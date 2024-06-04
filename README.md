@@ -1,3 +1,3 @@
-# Nought.Q.'s Notebook!
+# NoughtQ's Notebook!
 
 这个笔记本只是一个半成品，预计在暑假完善笔记……
