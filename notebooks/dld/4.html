@@ -814,6 +814,26 @@
   
   
     <li class="md-nav__item">
+      <a href="../dm/11.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 11 Trees
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../dm/Glossary.html" class="md-nav__link">
         
   
@@ -2281,7 +2301,7 @@
 
 <h1 id="chap-4-sequential-circuits">Chap 4 Sequential Circuits</h1>
 <div markdown="1" style="margin-top: -30px; font-size: 1em; opacity: 0.7;">
-约 9723 个字 , 预计阅读时间 32 分钟
+约 9698 个字 , 预计阅读时间 48 分钟
 </div>
 <!-- :material-circle-edit-outline:-->
 <!--:fontawesome-solid-code: -->
@@ -2328,7 +2348,7 @@
 <p><strong>同步(synchronous)</strong>： </p>
 <ul>
 <li>这种电路的行为可由它在<em>离散时间</em>内的信号来定义</li>
-<li>存储元件观察输入信号的时间，并且==仅==随时间信号(来自<em>时钟生成器(clock generator)</em> 的 <em>时钟脉冲(clock pulse)</em>)的变化而改变状态。因此它又被称为<em>时钟时序电路(clocked sequential circuits)</em>。因此，这种电路能够在不同的电路延迟下也能正常工作，而且相对来说比较容易设计出来。
+<li>存储元件观察输入信号的时间，并且<em>仅</em>随时间信号(来自<em>时钟生成器(clock generator)</em> 的 <em>时钟脉冲(clock pulse)</em>)的变化而改变状态。因此它又被称为<em>时钟时序电路(clocked sequential circuits)</em>。因此，这种电路能够在不同的电路延迟下也能正常工作，而且相对来说比较容易设计出来。
 <div style="text-align: center; margin-top: 15px;">
 <img src="images/C4/Quicker_20240424_214445.png" width="80%" style="margin: 0 auto;">
 </div></li>
@@ -2346,7 +2366,7 @@
 </li>
 </ul>
 <h3 id="storage-elements">Storage Elements</h3>
-<p>存储信息的方式多种多样，包括使用逻辑电路，比如<em>缓冲器(buffer)</em>。假设缓冲器具有<span class="arithmatex">\(t_G\)</span>时间的延迟，那么在<span class="arithmatex">\(t\)</span>时刻进行输入，将会在<span class="arithmatex">\(t + t_G\)</span>时刻得到输出，也就是说，信息存储了<span class="arithmatex">\(t_G\)</span>时间。</p>
+<p>存储信息的方式多种多样，包括使用逻辑电路，比如<em>缓冲器(buffer)</em>。假设缓冲器具有<span class="arithmatex">\(t_G\)</span>时间的延迟，那么在<span class="arithmatex">\(t\)</span>时刻进行输入，将会在<span class="arithmatex">\(t + t_G\)</span>时刻得到输出，也就是说，信息被存储了<span class="arithmatex">\(t_G\)</span>时间。</p>
 <p>但是，我们希望信息存储的时间是<strong>不定的(indefinite)</strong>，应该比一个或多个门的延迟更长一些。因此，我们对缓冲器进行改装：<mark>将它的输入与输出相连接</mark>。假如输入为0，那么在<span class="arithmatex">\(t_G\)</span>时间过后缓冲器将会输出0；然后这个0又回到输入，又过了<span class="arithmatex">\(t_G\)</span>时间后被输出……如此往复，最终实现一直保存0的功能(输入为1同理)。</p>
 <p>这个例子说明可以通过将具有延迟的逻辑电路构成<strong>闭环(closed loop)</strong> 的方式来实现存储功能，同时要确保回路中没有逆转信号。一个缓冲器通常由两个<em>非门</em>构成的。</p>
 <div style="text-align: center; margin-top: 15px;">
@@ -2355,22 +2375,21 @@
 
 <p>然而，上述方法虽然常用，但它存在一个明显的问题：<u>我们无法改变缓冲器存储的信息，因为没有额外的输入来控制</u>。如果我们用<em>或非门</em>或者<em>与非门</em>，就可以改变这一现状，后面讲到的<em>异步</em>存储电路<strong>锁存器(latches)</strong> 就是这么构建的。</p>
 <hr />
-<p>通常来说，更多复杂的异步时序电路很难设计，因为它们的行为高度依赖门的延迟和改变输入的时间。因此，大多数设计者会选择<strong>同步时序电路</strong>。尽管如此，有些异步时序电路是必需的，一个重要的例子：需要用<em>异步</em>的<strong>锁存器</strong>来构建<em>同步</em>电路<strong>触发器(flip-flops)</strong> 。</p>
-<p><strong>触发器</strong>是能够存储一位信息的二进制存储元件，并具有时间特征(在Flip-Flop Timing一节定义)。它仅根据时钟脉冲来改变状态，也就是说，如果没有时钟脉冲，即使触发器的输出改变了电路的输入，它的输出仍然不变。那么，[[Chap 4 Sequential Circuits#^e43b6d|上图]]组合逻辑电路与触发器的回路就相当于断开了。触发器有1个或2个输出，一个用于输出存储的正常值，另一个可选的输出存储值的<em>补</em>。最常用的触发器是 <strong><span class="arithmatex">\(D\)</span>触发器</strong>。在深入学习触发器之前，我们先了解锁存器的工作原理。</p>
+<p>通常来说，很多复杂的异步时序电路很难设计，因为它们的行为高度依赖门的延迟和改变输入的时间。因此，大多数设计者会选择<strong>同步时序电路</strong>。尽管如此，有些异步时序电路是必需的——我们需要用<em>异步</em>的<strong>锁存器</strong>来构建<em>同步</em>电路<strong>触发器(flip-flops)</strong> 。</p>
+<p><strong>触发器</strong>是能够存储一位信息的二进制存储元件，并具有时间特征(在Flip-Flop Timing一节定义)。它仅根据时钟脉冲来改变状态，也就是说，如果没有时钟脉冲，即使触发器的输出改变了电路的输入，它的输出仍然不变，相当于组合逻辑电路与触发器的回路之间被“切断”了。触发器有1个或2个输出，一个用于输出存储的正常值，另一个可选的输出存储值的<em>补</em>。最常用的触发器是 <strong><span class="arithmatex">\(D\)</span>触发器</strong>。在深入学习触发器之前，我们先了解锁存器的工作原理。</p>
 <h2 id="latches">Latches</h2>
-<blockquote>
-<p>注：锁存器是==异步==时序电路</p>
-</blockquote>
 <h3 id="sr-and-overlinesr-latches"><span class="arithmatex">\(SR\)</span> and <span class="arithmatex">\(\overline{SR}\)</span> Latches</h3>
 <p><strong>锁存器(latches)</strong> 有以下特征：
 + 两个<strong>稳定的状态</strong>，即<code>0</code>，<code>1</code>
 + 可以<strong>长期保存</strong>给定的状态值
 + 在特定条件下可以改变状态，比如置位(set)<code>1</code>或复位(reset)<code>0</code></p>
-<p><strong><span class="arithmatex">\(SR\)</span>锁存器</strong>：由两个<strong>或非门</strong>的<strong>交叉耦合(cross-coupling)</strong> 构成，如图所示：</p>
-<div style="text-align: center; margin-top: 15px;">
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1"><strong><span class="arithmatex">\(SR\)</span>锁存器</strong></label><label for="__tabbed_1_2"><strong><span class="arithmatex">\(\overline{SR}\)</span> 锁存器</strong></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>由两个<strong>或非门</strong>的<strong>交叉耦合(cross-coupling)</strong> 构成，如图所示：</p>
+<p><div style="text-align: center; margin-top: 15px;">
 <img src="images/C4/Quicker_20240425_183634.png" width="80%" style="margin: 0 auto;">
-</div>
-
+</div></p>
 <ul>
 <li>其中，<mark>输入</mark><span class="arithmatex">\(S\)</span>用于置位(set)，<span class="arithmatex">\(R\)</span>用于复位(reset)</li>
 <li>当==输出==<span class="arithmatex">\(Q = 1, \overline{Q} = 0\)</span>时，称为<em>置位状态(set state)</em>；当<span class="arithmatex">\(Q = 0, \overline{Q} = 1\)</span>时，称为<em>复位状态(reset state)</em></li>
@@ -2378,35 +2397,38 @@
 <li>如果<span class="arithmatex">\(S = R = 0\)</span>时，锁存器处于置位或复位状态，取决于最近的一次输入</li>
 </ul>
 <p><span class="arithmatex">\(SR\)</span>锁存器的行为可以由下面的仿真波形图表述：</p>
-<div style="text-align: center; margin-top: 15px;">
+<p><div style="text-align: center; margin-top: 15px;">
 <img src="images/C4/Quicker_20240426_204222.png" width="80%" style="margin: 0 auto;">
+</div></p>
 </div>
-
-<hr />
-<p><strong><span class="arithmatex">\(\overline{SR}\)</span> 锁存器</strong>：由两个<strong>与非门</strong>的<strong>交叉耦合</strong>构成，如图所示：</p>
+<div class="tabbed-block">
+<p>由两个<strong>与非门</strong>的<strong>交叉耦合</strong>构成，如图所示：
 <div style="text-align: center; margin-top: 15px;">
 <img src="images/C4/Quicker_20240425_122405.png" width="80%" style="margin: 0 auto;">
-</div>
-
+</div></p>
 <blockquote>
 <p>注意：这种锁存器的输入信号要<em>取补</em></p>
-<p>[!summary] </p>
+</blockquote>
+</div>
+</div>
+</div>
+<details class="summary" open="open">
+<summary>总结</summary>
 <ul>
 <li><span class="arithmatex">\(SR\)</span>锁存器由或非门构成 <span class="arithmatex">\(\rightarrow\)</span> 对<code>0</code>敏感 <span class="arithmatex">\(\rightarrow\)</span> 同时为<code>0</code>是保持状态</li>
 <li><span class="arithmatex">\(\overline{SR}\)</span>锁存器由与非门构成 <span class="arithmatex">\(\rightarrow\)</span> 对<code>1</code>敏感 <span class="arithmatex">\(\rightarrow\)</span> 同时为<code>1</code>是保持状态</li>
 </ul>
-</blockquote>
-<hr />
-<p>不稳定的锁存器行为：</p>
-<blockquote>
-<p>注：这块内容属于补充知识，考试应该不做要求</p>
-</blockquote>
+</details>
+<details class="info">
+<summary>补充知识——不稳定的锁存器行为(考试应该不做要求)</summary>
 <ul>
 <li>
 <p><strong>振荡(oscillation)</strong></p>
-<p><span class="arithmatex">\(\overline{S} = \overline{R} = 0\)</span>不能作为输入，因为：
-+ 如果两个门具有==相同的延迟==，那么它们将会同时输出0。将0反馈至输入端就会同时输出1，然后又同时输出0，如此往复。这种<em>振荡</em>行为称为<strong>critical race</strong>，它将会永远持续下去
-+ 如果两个门具有==不同的延迟==，那么锁存器就会改变状态。然而，我们不清楚锁存器会进入什么状态，因此锁存器的下一个状态是<em>未定义的</em></p>
+<p><span class="arithmatex">\(\overline{S} = \overline{R} = 0\)</span>不能作为输入，因为：</p>
+<ul>
+<li>如果两个门具有 <mark>相同的延迟</mark>，那么它们将会同时输出0。将0反馈至输入端就会同时输出1，然后又同时输出0，如此往复。这种<em>振荡</em>行为称为<strong>critical race</strong>，它将会永远持续下去</li>
+<li>如果两个门具有 <mark>不同的延迟</mark>，那么锁存器就会改变状态。然而，我们不清楚锁存器会进入什么状态，因此锁存器的下一个状态是<em>未定义的</em></li>
+</ul>
 </li>
 <li>
 <p><strong>亚稳态(metastable state)</strong></p>
@@ -2421,10 +2443,12 @@
 中间的点代表<strong>亚稳态</strong>。任何信号的微小变化都会得到加强，且电路会离开亚稳态</p>
 </li>
 </ul>
-<p>如何避免这些不稳定状态呢？
-+ 不要同时将<span class="arithmatex">\(R, S\)</span>从0改变至1，这样可以避免<strong>振荡</strong>行为。一种方法是不能让它们同时为0
-+ 一旦改变一个输入后，就不要再改变它，直到电路完成信号传输并达到稳定状态。这样可以避免<strong>亚稳态</strong>行为。</p>
-<hr />
+<p>如何避免这些不稳定状态呢？</p>
+<ul>
+<li>不要同时将<span class="arithmatex">\(R, S\)</span>从0改变至1，这样可以避免<strong>振荡</strong>行为。一种方法是不能让它们同时为0</li>
+<li>一旦改变一个输入后，就不要再改变它，直到电路完成信号传输并达到稳定状态。这样可以避免<strong>亚稳态</strong>行为。</li>
+</ul>
+</details>
 <p><strong>时钟<span class="arithmatex">\(SR\)</span>锁存器(clocked <span class="arithmatex">\(SR\)</span> latches)</strong>：在原先<span class="arithmatex">\(\overline{SR}\)</span>锁存器的基础上增加两个与非门和一个<strong>控制输入(control input)</strong><span class="arithmatex">\(C\)</span>得到的，这个输入作为另外两个输入的<em>使能信号</em></p>
 <div style="text-align: center; margin-top: 15px;">
 <img src="images/C4/Quicker_20240425_183559.png" width="80%" style="margin: 0 auto;">
