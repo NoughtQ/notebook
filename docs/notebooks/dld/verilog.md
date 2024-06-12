@@ -1,7 +1,7 @@
 
 ## Chap 2 Combinational Logic Circuits
 
-![400](./images/Verilog/Quicker_20240525_142536.png)
+![400](images/Verilog/Quicker_20240525_142536.png)
 ``` Verilog
 module fig2_5(L, D, X, A);
 	input D, X, A;
@@ -15,7 +15,7 @@ endmodule
 ```
 
 ---
-![500](./images/Verilog/Quicker_20240525_143245.png)
+![500](images/Verilog/Quicker_20240525_143245.png)
 
 ``` Verilog
 

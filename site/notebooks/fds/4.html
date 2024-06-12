@@ -1,20 +1,20 @@
 
 <!doctype html>
-<html lang="en" class="no-js">
+<html lang="zh" class="no-js">
   <head>
     
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
       
-        <meta name="author" content="stupid-qzy">
+        <meta name="author" content="NoughtQ">
       
       
       
         <link rel="prev" href="3.html">
       
       
-        <link rel="next" href="6.html">
+        <link rel="next" href="5.html">
       
       
       <link rel="icon" href="../../assets/favicon.png">
@@ -22,7 +22,7 @@
     
     
       
-        <title>Chap 4 Trees - NULL's Notebook!</title>
+        <title>Chap 4 Trees - NoughtQ's Notebook!</title>
       
     
     
@@ -43,8 +43,8 @@
         
         
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
-        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=JetBrains+Mono,+LXGW+WenKai+Screen+GB+Screen:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"JetBrains Mono, LXGW WenKai Screen GB Screen";--md-code-font:"JetBrains Mono"}</style>
       
     
     
@@ -54,7 +54,9 @@
     
       <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
     
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css">
+      <link rel="stylesheet" href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css">
+    
+      <link rel="stylesheet" href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css">
     
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -86,7 +88,7 @@
       
         
         <a href="#chap-4-trees" class="md-skip">
-          Skip to content
+          跳转至
         </a>
       
     </div>
@@ -98,8 +100,8 @@
       
 
 <header class="md-header" data-md-component="header">
-  <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../.." title="NULL&#39;s Notebook!" class="md-header__button md-logo" aria-label="NULL's Notebook!" data-md-component="logo">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../.." title="NoughtQ&#39;s Notebook!" class="md-header__button md-logo" aria-label="NoughtQ's Notebook!" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 22a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2h-6v7L9.5 7.5 7 9V2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12Z"/></svg>
@@ -113,7 +115,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            NULL's Notebook!
+            NoughtQ's Notebook!
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -162,16 +164,16 @@
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
     <form class="md-search__form" name="search">
-      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
       <label class="md-search__icon md-icon" for="__search">
         
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
         
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg>
       </label>
-      <nav class="md-search__options" aria-label="Search">
+      <nav class="md-search__options" aria-label="查找">
         
-        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
           
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
         </button>
@@ -182,7 +184,7 @@
       <div class="md-search__scrollwrap" data-md-scrollfix>
         <div class="md-search-result" data-md-component="search-result">
           <div class="md-search-result__meta">
-            Initializing search
+            正在初始化搜索引擎
           </div>
           <ol class="md-search-result__list" role="presentation"></ol>
         </div>
@@ -193,13 +195,13 @@
     
     
       <div class="md-header__source">
-        <a href="https://github.com/stupid-qzy/test-mkdocs" title="Go to repository" class="md-source" data-md-component="source">
+        <a href="https://github.com/stupid-qzy/notebook" title="前往仓库" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
   </div>
   <div class="md-source__repository">
-    NULL's Notebook
+    NoughtQ's Notebook
   </div>
 </a>
       </div>
@@ -214,7 +216,7 @@
         
           
             
-<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
       
@@ -261,7 +263,7 @@
     
     
       <li class="md-tabs__item md-tabs__item--active">
-        <a href="../calculus/8.html" class="md-tabs__link">
+        <a href="../calculus/7.html" class="md-tabs__link">
           
   
   笔记
@@ -334,25 +336,25 @@
   
 
 
-<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="NULL&#39;s Notebook!" class="md-nav__button md-logo" aria-label="NULL's Notebook!" data-md-component="logo">
+    <a href="../.." title="NoughtQ&#39;s Notebook!" class="md-nav__button md-logo" aria-label="NoughtQ's Notebook!" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 22a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2h-6v7L9.5 7.5 7 9V2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12Z"/></svg>
 
     </a>
-    NULL's Notebook!
+    NoughtQ's Notebook!
   </label>
   
     <div class="md-nav__source">
-      <a href="https://github.com/stupid-qzy/test-mkdocs" title="Go to repository" class="md-source" data-md-component="source">
+      <a href="https://github.com/stupid-qzy/notebook" title="前往仓库" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
   </div>
   <div class="md-source__repository">
-    NULL's Notebook
+    NoughtQ's Notebook
   </div>
 </a>
     </div>
@@ -530,6 +532,26 @@
   
   
     <li class="md-nav__item">
+      <a href="../calculus/7.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第七章 矢量代数与空间解析几何
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../calculus/8.html" class="md-nav__link">
         
   
@@ -575,6 +597,46 @@
   
   <span class="md-ellipsis">
     第十章 第二类曲线积分与第二类曲面积分
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../calculus/11.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第十一章 级数
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../calculus/appendix.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    附录
   </span>
   
 
@@ -636,7 +698,7 @@
         
   
   <span class="md-ellipsis">
-    Chapter 1 The Foundations:  Logic and Proofs
+    Chapter 1 The Foundations: Logic and Proofs
   </span>
   
 
@@ -672,6 +734,126 @@
   
   
     <li class="md-nav__item">
+      <a href="../dm/3.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 3 Algorithms
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dm/4.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 4 Number Theory and Cryptography
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dm/5.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 5 Induction and Recursion
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dm/6.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 6 Counting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dm/8.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 8 Advanced Counting Techniques
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dm/9.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 9 Relations
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../dm/10.html" class="md-nav__link">
         
   
@@ -692,11 +874,31 @@
   
   
     <li class="md-nav__item">
+      <a href="../dm/11.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 11 Trees
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../dm/Glossary.html" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    留言板
+    Glossary
   </span>
   
 
@@ -872,7 +1074,9 @@
       
         
 
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
   
   
   
@@ -881,7 +1085,7 @@
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
-      Table of contents
+      目录
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
@@ -1080,6 +1284,26 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="5.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 5 Hashing
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -1607,7 +1831,9 @@
                   <div class="md-sidebar__inner">
                     
 
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
   
   
   
@@ -1616,7 +1842,7 @@
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
-      Table of contents
+      目录
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
@@ -1829,9 +2055,16 @@
   
 
 
-<h1 id="chap-4-trees">Chap 4 Trees</h1>
-<h2 id="preliminaries">Preliminaries</h2>
-<h3 id="definitions">Definitions</h3>
+<h1 id="chap-4-trees">Chap 4 Trees<a class="headerlink" href="#chap-4-trees" title="Permanent link">&para;</a></h1>
+<div markdown="1" style="margin-top: -30px; font-size: 0.8em; opacity: 0.7;">
+约 2960 个字 , 436 行代码 , 预计阅读时间 20 分钟
+</div>
+<!-- :material-circle-edit-outline:-->
+<!--:fontawesome-solid-code: -->
+<!--:material-clock-time-two-outline: -->
+
+<h2 id="preliminaries">Preliminaries<a class="headerlink" href="#preliminaries" title="Permanent link">&para;</a></h2>
+<h3 id="definitions">Definitions<a class="headerlink" href="#definitions" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>树(Trees)</strong>：它是一组节点，可以为空，如果不为空：<ul>
 <li>包含1个<strong>根节点(root)</strong><span class="arithmatex">\(r\)</span></li>
@@ -1860,18 +2093,18 @@
 <li><strong>后代(descendant)</strong>：该节点所有子树的节点</li>
 <li><strong>内部顶点(internal vertices)</strong>：有孩子节点的顶点</li>
 </ul>
-<h3 id="implementation">Implementation</h3>
-<h4 id="list-representation">List Representation</h4>
+<h3 id="implementation">Implementation<a class="headerlink" href="#implementation" title="Permanent link">&para;</a></h3>
+<h4 id="list-representation">List Representation<a class="headerlink" href="#list-representation" title="Permanent link">&para;</a></h4>
 <p><img alt="" src="Quicker_20240320_173619.png" /></p>
 <blockquote>
 <p>问题：每个节点的空间大小取决于它有多少个子树，这样实现起来就很麻烦</p>
 </blockquote>
-<h4 id="firstchild-nextsibling-representation">FirstChild-NextSibling Representation</h4>
+<h4 id="firstchild-nextsibling-representation">FirstChild-NextSibling Representation<a class="headerlink" href="#firstchild-nextsibling-representation" title="Permanent link">&para;</a></h4>
 <p><img alt="" src="Images/C4/Quicker_20240421_204417.png" /></p>
 <blockquote>
 <p>注：对于同一棵树，这种表示并不唯一，因为树中孩子的顺序可以是任意的</p>
 </blockquote>
-<h3 id="applicationfile-system">Application(File System)</h3>
+<h3 id="applicationfile-system">Application(File System)<a class="headerlink" href="#applicationfile-system" title="Permanent link">&para;</a></h3>
 <p><em>Directory listing in a hierarchical file system</em>
 + Unix 系统
     <img alt="" src="Quicker_20240320_184217.png" />
@@ -1915,10 +2148,10 @@
 </span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">TotalSize</span><span class="p">;</span>
 </span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="p">}</span>
 </span></code></pre></div></p>
-<h2 id="binary-trees">Binary Trees</h2>
+<h2 id="binary-trees">Binary Trees<a class="headerlink" href="#binary-trees" title="Permanent link">&para;</a></h2>
 <p><strong>Binary Tree(二叉树)</strong>：每个节点拥有不超过两个孩子的树
 <img alt="" src="Quicker_20240320_174545.png" /></p>
-<h3 id="expression-treessyntax-trees">Expression Trees(syntax trees)</h3>
+<h3 id="expression-treessyntax-trees">Expression Trees(syntax trees)<a class="headerlink" href="#expression-treessyntax-trees" title="Permanent link">&para;</a></h3>
 <p>^fc61a7
 + 先将[[Chap 3 Lists, Stacks, and Queues#^01bb22|中缀-&gt;后缀]]
 + 然后类似[[Chap 3 Lists, Stacks, and Queues#^f00de4|后缀表达式求解]]的方法，<mark>遇到运算符时，将堆栈内的两个操作数弹出，与运算符构建一棵树</mark>，对应关系如下：
@@ -1964,7 +2197,7 @@
 </span><span id="__span-3-33"><a id="__codelineno-3-33" name="__codelineno-3-33" href="#__codelineno-3-33"></a>
 </span><span id="__span-3-34"><a id="__codelineno-3-34" name="__codelineno-3-34" href="#__codelineno-3-34"></a><span class="p">}</span>
 </span></code></pre></div></p>
-<h3 id="tree-traversals">Tree Traversals</h3>
+<h3 id="tree-traversals">Tree Traversals<a class="headerlink" href="#tree-traversals" title="Permanent link">&para;</a></h3>
 <blockquote>
 <p><strong>树的遍历(tree traversals)</strong>：对树的每个节点都访问一次，时间复杂度为<span class="arithmatex">\(O(N)\)</span></p>
 </blockquote>
@@ -2035,7 +2268,7 @@
 <blockquote>
 <p>注：入栈顺序貌似是前序遍历？🤔 我还没验证过……</p>
 </blockquote>
-<h3 id="threaded-binary-trees">Threaded Binary Trees</h3>
+<h3 id="threaded-binary-trees">Threaded Binary Trees<a class="headerlink" href="#threaded-binary-trees" title="Permanent link">&para;</a></h3>
 <blockquote>
 <p>对于一般的二叉树，它的叶子节点的左右指针指向<code>NULL</code>，这浪费了很多空间。而<strong>线索二叉树(Threaded Binary Trees)</strong> 很好地利用了闲置的节点，具体规则如下：</p>
 </blockquote>
@@ -2061,14 +2294,14 @@
 <blockquote>
 <p>注：虽然这里默认使用中序遍历的定义，但我们也可以将其修改成<em>前序</em>或者<em>后序</em>遍历的版本(比如对于后序遍历版的线索二叉树，某个节点空出来的左子树指向它在后序遍历中的前一个节点，空出来的右子树指向它在后序遍历中的后一个节点)</p>
 </blockquote>
-<h3 id="special-cases">Special Cases</h3>
+<h3 id="special-cases">Special Cases<a class="headerlink" href="#special-cases" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>歪斜二叉树(Skewed Binary Trees)</strong>：
 <img alt="" src="Images/C4/Quicker_20240327_190541.png" /></li>
 <li><strong>完全二叉树(Complete Binart Trees)</strong>：
 <img alt="" src="Images/C4/Quicker_20240327_190602.png" /></li>
 </ul>
-<h3 id="properties">Properties</h3>
+<h3 id="properties">Properties<a class="headerlink" href="#properties" title="Permanent link">&para;</a></h3>
 <ul>
 <li>
 <p>第<span class="arithmatex">\(i\)</span>层(<span class="arithmatex">\(i \ge 1\)</span>)最多拥有<span class="arithmatex">\(2^{i - 1}\)</span>个节点；深度为<span class="arithmatex">\(k\)</span>的二叉树最多有<span class="arithmatex">\(2^k - 1\)</span>个节点(<span class="arithmatex">\(k \ge 1\)</span>)</p>
@@ -2087,8 +2320,8 @@
 + 完全二叉树有奇数个节点时，<span class="arithmatex">\(n_1 = 0\)</span>
 + 完全二叉树有偶数个节点时，<span class="arithmatex">\(n_1 = 1\)</span></p>
 </blockquote>
-<h2 id="the-search-tree-adt-binary-search-tree">The Search Tree ADT -- Binary Search Tree</h2>
-<h3 id="definition">Definition</h3>
+<h2 id="the-search-tree-adt-binary-search-tree">The Search Tree ADT -- Binary Search Tree<a class="headerlink" href="#the-search-tree-adt-binary-search-tree" title="Permanent link">&para;</a></h2>
+<h3 id="definition">Definition<a class="headerlink" href="#definition" title="Permanent link">&para;</a></h3>
 <p><strong>二叉搜索树(Binary Search Tree)</strong> 是一棵二叉树，它可以是空树，如果非空，则遵循以下规则：
 + 每个节点有一个整数的<strong>键(key)</strong>，每个键互不相同</p>
 <blockquote>
@@ -2102,7 +2335,7 @@
 + 给出一棵二叉搜索树的<strong>前序</strong><em>或者<em>*</em>后序**遍历，根据二叉搜索树的定义，我们应当可以还原出这棵树
 + 对于一棵</em>完全<em>的二叉搜索树，它</em><em>最小</em><em>的节点一定是</em><em>叶子节点</em>*，最大的就不一定了</p>
 </blockquote>
-<h3 id="adt">ADT</h3>
+<h3 id="adt">ADT<a class="headerlink" href="#adt" title="Permanent link">&para;</a></h3>
 <p>对象：拥有0个或多个元素的有限有序表
 运算：
 + <code>SearchTree MakeEmpty(SearchTree T);</code>
@@ -2112,7 +2345,7 @@
 + <code>SearchTree Insert(ElementType X, SearchTree T);</code>
 + <code>SearchTree Delete(ElementType X, SearchTree T);</code>
 + <code>ElementType Retrieve(Position P);</code></p>
-<h3 id="implementations">Implementations</h3>
+<h3 id="implementations">Implementations<a class="headerlink" href="#implementations" title="Permanent link">&para;</a></h3>
 <div class="language-c highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1">// 声明部分</span>
 </span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="cp">#ifndef _Tree_H</span>
 </span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
@@ -2150,7 +2383,7 @@
 </span><span id="__span-9-35"><a id="__codelineno-9-35" name="__codelineno-9-35" href="#__codelineno-9-35"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
 </span><span id="__span-9-36"><a id="__codelineno-9-36" name="__codelineno-9-36" href="#__codelineno-9-36"></a><span class="p">}</span>
 </span></code></pre></div>
-<h4 id="find"><code>Find</code></h4>
+<h4 id="find"><code>Find</code><a class="headerlink" href="#find" title="Permanent link">&para;</a></h4>
 <div class="language-c highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">Position</span><span class="w"> </span><span class="nf">Find</span><span class="p">(</span><span class="n">ElementType</span><span class="w"> </span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">SearchTree</span><span class="w"> </span><span class="n">T</span><span class="p">)</span>
 </span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="p">{</span>
 </span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span>
@@ -2184,7 +2417,7 @@
 </span><span id="__span-11-13"><a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w">  </span><span class="c1">// not found</span>
 </span><span id="__span-11-14"><a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a><span class="p">}</span>
 </span></code></pre></div>
-<h4 id="findmin"><code>FindMin</code></h4>
+<h4 id="findmin"><code>FindMin</code><a class="headerlink" href="#findmin" title="Permanent link">&para;</a></h4>
 <div class="language-c highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">Position</span><span class="w"> </span><span class="nf">FindMin</span><span class="p">(</span><span class="n">SearchTree</span><span class="w"> </span><span class="n">T</span><span class="p">)</span>
 </span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="p">{</span>
 </span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span>
@@ -2195,7 +2428,7 @@
 </span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">FindMin</span><span class="p">(</span><span class="n">T</span><span class="o">-&gt;</span><span class="n">Left</span><span class="p">);</span><span class="w"> </span><span class="c1">// keep moving to left</span>
 </span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="p">}</span>
 </span></code></pre></div>
-<h4 id="findmax"><code>FindMax</code></h4>
+<h4 id="findmax"><code>FindMax</code><a class="headerlink" href="#findmax" title="Permanent link">&para;</a></h4>
 <div class="language-c highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">Position</span><span class="w"> </span><span class="nf">FindMax</span><span class="p">(</span><span class="n">SearchTree</span><span class="w"> </span><span class="n">T</span><span class="p">)</span>
 </span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="p">{</span>
 </span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span>
@@ -2207,7 +2440,7 @@
 <blockquote>
 <p>这两个函数的时间复杂度均为<span class="arithmatex">\(O(d)\)</span>，<span class="arithmatex">\(d\)</span>为树的深度</p>
 </blockquote>
-<h4 id="insert"><code>Insert</code></h4>
+<h4 id="insert"><code>Insert</code><a class="headerlink" href="#insert" title="Permanent link">&para;</a></h4>
 <blockquote>
 <p>思想：执行过程类似<code>Find</code>，
 + 如果找到了该节点，可以不做任何处理，也可以给它的计数器+1（如果节点有计数字段的话）
@@ -2242,7 +2475,7 @@
 <p>🤔思考：可不可以这样简化一下插入函数——将函数返回类型改为<code>void</code>，然后在第一个<code>else</code>中不采用赋值语句，最后也不返回<code>T</code></p>
 <p>答案：显然不可以。如果最后没有在树中找到要插入的节点，那么就需要新建一棵子树。如果建完这棵树后既不返回它，也没有将它赋回去，那么这棵子树的父节点无法与它建立联系，因此建了也等于白建。</p>
 </blockquote>
-<h4 id="delete">🌟<code>Delete</code></h4>
+<h4 id="delete">🌟<code>Delete</code><a class="headerlink" href="#delete" title="Permanent link">&para;</a></h4>
 <p>这是二分搜索树中最难处理的部分。我们要处理有三种情况：
 + 叶子结点
 + 有一个孩子
@@ -2308,7 +2541,7 @@
 <p>显然，这种删除的操作效率不高</p>
 <p>改进方法：如果删除操作用的不多，可以采用<strong>lazy deletion</strong>的方法——为每个节点添加一个<code>flag</code>字段，来标记节点是否被删除。因此我们可以不必通过释放节点的空间的方式来删除节点；而且如果我们重新插入已经删除的节点，则不必使用<code>malloc()</code>分配内存,因而能够提高程序的效率。很多数据库都是这么做的。</p>
 </blockquote>
-<h3 id="average-case-analysis">Average-Case Analysis</h3>
+<h3 id="average-case-analysis">Average-Case Analysis<a class="headerlink" href="#average-case-analysis" title="Permanent link">&para;</a></h3>
 <p>通过计算发现，树的所有节点的平均深度为<span class="arithmatex">\(O(logN)\)</span>，证明过程见教材<span class="arithmatex">\(P_{108}\)</span></p>
 <p>二分搜索树的大小取决于==插入的顺序==和==删除==操作
 + 插入：如果顺序不够随机（最坏的情况：升序），则树会<strong>退化</strong>成一个链表
@@ -2316,7 +2549,7 @@
 <p>解决方案（下学期ADS会讲）：
 + AVL树
 + splay树</p>
-<h2 id="problems">Problems</h2>
+<h2 id="problems">Problems<a class="headerlink" href="#problems" title="Permanent link">&para;</a></h2>
 <blockquote>
 <p>1-2. In a binary search tree which contains several integer keys including 4, 5, and 6, if 4 and 6 are on the same level, then 5 must be their parent.</p>
 </blockquote>
@@ -2557,6 +2790,21 @@ Figure2</p>
 <p>我感觉好像没有必要在<code>Traversal()</code>函数里使用<code>malloc()</code>，因为我已经开了大小确定的数组了🤔</p>
 </blockquote>
 
+  <hr>
+<div class="md-source-file">
+  <small>
+    
+      最后更新:
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime">2024年6月1日 17:09:32</span>
+      
+        <br>
+        创建日期:
+        <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime">2024年6月1日 17:09:32</span>
+      
+    
+  </small>
+</div>
+
 
 
 
@@ -2622,6 +2870,12 @@ async>
           
         </div>
         
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            回到页面顶部
+          </button>
+        
       </main>
       
         <footer class="md-footer">
@@ -2631,7 +2885,7 @@ async>
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright &copy; 2024 stupid-qzy
+      Copyright &copy; 2024 NoughtQ
     </div>
   
   
@@ -2666,7 +2920,7 @@ async>
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "content.code.copy", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.a264c092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.top", "content.code.copy", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.a264c092.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
     
     
       <script src="../../assets/javascripts/bundle.4e0fa4ba.min.js"></script>

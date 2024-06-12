@@ -1,0 +1,2488 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="NoughtQ">
+      
+      
+      
+        <link rel="prev" href="../../index.html">
+      
+      
+        <link rel="next" href="8.html">
+      
+      
+      <link rel="icon" href="../../assets/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.0">
+    
+    
+      
+        <title>第七章 矢量代数与空间解析几何 - NoughtQ's Notebook!</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.9f615399.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.649f08f9.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=JetBrains+Mono,+LXGW+WenKai+Screen+GB+Screen:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"JetBrains Mono, LXGW WenKai Screen GB Screen";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/extra.css">
+    
+      <link rel="stylesheet" href="../../css/counter.css">
+    
+      <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
+    
+      <link rel="stylesheet" href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css">
+    
+      <link rel="stylesheet" href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../.." title="NoughtQ&#39;s Notebook!" class="md-header__button md-logo" aria-label="NoughtQ's Notebook!" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 22a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2h-6v7L9.5 7.5 7 9V2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            NoughtQ's Notebook!
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              第七章 矢量代数与空间解析几何
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefer-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Light Mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Light Mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5c-.84 0-1.65.15-2.39.42L12 2M3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29L3.34 7m.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14L3.36 17M20.65 7l-1.77 3.79a7.023 7.023 0 0 0-2.38-4.15l4.15.36m-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29L20.64 17M12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44L12 22Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefer-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Dark Mode"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Dark Mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3 3.19.09m3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95 2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/stupid-qzy/notebook" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    NoughtQ's Notebook
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../index.html" class="md-tabs__link">
+          
+  
+  主页
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      
+  
+  
+    
+  
+  
+    
+    
+      
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="7.html" class="md-tabs__link">
+          
+  
+  笔记
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../tools/git.html" class="md-tabs__link">
+          
+  
+  工具
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../exp/interview.html" class="md-tabs__link">
+          
+  
+  经验
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="NoughtQ&#39;s Notebook!" class="md-nav__button md-logo" aria-label="NoughtQ's Notebook!" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 22a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2h-6v7L9.5 7.5 7 9V2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12Z"/></svg>
+
+    </a>
+    NoughtQ's Notebook!
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/stupid-qzy/notebook" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    NoughtQ's Notebook
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+        
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    主页
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            主页
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Welcome to my notebook!
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    笔记
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            笔记
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1" checked>
+        
+          <label class="md-nav__link" for="__nav_2_1" id="__nav_2_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    数学相关
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            数学相关
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1_1" checked>
+        
+          <label class="md-nav__link" for="__nav_2_1_1" id="__nav_2_1_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    微积分
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_1_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_1_1">
+            <span class="md-nav__icon md-icon"></span>
+            微积分
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    第七章 矢量代数与空间解析几何
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="7.html" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    第七章 矢量代数与空间解析几何
+  </span>
+  
+
+      </a>
+      
+        
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    两矢量的数量积与矢量积
+  </a>
+  
+    <nav class="md-nav" aria-label="两矢量的数量积与矢量积">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    数量积
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    矢量积
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    矢量的混合积与二重矢积
+  </a>
+  
+    <nav class="md-nav" aria-label="矢量的混合积与二重矢积">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    混合积
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    二重矢积
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    平面与直线方程
+  </a>
+  
+    <nav class="md-nav" aria-label="平面与直线方程">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    平面及平面方程
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    空间直线方程
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    平面束方程
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    曲面方程与空间曲线方程
+  </a>
+  
+    <nav class="md-nav" aria-label="曲面方程与空间曲线方程">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    曲面方程
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    曲线方程
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    二次曲面
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="8.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第八章 多元函数微分学
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="9.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第九章 多元函数积分学
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="10.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第十章 第二类曲线积分与第二类曲面积分
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="11.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第十一章 级数
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="appendix.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    附录
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1_2" >
+        
+          <label class="md-nav__link" for="__nav_2_1_2" id="__nav_2_1_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    离散数学
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_1_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_1_2">
+            <span class="md-nav__icon md-icon"></span>
+            离散数学
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dm/1.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chapter 1 The Foundations: Logic and Proofs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dm/2.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 2 Basic Structures: Sets, Functions, Sequences, Sums, and Matrices
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dm/3.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 3 Algorithms
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dm/4.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 4 Number Theory and Cryptography
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dm/5.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 5 Induction and Recursion
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dm/6.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 6 Counting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dm/8.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 8 Advanced Counting Techniques
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dm/9.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 9 Relations
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dm/10.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 10 Graph
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dm/11.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 11 Trees
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dm/Glossary.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Glossary
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    算法相关
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            算法相关
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2_1" >
+        
+          <label class="md-nav__link" for="__nav_2_2_1" id="__nav_2_2_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    数据结构基础
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            数据结构基础
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fds/2.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 2 Algorithm Analysis
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fds/3.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 3 Lists, Stacks, and Queues
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fds/4.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 4 Trees
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fds/5.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 5 Hashing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fds/6.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 6 Priority Queues(Heaps)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fds/7.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 7 Sorting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fds/8.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 8 The Disjoint Set ADT
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fds/9.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 9 Graph Algorithm
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    硬件相关
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            硬件相关
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3_1" >
+        
+          <label class="md-nav__link" for="__nav_2_3_1" id="__nav_2_3_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    数字逻辑设计
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            数字逻辑设计
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dld/1.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 1 Digital Systems and Information
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dld/2.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 2 Combinational Logic Circuit
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dld/3.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 3 Combinational Logical Design
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dld/4.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 4 Sequential Circuits
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dld/5.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 5 Digital HardWare Implementation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dld/6.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 6 Registers and Register Transfers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dld/7.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 7 Memory Basics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dld/verilog.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Verilog
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    工具
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            工具
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tools/git.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    git
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tools/vim.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    vim
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    经验
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            经验
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../exp/interview.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    面试
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../exp/freshman.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    大一の学习经验
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    两矢量的数量积与矢量积
+  </a>
+  
+    <nav class="md-nav" aria-label="两矢量的数量积与矢量积">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    数量积
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    矢量积
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    矢量的混合积与二重矢积
+  </a>
+  
+    <nav class="md-nav" aria-label="矢量的混合积与二重矢积">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    混合积
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    二重矢积
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    平面与直线方程
+  </a>
+  
+    <nav class="md-nav" aria-label="平面与直线方程">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    平面及平面方程
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    空间直线方程
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    平面束方程
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    曲面方程与空间曲线方程
+  </a>
+  
+    <nav class="md-nav" aria-label="曲面方程与空间曲线方程">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    曲面方程
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    曲线方程
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    二次曲面
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="_1">第七章 矢量代数与空间解析几何<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<div markdown="1" style="margin-top: -30px; font-size: 0.8em; opacity: 0.7;">
+约 2490 个字 , 预计阅读时间 12 分钟
+</div>
+<!-- :material-circle-edit-outline:-->
+<!--:fontawesome-solid-code: -->
+<!--:material-clock-time-two-outline: -->
+
+<details class="info" open="open">
+<summary>补充：矢量的投影</summary>
+<p>矢量<span class="arithmatex">\(\bm{a}\)</span>在轴u上的投影为：<span class="arithmatex">\(|\bm{a}| \cos{\varphi} = \dfrac{\bm{a} \cdot \bm{u}}{|\bm{u}|}\)</span></p>
+<p>投影矢量：<span class="arithmatex">\(|\bm{a}| \cos{\varphi} \dfrac{\bm{u}}{|\bm{u}|}\)</span></p>
+<p>性质：</p>
+<ul>
+<li><span class="arithmatex">\((\bm{a} + \bm{b})_{\bm{u}} = (\bm{a})_{\bm{u}} + (\bm{b})_{\bm{u}}\)</span></li>
+<li><span class="arithmatex">\((\lambda \bm{a})_{\bm{u}} = \lambda (\bm{a})_{\bm{u}}\)</span></li>
+</ul>
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="images/c7/微信图片_20240610163619.jpg" width="30%" style="margin: 0 auto;">
+</div>  </p>
+</details>
+<h2 id="_2">两矢量的数量积与矢量积<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<h3 id="_3">数量积<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
+<p><strong>数量积(点积)</strong>：<span class="arithmatex">\(\bm{a} \cdot \bm{b} = |\bm{a}||\bm{b}|\cos \theta\)</span></p>
+<p>运算规律：</p>
+<ul>
+<li>交换律：<span class="arithmatex">\(\bm{a} \cdot \bm{b} = \bm{b} \cdot \bm{a}\)</span></li>
+<li>结合律：<span class="arithmatex">\(m(\bm{a} \cdot \bm{b}) = (m\bm{a}) \cdot \bm{b} = \bm{a} \cdot (m\bm{b})\)</span></li>
+<li>分配律：<span class="arithmatex">\(\bm{a} \cdot (\bm{b} + \bm{c}) = \bm{a} \cdot \bm{b} + \bm{a} \cdot \bm{c}\)</span></li>
+</ul>
+<p><strong>定理1</strong>：<span class="arithmatex">\(\bm{a} \perp \bm{b} \Leftrightarrow \bm{a} \cdot \bm{b} = 0\)</span></p>
+<p>若<span class="arithmatex">\(\bm{a} = (a_1, a_2, a_3), \bm{b} = (b_1, b_2, b_3)\)</span>，则：</p>
+<div class="arithmatex">\[
+\cos(\bm{a}, \bm{b}) = \dfrac{\bm{a} \cdot \bm{b}}{|\bm{a}|\ |\bm{b}|} = \dfrac{a_1b_1 + a_2b_2 + a_3b_3}{\sqrt{a_1^2 + a_2^2 + a_3^2} \cdot \sqrt{b_1^2 + b_2^2 + b_3^2}}
+\]</div>
+<h3 id="_4">矢量积<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<p><strong>矢量积(叉积)</strong>：<span class="arithmatex">\(\bm{c} = \bm{a} \times \bm{b}\)</span></p>
+<ul>
+<li>大小：<span class="arithmatex">\(|\bm{c}| = |\bm{a}|\ |\bm{b}|\sin(\bm{a}, \bm{b})\)</span></li>
+<li>方向：从<span class="arithmatex">\(\bm{a}\)</span>经角<span class="arithmatex">\((\bm{a}, \bm{b})\)</span>到<span class="arithmatex">\(\bm{b}\)</span>的右手定则确定</li>
+</ul>
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/c7/Quicker_20240607_171933.png" width="40%" style="margin: 0 auto;">
+</div>
+
+<p>几何意义：数值上 = 以<span class="arithmatex">\(\bm{a}, \bm{b}\)</span>为邻边的平行四边形的面积</p>
+<p>运算规律：</p>
+<ul>
+<li><span class="arithmatex">\(\bm{a} \times \bm{b} = - (\bm{b} \times \bm{a})\)</span></li>
+<li>结合律：<span class="arithmatex">\(m(\bm{a} \times \bm{b}) = (m\bm{a}) \times \bm{b} = \bm{a} \times (m\bm{b})\)</span></li>
+<li>分配律：<span class="arithmatex">\(\bm{a} \times (\bm{b} + \bm{c}) = \bm{a} \times \bm{b} + \bm{a} \times \bm{c},\ (\bm{a} + \bm{b}) \times \bm{c} = \bm{a} \times \bm{c} + \bm{b} \times \bm{c}\)</span></li>
+</ul>
+<p><strong>定理2</strong>：<span class="arithmatex">\(\bm{a} \parallel \bm{b} \Leftrightarrow \bm{a} \times \bm{b} = \bm{0}\)</span></p>
+<p>坐标表达式：</p>
+<div class="arithmatex">\[
+\bm{a} \times \bm{b} = \begin{vmatrix}\bm{i} &amp; \bm{j} &amp; \bm{k} \\ a_1 &amp; a_2 &amp; a_3 \\ b_1 &amp; b_2 &amp; b_3\end{vmatrix}
+\]</div>
+<p>且：<span class="arithmatex">\(\bm{a} \parallel \bm{b} \Leftrightarrow \dfrac{a_1}{b_1} = \dfrac{a_2}{b_2} = \dfrac{a_3}{b_3}\)</span></p>
+<h2 id="_5">矢量的混合积与二重矢积<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<h3 id="_6">混合积<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
+<p>令<span class="arithmatex">\(\bm{a} = (a_1, a_2, a_3), \bm{b} = (b_1, b_2, b_3), \bm{c} = (c_1, c_2, c_3)\)</span></p>
+<p><strong>混合积</strong>：<span class="arithmatex">\(\bm{a} \cdot (\bm{b} \times \bm{c}) = \begin{vmatrix}a_1 &amp; a_2 &amp; a_3 \\ b_1 &amp; b_2 &amp; b_3 \\ c_1 &amp; c_2 &amp; c_3 \end{vmatrix}\)</span></p>
+<p><strong>定理3</strong>：<span class="arithmatex">\(\bm{a}, \bm{b}, \bm{c}\)</span>共面 <span class="arithmatex">\(\Leftrightarrow\ \bm{a} \cdot (\bm{b} \times \bm{c}) = 0\)</span>  </p>
+<p>几何意义：<span class="arithmatex">\(|\bm{a} \cdot (\bm{b} \times \bm{c})|\)</span>的值为以<span class="arithmatex">\(\bm{a}, \bm{b}, \bm{c}\)</span>为棱的平行六面体的体积</p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/c7/Quicker_20240607_173608.png" width="60%" style="margin: 0 auto;">
+</div>
+
+<p>性质：</p>
+<ul>
+<li>
+<p>顺次轮换混合积中的三个矢量，所得混合积不变，即
+$$
+\bm{a} \cdot (\bm{b} \times \bm{c}) = \bm{b} \cdot (\bm{c} \times \bm{a}) = \bm{c} \cdot (\bm{a} \times \bm{b})
+$$</p>
+</li>
+<li>
+<p>任意对调混合积中两矢量的位置所得混合积的绝对值不变，但符号相反，即</p>
+</li>
+</ul>
+<div class="arithmatex">\[
+\begin{align}
+\bm{a} \cdot (\bm{b} \times \bm{c}) &amp; = - \bm{a} \cdot (\bm{c} \times \bm{b}) \notag \\ 
+\bm{a} \cdot (\bm{b} \times \bm{c}) &amp; = - \bm{b} \cdot (\bm{a} \times \bm{c}) \notag \\ 
+\bm{a} \cdot (\bm{b} \times \bm{c}) &amp; = - \bm{c} \cdot (\bm{b} \times \bm{a}) \notag 
+\end{align}
+\]</div>
+<h3 id="_7">二重矢积<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h3>
+<p><strong>二重矢积</strong>：<span class="arithmatex">\(\bm{a} \times (\bm{b} \times \bm{c})\)</span></p>
+<p><strong>定理4</strong>：</p>
+<div class="arithmatex">\[
+\begin{align}
+\bm{a} \times (\bm{b} \times \bm{c}) &amp; = (\bm{a} \cdot \bm{c}) \bm{b} - (\bm{a} \cdot \bm{b})\bm{c} \notag \\
+(\bm{a} \times \bm{b}) \times \bm{c} &amp; = (\bm{c} \cdot \bm{a}) \bm{b} - (\bm{c} \cdot \bm{b})\bm{a} \notag 
+\end{align}
+\]</div>
+<h2 id="_8">平面与直线方程<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h2>
+<h3 id="_9">平面及平面方程<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>点法式方程</strong>：已知一平面过<span class="arithmatex">\(P_0(x_0, y_0, z_0)\)</span>，且垂直于非零矢量<span class="arithmatex">\(\bm{n} = A\bm{i} + B\bm{j} + C\bm{k}\)</span>，则平面方程为：</li>
+</ul>
+<div class="arithmatex">\[
+A(x - x_0) + B(y - y_0) + C(z - z_0) = 0
+\]</div>
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/c7/Quicker_20240607_174756.png" width="40%" style="margin: 0 auto;">
+</div>
+
+<ul>
+<li><strong>一般式方程</strong>：(其中<span class="arithmatex">\(A, B, C\)</span>不全为0)</li>
+</ul>
+<div class="arithmatex">\[
+Ax + By + Cz + D = 0
+\]</div>
+<ul>
+<li>当<span class="arithmatex">\(D = 0\)</span>，平面过原点</li>
+<li>当<span class="arithmatex">\(A, B, C\)</span>三者有一个为0时，平面与坐标轴(Ox/Oy/Oz)平行</li>
+<li>当<span class="arithmatex">\(A, B, C\)</span>三者有两个为0时，平面与坐标平面平行</li>
+</ul>
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/c7/Quicker_20240607_175144.png" width="60%" style="margin: 0 auto;">
+</div>
+
+<ul>
+<li><strong>截距式方程</strong>：(其中<span class="arithmatex">\(A, B, C, D\)</span>均不为0)令<span class="arithmatex">\(a = -\dfrac{D}{A}, b = -\dfrac{D}{B}, c = -\dfrac{D}{C}\)</span>，则方程为：</li>
+</ul>
+<div class="arithmatex">\[
+\dfrac{x}{a} + \dfrac{y}{b} + \dfrac{z}{c} = 1
+\]</div>
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/c7/Quicker_20240607_175450.png" width="40%" style="margin: 0 auto;">
+</div>
+
+<ul>
+<li>三点式方程：若平面过<span class="arithmatex">\(M_i(x_i, y_i, z_i)(i = 1, 2, 3)\)</span>这3个定点，则方程为：</li>
+</ul>
+<div class="arithmatex">\[
+\begin{vmatrix}
+x - x_1 &amp; y - y_1 &amp; z - z_1 \\
+x_2 - x_1 &amp; y_2 - y_1 &amp; z_2 - z_1 \\
+x_3 - x_2 &amp; y_3 - y_2 &amp; z_3 - z_2
+\end{vmatrix} = 0
+\]</div>
+<hr />
+<ul>
+<li>两平面的夹角：设平面<span class="arithmatex">\(\pi_1: A_1x + B_1y + C_1z + D_1 = 0,\ \pi_2: A_2x + B_2y + C_2z + D_2 = 0\)</span>，则该两平面的夹角的余弦值为：</li>
+</ul>
+<div class="arithmatex">\[
+\cos \theta = \cos(\bm{n}_1, \bm{n}_2) = \dfrac{A_1A_2 + B_1B_2 + C_1C_2}{\sqrt{A_1^2 + B_1^2 + C_1^2}\sqrt{A_2^2 + B_2^2 + C_2^2}}
+\]</div>
+<ul>
+<li><span class="arithmatex">\(\pi_1 \perp \pi_2 \Leftrightarrow A_1A_2 + B_1B_2 + C_1C_2 = 0\)</span></li>
+<li><span class="arithmatex">\(\pi_1 \parallel \pi_2 \Leftrightarrow \dfrac{A_1}{A_2} = \dfrac{B_1}{B_2} = \dfrac{C_1}{C_2}\)</span></li>
+</ul>
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/c7/Quicker_20240607_175450.png" width="40%" style="margin: 0 auto;">
+</div>
+
+<ul>
+<li>点到平面的距离：求空间一点<span class="arithmatex">\(P_0(x_0, y_0, z_0)\)</span>到平面<span class="arithmatex">\(Ax + By + Cz + D = 0\)</span>的距离</li>
+</ul>
+<div class="arithmatex">\[
+d = \dfrac{|Ax_0 + By_0 + Cz_0 + D|}{\sqrt{A^2 + B^2 + C^2}}
+\]</div>
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/c7/Quicker_20240607_184714.png" width="40%" style="margin: 0 auto;">
+</div>
+
+<h3 id="_10">空间直线方程<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>点向式方程(对称式方程)</strong>：设L是过点<span class="arithmatex">\(P_0(x_0, y_0, z_0)\)</span>且与一非零矢量<span class="arithmatex">\(\bm{v} = l\bm{i} + m\bm{j} + n\bm{k}\)</span>平行的直线，求其方程：</li>
+</ul>
+<div class="arithmatex">\[
+\dfrac{x - x_0}{l} = \dfrac{y - y_0}{m} = \dfrac{z - z_0}{n}
+\]</div>
+<blockquote>
+<p>注：若l, m或n为0，可以将0写在分母的位置上，表示在Ox/Oy/Oz轴上的投影为0，即直线垂直于Ox/Oy/Oz轴</p>
+</blockquote>
+<p><strong>参数式方程</strong>：(t为参数)</p>
+<div class="arithmatex">\[
+\begin{cases}x = x_0 + lt \\ y = y_0 + mt \\ z = z_0 + nt\end{cases},\quad (- \infty &lt; l &lt; + \infty)
+\]</div>
+<ul>
+<li><strong>两点式方程</strong>：已知直线上两点<span class="arithmatex">\(P_1(x_1, y_1, z_1), P_2(x_2, y_2, z_2)\)</span>，则直线方程为：</li>
+</ul>
+<div class="arithmatex">\[
+\dfrac{x - x_1}{x_2 - x_1} = \dfrac{y - y_1}{y_2 - y_1} = \dfrac{z - z_1}{z_2 - z_1}
+\]</div>
+<ul>
+<li><strong>一般式方程</strong>：(<span class="arithmatex">\(A_1, B_1, C_1\)</span>与<span class="arithmatex">\(A_2, B_2, C_2\)</span>不成比例)</li>
+</ul>
+<div class="arithmatex">\[
+\begin{cases}A_1x + B_1y + C_1z + D_1 = 0 \\ A_2x + B_2y + C_2z + D_2 = 0\end{cases}
+\]</div>
+<p>特别地，<span class="arithmatex">\(\begin{cases}y = 0 \\ z = 0\end{cases}\)</span>，<span class="arithmatex">\(\begin{cases}x = 0 \\ z = 0\end{cases}\)</span>，<span class="arithmatex">\(\begin{cases}x = 0 \\ y = 0\end{cases}\)</span>分别表示与Ox、Oy、Oz轴重合的直线。</p>
+<div class="admonition note">
+<p class="admonition-title">一般式 <span class="arithmatex">\(\Rightarrow\)</span> 点向式</p>
+<p>设一般式方程中：</p>
+<div class="arithmatex">\[
+\begin{align}
+\pi_1: A_1x + B_1y + C_1z + D_1 = 0 \text{ 的法矢量为 } \bm{n}_1\notag \\
+\pi_2: A_2x + B_2y + C_2z + D_2 = 0 \text{ 的法矢量为 } \bm{n}_2\notag \\
+\end{align}
+\]</div>
+<p>设直线方向矢量为<span class="arithmatex">\(\bm{v}\)</span>，取<span class="arithmatex">\(\bm{v} = \bm{n}_1 \times \bm{n}_2\)</span>，再在直线上取一点即可得到点向式方程。</p>
+</div>
+<hr />
+<ul>
+<li>两直线的夹角：两直线方向矢量的夹角<span class="arithmatex">\(\theta\)</span>或它们的补角<span class="arithmatex">\(\pi - \theta\)</span>，设：</li>
+</ul>
+<div class="arithmatex">\[
+\begin{align}
+L_1: \dfrac{x - x_1}{l_1} &amp; = \dfrac{y - y_1}{m_1} = \dfrac{z - z_1}{n_1} \notag \\
+L_2: \dfrac{x - x_2}{l_2} &amp; = \dfrac{y - y_2}{m_2} = \dfrac{z - z_2}{n_2} \notag \\
+\end{align}
+\]</div>
+<p>则: <span class="arithmatex">\(cos \theta = \dfrac{l_1l_2 + m_1m_2 + n_1n_2}{\sqrt{l_1^2 + m_1^2 + n_1^2} \sqrt{l_2^2 + m_2^2 + n_2^2}}\)</span></p>
+<ul>
+<li><span class="arithmatex">\(L_1 \perp L_2 \Leftrightarrow l_1l_2 + m_1m_2 + n_1n_2 = 0\)</span> </li>
+<li>
+<p><span class="arithmatex">\(L_1 \parallel L_2 \Leftrightarrow \dfrac{l_1}{l_2} = \dfrac{m_1}{m_2} = \dfrac{n_1}{n_2}\)</span></p>
+</li>
+<li>
+<p>直线与平面的夹角：设平面<span class="arithmatex">\(\pi: Ax + By + Cz + D = 0\)</span>，其法矢量为<span class="arithmatex">\(\bm{n} = A\bm{i} + B\bm{j} + C\bm{k}\)</span>；直线<span class="arithmatex">\(L: \dfrac{x - x_0}{l} = \dfrac{y - y_0}{m} = \dfrac{z - z_0}{n}\)</span>，其方向矢量为<span class="arithmatex">\(\bm{v} = l\bm{i} + m\bm{j} + n\bm{k}\)</span>。设<span class="arithmatex">\(\bm{v}\)</span>与<span class="arithmatex">\(\bm{n}\)</span>的夹角为<span class="arithmatex">\(\theta\)</span>，则<span class="arithmatex">\(\dfrac{\pi}{2} - \theta\)</span>或<span class="arithmatex">\(\theta - \dfrac{\pi}{2}\)</span>为L与<span class="arithmatex">\(\pi\)</span>的夹角。</p>
+<ul>
+<li><span class="arithmatex">\(L \perp \pi \Rightarrow \dfrac{A}{l} = \dfrac{B}{m} = \dfrac{C}{n}\)</span></li>
+<li><span class="arithmatex">\(L \parallel \pi \Rightarrow Al + Bm + Cn = 0\)</span></li>
+</ul>
+</li>
+</ul>
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/c7/Quicker_20240607_191129.png" width="40%" style="margin: 0 auto;">
+</div>
+
+<ul>
+<li>点到直线的距离：已知点<span class="arithmatex">\(P(x_1, y_1, z_1)\)</span>和直线<span class="arithmatex">\(L: \dfrac{x - x_0}{l} = \dfrac{y - y_0}{m} = \dfrac{z - z_0}{n}\)</span>，求点P到直线L的距离。</li>
+</ul>
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/c7/Quicker_20240607_191735.png" width="40%" style="margin: 0 auto;">
+</div>
+
+<p>由上图得：
+$$
+h = |\overrightarrow{P_0P}|\sin(\overrightarrow{P_0P}, \bm{v}) = \dfrac{|\overrightarrow{P_0P} \times \bm{v}|}{|\bm{v}|}
+$$</p>
+<ul>
+<li>
+<p>直线在平面上的投影直线方程 <span class="arithmatex">\(\rightarrow\)</span> 分类讨论</p>
+<ul>
+<li>
+<p>直线与平面平行：在直线l上取一点P，过该点作与平面<span class="arithmatex">\(\pi\)</span>垂直的直线<span class="arithmatex">\(l^*\)</span>，P在平面上的投影点<span class="arithmatex">\(P_0 = l^* \cap \pi\)</span>。投影直线的方向向量同原直线，且过<span class="arithmatex">\(P_0\)</span>，则可求出它的方程。</p>
+</li>
+<li>
+<p>直线与平面相交：设交点为<span class="arithmatex">\(P_1\)</span>，易知投影直线过该交点。投影直线的方向向量<span class="arithmatex">\(\bm{v}' = (\bm{v} \times \bm{n}) \times \bm{n}\)</span>，其中<span class="arithmatex">\(\bm{n}, \bm{v}\)</span>分别是平面的法向量和直线的方向向量，此时可以求出投影直线的方程了。</p>
+</li>
+</ul>
+</li>
+</ul>
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/c7/微信图片_20240607193653.jpg" width="70%" style="margin: 0 auto;">
+</div>
+
+<ul>
+<li>两异面直线的距离：设两异面直线分别为</li>
+</ul>
+<div class="arithmatex">\[
+\begin{align}
+L_1: \dfrac{x - x_1}{l_1} = \dfrac{y - y_1}{m_1} = \dfrac{z -z_1}{n_1} ,\ \bm{v}_1 = l_1\bm{i} + m_1\bm{j} + n_1\bm{k} \notag \\ 
+L_2: \dfrac{x - x_2}{l_2} = \dfrac{y - y_2}{m_2} = \dfrac{z -z_2}{n_2} ,\ \bm{v}_2 = l_2\bm{i} + m_2\bm{j} + n_2\bm{k} \notag \\
+\end{align}
+\]</div>
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/c7/Quicker_20240607_195205.png" width="40%" style="margin: 0 auto;">
+</div>
+
+<p>作上图所示的辅助线，最终可得：</p>
+<div class="arithmatex">\[
+d = |(\overrightarrow{M_1M_2})_{\bm{n}}| = \dfrac{|\overrightarrow{M_1M_2} \cdot (\bm{v_1} \times \bm{v_2})|}{|\bm{v_1} \times \bm{v_2}|}
+\]</div>
+<h3 id="_11">平面束方程<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h3>
+<p>通过一已知直线L的平面有无穷多张，这些平面的集合称为<strong>平面束</strong>，其中L为平面束的轴。</p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/c7/Quicker_20240607_195309.png" width="30%" style="margin: 0 auto;">
+</div>
+
+<p>若<span class="arithmatex">\(L: \begin{cases}\pi_1: A_1x + B_1y + C_1z + D_1 = 0 \\ \pi_2: A_2x + B_2y + C_2z + D_2 = 0 \end{cases}\)</span>，则<strong>平面束方程</strong>为：</p>
+<div class="arithmatex">\[
+\lambda(A_1x + B_1y + C_1z + D_1) + \mu(A_2x + B_2y + C_2z + D_2) = 0
+\]</div>
+<p>为了计算的方便，当<span class="arithmatex">\(\lambda \ne 0\)</span>时，令<span class="arithmatex">\(\alpha = \dfrac{\mu}{\lambda}\)</span>，则平面束方程变成：</p>
+<div class="arithmatex">\[
+A_1x + B_1y + C_1z + D_1 + \alpha(A_2x + B_2y + C_2z + D_2) = 0
+\]</div>
+<p>注意，该方程无法表示平面<span class="arithmatex">\(A_2x + B_2y + C_2z + D = 0\)</span>。</p>
+<h2 id="_12">曲面方程与空间曲线方程<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h2>
+<h3 id="_13">曲面方程<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>球面方程</strong>：<span class="arithmatex">\((x - x_0)^2 + (y - y_0)^2 + (z - z_0)^2 = R^2\)</span></li>
+</ul>
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/c7/Quicker_20240607_195902.png" width="40%" style="margin: 0 auto;">
+</div>
+
+<ul>
+<li><strong>柱面方程</strong>：以Oxy平面的曲线<span class="arithmatex">\(\Gamma: F(x, y) = 0\)</span>为准线，母线L的方向矢量为<span class="arithmatex">\(\bm{v} = a\bm{i} + b\bm{j} + c\bm{k}\)</span>的柱面方程为例：</li>
+</ul>
+<div class="arithmatex">\[
+F(x - \dfrac{a}{c}z, y - \dfrac{b}{c}z) = 0
+\]</div>
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/c7/Quicker_20240607_200242.png" width="60%" style="margin: 0 auto;">
+</div>
+
+<ul>
+<li><strong>锥面方程</strong>：以<span class="arithmatex">\(z = h(h \ne 0)\)</span>平面上的曲线<span class="arithmatex">\(\Gamma: F(x, y) = 0\)</span>为准线，以原点为顶点的锥面方程为例：</li>
+</ul>
+<div class="arithmatex">\[
+F(\dfrac{h}{z}x, \dfrac{h}{z}y) = 0
+\]</div>
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/c7/Quicker_20240607_200624.png" width="30%" style="margin: 0 auto;">
+<img src="images/c7/Quicker_20240607_200636.png" width="30%" style="margin 0 auto;">
+</div>
+
+<ul>
+<li><strong>旋转曲面方程</strong>：设<span class="arithmatex">\(\Gamma\)</span>是Oyz平面上的曲线，方程为F(y, z) = 0，将该曲线绕Oz轴旋转，得到一个以Oz轴为轴的旋转曲面，求其方程：</li>
+</ul>
+<p>取曲线上一点<span class="arithmatex">\(P(0, y_P, z_P)\)</span>，当曲线绕轴旋转一周后，点P的轨迹为一个圆，取圆上任意一点<span class="arithmatex">\(Q(x_Q, y_Q, z_Q)\)</span>，可得到：</p>
+<div class="arithmatex">\[
+\begin{cases}
+z_P = z_Q \\
+y_P = \pm \sqrt{x_Q^2 + y_Q^2}
+\end{cases}
+\]</div>
+<p>解得旋转曲面方程为<span class="arithmatex">\(F(\pm \sqrt{x^2 + y^2}, z)\)</span></p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/c7/Quicker_20240607_201323.png" width="40%" style="margin: 0 auto;">
+</div>
+
+<h3 id="_14">曲线方程<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h3>
+<ul>
+<li>用两曲面交线表示：</li>
+</ul>
+<div class="arithmatex">\[
+\Gamma: \begin{cases}
+F(x, y, z) = 0 \\ 
+G(x, y, z) = 0
+\end{cases}
+\]</div>
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/c7/Quicker_20240607_201556.png" width="40%" style="margin: 0 auto;">
+</div>
+
+<ul>
+<li>用参数方程表示：</li>
+</ul>
+<div class="arithmatex">\[
+\Gamma: \begin{cases}
+x = \varphi(t) \\
+y = \psi(t) \\
+z = \omega(t)
+\end{cases}
+\]</div>
+<hr />
+<p>空间曲线在<u>坐标平面</u>上的<strong>投影</strong></p>
+<p>令空间曲线</p>
+<div class="arithmatex">\[
+\Gamma: \begin{cases}
+F_1(x, y, z) = 0 \\ 
+F_2(x, y, z) = 0
+\end{cases}
+\]</div>
+<p>消去变量z，得到方程<span class="arithmatex">\(\begin{cases}F(x, y) = 0 \\ z = 0 \end{cases}\)</span>，这是<span class="arithmatex">\(\Gamma\)</span>在Oxy平面上的<strong>投影</strong></p>
+<p>同理的<span class="arithmatex">\(\Gamma\)</span>在Oyz和Ozx平面上的投影分别为：
+$$
+\begin{cases}G(y, z) = 0 \ x = 0 \end{cases} \quad
+\begin{cases}H(x, z) = 0 \ y = 0 \end{cases}
+$$</p>
+<div class="admonition note">
+<p class="admonition-title">更复杂的题型：空间曲线在<strong>任意平面上</strong>的投影曲线</p>
+<p>可以将投影曲线理解为一个过该曲线的柱体与已知平面的交线，该柱体母线的方向即为已知平面的法向量的方向。然后在空间曲线和投影曲线上各设一个点<span class="arithmatex">\(P, P_0\)</span>，满足<span class="arithmatex">\(\overrightarrow{PP_0} \parallel \bm{n}\)</span>，代入已知方程计算求解。</p>
+</div>
+<h2 id="_15">二次曲面<a class="headerlink" href="#_15" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>椭球面</strong>：<span class="arithmatex">\(\dfrac{x^2}{a^2} + \dfrac{y^2}{b^2} + \dfrac{z^2}{c^2} = 1(a &gt; 0, b &gt; 0, c &gt; 0)\)</span></li>
+</ul>
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/c7/Quicker_20240607_202245.png" width="40%" style="margin: 0 auto;">
+</div>
+
+<ul>
+<li><strong>椭圆抛物面</strong>：<span class="arithmatex">\(z = \dfrac{x^2}{a^2} + \dfrac{y^2}{b^2}(a &gt; 0, b &gt; 0)\)</span></li>
+</ul>
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/c7/Quicker_20240607_202429.png" width="40%" style="margin: 0 auto;">
+</div>
+
+<ul>
+<li><strong>二次锥面</strong>：<span class="arithmatex">\(\dfrac{x^2}{a^2} + \dfrac{y^2}{b^2} - \dfrac{z^2}{c^2} = 0(a &gt; 0, b &gt; 0, c &gt; 0)\)</span></li>
+</ul>
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/c7/Quicker_20240607_202537.png" width="40%" style="margin: 0 auto;">
+</div>
+
+<ul>
+<li><strong>双曲抛物面(马鞍面)</strong>：<span class="arithmatex">\(z = -\dfrac{x^2}{a^2} + \dfrac{y^2}{b^2}\)</span></li>
+</ul>
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/c7/Quicker_20240607_202654.png" width="40%" style="margin: 0 auto;">
+</div>
+
+<ul>
+<li><strong>单叶双曲面</strong>：<span class="arithmatex">\(\dfrac{x^2}{a^2} + \dfrac{y^2}{b^2} - \dfrac{z^2}{c^2} = 1\)</span></li>
+</ul>
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/c7/Quicker_20240607_202815.png" width="40%" style="margin: 0 auto;">
+</div>
+
+<ul>
+<li><strong>双叶双曲面</strong>：<span class="arithmatex">\(\dfrac{x^2}{a^2} + \dfrac{y^2}{b^2} - \dfrac{z^2}{c^2} = -1\)</span></li>
+</ul>
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/c7/Quicker_20240607_202824.png" width="40%" style="margin: 0 auto;">
+</div>
+
+  <hr>
+<div class="md-source-file">
+  <small>
+    
+      最后更新:
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime">2024年6月10日 20:33:18</span>
+      
+        <br>
+        创建日期:
+        <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime">2024年6月10日 20:33:18</span>
+      
+    
+  </small>
+</div>
+
+
+
+
+<p style="font-size: 30px;">评论区</p>
+<div>
+  如果有什么问题或想法，欢迎大家在下方留言~
+</div>
+<!-- Insert generated snippet here -->
+<script src="https://giscus.app/client.js"
+data-repo="stupid-qzy/my-notebook"
+data-repo-id="R_kgDOMAb9Zg"
+data-category="Announcements"
+data-category-id="DIC_kwDOMAb9Zs4CfmpP"
+data-mapping="pathname"
+data-strict="0"
+data-reactions-enabled="1"
+data-emit-metadata="0"
+data-input-position="bottom"
+data-theme="preferred_color_scheme"
+data-lang="zh-CN"
+crossorigin="anonymous"
+async>
+</script>
+  <!-- Synchronize Giscus theme with palette -->
+<script>
+  var giscus = document.querySelector("script[src*=giscus]")
+
+  // Set palette on initial load
+  var palette = __md_get("__palette")
+  if (palette && typeof palette.color === "object") {
+    var theme = palette.color.scheme === "slate"
+      ? "transparent_dark"
+      : "light"
+
+    // Instruct Giscus to set theme
+    giscus.setAttribute("data-theme", theme) 
+  }
+
+  // Register event handlers after documented loaded
+  document.addEventListener("DOMContentLoaded", function() {
+    var ref = document.querySelector("[data-md-component=palette]")
+    ref.addEventListener("change", function() {
+      var palette = __md_get("__palette")
+      if (palette && typeof palette.color === "object") {
+        var theme = palette.color.scheme === "slate"
+          ? "transparent_dark"
+          : "light"
+
+        // Instruct Giscus to change theme
+        var frame = document.querySelector(".giscus-frame")
+        frame.contentWindow.postMessage(
+          { giscus: { setConfig: { theme } } },
+          "https://giscus.app"
+        )
+      }
+    })
+  })
+</script>
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            回到页面顶部
+          </button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2024 NoughtQ
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/stupid-qzy" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.top", "content.code.copy", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.a264c092.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.4e0fa4ba.min.js"></script>
+      
+        <script src="../../javascripts/katex.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+      
+    
+  </body>
+</html>
