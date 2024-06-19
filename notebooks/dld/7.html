@@ -2182,7 +2182,7 @@
   
   <h1 id="chap-7-memory-basics">Chap 7 Memory Basics<a class="headerlink" href="#chap-7-memory-basics" title="Permanent link">&para;</a></h1>
 <div markdown="1" style="margin-top: -30px; font-size: 0.8em; opacity: 0.7;">
-约 4724 个字 , 预计阅读时间 24 分钟
+约 4763 个字 , 预计阅读时间 24 分钟
 </div>
 <!-- :material-circle-edit-outline:-->
 <!--:fontawesome-solid-code: -->
@@ -2258,9 +2258,14 @@
 <li><strong>读</strong>和<strong>写</strong>用到了单个<strong>控制线路(control lines)</strong>，它们是最简单的内存操作</li>
 <li>有些内存单元还包括<strong>芯片选择(chip select, CS)</strong> / <strong>芯片使能(chip enable, CE)</strong>：内存的使能输入</li>
 </ul>
-<blockquote>
-<p>注：我们常常会看到RAM的规模会用<span class="arithmatex">\(xK \times y\)</span>的表示法，这里的<span class="arithmatex">\(xK\)</span>是指<span class="arithmatex">\(x KB = x \times 1024 \times 8 bit\)</span>大小的深度</p>
-</blockquote>
+<div class="admonition note">
+<p class="admonition-title">注</p>
+<p>我们常常会看到RAM的规模会用<span class="arithmatex">\(xK \times y\)</span>的表示法</p>
+<ul>
+<li>这里的<span class="arithmatex">\(xK\)</span>是指<span class="arithmatex">\(x Kb\)</span>大小的深度，那么地址线路个数为<span class="arithmatex">\(\log_2 x + 10\)</span>个</li>
+<li>这块RAM的容量为<span class="arithmatex">\(x \cdot y \cdot 1024\)</span> bit</li>
+</ul>
+</div>
 <p>🌰：<span class="arithmatex">\(1024 \times 16\)</span>的内存单元</p>
 <div style="text-align: center; margin-top: 15px;">
 <img src="images/C7/Quicker_20240530_182221.png" width="60%" style="margin: 0 auto;">
@@ -2543,6 +2548,26 @@
 <li>输入数据、低位地址(即小RAM的全部地址，0-15)和读/写输入被传入每一个小的RAM</li>
 <li>高位地址(即扩展的RAM多出来的地址位，16-17)用一个<strong>译码器</strong>进行分配，用来挑选用哪个小的RAM；再由低位地址选择访问该RAM的哪个字</li>
 </ul>
+<details class="example">
+<summary>例题</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">问题</label><label for="__tabbed_3_2">答案</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="images/C7/Quicker_20240619_114656.png" width="80%" style="margin: 0 auto;">
+</div>
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/C7/Quicker_20240619_114708.png" width="80%" style="margin: 0 auto;">
+</div>  </p>
+</div>
+<div class="tabbed-block">
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="images/C7/Quicker_20240619_114846.png" width="80%" style="margin: 0 auto;">
+</div></p>
+</div>
+</div>
+</div>
+</details>
 <h3 id="bit-extension">Bit Extension<a class="headerlink" href="#bit-extension" title="Permanent link">&para;</a></h3>
 <p>🌰：用<span class="arithmatex">\(64K \times 8\)</span> RAM构建<span class="arithmatex">\(64K \times 16\)</span> RAM </p>
 <div style="text-align: center; margin-top: 15px;">
@@ -2620,21 +2645,43 @@
 </ul>
 <div class="admonition warning">
 <p class="admonition-title">误区</p>
-<p>先看一道例题</p>
+<p>先看一些例题</p>
 <details class="example" open="open">
 <summary>例题</summary>
-<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">问题</label><label for="__tabbed_3_2">答案</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><div class="tabbed-labels"><label for="__tabbed_4_1">例1</label><label for="__tabbed_4_2">例2</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="tabbed-set tabbed-alternate" data-tabs="5:2"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><input id="__tabbed_5_2" name="__tabbed_5" type="radio" /><div class="tabbed-labels"><label for="__tabbed_5_1">问题</label><label for="__tabbed_5_2">答案</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>a DRAM has 15 address lines and 32 data lines, its maximum capacity is ____ Bytes.</p>
 </div>
 <div class="tabbed-block">
-<p><span class="arithmatex">\(2^32\)</span> Byte</p>
+<p><span class="arithmatex">\(2^{32}\)</span> Byte</p>
 <p>分析：</p>
 <ul>
 <li>总地址线路 = 行地址 + 列地址 = 15 + 15 = 30</li>
-<li>总容量 = <span class="arithmatex">\(\dfrac{2^{\text{总地址线路}} \times 32}{8} = 2^32\)</span> Byte</li>
+<li>总容量 = <span class="arithmatex">\(\dfrac{2^{\text{总地址线路}} \times 32}{8} = 2^{32}\)</span> Byte</li>
 </ul>
+</div>
+</div>
+</div>
+</div>
+<div class="tabbed-block">
+<div class="tabbed-set tabbed-alternate" data-tabs="6:2"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio" /><input id="__tabbed_6_2" name="__tabbed_6" type="radio" /><div class="tabbed-labels"><label for="__tabbed_6_1">问题</label><label for="__tabbed_6_2">答案</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="images/C7/Quicker_20240619_115052.png" width="80%" style="margin: 0 auto;">
+</div>  </p>
+</div>
+<div class="tabbed-block">
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="images/C7/Quicker_20240619_115104.png" width="80%" style="margin: 0 auto;">
+</div>  </p>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -2656,7 +2703,7 @@
 </details>
 <div class="admonition note">
 <p class="admonition-title">DRAM的时序图</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><div class="tabbed-labels"><label for="__tabbed_4_1">读取</label><label for="__tabbed_4_2">写入</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="7:2"><input checked="checked" id="__tabbed_7_1" name="__tabbed_7" type="radio" /><input id="__tabbed_7_2" name="__tabbed_7" type="radio" /><div class="tabbed-labels"><label for="__tabbed_7_1">读取</label><label for="__tabbed_7_2">写入</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p><div style="text-align: center; margin-top: 15px;">
@@ -2674,7 +2721,7 @@
 <h3 id="refreshing">Refreshing<a class="headerlink" href="#refreshing" title="Permanent link">&para;</a></h3>
 <div class="admonition note">
 <p class="admonition-title">三种刷新方式</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="5:3"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><input id="__tabbed_5_2" name="__tabbed_5" type="radio" /><input id="__tabbed_5_3" name="__tabbed_5" type="radio" /><div class="tabbed-labels"><label for="__tabbed_5_1"><strong>只刷新RAS(RAS-only refresh)(仅访问行，不访问列)</strong></label><label for="__tabbed_5_2"><strong>RAS刷新前的CAS(CAS before RAS refresh)</strong></label><label for="__tabbed_5_3"><strong>隐蔽刷新(hidden refresh)</strong></label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="8:3"><input checked="checked" id="__tabbed_8_1" name="__tabbed_8" type="radio" /><input id="__tabbed_8_2" name="__tabbed_8" type="radio" /><input id="__tabbed_8_3" name="__tabbed_8" type="radio" /><div class="tabbed-labels"><label for="__tabbed_8_1"><strong>只刷新RAS(RAS-only refresh)(仅访问行，不访问列)</strong></label><label for="__tabbed_8_2"><strong>RAS刷新前的CAS(CAS before RAS refresh)</strong></label><label for="__tabbed_8_3"><strong>隐蔽刷新(hidden refresh)</strong></label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <ul>
@@ -2774,7 +2821,7 @@
 <li>内存时钟周期：7.5ns</li>
 <li>等待时间(从应用行地址开始，直到第一个可用的字出现的时间)：4个周期</li>
 </ul>
-<div class="tabbed-set tabbed-alternate" data-tabs="6:2"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio" /><input id="__tabbed_6_2" name="__tabbed_6" type="radio" /><div class="tabbed-labels"><label for="__tabbed_6_1">爆发读取长度：8B</label><label for="__tabbed_6_2">爆发读取长度：2048B</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="9:2"><input checked="checked" id="__tabbed_9_1" name="__tabbed_9" type="radio" /><input id="__tabbed_9_2" name="__tabbed_9" type="radio" /><div class="tabbed-labels"><label for="__tabbed_9_1">爆发读取长度：8B</label><label for="__tabbed_9_2">爆发读取长度：2048B</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <ul>
