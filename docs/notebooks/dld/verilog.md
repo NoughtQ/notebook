@@ -1,7 +1,14 @@
-
 ## Chap 2 Combinational Logic Circuits
 
-![400](images/Verilog/Quicker_20240525_142536.png)
+!!! abstract
+
+	+ 这里简单罗列了教材中出现的Verilog代码，而且我仅挑选最便于理解或最简单的代码
+	+ 想要好好学Verilog语法的话，推荐[HDLBits](https://hdlbits.01xz.net/wiki/Main_Page)(用来刷题)和[菜鸟教程](https://www.runoob.com/)
+
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/Verilog/Quicker_20240525_142536.png" width="50%" style="margin: 0 auto;">
+</div>
+
 ``` Verilog
 module fig2_5(L, D, X, A);
 	input D, X, A;
@@ -15,7 +22,9 @@ endmodule
 ```
 
 ---
-![500](images/Verilog/Quicker_20240525_143245.png)
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/Verilog/Quicker_20240525_143245.png" width="60%" style="margin: 0 auto;">
+</div>
 
 ``` Verilog
 
@@ -97,8 +106,6 @@ endmodule
 ```
 
 ## Chap 3 Combinational Logic Design
-
->注：后面如果对于同一个题目有不同的Verilog实现代码，仅摘录最易于理解，且最短的那个🐶
 
 2-4译码器
 ``` Verilog
@@ -183,7 +190,7 @@ end
 endmodule
 ```
 
-[[Chap 4 Sequential Circuits#Sequential Circuit Design|序列识别器]]
+[序列识别器](4.md#sequential-circuit-design)
 ``` verilog
 module seq_rec_v(CLK, RESET, X, Z);
 	input CLK, RESET, X;

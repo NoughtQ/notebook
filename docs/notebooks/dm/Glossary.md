@@ -295,3 +295,121 @@
 + 等价类&分区
 + the principle of well-ordered induction：良序归纳法
 + 拓扑排序算法
+
+## Chap 10 Graphs
+
++ undirected edge：无向边
++ directed edge：有向边
++ multiple edges：重边
++ multiple directed edges：有向重边
++ loop：环
++ undirected graph：无向图
++ simple graph：简单图
++ multigraph：多重图
++ pseudograph：伪图
++ directed graph：有向图
++ directed multigraph：有向多重图
++ simple directed graph：简单有向图
++ adjacent：相邻的(2顶点间)
++ incident：关联的(边和顶点)
++ $\mathrm{deg}\ v$：顶点v的度
++ $\mathrm{deg}^-\ v$：顶点v的入度
++ $\mathrm{deg}^+\ v$：顶点v的出度
++ underlying undirected graph of a graph with directed edges：(有向图的)潜在无向图
++ $K_n$(complete graph on $n$ vertices)：完全图
++ bipartite graph：二分图
++ $K_{m, n}$(complete bipartite graph)：完全二分图
++ $C_n$(cycle of size $n(\ge 3)$)：环
++ $W_n$(wheel of size $n(\ge 3)$)：轮
++ $Q_n$($n$-cube)：n立方
++ matching in a graph $G$：匹配
++ complete matching $M$ from $V_1$ to $V_2$：完全匹配
++ maximum matching：最大匹配
++ isolated vertex：孤立顶点(度为0)
++ pendant vertex：下悬顶点(度为1)
++ regular graph：正则图(每个顶点的度相同)
++ subgraph of a graph $G = (V, E)$：子图
++ $G_1 \cup G_2$(union of $G_1$ and $G_2$)：交集
++ adjacency matrix：邻接矩阵
++ indidence matrix：关联矩阵
++ isomorphic simple graphs：同构简单图
++ invariant for graph isomorphism：图同构的不变量
++ path from $u$ to $v$ in a graph with undirected/directed edges：路径
++ simple path：简单路径
++ circuit：回路/环
++ connected graph：连通图
++ cut vertex of $G$：割点
++ cut edge of $G$：割边
++ nonseparable graph：不可分割集
++ vertex cut of G：点割集
++ $\kappa(G)$(the vertex connectivity of $G$)：点连通度
++ $k$-connected graph：k连通度
++ edge cut of $G$：边割集
++ $\lambda(G)$(the edge connectivity of $G$)：边连通度
++ connected component of a graph $G$：连通分量
++ strongly connected directed graph：强连通有向图
++ strongly connected component of a directed graph $G$：有向图的强连通分量
++ Euler path：欧拉路
++ Euler circuit：欧拉环(回路)
++ Hamilton path：哈密顿路
++ Hamilton circuit：哈密顿环(回路) 
++ weighted graph：带权图
++ shortest-path problem：最短路问题
++ traveling salesperson problem：旅行商问题
++ planar graph：平面图
++ regions of a representation of a planar graph：平面图表示法的区域
++ elementary subdivision：初等细分
++ homeomorphic：同胚的
++ graph coloring：图着色
++ chromatic number：着色数
+
+---
++ the handshaking theorem：握手定理 
++ Hall's marriage theorem：霍尔婚配定理
++ 欧拉环和欧拉路存在的充要条件
++ Dijkstra's algorithm
++ Euler's formula
++ Kuratowski's theorem
++ the four color theorem：四色定理
+
+## Chap 11 Trees
+
++ tree：树
++ forest：森林
++ rooted tree：有根树
++ subtree：子树
++ parent of $v$ in a rooted tree：父节点
++ child of $v$ in a rooted tree：孩子节点
++ sibling of $v$ in a rooted tree：兄弟节点
++ ancestor of $v$ in a rooted tree：祖先
++ descendant of $v$ in a rooted tree：后代
++ internal vertex：内部节点
++ leaf：叶子节点
++ level of a vertex：层级
++ height of a tree：高度
++ $m$-ary tree：$m$叉树
++ full $m$-ary tree：满$m$叉树
++ binary tree：二叉树
++ ordered tree：有序树
++ balanced tree：平衡树
++ binary search tree：二叉搜索树
++ decision tree：决策树
++ game tree：博弈树
++ prefix code：前缀码
++ minmax strategy：极小极大策略
++ tree traversal：树的遍历
++ preorder traversal：前序遍历
++ inorder traversal：中序遍历
++ postorder traversal：后序遍历
++ infix notation：中缀表示法
++ prefix/Polish notation：前缀/波兰表示法
++ postfix/reverse Polish notation：后缀/逆波兰表示法
++ spanning tree：生成树
++ minimum spanning tree：最小生成树
+
+---
++ Huffman coding：哈夫曼编码
++ depth-first search/backtraking：深度优先搜索/回溯
++ breadth-first search：宽度优先搜索
++ Prim's algorithm
++ Kruskal's algorithm
