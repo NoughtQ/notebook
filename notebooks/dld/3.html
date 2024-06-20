@@ -2758,7 +2758,7 @@
   
   <h1 id="chap-3-combinational-logical-design">Chap 3 Combinational Logical Design<a class="headerlink" href="#chap-3-combinational-logical-design" title="Permanent link">&para;</a></h1>
 <div markdown="1" style="margin-top: -30px; font-size: 0.8em; opacity: 0.7;">
-约 7972 个字 , 预计阅读时间 40 分钟
+约 8009 个字 , 预计阅读时间 40 分钟
 </div>
 <!-- :material-circle-edit-outline:-->
 <!--:fontawesome-solid-code: -->
@@ -2946,7 +2946,7 @@
 <p><strong>电路延迟(circuit delay)</strong> 包括：</p>
 <ul>
 <li>电路自身的固定延迟</li>
-<li>不同负载导致的额外延迟</li>
+<li>不同负载导致的额外延迟(前面提到的“过渡时间”)</li>
 </ul>
 <p><div style="text-align: center; margin-top: 15px;">
 <img src="images/C3/Quicker_20240506_213717.png" width="50%" style="margin: 0 auto;">
@@ -2973,7 +2973,7 @@
 </div>
 </div>
 <h4 id="design-trade-offs">Design Trade-Offs<a class="headerlink" href="#design-trade-offs" title="Permanent link">&para;</a></h4>
-<p>在电路设计中，我们常常需要权衡<strong>成本(cost)</strong> 和 <strong>性能(performance)</strong></p>
+<p>在电路设计中，我们常常需要权衡<strong>成本(cost)</strong>和<strong>性能(performance)</strong></p>
 <div class="admonition example">
 <p class="admonition-title">例题</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">题目</label><label for="__tabbed_2_2">答案</label></div>
@@ -3217,6 +3217,7 @@
 
 <ul>
 <li>粗线用来表示<strong>总线(bus)</strong>，它是向量(简单理解为“数组”，但不准确)信号</li>
+<li>对于这样能够传输多位的导线，我们一般会在线上划一笔，并标注它的位数</li>
 <li>总线可以被分成多个1位信号</li>
 <li>可以从总线中分出一些位出来，且<u>不要求这些位一定要连续</u>(例(d))</li>
 </ul>
@@ -3225,7 +3226,7 @@
 <p><strong>译码器(decoder)</strong>：执行译码的电路。</p>
 <p>译码器的类型：</p>
 <ul>
-<li><strong>变量译码器(variable decoder)(最小项侦测器，minterm detector)</strong></li>
+<li>变量译码器(variable decoder)(最小项侦测器，minterm detector)</li>
 <li>显示译码器(display decoder)</li>
 <li>编码翻译译码器(code translation decoder)</li>
 </ul>
@@ -3399,14 +3400,14 @@ A_0 &amp; = D_1 + D_3 + D_5 + D_7 + D_9 \notag
 \end{align}
 \]</div>
 <p>我们可以使用<span class="arithmatex">\(F_1 = D_6 + D_7\)</span>，得到<span class="arithmatex">\(A_1\)</span>和<span class="arithmatex">\(A_2\)</span>的共享项，从而节省成本。</p>
+<blockquote>
+<p>所以，编码的实质即为将<strong>独热码</strong>转化成<strong>二进制数(编码)</strong></p>
+</blockquote>
 <p>我们可以直接从独热码的结果中进行化简，无需借助K-map的帮助。</p>
 <div style="text-align: center; margin-top: 15px;">
 <img src="images/C3/Quicker_20240514_195246.png" width="70%" style="margin: 0 auto;">
 </div>
 
-<blockquote>
-<p>所以，编码的实质即为将<strong>独热码</strong>转化成<strong>二进制数(编码)</strong></p>
-</blockquote>
 <h4 id="priority-encoder">Priority Encoder<a class="headerlink" href="#priority-encoder" title="Permanent link">&para;</a></h4>
 <div class="admonition warning">
 <p class="admonition-title">普通编码器的问题</p>
@@ -3457,7 +3458,7 @@ V &amp; = D_4 + F_1 + D_1 + D_0 \notag
 <li>一组用来做出选择的控制线路</li>
 <li>单个输出</li>
 </ul>
-<p><strong>多路复用器(Multiplexers, MUX)</strong>：执行选择的逻辑电路，可由<strong>译码器 + 与-或门</strong>(其中与门作为每个译码器输出的<em>使能</em>)，或者由<strong>三态门</strong>实现</p>
+<p><strong>多路复用器(Multiplexers, MUX)</strong>：执行选择的逻辑电路，可由<strong>译码器 + 与-或门</strong>(其中与门使每个译码器的输出起到使能作用)，或者由<strong>三态门</strong>实现</p>
 <div style="text-align: center; margin-top: 15px;">
 <img src="images/C3/Quicker_20240514_200626.png" width="70%" style="margin: 0 auto;">
 </div>
@@ -3512,7 +3513,7 @@ V &amp; = D_4 + F_1 + D_1 + D_0 \notag
 </div>
 <div class="admonition note">
 <p class="admonition-title">注意</p>
-<p>对于大规模的电路结构，比如上面的64-1多路复用器，以及之后的算术逻辑单元、寄存器等，我们往往只要画出它封装后的模块即可，而不关注它的细节。</p>
+<p>对于大规模的电路结构，比如上面的64-1多路复用器，以及之后的算术逻辑单元、寄存器等，我们往往只要画出它<strong>封装后的模块</strong>即可，而不关注它的细节。</p>
 </div>
 <h4 id="multiplexer-width-expansion">Multiplexer Width Expansion<a class="headerlink" href="#multiplexer-width-expansion" title="Permanent link">&para;</a></h4>
 <p>方法：</p>
@@ -3546,7 +3547,7 @@ V &amp; = D_4 + F_1 + D_1 + D_0 \notag
 
 <p>门输入成本：14(2个非门 + 6个三态门 * 2)</p>
 <h4 id="combinational-logic-implementation">Combinational Logic Implementation<a class="headerlink" href="#combinational-logic-implementation" title="Permanent link">&para;</a></h4>
-<div class="admonition question">
+<div class="admonition example">
 <p class="admonition-title">实例分析：格雷码 <span class="arithmatex">\(\rightarrow\)</span> 二进制码</p>
 <p><div style="text-align: center; margin-top: 15px;">
 <img src="images/C3/ap.png" width="70%" style="margin: 0 auto;">
@@ -3582,7 +3583,7 @@ V &amp; = D_4 + F_1 + D_1 + D_0 \notag
 <img src="images/C3/Quicker_20240514_204520.png" width="70%" style="margin: 0 auto;">
 </div></p>
 <blockquote>
-<p>注：在后面的章节中，我们会发现这个值固定的多路复用器，与3位地址和2位数据的ROM是一样的</p>
+<p>注：在后面的章节中，我们会发现这个值固定的多路复用器，与3位地址和2位数据的<a href="5.html#read-only-memory">ROM</a>是一样的</p>
 </blockquote>
 </div>
 <div class="tabbed-block">
@@ -3608,14 +3609,12 @@ V &amp; = D_4 + F_1 + D_1 + D_0 \notag
 <p><div style="text-align: center; margin-top: 15px;">
 <img src="images/C3/Quicker_20240514_205222.png" width="70%" style="margin: 0 auto;">
 </div></p>
-<blockquote>
 <p>注：</p>
 <ul>
 <li>这个方法相比前面那个，成本上减少了近乎一半</li>
 <li>但这个实现就不像ROM了</li>
 <li>扩展：多于n变量的函数可以被分解成一些子函数，这些子函数的变量是所有变量的子集。然后用多路复用器在这些子函数中进行选择。</li>
 </ul>
-</blockquote>
 </div>
 </div>
 </div>
@@ -3779,7 +3778,7 @@ C &amp; = XY+XZ+YZ = XY+(X \oplus Y)Z \notag
 <p><div style="text-align: center; margin-top: 15px;">
 <img src="images/C3/Quicker_20240404_161953.png" width="70%" style="margin: 0 auto;">
 </div></p>
-<p>其中最长的路径是从<span class="arithmatex">\(A_0\)</span>或<span class="arithmatex">\(B_0\)</span>到<span class="arithmatex">\(S_3\)</span>的长度(也就是说，最长延迟 = 路径上12个门的延迟和)</p>
+<p>其中最长的路径是从<span class="arithmatex">\(A_0\)</span>或<span class="arithmatex">\(B_0\)</span>到<span class="arithmatex">\(S_3\)</span>的长度</p>
 <div class="admonition note">
 <p class="admonition-title">理解延迟的产生</p>
 <p>回顾全加器的<u>进位传播</u>和<u>进位生成</u>：对应两个函数：</p>
@@ -3803,8 +3802,8 @@ C &amp; = XY+XZ+YZ = XY+(X \oplus Y)Z \notag
 <img src="images/C3/Quicker_20240518_154209.png" width="60%" style="margin: 0 auto;">
 </div>
 
-<p>使用这些公式，加法器的时间复杂度从O(n)降到O(1)</p>
-<p>电路实现：</p>
+<p>使用这些公式，加法器的时间复杂度从O(n)降到O(1)。</p>
+<p>电路实现（了解即可）：</p>
 <div style="text-align: center; margin-top: 15px;">
 <img src="images/C3/Quicker_20240518_154413.png" width="80%" style="margin: 0 auto;">
 </div>
@@ -3870,7 +3869,7 @@ $$</p>
 <h4 id="unsigned-2s-complement-subtraction">Unsigned 2's Complement Subtraction<a class="headerlink" href="#unsigned-2s-complement-subtraction" title="Permanent link">&para;</a></h4>
 <p>如果要同时实现无符号的加法和减法，需要用到加法器、减法器和取补器(complementer)，这相当复杂。因此我们需要让加法和减法“共享”一些更简单的逻辑，为此引入“<strong>补(complement)</strong>”的概念作为解决方法。</p>
 <blockquote>
-<p>注：这里的概念讲过很多遍了，实在不熟悉的话可以参考以下<img alt="👇" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/1f447.svg" title=":point_down:" /></p>
+<p>注：这里的概念讲过很多遍了，实在不熟悉的话可以参考一下<img alt="👇" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/1f447.svg" title=":point_down:" /></p>
 </blockquote>
 <details class="note">
 <summary>补</summary>
@@ -3909,9 +3908,9 @@ $$</p>
 <p class="admonition-title"><img alt="⭐" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2b50.svg" title=":star:" />用补码进行减法运算</p>
 <p>已知n位无符号整数<span class="arithmatex">\(M, N\)</span>，求<span class="arithmatex">\(M - N\)</span></p>
 <ul>
-<li><span class="arithmatex">\(M - N \Rightarrow M + (2^n - N) = M - N + 2^n\)</span>，即将<span class="arithmatex">\(M - N\)</span>转化为<span class="arithmatex">\(M + (N\text{的补码})\)</span></li>
-<li>如果<span class="arithmatex">\(M \ge N\)</span>，加法产生的末进位<span class="arithmatex">\(2^n\)</span>直接扔掉，保留M - N</li>
-<li>如果<span class="arithmatex">\(M &lt; N\)</span>，加法未产生末进位，此时我们得到的结果是<span class="arithmatex">\(N - M\)</span>的补码，那么答案为<span class="arithmatex">\(-(N - M)\)</span></li>
+<li><span class="arithmatex">\(M - N \Rightarrow M + (2^n - N) = M - N + 2^n\)</span>，即将<span class="arithmatex">\(M - N\)</span>转化为<span class="arithmatex">\(M + <span class="arithmatex">\((\)</span>N\)</span>的补码)</li>
+<li>如果<span class="arithmatex">\(M \ge N\)</span>，加法产生的末进位<span class="arithmatex">\(2^n\)</span>直接扔掉，保留<span class="arithmatex">\(M - N\)</span></li>
+<li>如果<span class="arithmatex">\(M &lt; N\)</span>，加法未产生末进位，此时我们得到的结果是<span class="arithmatex">\(M - N\)</span>的补码，那么答案为<span class="arithmatex">\(-(N - M)\)</span></li>
 </ul>
 </div>
 <details class="example" open="open">
@@ -3945,7 +3944,7 @@ $$</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="9:2"><input checked="checked" id="__tabbed_9_1" name="__tabbed_9" type="radio" /><input id="__tabbed_9_2" name="__tabbed_9" type="radio" /><div class="tabbed-labels"><label for="__tabbed_9_1">带符号的<strong>量(magnitude)</strong></label><label for="__tabbed_9_2">带符号的<strong>补(complement)</strong></label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<p>用n - 1个数字表示正值。对于2个数的运算：</p>
+<p>用最高位表示符号，其余位表示该数的绝对值。对于2个数的运算：</p>
 <ul>
 <li>
 <p>如果最高位加起来的和的最低位为0，则：</p>
@@ -4337,7 +4336,7 @@ $$</p>
       
       
     
-    <a href="https://github.com/stupid-qzy" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+    <a href="https://github.com/noughtq" target="_blank" rel="noopener" title="github.com" class="md-social__link">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
     </a>
   

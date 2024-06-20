@@ -2516,7 +2516,7 @@
   
   <h1 id="chap-4-sequential-circuits">Chap 4 Sequential Circuits<a class="headerlink" href="#chap-4-sequential-circuits" title="Permanent link">&para;</a></h1>
 <div markdown="1" style="margin-top: -30px; font-size: 0.8em; opacity: 0.7;">
-约 9786 个字 , 预计阅读时间 49 分钟
+约 9808 个字 , 预计阅读时间 49 分钟
 </div>
 <!-- :material-circle-edit-outline:-->
 <!--:fontawesome-solid-code: -->
@@ -2594,7 +2594,7 @@
 <li>
 <p><strong>同步(synchronous)</strong>： </p>
 <ul>
-<li>这种电路的行为可由它在<em>离散时间</em>内的信号来定义(人话：<strong>有时钟脉冲</strong>)</li>
+<li>这种电路的行为可由它在<em>离散时间</em>内的信号来定义(人话：<strong>随外部时钟脉冲变化</strong>)</li>
 <li>存储元件观察输入信号的时间，并且<em>仅</em>随时间信号(来自<em>时钟生成器(clock generator)</em> 的 <em>时钟脉冲(clock pulse)</em>)的变化而改变状态。因此它又被称为<em>时钟时序电路(clocked sequential circuits)</em>。因此，这种电路能够在电路的延迟下也能正常工作，而且相对来说比较容易设计出来。
 <div style="text-align: center; margin-top: 15px;">
 <img src="images/C4/Quicker_20240424_214445.png" width="80%" style="margin: 0 auto;">
@@ -2604,7 +2604,7 @@
 <li>
 <p><strong>异步(Asynchronous)</strong></p>
 <ul>
-<li>这种电路的行为依赖于某一时刻的输入信号以及<em>输入信号在连续时间内变化</em>的顺序(人话：<strong>没有时钟脉冲</strong>)
+<li>这种电路的行为依赖于某一时刻的输入信号以及<em>输入信号在连续时间内变化</em>的顺序(人话：<strong>不随外部时钟脉冲变化</strong>)
 <div style="text-align: center; margin-top: 15px;">
 <img src="images/C4/Quicker_20240424_214917.png" width="80%" style="margin: 0 auto;">
 </div></li>
@@ -2700,6 +2700,7 @@
 <li>一旦改变一个输入后，就不要再改变它，直到电路完成信号传输并达到稳定状态。这样可以避免<strong>亚稳态</strong>行为。</li>
 </ul>
 </details>
+<hr />
 <p><strong>时钟<span class="arithmatex">\(SR\)</span>锁存器(clocked <span class="arithmatex">\(SR\)</span> latches)</strong>：在原先<span class="arithmatex">\(\overline{SR}\)</span>锁存器的基础上增加两个<u>与非门</u>和一个<strong>控制输入(control input)</strong><span class="arithmatex">\(C\)</span>得到的，这个输入作为另外两个输入的<em>使能信号</em></p>
 <div style="text-align: center; margin-top: 15px;">
 <img src="images/C4/Quicker_20240425_183559.png" width="80%" style="margin: 0 auto;">
@@ -2734,6 +2735,11 @@
 <li>当<strong>没有</strong>时钟脉冲时，触发器可以改变第2个锁存器的值，且保持第1个锁存器的值</li>
 </ul>
 </li>
+</ul>
+<blockquote>
+<p>这里是正脉冲触发式触发器</p>
+</blockquote>
+<ul>
 <li>
 <p><strong>边沿触发式触发器(edge-triggered flip-flop)</strong>：</p>
 <ul>
@@ -2802,9 +2808,10 @@
 </ul>
 <p>所以说这个触发器是由上升沿触发的。</p>
 </div>
-<blockquote>
+<details class="info" open="open">
+<summary>注</summary>
 <p>通常，电路中所有的触发器都会采用同一种类型的。如果采用不同的类型，就要考虑采用<u>不同的时钟脉冲</u>，确保所有触发器的输出能够同时改变，从而正常运行。后面的章节若不做特殊说明，均采用同一类型的触发器。</p>
-</blockquote>
+</details>
 <p>注意到<span class="arithmatex">\(D\)</span>触发器<u>没有保持状态</u>，我们可以通过下列方法"添加"保持状态：</p>
 <ul>
 <li><em>时钟门控(clock gating)</em>：禁用输入<span class="arithmatex">\(C\)</span>的时钟脉冲。虽然节省成本，但会延迟时钟脉冲，这种延迟被称为<strong>时钟偏移(clock skew)</strong>。因此<u>避免采用这种方法</u></li>
@@ -3238,7 +3245,7 @@ $$
 <img src="images/C4/Quicker_20240514_152123.png" width="60%" style="margin: 0 auto;">
 </div>
 
-<details class="example">
+<details class="example" open="open">
 <summary>序列识别器</summary>
 <blockquote>
 <p>注：这里的序列识别器用来识别序列1101</p>
@@ -3513,16 +3520,16 @@ D_2 = X(Y_1 + Y_4) \quad D_1 &amp; = \overline{X}(Y_1 + Y_2 + Y_4) \quad Z = XY_
 <li><strong>仿真验证(verification with simulation)</strong>：只要准备好输入组合的序列和时钟，剩下的过程交给计算机自动处理，结果以时序图(波形图)的形式呈现</li>
 </ul>
 <p>🌰：验证“1101”序列识别器的正确性：</p>
-<ol>
+<ul>
 <li>手工模拟</li>
-</ol>
+</ul>
 <div style="text-align: center; margin-top: 15px;">
 <img src="images/C4/Quicker_20240514_161808.png" width="70%" style="margin: 0 auto;">
 </div>
 
-<ol>
+<ul>
 <li>仿真验证</li>
-</ol>
+</ul>
 <div style="text-align: center; margin-top: 15px;">
 <img src="images/C4/Quicker_20240514_161856.png" width="70%" style="margin: 0 auto;">
 </div>
@@ -3914,7 +3921,7 @@ $$
       
       
     
-    <a href="https://github.com/stupid-qzy" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+    <a href="https://github.com/noughtq" target="_blank" rel="noopener" title="github.com" class="md-social__link">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
     </a>
   
