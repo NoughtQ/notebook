@@ -2312,7 +2312,7 @@
 
 <h1 id="chap-11-trees">Chap 11 Trees<a class="headerlink" href="#chap-11-trees" title="Permanent link">&para;</a></h1>
 <div markdown="1" style="margin-top: -30px; font-size: 0.8em; opacity: 0.7;">
-约 6950 个字 , 预计阅读时间 35 分钟
+约 6944 个字 , 预计阅读时间 35 分钟
 </div>
 <!-- :material-circle-edit-outline:-->
 <!--:fontawesome-solid-code: -->
@@ -2339,7 +2339,7 @@
 </ul>
 </blockquote>
 <h2 id="introduction-to-trees">Introduction to Trees<a class="headerlink" href="#introduction-to-trees" title="Permanent link">&para;</a></h2>
-<p>定义：<strong>树(trees)</strong> 是没有简单环的连通无向图</p>
+<p>定义：<strong>树(trees)</strong>是没有简单环的连通无向图</p>
 <blockquote>
 <p>注：因为没有简单环，因此树也就不包含重边和自环</p>
 </blockquote>
@@ -2349,14 +2349,14 @@
 <img src="Images/C11/Quicker_20240531_115224.png" width="70%" style="margin: 0 auto;">
 </div>
 
-<p><strong>定理1</strong>：当且仅当无向图上任意两点间有<em>唯一的一条路径</em>时，该图是一棵树</p>
+<p><strong>定理1</strong>：当且仅当无向图上<u>任意两点间有唯一的一条路径</u>时，该图是一棵树</p>
 <blockquote>
 <p>证明难度不大（考虑充分性和必要性），故略</p>
 </blockquote>
 <h3 id="rooted-trees">Rooted Trees<a class="headerlink" href="#rooted-trees" title="Permanent link">&para;</a></h3>
 <p>定义：</p>
 <ul>
-<li><strong>有根树(rooted tree)</strong> 是一棵树，它指定某一个节点作为整棵树的根，每条边被视为从根“离开”</li>
+<li><strong>有根树(rooted tree)</strong>是一棵树，它指定某一个节点作为整棵树的根，每条边被视为从根出发的“有方向”的边（实际上还是无向边）</li>
 <li><strong>m叉树(m-ary tree)</strong>：每个内部节点的孩子的个数不超过m的有根树</li>
 <li><strong>满m叉树(full m-ary tree)</strong>：每个内部节点有且有m个孩子的有根树(<a href="5.html#recursively-defined-sets-and-structures">之前</a>介绍过满二叉树)</li>
 <li><strong>二叉树(binary tree)</strong>：m = 2</li>
@@ -2440,14 +2440,13 @@
 <p><strong>定理2</strong>：一棵具有n个节点的树有n - 1条边</p>
 <blockquote>
 <p>证明可以采用归纳法——但我认为是小题大做，因为很容易理解：除了根外，每个节点的上头都有一条不同的边，因此n个节点有n - 1条边</p>
-<p>注：若题目问的是非同构的<strong>有根树</strong>的种数，则要稍微改变一下思路</p>
 </blockquote>
 <p>对于无向图G，下面3个条件中：</p>
-<ol>
+<ul>
 <li>G是连通的</li>
 <li>G没有简单环</li>
 <li>G有n - 1条边</li>
-</ol>
+</ul>
 <p>只要其中2个条件成立，就可以说明G是一棵树，且剩下的1条也一定成立</p>
 <p><strong>定理3</strong>：有i个内部节点的满m叉树具有n = mi + 1个节点</p>
 <p><strong>定理4</strong>：对于一棵满m叉树</p>
@@ -2466,7 +2465,7 @@
 <div class="admonition warning">
 <p class="admonition-title">注意：这里的高度 = fds所说的深度，且根的高度 = 0，千万不要搞错!!!</p>
 </div>
-<p>如果有根m叉树的高度为h，且所有叶子的高度为h或h - 1，则这棵树是<strong>平衡的(balanced)</strong></p>
+<p>如果有根m叉树的高度为h，且所有叶子的层级为h或h - 1，则这棵树是<strong>平衡的(balanced)</strong></p>
 <p><strong>定理5</strong>：高度为h的m叉树至多有<span class="arithmatex">\(m^h\)</span>个叶子</p>
 <blockquote>
 <p>注：证明还是用数学归纳法，具体内容略，这里放一张图，相信看了就会懂👌
@@ -2567,7 +2566,7 @@
 <div class="admonition note">
 <p class="admonition-title">注</p>
 <ul>
-<li>哈夫曼树的权重 = <span class="arithmatex">\(\sum\)</span> 每个节点出现的权重(一般为频率) <span class="arithmatex">\(\times\)</span> 表示该节点的位串长度</li>
+<li>哈夫曼树的权重 = <span class="arithmatex">\(\sum\)</span> [每个节点出现的权重(一般为频率) <span class="arithmatex">\(\times\)</span> 表示该节点的位串长度]</li>
 <li>平均位串长度 = 哈夫曼树的权重 / 节点数</li>
 </ul>
 </div>
@@ -2685,10 +2684,10 @@
 <h2 id="tree-traversal">Tree Traversal<a class="headerlink" href="#tree-traversal" title="Permanent link">&para;</a></h2>
 <h3 id="universal-address-systems">Universal Address Systems<a class="headerlink" href="#universal-address-systems" title="Permanent link">&para;</a></h3>
 <p><strong>通用地址系统(universal address system)</strong>——一种有序根树的排序，其规则如下(递归方法)：</p>
-<ol>
+<ul>
 <li>根节点标记为0，它的孩子从左往右依次被标记为1, 2, 3, ..., k</li>
 <li>对于每个在层级n的节点v，它的标记为A，且有<span class="arithmatex">\(k_v\)</span>个孩子，则这些孩子从左往右依次被标记为A.1, A.2, ..., A.<span class="arithmatex">\(k_v\)</span></li>
-</ol>
+</ul>
 <p>我们可以在通用地址系统中定义<em>词典序</em>：规定当满足<u>下列条件之一</u>时，<span class="arithmatex">\(x_1.x_2. \dots .x_n &lt; y_1.y_2. \dots .y_n\)</span>成立</p>
 <ul>
 <li><span class="arithmatex">\(x_1 = y_1, x_2 = y_2, \dots, x_{i-1} = y_{i-1}, x_i &lt; y_i\)</span>，其中<span class="arithmatex">\(0 \le i \le n\)</span></li>
@@ -2794,15 +2793,14 @@
 </div>
 </div>
 <blockquote>
-<p>注：</p>
+<p>注：<u>前序</u>和<u>后序</u>遍历可以唯一确定一棵有序根树，因此它们可以对有序满m叉树的结构进行编码</p>
+</blockquote>
+<p>应用：</p>
 <ul>
-<li><u>前序</u>和<u>后序</u>遍历可以唯一确定一棵有序根树，因此它们可以对有序满m叉树的结构进行编码</li>
-<li>应用：</li>
 <li>前序遍历：拷贝二叉搜索树</li>
 <li>中序遍历：从二叉搜索树中得到节点值的升序排序</li>
 <li>后序遍历：删除一棵树；得到拓扑排序</li>
 </ul>
-</blockquote>
 <h3 id="infix-prefix-and-postfix-notation">Infix, Prefix, and Postfix Notation<a class="headerlink" href="#infix-prefix-and-postfix-notation" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>中缀式(infix form)</strong>：通过对表达式树的中序遍历得到的表达式，实际上就是原表达式</li>
@@ -2864,7 +2862,7 @@
 <p>虽然我们可以通过对原图进行删边操作得到一棵生成树，但这样做效率太低了。相反，我们会采取添边的方式构建一棵生成树，下面介绍的DFS和BFS均采用这种方式</p>
 </blockquote>
 <h3 id="depth-first-search">Depth-First Search<a class="headerlink" href="#depth-first-search" title="Permanent link">&para;</a></h3>
-<p><strong>深度优先搜索(depth-first search, DFS)</strong> 的思路：</p>
+<p><strong>深度优先搜索(depth-first search, DFS)</strong>的思路：</p>
 <ul>
 <li>先在图中任意选取一个顶点作为根节点</li>
 <li>从根节点出发，连续添加顶点和边，其中新增的边一定与最后添加的顶点相关联，且新添的顶点尚不在路径中，尽可能地往下这样做</li>
@@ -2911,11 +2909,11 @@
 <li>找割点(若图连通)</li>
 </ul>
 <h3 id="breadth-first-search">Breadth-First Search<a class="headerlink" href="#breadth-first-search" title="Permanent link">&para;</a></h3>
-<p><strong>宽度优先搜索(breadth-first search, BFS)</strong> 的思路：</p>
+<p><strong>宽度优先搜索(breadth-first search, BFS)</strong>的思路：</p>
 <ul>
 <li>先在图中任意选取一个顶点作为根节点</li>
 <li>将所有与根节点相邻的顶点添加至树内，对它们任意排序，这些顶点因而成为生成树中层级为1的节点，</li>
-<li>对于层级为1的所有节点，按顺序依次访问所有与这些顶点关联的边，且保证不会产生简单环，对得到的顶点进行任意排序</li>
+<li>对于层级为1的所有节点，按顺序依次访问所有与这些顶点关联的边上的另一个顶点，且保证不会产生简单环，对得到的顶点进行任意排序</li>
 <li>这样，我们得到层级为1的节点的所有孩子，它们构成层级为2的节点</li>
 <li>如此往复，直至所有顶点被添加至树内</li>
 </ul>
@@ -3010,7 +3008,7 @@
 </ul>
 </li>
 <li>
-<p>令<span class="arithmatex">\(T_1, T_2\)</span>为一张图中的生成树，它们的<strong>距离(distance)</strong> 为它们非公共边的条数</p>
+<p>令<span class="arithmatex">\(T_1, T_2\)</span>为一张图中的生成树，它们的<strong>距离(distance)</strong>为它们非公共边的条数</p>
 <ul>
 <li>假设<span class="arithmatex">\(T_1, T_2, T_3\)</span>是G的生成树，则<span class="arithmatex">\(\mathrm{dis}(T_1, T_3) \le \mathrm{dis}(T_1, T_2) + \mathrm{dis}(T_2, T_3)\)</span></li>
 <li>
