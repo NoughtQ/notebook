@@ -2087,29 +2087,43 @@
 <!--:material-clock-time-two-outline: -->
 
 <h2 id="equivalence-relations">Equivalence Relations<a class="headerlink" href="#equivalence-relations" title="Permanent link">&para;</a></h2>
-<blockquote>
-<p>具体概念见dm[[Chap 9 Relations|第9章]]</p>
-</blockquote>
-<p>定义：
-+ 在某个集合<span class="arithmatex">\(S\)</span>的一个<strong>关系(relation)</strong><span class="arithmatex">\(R\)</span>，对于每对元素<span class="arithmatex">\((a ,b), a, b \in S\)</span>，它们的关系<span class="arithmatex">\(a \ R\ b\)</span>，如果其值为真，那么称<span class="arithmatex">\(a\)</span>与<span class="arithmatex">\(b\)</span>相关(<span class="arithmatex">\(a\)</span> is related to <span class="arithmatex">\(b\)</span>)
-+ 对于集合<span class="arithmatex">\(S\)</span>的一种关系<span class="arithmatex">\(\sim\)</span>，如果它满足<em>自反性(reflexive)</em> 、<em>对称性(symmetric)</em>和 <em>传递性(transitive)</em>，那么称这种关系为<strong>等价关系(equivalence relation)</strong>
-    &gt;+ 自反性：<span class="arithmatex">\(\forall a \in S, a\ R\ a\)</span>
-    &gt;+ 对称性：<span class="arithmatex">\(a\ R\ b \leftrightarrow b\ R\ a\)</span>
-    &gt;+ 传递性：<span class="arithmatex">\((a\ R\ b) \wedge (b\ R\ c) \rightarrow a\ R\ c\)</span></p>
+<p>定义：</p>
 <ul>
-<li>对于元素<span class="arithmatex">\(a \in S\)</span>的<strong>等价类(equivalence class)</strong>，是包含所有与<span class="arithmatex">\(a\)</span><em>相关</em>的元素的<span class="arithmatex">\(S\)</span>的子集<blockquote>
-<p>可以看出，等价类相当于<span class="arithmatex">\(S\)</span>内的隔板(partition)，<span class="arithmatex">\(S\)</span>内的每个元素仅出现在一个等价类中</p>
+<li>集合<span class="arithmatex">\(S\)</span>的<strong>关系(relation)</strong><span class="arithmatex">\(R\)</span>，对于每对元素<span class="arithmatex">\((a ,b), a, b \in S\)</span>，它们的关系<span class="arithmatex">\(a \ R\ b\)</span>，如果其值为真，那么称<span class="arithmatex">\(a\)</span>与<span class="arithmatex">\(b\)</span>相关(<span class="arithmatex">\(a\)</span> is related to <span class="arithmatex">\(b\)</span>)</li>
+<li>
+<p>对于集合<span class="arithmatex">\(S\)</span>的一种关系<span class="arithmatex">\(\sim\)</span>，如果它满足<em>自反性(reflexive)</em>、<em>对称性(symmetric)</em>和<em>传递性(transitive)</em>，那么称这种关系为<strong>等价关系(equivalence relation)</strong></p>
+<ul>
+<li>自反性：<span class="arithmatex">\(\forall a \in S, a\ R\ a\)</span></li>
+<li>对称性：<span class="arithmatex">\(a\ R\ b \leftrightarrow b\ R\ a\)</span></li>
+<li>传递性：<span class="arithmatex">\((a\ R\ b) \wedge (b\ R\ c) \rightarrow a\ R\ c\)</span></li>
+</ul>
+</li>
+<li>
+<p>对于元素<span class="arithmatex">\(a \in S\)</span>的<strong>等价类(equivalence class)</strong>，是包含所有与<span class="arithmatex">\(a\)</span><em>相关</em>的元素的<span class="arithmatex">\(S\)</span>的子集</p>
+<blockquote>
+<p>等价类相当于<span class="arithmatex">\(S\)</span>内的<strong>分区(partition)</strong>，<span class="arithmatex">\(S\)</span>内的每个元素仅出现在一个等价类中</p>
 </blockquote>
 </li>
 </ul>
-<h2 id="the-dynamic-equivalence-problem">The Dynamic Equivalence Problem<a class="headerlink" href="#the-dynamic-equivalence-problem" title="Permanent link">&para;</a></h2>
 <blockquote>
-<p>问题：给定等价关系<span class="arithmatex">\(\sim\)</span>，对于任何的<span class="arithmatex">\(a, b\)</span>，判断<span class="arithmatex">\(a \sim b\)</span>是否成立</p>
+<p>注：等价关系的详细知识参见离散数学<a href="../dm/9.html#equivalence-relations">Chap 9</a></p>
 </blockquote>
-<p>🌰
-<img alt="" src="Images/C8/Quicker_20240410_154916.png" />
-算法——<strong>并查集(Union / Find, the disjoint set)</strong>
-<div class="language-c highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nl">Algorithm</span><span class="p">:</span><span class="w"> </span><span class="p">(</span><span class="n">Union</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Find</span><span class="p">)</span>
+<h2 id="the-dynamic-equivalence-problem">The Dynamic Equivalence Problem<a class="headerlink" href="#the-dynamic-equivalence-problem" title="Permanent link">&para;</a></h2>
+<div class="admonition question">
+<p class="admonition-title">问题</p>
+<p>给定等价关系<span class="arithmatex">\(\sim\)</span>，对于任何的<span class="arithmatex">\(a, b\)</span>，判断<span class="arithmatex">\(a \sim b\)</span>是否成立</p>
+</div>
+<p>🌰</p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="Images/C8/Quicker_20240410_154916.png" width="80%" style="margin: 0 auto;">
+</div>
+
+<p>算法——<strong>并查集(Union / Find, the disjoint set)</strong>，这是一种<em>动态的(dynamic)</em>，<em>在线(on-line)</em>算法</p>
+<blockquote>
+<p><strong>动态</strong>：在算法执行过程中，<code>Union()</code>会随时更新集合</p>
+</blockquote>
+<p>伪代码模版：</p>
+<p><div class="language-c highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nl">Algorithm</span><span class="p">:</span><span class="w"> </span><span class="p">(</span><span class="n">Union</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Find</span><span class="p">)</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="p">{</span><span class="w">   </span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="c1">// step 1: read the relations in</span>
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="n">initialize</span><span class="w"> </span><span class="n">N</span><span class="w"> </span><span class="n">disjoint</span><span class="w"> </span><span class="n">sets</span><span class="p">;</span>
@@ -2125,21 +2139,24 @@
 </span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">        </span><span class="k">else</span>
 </span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">            </span><span class="n">output</span><span class="p">(</span><span class="nb">false</span><span class="p">);</span>
 </span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="p">}</span>
-</span></code></pre></div></p>
-<blockquote>
-<p>注：这是一种<em>动态的(dynamic)</em>，<em>在线(on-line)</em> 算法
-+ 动态：在算法执行过程中，<code>Union()</code>会随时改变集合</p>
-</blockquote>
-<hr />
-<p>并查集有以下属性：
-+ 集合的 <strong>元素(Elements)</strong>：<span class="arithmatex">\(1, 2, 3, \dots, N\)</span></p>
-<blockquote>
-<p>初始状态：有<span class="arithmatex">\(N\)</span>个集合，每个集合仅有1个元素
-+ 对于一组集合<span class="arithmatex">\(S_1, S_2, \dots \dots\)</span>，如果满足<span class="arithmatex">\(S_i \cap S_j = \emptyset(i \ne j)\)</span>，称这些集合为<strong>不相交(disjoint)</strong>
-    &gt;如何在程序中表示这种数据结构？——<strong>树</strong>，并注意指针应==从孩子节点指向父节点==</p>
-</blockquote>
+</span></code></pre></div>
+并查集的属性：</p>
 <ul>
-<li><strong>运算(Operations)</strong><ul>
+<li>
+<p>集合的<strong>元素(elements)</strong>：<span class="arithmatex">\(1, 2, 3, \dots, N\)</span></p>
+<blockquote>
+<p>初始状态：有<span class="arithmatex">\(N\)</span>个集合，每个集合仅有1个元素</p>
+</blockquote>
+</li>
+<li>
+<p>对于一组集合<span class="arithmatex">\(S_1, S_2, \dots \dots\)</span>，如果满足<span class="arithmatex">\(S_i \cap S_j = \emptyset(i \ne j)\)</span>，称这些集合为<strong>不相交(disjoint)</strong></p>
+<blockquote>
+<p>如何在程序中表示这种数据结构？——<strong>树</strong>，并注意指针应<u>从孩子节点指向父节点</u></p>
+</blockquote>
+</li>
+<li>
+<p><strong>运算(operations)</strong></p>
+<ul>
 <li><code>Union(i, j)</code>： 用<span class="arithmatex">\(S = S_i \cup S_j\)</span>取代<span class="arithmatex">\(S_i\)</span>和<span class="arithmatex">\(S_j\)</span></li>
 <li><code>Find(i)</code>：找到包含元素<span class="arithmatex">\(i\)</span>的集合<span class="arithmatex">\(S_k\)</span></li>
 </ul>
@@ -2159,61 +2176,94 @@
 </span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>
 </span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="cp">#endif </span><span class="c1">// _DisjSet_H</span>
 </span></code></pre></div>
-<h3 id="unioni-j"><code>Union(i, j)</code><a class="headerlink" href="#unioni-j" title="Permanent link">&para;</a></h3>
+<h3 id="unioni-j">Union(i, j)<a class="headerlink" href="#unioni-j" title="Permanent link">&para;</a></h3>
+<div class="admonition note">
+<p class="admonition-title">思路</p>
+<p>令<span class="arithmatex">\(S_i\)</span>为<span class="arithmatex">\(S_j\)</span>的子树（反过来也行），也就是说，我们将其中一棵树的根节点指向另一棵树的根节点</p>
+</div>
+<div style="text-align: center; margin-top: 15px;">
+<img src="Images/C8/Quicker_20240410_164944.png" width="80%" style="margin: 0 auto;">
+</div>
+
+<div class="admonition note">
+<p class="admonition-title">实现方法</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">方法1——数组+指针<img alt="👎" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/1f44e.svg" title=":-1:" /></label><label for="__tabbed_1_2">方法2——利用数组的<em>索引</em><img alt="👍" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/1f44d.svg" title=":+1:" /></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="Images/C8/Quicker_20240410_165101.png" width="80%" style="margin: 0 auto;">
+</div></p>
+</div>
+<div class="tabbed-block">
+<div class="arithmatex">\[
+S[i] = \begin{cases}\text{the element's parent} &amp;,\ \text{if the element isn't a root} \\ 0 &amp;,\ \text{if the element is a root}\end{cases}
+\]</div>
 <blockquote>
-<p>思路：令<span class="arithmatex">\(S_i\)</span>为<span class="arithmatex">\(S_j\)</span>的子树（反过来也行），也就是说，我们将其中一棵树的根节点指向另一棵树的根节点</p>
+<p>注：索引从<strong>1</strong>开始</p>
 </blockquote>
-<p><img alt="" src="Images/C8/Quicker_20240410_164944.png" /></p>
-<p>如何实现？
-+ 方法1——数组+指针(不推荐❌)
-    <img alt="" src="Images/C8/Quicker_20240410_165101.png" />
-+ 方法2——利用数组的<em>索引</em>（因为集合的元素都是正整数）👍
-    $$
-    S[i] = \begin{cases}\text{the element's parent} &amp;, \text{if the element isn't a root} \ 0 &amp;, \text{if the element is a root}\end{cases}
-    $$
-    &gt;注：索引从<strong>1</strong>开始</p>
-<div class="language-text highlight"><pre><span></span><code>🌰
-![](Images/C8/Quicker_20240410_165640.png)
-变化后
-![](Images/C8/Quicker_20240410_165703.png)
-
-代码实现：
-</code></pre></div>
-<p><code>c
-void Initialize(DisjSet S)
-{
-    int i;
-
-    for (i = NumSets; i &gt; 0; i--)
-        S[i] = 0;
-}</code></p>
-<div class="language-c highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">SetUnion</span><span class="p">(</span><span class="n">DisSet</span><span class="w"> </span><span class="n">S</span><span class="p">,</span><span class="w"> </span><span class="n">SetType</span><span class="w"> </span><span class="n">Rt1</span><span class="p">,</span><span class="w"> </span><span class="n">SetType</span><span class="w"> </span><span class="n">Rt2</span><span class="p">)</span>
+<details class="example" open="open">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">变化前</label><label for="__tabbed_2_2">变化后</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="Images/C8/Quicker_20240410_165640.png" width="80%" style="margin: 0 auto;">
+</div></p>
+</div>
+<div class="tabbed-block">
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="Images/C8/Quicker_20240410_165703.png" width="80%" style="margin: 0 auto;">
+</div></p>
+</div>
+</div>
+</div>
+</details>
+</div>
+</div>
+</div>
+</div>
+<p>代码实现：</p>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">Initialize</span><span class="p">(</span><span class="n">DisjSet</span><span class="w"> </span><span class="n">S</span><span class="p">)</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="p">{</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NumSets</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">--</span><span class="p">)</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">        </span><span class="n">S</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="p">}</span>
+</span></code></pre></div>
+<p><div class="language-c highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">SetUnion</span><span class="p">(</span><span class="n">DisSet</span><span class="w"> </span><span class="n">S</span><span class="p">,</span><span class="w"> </span><span class="n">SetType</span><span class="w"> </span><span class="n">Rt1</span><span class="p">,</span><span class="w"> </span><span class="n">SetType</span><span class="w"> </span><span class="n">Rt2</span><span class="p">)</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="p">{</span>
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="n">S</span><span class="p">[</span><span class="n">Rt2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">S</span><span class="p">[</span><span class="n">Rt1</span><span class="p">];</span>
 </span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="p">}</span>
 </span></code></pre></div>
-<blockquote>
-<p>时间复杂度：<span class="arithmatex">\(O(1)\)</span></p>
-</blockquote>
-<h3 id="findi"><code>Find(i)</code><a class="headerlink" href="#findi" title="Permanent link">&para;</a></h3>
-<ul>
-<li>方法1——树的节点有一个<code>parent</code>字段，利用它得到整棵树的根节点(还是不推荐❌)
-    <img alt="" src="Images/C8/Quicker_20240412_152330.png" /></li>
-<li>方法2
-    代码实现：
+时间复杂度：<span class="arithmatex">\(O(1)\)</span></p>
+<h3 id="findi">Find(i)<a class="headerlink" href="#findi" title="Permanent link">&para;</a></h3>
+<div class="admonition note">
+<p class="admonition-title">实现方法</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">方法1<img alt="👎" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/1f44e.svg" title=":-1:" /></label><label for="__tabbed_3_2">方法2<img alt="👍" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/1f44d.svg" title=":+1:" /></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>树的节点有一个<code>parent</code>字段，利用它得到整棵树的根节点(还是不推荐❌)</p>
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="Images/C8/Quicker_20240412_152330.png" width="40%" style="margin: 0 auto;">
+</div></p>
+</div>
+<div class="tabbed-block">
+<p>代码实现：</p>
 <div class="language-c highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">SetType</span><span class="w"> </span><span class="nf">Find</span><span class="p">(</span><span class="n">ElementType</span><span class="w"> </span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">DisSet</span><span class="w"> </span><span class="n">S</span><span class="p">)</span>
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="p">{</span>
 </span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(;</span><span class="w"> </span><span class="n">S</span><span class="p">[</span><span class="n">X</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">X</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">S</span><span class="p">[</span><span class="n">X</span><span class="p">]);</span>
 </span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">X</span><span class="p">;</span>
 </span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="p">}</span>
-</span></code></pre></div><blockquote>
+</span></code></pre></div>
 <p>(最坏情况)时间复杂度：<span class="arithmatex">\(O(N)\)</span>（与<span class="arithmatex">\(X\)</span>的深度有关，<span class="arithmatex">\(N\)</span>为整个并查集的节点个数）</p>
-</blockquote>
-</li>
-</ul>
+</div>
+</div>
+</div>
+</div>
 <h3 id="analysis">Analysis<a class="headerlink" href="#analysis" title="Permanent link">&para;</a></h3>
 <p>因为<code>union()</code>和<code>find()</code>操作往往是成对出现的，因此要分析该算法的复杂度，需要考虑执行一系列的<code>union()</code> + <code>find()</code>运算</p>
-<p>代码实现
+<p>代码实现完整的并查集操作：</p>
 <div class="language-c highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1">// 使用上述算法实现的并查运算</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="p">{</span>
 </span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="n">Initialize</span><span class="w"> </span><span class="n">S</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">i</span><span class="p">}</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,...,</span><span class="w"> </span><span class="mi">12</span><span class="p">;</span>
@@ -2221,18 +2271,20 @@ void Initialize(DisjSet S)
 </span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Find</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">Find</span><span class="p">(</span><span class="n">j</span><span class="p">))</span>
 </span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">            </span><span class="n">SetUnion</span><span class="p">(</span><span class="n">Find</span><span class="p">(</span><span class="n">i</span><span class="p">),</span><span class="w"> </span><span class="n">Find</span><span class="p">(</span><span class="n">j</span><span class="p">));</span><span class="w">  </span><span class="c1">// 注意：Union时最好合并的是两棵树的根节点</span>
 </span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="p">}</span>
-</span></code></pre></div></p>
-<p>考虑最坏情况：<code>union(2, 1), find(1); union(3, 2), find(2); ...... union(N, N - 1), find(1);</code>，这些操作最终使一棵树退化成一个链表，时间复杂度为<span class="arithmatex">\(\Theta(N^2)\)</span>
-<img alt="" src="Images/C8/Quicker_20240410_170917.png" /></p>
+</span></code></pre></div>
+<p><img alt="⭐" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2b50.svg" title=":star:" />注：记得在调用<code>Union()</code>函数前，一定要先调用<code>Find()</code>，因为我们要合并2个完整的并查集，而不是2个节点。</p>
+<p>考虑最坏情况：<code>union(2, 1), find(1); union(3, 2), find(2); ...... union(N, N - 1), find(1);</code>，这些操作最终使一棵树退化成一个链表，此时时间复杂度为<span class="arithmatex">\(\Theta(N^2)\)</span></p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="Images/C8/Quicker_20240410_170917.png" width="40%" style="margin: 0 auto;">
+</div>
+
 <h2 id="smart-union-algorithms">Smart Union Algorithms<a class="headerlink" href="#smart-union-algorithms" title="Permanent link">&para;</a></h2>
 <h3 id="union-by-size">Union-by-Size<a class="headerlink" href="#union-by-size" title="Permanent link">&para;</a></h3>
-<blockquote>
-<p>根据<strong>规模(size)</strong> 合并树——总是将规模小的树合并到规模大的树上，令<code>S[Root] = -size</code>，初始化为-1</p>
-</blockquote>
-<p><em>引理</em>：令树<span class="arithmatex">\(T\)</span>为通过union-by-size方法构造出的，且有<span class="arithmatex">\(N\)</span>个节点，则：
-$$
+<p>根据<strong>规模(size)</strong>合并树——总是将规模小的树合并到规模大的树上，令<code>S[Root] = -size</code>，初始化为-1</p>
+<p>引理：令树<span class="arithmatex">\(T\)</span>为通过union-by-size方法构造出的，且有<span class="arithmatex">\(N\)</span>个节点，则：</p>
+<div class="arithmatex">\[
 height(T) \le \lfloor \log_2N \rfloor + 1
-$$</p>
+\]</div>
 <blockquote>
 <p>证明：利用数学归纳法</p>
 </blockquote>
@@ -2258,9 +2310,7 @@ $$</p>
 <p>注：树的高度 <span class="arithmatex">\(\le \log N + 1\)</span></p>
 </blockquote>
 <h3 id="union-by-heightrank">Union-by-Height(rank)<a class="headerlink" href="#union-by-heightrank" title="Permanent link">&para;</a></h3>
-<blockquote>
-<p>根据<strong>高度(height)</strong> 合并树——总是将矮的那棵树合并到高的那棵树上，因此每次<code>Union()</code>后树的高度最多增加1（当2棵树高度相同时）</p>
-</blockquote>
+<p>根据<strong>高度(height)</strong>合并树——总是将矮的那棵树合并到高的那棵树上，因此每次<code>Union()</code>后树的高度最多增加1（当2棵树高度相同时）</p>
 <p>代码实现：
 <div class="language-c highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">SetUnion</span><span class="p">(</span><span class="n">DisjSet</span><span class="w"> </span><span class="n">S</span><span class="p">,</span><span class="w"> </span><span class="n">SetType</span><span class="w"> </span><span class="n">Root1</span><span class="p">,</span><span class="w"> </span><span class="n">SetType</span><span class="w"> </span><span class="n">Root2</span><span class="p">)</span>
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="p">{</span>
@@ -2274,15 +2324,13 @@ $$</p>
 </span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="w">    </span><span class="p">}</span>
 </span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="p">}</span>
 </span></code></pre></div></p>
-<blockquote>
-<p>🌟记得在调用<code>Union()</code>函数时，<mark>参数中的两个<code>root</code>一定要先调用<code>Find</code></mark>，类似<code>Union(S, Find(x1), Find(x2))</code>，因为我们要合并2个完整的并查集，而不是2个节点。</p>
-</blockquote>
 <h2 id="path-compression">Path Compression<a class="headerlink" href="#path-compression" title="Permanent link">&para;</a></h2>
-<blockquote>
-<p>经过上述改进，<code>Union</code>算法的性能已经不能再提升了，因此我们考虑改进<code>Find</code>算法。于是我们便用到了<strong>路径压缩(path compression)</strong> 的方法——对于从根节点到<span class="arithmatex">\(X\)</span>路径上的每个节点，将它的父节点设为根节点</p>
-</blockquote>
-<p>示意图：
-<img alt="" src="Images/C8/Quicker_20240421_170311.png" /></p>
+<p>经过上述改进，<code>Union</code>算法的性能已经不能再提升了，因此我们考虑改进<code>Find</code>算法。于是我们便用到了<strong>路径压缩(path compression)</strong>的方法——对于从根节点到<span class="arithmatex">\(X\)</span>路径上的每个节点，将它的父节点设为根节点</p>
+<p>示意图：</p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="Images/C8/Quicker_20240421_170311.png" width="40%" style="margin: 0 auto;">
+</div>
+
 <p>代码实现：
 <div class="language-c highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1">// algorithm1--recursion</span>
 </span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="n">SetType</span><span class="w"> </span><span class="nf">Find</span><span class="p">(</span><span class="n">ElementType</span><span class="w"> </span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">DisSet</span><span class="w"> </span><span class="n">S</span><span class="p">)</span>
@@ -2307,11 +2355,10 @@ $$</p>
 </span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">rootl</span>
 </span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="p">}</span>
 </span></code></pre></div>
-<blockquote>
-<p>注：
-+ 虽然这种算法相较于上一种，查找单个元素的速度变慢（因为多了一次赋值）；但是对于查找整个序列的元素，这个算法的速度更快（因为多出来的赋值<strong>压缩</strong>了整棵树，对于频繁的合并操作显然是有利的）
-+ 该方法与<em>按高度合并树</em>的方法不兼容，因为树的高度发生改变。所以推荐使用<em>union-by-size</em></p>
-</blockquote>
+<ul>
+<li>虽然这种算法相较于上一种，查找单个元素的速度变慢（因为多了一次赋值）；但是对于查找整个序列的元素，这个算法的速度更快（因为多出来的赋值<strong>压缩</strong>了整棵树，对于频繁的合并操作显然是有利的）</li>
+<li>该方法与union-by-height的方法不兼容，因为树的高度发生改变。所以推荐使用<strong>union-by-size</strong></li>
+</ul>
 <h2 id="worst-case-for-union-by-rank-and-path-compression">Worst Case for Union-by-Rank and Path Compression<a class="headerlink" href="#worst-case-for-union-by-rank-and-path-compression" title="Permanent link">&para;</a></h2>
 <blockquote>
 <p>并查集的实现较为简单，但要分析它的时间复杂度相当困难。下面的内容仅供参考，考试不做要求。</p>
@@ -2321,24 +2368,23 @@ $$
 k_1M \alpha(M, N) \le T(M, N) \le k_2M \alpha(M, N)
 $$
 即并查集最坏情况的时间复杂度为：<span class="arithmatex">\(\Theta(M\alpha (M, N))\)</span></p>
-<p><strong>阿克曼函数(Ackermann's Function)</strong>：<span class="arithmatex">\(\alpha (M, N)\)</span> ^ab877c
-$$
+<p><strong>阿克曼函数(Ackermann's Function)</strong>：<span class="arithmatex">\(\alpha (M, N)\)</span> </p>
+<div class="arithmatex">\[
 A(i, j) = 
 \begin{cases}
-2^j &amp; i = 1 \text{ and } j \ge 1 \
-A(i - 1, 2) &amp; i \ge 2 \text{ and } j = 1 \
+2^j &amp; i = 1 \text{ and } j \ge 1 \\
+A(i - 1, 2) &amp; i \ge 2 \text{ and } j = 1 \\
 A(i - 1, A(i, j - 1)) &amp; i \ge 2 \text{ and } j \ge 2
 \end{cases}
-$$
-<a href="http://mathworld.wolfram.com/AckermannFunction.html">详细介绍</a></p>
+\]</div>
 <blockquote>
 <p>注：即使<span class="arithmatex">\(i, j\)</span>数字很小，<span class="arithmatex">\(A(i, j)\)</span>结果可能也非常大，比如<span class="arithmatex">\(A(2, 4) = 2^{65536}\)</span></p>
 </blockquote>
 <p><span class="arithmatex">\(\alpha (M, N) = \min\{ i\ge 1 | A(i, \lfloor M / N \rfloor )&gt; \log N\} \le O(\log^* N) \le 4\)</span></p>
+<p>其中<span class="arithmatex">\(\log^*N\)</span>是阿克曼函数的<em>反函数</em>，代表用于<span class="arithmatex">\(N\)</span>的对数的次数，使其最终结果<span class="arithmatex">\(\le 1\)</span>。比如上例中<span class="arithmatex">\(\log^* 2^{65536} = 5\)</span>，因为<span class="arithmatex">\(\log\log\log\log\log(2^{65536}) = 1\)</span></p>
 <blockquote>
-<p>注：<span class="arithmatex">\(\log^*N\)</span>是阿克曼函数的<em>反函数</em>，代表用于<span class="arithmatex">\(N\)</span>的对数的次数，使其最终结果<span class="arithmatex">\(\le 1\)</span>。比如上例中<span class="arithmatex">\(\log^* 2^{65536} = 5\)</span>，因为<span class="arithmatex">\(\log\log\log\log\log(2^{65536}) = 1\)</span></p>
+<p>参考资料：<a href="http://mathworld.wolfram.com/AckermannFunction.html">阿克曼函数的详细介绍</a></p>
 </blockquote>
-<p>^e5be9e</p>
 <h2 id="an-application">An Application<a class="headerlink" href="#an-application" title="Permanent link">&para;</a></h2>
 <p>应用：计算机网络中的文件传输（具体内容见课本<span class="arithmatex">\(P_{279}\)</span>，也可以看看下面的编程题）</p>
 <p>后续章节中会有更好的应用</p>
@@ -2417,6 +2463,8 @@ $$
   })
 </script>
                 
+
+<link rel="stylesheet" href="/css/counter.css">
 
 
               </article>
@@ -2501,7 +2549,7 @@ $$
       
     
     <a href="https://github.com/noughtq" target="_blank" rel="noopener" title="github.com" class="md-social__link">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M23.546 10.93 13.067.452a1.55 1.55 0 0 0-2.188 0L8.708 2.627l2.76 2.76a1.838 1.838 0 0 1 2.327 2.341l2.658 2.66a1.838 1.838 0 0 1 1.9 3.039 1.837 1.837 0 0 1-2.6 0 1.846 1.846 0 0 1-.404-1.996L12.86 8.955v6.525c.176.086.342.203.488.348a1.848 1.848 0 0 1 0 2.6 1.844 1.844 0 0 1-2.609 0 1.834 1.834 0 0 1 0-2.598c.182-.18.387-.316.605-.406V8.835a1.834 1.834 0 0 1-.996-2.41L7.636 3.7.45 10.881c-.6.605-.6 1.584 0 2.189l10.48 10.477a1.545 1.545 0 0 0 2.186 0l10.43-10.43a1.544 1.544 0 0 0 0-2.187"/></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
     </a>
   
 </div>

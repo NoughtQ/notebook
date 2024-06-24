@@ -2296,39 +2296,82 @@
 
 <h1 id="chap-9-graph-algorithm">Chap 9 Graph Algorithm<a class="headerlink" href="#chap-9-graph-algorithm" title="Permanent link">&para;</a></h1>
 <div markdown="1" style="margin-top: -30px; font-size: 0.8em; opacity: 0.7;">
-约 6673 个字 , 279 行代码 , 预计阅读时间 37 分钟
+约 6575 个字 , 279 行代码 , 预计阅读时间 36 分钟
 </div>
 <!-- :material-circle-edit-outline:-->
 <!--:fontawesome-solid-code: -->
 <!--:material-clock-time-two-outline: -->
 
+<blockquote>
+<p>详细的图论知识见离散数学<a href="../dm/10.html">同名章节</a></p>
+</blockquote>
 <h2 id="definitions">Definitions<a class="headerlink" href="#definitions" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>G(V, E)</strong>：<em>G</em>表示<strong>图</strong>(graph)，<em>V = V(G)</em> 表示关于<strong>顶点(vertices)</strong> 的有限非空集合，<em>E = E(G)</em> 表示关于<strong>边(edges/arcs)</strong> 的有限集合</li>
+<li><strong>G(V, E)</strong>：<span class="arithmatex">\(G\)</span>表示<strong>图(graph)</strong>，<span class="arithmatex">\(V = V(G)\)</span>表示关于<strong>顶点(vertices)</strong>的有限非空集合，<span class="arithmatex">\(E = E(G)\)</span>表示关于<strong>边(edges/arcs)</strong>的有限集合</li>
 <li><strong>无向图(undirected graph)</strong>：<span class="arithmatex">\((v_i, v_j) = (v_j, v_i)\)</span>表示相同的边</li>
-<li><strong>有向图(directed graph, digraph)</strong>：<span class="arithmatex">\(&lt;v_i, v_j&gt; \ne &lt;v_j, v_i&gt;\)</span>
-    &gt;<span class="arithmatex">\(&lt;v_i, v_j&gt;\)</span>：<img alt="" src="Images/C9/Quicker_20240417_200539.png" /></li>
+<li><strong>有向图(directed graph, digraph)</strong>：<span class="arithmatex">\(&lt;v_i, v_j&gt; \ne &lt;v_j, v_i&gt;\)</span></li>
 </ul>
-<blockquote>
-<p>限制：
-+ <strong>自环(self loop)</strong> 是非法的：<img alt="" src="Images/C9/Quicker_20240417_200725.png" />
-+ 不考虑<strong>多重图(multigraph)</strong> （两个节点间有多条边）的情况<img alt="" src="Images/C9/Quicker_20240417_200917.png" /></p>
-</blockquote>
+<details class="example" open="open">
+<summary><span class="arithmatex">\(&lt;v_i, v_j&gt;\)</span></summary>
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="Images/C9/Quicker_20240417_200539.png" width="20%" style="margin: 0 auto;">
+</div></p>
+</details>
+<details class="warning" open="open">
+<summary>限制</summary>
 <ul>
-<li><strong>完全图(complete graph)</strong>：有最大数量的边的图（每对顶点都有直接相连的边）<ul>
-<li>无向图：<span class="arithmatex">\(V = n \quad E = C^2_n = \frac{n(n - 1)}{2}\)</span>
-    <img alt="" src="Images/C9/Quicker_20240417_201101.png" /></li>
-<li>有向图：<span class="arithmatex">\(V = n \quad E = P^2_n = n(n - 1)\)</span>
-    <img alt="" src="Images/C9/Quicker_20240417_201159.png" /></li>
+<li>
+<p><strong>自环(self loop)</strong>是非法的</p>
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="Images/C9/Quicker_20240417_200725.png" width="20%" style="margin: 0 auto;">
+</div></p>
+</li>
+<li>
+<p>不考虑<strong>多重图(multigraph)</strong>（两个节点间有多条边）的情况</p>
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="Images/C9/Quicker_20240417_200917.png" width="20%" style="margin: 0 auto;">
+</div></p>
+</li>
+</ul>
+</details>
+<ul>
+<li>
+<p><strong>完全图(complete graph)</strong>：图上任意两点间都有一条边</p>
+<ul>
+<li>
+<p>无向图：<span class="arithmatex">\(V = n \quad E = C^2_n = \frac{n(n - 1)}{2}\)</span></p>
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="Images/C9/Quicker_20240417_201101.png" width="20%" style="margin: 0 auto;">
+</div></p>
+</li>
+<li>
+<p>有向图：<span class="arithmatex">\(V = n \quad E = P^2_n = n(n - 1)\)</span></p>
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="Images/C9/Quicker_20240417_201159.png" width="20%" style="margin: 0 auto;">
+</div>  </p>
+</li>
 </ul>
 </li>
-<li><strong>邻接(adjacent)</strong><ul>
-<li>无向图：如果<span class="arithmatex">\((v_i, v_j)\)</span>存在，则称<span class="arithmatex">\(v_i, v_j\)</span>是<em>邻接的</em><img alt="" src="Images/C9/Quicker_20240417_201534.png" /></li>
-<li>有向图：如果<span class="arithmatex">\(&lt;v_i, v_j&gt;\)</span>存在，则称<span class="arithmatex">\(v_i\)</span><mark>到</mark><span class="arithmatex">\(v_j\)</span>是<em>邻接的</em>，或者说<span class="arithmatex">\(v_j\)</span><mark>来自</mark><span class="arithmatex">\(v_i\)</span>是<em>邻接的</em>
-    <img alt="" src="Images/C9/Quicker_20240417_201543.png" /></li>
+<li>
+<p><strong>邻接(adjacent)</strong></p>
+<ul>
+<li>
+<p>无向图：如果<span class="arithmatex">\((v_i, v_j)\)</span>存在，则称<span class="arithmatex">\(v_i, v_j\)</span>是<em>邻接的</em></p>
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="Images/C9/Quicker_20240417_201534.png" width="20%" style="margin: 0 auto;">
+</div>  </p>
+</li>
+<li>
+<p>有向图：如果<span class="arithmatex">\(&lt;v_i, v_j&gt;\)</span>存在，则称<span class="arithmatex">\(v_i\)</span> to <span class="arithmatex">\(v_j\)</span>是<em>邻接的</em>，或者说<span class="arithmatex">\(v_j\)</span> from <span class="arithmatex">\(v_i\)</span>是<em>邻接的</em></p>
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="Images/C9/Quicker_20240417_201543.png" width="20%" style="margin: 0 auto;">
+</div></p>
+</li>
 </ul>
 </li>
-<li><strong>子图(subgraph)</strong><span class="arithmatex">\(G' \subset G\)</span>，<span class="arithmatex">\(V(G') \subseteq V(G) \wedge E(G') \subseteq E(G)\)</span></li>
+<li>
+<p><strong>子图(subgraph)</strong><span class="arithmatex">\(G' \subset G\)</span>，<span class="arithmatex">\(V(G') \subseteq V(G) \wedge E(G') \subseteq E(G)\)</span></p>
+</li>
 <li>从<span class="arithmatex">\(v_p\)</span>到<span class="arithmatex">\(v_q\)</span>的<strong>路径(path)</strong>(<span class="arithmatex">\(\subset G\)</span>)：<span class="arithmatex">\(\{v_p, v_{i1}, v_{i2}, \dots, v_{in}, v_q\}\)</span>，使得<span class="arithmatex">\((v_p, v_{i1}), (v_{i1}, v_{i2}), \dots, (v_{in}, v_q)\)</span>或者<span class="arithmatex">\(&lt;v_p, v_{i1}&gt;, &lt;v_{i1}, v_{i2}&gt;, \dots, &lt;v_{in}, v_q&gt; \subset E(G)\)</span></li>
 <li>路径的<strong>长度(length)</strong>：路径上边的条数</li>
 <li><strong>简单路径(simple path)</strong>：对于上述路径，<span class="arithmatex">\(v_{i1}, v_{i2}, \dots, v_{in}\)</span>是不同的(不会多次经过同一顶点)</li>
@@ -2340,127 +2383,186 @@
 <p>无向图：</p>
 <ul>
 <li>对于两个顶点<span class="arithmatex">\(v_i, v_j\)</span>而言，如果它们之间存在一条路径，则称它们是<em>连通的</em></li>
-<li>对于整张无向图<span class="arithmatex">\(G\)</span>而言，如果图内两个不同的节点之间相互连通，则称整张图是<em>连通的</em><blockquote>
+<li>对于整张无向图<span class="arithmatex">\(G\)</span>而言，如果图内任意两点之间相互连通，则称整张图是<em>连通的</em><blockquote>
 <p>对于<span class="arithmatex">\(n\)</span>个顶点的无向图，最少需要<span class="arithmatex">\(n - 1\)</span>条边来实现整张图的连通</p>
 </blockquote>
 </li>
-<li>无向图<span class="arithmatex">\(G\)</span>的(连通)<strong>分量(component)</strong>：<em>极大</em>连通子图(一张图中仅有1个)</li>
-<li><em>树(tree)</em> 是连通且 <em>无环(acyclic)</em> 的图</li>
+<li>无向图<span class="arithmatex">\(G\)</span>的<strong>(连通)分量(component)</strong>：极大连通子图(一张图中仅有1个)</li>
+<li><strong>树</strong>是连通且无环(acyclic)的图</li>
 </ul>
 </li>
 <li>
 <p>有向图：</p>
 <ul>
 <li><strong>有向无环图(directed acyclic graph, DAG)</strong></li>
-<li><strong>强连通(strongly connected)</strong> 有向图<span class="arithmatex">\(G\)</span>：对于<span class="arithmatex">\(V(G)\)</span>中的每对顶点<span class="arithmatex">\(v_i, v_j\)</span>，存在从<span class="arithmatex">\(v_i\)</span>到<span class="arithmatex">\(v_j\)</span>==和==从<span class="arithmatex">\(v_j\)</span>到<span class="arithmatex">\(v_i\)</span>的有向路径</li>
-<li><strong>弱连通(weakly connected)</strong> 有向图：在不考虑方向的情况下(即无向图)，整张图是连通的(即对于<span class="arithmatex">\(V(G)\)</span>中的每对顶点<span class="arithmatex">\(v_i, v_j\)</span>，存在从<span class="arithmatex">\(v_i\)</span>到<span class="arithmatex">\(v_j\)</span>==或==从<span class="arithmatex">\(v_j\)</span>到<span class="arithmatex">\(v_i\)</span>的有向路径)<blockquote>
+<li><strong>强连通(strongly connected)</strong>有向图<span class="arithmatex">\(G\)</span>：对于<span class="arithmatex">\(V(G)\)</span>中的每对顶点<span class="arithmatex">\(v_i, v_j\)</span>，存在从<span class="arithmatex">\(v_i\)</span>到<span class="arithmatex">\(v_j\)</span><strong>以及</strong>从<span class="arithmatex">\(v_j\)</span>到<span class="arithmatex">\(v_i\)</span>的有向路径</li>
+<li>
+<p><strong>弱连通(weakly connected)</strong>有向图：在不考虑方向的情况下(即无向图)，整张图是连通的(即对于<span class="arithmatex">\(V(G)\)</span>中的每对顶点<span class="arithmatex">\(v_i, v_j\)</span>，存在从<span class="arithmatex">\(v_i\)</span>到<span class="arithmatex">\(v_j\)</span><strong>或</strong>从<span class="arithmatex">\(v_j\)</span>到<span class="arithmatex">\(v_i\)</span>的有向路径)</p>
+<blockquote>
 <p>对于<span class="arithmatex">\(n\)</span>个顶点的<em>弱连通有向图</em>，最少需要<span class="arithmatex">\(n - 1\)</span>条边来实现整张图的连通</p>
 </blockquote>
 </li>
-<li><strong>强连通分量(strongly connected component)</strong> ：<em>极大</em>强连通子图</li>
-<li><strong>弱连通分量(weakly connected component)</strong> ：<em>极大</em>弱连通子图</li>
+<li>
+<p><strong>强连通分量(strongly connected component)</strong>：极大强连通子图</p>
+</li>
+<li><strong>弱连通分量(weakly connected component)</strong>：极大弱连通子图</li>
 </ul>
 </li>
 </ul>
-<blockquote>
-<p>注：对于一个仅有一个顶点的图，它自身就是连通分量
-+ <strong>度(degree)</strong>：<em>Degree(v)</em>，与顶点v相连的边数
-对于一个有向图<span class="arithmatex">\(G\)</span>而言，度分为<strong>入度(in-degree)</strong> 和<strong>出度(out-degree)</strong>，例如：
-<img alt="" src="Images/C9/Quicker_20240417_203628.png" />
-假如<span class="arithmatex">\(G\)</span>有<span class="arithmatex">\(v\)</span>个顶点和<span class="arithmatex">\(e\)</span>条边，那么<span class="arithmatex">\(e = \dfrac{\sum\limits_{i = 0}^{n - 1}d_i}{2}\)</span>，其中<span class="arithmatex">\(d_i = \text{degree}(v_i)\)</span>
-注：对于有向图而言，<mark>所有顶点入度之和 = 所有顶点出度之和</mark></p>
-</blockquote>
+</li>
+<li>
+<p><strong>度(degree)</strong>：<span class="arithmatex">\(Degree(v)\)</span>，与顶点v相连的边数
+    对于一个有向图<span class="arithmatex">\(G\)</span>而言，度分为<strong>入度(in-degree)</strong>和<strong>出度(out-degree)</strong>，例如：</p>
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="Images/C9/Quicker_20240417_203628.png" width="80%" style="margin: 0 auto;">
+</div></p>
+<p>假如<span class="arithmatex">\(G\)</span>有<span class="arithmatex">\(v\)</span>个顶点和<span class="arithmatex">\(e\)</span>条边，那么<span class="arithmatex">\(e = \dfrac{\sum\limits_{i = 0}^{n - 1}d_i}{2}\)</span>，其中<span class="arithmatex">\(d_i = \text{degree}(v_i)\)</span>（<a href="../dm/10.html#basic-terminology">握手定理</a>）</p>
+<p>对于有向图而言，所有顶点入度之和 = 所有顶点出度之和</p>
 </li>
 </ul>
 <h3 id="representation-of-graph">Representation of Graph<a class="headerlink" href="#representation-of-graph" title="Permanent link">&para;</a></h3>
-<blockquote>
-<p>注：有成千上万中表示图的方法，这里只列出最常用的几种。可以根据具体情况设计出相应的表示法</p>
-</blockquote>
 <p>法一：<strong>邻接矩阵(adjacency matrix)</strong></p>
-<p>对于一张具有<span class="arithmatex">\(n(n \ge 1)\)</span>个节点的图<span class="arithmatex">\(G(V, E)\)</span>，定义邻接矩阵<span class="arithmatex">\(adj\_mat [i] [j]\)</span>为
-$$
-adj_mat[i][j] = \begin{cases}1 &amp; \text{if } (v_i, v_j) \text{ or } <v_i, v_j> \in E(G) \ 0 &amp; \text{otherwise}\end{cases}
-$$
-所以也就有：
-$$
-\text{degree}(i) = \begin{cases}\sum\limits_{j = 0}^{n - 1} adj_mat[i][j] &amp; \text{if G is undirected} \ \sum\limits_{j = 0}^{n - 1} adj_mat[i][j] + \sum\limits_{j = 0}^{n - 1}adj_mat[j][i] &amp; \text{if G is directed} \end{cases}
-$$</p>
-<p>不难看出，如果<span class="arithmatex">\(G\)</span>是无向的，则该邻接矩阵是对称的，因此浪费了一半的空间和时间（复杂度：<span class="arithmatex">\(\Theta(|V|^2)\)</span>）</p>
-<blockquote>
-<p>但是用在<em>稠密(dense)</em> 图(<span class="arithmatex">\(|E| = \Theta(|V|^2)\)</span>)中是比较合适的</p>
-</blockquote>
-<p>我们可以通过下面这种方法来节省一半的空间(将<em>下三角矩阵</em>存入一维数组中)👇
-<span class="arithmatex">\(adj\_mat[n(n+1)/2] = \{a_{11}, a_{21}, \dots, a_{n1}, \dots, a_{nn}\}\)</span>，其中<span class="arithmatex">\(a_{ij}\)</span>的索引为<span class="arithmatex">\(\frac{i(i-1)}{2} + j\)</span></p>
+<p>对于一张具有<span class="arithmatex">\(n(n \ge 1)\)</span>个节点的图<span class="arithmatex">\(G(V, E)\)</span>，定义邻接矩阵<span class="arithmatex">\(adj\_mat [i] [j]\)</span>为</p>
+<div class="arithmatex">\[
+adj\_mat[i][j] = \begin{cases}1 &amp; \text{if } (v_i, v_j) \text{ or } &lt;v_i, v_j&gt; \in E(G) \\ 0 &amp; \text{otherwise}\end{cases}
+\]</div>
+<p>所以也就有：</p>
+<div class="arithmatex">\[
+\text{degree}(i) = \begin{cases}\sum\limits_{j = 0}^{n - 1} adj\_mat[i][j] &amp; \text{if G is undirected} \\ \sum\limits_{j = 0}^{n - 1} adj\_mat[i][j] + \sum\limits_{j = 0}^{n - 1}adj\_mat[j][i] &amp; \text{if G is directed} \end{cases}
+\]</div>
+<p>不难看出，如果<span class="arithmatex">\(G\)</span>是无向的，则该邻接矩阵是对称的，因此浪费了一半的空间和时间（复杂度：<span class="arithmatex">\(\Theta(|V|^2)\)</span>），但是用在<strong>稠密(dense)图</strong>(<span class="arithmatex">\(|E| = \Theta(|V|^2)\)</span>)中是比较合适的。</p>
+<p>改进措施：通过将<strong>下三角矩阵</strong>存入一维数组中，节省了一半的空间</p>
+<p><span class="arithmatex">\(adj\_mat[n(n+1)/2] = \{a_{11}, a_{21}, \dots, a_{n1}, \dots, a_{nn}\}\)</span>，其中<span class="arithmatex">\(a_{ij}\)</span>的索引为<span class="arithmatex">\(\dfrac{i(i-1)}{2} + j\)</span></p>
 <hr />
 <p>法二：<strong>邻接表(adjacency lists)</strong></p>
-<p>来看个🌰：
-如何存储这张图？<img alt="" src="Images/C9/Quicker_20240417_205817.png" />
-+ 邻接矩阵：<span class="arithmatex">\(adj\_mat = \begin{bmatrix}0 &amp; 1 &amp; 0 \\ 1 &amp; 0 &amp; 1 \\ 0 &amp; 0 &amp; 0\end{bmatrix}\)</span>
-+ 邻接表：<img alt="" src="Images/C9/Quicker_20240417_210032.png" /></p>
+<details class="example" open="open">
+<summary>例子</summary>
+<p>如何存储这张图？</p>
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="Images/C9/Quicker_20240417_205817.png" width="40%" style="margin: 0 auto;">
+</div></p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">邻接矩阵</label><label for="__tabbed_1_2">邻接表</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="arithmatex">\[adj\_mat = \begin{bmatrix}0 &amp; 1 &amp; 0 \\ 1 &amp; 0 &amp; 1 \\ 0 &amp; 0 &amp; 0\end{bmatrix}\]</div>
+</div>
+<div class="tabbed-block">
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="Images/C9/Quicker_20240417_210032.png" width="40%" style="margin: 0 auto;">
+</div></p>
 <blockquote>
 <p>注：节点的顺序并不重要</p>
 </blockquote>
-<p><span class="arithmatex">\(\therefore\)</span> 对于无向图<span class="arithmatex">\(G\)</span>，空间<span class="arithmatex">\(S = n\)</span>个头 + <span class="arithmatex">\(2e\)</span>个节点 = <span class="arithmatex">\((n + 2e)\)</span>个指针 + <span class="arithmatex">\(2e\)</span>个整型</p>
-<p>时间复杂度<span class="arithmatex">\(T = E(G) = O(|V| + |E|)\)</span>，适合用于<em>稀疏(sparse)</em> 图(<span class="arithmatex">\(|E| &lt; \Theta(|V|^2)\)</span>)</p>
+</div>
+</div>
+</div>
+</details>
+<p>对于无向图<span class="arithmatex">\(G\)</span>，邻接表的空间<span class="arithmatex">\(S = n\)</span>个头 + <span class="arithmatex">\(2e\)</span>个节点 = <span class="arithmatex">\((n + 2e)\)</span>个指针 + <span class="arithmatex">\(2e\)</span>个整型</p>
+<p>时间复杂度<span class="arithmatex">\(T = E(G) = O(|V| + |E|)\)</span>，适用于<strong>稀疏(sparse)图</strong>(<span class="arithmatex">\(|E| &lt; \Theta(|V|^2)\)</span>)中</p>
 <blockquote>
 <p>注：事实上，邻接表可以胜任各种图的存储</p>
 </blockquote>
-<p>对于无向图，Degree(i) = graph[i] 中节点的个数</p>
-<p>而如果<span class="arithmatex">\(G\)</span>是有向的，我们需要找到in-degree(i)
-    + 法1：逆转邻接链表的做法
-        <img alt="" src="Images/C9/Quicker_20240417_210654.png" />
-    + 法2：用<em>多链表(multilist)</em> 表示邻接矩阵<span class="arithmatex">\(adj\_mat[i][j]\)</span>
-        <img alt="" src="Images/C9/Quicker_20240417_210838.png" /></p>
-<blockquote>
-<p>尽管多链表的表示看起来挺优雅，但实现起来相当复杂（回忆[[Chap 3 Lists, Stacks, and Queues#^222af4|之前的例子]]），因此更推荐法1</p>
-<p>补充：有时顶点的值不一定是整数，也有可能是字符串，这时需要维护一张从字符串映射到整数索引的表格，在图中用索引代替字符串</p>
-</blockquote>
+<div class="admonition note">
+<p class="admonition-title">实现方法</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">无向图</label><label for="__tabbed_2_2">有向图</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>Degree(i) = graph[i]中节点的个数</p>
+</div>
+<div class="tabbed-block">
+<p>我们需要找到in-degree(i)</p>
+<ul>
+<li>
+<p>法1：逆转邻接链表的做法</p>
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="Images/C9/Quicker_20240417_210654.png" width="40%" style="margin: 0 auto;">
+</div></p>
+</li>
+<li>
+<p>法2：用<a href="3.html#multilists"><strong>多链表(multilist)</strong></a>表示邻接矩阵<span class="arithmatex">\(adj\_mat[i][j]\)</span></p>
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="Images/C9/Quicker_20240417_210838.png" width="40%" style="margin: 0 auto;">
+</div></p>
+</li>
+</ul>
+<p>尽管多链表的表示看起来挺优雅，但实现起来相当复杂，因此更推荐法1</p>
+<details class="info" open="open">
+<summary>补充</summary>
+<p>有时顶点的值不一定是整数，也有可能是字符串，这时需要维护一张从字符串映射到整数索引的表格，在图中用索引代替字符串</p>
+</details>
+</div>
+</div>
+</div>
+</div>
 <hr />
 <p>法三：邻接多重表(adjacency multilist)</p>
 <blockquote>
-<p>注：这个不作要求，认识即可</p>
+<p>注：这个不作要求，了解即可</p>
 </blockquote>
-<p>在之前的邻接表里，对于每条边<span class="arithmatex">\((v_i, v_j)\)</span>，我们会有两个节点：
-<img alt="" src="Images/C9/Quicker_20240417_211329.png" /></p>
-<p>通过改进，将这两个节点结合到一起，<img alt="" src="Images/C9/Quicker_20240417_211529.png" /></p>
-<p>于是就有如下表示方法：
-<img alt="" src="Images/C9/Quicker_20240417_211427.png" /></p>
-<blockquote>
-<p>mark表示某一条边</p>
-</blockquote>
-<p>🌰
-<img alt="" src="Images/C9/Quicker_20240417_211622.png" /></p>
-<blockquote>
-<p>观察发现，在没有考虑mark存储的情况下，这种表示法的占用空间与邻接表完全一样。虽然它的空间复杂度略微高了点，但是在某些情况下(比如检验某条边后还要检验下一条边)比较有利</p>
-</blockquote>
+<p>在之前的邻接表里，对于每条边<span class="arithmatex">\((v_i, v_j)\)</span>，我们会有两个节点：</p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="Images/C9/Quicker_20240417_211329.png" width="40%" style="margin: 0 auto;">
+</div>
+
+<p>通过改进，将这两个节点结合到一起：</p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="Images/C9/Quicker_20240417_211529.png" width="40%" style="margin: 0 auto;">
+</div>
+
+<p>于是就有如下表示方法(mark表示某一条边)：</p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="Images/C9/Quicker_20240417_211427.png" width="20%" style="margin: 0 auto;">
+</div>
+
+<p>最终效果：</p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="Images/C9/Quicker_20240417_211622.png" width="50%" style="margin: 0 auto;">
+</div>
+
+<p>观察发现，在没有考虑mark存储的情况下，这种表示法的占用空间与邻接表完全一样。虽然它的空间复杂度略微高了点，但是在某些情况下(比如检验某条边后还要检验下一条边)比较有利。</p>
 <hr />
-<p>有时，我们会遇到<strong>加权边(weighted edges)</strong> 的情况，处理方式如下：
-+ 邻接矩阵：<span class="arithmatex">\(adj\_mat[i][j] = \text{weight}\)</span>
-+ 邻接表/邻接多重表：为每个节点添加权重的字段</p>
+<p>有时，我们会遇到<strong>加权边(weighted edges)</strong>的情况，处理方式如下：</p>
+<ul>
+<li>邻接矩阵：<span class="arithmatex">\(adj\_mat[i][j] = \text{weight}\)</span></li>
+<li>邻接表/邻接多重表：为每个节点添加权重的字段</li>
+</ul>
 <h2 id="topological-sort">Topological Sort<a class="headerlink" href="#topological-sort" title="Permanent link">&para;</a></h2>
 <p><strong>AOV网(activity on vertex network)</strong>：对于有向图<span class="arithmatex">\(G\)</span>，<span class="arithmatex">\(V(G)\)</span>表示活动，<span class="arithmatex">\(E(G)\)</span>表示位次关系</p>
+<p><img alt="🌰" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/1f330.svg" title=":chestnut:" />（C1是C3的前置活动）</p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="Images/C9/Quicker_20240417_212653.png" width="20%" style="margin: 0 auto;">
+</div>
+
+<ul>
+<li>如果从<span class="arithmatex">\(i\)</span>到<span class="arithmatex">\(j\)</span>有一条路径，则称<span class="arithmatex">\(i\)</span>是<span class="arithmatex">\(j\)</span>的<strong>前任(predecessor)</strong></li>
+<li>如果<span class="arithmatex">\(&lt;i, j&gt; \in E(G)\)</span>，则称<span class="arithmatex">\(i\)</span>是<span class="arithmatex">\(j\)</span>的<strong>直接前任(immediate predecessor)</strong>。称<span class="arithmatex">\(j\)</span>是<span class="arithmatex">\(i\)</span>的 <strong>(直接)后任((immediate) predecessor)</strong></li>
+</ul>
+<p>可行的AOV网必须是一个<strong>有向无环图(DAG)</strong></p>
 <blockquote>
-<p>比如这张图表示C1是C3的前置活动：<img alt="" src="Images/C9/Quicker_20240417_212653.png" /></p>
+<p>补充阅读：<a href="https://oi-wiki.org/graph/topo/">AOE网</a></p>
 </blockquote>
-<p>如果从<span class="arithmatex">\(i\)</span>到<span class="arithmatex">\(j\)</span>有一条路径，则称<span class="arithmatex">\(i\)</span>是<span class="arithmatex">\(j\)</span>的<strong>前任(predecessor)</strong>。如果<span class="arithmatex">\(&lt;i, j&gt; \in E(G)\)</span>，则称<span class="arithmatex">\(i\)</span>是<span class="arithmatex">\(j\)</span>的<strong>直接前任(immediate predecessor)</strong>。称<span class="arithmatex">\(j\)</span>是<span class="arithmatex">\(i\)</span>的 <strong>(直接)后任((immediate) predecessor)</strong></p>
-<p><strong>偏序(partial order)</strong>：具有<em>传递性(<span class="arithmatex">\(i \rightarrow j, j \rightarrow k \Rightarrow i \rightarrow k\)</span>)</em> 和 <em>非自反性(不存在<span class="arithmatex">\(i \rightarrow i\)</span>)</em> 的位次关系</p>
-<blockquote>
-<p>如果具有自反性，就会出现要做一件事<span class="arithmatex">\(i\)</span>之前要完成<span class="arithmatex">\(i\)</span>的怪圈，因此❌</p>
-<p>注：偏序的概念可见dm[[Chap 9 Relations#9.6 Partial Orderings|9.6节]]</p>
-</blockquote>
-<p>可行的AOV网必须是一个<em>有向无环图(DAG)</em></p>
-<blockquote>
-<p>注：与AOV网相对的还有<em>AOE网(activity on edge network)</em>，具体内容可<a href="https://oi-wiki.org/graph/topo/">戳这</a></p>
-</blockquote>
+<p><strong>偏序(partial order)</strong>是一种具有以下性质的关系</p>
+<ul>
+<li><strong>反自反性(irreflexive)</strong>(不存在<span class="arithmatex">\(i \rightarrow i\)</span>)</li>
+<li><strong>反对称性(anti-symmetric)</strong></li>
+<li><strong>传递性</strong>(<span class="arithmatex">\(i \rightarrow j, j \rightarrow k \Rightarrow i \rightarrow k\)</span>)</li>
+</ul>
+<div class="admonition info">
+<p class="admonition-title">说明</p>
+<ul>
+<li>这里的偏序指的是<strong>严格偏序</strong>，因此和离散数学定义的<a href="../dm/9.html#partial-orderings">偏序</a>略有区别</li>
+<li>如果具有自反性，就会出现要做一件事<span class="arithmatex">\(i\)</span>之前要完成<span class="arithmatex">\(i\)</span>的怪圈，因此❌</li>
+</ul>
+</div>
 <hr />
-<p><strong>拓扑序(topological order)</strong> 是一张图的顶点的线性顺序，满足：对于任意两个顶点<span class="arithmatex">\(i, j\)</span>，如果<span class="arithmatex">\(i\)</span>是<span class="arithmatex">\(j\)</span>的前任，则在线性顺序中<span class="arithmatex">\(i\)</span>要出现在<span class="arithmatex">\(j\)</span>之前</p>
-<blockquote>
-<p>注：
-+ 对于一个网，拓扑序不一定是唯一的
-+ <strong>强连通的DAG</strong>一定有唯一的拓扑序
-+ 如果拓扑序中一个顶点出现在另一个顶点的前面，它们之间不一定存在路径</p>
-</blockquote>
-<p>算法实现：
+<p><strong>拓扑序(topological order)</strong>是一张图的顶点的线性顺序，满足：对于任意两个顶点<span class="arithmatex">\(i, j\)</span>，如果<span class="arithmatex">\(i\)</span>是<span class="arithmatex">\(j\)</span>的前任，则在线性顺序中<span class="arithmatex">\(i\)</span>要出现在<span class="arithmatex">\(j\)</span>之前</p>
+<p>注：</p>
+<ul>
+<li>对于一个网，拓扑序不一定是唯一的</li>
+<li><strong>强连通的DAG</strong>一定有唯一的拓扑序</li>
+<li>如果拓扑序中一个顶点出现在另一个顶点的前面，它们之间不一定存在路径</li>
+</ul>
+<p>代码实现：</p>
 <div class="language-c highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">// version 1</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kt">void</span><span class="w"> </span><span class="nf">Topsort</span><span class="p">(</span><span class="n">Graph</span><span class="w"> </span><span class="n">G</span><span class="p">)</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="p">{</span>
@@ -2479,13 +2581,12 @@ $$</p>
 </span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">            </span><span class="n">indegreep</span><span class="p">[</span><span class="n">W</span><span class="p">]</span><span class="o">--</span><span class="p">;</span>
 </span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">    </span><span class="p">}</span>
 </span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="p">}</span>
-</span></code></pre></div></p>
-<blockquote>
-<p>注：
-+ <code>FindNewVertexOfDegreeZero()</code>：扫描<code>Indegree[]</code>数组，找到入度为0且未赋予拓扑序的顶点，如果没有找到顶点，那么表明图中出现了环。
-+ 时间复杂度：<span class="arithmatex">\(T = O(|V|^2)\)</span> 👎</p>
-</blockquote>
-<p>改进方法：将所有==未赋予拓扑序的、度为0的顶点==放入特殊的盒子(比如<strong>队列</strong>或<strong>堆栈</strong>)里
+</span></code></pre></div>
+<ul>
+<li><code>FindNewVertexOfDegreeZero()</code>：扫描<code>Indegree[]</code>数组，找到入度为0且未赋予拓扑序的顶点，如果没有找到顶点，那么表明图中出现了环。</li>
+<li>时间复杂度：<span class="arithmatex">\(T = O(|V|^2)\)</span> 👎</li>
+</ul>
+<p>改进方法：将所有<strong>未赋予拓扑序的、度为0的顶点</strong>放入特殊的盒子(比如<strong>队列</strong>或<strong>堆栈</strong>)里
 <div class="language-c highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">// version 2, using queue ADT</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kt">void</span><span class="w"> </span><span class="nf">Topsort</span><span class="p">(</span><span class="n">Graph</span><span class="w"> </span><span class="n">G</span><span class="p">)</span>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="p">{</span>
@@ -2510,53 +2611,73 @@ $$</p>
 </span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="w">    </span><span class="n">DisposeQueue</span><span class="p">(</span><span class="n">Q</span><span class="p">);</span><span class="w"> </span><span class="c1">// free memery</span>
 </span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="p">}</span>
 </span></code></pre></div></p>
-<blockquote>
 <p>时间复杂度：<span class="arithmatex">\(O(|E| + |V|)\)</span></p>
-</blockquote>
-<p>🌰
-<img alt="" src="Images/C9/Quicker_20240417_214857.png" />
-<img alt="" src="Images/C9/Quicker_20240417_214925.png" /></p>
-<blockquote>
-<p>注：现实生活中，排课表的时候将队列作为special box，而不是堆栈，因为采用后者的方式，学生会深入学完一整个体系，然后才开始学下一个体系，这样学时间不够用。</p>
-</blockquote>
+<details class="example">
+<summary>例题</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">问题</label><label for="__tabbed_3_2">答案</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="Images/C9/Quicker_20240417_214857.png" width="80%" style="margin: 0 auto;">
+</div></p>
+</div>
+<div class="tabbed-block">
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="Images/C9/Quicker_20240417_214925.png" width="80%" style="margin: 0 auto;">
+</div></p>
+</div>
+</div>
+</div>
+</details>
 <h2 id="shortest-path-algorithms">Shortest Path Algorithms<a class="headerlink" href="#shortest-path-algorithms" title="Permanent link">&para;</a></h2>
-<p>给定一张有向图<span class="arithmatex">\(G(V, E)\)</span>，以及成本函数<span class="arithmatex">\(c(e)\)</span>，<span class="arithmatex">\(e \in E(G)\)</span>，从<strong>源(source)</strong> 到<strong>目的地(destination)</strong> 的路径<span class="arithmatex">\(P\)</span>的<strong>长度(length)</strong> 为<span class="arithmatex">\(\sum\limits_{e_i \subset P}c(e_i)\)</span>（也称为<strong>权重路径长度(weighted path length)</strong>）</p>
+<p>给定一张有向图<span class="arithmatex">\(G(V, E)\)</span>，以及成本函数<span class="arithmatex">\(c(e)\)</span>，<span class="arithmatex">\(e \in E(G)\)</span>，从<strong>源(source)</strong>到<strong>目的地(destination)</strong>的路径<span class="arithmatex">\(P\)</span>的长度(length)为<span class="arithmatex">\(\sum\limits_{e_i \subset P}c(e_i)\)</span>（也称为<strong>带权路径长度(weighted path length)</strong>）</p>
 <h3 id="single-source-shortest-path-problem">Single-Source Shortest-Path Problem<a class="headerlink" href="#single-source-shortest-path-problem" title="Permanent link">&para;</a></h3>
-<p>问题：给定一张权重图<span class="arithmatex">\(G(V, E)\)</span>，以及一个可区分的顶点<span class="arithmatex">\(s\)</span>，寻找从<span class="arithmatex">\(s\)</span>到<span class="arithmatex">\(G\)</span>中所有其他顶点的最短权重路径
-<img alt="" src="Images/C9/Quicker_20240424_131818.png" /></p>
-<blockquote>
-<p>注：
-+ 右图存在负的边，这样最短路的长度可以是无穷小。因此在这种情况下，最短路是未定义的，因为陷入了死循环。这种循环被称为<strong>负值环(negative-cost cycle)</strong>
-+ 从<span class="arithmatex">\(s\)</span>到<span class="arithmatex">\(s\)</span>的最短路径被定义为0
-+ 现在，还没有一种最短路算法的速度快于找到从<span class="arithmatex">\(s\)</span>到所有顶点的路径的算法</p>
-</blockquote>
+<div class="admonition question">
+<p class="admonition-title">问题</p>
+<p>给定一张权重图<span class="arithmatex">\(G(V, E)\)</span>，以及一个可区分的顶点<span class="arithmatex">\(s\)</span>，寻找从<span class="arithmatex">\(s\)</span>到<span class="arithmatex">\(G\)</span>中所有其他顶点的最短权重路径</p>
+</div>
+<p>某个<img alt="🌰" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/1f330.svg" title=":chestnut:" />：</p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="Images/C9/Quicker_20240424_131818.png" width="70%" style="margin: 0 auto;">
+</div>
+
+<ul>
+<li>右图存在负的边，这样最短路的长度可以是无穷小。因此在这种情况下，最短路是未定义的，因为陷入了死循环。这种循环被称为<strong>负值环(negative-cost cycle)</strong></li>
+<li>从<span class="arithmatex">\(s\)</span>到<span class="arithmatex">\(s\)</span>的最短路径被定义为0</li>
+<li>现在，还没有一种最短路算法的速度快于找到从<span class="arithmatex">\(s\)</span>到所有顶点的路径的算法</li>
+</ul>
 <h4 id="unweighted-shortest-paths">Unweighted Shortest Paths<a class="headerlink" href="#unweighted-shortest-paths" title="Permanent link">&para;</a></h4>
-<blockquote>
-<p>所有边的权重 = 1</p>
-</blockquote>
-<p><img alt="" src="Images/C9/Quicker_20240424_132143.png" /></p>
-<p>如图所示，为了找到从<span class="arithmatex">\(v_3\)</span>出发到其他顶点的所有最短路径：
-+ 先找到与<span class="arithmatex">\(v_3\)</span>邻接的顶点，记从<span class="arithmatex">\(v_3\)</span>到这些顶点的最短路径为1
-+ 然后再从这些顶点出发，找到与它们邻接的顶点。如果新找到的顶点还没有相应的最短路径，那就记这些顶点的最短路径为2
-+ 重复步骤2，直至所有顶点的最短路径都已找到
-这种方法被称为<strong>宽度优先搜索(Breadth-first search, BFS)</strong>：该方法一层层地处理顶点：最近的顶点最先处理，最远的顶点最后处理。这和树中的 <em>[[Chap 4 Trees#^770ab3|层序遍历]]</em> 类似</p>
-<p>实现：
-+ <code>Table[i].Dist</code> ::= 从<span class="arithmatex">\(s\)</span>到<span class="arithmatex">\(v_i\)</span>的距离 <span class="arithmatex">\(= \begin{cases}\infty &amp; \text{if } v_i \ne s \\ 0 &amp; \text{if } v_i = s\end{cases}\)</span></p>
+<p>在这种情况下，所有边的权重 = 1</p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="Images/C9/Quicker_20240424_132143.png" width="60%" style="margin: 0 auto;">
+</div>
+
+<p>如图所示，为了找到从<span class="arithmatex">\(v_3\)</span>出发到其他顶点的所有最短路径：</p>
+<ul>
+<li>先找到与<span class="arithmatex">\(v_3\)</span>邻接的顶点，记从<span class="arithmatex">\(v_3\)</span>到这些顶点的最短路径为1</li>
+<li>然后再从这些顶点出发，找到与它们邻接的顶点。如果新找到的顶点还没有相应的最短路径，那就记这些顶点的最短路径为2</li>
+<li>重复步骤2，直至所有顶点的最短路径都已找到</li>
+</ul>
+<p>这种方法被称为<strong>宽度优先搜索(Breadth-first search, BFS)</strong>：该方法一层层地处理顶点：最近的顶点最先处理，最远的顶点最后处理。这和树中的<a href="4.html#tree-traversals">层序遍历</a>类似</p>
+<p>实现：</p>
 <ul>
 <li>
+<p><code>Table[i].Dist</code> ::= 从<span class="arithmatex">\(s\)</span>到<span class="arithmatex">\(v_i\)</span>的距离 <span class="arithmatex">\(= \begin{cases}\infty &amp; \text{if } v_i \ne s \\ 0 &amp; \text{if } v_i = s\end{cases}\)</span></p>
+</li>
+<li>
 <p><code>Table[i].Known</code> ::= <span class="arithmatex">\(\begin{cases}1 \quad \text{if } v_i \text{ is checked} \\ 0 \quad \text{if not}\end{cases}\)</span></p>
+</li>
+</ul>
 <blockquote>
 <ul>
 <li>其实没有必要设这个字段(因为<code>Table[i].Dist</code>同时具备<strong>标记</strong>功能)，写在这里只是提醒一下要做一下标记</li>
 <li>在初始化中，所有顶点的<code>Table[i].Known = 0</code>，包括起始顶点，因为没有任何顶点被处理过</li>
 </ul>
 </blockquote>
-</li>
-<li>
-<p><code>Table[i].Path</code> ::= 记录路径上<span class="arithmatex">\(v_i\)</span>的前一个顶点，以便打印整条路径</p>
-</li>
+<ul>
+<li><code>Table[i].Path</code> ::= 记录路径上<span class="arithmatex">\(v_i\)</span>的前一个顶点，以便打印整条路径</li>
 </ul>
-<p>代码：
+<p>代码实现：</p>
 <div class="language-c highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">// version 1</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kt">void</span><span class="w"> </span><span class="nf">Unweighted</span><span class="p">(</span><span class="n">Table</span><span class="w"> </span><span class="n">T</span><span class="p">)</span>
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="p">{</span>
@@ -2577,19 +2698,24 @@ $$</p>
 </span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="w">            </span><span class="p">}</span><span class="w"> </span><span class="c1">// end-if !Known &amp;&amp;Dist == CurrDist</span>
 </span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="c1">// end-for CurrDist</span>
 </span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="p">}</span>
-</span></code></pre></div></p>
-<blockquote>
-<p>注：
-+ 这个算法显然没什么效率，因为外层循环要循环<code>NumVertex - 1</code>次才结束，即使所有的顶点早就处理过了。虽然可以增加一个额外的判断提前结束循环，但这并没有影响最坏情况的运行时间，比如：
-  <img alt="" src="Images/C9/Quicker_20240424_134237.png" />
-  起始点为<span class="arithmatex">\(v_9\)</span>，第一次循环要找<code>CurrDist == 0</code>的顶点(即<span class="arithmatex">\(v_9\)</span>)。我们一般会按照节点下标的递增顺序查找，则要找到<span class="arithmatex">\(v_9\)</span>需要从头遍历到尾；而且不难看出，每次循环均会从头遍历到尾(越来越靠前)
-+ 因此时间复杂度<span class="arithmatex">\(T = O(|V|^2)\)</span>👎</p>
-</blockquote>
+</span></code></pre></div>
+<p>这个算法显然没什么效率，因为外层循环要循环<code>NumVertex - 1</code>次才结束，即使所有的顶点早就处理过了。虽然可以增加一个额外的判断提前结束循环，但这并没有影响最坏情况的运行时间，比如：</p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="Images/C9/Quicker_20240424_134237.png" width="70%" style="margin: 0 auto;">
+</div>
+
+<p>起始点为<span class="arithmatex">\(v_9\)</span>，第一次循环要找<code>CurrDist == 0</code>的顶点(即<span class="arithmatex">\(v_9\)</span>)。我们一般会按照节点下标的递增顺序查找，则要找到<span class="arithmatex">\(v_9\)</span>需要从头遍历到尾；而且不难看出，每次循环均会从头遍历到尾(越来越靠前)</p>
+<p>因此时间复杂度<span class="arithmatex">\(T = O(|V|^2)\)</span>👎</p>
+<hr />
 <p>可以发现，如果顶点<span class="arithmatex">\(V\)</span>未被标记，但<span class="arithmatex">\(d_v \ne \infty\)</span>，那么<span class="arithmatex">\(d_v = CurrDist\)</span> 或 <span class="arithmatex">\(d_v = CurrDist + 1\)</span>，因此没有必要像上面那个算法一样扫描整个表来找到合适的顶点。</p>
-<p>改进思路：用两个箱子，一个箱子放未标记的且<span class="arithmatex">\(d_v = CurrDist\)</span>的顶点，另一个箱子放未标记的且<span class="arithmatex">\(d_v = CurrDist + 1\)</span>的顶点。那么，原来扫描整张表的操作可以变成：从第1个箱子找任一顶点<span class="arithmatex">\(V\)</span>，等到(* ) 那行代码执行完后，将<span class="arithmatex">\(W\)</span>放入第2个箱子。等到外层<code>for</code>循环一轮结束后，第1个箱子为空，将第2个箱子的顶点转移到第1个箱子，进行下一轮循环。</p>
+<div class="admonition note">
+<p class="admonition-title">改进思路</p>
+<p>用两个箱子，一个箱子放未标记的且<span class="arithmatex">\(d_v = CurrDist\)</span>的顶点，另一个箱子放未标记的且<span class="arithmatex">\(d_v = CurrDist + 1\)</span>的顶点。那么，原来扫描整张表的操作可以变成：从第1个箱子找任一顶点<span class="arithmatex">\(V\)</span>，等到(*)那行代码执行完后，将<span class="arithmatex">\(W\)</span>放入第2个箱子。等到外层<code>for</code>循环一轮结束后，第1个箱子为空，将第2个箱子的顶点转移到第1个箱子，进行下一轮循环。</p>
+</div>
 <p>事实上，我们只需要一个<strong>队列</strong>就能完成上述步骤：</p>
 <blockquote>
-<p>这里不用<code>Known</code>字段是因为<code>Dequeue</code>就代表顶点已经被处理过了，不会再回到队列里
+<p>这里不用<code>Known</code>字段是因为<code>Dequeue</code>就代表顶点已经被处理过了，不会再回到队列里</p>
+</blockquote>
 <div class="language-c highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1">// version 2</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="kt">void</span><span class="w"> </span><span class="nf">Unweighted</span><span class="p">(</span><span class="n">Table</span><span class="w"> </span><span class="n">T</span><span class="p">)</span>
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="p">{</span>
@@ -2613,18 +2739,24 @@ $$</p>
 </span><span id="__span-3-21"><a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="c1">// end-while</span>
 </span><span id="__span-3-22"><a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a><span class="w">    </span><span class="n">DisposeQueue</span><span class="p">(</span><span class="n">Q</span><span class="p">);</span><span class="w"> </span><span class="c1">// free memory</span>
 </span><span id="__span-3-23"><a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a><span class="p">}</span>
-</span></code></pre></div></p>
-<p>演示动画见PPT</p>
-</blockquote>
+</span></code></pre></div>
+<details class="play" open="open">
+<summary>动画演示</summary>
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="Images/C9/6.gif" width="30%" style="margin: 0 auto;">
+</div></p>
+</details>
 <h4 id="dijkstras-algorithmfor-weighted-shortest-paths">Dijkstra's Algorithm(for weighted shortest paths)<a class="headerlink" href="#dijkstras-algorithmfor-weighted-shortest-paths" title="Permanent link">&para;</a></h4>
-<p>令<span class="arithmatex">\(S =\)</span> {<span class="arithmatex">\(s\)</span>和已找到最短路径的顶点<span class="arithmatex">\(v_i\)</span>的集合}
-对于<span class="arithmatex">\(\forall u \notin S\)</span>，定义<code>distance[u]</code> = 路径<span class="arithmatex">\(\{s \rightarrow (v_i \in S) \rightarrow u\}\)</span>的最小长度</p>
+<div class="admonition note">
+<p class="admonition-title">Dijkstra算法的思路</p>
+<p>令<span class="arithmatex">\(S =\)</span> {<span class="arithmatex">\(s\)</span>和已找到最短路径的顶点<span class="arithmatex">\(v_i\)</span>的集合}。对于<span class="arithmatex">\(\forall u \notin S\)</span>，定义<code>distance[u]</code> = 路径<span class="arithmatex">\(\{s \rightarrow (v_i \in S) \rightarrow u\}\)</span>的最小长度</p>
 <ul>
 <li>Dijkstra算法按阶段执行，在每个阶段中，挑选一个顶点<span class="arithmatex">\(w\)</span>，保证它是所有<em>未被标记</em>的顶点中路径长度<span class="arithmatex">\(d_w\)</span><em>最短</em>的那个顶点（如果有多个最短路径长度，则任意挑选顶点）</li>
 <li>已知上一个被挑选的顶点<span class="arithmatex">\(v\)</span>，则<span class="arithmatex">\(d_w = \min(d_w, d_v + c_{v, w})\)</span>，此时<span class="arithmatex">\(w \in S\)</span>，将其标记</li>
 <li>然后对于剩余未被标记的顶点，重复上述操作，直至所有顶点均被标记</li>
 </ul>
-<p>一些基本代码：
+</div>
+<p>基本代码：</p>
 <div class="language-c highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1">// Declarations for Dijkstra&#39;s algorithm</span>
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="k">typedef</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">Vertex</span>
 </span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
@@ -2666,8 +2798,8 @@ $$</p>
 </span><span id="__span-4-39"><a id="__codelineno-4-39" name="__codelineno-4-39" href="#__codelineno-4-39"></a><span class="w">    </span><span class="p">}</span>
 </span><span id="__span-4-40"><a id="__codelineno-4-40" name="__codelineno-4-40" href="#__codelineno-4-40"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%v&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">V</span><span class="p">)</span><span class="w"> </span><span class="c1">//%v is pseudocode</span>
 </span><span id="__span-4-41"><a id="__codelineno-4-41" name="__codelineno-4-41" href="#__codelineno-4-41"></a><span class="p">}</span>
-</span></code></pre></div></p>
-<p>代码实现：
+</span></code></pre></div>
+<p>代码实现：</p>
 <div class="language-c highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">Dijkstra</span><span class="p">(</span><span class="n">Table</span><span class="w"> </span><span class="n">T</span><span class="p">)</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="p">{</span>
 </span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="n">Vertex</span><span class="w"> </span><span class="n">V</span><span class="p">,</span><span class="w"> </span><span class="n">W</span><span class="p">;</span>
@@ -2686,33 +2818,56 @@ $$</p>
 </span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a><span class="w">                </span><span class="p">}</span><span class="w"> </span><span class="c1">// end-if update W</span>
 </span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="c1">// end-for(;;)</span>
 </span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="p">}</span><span class="w"> </span><span class="c1">// now work for edge with negative cost</span>
-</span></code></pre></div></p>
-<p>示意图(原图见最短路算法这一节第一张图片的左图)：
-<img alt="" src="Images/C9/Quicker_20240424_205604.png" /></p>
+</span></code></pre></div>
+<details class="play" open="open">
+<summary>动画演示</summary>
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="Images/C9/7.gif" width="30%" style="margin: 0 auto;">
+</div></p>
+</details>
+<p>Dijkstra算法的运行时间取决于我们如何操作存放图的表</p>
+<div class="admonition note">
+<p class="admonition-title">实现方法</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><div class="tabbed-labels"><label for="__tabbed_4_1">实现1</label><label for="__tabbed_4_2">实现2</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<ul>
+<li>仅仅简单扫描一遍整张表来找到<span class="arithmatex">\(d_v\)</span>最小的顶点<span class="arithmatex">\(v \rightarrow O(|V|)\)</span>；而且外层循环遍历所有顶点，因此时间复杂度为<span class="arithmatex">\(O(|V|^2)\)</span></li>
+<li>每条边最多会更新一次，时间复杂度为<span class="arithmatex">\(O(|E|)\)</span>，而且与顶点的遍历是<em>独立</em>的</li>
+<li>因此<span class="arithmatex">\(T = O(|V|^2 + |E|)\)</span>，适用于<em>稠密图</em>（此时复杂度相当于线性复杂度）</li>
+</ul>
+</div>
+<div class="tabbed-block">
+<p>将距离保存在<strong>堆</strong>里，调用<code>DeleteMin</code>来找到未标记的最小定点，并且之后不去管它。那么如何实现算法中的<code>Decrease(T[W].Dist to T[V].Dist + Cvw);</code>呢？</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="5:2"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><input id="__tabbed_5_2" name="__tabbed_5" type="radio" /><div class="tabbed-labels"><label for="__tabbed_5_1">法1</label><label for="__tabbed_5_2">法2</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p><code>DecreaseKey()</code> <span class="arithmatex">\(\rightarrow O(\log |V|)\)</span>，因此<span class="arithmatex">\(T = O(|V|\log |V| + |E| \log |V|) = O(|E|\log |V|)\)</span>，适用于<em>稀疏图</em></p>
+<p>但是，因为堆不能有效支持<code>Find</code>操作，当<span class="arithmatex">\(d_i\)</span>的值发生改变时，它的位置需要维护和更新，用二叉堆实现起来有些麻烦。</p>
 <blockquote>
-<p>演示动画见PPT，看起来更直观</p>
+<p>如果用到<a href="https://oi-wiki.org/ds/pairing-heap/"><strong>配对堆(pairing heap)</strong></a>，情况就会改善，这种改进不做要求</p>
 </blockquote>
-<p>Dijkstra算法的运行时间取决于我们如何操作存放图的表
-实现1：
-+ 仅仅简单扫描一遍整张表来找到<span class="arithmatex">\(d_v\)</span>最小的顶点<span class="arithmatex">\(v \rightarrow O(|V|)\)</span>；而且外层循环遍历所有顶点，因此时间复杂度为<span class="arithmatex">\(O(|V|^2)\)</span>
-+ 每条边最多会更新一次，时间复杂度为<span class="arithmatex">\(O(|E|)\)</span>，而且与顶点的遍历是<em>独立</em>的
-+ 因此<span class="arithmatex">\(T = O(|V|^2 + |E|)\)</span>，适用于<em>稠密图</em>（此时复杂度相当于线性复杂度）</p>
-<p>实现2：
-+ 将距离保存在<strong>堆</strong>里，调用<code>DeleteMin</code>来找到未标记的最小定点，并且之后不去管它。
-    那么如何实现算法中的<code>Decrease(T[W].Dist to T[V].Dist + Cvw);</code>呢？
-    + 法1：<code>DecreaseKey()</code> <span class="arithmatex">\(\rightarrow O(\log |V|)\)</span>，因此<span class="arithmatex">\(T = O(|V|\log |V| + |E| \log |V|) = O(|E|\log |V|)\)</span>，适用于<em>稀疏图</em>
-    &gt;但是，因为堆不能有效支持<code>Find</code>操作，当<span class="arithmatex">\(d_i\)</span>的值发生改变时，它的位置需要维护和更新，用二叉堆实现起来有些麻烦。如果用到<em>配对堆(pairing heap)</em>(第12章会讲到)，情况就会改善</p>
-<div class="language-text highlight"><pre><span></span><code>+ 法2：将更新$d_w$插入堆中。那么堆中就会出现多个同一顶点的表示。当`DeleteMin`将最小顶点从堆中删除的时候，必须确保它是。因此未标记的。因此在`V = smallest unknown distance vertex;`这一句中，要循环使用`DeleteMin`，直到未标记的点出现(标记过的点就扔掉不用)。虽然这种方法会扩大堆的规模($O(|E|)$)，但是因为$|E| \le |V|^2$。所以$\log |E| \le 2\log |V|$，因此$T = O(|E| \log |V|)$。但它占用空间大于法1需要$|E|$次`DeleteMin`操作，因此在实际运行中可能会变慢。
-
-&gt;其他改进方法：斐波那契堆(Fibonacci heap)(第11章)
-</code></pre></div>
+</div>
+<div class="tabbed-block">
+<p>将更新<span class="arithmatex">\(d_w\)</span>插入堆中。那么堆中就会出现多个同一顶点的表示。当<code>DeleteMin</code>将最小顶点从堆中删除的时候，必须确保它是。因此未标记的。因此在<code>V = smallest unknown distance vertex;</code>这一句中，要循环使用<code>DeleteMin</code>，直到未标记的点出现(标记过的点就扔掉不用)。虽然这种方法会扩大堆的规模(<span class="arithmatex">\(O(|E|)\)</span>)，但是因为<span class="arithmatex">\(|E| \le |V|^2\)</span>。所以<span class="arithmatex">\(\log |E| \le 2\log |V|\)</span>，因此<span class="arithmatex">\(T = O(|E| \log |V|)\)</span>。但它占用空间大于法1需要<span class="arithmatex">\(|E|\)</span>次<code>DeleteMin</code>操作，因此在实际运行中可能会变慢。</p>
+<blockquote>
+<p>其他改进方法：<a href="https://zh.wikipedia.org/wiki/%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E5%A0%86">斐波那契堆(Fibonacci heap)</a></p>
+</blockquote>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
 <h4 id="graphs-with-negative-edge-costs">Graphs with Negative Edge Costs<a class="headerlink" href="#graphs-with-negative-edge-costs" title="Permanent link">&para;</a></h4>
 <p>如果出现负的边成本，那么我们就不能在使用<code>Known</code>字段标记是否已经处理过某个顶点，因为有可能在第一次处理该顶点之后，又发现更小的路径长度(因为负的边)</p>
-<blockquote>
-<p>一种尝试是给所有边加上一个相同的常数，使得所有边的成本为正数 <span class="arithmatex">\(\rightarrow\)</span> ❌
-分析：这样做的话，原本包含边数较多的路径，它的成本增长就明显多于边数较少的路径，这就有可能改变最短路径的取法。</p>
-</blockquote>
-<p>我们采取将上面介绍过的两种算法相结合的方法来解决这一问题：
+<details class="info">
+<summary>一种尝试❌</summary>
+<p>给所有边加上一个相同的常数，使得所有边的成本为正数</p>
+<p>分析：这样做的话，原本包含边数较多的路径，它的成本增长就明显多于边数较少的路径，这就有可能改变最短路径的取法。</p>
+</details>
+<p>我们用“无权重最短路算法 + Dijkstra算法”来解决这一问题：</p>
 <div class="language-c highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">WeightedNegative</span><span class="p">(</span><span class="n">Table</span><span class="w"> </span><span class="n">T</span><span class="p">)</span>
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="p">{</span>
 </span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span><span class="n">Queue</span><span class="w"> </span><span class="n">Q</span><span class="p">;</span>
@@ -2734,101 +2889,142 @@ $$</p>
 </span><span id="__span-6-19"><a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="c1">// end-while</span>
 </span><span id="__span-6-20"><a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a><span class="w">    </span><span class="n">DisposeQueue</span><span class="p">(</span><span class="n">Q</span><span class="p">);</span><span class="w"> </span><span class="c1">// free memory</span>
 </span><span id="__span-6-21"><a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a><span class="p">}</span><span class="w"> </span><span class="c1">// negative-cost cycle will cause indefinite loop</span>
-</span></code></pre></div></p>
-<blockquote>
-<p>注：
-+ 时间复杂度：<span class="arithmatex">\(O(|E| \cdot |V|)\)</span>
-+ 如果出现负值环，该算法将会陷入无限循环。因此，记录每个顶点的出队次数，发现有顶点出队次数多于<span class="arithmatex">\(|V|\)</span>次时，就终止程序，这样可以避免这一问题</p>
-</blockquote>
+</span></code></pre></div>
+<ul>
+<li>时间复杂度：<span class="arithmatex">\(O(|E| \cdot |V|)\)</span></li>
+<li>如果出现负值环，该算法将会陷入无限循环。因此，记录每个顶点的出队次数，发现有顶点出队次数多于<span class="arithmatex">\(|V|\)</span>次时，就终止程序，这样可以避免这一问题</li>
+</ul>
 <h4 id="acyclic-graphs">Acyclic Graphs<a class="headerlink" href="#acyclic-graphs" title="Permanent link">&para;</a></h4>
 <p>如果图是<em>无环(acyclic)</em>，我们可以按照拓扑序选择顶点，因为当选择某个顶点后，它的距离不可能因为它前面顶点的入边而减少，这样只需执行一趟算法即可。</p>
 <p>时间复杂度<span class="arithmatex">\(T = O(|E| + |V|)\)</span>，不需要优先队列</p>
-<p>应用：
-1. 下坡滑雪
-2. （不可逆）的化学反应</p>
-<ol>
-<li>🌰建筑工程</li>
-</ol>
-<p>🎯
-+ 最早的完成时间？
-+ 哪个项目可以在不影响最早完成时间的情况下有延迟，能延迟多久？</p>
-<p><strong>关键路径分析(critical path analysis)</strong>：
-+ AOV网：每个顶点表示一个活动，且包括需要完成该活动的时间。边(v, w)表示w完成之前，v必须完成
-    <img alt="" src="Images/C9/Quicker_20240508_152235.png" />
-+ <strong>AOE网(activity on edges networks)</strong> 
-    <img alt="" src="Images/C9/Quicker_20240508_152702.png" />
-    如何表示？
-<img alt="" src="Images/C9/Quicker_20240508_140200.png" /></p>
+<p><strong>关键路径分析(critical path analysis)</strong>：</p>
+<ul>
+<li>AOV网：每个顶点表示一个活动，且包括需要完成该活动的时间。边(v, w)表示w完成之前，v必须完成</li>
+</ul>
+<div style="text-align: center; margin-top: 15px;">
+<img src="Images/C9/Quicker_20240508_152235.png" width="70%" style="margin: 0 auto;">
+</div>
+
+<hr />
+<ul>
+<li>
+<p><strong>AOE网(activity on edges networks)</strong></p>
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="Images/C9/Quicker_20240508_152702.png" width="70%" style="margin: 0 auto;">
+</div></p>
+<p>表示方法：</p>
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="Images/C9/Quicker_20240508_140200.png" width="70%" style="margin: 0 auto;">
+</div></p>
 <blockquote>
 <p>注：必要时需要添加dummy edges和dummy nodes，避免错误或缺少的依赖关系产生</p>
 </blockquote>
-<p><img alt="" src="Images/C9/Quicker_20240508_140331.png" />
-+ <span class="arithmatex">\(EC[j]\)</span>：节点<span class="arithmatex">\(v_j\)</span><em>最早</em>的完成时间
-+ <span class="arithmatex">\(LC[j]\)</span>：节点<span class="arithmatex">\(v_j\)</span><em>最晚</em>的完成时间</p>
-<p>🌰
-<img alt="" src="Images/C9/Quicker_20240508_140626.png" /></p>
+</li>
+</ul>
+<div style="text-align: center; margin-top: 15px;">
+<img src="Images/C9/Quicker_20240508_140331.png" width="50%" style="margin: 0 auto;">
+</div>
+
+<ul>
+<li><span class="arithmatex">\(EC[j]\)</span>：节点<span class="arithmatex">\(v_j\)</span><strong>最早</strong>的完成时间</li>
+<li><span class="arithmatex">\(LC[j]\)</span>：节点<span class="arithmatex">\(v_j\)</span><strong>最晚</strong>的完成时间</li>
+</ul>
+<p>🌰</p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="Images/C9/Quicker_20240508_140626.png" width="80%" style="margin: 0 auto;">
+</div>
+
 <blockquote>
 <p>注：蓝字表示EC，红字表示LC，绿字表示<em>空闲时间</em>(后面会讲到)</p>
 </blockquote>
 <ul>
 <li>
-<p>计算EC：找到第一个事件到最后一个事件之间<em>最长</em>的路
-    &gt;注： 图如果是有环的，因为<strong>正成本环(positive-cost cycles)</strong> 的存在，这种算法无法实现。然而这里已经规定是无环图，所以无需担心</p>
-<p>从起点<span class="arithmatex">\(v_0\)</span>开始，对于任意的<span class="arithmatex">\(a_i = &lt;v, w&gt;\)</span>，我们有
-$$
-EC[0] = 0 \quad EC[w] = \max\limits_{(v,w) \in E} {EC[v] + C_{v, w}}
-$$</p>
+<p>计算EC：找到第一个事件到最后一个事件之间<em>最长</em>的路</p>
 <blockquote>
-<p>注：按<em>拓扑序</em>计算
-+ 计算LC：从终点<span class="arithmatex">\(v_8\)</span>开始，对于任意的<span class="arithmatex">\(a_i = &lt;v, w&gt;\)</span>，我们有
-$$
-LC[8] = EC[8] \quad LC[v] = \min\limits_{(v,w) \in E} {LC[v] - C_{v, w}}
-$$
-注：按<em>逆向拓扑序</em>计算
-+ <span class="arithmatex">\(&lt;v, w&gt;\)</span>的<strong>空闲时间(slack time)</strong> = <span class="arithmatex">\(LC[w] - EC[v] - C_{v, w}\)</span>
-+ <strong>关键活动(critical activity)</strong>：空闲时间为0的活动
-+ <strong>关键路径(critical path)</strong>：所有边的空闲时间均为0的路径</p>
+<p>注： 图如果是有环的，因为<strong>正成本环(positive-cost cycles)</strong>的存在，这种算法无法实现。然而这里已经规定是无环图，所以无需担心</p>
+</blockquote>
+<p>从起点<span class="arithmatex">\(v_0\)</span>开始，对于任意的<span class="arithmatex">\(a_i = &lt;v, w&gt;\)</span>，我们有</p>
+<div class="arithmatex">\[
+EC[0] = 0 \quad EC[w] = \max\limits_{(v,w) \in E} \{EC[v] + C_{v, w}\}
+\]</div>
+<blockquote>
+<p>注：按<strong>拓扑序</strong>计算</p>
 </blockquote>
 </li>
+<li>
+<p>计算LC：从终点<span class="arithmatex">\(v_8\)</span>开始，对于任意的<span class="arithmatex">\(a_i = &lt;v, w&gt;\)</span>，我们有</p>
+<div class="arithmatex">\[
+LC[8] = EC[8] \quad LC[v] = \min\limits_{(v,w) \in E} \{LC[v] - C_{v, w}\}
+\]</div>
+<blockquote>
+<p>注：按<strong>逆向拓扑序</strong>计算</p>
+</blockquote>
+</li>
+<li>
+<p><span class="arithmatex">\(&lt;v, w&gt;\)</span>的<strong>空闲时间(slack time)</strong> = <span class="arithmatex">\(LC[w] - EC[v] - C_{v, w}\)</span></p>
+</li>
+<li><strong>关键活动(critical activity)</strong>：空闲时间为0的活动</li>
+<li><strong>关键路径(critical path)</strong>：所有边的空闲时间均为0的路径</li>
 </ul>
 <h3 id="all-pairs-shortest-path-problem">All-pairs Shortest Path Problem<a class="headerlink" href="#all-pairs-shortest-path-problem" title="Permanent link">&para;</a></h3>
 <p>对图中任意一对顶点<span class="arithmatex">\(v_i, v_j(i \ne j)\)</span>，要求它们的最短路径，有以下方法：
 + 使用<span class="arithmatex">\(|V|\)</span>次<strong>单源算法</strong>(比如Dijkstra)，时间复杂度<span class="arithmatex">\(T = O(|V|^3)\)</span>，在<em>稀疏图</em>中运行较快
-+ 用Chap 10（本学期不讲）给出的算法，时间复杂度<span class="arithmatex">\(T = O(|V|^3)\)</span>，在<em>稠密图</em>中运行较快</p>
++ 用Chap 10给出的算法，时间复杂度<span class="arithmatex">\(T = O(|V|^3)\)</span>，在<em>稠密图</em>中运行较快，这里就略过了（<del>我也不知道是什么算法(doge)</del>）</p>
 <h2 id="network-flow-problems">Network Flow Problems<a class="headerlink" href="#network-flow-problems" title="Permanent link">&para;</a></h2>
-<p>🌰：考虑下面的管道网络
-<img alt="" src="Images/C9/Quicker_20240508_142217.png" />
-+ 这是一个有向图<span class="arithmatex">\(G(V, E)\)</span>，每条边的<em>容量(capacity)</em> 为<span class="arithmatex">\(c_{v, w}\)</span>，经过该边的<em>流量(flow)</em> 不得超过它的容量
-+ 我们称起点s为<strong>源点(source)</strong>，终点t为<strong>汇点(sink)</strong>
-+ 对于所有顶点<span class="arithmatex">\(v \notin \{s, t\}\)</span>，总流入 = 总输出，即<span class="arithmatex">\(\text{Total coming in}(v) \equiv \text{Total going out}(v)\)</span>，也就是说顶点 <mark>不具备存储的能力</mark></p>
+<p>考虑下面的管道网络：</p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="Images/C9/Quicker_20240508_142217.png" width="30%" style="margin: 0 auto;">
+</div>
+
+<ul>
+<li>这是一个有向图<span class="arithmatex">\(G(V, E)\)</span>，每条边的<em>容量(capacity)为<span class="arithmatex">\(c_{v, w}\)</span>，经过该边的</em>流量(flow)*不得超过它的容量</li>
+<li>我们称起点s为<strong>源点(source)</strong>，终点t为<strong>汇点(sink)</strong></li>
+<li>对于所有顶点<span class="arithmatex">\(v \notin \{s, t\}\)</span>，总流入 = 总输出，即<span class="arithmatex">\(\text{Total coming in}(v) \equiv \text{Total going out}(v)\)</span>，也就是说顶点<strong>不具备存储的能力</strong></li>
+</ul>
 <p>🎯：确定从s到t的<strong>最大流(maximum-flow)</strong></p>
 <h3 id="simple-algorithm">Simple Algorithm<a class="headerlink" href="#simple-algorithm" title="Permanent link">&para;</a></h3>
-<p><img alt="" src="Images/C9/Quicker_20240508_143403.png" /></p>
-<blockquote>
-<p>注：使用这个算法时，我们需要3张图：
-+ 原图<span class="arithmatex">\(G\)</span>
-+ <em>流量(flow)图</em><span class="arithmatex">\(G_f\)</span>：表示算法运行的每个阶段中已经得到的流量，初始情况下每条边的流量均为0
-+ <em>残量(residual)图</em><span class="arithmatex">\(G_r\)</span>：表示对于图中的每条边，还剩下多少流量可以被添加</p>
-</blockquote>
-<p>步骤：
-1.  在<strong>残量图(residual graph)</strong><span class="arithmatex">\(G_r\)</span>中找任意一条<span class="arithmatex">\(s \rightarrow t\)</span>的路径(称为<strong>增广路径(augmenting path)</strong>)
-2. 将这条路上最小的边作为流量的一部分，并加入<em>流量图(flow graph)</em><span class="arithmatex">\(G_f\)</span>
-3. 更新<span class="arithmatex">\(G_r\)</span>，并移除流量为0的边
-4. 如果<span class="arithmatex">\(G_r\)</span>中还存在<span class="arithmatex">\(s \rightarrow t\)</span>的路径，回到步骤1，否则终止程序
-<img alt="" src="Images/C9/1.png" /></p>
-<blockquote>
-<p>注：这种算法有一点问题——如果我们采用<strong>贪心</strong>的策略，对于上图，我们会先选择<span class="arithmatex">\(s \rightarrow a \rightarrow d \rightarrow t\)</span>，这样得到的流量为3，如下图所示。然而，这样做的话我们就无法再找到第2条路径，因此总流量为3，不满足要求。因此我们需要改进上述算法。</p>
-</blockquote>
-<p><img alt="" src="Images/C9/Quicker_20240508_154736.png" /></p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="Images/C9/Quicker_20240508_143403.png" width="70%" style="margin: 0 auto;">
+</div>
+
+<p>注：使用这个算法时，我们需要3张图：</p>
+<ul>
+<li>原图<span class="arithmatex">\(G\)</span></li>
+<li><strong>流量(flow)图</strong><span class="arithmatex">\(G_f\)</span>：表示算法运行的每个阶段中已经得到的流量，初始情况下每条边的流量均为0</li>
+<li><strong>残量(residual)图</strong><span class="arithmatex">\(G_r\)</span>：表示对于图中的每条边，还剩下多少流量可以被添加</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">步骤</p>
+<ol>
+<li>在<strong>残量图(residual graph)</strong><span class="arithmatex">\(G_r\)</span>中找任意一条<span class="arithmatex">\(s \rightarrow t\)</span>的路径(称为<strong>增广路径(augmenting path)</strong>)</li>
+<li>将这条路上最小的边作为流量的一部分，并加入<em>流量图(flow graph)</em><span class="arithmatex">\(G_f\)</span></li>
+<li>更新<span class="arithmatex">\(G_r\)</span>，并移除流量为0的边</li>
+<li>如果<span class="arithmatex">\(G_r\)</span>中还存在<span class="arithmatex">\(s \rightarrow t\)</span>的路径，回到步骤1，否则终止程序</li>
+</ol>
+</div>
+<details class="play" open="open">
+<summary>动画演示</summary>
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="Images/C9/8.gif" width="70%" style="margin: 0 auto;">
+</div></p>
+</details>
+<div class="admonition warning">
+<p class="admonition-title">问题</p>
+<p>如果我们采用<strong>贪心</strong>的策略，对于上图，我们会先选择<span class="arithmatex">\(s \rightarrow a \rightarrow d \rightarrow t\)</span>，这样得到的流量为3，如下图所示。然而，这样做的话我们就无法再找到第2条路径，因此总流量为3，不满足要求。因此我们需要改进上述算法。</p>
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="Images/C9/Quicker_20240508_154736.png" width="80%" style="margin: 0 auto;">
+</div></p>
+</div>
 <h3 id="solution">Solution<a class="headerlink" href="#solution" title="Permanent link">&para;</a></h3>
+<p>改进：使算法可以<strong>撤销(undo)</strong>决策——对于流量图<span class="arithmatex">\(G_f\)</span>中的每条边(v, w)，它的流量为<span class="arithmatex">\(f_{v, w}\)</span>，在<em>残量图</em>中添加一条反向的边(w, v)，它的流量也为<span class="arithmatex">\(f_{v, w}\)</span></p>
+<details class="play" open="open">
+<summary>动画演示</summary>
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="Images/C9/9.gif" width="80%" style="margin: 0 auto;">
+</div></p>
+</details>
 <blockquote>
-<p>改进：使算法可以<em>撤销(undo)</em> 决策</p>
-</blockquote>
-<p>🔑 对于流量图<span class="arithmatex">\(G_f\)</span>中的每条边(v, w)，它的流量为<span class="arithmatex">\(f_{v, w}\)</span>，在<em>残量图</em>中添加一条反向的边(w, v)，它的流量也为<span class="arithmatex">\(f_{v, w}\)</span>
-<img alt="" src="Images/C9/Quicker_20240508_145050.png" /></p>
-<blockquote>
-<p>注：强烈建议看PPT，这里没有动画容易产生误解</p>
-<p>注：如果边的容量是<em>有理数</em>，那么该算法在终止时总能得到一个最大流（图有<em>环</em>的话也可以）</p>
+<p>注：如果边的容量是<em>有理数</em>，那么该算法在终止时总能得到一个最大流（图有<strong>环</strong>的话也可以）</p>
 </blockquote>
 <h3 id="analysis">Analysis<a class="headerlink" href="#analysis" title="Permanent link">&para;</a></h3>
 <blockquote>
@@ -2838,35 +3034,45 @@ $$
 <blockquote>
 <p>时间复杂度<span class="arithmatex">\(T = O(f \cdot |E|)\)</span>，<span class="arithmatex">\(f\)</span>表示最大流量</p>
 </blockquote>
-<p>❓：对于以下特殊情况：
-<img alt="" src="Images/C9/Quicker_20240508_145431.png" />
-如果我们随机挑选增广路径，挑到一条包括<span class="arithmatex">\(a \rightarrow b\)</span>的路径，就会产生问题：</p>
+<p>对于以下特殊情况：</p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="Images/C9/Quicker_20240508_145431.png" width="60%" style="margin: 0 auto;">
+</div>
+
+<p>如果我们随机挑选增广路径，挑到一条包括<span class="arithmatex">\(a \rightarrow b\)</span>的路径，就会产生问题：</p>
 <blockquote>
 <p>Random augmentations could continually augment along a path that includes the edge connected by a and b. If this were to occur repeatedly, 2,000,000 augmentations would be required, when we could get by with only 2.</p>
 </blockquote>
-<p>解决方法：
-1. 在选择增广路径时，总是挑选 <mark>对流量提升最大</mark> 的路径
-    如何实现：稍微改变一下Dijkstra算法</p>
-<div class="language-text highlight"><pre><span></span><code>时间复杂度：
-$$
+<div class="admonition note">
+<p class="admonition-title">解决方法</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="6:2"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio" /><input id="__tabbed_6_2" name="__tabbed_6" type="radio" /><div class="tabbed-labels"><label for="__tabbed_6_1">法1</label><label for="__tabbed_6_2">法2</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>在选择增广路径时，总是挑选<strong>对流量提升最大</strong>的路径</p>
+<p>如何实现：稍微改变一下Dijkstra算法</p>
+<p>时间复杂度：</p>
+<div class="arithmatex">\[
 \begin{align}
-T = &amp; T_{augmentation} \cdot T_{find\ a\ path} \\
-= &amp; O(|E| \log cap_{max}) \cdot O(|E|\log |V|) \\ 
-= &amp; O(|E|^2 \log |V|) (\text{if } cap_{max} \text{ is a small integer})
+T = &amp; T_{augmentation} \cdot T_{find\ a\ path} \notag \\
+= &amp; O(|E| \log cap_{max}) \cdot O(|E|\log |V|) \notag \\ 
+= &amp; O(|E|^2 \log |V|) (\text{if } cap_{max} \text{ is a small integer}) \notag
 \end{align}
-$$
-</code></pre></div>
-<ol>
-<li>在选择增广路径时，挑选 <mark>边最少</mark> 的增广路径
-    时间复杂度：
-    $$
-    \begin{align}
-    T = &amp; T_{augmentation} \cdot T_{find a path} \ 
-    = &amp; O(|E|) \cdot O(|E| \cdot |V|)\quad (\text{unweighted shortest path algorithm})\
-    = &amp; O(|E|^2 |V|) 
-    \end{align}
-    $$</li>
-</ol>
+\]</div>
+</div>
+<div class="tabbed-block">
+<p>在选择增广路径时，挑选<strong>边最少</strong>的增广路径</p>
+<p>时间复杂度：</p>
+<div class="arithmatex">\[
+\begin{align}
+T = &amp; T_{augmentation} \cdot T_{find\ a\ path} \notag \\ 
+= &amp; O(|E|) \cdot O(|E| \cdot |V|)\quad (\text{unweighted shortest path algorithm}) \notag \\
+= &amp; O(|E|^2 |V|) \notag
+\end{align}
+\]</div>
+</div>
+</div>
+</div>
+</div>
 <h3 id="supplements">Supplements<a class="headerlink" href="#supplements" title="Permanent link">&para;</a></h3>
 <ul>
 <li>更优的算法，时间复杂度可以将至<span class="arithmatex">\(O(|E||V|\log(|V|^2/|E|))\)</span>和<span class="arithmatex">\(O(|E||V| + |V|^{2 + \epsilon})\)</span></li>
@@ -2874,50 +3080,78 @@ $$
 <li>更复杂的问题：<em>最小费用流问题(min-cost flow problem)</em>——每条边不仅有容量，还要考虑单位流量的费用。🎯：要找到所有最大流量中的最小成本</li>
 </ul>
 <h2 id="minimum-spanning-tree">Minimum Spanning Tree<a class="headerlink" href="#minimum-spanning-tree" title="Permanent link">&para;</a></h2>
-<p>定义：图<span class="arithmatex">\(G\)</span>的<strong>生成树(spanning tree)</strong> 是一棵包含所有顶点<span class="arithmatex">\(V(G)\)</span>，以及所有边<span class="arithmatex">\(E(G)\)</span>的<em>子集</em>的<em>树</em></p>
-<p>🌰：<img alt="" src="Images/C9/Quicker_20240508_150633.png" />
-如何理解<strong>最小生成树(minimum spanning tree)</strong>？
-+ 最小生成树是一棵<em>树</em>，因为它是无环的，且边的数量为<span class="arithmatex">\(|V| - 1\)</span>
-+ 它是<em>最小的</em>，因为边的成本已经最小化了
-+ 它是<em>生成的</em>，因为它覆盖所有的顶点
-+ 最小生成树存在的<strong>充要条件</strong>是图<span class="arithmatex">\(G\)</span>是<strong>连通的</strong>
-+ 如果在生成树中添加一条边，就会形成一个<em>环</em>
-+ 最小生成树是并不一定是唯一的，但最小生成树的==<strong>总权重</strong>是唯一的==</p>
-<p>如何求解——<strong>贪心算法(greedy algorithm)</strong>，每一步都采取最优策略，但有以下限制：
-+ 必须使用图里面的边
-+ 必须用到<span class="arithmatex">\(|V| - 1\)</span>条边
-+ 不使用可能导致环出现的边</p>
+<p>定义：图<span class="arithmatex">\(G\)</span>的<strong>生成树(spanning tree)</strong>是一棵包含所有顶点<span class="arithmatex">\(V(G)\)</span>（但不一定包含所有边）的树</p>
+<p>🌰：</p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="Images/C9/Quicker_20240508_150633.png" width="60%" style="margin: 0 auto;">
+</div>
+
+<p>如何理解<strong>最小生成树(minimum spanning tree)</strong>？</p>
+<ul>
+<li>“树”：无环且边的数量为<span class="arithmatex">\(|V| - 1\)</span></li>
+<li>“最小”：边的成本最小化</li>
+<li>“生成”：覆盖所有的顶点</li>
+<li>最小生成树存在的<strong>充要条件</strong>是图<span class="arithmatex">\(G\)</span>是<strong>连通的</strong></li>
+<li>如果在生成树中添加一条边，就会形成一个<em>环</em></li>
+<li>最小生成树是并不一定是唯一的，但最小生成树的<strong>总权重是唯一的</strong></li>
+</ul>
+<p>如何求解——<strong>贪心算法(greedy algorithm)</strong>，每一步都采取最优策略，但有以下限制：</p>
+<ul>
+<li>必须使用图里面的边</li>
+<li>必须用到<span class="arithmatex">\(|V| - 1\)</span>条边</li>
+<li>不能出现环</li>
+</ul>
 <h3 id="prims-algorithm">Prim's Algorithm<a class="headerlink" href="#prims-algorithm" title="Permanent link">&para;</a></h3>
-<p>方法：生成一棵树，与Dijkstra算法非常相似
-+ 初始情况下，先将一个顶点作为树的<em>根</em>放入树内
-+ 在每个阶段，通过添加边(u, v)，满足(u, v)的成本是所有在树里的u和在树外的v之间的边中最小的，将新的顶点添加至树里</p>
-<p>图示：
-<img alt="" src="Images/C9/Quicker_20240508_162105.png" /></p>
-<blockquote>
-<p>注：演示动画见PPT</p>
-</blockquote>
-<p>与Dijkstra不同之处在于：
-+ 要保存两类值<span class="arithmatex">\(d_v\)</span>和<span class="arithmatex">\(p_v\)</span>：
-    + <span class="arithmatex">\(d_v\)</span>：连接<span class="arithmatex">\(v\)</span>和已知顶点的最短路的权重
-    + <span class="arithmatex">\(p_v\)</span>：最后一个导致<span class="arithmatex">\(d_v\)</span>改变的顶点
-+ 更新规则更加简单：对于已经选入树内的顶点<span class="arithmatex">\(v\)</span>，它的邻接顶点<span class="arithmatex">\(w\)</span>满足<span class="arithmatex">\(d_w = \min(d_w, c_{w, v})\)</span></p>
+<p>方法：生成一棵树，与Dijkstra算法非常相似</p>
+<ul>
+<li>初始情况下，先将一个顶点作为树的<strong>根</strong>放入树内</li>
+<li>在每个阶段，通过添加边(u, v)，满足(u, v)的成本是所有在树里的u和在树外的v之间的边中最小的，将新的顶点添加至树里</li>
+</ul>
+<details class="play" open="open">
+<summary>动画演示</summary>
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="Images/C9/10.gif" width="60%" style="margin: 0 auto;">
+</div></p>
+</details>
+<p>与Dijkstra不同之处在于：</p>
+<ul>
+<li>
+<p>要保存两类值<span class="arithmatex">\(d_v\)</span>和<span class="arithmatex">\(p_v\)</span>：</p>
+<ul>
+<li><span class="arithmatex">\(d_v\)</span>：连接<span class="arithmatex">\(v\)</span>和已知顶点的最短路的权重</li>
+<li><span class="arithmatex">\(p_v\)</span>：最后一个导致<span class="arithmatex">\(d_v\)</span>改变的顶点</li>
+<li>更新规则更加简单：对于已经选入树内的顶点<span class="arithmatex">\(v\)</span>，它的邻接顶点<span class="arithmatex">\(w\)</span>满足<span class="arithmatex">\(d_w = \min(d_w, c_{w, v})\)</span></li>
+</ul>
+</li>
+</ul>
 <blockquote>
 <p>注：由于这是无向图，因此需要用到<u>两张邻接表</u>存储图</p>
 </blockquote>
-<p>时间复杂度：
-+ 不用堆(适用于<em>稠密图</em>)：<span class="arithmatex">\(O(|V|^2)\)</span>
-+ <em>二叉堆</em>(适用于<em>稀疏图</em>)：<span class="arithmatex">\(O(E\log|V|)\)</span></p>
+<p>时间复杂度：</p>
+<ul>
+<li>不用堆(适用于<em>稠密图</em>)：<span class="arithmatex">\(O(|V|^2)\)</span></li>
+<li><em>二叉堆</em>(适用于<em>稀疏图</em>)：<span class="arithmatex">\(O(E\log|V|)\)</span></li>
+</ul>
 <h3 id="kruskals-algorithm">Kruskal's Algorithm<a class="headerlink" href="#kruskals-algorithm" title="Permanent link">&para;</a></h3>
-<p>方法：维持一片森林(一组树)
-+ 初始情况下，有<span class="arithmatex">\(|V|\)</span>棵单个节点构成的树
-+ 添加一条边，可以合并两棵树。当算法结束时，应当只剩下一棵树。因此，我们很自然地想到使用<strong>并查集</strong>的算法
-+ 挑选边(这里假设挑选边<span class="arithmatex">\((u, v)\)</span>)时要注意的细节：
-    + 如果u, v在同一个集合内，则不能添加这条边（否则会出现环）
-    + 否则加入这条边，使用<code>Union</code>算法将两个集合合并起来
-+ 用<strong>堆</strong>维护未被检验过的最小的边，每当检验一条边时，使用<code>DeleteMin</code>算法</p>
-<p>图示：
-<img alt="" src="Images/C9/Quicker_20240508_194123.png" /></p>
-<p>伪代码实现：
+<p>方法：维持一片森林(一组树)</p>
+<ul>
+<li>初始情况下，有<span class="arithmatex">\(|V|\)</span>棵单个节点构成的树</li>
+<li>添加一条边，可以合并两棵树。当算法结束时，应当只剩下一棵树。因此，我们很自然地想到使用<strong>并查集</strong>的算法</li>
+<li>
+<p>挑选边(这里假设挑选边<span class="arithmatex">\((u, v)\)</span>)时要注意的细节：</p>
+<ul>
+<li>如果u, v在同一个集合内，则不能添加这条边（否则会出现环）</li>
+<li>否则加入这条边，使用<code>Union</code>算法将两个集合合并起来</li>
+<li>用<strong>堆</strong>维护未被检验过的最小的边，每当检验一条边时，使用<code>DeleteMin</code>算法</li>
+</ul>
+</li>
+</ul>
+<p>图示：</p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="Images/C9/Quicker_20240508_194123.png" width="80%" style="margin: 0 auto;">
+</div>
+
+<p>伪代码实现：</p>
 <div class="language-c highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">Kruskal</span><span class="p">(</span><span class="n">Graph</span><span class="w"> </span><span class="n">G</span><span class="p">)</span>
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="p">{</span>
 </span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">    </span><span class="n">T</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">};</span>
@@ -2933,8 +3167,8 @@ $$
 </span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">contains</span><span class="w"> </span><span class="n">fewer</span><span class="w"> </span><span class="n">than</span><span class="w"> </span><span class="p">[</span><span class="n">V</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">edges</span><span class="p">)</span>
 </span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a><span class="w">        </span><span class="n">Error</span><span class="p">(</span><span class="s">&quot;No spanning tree&quot;</span><span class="p">);</span>
 </span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a><span class="p">}</span>
-</span></code></pre></div></p>
-<p>正式代码：
+</span></code></pre></div>
+<p>正式代码实现：</p>
 <div class="language-c highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">Kruskal</span><span class="p">(</span><span class="n">Graph</span><span class="w"> </span><span class="n">G</span><span class="p">)</span>
 </span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="p">{</span>
 </span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">EdgesAccepted</span><span class="p">;</span>
@@ -2962,14 +3196,16 @@ $$
 </span><span id="__span-8-25"><a id="__codelineno-8-25" name="__codelineno-8-25" href="#__codelineno-8-25"></a><span class="w">        </span><span class="p">}</span>
 </span><span id="__span-8-26"><a id="__codelineno-8-26" name="__codelineno-8-26" href="#__codelineno-8-26"></a><span class="w">    </span><span class="p">}</span>
 </span><span id="__span-8-27"><a id="__codelineno-8-27" name="__codelineno-8-27" href="#__codelineno-8-27"></a><span class="p">}</span>
-</span></code></pre></div></p>
+</span></code></pre></div>
 <p>由于每条边要存3个字段，因此用<em>指针数组</em>存储边可能更加高效。</p>
 <p>时间复杂度：<span class="arithmatex">\(T = O(|E|\log |E|) = O(|E| \log |V|) \quad (|E| = O(|V|^2))\)</span></p>
 <h2 id="applications-of-depth-first-search">Applications of Depth-First Search<a class="headerlink" href="#applications-of-depth-first-search" title="Permanent link">&para;</a></h2>
-<p><strong>深度优先搜索(depth-first search, DFS)</strong> 是一种<em>前序遍历</em>的泛化。
-+ 树：时间复杂度<span class="arithmatex">\(T = O(|E|)\ (|E| = \Theta(|V|))\)</span>
-+ 图：注意要避免环(cycles)，所以访问过的顶点就要对其<em>标记</em>，然后接着访问未访问过的顶点。
-+ 如果无向图不连通，或者有向图不是强连通的，那么用一次DFS无法访问所有顶点，需要对未标记的顶点再用一次DFS，直至所有顶点都被标记。因此，时间复杂度为<span class="arithmatex">\(O(|E| + |V|)\)</span></p>
+<p><strong>深度优先搜索(depth-first search, DFS)</strong>是一种<u>前序遍历</u>的泛化</p>
+<ul>
+<li>树：时间复杂度<span class="arithmatex">\(T = O(|E|)\ (|E| = \Theta(|V|))\)</span></li>
+<li>图：注意要避免环(cycles)，所以访问过的顶点就要对其<strong>标记</strong>，然后接着访问未访问过的顶点。</li>
+<li>如果无向图不连通，或者有向图不是强连通的，那么用一次DFS无法访问所有顶点，需要对未标记的顶点再用一次DFS，直至所有顶点都被标记。因此，时间复杂度为<span class="arithmatex">\(O(|E| + |V|)\)</span></li>
+</ul>
 <p>模版：
 <div class="language-c highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">DFS</span><span class="p">(</span><span class="n">Vertex</span><span class="w"> </span><span class="n">V</span><span class="p">)</span>
 </span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="p">{</span>
@@ -2981,12 +3217,16 @@ $$
 </span></code></pre></div></p>
 <h3 id="undirected-graphs">Undirected Graphs<a class="headerlink" href="#undirected-graphs" title="Permanent link">&para;</a></h3>
 <p>当且仅当1次DFS能够遍历所有顶点时，无向图是连通的</p>
-<p><img alt="" src="Images/C9/2.gif" /></p>
-<p>我们可以使用<strong>深度优先生成树(depth-first spanning tree)</strong> 来形象展示DFS的过程。当我们发现某条边(v, w)中的w已被标记过，用虚线画出这条边，称作“<strong>回边(back edge)</strong>”，表示这条边不包含于生成树里，如图所示：
-<img alt="" src="Images/C9/2.png" /></p>
-<blockquote>
-<p>注：如果无向图不连通，则可以生成<em>深度优先生成森林(depth-first spanning forest)</em></p>
-</blockquote>
+<div style="text-align: center; margin-top: 15px;">
+<img src="Images/C9/2.gif" width="60%" style="margin: 0 auto;">
+</div>
+
+<p>我们可以使用<strong>深度优先生成树(depth-first spanning tree)</strong>来形象展示DFS的过程。当我们发现某条边(v, w)中的w已被标记过，用虚线画出这条边，称作“<strong>回边(back edge)</strong>”，表示这条边不包含于生成树里，如图所示：</p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="Images/C9/2.png" width="80%" style="margin: 0 auto;">
+</div>
+
+<p>如果无向图不连通，则可以生成<em>深度优先生成森林(depth-first spanning forest)</em></p>
 <p>代码实现：
 <div class="language-c highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">ListComponents</span><span class="p">(</span><span class="n">Graph</span><span class="w"> </span><span class="n">G</span><span class="p">)</span>
 </span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="p">{</span>
@@ -3000,42 +3240,73 @@ $$
 </span></code></pre></div></p>
 <h3 id="biconnectivity">Biconnectivity<a class="headerlink" href="#biconnectivity" title="Permanent link">&para;</a></h3>
 <ul>
-<li>当<code>G' = DeleteVertex(G, v)</code> 至少有2个连通分量，称<code>v</code>为<strong>关节点(articulation point)</strong><blockquote>
-<p>人话：图<em>不是双连通的</em>，且某个顶点的移除会破坏图的连通性，称该顶点为<strong>关节点</strong></p>
+<li>
+<p>当<code>G' = DeleteVertex(G, v)</code>至少有2个连通分量时，称<code>v</code>为<strong>关节点(articulation point)</strong></p>
+<blockquote>
+<p>换句话说，关节点的移除能够破坏图的连通性</p>
 </blockquote>
 </li>
-<li>如果<code>G</code>是连通的且没有关节点，称<code>G</code>为<strong>双连通图(biconnected graph)</strong><blockquote>
-<p>人话：任意顶点的移除不会破坏剩余的无向图的连通性</p>
+<li>
+<p>没有关节点的连通图<code>G</code>称为<strong>双连通图(biconnected graph)</strong></p>
+<blockquote>
+<p>注：之所以称为双连通图，是因为至少需要移除两个及以上的顶点，才能形成有多个连通分量的子图</p>
 </blockquote>
 </li>
-<li><strong>双连通分量(biconnected component)</strong>：最大的双连通子图
-<img alt="" src="Images/C9/Quicker_20240515_150434.png" /></li>
+<li>
+<p><strong>双连通分量(biconnected component)</strong>：极大双连通子图</p>
+</li>
 </ul>
+<div style="text-align: center; margin-top: 15px;">
+<img src="Images/C9/Quicker_20240515_150434.png" width="80%" style="margin: 0 auto;">
+</div>
+
 <blockquote>
 <p>注：没有一条边会同时出现在多个双连通分量中。因此E(G)被双连通分量划分</p>
 </blockquote>
-<p>问题：寻找无向连通图G中的所有<em>双连通分量</em></p>
-<p>预备：
-+ <code>Num(v)</code>：顶点v的前序遍历的序号
-+ <code>Low(v)</code>：所有通过树的边和回边与v相连通的最小顶点(<span class="arithmatex">\(\min(Num(w_i))\)</span>)。这里要用到<em>后序遍历</em>，找到所有与v相邻的顶点，然后找出最小的那个</p>
-<p>解决方法：
-+ 使用<em>深度优先搜索(depth first search)</em> 得到G的生成树<img alt="" src="Images/C9/3.gif" />
-<img alt="" src="Images/C9/Quicker_20240515_152220.png" /></p>
-<blockquote>
-<p>注：<em>回边(back edges)</em> (u, v)：(u, v) <span class="arithmatex">\(\notin\)</span> tree，且u(或v)是v(或u)的祖先。如果u是v的祖先，则Num(u) &lt; Num(v)</p>
-</blockquote>
+<div class="admonition question">
+<p class="admonition-title">问题</p>
+<p>寻找无向连通图G中的所有<strong>双连通分量</strong></p>
+</div>
+<p>用到的变量：</p>
 <ul>
-<li>找到G内的<strong>关节点</strong><ul>
-<li>当且仅当<em>根节点</em>至少有2个孩子时，根节点为关节点</li>
-<li>当且仅当<em>其他的顶点u</em>至少有1个孩子，且不能通过往下移动至少1步来到它的祖先(即Low(child) <span class="arithmatex">\(\ge\)</span> Num(u))时，u为关节点</li>
+<li><code>Num(v)</code>：顶点v的前序遍历的序号</li>
+<li><code>Low(v)</code>：所有通过树的边和回边与v相连通的最小顶点(<span class="arithmatex">\(\min(Num(w_i))\)</span>)。这里要用到<em>后序遍历</em>，找到所有与v相邻的顶点，然后找出最小的那个</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">解决方法</p>
+</div>
+<ul>
+<li>
+<p>使用<strong>深度优先搜索(depth first search)</strong>得到G的生成树</p>
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="Images/C9/3.gif" width="70%" style="margin: 0 auto;">
+</div></p>
+<p>我们得到：</p>
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="Images/C9/Quicker_20240515_152220.png" width="40%" style="margin: 0 auto;">
+</div></p>
+<p><strong>回边(back edges)</strong>(u, v)：(u, v) <span class="arithmatex">\(\notin\)</span> tree，且u(或v)是v(或u)的祖先。如果u是v的祖先，则Num(u) &lt; Num(v)</p>
+</li>
+<li>
+<p>找到G内的<strong>关节点</strong></p>
+<ul>
+<li>当且仅当<strong>根节点</strong>至少有2个孩子时，根节点为关节点</li>
+<li>当且仅当<strong>其他的顶点u</strong>至少有1个孩子，且不能通过往下移动至少1步来到它的祖先(即Low(child) <span class="arithmatex">\(\ge\)</span> Num(u))时，u为关节点</li>
 </ul>
 </li>
 </ul>
 <div class="arithmatex">\[
-Low(u) = \min\{Num(u), \min\{Low(w)\ |\ w \text{ is a child of }u\}, \min\{Num(w)\ |\ (u, w) \text{ is a back edge}\}\}
+\begin{align}
+Low(u) = &amp; \min\{Num(u), \min\{Low(w)\ |\ w \text{ is a child of }u\} \notag \\
+&amp; , \min\{Num(w)\ |\ (u, w) \text{ is a back edge}\}\} \notag
+\end{align}
 \]</div>
-<p>列表：<img alt="" src="Images/C9/Quicker_20240515_153001.png" /></p>
-<p>代码：
+<p>列表：</p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="Images/C9/Quicker_20240515_153001.png" width="70%" style="margin: 0 auto;">
+</div>
+
+<p>代码实现：</p>
 <div class="language-c highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1">// Assign Num and compute Parents</span>
 </span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="kt">void</span><span class="w"> </span><span class="nf">AssignNum</span><span class="p">(</span><span class="n">Vertex</span><span class="w"> </span><span class="n">V</span><span class="p">)</span>
 </span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="p">{</span>
@@ -3092,26 +3363,34 @@ Low(u) = \min\{Num(u), \min\{Low(w)\ |\ w \text{ is a child of }u\}, \min\{Num(w
 </span><span id="__span-11-54"><a id="__codelineno-11-54" name="__codelineno-11-54" href="#__codelineno-11-54"></a><span class="w">            </span><span class="n">Low</span><span class="p">[</span><span class="n">V</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Min</span><span class="p">(</span><span class="n">Low</span><span class="p">[</span><span class="n">V</span><span class="p">],</span><span class="w"> </span><span class="n">Num</span><span class="p">[</span><span class="n">W</span><span class="p">]);</span><span class="w">  </span><span class="c1">// Rule 2</span>
 </span><span id="__span-11-55"><a id="__codelineno-11-55" name="__codelineno-11-55" href="#__codelineno-11-55"></a><span class="w">    </span><span class="p">}</span>
 </span><span id="__span-11-56"><a id="__codelineno-11-56" name="__codelineno-11-56" href="#__codelineno-11-56"></a><span class="p">}</span>
-</span></code></pre></div></p>
+</span></code></pre></div>
 <h3 id="euler-circuits">Euler Circuits<a class="headerlink" href="#euler-circuits" title="Permanent link">&para;</a></h3>
 <ul>
-<li><strong>欧拉路程(Euler tour)</strong>：在笔不离纸的情况下，每条边仅画到一遍（一笔画）</li>
-<li>
-<p><strong>欧拉回路(Euler circuit)</strong>：在笔不离纸的情况下，每条边仅画到一遍，且最后回到起点的位置
-<img alt="" src="Images/C9/4.gif" /></p>
-</li>
-<li>
-<p>当且仅当图是连通的，且每个顶点都有==偶数个度==时，<strong>欧拉回路</strong>是有可能出现的</p>
-</li>
-<li>当且仅当<em>两个</em>顶点有<em>奇数个度</em>时，且从奇数度的顶点出发画图，则<strong>欧拉路程</strong>是有可能的</li>
+<li><strong>欧拉路(Euler tour)</strong>：在笔不离纸的情况下，每条边仅画到一遍（一笔画）</li>
+<li><strong>欧拉环(Euler circuit)</strong>：在笔不离纸的情况下，每条边仅画到一遍，且最后回到起点的位置</li>
 </ul>
-<p>利用DFS寻找欧拉回路：<img alt="" src="Images/C9/5.gif" /></p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="Images/C9/4.gif" width="70%" style="margin: 0 auto;">
+</div>
+
+<ul>
+<li>当且仅当图是连通的，且<strong>每个顶点的度为偶数</strong>时，<strong>欧拉环</strong>是有可能出现的</li>
+<li>当且仅当<em>两个</em>顶点有<em>奇数个度</em>时，且从奇数度的顶点出发画图，则<strong>欧拉路</strong>是有可能的</li>
+</ul>
+<p>利用DFS寻找欧拉环：</p>
+<details class="play" open="open">
+<summary>动画演示</summary>
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="Images/C9/5.gif" width="80%" style="margin: 0 auto;">
+</div></p>
+</details>
+<ul>
+<li>用<em>链表</em>维护路径</li>
+<li>对于每个邻接表，维护一个指向最后被扫描的边</li>
+<li>时间复杂度<span class="arithmatex">\(T = O(|E| + |V|)\)</span></li>
+</ul>
 <blockquote>
-<p>[!note]
-+ 用<em>链表</em>维护路径
-+ 对于每个邻接表，维护一个指向最后被扫描的边
-+ 时间复杂度<span class="arithmatex">\(T = O(|E| + |V|)\)</span></p>
-<p>注：<strong>哈密顿环(Hamilton cycle)</strong>：在无向图中找到一个最小的，访问所有<em>顶点</em>的圈，代码见下面的[[Chap 9 Graph Algorithm#^3b293b|题目]]（<a href="https://en.wikipedia.org/wiki/Hamiltonian_path">wiki</a>）</p>
+<p>补充：<a href="https://zh.wikipedia.org/wiki/%E5%93%88%E5%AF%86%E9%A1%BF%E5%9B%BE"><strong>哈密顿环(Hamilton cycle)</strong></a>：无向图中能够访问所有<strong>顶点</strong>的环。</p>
 </blockquote>
 <div class="language-c highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1">// 这里缺少代码实现</span>
 </span></code></pre></div>
@@ -3192,6 +3471,8 @@ Low(u) = \min\{Num(u), \min\{Low(w)\ |\ w \text{ is a child of }u\}, \min\{Num(w
   })
 </script>
                 
+
+<link rel="stylesheet" href="/css/counter.css">
 
 
               </article>
@@ -3276,7 +3557,7 @@ Low(u) = \min\{Num(u), \min\{Low(w)\ |\ w \text{ is a child of }u\}, \min\{Num(w
       
     
     <a href="https://github.com/noughtq" target="_blank" rel="noopener" title="github.com" class="md-social__link">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M23.546 10.93 13.067.452a1.55 1.55 0 0 0-2.188 0L8.708 2.627l2.76 2.76a1.838 1.838 0 0 1 2.327 2.341l2.658 2.66a1.838 1.838 0 0 1 1.9 3.039 1.837 1.837 0 0 1-2.6 0 1.846 1.846 0 0 1-.404-1.996L12.86 8.955v6.525c.176.086.342.203.488.348a1.848 1.848 0 0 1 0 2.6 1.844 1.844 0 0 1-2.609 0 1.834 1.834 0 0 1 0-2.598c.182-.18.387-.316.605-.406V8.835a1.834 1.834 0 0 1-.996-2.41L7.636 3.7.45 10.881c-.6.605-.6 1.584 0 2.189l10.48 10.477a1.545 1.545 0 0 0 2.186 0l10.43-10.43a1.544 1.544 0 0 0 0-2.187"/></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
     </a>
   
 </div>
