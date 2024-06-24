@@ -2120,25 +2120,27 @@
 
 <h1 id="chap-2-algorithm-analysis">Chap 2 Algorithm Analysis<a class="headerlink" href="#chap-2-algorithm-analysis" title="Permanent link">&para;</a></h1>
 <div markdown="1" style="margin-top: -30px; font-size: 0.8em; opacity: 0.7;">
-约 1230 个字 , 137 行代码 , 预计阅读时间 8 分钟
+约 1294 个字 , 137 行代码 , 预计阅读时间 8 分钟
 </div>
 <!-- :material-circle-edit-outline:-->
 <!--:fontawesome-solid-code: -->
 <!--:material-clock-time-two-outline: -->
 
-<p><strong>算法(algorithm)</strong>：完成特定任务的有限个指令。所有的算法都具备以下特征：</p>
+<p><strong>算法(algorithm)</strong>：完成特定任务的有限步指令。所有的算法都具备以下特征：</p>
 <ul>
 <li><em>输入(input)</em>：0个或多个输入</li>
 <li><em>输出(output)</em>：<strong>至少有1个</strong>输出</li>
-<li><em>确定性(definiteness)</em>：每条指令都是清楚的</li>
-<li><em>有限性(finiteness)</em>：在所有情况下，算法在经过有限步后终止</li>
+<li><em>确定性(definiteness)</em>：每条指令都是明确的</li>
+<li><em>有限性(finiteness)</em>：不管什么在什么情况下，算法需要在经过有限步后终止</li>
 <li><em>有效性(effectiveness)</em>：每条指令足够简单可行，原则上使用纸和笔便能表达出来。</li>
 </ul>
 <details class="info" open="open">
 <summary>注</summary>
 <ul>
-<li><strong>程序</strong>由编程语言书写，并且不必是有限步，比如操作系统的时钟</li>
-<li><strong>算法</strong>能由以下方法描述：<ul>
+<li><strong>程序</strong>由编程语言书写，但不必在有限步内完成，比如操作系统的时钟</li>
+<li>
+<p><strong>算法</strong>能由以下方法描述：</p>
+<ul>
 <li>人类语言(human languages)</li>
 <li>流程图(flow charts)</li>
 <li>编程语言(programming languages)</li>
@@ -2153,12 +2155,12 @@
 <ul>
 <li>每条指令按顺序执行</li>
 <li>每条指令很简单，且执行一条指令仅花费一个时间单元</li>
-<li>整数规模是固定的，并且我们有无限的内存</li>
+<li>整数规模是固定的，并且假设有无限的内存</li>
 </ul>
-<p>通常，我们分析下列两个函数，他们的输入规模均为<span class="arithmatex">\(N\)</span>：</p>
+<p>通常，我们分析以下两种时间复杂度，它们的输入规模均为<span class="arithmatex">\(N\)</span>：</p>
 <ul>
 <li><span class="arithmatex">\(T_{avg}(N)\)</span>：平均时间复杂度</li>
-<li><span class="arithmatex">\(T_{worst}(N)\)</span>​​：最差时间复杂度 <img alt="👍" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/1f44d.svg" title=":+1:" /></li>
+<li><span class="arithmatex">\(T_{worst}(N)\)</span>​​：最差时间复杂度<img alt="👍" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/1f44d.svg" title=":+1:" /></li>
 </ul>
 <h2 id="asympotic-notation">Asympotic Notation<a class="headerlink" href="#asympotic-notation" title="Permanent link">&para;</a></h2>
 <h3 id="definition">Definition<a class="headerlink" href="#definition" title="Permanent link">&para;</a></h3>
@@ -2171,9 +2173,9 @@
 <ul>
 <li><strong>for循环(FOR LOOPS)</strong>：for循环的运行时间不超过“循环体内部语句 <span class="arithmatex">\(\times\)</span> 迭代次数”</li>
 <li><strong>嵌套for循环(NESTED FOR LOOPS)</strong>：在一组嵌套循环内的一条语句的执行时间为 “该语句 <span class="arithmatex">\(\times\)</span> 所有的for循环规模的乘积”</li>
-<li><strong>连续的语句(CONSECUTIVE STATEMENTS)</strong>：简单地相加起来（这意味着其中运行次数最多的一条语句最重要）</li>
+<li><strong>连续的语句(CONSECUTIVE STATEMENTS)</strong>：简单地相加</li>
 <li>
-<p><strong>条件语句(IF / ELSE)</strong>：对于下面代码块</p>
+<p><strong>条件语句(IF/ELSE)</strong>：对于下面代码块</p>
 <div class="language-c highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">condition</span><span class="p">)</span><span class="w"> </span><span class="n">S1</span><span class="p">;</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">else</span><span class="w"> </span><span class="n">S2</span>
 </span></code></pre></div>
@@ -2190,10 +2192,15 @@
 <details class="note" open="open">
 <summary>关于斐波那契数</summary>
 <ul>
-<li><strong>空间</strong>复杂度：<span class="arithmatex">\(O(N)\)</span>，递归的堆栈调用（串行程序）。比如要算<span class="arithmatex">\(Fib(N)\)</span>，一定是先<strong>算完</strong> <span class="arithmatex">\(Fib(N - 1)\)</span> 再算<span class="arithmatex">\(Fib(N - 2)\)</span> ，不会同时计算两者，所以是线性复杂度</li>
-<li>准确的<strong>时间</strong>复杂度：<span class="arithmatex">\(T = \Theta((\dfrac{1 + \sqrt 5}{2})^n)\)</span>，证明过程可以看<a href="https://zhuanlan.zhihu.com/p/257214075">这篇文章</a></li>
+<li><strong>空间</strong>复杂度：<span class="arithmatex">\(O(N)\)</span>。理解递归的堆栈调用（串行程序）：比如要算<span class="arithmatex">\(Fib(N)\)</span>，一定是先<strong>算完</strong><span class="arithmatex">\(Fib(N - 1)\)</span>再算<span class="arithmatex">\(Fib(N - 2)\)</span> ，不会同时计算两者，所以是线性复杂度</li>
+<li>准确的<strong>时间</strong>复杂度：<span class="arithmatex">\(T = \Theta((\dfrac{1 + \sqrt 5}{2})^n)\)</span>，利用离散数学教的线性齐次递推关系求解</li>
 </ul>
 </details>
+<p>在计算递归的时间复杂度中，我们常常建立关于时间复杂度的<strong>递推关系</strong>。下面举几个常见的递推关系：</p>
+<ul>
+<li><a href="../dm/8.html#solving-linear-recurrence-relations">线性齐次递推关系</a></li>
+<li>形如<span class="arithmatex">\(T(N) = T(N / a) + b\)</span>，则<span class="arithmatex">\(T(N)\)</span>大致为<span class="arithmatex">\(O(\log N)\)</span>（严谨的形式可参见主定理）</li>
+</ul>
 <blockquote>
 <p>补充(不做要求)：<a href="https://zh.wikipedia.org/wiki/%E4%B8%BB%E5%AE%9A%E7%90%86">主定理</a></p>
 </blockquote>
@@ -2244,10 +2251,10 @@
 </span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">MaxSum</span><span class="p">;</span>
 </span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="p">}</span>
 </span></code></pre></div>
-<hr />
 <h3 id="algorithm-3">Algorithm 3<a class="headerlink" href="#algorithm-3" title="Permanent link">&para;</a></h3>
 <p>时间复杂度：<span class="arithmatex">\(O(NlogN)\)</span></p>
-<p>采用<strong>分治(divide-and-conquer)算法</strong>，只需递归比较<strong>左半边子列</strong>、<strong>右半边子列</strong>和<strong>中间</strong>的子列，选择其中最大的作为最大值。下面放上示意图，看起来更加直观：</p>
+<p>采用<strong>分治(divide-and-conquer)算法</strong>，只需递归比较<strong>左半边子列</strong>、<strong>右半边子列</strong>和<strong>中间</strong>的子列，选择其中最大的作为最大值。</p>
+<p>示意图：</p>
 <div style="text-align: center; margin-top: 15px;">
 <img src="Images/C2/Quicker_20240308_193906.png" width="80%" style="margin: 0 auto;">
 </div>
@@ -2306,7 +2313,7 @@
 \]</div>
 <h3 id="algorithm-4">Algorithm 4<a class="headerlink" href="#algorithm-4" title="Permanent link">&para;</a></h3>
 <p>时间复杂度：<span class="arithmatex">\(O(N)\)</span></p>
-<p>采用<strong>在线(on-line)算法</strong>，它能在<u>任何时间点</u>上计算对于已经读入的数据的解</p>
+<p>采用<strong>在线(on-line)算法</strong>，它能在<u>任何时间点</u>上计算包含已经读入的数据的解</p>
 <div class="language-c highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kt">int</span><span class="w"> </span><span class="nf">MaxSubsequenceSum</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">A</span><span class="p">[</span><span class="w"> </span><span class="p">],</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">N</span><span class="p">)</span>
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="p">{</span>
 </span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">ThisSum</span><span class="p">,</span><span class="w"> </span><span class="n">MaxSum</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">;</span>
