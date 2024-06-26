@@ -1158,7 +1158,7 @@
 
 <h1 id="chap-5-hashing">Chap 5 Hashing<a class="headerlink" href="#chap-5-hashing" title="Permanent link">&para;</a></h1>
 <div markdown="1" style="margin-top: -30px; font-size: 0.8em; opacity: 0.7;">
-约 2178 个字 , 212 行代码 , 预计阅读时间 14 分钟
+约 2186 个字 , 212 行代码 , 预计阅读时间 14 分钟
 </div>
 <!-- :material-circle-edit-outline:-->
 <!--:fontawesome-solid-code: -->
@@ -1166,7 +1166,7 @@
 
 <details class="info">
 <summary>引入：插值排序(interpolation sort)</summary>
-<p>在chap 7中，我们介绍了一些基于比较的排序算法，这类算法的最优时间复杂度为<span class="arithmatex">\(O(n \log n)\)</span>，然而这不是排序算法的极限——<strong>插值排序</strong>为我们提供了时间复杂度仅为<span class="arithmatex">\(O(1)\)</span>的方法，其本质为<em>基于公式的搜索(search by formula)</em>。</p>
+<p>在<a href="7.html">Chap 7</a>中，我们介绍了一些基于比较的排序算法，这类算法的最优时间复杂度为<span class="arithmatex">\(O(n \log n)\)</span>，然而这不是排序算法的极限——<strong>插值排序</strong>为我们提供了时间复杂度仅为<span class="arithmatex">\(O(1)\)</span>的方法，其本质为<em>基于公式的搜索(search by formula)</em>。</p>
 <p>题目：从有序列表f[l].key, f[l+1].key, ..., f[u].key中找到特定的key</p>
 <p><div style="text-align: center; margin-top: 15px;">
 <img src="Images/C5/Quicker_20240605_202848.png" width="70%" style="margin: 0 auto;">
@@ -1183,8 +1183,8 @@
 <ul>
 <li><code>SymTab Create(TableSize)</code></li>
 <li><code>Boolean IsIn(symtab, name)</code></li>
-<li><img alt="⭐" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2b50.svg" title=":star:" /><code>Attribute Find(symtab, name)</code></li>
-<li><img alt="⭐" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2b50.svg" title=":star:" /><code>SymTab Insert(symtab, name, attr)</code></li>
+<li><code>Attribute Find(symtab, name)</code> <img alt="⭐" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2b50.svg" title=":star:" /></li>
+<li><code>SymTab Insert(symtab, name, attr)</code> <img alt="⭐" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2b50.svg" title=":star:" /></li>
 <li><code>SymTab Delete(symtab, name)</code></li>
 </ul>
 </li>
@@ -1199,13 +1199,13 @@
 <li>T表示表示x的不同可能值的总数</li>
 <li>n表示ht[]中标识符的总数</li>
 <li><em>标识符密度(identifier density)</em> = <span class="arithmatex">\(\dfrac{n}{T}\)</span></li>
-<li><strong>加载密度(loading density)</strong>$\lambda = <span class="arithmatex">\(\dfrac{n}{s \cdot b}\)</span></li>
+<li><strong>加载密度(loading density)</strong><span class="arithmatex">\(\lambda = \dfrac{n}{s \cdot b}\)</span></li>
 </ul>
 <div class="admonition warning">
 <p class="admonition-title">散列表的常见问题</p>
 <ul>
 <li><strong>冲突(collision)</strong>：2个不同的标识符放入相同的篮子内，即<span class="arithmatex">\(f(i_1) = f(i_2)\)</span>且<span class="arithmatex">\(i_1 \ne i_2\)</span></li>
-<li><strong>溢出(overflow)</strong>：将新的标识符放入满的篮子内<blockquote>
+<li><strong>溢出(overflow)</strong>：某个（些）篮子的空间已满，无法安置新的标识符<blockquote>
 <p>注：当篮子容量s = 1时，冲突和溢出同时发生</p>
 </blockquote>
 </li>
@@ -1232,28 +1232,28 @@ $$</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:4"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">函数1</label><label for="__tabbed_1_2">函数2</label><label for="__tabbed_1_3">函数3</label><label for="__tabbed_1_4">函数4</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="arithmatex">\[f(x) = x % TableSize\]</div>
+<div class="arithmatex">\[f(x) = x \% TableSize\]</div>
 <blockquote>
 <p>x为整数</p>
 </blockquote>
 <p>这不是一个好的散列函数，因为用这种函数很容易发生冲突。然而，若我们让<span class="arithmatex">\(TableSize\)</span>为一个质数，且令所有的键尽可能随机，冲突就不那么容易发生了</p>
 </div>
 <div class="tabbed-block">
-<div class="arithmatex">\[f(x) = (\sum x[i]) % TableSize\]</div>
+<div class="arithmatex">\[f(x) = (\sum x[i]) \% TableSize\]</div>
 <blockquote>
 <p>x为字符串</p>
 </blockquote>
 <p>这是前一种函数的变种，用于字符串的情况，<span class="arithmatex">\(\sum x[i]\)</span>为所有字符的ASCII码之和。这种方法也很简单，也很容易产生冲突</p>
 </div>
 <div class="tabbed-block">
-<div class="arithmatex">\[f(x) = (x[0] + x[1] * 27 + x[2] * 27^2) % TableSize\]</div>
+<div class="arithmatex">\[f(x) = (x[0] + x[1] * 27 + x[2] * 27^2) \% TableSize\]</div>
 <blockquote>
 <p>x为长度为3的英文字符串(全大写或全小写)(27 = 26个字母 + NULL(空))</p>
 </blockquote>
 <p>这是对前一种函数的改良，把每个字符串表示为一个唯一的27进制数。这确实能完全避开冲突，然而实际长度为3的英语单词的个数远少于散列表的篮子个数，从而导致空间的巨大浪费</p>
 </div>
 <div class="tabbed-block">
-<div class="arithmatex">\[f(x) = (\sum x[N - i - 1] * 32^i) % TableSize\]</div>
+<div class="arithmatex">\[f(x) = (\sum x[N - i - 1] * 32^i) \% TableSize\]</div>
 <p>如果我们将27改成32，则用左移5位的运算替代乘以26的运算，效率更高(移位的速度大于乘法)。由于是左移位，所以需要稍微调整一下散列值的表示，如下图所示</p>
 <p><div style="text-align: center; margin-top: 15px;">
 <img src="Images/C5/Quicker_20240605_210417.png" width="50%" style="margin: 0 auto;">
