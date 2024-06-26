@@ -1158,7 +1158,7 @@
 
 <h1 id="chap-5-hashing">Chap 5 Hashing<a class="headerlink" href="#chap-5-hashing" title="Permanent link">&para;</a></h1>
 <div markdown="1" style="margin-top: -30px; font-size: 0.8em; opacity: 0.7;">
-约 2186 个字 , 212 行代码 , 预计阅读时间 14 分钟
+约 2185 个字 , 210 行代码 , 预计阅读时间 14 分钟
 </div>
 <!-- :material-circle-edit-outline:-->
 <!--:fontawesome-solid-code: -->
@@ -1232,28 +1232,28 @@ $$</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:4"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">函数1</label><label for="__tabbed_1_2">函数2</label><label for="__tabbed_1_3">函数3</label><label for="__tabbed_1_4">函数4</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="arithmatex">\[f(x) = x \% TableSize\]</div>
+<div class="arithmatex">\[f(x) = x\ \%\ TableSize\]</div>
 <blockquote>
 <p>x为整数</p>
 </blockquote>
 <p>这不是一个好的散列函数，因为用这种函数很容易发生冲突。然而，若我们让<span class="arithmatex">\(TableSize\)</span>为一个质数，且令所有的键尽可能随机，冲突就不那么容易发生了</p>
 </div>
 <div class="tabbed-block">
-<div class="arithmatex">\[f(x) = (\sum x[i]) \% TableSize\]</div>
+<div class="arithmatex">\[f(x) = (\sum x[i])\ \%\ TableSize\]</div>
 <blockquote>
 <p>x为字符串</p>
 </blockquote>
 <p>这是前一种函数的变种，用于字符串的情况，<span class="arithmatex">\(\sum x[i]\)</span>为所有字符的ASCII码之和。这种方法也很简单，也很容易产生冲突</p>
 </div>
 <div class="tabbed-block">
-<div class="arithmatex">\[f(x) = (x[0] + x[1] * 27 + x[2] * 27^2) \% TableSize\]</div>
+<div class="arithmatex">\[f(x) = (x[0] + x[1] * 27 + x[2] * 27^2)\ \%\ TableSize\]</div>
 <blockquote>
 <p>x为长度为3的英文字符串(全大写或全小写)(27 = 26个字母 + NULL(空))</p>
 </blockquote>
 <p>这是对前一种函数的改良，把每个字符串表示为一个唯一的27进制数。这确实能完全避开冲突，然而实际长度为3的英语单词的个数远少于散列表的篮子个数，从而导致空间的巨大浪费</p>
 </div>
 <div class="tabbed-block">
-<div class="arithmatex">\[f(x) = (\sum x[N - i - 1] * 32^i) \% TableSize\]</div>
+<div class="arithmatex">\[f(x) = (\sum x[N - i - 1] * 32^i)\ \%\ TableSize\]</div>
 <p>如果我们将27改成32，则用左移5位的运算替代乘以26的运算，效率更高(移位的速度大于乘法)。由于是左移位，所以需要稍微调整一下散列值的表示，如下图所示</p>
 <p><div style="text-align: center; margin-top: 15px;">
 <img src="Images/C5/Quicker_20240605_210417.png" width="50%" style="margin: 0 auto;">
@@ -1274,7 +1274,11 @@ $$</p>
 </div>
 <h2 id="seperate-chaining">Seperate Chaining<a class="headerlink" href="#seperate-chaining" title="Permanent link">&para;</a></h2>
 <p><strong>单独链表法(separate chaining)</strong>：将所有散列值相同的键放入同一张链表中</p>
-<p>初始化
+<details class="code">
+<summary>代码实现</summary>
+<ul>
+<li>初始化</li>
+</ul>
 <div class="language-c highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">struct</span><span class="w"> </span><span class="nc">ListNode</span><span class="p">;</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">ListNode</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Position</span><span class="p">;</span>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="k">struct</span><span class="w"> </span><span class="nc">HashTbl</span><span class="p">;</span>
@@ -1295,8 +1299,10 @@ $$</p>
 </span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">TableSize</span><span class="p">;</span>
 </span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="w">    </span><span class="n">List</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">TheLists</span><span class="p">;</span>
 </span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="p">};</span>
-</span></code></pre></div></p>
-<p>创建空表
+</span></code></pre></div>
+<ul>
+<li>创建空表</li>
+</ul>
 <div class="language-c highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">HashTable</span><span class="w"> </span><span class="nf">InitializeTable</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">TableSize</span><span class="p">)</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="p">{</span>
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="n">HashTable</span><span class="w"> </span><span class="n">H</span><span class="p">;</span>
@@ -1323,15 +1329,17 @@ $$</p>
 </span><span id="__span-2-24"><a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a><span class="w">    </span><span class="p">}</span><span class="w"> </span>
 </span><span id="__span-2-25"><a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">H</span><span class="p">;</span><span class="w"> </span>
 </span><span id="__span-2-26"><a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a><span class="p">}</span>
-</span></code></pre></div></p>
+</span></code></pre></div>
 <details class="example">
 <summary>散列表示意图</summary>
 <p><div style="text-align: center; margin-top: 15px;">
 <img src="Images/C5/Quicker_20240605_211858.png" width="50%" style="margin: 0 auto;">
 </div></p>
-<p>这里创建的散列表是有"空头"的，这主要是为了后面插入操作的方便。若没有插入操作，则最好不要用空头，这样可以节省空间</p>
+<p>注意：散列表的开头，以及每个篮子都是有"空头"的，这主要是为了后面插入操作的方便。若没有插入操作，则最好不要用空头，这样可以节省空间</p>
 </details>
-<p>从散列表中找键
+<ul>
+<li>从散列表中找键</li>
+</ul>
 <div class="language-c highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">Position</span><span class="w"> </span><span class="nf">Find</span><span class="p">(</span><span class="n">ElementType</span><span class="w"> </span><span class="n">Key</span><span class="p">,</span><span class="w"> </span><span class="n">HashTable</span><span class="w"> </span><span class="n">H</span><span class="p">)</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="p">{</span>
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="n">Position</span><span class="w"> </span><span class="n">P</span><span class="p">;</span>
@@ -1340,13 +1348,15 @@ $$</p>
 </span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">    </span><span class="n">L</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">H</span><span class="o">-&gt;</span><span class="n">TheLists</span><span class="p">[</span><span class="n">Hash</span><span class="p">(</span><span class="n">Key</span><span class="p">,</span><span class="w"> </span><span class="n">H</span><span class="o">-&gt;</span><span class="n">TableSize</span><span class="p">)];</span>
 </span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>
 </span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">    </span><span class="n">P</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">L</span><span class="o">-&gt;</span><span class="n">Next</span><span class="p">;</span>
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">    </span><span class="c1">// Identical to the code to perfome a Find for List ADT</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">    </span><span class="c1">// Identical to the code to perform a Find for List ADT</span>
 </span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">P</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">P</span><span class="o">-&gt;</span><span class="n">Element</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">Key</span><span class="p">)</span><span class="w"> </span><span class="c1">// Probably need strcmp</span>
 </span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">        </span><span class="n">P</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">P</span><span class="o">-&gt;</span><span class="n">Next</span><span class="p">;</span>
 </span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">P</span><span class="p">;</span>
 </span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="p">}</span>
-</span></code></pre></div></p>
-<p>将键插入散列表内
+</span></code></pre></div>
+<ul>
+<li>将键插入散列表内（放在篮子的最上（前）面）</li>
+</ul>
 <div class="language-c highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">Insert</span><span class="p">(</span><span class="n">ElementType</span><span class="w"> </span><span class="n">Key</span><span class="p">,</span><span class="w"> </span><span class="n">HashTable</span><span class="w"> </span><span class="n">H</span><span class="p">)</span>
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="p">{</span>
 </span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span><span class="n">Position</span><span class="w"> </span><span class="n">Pos</span><span class="p">,</span><span class="w"> </span><span class="n">NewWell</span><span class="p">;</span>
@@ -1366,19 +1376,20 @@ $$</p>
 </span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="w">        </span><span class="p">}</span>
 </span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="w">    </span><span class="p">}</span>
 </span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="p">}</span>
-</span></code></pre></div></p>
+</span></code></pre></div>
+</details>
 <blockquote>
 <p>注：</p>
 <ul>
-<li>不好的一点是该函数用了两次Hash()函数，所以这里需要改进一下</li>
-<li>我们要让TableSize尽可能接近键的数量，即让加载密度<span class="arithmatex">\(\lambda \approx 1\)</span></li>
+<li>不好的一点是该函数用了两次<code>Hash()</code>函数，所以这里需要改进一下</li>
+<li>我们要让<code>TableSize</code>尽可能接近键的数量，即让加载密度<span class="arithmatex">\(\lambda \approx 1\)</span></li>
 <li>这里仅考虑所有键都不同的情况，若出现相同的键，要么选择无视，要么增加一个额外的字段记录重复的次数</li>
 </ul>
 </blockquote>
 <h2 id="open-addressing">Open Addressing<a class="headerlink" href="#open-addressing" title="Permanent link">&para;</a></h2>
 <p><strong>开放地址(open addressing)</strong>：通过寻找下一个空的单元来解决冲突，这样我们就不必使用指针了。</p>
-<p>代码实现：
-<div class="language-c highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nl">Algorithm</span><span class="p">:</span><span class="w"> </span><span class="n">insert</span><span class="w"> </span><span class="n">key</span><span class="w"> </span><span class="n">into</span><span class="w"> </span><span class="n">an</span><span class="w"> </span><span class="n">array</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">hash</span><span class="w"> </span><span class="n">table</span>
+<p>模版：</p>
+<p><div class="language-c highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nl">Algorithm</span><span class="p">:</span><span class="w"> </span><span class="n">insert</span><span class="w"> </span><span class="n">key</span><span class="w"> </span><span class="n">into</span><span class="w"> </span><span class="n">an</span><span class="w"> </span><span class="n">array</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">hash</span><span class="w"> </span><span class="n">table</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="p">{</span>
 </span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="n">index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hash</span><span class="p">(</span><span class="n">key</span><span class="p">);</span>
 </span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="n">initialize</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w">  </span><span class="c1">// the counter of probing</span>
@@ -1393,14 +1404,9 @@ $$</p>
 </span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="w">    </span><span class="k">else</span>
 </span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="w">        </span><span class="n">Insert</span><span class="w"> </span><span class="n">key</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="n">index</span><span class="p">;</span>
 </span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="p">}</span>
-</span></code></pre></div></p>
-<blockquote>
-<p>注：</p>
-<ul>
-<li>f(i)为冲突解决函数，初始状态为f(0) = 0</li>
-<li>通常用于<span class="arithmatex">\(\lambda &lt; 0.5\)</span>的情况</li>
-</ul>
-</blockquote>
+</span></code></pre></div>
+其中，f(i)为<strong>冲突解决函数</strong>，初始状态为f(0) = 0。通常用于<span class="arithmatex">\(\lambda &lt; 0.5\)</span>的情况。</p>
+<p>正如<code>while</code>循环所示，若使用一次冲突解决函数后，冲突仍然发生，那就继续使用冲突解决函数，直至冲突解决，或发现无法解决直接退出。</p>
 <h3 id="linear-probing">Linear Probing<a class="headerlink" href="#linear-probing" title="Permanent link">&para;</a></h3>
 <p>最简单的冲突解决函数为<strong>线性探测(linear probing)</strong>：f(i) = i，它仅是一个线性函数</p>
 <div class="admonition example">
@@ -1408,16 +1414,16 @@ $$</p>
 <p><div style="text-align: center; margin-top: 15px;">
 <img src="Images/C5/Quicker_20240605_213411.png" width="70%" style="margin: 0 auto;">
 </div></p>
-<p>对比前面的例子，可以发现：虽然加载密度得到不小的提升，但是平均搜索时间比较长。</p>
+<p>对比<a href="#general-idea">前面的例子</a>，可以发现：虽然加载密度得到不小的提升，但是平均搜索时间比较长。</p>
 </div>
 <p>线性探测中预期探测次数关于加载密度的表达式：</p>
 <div class="arithmatex">\[
 p = \begin{cases}\dfrac{1}{2}(1 + \dfrac{1}{(1 - \lambda)^2}) &amp; \text{for insertion and unsuccessful searches}\\ \dfrac{1}{2}(1 + \dfrac{1}{1 - \lambda}) &amp; \text{for successful searches}\end{cases}
 \]</div>
-<p>对于上面的例子，p = 1.36。虽然很小，但是在最坏情况下p会很大。、</p>
+<p>对于上面的例子，p = 1.36。虽然很小，但是在最坏情况下p会很大。</p>
 <div class="admonition warning">
 <p class="admonition-title">线性探测的问题：<strong>基本聚集(primary cluster)</strong></p>
-<p>线性探测将位置不匹配的键安放至后面最近的空内，这样做会形成<em>区块(cluster)</em>，使得散列表分布不均匀，导致即使表的空间看起来挺空的，但是某块地方挤满了元素。</p>
+<p>线性探测将位置不匹配的键安放至后面最近的空内，这样做会形成<em>区块(cluster)</em>，使得散列表分布不均匀，导致即使表的空间看起来挺空的，但是某些地方聚集了一堆元素。</p>
 </div>
 <details class="info" open="open">
 <summary>随机冲突解决策略(random collision resolution strategy)</summary>
@@ -1439,14 +1445,15 @@ p = \begin{cases}\dfrac{1}{2}(1 + \dfrac{1}{(1 - \lambda)^2}) &amp; \text{for in
 <div class="arithmatex">\[
 (h(x) + i^2)\ \%\ TableSize \ne (h(x) + j^2)\ \%\ TableSize
 \]</div>
-<p>反证法：假设<span class="arithmatex">\(h(x) + i^2 \equiv h(x) + j^2 (\text{ mod } TableSize)\)</span>，那么可以得到<span class="arithmatex">\(((i + j)(i - j) \equiv 0\text{ mod } TableSize)\)</span>，即(i + j)或(i - j)能够被质数TableSize整除，但这显然是不可能的，推出矛盾，因此定理成立。</p>
+<p>反证法：假设<span class="arithmatex">\(h(x) + i^2 \equiv h(x) + j^2 (\text{mod }\  TableSize)\)</span>，那么可以得到<span class="arithmatex">\((i + j)(i - j) \equiv 0(\text{mod } TableSize)\)</span>，即(i + j)或(i - j)能够被质数TableSize整除，但这显然是不可能的，推出矛盾，因此定理成立。</p>
 </details>
 <p>对于任意x，总有<span class="arithmatex">\(\lceil \dfrac{TableSize}{2} \rceil\)</span>个不同的地方可以进入。如果至多有<span class="arithmatex">\(\lfloor \dfrac{TableSize}{2} \rfloor\)</span>个位置被占据，那么总能找到一个空的位置存放该值。</p>
 <div class="admonition note">
 <p class="admonition-title">注</p>
 <p>若表的大小是一个形如4k + 3的质数，则使用二次探测<span class="arithmatex">\(f(i) = \pm i^2\)</span>来探测整张表</p>
 </div>
-<p>代码实现：</p>
+<details class="code">
+<summary>代码实现</summary>
 <ul>
 <li>声明</li>
 </ul>
@@ -1562,6 +1569,7 @@ p = \begin{cases}\dfrac{1}{2}(1 + \dfrac{1}{(1 - \lambda)^2}) &amp; \text{for in
 </span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="w">    </span><span class="p">}</span>
 </span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="p">}</span>
 </span></code></pre></div>
+</details>
 <div class="admonition note">
 <p class="admonition-title">注</p>
 <ul>
@@ -1584,13 +1592,7 @@ p = \begin{cases}\dfrac{1}{2}(1 + \dfrac{1}{(1 - \lambda)^2}) &amp; \text{for in
 </ul>
 </div>
 <h2 id="rehashing">Rehashing<a class="headerlink" href="#rehashing" title="Permanent link">&para;</a></h2>
-<p>我们更喜欢使用二次探测，然而当表的空余空间不足一半时，插入操作可能会失败。这时，我们要用到<strong>再散列(rehashing)</strong>。</p>
-<ul>
-<li>建立一张额外的表，大小是原来的两倍</li>
-<li>遍历原来的整张散列表中未删除的元素</li>
-<li>使用新的散列函数，将遍历到的元素插入新的表中</li>
-</ul>
-<p>如果表内有N个键，则时间复杂度<span class="arithmatex">\(T(N) = O(N)\)</span></p>
+<p>在二次探测中，我们有时会用到“<strong>再散列(rehashing)</strong>”的技巧</p>
 <div class="admonition question">
 <p class="admonition-title">何时使用再散列</p>
 <ul>
@@ -1599,7 +1601,14 @@ p = \begin{cases}\dfrac{1}{2}(1 + \dfrac{1}{(1 - \lambda)^2}) &amp; \text{for in
 <li>散列表的加载因数达到特定值时</li>
 </ul>
 </div>
-<p>代码实现：</p>
+<ul>
+<li>建立一张额外的表，大小是原来的两倍</li>
+<li>遍历原来的整张散列表中未删除的元素</li>
+<li>使用新的散列函数，将遍历到的元素插入新的表中</li>
+</ul>
+<p>如果表内有N个键，则时间复杂度<span class="arithmatex">\(T(N) = O(N)\)</span></p>
+<details class="code">
+<summary>代码实现</summary>
 <div class="language-c highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">HashTable</span><span class="w"> </span><span class="nf">ReHash</span><span class="p">(</span><span class="n">HashTable</span><span class="w"> </span><span class="n">H</span><span class="p">)</span>
 </span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="p">{</span>
 </span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">OldSize</span><span class="p">;</span>
@@ -1621,6 +1630,7 @@ p = \begin{cases}\dfrac{1}{2}(1 + \dfrac{1}{(1 - \lambda)^2}) &amp; \text{for in
 </span><span id="__span-10-19"><a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">H</span><span class="p">;</span>
 </span><span id="__span-10-20"><a id="__codelineno-10-20" name="__codelineno-10-20" href="#__codelineno-10-20"></a><span class="p">}</span>
 </span></code></pre></div>
+</details>
 
   <hr>
 <div class="md-source-file">
