@@ -1,0 +1,2345 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="NoughtQ">
+      
+      
+        <link rel="canonical" href="https://notebook.noughtq.top/notes/ZJU/fds/4.html">
+      
+      
+        <link rel="prev" href="3.html">
+      
+      
+        <link rel="next" href="5.html">
+      
+      
+      <link rel="icon" href="../../../assets/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.0">
+    
+    
+      
+        <title>Chap 4 Trees - NoughtQ的笔记本</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.9f615399.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.649f08f9.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=JetBrains+Mono,+LXGW+WenKai+Screen+GB+Screen:300,300i,400,400i,700,700i%7CJetBrains+Mono,+Consolas,+LXGW+WenKai+Screen+GB+Screen:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"JetBrains Mono, LXGW WenKai Screen GB Screen";--md-code-font:"JetBrains Mono, Consolas, LXGW WenKai Screen GB Screen"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../css/toc_extra.css">
+    
+      <link rel="stylesheet" href="../../../stylesheet/extra.css">
+    
+      <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
+    
+      <link rel="stylesheet" href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css">
+    
+      <link rel="stylesheet" href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#chap-4-trees" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../.." title="NoughtQ的笔记本" class="md-header__button md-logo" aria-label="NoughtQ的笔记本" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.05 9H7.06V6h1.99V4.03H7.06v-1c0-1.11.89-1.99 1.99-1.99h5.98V8l2.47-1.5L20 8V1.04h1c1.05 0 2 .96 2 1.99V17c0 1.03-.95 2-2 2H9.05c-1.05 0-1.99-.95-1.99-2v-1h1.99v-2H7.06v-3h1.99V9M1 18h2v-3H1v-2h2v-3H1V8h2V5h2v3H3v2h2v3H3v2h2v3H3v2h2v1h16v2H5a2 2 0 0 1-2-2v-1H1v-2Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            NoughtQ的笔记本
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Chap 4 Trees
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefer-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Dark Mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Dark Mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3 3.19.09m3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95 2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefer-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Light Mode"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Light Mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5c-.84 0-1.65.15-2.39.42L12 2M3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29L3.34 7m.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14L3.36 17M20.65 7l-1.77 3.79a7.023 7.023 0 0 0-2.38-4.15l4.15.36m-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29L20.64 17M12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44L12 22Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/noughtq/notebook" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    NoughtQ/Notebook
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../index.html" class="md-tabs__link">
+          
+  
+    
+  
+  主页
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      
+  
+  
+    
+  
+  
+    
+    
+      
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../calculus/index.html" class="md-tabs__link">
+          
+  
+    
+  
+  ZJU笔记
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../self-learning/cs61a/index.html" class="md-tabs__link">
+          
+  
+    
+  
+  自学笔记
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../tools/git.html" class="md-tabs__link">
+          
+  
+    
+  
+  工具
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../exp/interview.html" class="md-tabs__link">
+          
+  
+    
+  
+  经验
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="NoughtQ的笔记本" class="md-nav__button md-logo" aria-label="NoughtQ的笔记本" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.05 9H7.06V6h1.99V4.03H7.06v-1c0-1.11.89-1.99 1.99-1.99h5.98V8l2.47-1.5L20 8V1.04h1c1.05 0 2 .96 2 1.99V17c0 1.03-.95 2-2 2H9.05c-1.05 0-1.99-.95-1.99-2v-1h1.99v-2H7.06v-3h1.99V9M1 18h2v-3H1v-2h2v-3H1V8h2V5h2v3H3v2h2v3H3v2h2v3H3v2h2v1h16v2H5a2 2 0 0 1-2-2v-1H1v-2Z"/></svg>
+
+    </a>
+    NoughtQ的笔记本
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/noughtq/notebook" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    NoughtQ/Notebook
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../../index.html" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    主页
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    ZJU笔记
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            ZJU笔记
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    
+  
+  
+    <a href="../calculus/index.html" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    数学相关
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    
+  
+  
+    <a href="../c/index.html" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    编程语言
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" checked>
+        
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    算法相关
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            算法相关
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3_1" checked>
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="index.html" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    数据结构基础
+  </span>
+  
+
+            </a>
+            
+              <label class="md-nav__link " for="__nav_2_3_1">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_3_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            数据结构基础
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="2.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 2 Algorithm Analysis
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="3.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 3 Lists, Stacks, and Queues
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Chap 4 Trees
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="4.html" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Chap 4 Trees
+  </span>
+  
+
+      </a>
+      
+        
+  
+    
+  
+  <nav class="md-nav md-nav--secondary " aria-label="目录">
+    
+    
+    
+      
+    
+    
+      <label class="md-nav__title" for="__toc">
+        <span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+      <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+        
+          <li class="md-nav__item">
+  <a href="#preliminaries" class="md-nav__link">
+    Preliminaries
+  </a>
+  
+    <nav class="md-nav" aria-label="Preliminaries">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#definitions" class="md-nav__link">
+    Definitions
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation" class="md-nav__link">
+    Implementation
+  </a>
+  
+    <nav class="md-nav" aria-label="Implementation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#list-representation" class="md-nav__link">
+    List Representation
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#firstchild-nextsibling-representation" class="md-nav__link">
+    FirstChild-NextSibling Representation
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#applicationfile-system" class="md-nav__link">
+    Application(File System)
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#binary-trees" class="md-nav__link">
+    Binary Trees
+  </a>
+  
+    <nav class="md-nav" aria-label="Binary Trees">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#expression-treessyntax-trees" class="md-nav__link">
+    Expression Trees(syntax trees)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tree-traversals" class="md-nav__link">
+    Tree Traversals
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#threaded-binary-trees" class="md-nav__link">
+    Threaded Binary Trees
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#special-cases" class="md-nav__link">
+    Special Cases
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#properties" class="md-nav__link">
+    Properties
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#binary-search-tree" class="md-nav__link">
+    Binary Search Tree
+  </a>
+  
+    <nav class="md-nav" aria-label="Binary Search Tree">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#definition" class="md-nav__link">
+    Definition
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adt" class="md-nav__link">
+    ADT
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementations" class="md-nav__link">
+    Implementations
+  </a>
+  
+    <nav class="md-nav" aria-label="Implementations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#find" class="md-nav__link">
+    Find
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#findmin" class="md-nav__link">
+    FindMin
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#findmax" class="md-nav__link">
+    FindMax
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#insert" class="md-nav__link">
+    Insert
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delete" class="md-nav__link">
+    Delete
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#average-case-analysis" class="md-nav__link">
+    Average-Case Analysis
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    
+  </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="5.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 5 Hashing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="6.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 6 Priority Queues(Heaps)
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="7.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 7 Sorting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="8.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 8 The Disjoint Set ADT
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="9.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 9 Graph Algorithm
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="mistakes.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Mistakes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    
+  
+  
+    <a href="../dld/index.html" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    硬件相关
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+  
+
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    
+  
+  
+    <a href="../../self-learning/cs61a/index.html" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    自学笔记
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../../tools/git.html" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    工具
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../../exp/interview.html" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    经验
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+  
+    
+  
+  <nav class="md-nav md-nav--secondary " aria-label="目录">
+    
+    
+    
+      
+    
+    
+      <label class="md-nav__title" for="__toc">
+        <span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+      <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+        
+          <li class="md-nav__item">
+  <a href="#preliminaries" class="md-nav__link">
+    Preliminaries
+  </a>
+  
+    <nav class="md-nav" aria-label="Preliminaries">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#definitions" class="md-nav__link">
+    Definitions
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation" class="md-nav__link">
+    Implementation
+  </a>
+  
+    <nav class="md-nav" aria-label="Implementation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#list-representation" class="md-nav__link">
+    List Representation
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#firstchild-nextsibling-representation" class="md-nav__link">
+    FirstChild-NextSibling Representation
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#applicationfile-system" class="md-nav__link">
+    Application(File System)
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#binary-trees" class="md-nav__link">
+    Binary Trees
+  </a>
+  
+    <nav class="md-nav" aria-label="Binary Trees">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#expression-treessyntax-trees" class="md-nav__link">
+    Expression Trees(syntax trees)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tree-traversals" class="md-nav__link">
+    Tree Traversals
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#threaded-binary-trees" class="md-nav__link">
+    Threaded Binary Trees
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#special-cases" class="md-nav__link">
+    Special Cases
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#properties" class="md-nav__link">
+    Properties
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#binary-search-tree" class="md-nav__link">
+    Binary Search Tree
+  </a>
+  
+    <nav class="md-nav" aria-label="Binary Search Tree">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#definition" class="md-nav__link">
+    Definition
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adt" class="md-nav__link">
+    ADT
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementations" class="md-nav__link">
+    Implementations
+  </a>
+  
+    <nav class="md-nav" aria-label="Implementations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#find" class="md-nav__link">
+    Find
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#findmin" class="md-nav__link">
+    FindMin
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#findmax" class="md-nav__link">
+    FindMax
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#insert" class="md-nav__link">
+    Insert
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delete" class="md-nav__link">
+    Delete
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#average-case-analysis" class="md-nav__link">
+    Average-Case Analysis
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    
+  </nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+
+                  
+
+  
+  
+
+
+<h1 id="chap-4-trees">Chap 4 Trees<a class="headerlink" href="#chap-4-trees" title="Permanent link">⚓︎</a></h1>
+<div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
+<p><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8V2m6.78 1a.69.69 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38-2.5-2.5Z"/></svg></span> 约 2671 个字 <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M392.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6zm80.6 120.1c-12.5 12.5-12.5 32.8 0 45.3l89.3 89.4-89.4 89.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l112-112c12.5-12.5 12.5-32.8 0-45.3l-112-112c-12.5-12.5-32.8-12.5-45.3 0zm-306.7 0c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3l112 112c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l89.4-89.4c12.5-12.5 12.5-32.8 0-45.3z"/></svg></span> 259 行代码 <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3L12.5 13Z"/></svg></span> 预计阅读时间 17 分钟</p>
+</div>
+<details class="abstract">
+<summary>核心知识</summary>
+<ul>
+<li>树的表示法：first-child-next-sibling</li>
+<li>二叉树<ul>
+<li>性质</li>
+<li>树的遍历：前、中、后、层</li>
+<li>线索二叉树</li>
+<li>应用：文件系统、表达式树</li>
+</ul>
+</li>
+<li><strong>二叉搜索树</strong><ul>
+<li>各种操作，重点是插入和删除</li>
+</ul>
+</li>
+</ul>
+</details>
+<blockquote>
+<p>注：更多理论部分的知识可参见离散数学<a href="../dm/11.html">同名章节</a></p>
+</blockquote>
+<h2 id="preliminaries">Preliminaries<a class="headerlink" href="#preliminaries" title="Permanent link">⚓︎</a></h2>
+<h3 id="definitions">Definitions<a class="headerlink" href="#definitions" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li>
+<p><strong>树(trees)</strong>：它是一组节点，可以为空，如果不为空：</p>
+<ul>
+<li>包含1个<strong>根节点(root)</strong><span class="arithmatex">\(r\)</span></li>
+<li>有0个或多个<strong>子树(subtrees)</strong><span class="arithmatex">\(T_1, \dots, T_k\)</span>，每个子树的根节点都和<span class="arithmatex">\(r\)</span>通过一条<strong>边(edge)</strong>连接</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>注：</p>
+<ul>
+<li>子树之间不会相互连接，因此每个节点都是某个子树的根节点</li>
+<li>对于一棵有<span class="arithmatex">\(N\)</span>个节点的树，它有<span class="arithmatex">\(N - 1\)</span>条边</li>
+</ul>
+</blockquote>
+<ul>
+<li><strong>度(degree)</strong>：<ul>
+<li>一个<em>节点</em>的度指的是它<u>所有子树的个数</u></li>
+<li>一棵<em>树</em>的度为<span class="arithmatex">\(\max\limits_{\text{node } \in \text{ tree}}\{\text{degree(node)}\}\)</span></li>
+</ul>
+</li>
+<li><strong>父节点(parent)</strong>：有子树的节点</li>
+<li><strong>孩子节点(children)</strong>：父节点子树的根节点</li>
+<li><strong>兄弟节点(siblings)</strong>：有相同父节点的孩子节点</li>
+<li><strong>叶子节点(leaf)</strong>：度为0的节点</li>
+<li>从<span class="arithmatex">\(n_1\)</span>到<span class="arithmatex">\(n_k\)</span><strong>路径(path)</strong>：一个包含节点<span class="arithmatex">\(n_1, n_2, \dots, n_k\)</span><strong>唯一</strong>的序列，满足<span class="arithmatex">\(n_i\)</span>是<span class="arithmatex">\(n_{i+1}\)</span>的父节点(<span class="arithmatex">\(1 \le i &lt; k\)</span>)</li>
+<li>路径<strong>长度(length)</strong>：路径上边的条数</li>
+<li>顶点<span class="arithmatex">\(n_i\)</span>的<strong>深度(depth)</strong>：从根节点出发到<span class="arithmatex">\(n_i\)</span>的路径长度，规定<span class="arithmatex">\(\mathrm{depth}(root) = 0\)</span></li>
+<li>顶点<span class="arithmatex">\(n_i\)</span>的<strong>高度(height)</strong>：从<span class="arithmatex">\(n_i\)</span>到叶子结点的<strong>最长</strong>路径长度，规定<span class="arithmatex">\(\mathrm{height}(leaf) = 0\)</span></li>
+</ul>
+<div class="arithmatex">\[\therefore \mathrm{height}(root) = \mathrm{depth}(deepest\text{ }leaf)\]</div>
+<ul>
+<li><strong>祖先(ancestor)</strong>：从该节点到根节点的路径上所有的节点</li>
+<li><strong>后代(descendant)</strong>：该节点所有子树的节点</li>
+<li><strong>内部节点(internal vertices)</strong>：有孩子节点的顶点</li>
+</ul>
+<h3 id="implementation">Implementation<a class="headerlink" href="#implementation" title="Permanent link">⚓︎</a></h3>
+<h4 id="list-representation">List Representation<a class="headerlink" href="#list-representation" title="Permanent link">⚓︎</a></h4>
+<div style="text-align: center; margin-top: 15px;">
+<img src="Images/C4/Quicker_20240320_173619.png" width="80%" style="margin: 0 auto;">
+</div>
+
+<p>缺陷：每个节点的空间大小取决于它有多少个子树，这样实现起来就很麻烦</p>
+<h4 id="firstchild-nextsibling-representation">FirstChild-NextSibling Representation<a class="headerlink" href="#firstchild-nextsibling-representation" title="Permanent link">⚓︎</a></h4>
+<div style="text-align: center; margin-top: 15px;">
+<img src="Images/C4/Quicker_20240421_204417.png" width="80%" style="margin: 0 auto;">
+</div>
+
+<blockquote>
+<p>注：对于同一棵树，这种表示并<strong>不唯一</strong>，因为孩子的顺序可以是任意的</p>
+</blockquote>
+<h3 id="applicationfile-system">Application(File System)<a class="headerlink" href="#applicationfile-system" title="Permanent link">⚓︎</a></h3>
+<p>Unix 文件树 <span class="arithmatex">\(\Rightarrow\)</span> DOS 目录列表</p>
+<div class="admonition example">
+<p class="admonition-title">分层文件系统的目录列表</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Unix 系统</label><label for="__tabbed_1_2">DOS 系统</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="Images/C4/Quicker_20240320_184217.png" width="80%" style="margin: 0 auto;">
+</div></p>
+</div>
+<div class="tabbed-block">
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="Images/C4/Quicker_20240320_184308.png" width="30%" style="margin: 0 auto;">
+</div></p>
+</div>
+</div>
+</div>
+</div>
+<blockquote>
+<p>注意：在UNIX系统中位于深度<span class="arithmatex">\(d_i\)</span>的文件，在转化为DOS系统的表示法时需要将它们的名字缩进<span class="arithmatex">\(d_i\)</span>倍的多个空格</p>
+</blockquote>
+<p>代码实现（<strong>前序遍历</strong>）：
+<div class="language-c highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">ListDir</span><span class="p">(</span><span class="n">DirOfFile</span><span class="w"> </span><span class="n">D</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">Depth</span><span class="p">)</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="p">{</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">D</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">legitimate</span><span class="w"> </span><span class="n">entry</span><span class="p">)</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">        </span><span class="n">PrintName</span><span class="p">(</span><span class="n">D</span><span class="p">,</span><span class="w"> </span><span class="n">Depth</span><span class="p">);</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">D</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">directory</span><span class="p">)</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">            </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">each</span><span class="w"> </span><span class="n">child</span><span class="w"> </span><span class="n">C</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">D</span><span class="p">)</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">                </span><span class="n">ListDir</span><span class="p">(</span><span class="n">C</span><span class="p">,</span><span class="w"> </span><span class="n">Depth</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="p">}</span>
+</span></code></pre></div>
+<code>Depth</code>变量是不应该被用户看到的<strong>内部变量</strong>，需要隐藏起来。一种解决方法是像下面那样定义另外一个函数，隐藏<code>Depth</code>接口</p>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">ListDirectory</span><span class="p">(</span><span class="n">DirOfFile</span><span class="w"> </span><span class="n">D</span><span class="p">)</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="p">{</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="n">ListDir</span><span class="p">(</span><span class="n">D</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="p">}</span>
+</span></code></pre></div>
+<hr />
+<p>计算目录大小</p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="Images/C4/Quicker_20240320_185012.png" width="80%" style="margin: 0 auto;">
+</div>
+
+<p>代码实现（<strong>后序遍历</strong>，时间复杂度<span class="arithmatex">\(O(N)\)</span>）
+<div class="language-c highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">SizeDir</span><span class="p">(</span><span class="n">DirOrFile</span><span class="w"> </span><span class="n">D</span><span class="p">)</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="p">{</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">TotalSize</span><span class="p">;</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="n">TotalSize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">D</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">legitimate</span><span class="w"> </span><span class="n">entry</span><span class="p">)</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">        </span><span class="n">TotalSize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FileSize</span><span class="p">(</span><span class="n">D</span><span class="p">);</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">D</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">directory</span><span class="p">)</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">            </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">each</span><span class="w"> </span><span class="n">child</span><span class="w"> </span><span class="n">C</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">D</span><span class="p">)</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">                </span><span class="n">TotalSize</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">SizeDir</span><span class="p">(</span><span class="n">C</span><span class="p">);</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="c1">// end if D is legal</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">TotalSize</span><span class="p">;</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="p">}</span>
+</span></code></pre></div></p>
+<h2 id="binary-trees">Binary Trees<a class="headerlink" href="#binary-trees" title="Permanent link">⚓︎</a></h2>
+<p><strong>二叉树(binary tree)</strong>：每个节点拥有不超过两个孩子的树</p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="Images/C4/Quicker_20240320_174545.png" width="80%" style="margin: 0 auto;">
+</div>
+
+<p>补充：一般树（左图）的后序遍历 = 由上述方法得到的二叉树（右图）的中序遍历</p>
+<h3 id="expression-treessyntax-trees">Expression Trees(syntax trees)<a class="headerlink" href="#expression-treessyntax-trees" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li>先将<a href="3.html#infix-to-postfix-conversion">中缀-&gt;后缀</a></li>
+<li>
+<p>然后类似<a href="3.html#postfix-evaluation">后缀表达式求解</a>的方法，遇到运算符时，将堆栈内的两个操作数弹出，与运算符构建一棵树，对应关系如下：</p>
+<ul>
+<li>左子树：栈顶下面的元素</li>
+<li>根节点：运算符</li>
+<li>右子树：栈顶元素</li>
+</ul>
+<p>将这棵树压入堆栈中，重复上述步骤直到遍历完整个表达式</p>
+</li>
+</ul>
+<details class="play" open="open">
+<summary>动画演示</summary>
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="Images/C4/1.gif" width="80%" style="margin: 0 auto;">
+</div></p>
+</details>
+<details class="code" open="open">
+<summary>代码实现</summary>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1">// from my work of project 2</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">Tree</span><span class="w"> </span><span class="nf">ExpTree</span><span class="p">(</span><span class="n">Queue</span><span class="w"> </span><span class="n">q</span><span class="p">)</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="p">{</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span><span class="n">Tree</span><span class="w"> </span><span class="n">ans</span><span class="p">;</span><span class="w">   </span><span class="c1">// The final expression tree</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">    </span><span class="n">Stack</span><span class="w"> </span><span class="n">s</span><span class="p">;</span><span class="w">    </span><span class="c1">// The stack for tree construction, containing the nodes or the trees</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">    </span><span class="n">PtrToNode</span><span class="w"> </span><span class="n">node</span><span class="p">,</span><span class="w"> </span><span class="n">op1</span><span class="p">,</span><span class="w"> </span><span class="n">op2</span><span class="p">,</span><span class="w"> </span><span class="n">new</span><span class="p">;</span><span class="w">  </span><span class="c1">// node for all element in the queue; op1 and op2 are operands;and new is a new tree</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">    </span><span class="n">PtrToQueue</span><span class="w"> </span><span class="n">cur</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">q</span><span class="o">-&gt;</span><span class="n">front</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span><span class="w">  </span><span class="c1">// Starting from the second element, for the queue has a dummy header</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">    </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CreateStack</span><span class="p">();</span><span class="w">  </span><span class="c1">// Initialization</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">cur</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w">  </span><span class="c1">// Traversing all the element in the queue</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">        </span><span class="n">node</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CreateNode</span><span class="p">(</span><span class="n">cur</span><span class="o">-&gt;</span><span class="n">var</span><span class="p">);</span><span class="w">  </span><span class="c1">// Creating node for every element in the queue</span>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">isalnum</span><span class="p">(</span><span class="n">cur</span><span class="o">-&gt;</span><span class="n">var</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">cur</span><span class="o">-&gt;</span><span class="n">var</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;-&#39;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">isalnum</span><span class="p">(</span><span class="n">cur</span><span class="o">-&gt;</span><span class="n">var</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span><span class="w">  </span><span class="c1">// If it&#39;s an operand, push it into the stack</span>
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="w">        </span><span class="p">{</span>
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="w">            </span><span class="n">Push1</span><span class="p">(</span><span class="n">node</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="p">);</span>
+</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="w">            </span><span class="c1">// printf(&quot;%s\n&quot;, str);</span>
+</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="w">        </span><span class="p">}</span>
+</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="w">        </span><span class="k">else</span><span class="w">  </span><span class="c1">// If it&#39;s a operator,</span>
+</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="w">        </span><span class="p">{</span>
+</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>
+</span><span id="__span-3-21"><a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="w">            </span><span class="n">op2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Top1</span><span class="p">(</span><span class="n">s</span><span class="p">);</span><span class="w">  </span><span class="c1">// Obtaining the top two operands from the stack</span>
+</span><span id="__span-3-22"><a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a><span class="w">            </span><span class="n">Pop</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+</span><span id="__span-3-23"><a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a><span class="w">            </span><span class="n">op1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Top1</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+</span><span id="__span-3-24"><a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a><span class="w">            </span><span class="n">Pop</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+</span><span id="__span-3-25"><a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a><span class="w">            </span><span class="n">new</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CreateTree</span><span class="p">(</span><span class="n">node</span><span class="p">,</span><span class="w"> </span><span class="n">op1</span><span class="p">,</span><span class="w"> </span><span class="n">op2</span><span class="p">);</span><span class="w">  </span><span class="c1">// Creating an expression (sub)tree</span>
+</span><span id="__span-3-26"><a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a><span class="w">            </span><span class="n">Push1</span><span class="p">(</span><span class="n">new</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="p">);</span>
+</span><span id="__span-3-27"><a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a><span class="w">        </span><span class="p">}</span>
+</span><span id="__span-3-28"><a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a><span class="w">        </span><span class="n">cur</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cur</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span><span id="__span-3-29"><a id="__codelineno-3-29" name="__codelineno-3-29" href="#__codelineno-3-29"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-3-30"><a id="__codelineno-3-30" name="__codelineno-3-30" href="#__codelineno-3-30"></a><span class="w">    </span><span class="n">ans</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Top1</span><span class="p">(</span><span class="n">s</span><span class="p">);</span><span class="w"> </span><span class="c1">// The remaining tree in the stack is the answer</span>
+</span><span id="__span-3-31"><a id="__codelineno-3-31" name="__codelineno-3-31" href="#__codelineno-3-31"></a>
+</span><span id="__span-3-32"><a id="__codelineno-3-32" name="__codelineno-3-32" href="#__codelineno-3-32"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">ans</span><span class="p">;</span>
+</span><span id="__span-3-33"><a id="__codelineno-3-33" name="__codelineno-3-33" href="#__codelineno-3-33"></a>
+</span><span id="__span-3-34"><a id="__codelineno-3-34" name="__codelineno-3-34" href="#__codelineno-3-34"></a><span class="p">}</span>
+</span></code></pre></div>
+</details>
+<h3 id="tree-traversals">Tree Traversals<a class="headerlink" href="#tree-traversals" title="Permanent link">⚓︎</a></h3>
+<p><strong>树的遍历(tree traversals)</strong>：对树的每个节点都访问一次，时间复杂度为<span class="arithmatex">\(O(N)\)</span></p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="Images/C4/Quicker_20240320_184009.png" width="80%" style="margin: 0 auto;">
+</div>
+
+<p><strong>前序遍历(preorder traversal)</strong></p>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">preorder</span><span class="p">(</span><span class="n">tree_ptr</span><span class="w"> </span><span class="n">tree</span><span class="p">)</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="p">{</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">        </span><span class="n">visit</span><span class="p">(</span><span class="n">tree</span><span class="p">);</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">each</span><span class="w"> </span><span class="n">child</span><span class="w"> </span><span class="n">C</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">tree</span><span class="p">)</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">            </span><span class="n">preorder</span><span class="p">(</span><span class="n">C</span><span class="p">);</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="p">}</span>
+</span></code></pre></div>
+<p><strong>后序遍历(postorder traversal)</strong></p>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">postorder</span><span class="p">(</span><span class="n">tree_ptr</span><span class="w"> </span><span class="n">tree</span><span class="p">)</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="p">{</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">each</span><span class="w"> </span><span class="n">child</span><span class="w"> </span><span class="n">C</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">tree</span><span class="p">)</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">            </span><span class="n">postorder</span><span class="p">(</span><span class="n">C</span><span class="p">);</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">        </span><span class="n">visit</span><span class="p">(</span><span class="n">tree</span><span class="p">);</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="p">}</span>
+</span></code></pre></div>
+<p><strong>层序遍历(levelorder traversal)</strong></p>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">levelorder</span><span class="p">(</span><span class="n">tree_ptr</span><span class="w"> </span><span class="n">tree</span><span class="p">)</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="p">{</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span><span class="n">enqueue</span><span class="p">(</span><span class="n">tree</span><span class="p">);</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">queue</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">empty</span><span class="p">)</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">        </span><span class="n">visit</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dequeue</span><span class="p">());</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">each</span><span class="w"> </span><span class="n">child</span><span class="w"> </span><span class="n">C</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">T</span><span class="p">)</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">            </span><span class="n">enqueue</span><span class="p">(</span><span class="n">C</span><span class="p">);</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="p">}</span>
+</span></code></pre></div>
+<details class="info">
+<summary>补充：“之”字形遍历</summary>
+<p>可以认为是“层序遍历pro”：第0层（根节点）从右往左、第1层从左往右、第2层从右往左...，也就是说每层遍历完后都要改变一次遍历方向</p>
+<p>实现方法：用2个栈，一个存从左往右遍历的节点，一个存从右往左遍历的节点</p>
+</details>
+<p><strong>中序遍历(inorder traversal)</strong>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1">// Recursion</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="kt">void</span><span class="w"> </span><span class="nf">inorder</span><span class="p">(</span><span class="n">tree_ptr</span><span class="w"> </span><span class="n">tree</span><span class="p">)</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="p">{</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">        </span><span class="n">inorder</span><span class="p">(</span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">Left</span><span class="p">);</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">        </span><span class="n">visit</span><span class="p">(</span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">Element</span><span class="p">);</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">        </span><span class="n">inorder</span><span class="p">(</span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">Right</span><span class="p">);</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="p">}</span>
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="c1">// Iteration(using stack)</span>
+</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="kt">void</span><span class="w"> </span><span class="nf">iter_inorder</span><span class="p">(</span><span class="n">tree_ptr</span><span class="w"> </span><span class="n">tree</span><span class="p">)</span>
+</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a><span class="p">{</span>
+</span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a><span class="w">    </span><span class="n">Stack</span><span class="w"> </span><span class="n">S</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CreateStack</span><span class="p">(</span><span class="n">MAX_SIZE</span><span class="p">);</span>
+</span><span id="__span-7-16"><a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(;;)</span>
+</span><span id="__span-7-17"><a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-7-18"><a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a><span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(;</span><span class="w"> </span><span class="n">tree</span><span class="p">;</span><span class="w"> </span><span class="n">tree</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">)</span>
+</span><span id="__span-7-19"><a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a><span class="w">            </span><span class="n">Push</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span><span class="w"> </span><span class="n">S</span><span class="p">);</span>
+</span><span id="__span-7-20"><a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a><span class="w">        </span><span class="n">tree</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Top</span><span class="p">(</span><span class="n">S</span><span class="p">);</span>
+</span><span id="__span-7-21"><a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a><span class="w">        </span><span class="n">Pop</span><span class="p">(</span><span class="n">S</span><span class="p">);</span>
+</span><span id="__span-7-22"><a id="__codelineno-7-22" name="__codelineno-7-22" href="#__codelineno-7-22"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">tree</span><span class="p">)</span>
+</span><span id="__span-7-23"><a id="__codelineno-7-23" name="__codelineno-7-23" href="#__codelineno-7-23"></a><span class="w">            </span><span class="k">break</span><span class="p">;</span>
+</span><span id="__span-7-24"><a id="__codelineno-7-24" name="__codelineno-7-24" href="#__codelineno-7-24"></a><span class="w">        </span><span class="n">visit</span><span class="p">(</span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">Element</span><span class="p">);</span>
+</span><span id="__span-7-25"><a id="__codelineno-7-25" name="__codelineno-7-25" href="#__codelineno-7-25"></a><span class="w">        </span><span class="n">tree</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tree</span><span class="o">-&gt;</span><span class="n">Right</span><span class="p">;</span>
+</span><span id="__span-7-26"><a id="__codelineno-7-26" name="__codelineno-7-26" href="#__codelineno-7-26"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-7-27"><a id="__codelineno-7-27" name="__codelineno-7-27" href="#__codelineno-7-27"></a><span class="p">}</span>
+</span></code></pre></div></p>
+<div class="admonition note">
+<p class="admonition-title">注</p>
+<ul>
+<li>知道<u>前序或者后序遍历</u> + 中序遍历，可以确定唯一的一棵树</li>
+<li>知道前序遍历 + 后序遍历，一般情况下无法确定树的形状</li>
+</ul>
+</div>
+<h3 id="threaded-binary-trees">Threaded Binary Trees<a class="headerlink" href="#threaded-binary-trees" title="Permanent link">⚓︎</a></h3>
+<p>对于一般的二叉树，它的叶子节点的左右指针指向<code>NULL</code>，这浪费了很多空间。而<strong>线索二叉树(threaded binary trees)</strong>很好地利用了闲置的节点，具体规则如下：</p>
+<ul>
+<li>如果<code>Tree-&gt;Left</code>为空，将它指向<strong>中序</strong>遍历中的<strong>前一个节点</strong></li>
+<li>如果<code>Tree-&gt;Right</code>为空，将它指向<strong>中序</strong>遍历中的<strong>后一个节点</strong></li>
+<li>有一个<strong>头节点</strong>(dummy node)，使得<em>最左边</em>和<em>最右边</em>孩子分别指向这个节点的左右孩子</li>
+</ul>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1">// 结构声明</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">ThreadedTreeNode</span><span class="w"> </span><span class="o">*</span><span class="n">PtrTo</span><span class="w"> </span><span class="n">ThreadedNode</span><span class="p">;</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">PtrToThreadedNode</span><span class="w"> </span><span class="n">ThreadedTree</span><span class="p">;</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="k">struct</span><span class="w"> </span><span class="nc">ThreadedTreeNode</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="p">{</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">LeftThread</span><span class="p">;</span><span class="w">      </span><span class="c1">// if it is True, then Left</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">    </span><span class="n">TreadedTree</span><span class="w"> </span><span class="n">Left</span><span class="p">;</span><span class="w">    </span><span class="c1">// is a thread, not a child ptr</span>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">    </span><span class="n">ElementType</span><span class="w"> </span><span class="n">Element</span><span class="p">;</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">RightThread</span><span class="p">;</span><span class="w">     </span><span class="c1">// if it is True, then Right</span>
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="w">    </span><span class="n">ThreadedTree</span><span class="w"> </span><span class="n">Right</span><span class="p">;</span><span class="w">  </span><span class="c1">// is a thread, not a child ptr</span>
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>🌰</p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="Images/C4/Quicker_20240320_190628.png" width="80%" style="margin: 0 auto;">
+</div>
+
+<p>可以看到，我们从dummy head node出发，重复“左线索 <span class="arithmatex">\(\rightarrow\)</span> 右线索 <span class="arithmatex">\(\rightarrow\)</span> 左线索 <span class="arithmatex">\(\rightarrow\)</span> 右线索 <span class="arithmatex">\(\dots\)</span>”的遍历过程，最后回到dummy head node，这样我们可以对整棵树进行一趟完整的中序遍历</p>
+<details class="note" open="open">
+<summary>注</summary>
+<p>虽然这里默认使用中序遍历的定义，但我们也可以将其修改成<strong>前序</strong>或者<strong>后序</strong>遍历的版本(比如对于后序遍历版的线索二叉树，某个节点空出来的左子树指向它在后序遍历中的前一个节点，空出来的右子树指向它在后序遍历中的后一个节点)</p>
+</details>
+<h3 id="special-cases">Special Cases<a class="headerlink" href="#special-cases" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li><strong>歪斜二叉树(skewed binary trees)</strong>：</li>
+</ul>
+<div style="text-align: center; margin-top: 15px;">
+<img src="Images/C4/Quicker_20240327_190541.png" width="40%" style="margin: 0 auto;">
+</div>
+
+<ul>
+<li><strong>完全二叉树(complete binary trees)</strong>：</li>
+</ul>
+<div style="text-align: center; margin-top: 15px;">
+<img src="Images/C4/Quicker_20240327_190602.png" width="40%" style="margin: 0 auto;">
+</div>
+
+<h3 id="properties">Properties<a class="headerlink" href="#properties" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li>
+<p>第<span class="arithmatex">\(i\)</span>层(<span class="arithmatex">\(i \ge 1\)</span>)最多拥有<span class="arithmatex">\(2^{i - 1}\)</span>个节点；深度为<span class="arithmatex">\(k\)</span>的二叉树最多有<span class="arithmatex">\(2^k - 1\)</span>个节点(<span class="arithmatex">\(k \ge 1\)</span>)</p>
+</li>
+<li>
+<p>对于非空的二叉树，<span class="arithmatex">\(n_0 = n_2 + 1\)</span>，其中<span class="arithmatex">\(n_0\)</span>是叶子节点个数，<span class="arithmatex">\(n_2\)</span>是度为2的节点个数</p>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">证明</p>
+<blockquote>
+<p>注：该证明可推广至n叉树</p>
+</blockquote>
+<ul>
+<li>令<span class="arithmatex">\(n_1\)</span>为度为1的节点，<span class="arithmatex">\(n\)</span>为节点总数，则<span class="arithmatex">\(n = n_0 + n_1 + n_2\)</span></li>
+<li>令<span class="arithmatex">\(B\)</span>为边的条数，则<span class="arithmatex">\(n = B + 1\)</span>，而且不难发现<span class="arithmatex">\(B = n_1 + 2n_2\)</span></li>
+<li>联立上述三个方程，可以得到<span class="arithmatex">\(n_0 = n_2 + 1\)</span>(<span class="arithmatex">\(n_1\)</span>被消掉了)</li>
+</ul>
+</div>
+<p>推论1：对于一棵完全二叉树，易知<span class="arithmatex">\(n_1 = 0\)</span>或<span class="arithmatex">\(1\)</span>。由<span class="arithmatex">\(n_0 = n_2 + 1\)</span>知:</p>
+<ul>
+<li>完全二叉树有奇数个节点时，<span class="arithmatex">\(n_1 = 0\)</span></li>
+<li>完全二叉树有偶数个节点时，<span class="arithmatex">\(n_1 = 1\)</span></li>
+</ul>
+<p><img alt="⭐" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2b50.svg" title=":star:" />推论2：<span class="arithmatex">\(n\)</span>叉树的叶子节点个数与<span class="arithmatex">\(n_1\)</span>无关，且<span class="arithmatex">\(n_0 = \sum\limits_{i = 2}^n (i - 1)n_i + 1\)</span></p>
+<h2 id="binary-search-tree">Binary Search Tree<a class="headerlink" href="#binary-search-tree" title="Permanent link">⚓︎</a></h2>
+<h3 id="definition">Definition<a class="headerlink" href="#definition" title="Permanent link">⚓︎</a></h3>
+<p><strong>二叉搜索树(Binary Search Tree)</strong>是一棵二叉树，它可以是空树，如果非空，则遵循以下规则：</p>
+<ul>
+<li>
+<p>每个节点有一个整数的<strong>键(key)</strong>，每个键互不相同</p>
+<blockquote>
+<p>这里这么定义是为了方便后面的操作，实际上键不必是整数，键也可以相同</p>
+</blockquote>
+</li>
+<li>
+<p>非空<strong>左</strong>子树的键必须<strong>小于</strong>根上的键</p>
+</li>
+<li>非空<strong>右</strong>子树的键必须<strong>大于</strong>根上的键</li>
+<li>左右子树也是二叉搜索树</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">注</p>
+<ul>
+<li>对二叉搜索树的<strong>同一层</strong>从左往右遍历，得到的键的序列是<strong>有序</strong>的</li>
+<li>通过对二叉搜索树的<strong>中序遍历</strong>得到的元素序列是<strong>有序</strong>的</li>
+<li>给出一棵二叉搜索树的<strong>前序</strong><em>或者</em><strong>后序</strong>遍历，根据二叉搜索树的定义，我们应当可以还原出这棵树</li>
+<li>对于一棵<em>完全</em>的二叉搜索树，它<strong>最小</strong>的节点一定是<strong>叶子节点</strong>，最大的就不一定了</li>
+</ul>
+</div>
+<h3 id="adt">ADT<a class="headerlink" href="#adt" title="Permanent link">⚓︎</a></h3>
+<p>对象：拥有0个或多个元素的有限有序表</p>
+<p>运算：</p>
+<ul>
+<li><code>SearchTree MakeEmpty(SearchTree T);</code></li>
+<li><code>Position Find(ElementType X, SearchTree T);</code></li>
+<li><code>Position FindMin(SearchTree T);</code></li>
+<li><code>Position FindMax(SearchTree T);</code></li>
+<li><code>SearchTree Insert(ElementType X, SearchTree T);</code> <img alt="⭐" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2b50.svg" title=":star:" /></li>
+<li><code>SearchTree Delete(ElementType X, SearchTree T);</code> <img alt="⭐" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2b50.svg" title=":star:" /></li>
+<li><code>ElementType Retrieve(Position P);</code></li>
+</ul>
+<h3 id="implementations">Implementations<a class="headerlink" href="#implementations" title="Permanent link">⚓︎</a></h3>
+<details class="code">
+<summary>预先处理</summary>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1">// 声明部分</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="cp">#ifndef _Tree_H</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="k">struct</span><span class="w"> </span><span class="nc">TreeNode</span><span class="p">;</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Position</span><span class="p">;</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">TreeNode</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">SearchTree</span><span class="p">;</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="n">SearchTree</span><span class="w"> </span><span class="nf">MakeEmpty</span><span class="p">(</span><span class="n">SearchTree</span><span class="w"> </span><span class="n">T</span><span class="p">);</span>
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="n">Position</span><span class="w"> </span><span class="nf">Find</span><span class="p">(</span><span class="n">ElementType</span><span class="w"> </span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">SearchTree</span><span class="w"> </span><span class="n">T</span><span class="p">);</span>
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="n">Position</span><span class="w"> </span><span class="nf">FindMin</span><span class="p">(</span><span class="n">SearchTree</span><span class="w"> </span><span class="n">T</span><span class="p">);</span>
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="n">Position</span><span class="w"> </span><span class="nf">FindMax</span><span class="p">(</span><span class="n">SearchTree</span><span class="w"> </span><span class="n">T</span><span class="p">);</span>
+</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="n">SearchTree</span><span class="w"> </span><span class="nf">Insert</span><span class="p">(</span><span class="n">ElementType</span><span class="w"> </span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">SearchTree</span><span class="w"> </span><span class="n">T</span><span class="p">);</span>
+</span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="n">SearchTree</span><span class="w"> </span><span class="nf">Delete</span><span class="p">(</span><span class="n">ElementType</span><span class="w"> </span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">SearchTree</span><span class="w"> </span><span class="n">T</span><span class="p">);</span>
+</span><span id="__span-9-14"><a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a><span class="n">ElementType</span><span class="w"> </span><span class="nf">Retrieve</span><span class="p">(</span><span class="n">Position</span><span class="w"> </span><span class="n">P</span><span class="p">);</span>
+</span><span id="__span-9-15"><a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a>
+</span><span id="__span-9-16"><a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a><span class="cp">#endif </span><span class="c1">// _Tree_H</span>
+</span><span id="__span-9-17"><a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a>
+</span><span id="__span-9-18"><a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a><span class="c1">// 写在执行文件部分</span>
+</span><span id="__span-9-19"><a id="__codelineno-9-19" name="__codelineno-9-19" href="#__codelineno-9-19"></a><span class="k">struct</span><span class="w"> </span><span class="nc">TreeNode</span>
+</span><span id="__span-9-20"><a id="__codelineno-9-20" name="__codelineno-9-20" href="#__codelineno-9-20"></a><span class="p">{</span>
+</span><span id="__span-9-21"><a id="__codelineno-9-21" name="__codelineno-9-21" href="#__codelineno-9-21"></a><span class="w">    </span><span class="n">ElementType</span><span class="w"> </span><span class="n">Element</span><span class="p">;</span>
+</span><span id="__span-9-22"><a id="__codelineno-9-22" name="__codelineno-9-22" href="#__codelineno-9-22"></a><span class="w">    </span><span class="n">SearchTree</span><span class="w"> </span><span class="n">Left</span><span class="p">;</span>
+</span><span id="__span-9-23"><a id="__codelineno-9-23" name="__codelineno-9-23" href="#__codelineno-9-23"></a><span class="w">    </span><span class="n">SearchTree</span><span class="w"> </span><span class="n">Right</span><span class="p">;</span>
+</span><span id="__span-9-24"><a id="__codelineno-9-24" name="__codelineno-9-24" href="#__codelineno-9-24"></a><span class="p">}</span>
+</span><span id="__span-9-25"><a id="__codelineno-9-25" name="__codelineno-9-25" href="#__codelineno-9-25"></a>
+</span><span id="__span-9-26"><a id="__codelineno-9-26" name="__codelineno-9-26" href="#__codelineno-9-26"></a><span class="c1">// 初始化处理(用到后序遍历)，时间复杂度O(logN)</span>
+</span><span id="__span-9-27"><a id="__codelineno-9-27" name="__codelineno-9-27" href="#__codelineno-9-27"></a><span class="n">SearchTree</span><span class="w"> </span><span class="n">MakeEmpty</span><span class="p">(</span><span class="n">SearchTree</span><span class="w"> </span><span class="n">T</span><span class="p">)</span>
+</span><span id="__span-9-28"><a id="__codelineno-9-28" name="__codelineno-9-28" href="#__codelineno-9-28"></a><span class="p">{</span>
+</span><span id="__span-9-29"><a id="__codelineno-9-29" name="__codelineno-9-29" href="#__codelineno-9-29"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span>
+</span><span id="__span-9-30"><a id="__codelineno-9-30" name="__codelineno-9-30" href="#__codelineno-9-30"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-9-31"><a id="__codelineno-9-31" name="__codelineno-9-31" href="#__codelineno-9-31"></a><span class="w">        </span><span class="n">MakeEmpty</span><span class="p">(</span><span class="n">T</span><span class="o">-&gt;</span><span class="n">Left</span><span class="p">);</span>
+</span><span id="__span-9-32"><a id="__codelineno-9-32" name="__codelineno-9-32" href="#__codelineno-9-32"></a><span class="w">        </span><span class="n">MakeEmpty</span><span class="p">(</span><span class="n">T</span><span class="o">-&gt;</span><span class="n">Right</span><span class="p">);</span>
+</span><span id="__span-9-33"><a id="__codelineno-9-33" name="__codelineno-9-33" href="#__codelineno-9-33"></a><span class="w">        </span><span class="n">free</span><span class="p">(</span><span class="n">T</span><span class="p">);</span>
+</span><span id="__span-9-34"><a id="__codelineno-9-34" name="__codelineno-9-34" href="#__codelineno-9-34"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-9-35"><a id="__codelineno-9-35" name="__codelineno-9-35" href="#__codelineno-9-35"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
+</span><span id="__span-9-36"><a id="__codelineno-9-36" name="__codelineno-9-36" href="#__codelineno-9-36"></a><span class="p">}</span>
+</span></code></pre></div>
+</details>
+<h4 id="find">Find<a class="headerlink" href="#find" title="Permanent link">⚓︎</a></h4>
+<details class="code">
+<summary>代码实现（递归版）</summary>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">Position</span><span class="w"> </span><span class="nf">Find</span><span class="p">(</span><span class="n">ElementType</span><span class="w"> </span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">SearchTree</span><span class="w"> </span><span class="n">T</span><span class="p">)</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="p">{</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w"> </span><span class="c1">// not found in an empty tree</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">X</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">T</span><span class="o">-&gt;</span><span class="n">Element</span><span class="p">)</span><span class="w">  </span><span class="c1">// if smaller than root</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">Find</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="o">-&gt;</span><span class="n">Left</span><span class="p">);</span><span class="w">  </span><span class="c1">// search left subtree</span>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">X</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">T</span><span class="o">-&gt;</span><span class="n">Element</span><span class="p">)</span><span class="w">  </span><span class="c1">// if larger than root</span>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">Find</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="o">-&gt;</span><span class="n">Right</span><span class="p">);</span><span class="w">  </span><span class="c1">// search right subtree</span>
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="w">    </span><span class="k">else</span><span class="w">  </span><span class="c1">// if X == root</span>
+</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">T</span><span class="p">;</span><span class="w">  </span><span class="c1">// found</span>
+</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="p">}</span>
+</span></code></pre></div>
+</details>
+<ul>
+<li>时间复杂度<span class="arithmatex">\(T(N)\)</span>和空间复杂度<span class="arithmatex">\(S(N)\)</span>都等于<span class="arithmatex">\(O(d)\)</span>，其中<span class="arithmatex">\(d\)</span>为树<span class="arithmatex">\(X\)</span>的深度</li>
+<li>函数开始时应先判断树是否为空，如果少了这句，后面就会发生段错误（在不存在的树中获取元素，这是未定义的）</li>
+<li>这里的递归函数是<a href="3.html#function-calls"><strong>尾递归(tail recursions)</strong></a>，因此系统会自动将递归优化为循环</li>
+</ul>
+<details class="code">
+<summary>代码实现（迭代版）</summary>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">Position</span><span class="w"> </span><span class="nf">Iter_Find</span><span class="p">(</span><span class="n">ElementType</span><span class="w"> </span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">SearchTree</span><span class="w"> </span><span class="n">T</span><span class="p">)</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="p">{</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">X</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">T</span><span class="o">-&gt;</span><span class="n">Element</span><span class="p">)</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">T</span><span class="p">;</span><span class="w">  </span><span class="c1">// found</span>
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">X</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">T</span><span class="o">-&gt;</span><span class="n">Element</span><span class="p">)</span>
+</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="w">            </span><span class="n">T</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">T</span><span class="o">-&gt;</span><span class="n">Left</span><span class="p">;</span><span class="w">  </span><span class="c1">// move down along left path</span>
+</span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="w">        </span><span class="k">else</span>
+</span><span id="__span-11-10"><a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="w">            </span><span class="n">T</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">T</span><span class="o">-&gt;</span><span class="n">Right</span><span class="p">;</span><span class="w">  </span><span class="c1">// move down along right path</span>
+</span><span id="__span-11-11"><a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="c1">// end while-loop</span>
+</span><span id="__span-11-12"><a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w">  </span><span class="c1">// not found</span>
+</span><span id="__span-11-13"><a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a><span class="p">}</span>
+</span></code></pre></div>
+</details>
+<h4 id="findmin">FindMin<a class="headerlink" href="#findmin" title="Permanent link">⚓︎</a></h4>
+<details class="code">
+<summary>代码实现</summary>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">Position</span><span class="w"> </span><span class="nf">FindMin</span><span class="p">(</span><span class="n">SearchTree</span><span class="w"> </span><span class="n">T</span><span class="p">)</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="p">{</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w">  </span><span class="c1">// not found in an empty tree</span>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">T</span><span class="o">-&gt;</span><span class="n">Left</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w">  </span><span class="c1">// found left most</span>
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">T</span><span class="p">;</span>
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="w">    </span><span class="k">else</span>
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">FindMin</span><span class="p">(</span><span class="n">T</span><span class="o">-&gt;</span><span class="n">Left</span><span class="p">);</span><span class="w"> </span><span class="c1">// keep moving to left</span>
+</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="p">}</span>
+</span></code></pre></div>
+</details>
+<h4 id="findmax">FindMax<a class="headerlink" href="#findmax" title="Permanent link">⚓︎</a></h4>
+<details class="code">
+<summary>代码实现</summary>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">Position</span><span class="w"> </span><span class="nf">FindMax</span><span class="p">(</span><span class="n">SearchTree</span><span class="w"> </span><span class="n">T</span><span class="p">)</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="p">{</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="w">        </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">T</span><span class="o">-&gt;</span><span class="n">Right</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="w">            </span><span class="n">T</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">T</span><span class="o">-&gt;</span><span class="n">Right</span><span class="p">;</span><span class="w">  </span><span class="c1">// keep moving to find right most</span>
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">T</span><span class="p">;</span><span class="w">  </span><span class="c1">// return NULL or the right most</span>
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="p">}</span>
+</span></code></pre></div>
+</details>
+<p><code>FindMin()</code>和<code>FindMax</code>函数的时间复杂度均为<span class="arithmatex">\(O(d)\)</span>，<span class="arithmatex">\(d\)</span>为树的深度</p>
+<h4 id="insert">Insert<a class="headerlink" href="#insert" title="Permanent link">⚓︎</a></h4>
+<div class="admonition note">
+<p class="admonition-title">思路</p>
+<p>执行过程类似<code>Find</code></p>
+<ul>
+<li>如果找到了该节点，可以不做任何处理，也可以给它的计数器+1（如果节点有计数字段的话）</li>
+<li>否则将最后遇到的<strong>非空节点</strong>视为新节点的parent，然后将新节点插入<code>NULL</code>的位置上</li>
+</ul>
+</div>
+<details class="code">
+<summary>代码实现</summary>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="n">SearchTree</span><span class="w"> </span><span class="nf">Insert</span><span class="p">(</span><span class="n">ElementType</span><span class="w"> </span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">SearchTree</span><span class="w"> </span><span class="n">T</span><span class="p">)</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="p">{</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w">  </span><span class="c1">// Create and return a one-node tree</span>
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="w">        </span><span class="n">T</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">SearchTree</span><span class="p">)</span><span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">TreeNode</span><span class="p">));</span>
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span>
+</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="w">            </span><span class="n">FatalError</span><span class="p">(</span><span class="s">&quot;Out of space!!!&quot;</span><span class="p">);</span>
+</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="w">        </span><span class="k">else</span>
+</span><span id="__span-14-9"><a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="w">        </span><span class="p">{</span>
+</span><span id="__span-14-10"><a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="w">            </span><span class="n">T</span><span class="o">-&gt;</span><span class="n">Element</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">X</span><span class="p">;</span>
+</span><span id="__span-14-11"><a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a><span class="w">            </span><span class="n">T</span><span class="o">-&gt;</span><span class="n">Left</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">T</span><span class="o">-&gt;</span><span class="n">Right</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
+</span><span id="__span-14-12"><a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a><span class="w">        </span><span class="p">}</span>
+</span><span id="__span-14-13"><a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a><span class="w">    </span><span class="p">}</span><span class="w">  </span><span class="c1">// End create a one-node tree</span>
+</span><span id="__span-14-14"><a id="__codelineno-14-14" name="__codelineno-14-14" href="#__codelineno-14-14"></a><span class="w">    </span><span class="k">else</span>
+</span><span id="__span-14-15"><a id="__codelineno-14-15" name="__codelineno-14-15" href="#__codelineno-14-15"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-14-16"><a id="__codelineno-14-16" name="__codelineno-14-16" href="#__codelineno-14-16"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">X</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">T</span><span class="o">-&gt;</span><span class="n">Element</span><span class="p">)</span>
+</span><span id="__span-14-17"><a id="__codelineno-14-17" name="__codelineno-14-17" href="#__codelineno-14-17"></a><span class="w">            </span><span class="n">T</span><span class="o">-&gt;</span><span class="n">Left</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Insert</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="o">-&gt;</span><span class="n">Left</span><span class="p">);</span>
+</span><span id="__span-14-18"><a id="__codelineno-14-18" name="__codelineno-14-18" href="#__codelineno-14-18"></a><span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">X</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">T</span><span class="o">-&gt;</span><span class="n">Element</span><span class="p">)</span>
+</span><span id="__span-14-19"><a id="__codelineno-14-19" name="__codelineno-14-19" href="#__codelineno-14-19"></a><span class="w">            </span><span class="n">T</span><span class="o">-&gt;</span><span class="n">Right</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Insert</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="o">-&gt;</span><span class="n">Right</span><span class="p">);</span>
+</span><span id="__span-14-20"><a id="__codelineno-14-20" name="__codelineno-14-20" href="#__codelineno-14-20"></a><span class="w">        </span><span class="c1">// Else X is in the tree already, we&#39;ll do nothing</span>
+</span><span id="__span-14-21"><a id="__codelineno-14-21" name="__codelineno-14-21" href="#__codelineno-14-21"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-14-22"><a id="__codelineno-14-22" name="__codelineno-14-22" href="#__codelineno-14-22"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">T</span><span class="p">;</span><span class="w"> </span><span class="c1">// Don&#39;t forget this line!!</span>
+</span><span id="__span-14-23"><a id="__codelineno-14-23" name="__codelineno-14-23" href="#__codelineno-14-23"></a><span class="p">}</span>
+</span></code></pre></div>
+</details>
+<p>时间复杂度：<span class="arithmatex">\(O(d)\)</span></p>
+<div class="admonition question">
+<p class="admonition-title">思考</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">问题</label><label for="__tabbed_2_2">答案</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>可不可以这样简化一下插入函数——将函数返回类型改为<code>void</code>，然后在第一个<code>else</code>中不采用赋值语句，最后也不返回<code>T</code></p>
+</div>
+<div class="tabbed-block">
+<p>NO!!!</p>
+<p>如果最后没有在树中找到要插入的节点，那么就需要新建一棵子树。如果建完这棵树后没有返回，那么这棵子树的父节点无法与它建立联系，这棵子树与原来的树就是断开的，因此建了也等于白建。</p>
+</div>
+</div>
+</div>
+</div>
+<h4 id="delete">Delete<a class="headerlink" href="#delete" title="Permanent link">⚓︎</a></h4>
+<p>这是二叉搜索树中最难处理的部分。我们要处理有三种情况：</p>
+<ul>
+<li>叶子结点</li>
+<li>有一个孩子</li>
+<li><mark>有两个孩子</mark></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">具体分析</p>
+<p>其中前两种情况的实现较为简单，最后的情况较为复杂</p>
+<ul>
+<li>删除<strong>叶子节点</strong>：直接将它的父节点连接到空节点上</li>
+<li>删除<strong>度为1</strong>的节点：用该节点的子节点替换它自身</li>
+<li>
+<p>删除<strong>度为2</strong>的节点：</p>
+<ul>
+<li>
+<p>用该节点<strong>左子树的最大节点</strong>或<strong>右子树的最小节点</strong>（挑一种）替换它自身</p>
+<blockquote>
+<p>解释：以右子树最小节点为例，将其作为新的父节点，因为它既满足比左子树所有节点大（右子树的节点&gt;左子树的节点），又满足比新的右子树所有节点小（它原本就是右子树最小的节点）</p>
+</blockquote>
+</li>
+<li>
+<p>从子树中删除用来替换的节点</p>
+<blockquote>
+<p>注意用来替换的节点的度不超过1</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<details class="code">
+<summary>代码实现</summary>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="c1">// 这里删除度为2的节点时采用拿右子树最小节点替换的方法</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="n">SearchTree</span><span class="w"> </span><span class="nf">Delete</span><span class="p">(</span><span class="n">ElementType</span><span class="w"> </span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">SearchTree</span><span class="w"> </span><span class="n">T</span><span class="p">)</span>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="p">{</span>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="w">    </span><span class="n">Position</span><span class="w"> </span><span class="n">TmpCell</span><span class="p">;</span>
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span>
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="w">        </span><span class="n">Error</span><span class="p">(</span><span class="s">&quot;Element not found&quot;</span><span class="p">);</span>
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="w">    </span><span class="k">else</span>
+</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-15-9"><a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">X</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">T</span><span class="o">-&gt;</span><span class="n">ELement</span><span class="p">)</span><span class="w">  </span><span class="c1">// Go left</span>
+</span><span id="__span-15-10"><a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="w">            </span><span class="n">T</span><span class="o">-&gt;</span><span class="n">Left</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Delete</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="o">-&gt;</span><span class="n">Left</span><span class="p">);</span>
+</span><span id="__span-15-11"><a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a><span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">X</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">T</span><span class="o">-&gt;</span><span class="n">Element</span><span class="p">)</span><span class="w">  </span><span class="c1">// Go right</span>
+</span><span id="__span-15-12"><a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a><span class="w">            </span><span class="n">T</span><span class="o">-&gt;</span><span class="n">Right</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Delete</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="o">-&gt;</span><span class="n">Right</span><span class="p">);</span>
+</span><span id="__span-15-13"><a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a><span class="w">        </span><span class="k">else</span><span class="w">  </span><span class="c1">// Found element to be deleted</span>
+</span><span id="__span-15-14"><a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a><span class="w">        </span><span class="p">{</span>
+</span><span id="__span-15-15"><a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a><span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">T</span><span class="o">-&gt;</span><span class="n">Left</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">T</span><span class="o">-&gt;</span><span class="n">Right</span><span class="p">)</span><span class="w">  </span><span class="c1">// Two children</span>
+</span><span id="__span-15-16"><a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a><span class="w">            </span><span class="p">{</span><span class="w">  </span><span class="c1">// Replace with smallest in right subtree</span>
+</span><span id="__span-15-17"><a id="__codelineno-15-17" name="__codelineno-15-17" href="#__codelineno-15-17"></a><span class="w">                </span><span class="n">TmpCell</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FindMin</span><span class="p">(</span><span class="n">T</span><span class="o">-&gt;</span><span class="n">Right</span><span class="p">);</span>
+</span><span id="__span-15-18"><a id="__codelineno-15-18" name="__codelineno-15-18" href="#__codelineno-15-18"></a><span class="w">                </span><span class="n">T</span><span class="o">-&gt;</span><span class="n">Element</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TmpCell</span><span class="o">-&gt;</span><span class="n">Element</span><span class="p">;</span>
+</span><span id="__span-15-19"><a id="__codelineno-15-19" name="__codelineno-15-19" href="#__codelineno-15-19"></a><span class="w">                </span><span class="n">T</span><span class="o">-&gt;</span><span class="n">Right</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Delete</span><span class="p">(</span><span class="n">T</span><span class="o">-&gt;</span><span class="n">Element</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="o">-&gt;</span><span class="n">Right</span><span class="p">);</span>
+</span><span id="__span-15-20"><a id="__codelineno-15-20" name="__codelineno-15-20" href="#__codelineno-15-20"></a><span class="w">            </span><span class="p">}</span><span class="w">  </span><span class="c1">// End if </span>
+</span><span id="__span-15-21"><a id="__codelineno-15-21" name="__codelineno-15-21" href="#__codelineno-15-21"></a><span class="w">            </span><span class="k">else</span><span class="w">  </span><span class="c1">// One or zero child</span>
+</span><span id="__span-15-22"><a id="__codelineno-15-22" name="__codelineno-15-22" href="#__codelineno-15-22"></a><span class="w">            </span><span class="p">{</span>
+</span><span id="__span-15-23"><a id="__codelineno-15-23" name="__codelineno-15-23" href="#__codelineno-15-23"></a><span class="w">                </span><span class="n">TmpCell</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">T</span><span class="p">;</span>
+</span><span id="__span-15-24"><a id="__codelineno-15-24" name="__codelineno-15-24" href="#__codelineno-15-24"></a><span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">T</span><span class="o">-&gt;</span><span class="n">Left</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w">  </span><span class="c1">// Also handles 0 child</span>
+</span><span id="__span-15-25"><a id="__codelineno-15-25" name="__codelineno-15-25" href="#__codelineno-15-25"></a><span class="w">                    </span><span class="n">T</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">T</span><span class="o">-&gt;</span><span class="n">Right</span><span class="p">;</span>
+</span><span id="__span-15-26"><a id="__codelineno-15-26" name="__codelineno-15-26" href="#__codelineno-15-26"></a><span class="w">                </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">T</span><span class="o">-&gt;</span><span class="n">Right</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span>
+</span><span id="__span-15-27"><a id="__codelineno-15-27" name="__codelineno-15-27" href="#__codelineno-15-27"></a><span class="w">                    </span><span class="n">T</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">T</span><span class="o">-&gt;</span><span class="n">Left</span><span class="p">;</span>
+</span><span id="__span-15-28"><a id="__codelineno-15-28" name="__codelineno-15-28" href="#__codelineno-15-28"></a><span class="w">                </span><span class="n">free</span><span class="p">(</span><span class="n">TmpCell</span><span class="p">);</span><span class="w">  </span><span class="c1">// End else 1 or 0 child</span>
+</span><span id="__span-15-29"><a id="__codelineno-15-29" name="__codelineno-15-29" href="#__codelineno-15-29"></a><span class="w">            </span><span class="p">}</span>
+</span><span id="__span-15-30"><a id="__codelineno-15-30" name="__codelineno-15-30" href="#__codelineno-15-30"></a><span class="w">        </span><span class="p">}</span>
+</span><span id="__span-15-31"><a id="__codelineno-15-31" name="__codelineno-15-31" href="#__codelineno-15-31"></a><span class="w">    </span><span class="p">}</span><span class="w"> </span>
+</span><span id="__span-15-32"><a id="__codelineno-15-32" name="__codelineno-15-32" href="#__codelineno-15-32"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">T</span><span class="p">;</span>
+</span><span id="__span-15-33"><a id="__codelineno-15-33" name="__codelineno-15-33" href="#__codelineno-15-33"></a><span class="p">}</span>
+</span></code></pre></div>
+</details>
+<p>时间复杂度：<span class="arithmatex">\(O(h), h\)</span>是树的高度。显然，这种删除的操作效率不高</p>
+<p>改进方法：如果删除操作用的不多，可以采用<strong>lazy deletion</strong>的方法——为每个节点添加一个<code>flag</code>字段，来标记节点是否被删除。因此我们不必通过释放节点的空间的方式来删除节点；而且如果我们重新插入已经删除的节点，也不需要使用<code>malloc()</code>分配内存，从而提高程序的效率。</p>
+<h3 id="average-case-analysis">Average-Case Analysis<a class="headerlink" href="#average-case-analysis" title="Permanent link">⚓︎</a></h3>
+<p>通过计算发现，树的所有节点的平均深度为<span class="arithmatex">\(O(logN)\)</span>（证明过程见教材<span class="arithmatex">\(P_{108}\)</span>）</p>
+<p>二叉搜索树的大小取决于<strong>插入的顺序</strong>和<strong>删除</strong>操作</p>
+<ul>
+<li>插入：如果顺序不够随机（最坏的情况：升/降序），则树会<strong>退化</strong>成一个链表，因此<strong>最坏情况</strong>的时间复杂度为<span class="arithmatex">\(O(N)\)</span></li>
+<li>删除：以替换为右子树最小节点为例，过多的删除操作会导致右子树不断缩小，左子树的规模会大于右子树，破坏了树的平衡</li>
+</ul>
+
+  <hr>
+<div class="md-source-file">
+  <small>
+    
+      最后更新:
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime">2024年6月28日 17:37:04</span>
+      
+        <br>
+        创建日期:
+        <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime">2024年6月28日 17:37:04</span>
+      
+    
+  </small>
+</div>
+
+
+
+
+<p style="font-size: 30px;">评论区</p>
+<div>
+  如果有什么问题或想法，欢迎大家在下方留言~
+</div>
+<!-- Insert generated snippet here -->
+<script src="https://giscus.app/client.js"
+        data-repo="noughtq/notebook"
+        data-repo-id="R_kgDOMAb9Zg"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOMAb9Zs4CfmpP"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="preferred_color_scheme"
+        data-lang="zh-CN"
+        crossorigin="anonymous"
+        async>
+</script>
+  <!-- Synchronize Giscus theme with palette -->
+<script>
+  var giscus = document.querySelector("script[src*=giscus]")
+
+  // Set palette on initial load
+  var palette = __md_get("__palette")
+  if (palette && typeof palette.color === "object") {
+    var theme = palette.color.scheme === "slate"
+      ? "transparent_dark"
+      : "light"
+
+    // Instruct Giscus to set theme
+    giscus.setAttribute("data-theme", theme) 
+  }
+
+  // Register event handlers after documented loaded
+  document.addEventListener("DOMContentLoaded", function() {
+    var ref = document.querySelector("[data-md-component=palette]")
+    ref.addEventListener("change", function() {
+      var palette = __md_get("__palette")
+      if (palette && typeof palette.color === "object") {
+        var theme = palette.color.scheme === "slate"
+          ? "transparent_dark"
+          : "light"
+
+        // Instruct Giscus to change theme
+        var frame = document.querySelector(".giscus-frame")
+        frame.contentWindow.postMessage(
+          { giscus: { setConfig: { theme } } },
+          "https://giscus.app"
+        )
+      }
+    })
+  })
+</script>
+                
+
+<link rel="stylesheet" href="/stylesheet/counter.css">
+
+
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            回到页面顶部
+          </button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="页脚" >
+        
+          
+          <a href="3.html" class="md-footer__link md-footer__link--prev" aria-label="上一页: Chap 3 Lists, Stacks, and Queues" rel="prev">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              <div class="md-ellipsis">
+                Chap 3 Lists, Stacks, and Queues
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="5.html" class="md-footer__link md-footer__link--next" aria-label="下一页: Chap 5 Hashing" rel="next">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              <div class="md-ellipsis">
+                Chap 5 Hashing
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2024 NoughtQ
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/noughtq" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.tabs", "navigation.top", "navigation.footer", "navigation.indexes", "navigation.tracking", "navigation.prune", "content.code.copy", "content.code.annotate"], "search": "../../../assets/javascripts/workers/search.a264c092.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.4e0fa4ba.min.js"></script>
+      
+        <script src="../../../javascripts/katex.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+      
+    
+  </body>
+</html>
