@@ -1,57 +1,34 @@
 # Welcome to my notebook!
 
-??? abstract "About me"
+!!! abstract "About me"
 
-    + 23级CS专业的ZJUer
+    + 23级的ZJUer和CSer，毕业堪忧:crying_cat_face:
     + 没了...
+
 
 !!! info "阅读前须知"
 
-    + 本笔记目前还没有完全搭建好，而且我还不是特别熟悉mkdocs-material的全部功能，再加上前端知识学的不怎么扎实，所以目前网站比较简陋
-    + 由于本笔记是从obsidian上转移过来的，而且当初在做笔记的时候没有经过较为认真的思考，所以会出现一些措辞和内容上的错误。我会在期末补天的时候尽量进行修改。若带来不适的阅读体验，请见谅:confounded:
-    
-    预计在这个暑假完成网站的整体布置:fist:
+    + 目前只存放了我大一春夏学期的笔记，之后根据学业进度继续更新我的笔记。~~可能会补上大一秋冬的笔记吧...~~
+    + 之后还会加入自学笔记、实用工具、学习经验等板块，敬请期待（~~画大饼~~）
+    + 若发现笔记内容有误，或有自己的想法，欢迎大家在评论区留言！（我不一定能够及时回复，请见谅）
+
+    其实，我更认同将笔记**按照知识点分类整理**，这有助于将知识点连接成网，对知识的记忆更加深刻而持久。但是，鉴于笔者能力有限，目前就主要按照课程进行分类，之后若有时间和精力的话再打算重新整理笔记。
 
 ### Table of Contents
 
 {{ BEGIN_TOC }}
 
     - 数学相关:
-      - 微积分: notebooks/calculus/
-      - 离散数学: notebooks/dm/
+      - 微积分（甲）[note]: notebooks/calculus/
+      - 离散数学及其应用[note]: notebooks/dm/
     - 算法相关:
-      - 数据结构基础: notebooks/fds/
+      - 数据结构基础[note]: notebooks/fds/
     - 硬件相关: 
-      - 数字逻辑设计: notebooks/dld/
+      - 数字逻辑设计[note]: notebooks/dld/
 
 {{ END_TOC }}
 
-??? success "目标"
 
-    **ZJU笔记**
-
-    - [x] 微积分（甲）II的笔记
-    - [x] 离散数学
-    - [ ] 数据结构基础
-    - [x] 数字逻辑设计
-
-    **自学笔记(预计暑假完成)**
-
-    - [ ] CS61A
-    - [ ] CS61B
-    - [ ] others(maybe)
-
-    **学习经验**
-
-    - [ ] 大一整个学期的学习经验
-    - [ ] markdown书写规范
-
-    **工具**
-
-    - [ ] shell命令
-    - [ ] git
-    - [ ] vim
-    - [ ] others(maybe)
 
 
 
