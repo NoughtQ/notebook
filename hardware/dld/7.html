@@ -1,0 +1,2622 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="NoughtQ">
+      
+      
+        <link rel="canonical" href="https://notebook.noughtq.top/hardware/dld/7.html">
+      
+      
+        <link rel="prev" href="6.html">
+      
+      
+        <link rel="next" href="verilog.html">
+      
+      
+      <link rel="icon" href="../../assets/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.27">
+    
+    
+      
+        <title>Chap 7 Memory Basics - NoughtQ的笔记本</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.6543a935.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=JetBrains+Mono,+LXGW+WenKai+Screen+GB+Screen:300,300i,400,400i,700,700i%7CJetBrains+Mono,+Consolas,+LXGW+WenKai+Screen+GB+Screen:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"JetBrains Mono, LXGW WenKai Screen GB Screen";--md-code-font:"JetBrains Mono, Consolas, LXGW WenKai Screen GB Screen"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/toc_extra.css">
+    
+      <link rel="stylesheet" href="../../stylesheet/extra.css">
+    
+      <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
+    
+      <link rel="stylesheet" href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css">
+    
+      <link rel="stylesheet" href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#chap-7-memory-basics" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../.." title="NoughtQ的笔记本" class="md-header__button md-logo" aria-label="NoughtQ的笔记本" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.05 9H7.06V6h1.99V4.03H7.06v-1c0-1.11.89-1.99 1.99-1.99h5.98V8l2.47-1.5L20 8V1.04h1c1.05 0 2 .96 2 1.99V17c0 1.03-.95 2-2 2H9.05c-1.05 0-1.99-.95-1.99-2v-1h1.99v-2H7.06v-3h1.99V9M1 18h2v-3H1v-2h2v-3H1V8h2V5h2v3H3v2h2v3H3v2h2v3H3v2h2v1h16v2H5a2 2 0 0 1-2-2v-1H1v-2Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            NoughtQ的笔记本
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Chap 7 Memory Basics
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefer-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Dark Mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Dark Mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3 3.19.09m3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95 2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefer-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Light Mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Light Mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5c-.84 0-1.65.15-2.39.42L12 2M3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29L3.34 7m.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14L3.36 17M20.65 7l-1.77 3.79a7.023 7.023 0 0 0-2.38-4.15l4.15.36m-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29L20.64 17M12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44L12 22Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/noughtq/notebook" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    NoughtQ/Notebook
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../index.html" class="md-tabs__link">
+          
+  
+    
+  
+  主页
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../math/index.html" class="md-tabs__link">
+          
+  
+    
+  
+  数学相关
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../lang/index.html" class="md-tabs__link">
+          
+  
+    
+  
+  语言
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../algorithms/index.html" class="md-tabs__link">
+          
+  
+    
+  
+  算法相关
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../index.html" class="md-tabs__link">
+          
+  
+    
+  
+  硬件相关
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../sec/ctf-101/index.html" class="md-tabs__link">
+          
+  
+    
+  
+  信息安全
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../misc/index.html" class="md-tabs__link">
+          
+  
+    
+  
+  杂项
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../tools/index.html" class="md-tabs__link">
+          
+  
+    
+  
+  工具
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="NoughtQ的笔记本" class="md-nav__button md-logo" aria-label="NoughtQ的笔记本" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.05 9H7.06V6h1.99V4.03H7.06v-1c0-1.11.89-1.99 1.99-1.99h5.98V8l2.47-1.5L20 8V1.04h1c1.05 0 2 .96 2 1.99V17c0 1.03-.95 2-2 2H9.05c-1.05 0-1.99-.95-1.99-2v-1h1.99v-2H7.06v-3h1.99V9M1 18h2v-3H1v-2h2v-3H1V8h2V5h2v3H3v2h2v3H3v2h2v3H3v2h2v1h16v2H5a2 2 0 0 1-2-2v-1H1v-2Z"/></svg>
+
+    </a>
+    NoughtQ的笔记本
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/noughtq/notebook" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    NoughtQ/Notebook
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../index.html" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    主页
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../math/index.html" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    数学相关
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../lang/index.html" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    语言
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../algorithms/index.html" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    算法相关
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+      
+        
+        
+      
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../index.html" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    硬件相关
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            硬件相关
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" checked>
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="index.html" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    数字逻辑设计
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            数字逻辑设计
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="1.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 1 Digital Systems and Information
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="2.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 2 Combinational Logic Circuit
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="3.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 3 Combinational Logical Design
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="4.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 4 Sequential Circuits
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="5.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 5 Digital HardWare Implementation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="6.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 6 Registers and Register Transfers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Chap 7 Memory Basics
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="7.html" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Chap 7 Memory Basics
+  </span>
+  
+
+      </a>
+      
+        
+  
+    
+  
+  <nav class="md-nav md-nav--secondary " aria-label="目录">
+    
+    
+    
+      
+    
+    
+      <label class="md-nav__title" for="__toc">
+        <span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+      <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+        
+          <li class="md-nav__item">
+  <a href="#memory-definitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Memory Definitions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Memory Definitions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#memory-organization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Memory Organization
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#memory-block-diagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      Memory Block Diagram
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#basic-memory-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Basic Memory Operations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#memory-operation-timing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Memory Operation Timing
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#random-access-memoryram" class="md-nav__link">
+    <span class="md-ellipsis">
+      Random Access Memory(RAM)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#static-ramsram-integrated-circuits" class="md-nav__link">
+    <span class="md-ellipsis">
+      Static RAM(SRAM) Integrated Circuits
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Static RAM(SRAM) Integrated Circuits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bit-slice" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bit Slice
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#coincident-selection" class="md-nav__link">
+    <span class="md-ellipsis">
+      Coincident Selection
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#array-of-sram-ics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Array of SRAM ICs
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Array of SRAM ICs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#word-extension" class="md-nav__link">
+    <span class="md-ellipsis">
+      Word Extension
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bit-extension" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bit Extension
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dynamic-ramdram-integrated-circuits" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dynamic RAM(DRAM) Integrated Circuits
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dynamic RAM(DRAM) Integrated Circuits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bit-slice_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bit Slice
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#refreshing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Refreshing
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dram-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      DRAM Types
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="DRAM Types">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#synchronous-dram" class="md-nav__link">
+    <span class="md-ellipsis">
+      Synchronous DRAM
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#double-data-rate-synchronous-dram" class="md-nav__link">
+    <span class="md-ellipsis">
+      Double Data Rate Synchronous DRAM
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rambus-dramrdram" class="md-nav__link">
+    <span class="md-ellipsis">
+      RAMBUS DRAM(RDRAM)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#arrays-of-dram-integrated-circuits" class="md-nav__link">
+    <span class="md-ellipsis">
+      Arrays of DRAM Integrated Circuits
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    
+  </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="verilog.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Verilog
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../co/index.html" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    计算机组成
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../sec/ctf-101/index.html" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    信息安全
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../misc/index.html" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    杂项
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../tools/index.html" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    工具
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+  
+    
+  
+  <nav class="md-nav md-nav--secondary " aria-label="目录">
+    
+    
+    
+      
+    
+    
+      <label class="md-nav__title" for="__toc">
+        <span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+      <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+        
+          <li class="md-nav__item">
+  <a href="#memory-definitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Memory Definitions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Memory Definitions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#memory-organization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Memory Organization
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#memory-block-diagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      Memory Block Diagram
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#basic-memory-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Basic Memory Operations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#memory-operation-timing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Memory Operation Timing
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#random-access-memoryram" class="md-nav__link">
+    <span class="md-ellipsis">
+      Random Access Memory(RAM)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#static-ramsram-integrated-circuits" class="md-nav__link">
+    <span class="md-ellipsis">
+      Static RAM(SRAM) Integrated Circuits
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Static RAM(SRAM) Integrated Circuits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bit-slice" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bit Slice
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#coincident-selection" class="md-nav__link">
+    <span class="md-ellipsis">
+      Coincident Selection
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#array-of-sram-ics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Array of SRAM ICs
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Array of SRAM ICs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#word-extension" class="md-nav__link">
+    <span class="md-ellipsis">
+      Word Extension
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bit-extension" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bit Extension
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dynamic-ramdram-integrated-circuits" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dynamic RAM(DRAM) Integrated Circuits
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dynamic RAM(DRAM) Integrated Circuits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bit-slice_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bit Slice
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#refreshing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Refreshing
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dram-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      DRAM Types
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="DRAM Types">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#synchronous-dram" class="md-nav__link">
+    <span class="md-ellipsis">
+      Synchronous DRAM
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#double-data-rate-synchronous-dram" class="md-nav__link">
+    <span class="md-ellipsis">
+      Double Data Rate Synchronous DRAM
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rambus-dramrdram" class="md-nav__link">
+    <span class="md-ellipsis">
+      RAMBUS DRAM(RDRAM)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#arrays-of-dram-integrated-circuits" class="md-nav__link">
+    <span class="md-ellipsis">
+      Arrays of DRAM Integrated Circuits
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    
+  </nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+
+                  
+
+  
+  
+
+
+<h1 id="chap-7-memory-basics">Chap 7 Memory Basics<a class="headerlink" href="#chap-7-memory-basics" title="Permanent link">⚓︎</a></h1>
+<div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
+<p><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8V2m6.78 1a.69.69 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38-2.5-2.5Z"/></svg></span> 约 4764 个字 <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3L12.5 13Z"/></svg></span> 预计阅读时间 24 分钟</p>
+</div>
+<details class="abstract">
+<summary>核心知识</summary>
+<ul>
+<li>内存的基本知识</li>
+<li>SRAM<ul>
+<li>位切片</li>
+<li>重合选择</li>
+<li>字扩展和位扩展</li>
+</ul>
+</li>
+<li>DRAM<ul>
+<li>位切片</li>
+<li>刷新</li>
+<li>类型：SDRAM、DDR SDRAM、RDRAM</li>
+</ul>
+</li>
+</ul>
+</details>
+<h2 id="memory-definitions">Memory Definitions<a class="headerlink" href="#memory-definitions" title="Permanent link">⚓︎</a></h2>
+<ul>
+<li>
+<p><strong>内存(memory)</strong>：由一组存储单元和其他必要电路组成，主要有以下两大类：</p>
+<ul>
+<li><strong>随机访问存储器(random access memory, RAM)</strong>：数据能够在任何单元之间进行传输，且不依赖于特定的单元的一种内存</li>
+<li><strong>只读存储器(read-only memory, ROM)</strong>：具体内容见<a href="5.html#read-only-memory">Chap 5</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="memory-organization">Memory Organization<a class="headerlink" href="#memory-organization" title="Permanent link">⚓︎</a></h3>
+<p><strong>内存组织(memory organization)</strong>反映了内存中的数据是如何通过地址被访问的。</p>
+<ul>
+<li><strong>内存数据(memory data)</strong>：在内存中被存储的或被访问的1位或一组位</li>
+<li><strong>内存地址(memory address)</strong>：用来识别特定内存元素的一组位</li>
+<li><strong>内存规模(memory size)</strong>：字数(即深度，与地址个数相关) <span class="arithmatex">\(\times\)</span> 位数(即宽度，每个字的位长度)，比如2K <span class="arithmatex">\(\times\)</span> 8，32M <span class="arithmatex">\(\times\)</span> 16</li>
+</ul>
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/C7/Quicker_20240524_201746.png" width="60%" style="margin: 0 auto;">
+</div>
+
+<div class="admonition note">
+<p class="admonition-title">内存的数据类型</p>
+<ul>
+<li><strong>位(bit)</strong>：单个二进制数字</li>
+<li><strong>字节(byte)</strong>：连续的8位数据</li>
+<li><strong>字(word)</strong>：一组二进制位，大小一般为内存访问数据的规模，通常是2的幂的倍数个byte，比如2 bytes, 4 bytes。可以用来表示一个数字，一条指令，一个或多个数字字母字符，或者二进制编码的信息等。<blockquote>
+<p>个人理解：1个字 <span class="arithmatex">\(\approx\)</span> 1个数据</p>
+</blockquote>
+</li>
+</ul>
+</div>
+<details class="info">
+<summary>历史上较为知名的计算机架构及其内存组织</summary>
+<ul>
+<li>PDP-8：使用12位地址访问<span class="arithmatex">\(2^{12}\)</span>个12位字</li>
+<li>IBM 360：使用24位地址访问<span class="arithmatex">\(2^{24}\)</span>个字节，或者<span class="arithmatex">\(2^{22}\)</span>个字</li>
+<li>Intel 8080：16位地址访问<span class="arithmatex">\(2^{16}\)</span>个字节</li>
+</ul>
+</details>
+<h3 id="memory-block-diagram">Memory Block Diagram<a class="headerlink" href="#memory-block-diagram" title="Permanent link">⚓︎</a></h3>
+<p><span class="arithmatex">\(2^k \times n\)</span>的内存单元：</p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/C7/Quicker_20240606_203945.png" width="50%" style="margin: 0 auto;">
+</div>
+
+<ul>
+<li>k表示<strong>地址线路(address lines)</strong>的宽度，通过译码器，可以得到<span class="arithmatex">\(2^k\)</span>个地址，每个地址指定一个特定的字</li>
+<li>n表示字的位宽，注意：<span class="arithmatex">\(2^k \ge n\)</span></li>
+<li><strong>读</strong>和<strong>写</strong>用到了单个<strong>控制线路(control lines)</strong>，它们是最简单的内存操作</li>
+<li>有些内存单元还包括<strong>芯片选择(chip select, CS)</strong> / <strong>芯片使能(chip enable, CE)</strong>：内存的使能输入</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">注</p>
+<p>我们常常会看到RAM的规模会用<span class="arithmatex">\(xK \times y\)</span>的表示法</p>
+<ul>
+<li>这里的<span class="arithmatex">\(xK\)</span>是指<span class="arithmatex">\(x Kb\)</span>大小的深度，那么地址线路个数为<span class="arithmatex">\(\log_2 x + 10\)</span>个</li>
+<li>这块RAM的容量为<span class="arithmatex">\(x \cdot y \cdot 1024\)</span> bit</li>
+</ul>
+</div>
+<p>🌰：<span class="arithmatex">\(1024 \times 16\)</span>的内存单元</p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/C7/Quicker_20240530_182221.png" width="60%" style="margin: 0 auto;">
+</div>
+<p>该内存具有1024个字(地址个数)，每个字的内容为16位</p>
+<h3 id="basic-memory-operations">Basic Memory Operations<a class="headerlink" href="#basic-memory-operations" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li><strong>内存操作(memory operations)</strong>：对内存数据的操作，通常是对一些数据元素的<strong>读(read)</strong>和<strong>写(write)</strong>的操作</li>
+</ul>
+<p>内存操作需要：</p>
+<ul>
+<li><strong>地址(address)</strong>：指明需要操作的内存位置，地址线路将这些信息带入内存中</li>
+<li><strong>数据(data)</strong>：需要写入或读出的数据</li>
+<li><strong>操作(operation)</strong>：传入内存并由控制信号指明类型的信息。典型的操作是<strong>读(read)</strong>和<strong>写(write)</strong>。</li>
+</ul>
+<details class="info">
+<summary>连接内存和CPU的总线</summary>
+<ul>
+<li><strong>地址总线(address bus)</strong>：指明内存位置</li>
+<li><strong>数据总线(data bus)</strong>：包含传入/出指定位置的数据</li>
+<li><strong>控制总线(control bus)</strong>：额外的控制，比如芯片选择、读/写……</li>
+</ul>
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="images/C7/Quicker_20240524_204717.png" width="70%" style="margin: 0 auto;">
+</div></p>
+</details>
+<ul>
+<li><strong>读</strong>：读取内存数据的操作，它的工作流程如下：<ul>
+<li>将想获取的字的二进制地址放入地址线路上</li>
+<li>激活“读”输入</li>
+</ul>
+</li>
+<li><strong>写</strong>：将数据写入内存的操作，它的工作流程如下：<ul>
+<li>将想获取的字的二进制地址放入地址线路上</li>
+<li>将必须存入内存的数据位放入数据输入线路上</li>
+<li>激活“写”输入</li>
+</ul>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">内存的控制输入</p>
+<ul>
+<li>芯片选择(Chip Select)：决定是否进行读或写的操作(使能信号)</li>
+<li>读/写(<span class="arithmatex">\(Read/\overline{Write}\)</span>)：指定特定的操作(读写二选一)</li>
+</ul>
+<p>功能表如下：
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/C7/Quicker_20240524_205425.png" width="60%" style="margin: 0 auto;">
+</div></p>
+<ul>
+<li>有时读和写的使能线路是一个带有精确时间信息的时钟(比如读取时钟(read clock)，写入频闪(write strobe))</li>
+<li>有时内存必须对完成操作进行响应</li>
+</ul>
+</div>
+<details class="info">
+<summary>异步RAM vs 同步RAM</summary>
+<ul>
+<li><strong>异步RAM</strong>不依赖外部时钟的状态，只要接收到指令就开始读写数据</li>
+<li><strong>同步RAM</strong>通过外部时钟进行同步，根据特定的时钟状态读写数据</li>
+</ul>
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="images/C7/Quicker_20240524_205708.png" width="40%" style="margin: 0 auto;">
+</div></p>
+</details>
+<h3 id="memory-operation-timing">Memory Operation Timing<a class="headerlink" href="#memory-operation-timing" title="Permanent link">⚓︎</a></h3>
+<p>多数基本内存是<em>异步的</em>，即没有外部时钟(但有内部时钟)，且受控制输入和地址控制。</p>
+<ul>
+<li>(读取)<strong>访问时间(access time)</strong>：从使用地址，到数据输出上数据出现之间的最大时间</li>
+<li><strong>写入周期时间(write cycle time)</strong>：从使用地址，到所有需要用来存储字的内存内部操作全部完成之间的最大时间</li>
+</ul>
+<p>CPU必须提供一个内存控制信号，使得它自身内部的时钟操作与内存的读写操作同步，这意味着内存的访问时间和写入周期时间，与CPU时钟周期的固定数值相关</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">读操作时序图</label><label for="__tabbed_1_2">写操作时序图</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="images/C7/Quicker_20240524_210014.png" width="70%" style="margin: 0 auto;">
+</div></p>
+</div>
+<div class="tabbed-block">
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="images/C7/Quicker_20240524_210040.png" width="70%" style="margin: 0 auto;">
+</div></p>
+<p>写操作的关键时间位于1-0-1脉冲的边沿处：</p>
+<ul>
+<li><strong>地址</strong>必须在1-0前的一段时间内<em>建立</em>起来，并且在0-1之后再消失，以防对其他地址的内容的干扰</li>
+<li><strong>数据</strong>必须在1-0前的一段时间内<em>建立</em>起来，并且在0-1之后再消失，确保正确写入</li>
+</ul>
+</div>
+</div>
+</div>
+<h2 id="random-access-memoryram">Random Access Memory(RAM)<a class="headerlink" href="#random-access-memoryram" title="Permanent link">⚓︎</a></h2>
+<p>RAM的类型：</p>
+<ul>
+<li><strong>静态(static)</strong>：信息被存储在<em>锁存器</em>内</li>
+<li><strong>动态(dynamic)</strong>：信息以<em>电荷</em>的形式被存储在<em>电容(capacitors)</em> 内，且用n型晶体管“访问”电容。由于电容会漏电，因此需要定期<em>刷新(refresh)</em> 电容的电荷</li>
+</ul>
+<details class="info">
+<summary>SRAM vs DRAM</summary>
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="images/C7/Quicker_20240529_171816.png" width="70%" style="margin: 0 auto;">
+</div></p>
+</details>
+<p>根据对电源的依赖性，我们也可以将内存分为以下两类：</p>
+<ul>
+<li><strong>易变的(volatile)</strong>：当电源切断时存储的信息丢失</li>
+<li><strong>不变的(non-volatile)</strong>：当电源切断时仍然保存信息</li>
+</ul>
+<p>内存阵列结构：我们可以把内存看作位的二维阵列，每一位用一个<strong>单元(cell)</strong> 存储，如下图所示：</p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/C7/Quicker_20240529_172114.png" width="70%" style="margin: 0 auto;">
+</div>
+
+<blockquote>
+<p>注：存储单元通常作为电子电路来设计的，而非逻辑电路。尽管如此，方便起见，我们还是使用逻辑模型描述</p>
+</blockquote>
+<h2 id="static-ramsram-integrated-circuits">Static RAM(SRAM) Integrated Circuits<a class="headerlink" href="#static-ramsram-integrated-circuits" title="Permanent link">⚓︎</a></h2>
+<p>SRAM的存储单元包括：</p>
+<ul>
+<li>SR 锁存器</li>
+<li>用于控制的选择输入</li>
+<li>双轨数据输入<span class="arithmatex">\(B\)</span>和<span class="arithmatex">\(\overline{B}\)</span></li>
+<li>双轨数据输出<span class="arithmatex">\(C\)</span>和<span class="arithmatex">\(\overline{C}\)</span></li>
+</ul>
+<p>图示：</p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/C7/Quicker_20240530_184546.png" width="60%" style="margin: 0 auto;">
+</div>
+
+<ul>
+<li>
+<p>输入：</p>
+<ul>
+<li>Select = 0：保持已被存储的内容</li>
+<li>Select = 1：存储内容取决于B和<span class="arithmatex">\(\overline{B}\)</span>的值</li>
+</ul>
+</li>
+<li>
+<p>输出：</p>
+<ul>
+<li>Select = 0：C = <span class="arithmatex">\(\overline{C}\)</span> = 0</li>
+<li>Select = 1：C为存储值，<span class="arithmatex">\(\overline{C}\)</span>为其补</li>
+</ul>
+</li>
+</ul>
+<h3 id="bit-slice">Bit Slice<a class="headerlink" href="#bit-slice" title="Permanent link">⚓︎</a></h3>
+<p>要利用RAM片构建RAM IC，我们需要：</p>
+<ul>
+<li>译码器：将n个地址线路译码为<span class="arithmatex">\(2^n\)</span>个字选择线路，用于挑选需要读取或写入的字</li>
+<li>数据输出上的三态门允许RAM IC能被结合为<span class="arithmatex">\(2^n\)</span>个字的RAM</li>
+</ul>
+<p>这种方法被称为RAM<strong>位切片(bit slice)</strong> ，下图展示了它的模型(以<span class="arithmatex">\(2^n \times 1\)</span> RAM为例)：</p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/C7/Quicker_20240529_173203.png" width="80%" style="margin: 0 auto;">
+</div>
+
+<p>构成：</p>
+<ul>
+<li>多个RAM单元</li>
+<li>
+<p>控制线路：</p>
+<ul>
+<li>
+<p>字选择(word select)：用于选择对哪一个RAM单元进行操作。<mark>同时只能选择一个单元</mark>，即只有一个单元对应的字选择输入为<code>1</code>，其余的字选择输入均为<code>0</code></p>
+<ul>
+<li>word select = <code>0</code>：单元锁存器的值不变</li>
+<li>word select = <code>1</code>：值被加载至锁存器</li>
+</ul>
+</li>
+<li>
+<p>位选择(bit select)：用于选择启用哪个位，在这里相当于整个<span class="arithmatex">\(2^k \times 1\)</span>的使能信号(因为整个RAM只有1位)</p>
+</li>
+<li>
+<p>读/写(<span class="arithmatex">\(Read/\overline{Write}\)</span>)</p>
+<ul>
+<li><span class="arithmatex">\(Read/\overline{Write}\)</span> = <code>0</code>：写操作</li>
+<li><span class="arithmatex">\(Read/\overline{Write}\)</span> = <code>1</code>：读操作</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>数据线路</p>
+<ul>
+<li>数据输入</li>
+<li>数据输出</li>
+</ul>
+</li>
+</ul>
+<p>🌰：<span class="arithmatex">\(16 \times 1\)</span> RAM</p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/C7/Quicker_20240530_190449.png" width="80%" style="margin: 0 auto;">
+</div>
+
+<p>与上面的模型略有不同：</p>
+<ul>
+<li>数据输出处用到了一个<strong>三态门</strong>，这样我们可以将RAM芯片的输出连在一起</li>
+<li>芯片选择(chip select)与RAM上的位选择接口相连，作为使能信号</li>
+</ul>
+<h3 id="coincident-selection">Coincident Selection<a class="headerlink" href="#coincident-selection" title="Permanent link">⚓︎</a></h3>
+<p>对于一个大型的内存阵列，我们需要更大的译码器，因此位线路上就会有更大的扇出，导致RAM的访问时间和写入周期时间延长，这会制约内存的扩展。</p>
+<p>一种有效的解决方法是<strong>重合选择(coincident selection)</strong>：用2个译码器构建一个二维的RAM阵列，它们分别负责横向和纵向的选择，这可以有效削减译码器的大小和扇出。</p>
+<p>在重合选择中：</p>
+<ul>
+<li>字选择 <span class="arithmatex">\(\rightarrow\)</span> <strong>行选择(row select)</strong></li>
+<li>位选择 <span class="arithmatex">\(\rightarrow\)</span> <strong>列选择(column select)</strong></li>
+</ul>
+<div class="admonition example">
+<p class="admonition-title">用 <span class="arithmatex">\(4 \times 1\)</span> RAM + 重合选择 实现RAM的扩展</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">用<span class="arithmatex">\(4 \times 4\)</span>的RAM单元阵列实现<span class="arithmatex">\(16 \times 1\)</span> RAM</label><label for="__tabbed_2_2">用<span class="arithmatex">\(4 \times 4\)</span>的RAM单元阵列实现<span class="arithmatex">\(8 \times 2\)</span> RAM</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="images/C7/Quicker_20240530_191301.png" width="80%" style="margin: 0 auto;">
+</div></p>
+<ul>
+<li>行译码器和列译码器均为2-4译码器</li>
+<li>地址的高2位通过<strong>字选择</strong>来选择行，低2位通过<strong>位选择</strong>来挑选列，从而找到特定的RAM单元</li>
+<li>
+<p>列译码器有一个作为使能信号的芯片选择输入：</p>
+<ul>
+<li>其值为0时，译码器的输出为0，因此不选择任何列</li>
+<li>其值为1时，可以访问RAM的特定位</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="tabbed-block">
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="images/C7/Quicker_20240530_191808.png" width="80%" style="margin: 0 auto;">
+</div></p>
+<ul>
+<li>行译码器为2-4译码器，而列译码器为1-2译码器</li>
+<li>地址的高2位挑选行，低1位挑选列(同时选中某2列，因为位宽为2)</li>
+<li>输入输出都是2 bit，数据输入0被传入第一、三个 <span class="arithmatex">\(4 \times 1\)</span> RAM，数据输入1被传入第二、四个 <span class="arithmatex">\(4 \times 1\)</span> RAM</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<details class="example">
+<summary>更复杂的例子</summary>
+<p>对于<span class="arithmatex">\(1K \times 1\)</span>的内存</p>
+<ul>
+<li>使用1个10-1024译码器，我们需要1024个10输入的与门</li>
+<li>使用2个5-32译码器，我们需要32 * 2 = 64个5输入的与门</li>
+</ul>
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="images/C7/Quicker_20240529_181205.png" width="70%" style="margin: 0 auto;">
+</div></p>
+</details>
+<h2 id="array-of-sram-ics">Array of SRAM ICs<a class="headerlink" href="#array-of-sram-ics" title="Permanent link">⚓︎</a></h2>
+<p>内存的容量是由地址宽度(<span class="arithmatex">\(\log_2\)</span>(字的数量))和位宽决定的，要想扩展内存，可以从下面两个角度考虑：</p>
+<ul>
+<li>地址空间扩展(地址位增加)——<strong>字扩展(word extension)</strong></li>
+<li>字的位宽扩展——<strong>位扩展(bit extension)</strong></li>
+</ul>
+<p>🌰：</p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/C7/Quicker_20240529_181523.png" width="60%" style="margin: 0 auto;">
+</div>
+
+<blockquote>
+<p>其实，在介绍重合选择的时候，我们已经实现了字扩展和位扩展，但上面的例子用到的只是小规模的RAM单元，对于更大型的RAM扩展，我们需要用下面的方法来实现。</p>
+</blockquote>
+<p>为了便于后面介绍RAM IC阵列，我们先给出<span class="arithmatex">\(64K \times 8\)</span> RAM的符号：</p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/C7/Quicker_20240529_182052.png" width="60%" style="margin: 0 auto;">
+</div>
+
+<blockquote>
+<p>注：输出部分的倒三角形表明使用了三态门，因此当CS = 0时，数据输出处于高阻抗(Hi-Z)状态(被禁用)；CS = 1时，数据输出被启用</p>
+</blockquote>
+<h3 id="word-extension">Word Extension<a class="headerlink" href="#word-extension" title="Permanent link">⚓︎</a></h3>
+<p>🌰：用<span class="arithmatex">\(64K \times 8\)</span> RAM构建<span class="arithmatex">\(256K \times 8\)</span> RAM</p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/C7/Quicker_20240529_182103.png" width="80%" style="margin: 0 auto;">
+</div>
+
+<ul>
+<li>输入数据、低位地址(即小RAM的全部地址，0-15)和读/写输入被传入每一个小的RAM</li>
+<li>高位地址(即扩展的RAM多出来的地址位，16-17)用一个<strong>译码器</strong>进行分配，用来挑选用哪个小的RAM；再由低位地址选择访问该RAM的哪个字</li>
+</ul>
+<details class="example">
+<summary>例题</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">问题</label><label for="__tabbed_3_2">答案</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="images/C7/Quicker_20240619_114656.png" width="80%" style="margin: 0 auto;">
+</div>
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/C7/Quicker_20240619_114708.png" width="80%" style="margin: 0 auto;">
+</div>  </p>
+</div>
+<div class="tabbed-block">
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="images/C7/Quicker_20240619_114846.png" width="80%" style="margin: 0 auto;">
+</div></p>
+</div>
+</div>
+</div>
+</details>
+<h3 id="bit-extension">Bit Extension<a class="headerlink" href="#bit-extension" title="Permanent link">⚓︎</a></h3>
+<p>🌰：用<span class="arithmatex">\(64K \times 8\)</span> RAM构建<span class="arithmatex">\(64K \times 16\)</span> RAM </p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/C7/Quicker_20240529_182518.png" width="80%" style="margin: 0 auto;">
+</div>
+
+<ul>
+<li>数据输入、数据输出均被分成两路8 bit信号，分别传输至两个的小RAM中</li>
+<li>这两个RAM接受相同的地址、芯片选择和读/写信号</li>
+</ul>
+<hr />
+<details class="info">
+<summary>Info</summary>
+<p>为了减少芯片引脚的数量，很多RAM ICs为数据输入和输出提供一个”公共站点(common terminal)“，我们认为这是<strong>双向的(bidirectional)</strong>，即：当<em>读</em>取数据时作为<em>输出</em>，当<em>写</em>入数据时作为<em>输入</em>。<strong>三态门</strong>便是一个不错的选择。</p>
+</details>
+<h2 id="dynamic-ramdram-integrated-circuits">Dynamic RAM(DRAM) Integrated Circuits<a class="headerlink" href="#dynamic-ramdram-integrated-circuits" title="Permanent link">⚓︎</a></h2>
+<p>DRAM单元的构成：</p>
+<ul>
+<li>晶体管T作为"开关"使用，用来控制外部输入信号B和电容C</li>
+<li>电容C用于存储数据，当电容充满电时表示<code>1</code>，电容没有电时表示<code>0</code></li>
+</ul>
+<p>由于电容会慢慢漏电，所以需要定期<strong>刷新(refresh)</strong>电容，这样才能保证数据不会丢失，因此这种RAM被认为是“动态的”。</p>
+<p>符号：</p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/C7/Quicker_20240529_183148.png" width="50%" style="margin: 0 auto;">
+</div>
+
+<p>DRAM单元的逻辑模型(左下)以及与水压控制装置的类比(右)</p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/C7/Quicker_20240529_183335.png" width="70%" style="margin: 0 auto;">
+</div>
+
+<p>基本操作：</p>
+<ul>
+<li>
+<p>写：如上图(d)表示写入高电平，(e)表示写入低电平</p>
+</li>
+<li>
+<p>读：如上图(f)表示读取高电平，(g)表示读取低电平</p>
+</li>
+</ul>
+<details class="info">
+<summary>sense amplifier</summary>
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="images/C7/Quicker_20240529_183905.png" width="50%" style="margin: 0 auto;">
+</div></p>
+</details>
+<p>观察上面的图(f)和图(g)，不难发现每次读操作都会稍微改变电容中存储的电荷量，这就是所谓“<strong>毁灭性的读取(destructive read)</strong>“：读取内存数据后，原来的内容被删除。下面的折线图直观反映该结果。</p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/C7/Quicker_20240529_184027.png" width="60%" style="margin: 0 auto;">
+</div>
+
+<p>因此对于每一操作，都要进行<strong>复原(restore)</strong>操作，也就是<strong>刷新</strong>，将电容中的电荷量恢复至读取前的水平。</p>
+<h3 id="bit-slice_1">Bit Slice<a class="headerlink" href="#bit-slice_1" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li>如下图所示，DRAM的位切片与SRAM的<a href="#bit-slice">位切片</a>本质上没有多大区别</li>
+<li>但是DRAM位切片的输出多了一个<strong>感测放大器</strong>，从而将电荷量的微小变化转换成变化明显的数字信号</li>
+<li>B, C和感测放大器输出被连接在一起(三态门)，以防“毁灭性的读取”发生</li>
+<li>由于DRAM结构简单，成本更低，因此相比SRAM被更加广泛地应用于大型内存中</li>
+</ul>
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/C7/Quicker_20240529_184515.png" width="80%" style="margin: 0 auto;">
+</div>
+
+<p>大型DRAM的框图：</p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/C7/Quicker_20240529_185058.png" width="80%" style="margin: 0 auto;">
+</div>
+
+<ul>
+<li>为了减少引脚的数量，DRAM地址通常被分为连续的两部分：<em>先</em>是<em>行</em>地址，<em>后</em>为<em>列</em>地址。这是因为：用来执行行选择的行地址需要在列地址之前使用(列地址需要根据行选择的结果读取数据)<blockquote>
+<p>这里类似SRAM中<a href="#coincident-selection">重合选择</a>的思想</p>
+</blockquote>
+</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">误区</p>
+<p>先看一些例题</p>
+<details class="example" open="open">
+<summary>例题</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><div class="tabbed-labels"><label for="__tabbed_4_1">例1</label><label for="__tabbed_4_2">例2</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="tabbed-set tabbed-alternate" data-tabs="5:2"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><input id="__tabbed_5_2" name="__tabbed_5" type="radio" /><div class="tabbed-labels"><label for="__tabbed_5_1">问题</label><label for="__tabbed_5_2">答案</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>a DRAM has 15 address lines and 32 data lines, its maximum capacity is ____ Bytes.</p>
+</div>
+<div class="tabbed-block">
+<p><span class="arithmatex">\(2^{32}\)</span> Byte</p>
+<p>分析：</p>
+<ul>
+<li>总地址线路 = 行地址 + 列地址 = 15 + 15 = 30</li>
+<li>总容量 = <span class="arithmatex">\(\dfrac{2^{\text{总地址线路}} \times 32}{8} = 2^{32}\)</span> Byte</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="tabbed-block">
+<div class="tabbed-set tabbed-alternate" data-tabs="6:2"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio" /><input id="__tabbed_6_2" name="__tabbed_6" type="radio" /><div class="tabbed-labels"><label for="__tabbed_6_1">问题</label><label for="__tabbed_6_2">答案</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="images/C7/Quicker_20240619_115052.png" width="80%" style="margin: 0 auto;">
+</div>  </p>
+</div>
+<div class="tabbed-block">
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="images/C7/Quicker_20240619_115104.png" width="80%" style="margin: 0 auto;">
+</div>  </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</details>
+<p>事实上，通过将地址分为连续的2部分(行地址 + 列地址，它们都是原地址的“副本”)，相当于将原来的地址线路条数“翻倍”了，从而有效减少地址线路的条数</p>
+</div>
+<ul>
+<li>用寄存器保存来自读取或写入周期的行/列地址</li>
+<li><strong>行地址选通(row address strobe)</strong><span class="arithmatex">\(\overline{RAS}\)</span>：行地址寄存器的加载信号</li>
+<li><strong>列地址选通(column address strobe)</strong><span class="arithmatex">\(\overline{CAS}\)</span>：列地址寄存器的加载信号</li>
+<li>以及输出使能<span class="arithmatex">\(\overline{OE}\)</span>，它们均为<u>低电平活跃</u></li>
+<li><em>寄存器控制器(refresh controller)</em>和<em>寄存器计数器(refresh counter)</em>模块负责实现刷新功能</li>
+</ul>
+<details class="info">
+<summary>DRAM的访问顺序</summary>
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="images/C7/Quicker_20240529_185306.png" width="80%" style="margin: 0 auto;">
+</div></p>
+</details>
+<div class="admonition note">
+<p class="admonition-title">DRAM的时序图</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="7:2"><input checked="checked" id="__tabbed_7_1" name="__tabbed_7" type="radio" /><input id="__tabbed_7_2" name="__tabbed_7" type="radio" /><div class="tabbed-labels"><label for="__tabbed_7_1">读取</label><label for="__tabbed_7_2">写入</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="images/C7/Quicker_20240529_185452.png" width="80%" style="margin: 0 auto;">
+</div></p>
+</div>
+<div class="tabbed-block">
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="images/C7/Quicker_20240529_185526.png" width="80%" style="margin: 0 auto;">
+</div></p>
+</div>
+</div>
+</div>
+</div>
+<h3 id="refreshing">Refreshing<a class="headerlink" href="#refreshing" title="Permanent link">⚓︎</a></h3>
+<div class="admonition note">
+<p class="admonition-title">三种刷新方式</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="8:3"><input checked="checked" id="__tabbed_8_1" name="__tabbed_8" type="radio" /><input id="__tabbed_8_2" name="__tabbed_8" type="radio" /><input id="__tabbed_8_3" name="__tabbed_8" type="radio" /><div class="tabbed-labels"><label for="__tabbed_8_1"><strong>只刷新RAS(RAS-only refresh)(仅访问行，不访问列)</strong></label><label for="__tabbed_8_2"><strong>RAS刷新前的CAS(CAS before RAS refresh)</strong></label><label for="__tabbed_8_3"><strong>隐蔽刷新(hidden refresh)</strong></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<ul>
+<li>RAS被激活，一个行地址(<strong>刷新地址</strong>)用于DRAM；CAS不动</li>
+<li>DRAM在内部读取一行，并放大读取数据。由于CAS被禁用，没有数据被传到输出引脚上</li>
+<li>缺点：需要额外的外部逻辑设备来连续生成行地址</li>
+</ul>
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="images/C7/Quicker_20240529_190209.png" width="70%" style="margin: 0 auto;">
+</div></p>
+</div>
+<div class="tabbed-block">
+<ul>
+<li>DRAM有自己的刷新逻辑——地址计数器。当序列用于CAS和RAS上，内部刷新逻辑生成一个地址，并刷新对应的单元</li>
+<li>每个周期后，地址计数器会自增</li>
+<li>内存控制器只需发出信号</li>
+</ul>
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="images/C7/Quicker_20240529_190501.png" width="70%" style="margin: 0 auto;">
+</div></p>
+</div>
+<div class="tabbed-block">
+<ul>
+<li>伴随正常的读取或写入，CAS = 0，RAS按周期变化，有效执行第二种刷新方法。在这种刷新方法中，之前读取的输出数据依旧合法，因此认为刷新是隐蔽的</li>
+<li>缺点：花费时间太长，导致后续读写操作的延迟</li>
+</ul>
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="images/C7/Quicker_20240529_190733.png" width="70%" style="margin: 0 auto;">
+</div></p>
+</div>
+</div>
+</div>
+</div>
+<p>刷新模式：</p>
+<ul>
+<li><strong>爆发模式(burst mode)</strong>：停止工作，刷新所有数据</li>
+</ul>
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/C7/Quicker_20240529_191006.png" width="60%" style="margin: 0 auto;">
+</div>
+
+<ul>
+<li><strong>分布模式(distributed mode)</strong>：间隔一段时间刷新，从而避免长时间的内存阻塞，这种刷新方式更加常用</li>
+</ul>
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/C7/Quicker_20240529_191123.png" width="60%" style="margin: 0 auto;">
+</div>
+
+<h2 id="dram-types">DRAM Types<a class="headerlink" href="#dram-types" title="Permanent link">⚓︎</a></h2>
+<p>类型：</p>
+<ul>
+<li>同步DRAM(<strong>SDRAM</strong>)：DRAM + clock，实现同步</li>
+<li>双倍数据率SDRAM(<strong>DDR</strong> SDRAM)：在SDRAM的基础上，同时利用上升沿和下降沿读取数据</li>
+<li>RAMBUS&reg; DRAM(<strong>RDRAM</strong>)：用相对更窄的总线来实现极高的内存访问速度</li>
+</ul>
+<p><strong>爆发读取(burst read)</strong>：高速缓存从DRAM读取数据时，总是一次性读取一串相邻的字，这样可以达到更快的内存访问速度。</p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/C7/Quicker_20240529_192121.png" width="50%" style="margin: 0 auto;">
+</div>
+
+<h3 id="synchronous-dram">Synchronous DRAM<a class="headerlink" href="#synchronous-dram" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li>所有的信号与<strong>外部时钟(external clock)</strong> 关联<ul>
+<li>使时间与其他系统(比如CPU)的匹配更加精确</li>
+<li>同步寄存器出现于地址输入、数据输入和输出中</li>
+</ul>
+</li>
+<li>爆发且有方向的读取和写入访问：<ul>
+<li><strong>列地址计数器(column address counter)</strong>：用来为将随时钟周期传输的内部数据分配地址</li>
+<li>计数器的上限：address + burst length - 1</li>
+<li><strong>爆发(读取)长度(burst length)</strong></li>
+</ul>
+</li>
+<li>一种用户可编程模式的寄存器<ul>
+<li>CAS潜伏(latency)，爆发(读取)长度、爆发类型</li>
+</ul>
+</li>
+</ul>
+<p>🌰：16MB SDRAM的框图</p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/C7/Quicker_20240530_200226.png" width="70%" style="margin: 0 auto;">
+</div>
+
+<p>SDRAM的时序图：</p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/C7/Quicker_20240529_192937.png" width="70%" style="margin: 0 auto;">
+</div>
+
+<blockquote>
+<p>注：这里的例子和时序图我理解的不是很透彻，推荐看<a href="https://note.isshikih.top/cour_note/D2QD_DigitalDesign/Chap07/#sdram">修佬の解释</a></p>
+</blockquote>
+<p><strong>内存带宽(memory bandwidth)</strong>：内存的速度——数据读取或存入的最大速率。单位一般为MB/s或GB/s。SDRAM的内存带宽与爆发大小(burst size)相关</p>
+<details class="example" open="open">
+<summary>例题</summary>
+<ul>
+<li>内存数据路径宽度：1B</li>
+<li>内存时钟周期：7.5ns</li>
+<li>等待时间(从应用行地址开始，直到第一个可用的字出现的时间)：4个周期</li>
+</ul>
+<div class="tabbed-set tabbed-alternate" data-tabs="9:2"><input checked="checked" id="__tabbed_9_1" name="__tabbed_9" type="radio" /><input id="__tabbed_9_2" name="__tabbed_9" type="radio" /><div class="tabbed-labels"><label for="__tabbed_9_1">爆发读取长度：8B</label><label for="__tabbed_9_2">爆发读取长度：2048B</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<ul>
+<li>读取周期：(4 + 8) * 7.5 = 90ns</li>
+<li>内存带宽：8 / (90 * <span class="arithmatex">\(10^{-9}\)</span>) = 88.89 MB/s</li>
+</ul>
+</div>
+<div class="tabbed-block">
+<ul>
+<li>读取周期：(4 + 2048) * 7.5 = 15390ns</li>
+<li>内存带宽：2048 / (15390 * <span class="arithmatex">\(10^{-9}\)</span>) = 133.07 MB/s</li>
+</ul>
+</div>
+</div>
+</div>
+</details>
+<h3 id="double-data-rate-synchronous-dram">Double Data Rate Synchronous DRAM<a class="headerlink" href="#double-data-rate-synchronous-dram" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li>在时钟两侧的边沿均可传输数据</li>
+<li>提供每个周期内2个数据字的传输速率</li>
+</ul>
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/C7/Quicker_20240529_193847.png" width="60%" style="margin: 0 auto;">
+</div>
+
+<p>🌰：</p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/C7/Quicker_20240529_193936.png" width="60%" style="margin: 0 auto;">
+</div>
+
+<h3 id="rambus-dramrdram">RAMBUS DRAM(RDRAM)<a class="headerlink" href="#rambus-dramrdram" title="Permanent link">⚓︎</a></h3>
+<blockquote>
+<p>注：这块内容仅做了解即可</p>
+</blockquote>
+<ul>
+<li>在RDRAM ICs与连至处理器的内存总线之间的连接中使用<strong>基于包的总线(packet-based bus)</strong></li>
+<li>总线包括：<ul>
+<li>3位行地址总线</li>
+<li>5位列地址总线</li>
+<li>16或18位(用于错误纠正)数据总线</li>
+</ul>
+</li>
+<li>总线是同步的，在时钟两侧的边沿均可传输</li>
+<li>每个<strong>包(packet)</strong> 在4个时钟周期内提供8次传输，这意味着：<ul>
+<li>12位的行地址包</li>
+<li>20位的列地址包</li>
+<li>128或144位的数据包</li>
+</ul>
+</li>
+<li>RDRAM利用多个内存库，允许用不同的行地址对内存进行同时访问</li>
+<li>通过精密的电路设计，可以提高时钟频率，从而大大提高内存访问速度</li>
+</ul>
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/C7/Quicker_20240529_194738.png" width="80%" style="margin: 0 auto;">
+</div>
+
+<p>🌰：16 MB RDRAM的时序图</p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/C7/Quicker_20240530_200406.png" width="80%" style="margin: 0 auto;">
+</div>
+
+<h2 id="arrays-of-dram-integrated-circuits">Arrays of DRAM Integrated Circuits<a class="headerlink" href="#arrays-of-dram-integrated-circuits" title="Permanent link">⚓︎</a></h2>
+<p>DRAM的阵列与SRAM类似，除了多了一个称为<strong>DRAM控制器(DRAM controller)</strong> 的IC</p>
+<ul>
+<li>将地址分为行地址和列地址，并为它们的使用计时</li>
+<li>提供<span class="arithmatex">\(\overline{RAS}\)</span>和<span class="arithmatex">\(\overline{CAS}\)</span>，并为它们的使用计时</li>
+<li>在要求的间隔内执行刷新操作</li>
+<li>为系统的剩余部分提供状态信号(表明内存是否是处于活跃状态，或者是否在执行刷新操作)</li>
+</ul>
+<p>DRAM组织：</p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="images/C7/Quicker_20240529_195130.png" width="70%" style="margin: 0 auto;">
+</div>
+
+
+
+
+
+
+
+  
+    
+  
+  
+    
+  
+
+
+  <aside class="md-source-file">
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="最后更新">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1-2.1-2M12.5 7v5.2l4 2.4-1 1L11 13V7h1.5M11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2v1.8Z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime">2024年7月5日 10:19:41</span>
+  </span>
+
+    
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="创建日期">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3h-2Z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime">2024年7月5日 10:19:41</span>
+  </span>
+
+    
+    
+    
+  </aside>
+
+
+
+
+<p style="font-size: 30px;">评论区</p>
+<div>
+  如果有什么问题或想法，欢迎大家在下方留言~
+</div>
+<!-- Insert generated snippet here -->
+<script src="https://giscus.app/client.js"
+        data-repo="noughtq/notebook"
+        data-repo-id="R_kgDOMAb9Zg"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOMAb9Zs4CfmpP"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="preferred_color_scheme"
+        data-lang="zh-CN"
+        crossorigin="anonymous"
+        async>
+</script>
+  <!-- Synchronize Giscus theme with palette -->
+<script>
+  var giscus = document.querySelector("script[src*=giscus]")
+
+  // Set palette on initial load
+  var palette = __md_get("__palette")
+  if (palette && typeof palette.color === "object") {
+    var theme = palette.color.scheme === "slate"
+      ? "transparent_dark"
+      : "light"
+
+    // Instruct Giscus to set theme
+    giscus.setAttribute("data-theme", theme) 
+  }
+
+  // Register event handlers after documented loaded
+  document.addEventListener("DOMContentLoaded", function() {
+    var ref = document.querySelector("[data-md-component=palette]")
+    ref.addEventListener("change", function() {
+      var palette = __md_get("__palette")
+      if (palette && typeof palette.color === "object") {
+        var theme = palette.color.scheme === "slate"
+          ? "transparent_dark"
+          : "light"
+
+        // Instruct Giscus to change theme
+        var frame = document.querySelector(".giscus-frame")
+        frame.contentWindow.postMessage(
+          { giscus: { setConfig: { theme } } },
+          "https://giscus.app"
+        )
+      }
+    })
+  })
+</script>
+                
+
+<link rel="stylesheet" href="/stylesheet/counter.css">
+
+
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="页脚" >
+        
+          
+          <a href="6.html" class="md-footer__link md-footer__link--prev" aria-label="上一页: Chap 6 Registers and Register Transfers">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              <div class="md-ellipsis">
+                Chap 6 Registers and Register Transfers
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="verilog.html" class="md-footer__link md-footer__link--next" aria-label="下一页: Verilog">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              <div class="md-ellipsis">
+                Verilog
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2024 NoughtQ
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/noughtq" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://blog.noughtq.top" target="_blank" rel="noopener" title="blog.noughtq.top" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19.199 24C19.199 13.467 10.533 4.8 0 4.8V0c13.165 0 24 10.835 24 24h-4.801zM3.291 17.415a3.3 3.3 0 0 1 3.293 3.295A3.303 3.303 0 0 1 3.283 24C1.47 24 0 22.526 0 20.71s1.475-3.294 3.291-3.295zM15.909 24h-4.665c0-6.169-5.075-11.245-11.244-11.245V8.09c8.727 0 15.909 7.184 15.909 15.91z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.top", "navigation.footer", "navigation.indexes", "navigation.tracking", "navigation.prune", "content.code.copy", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.ad660dcc.min.js"></script>
+      
+        <script src="../../javascripts/katex.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+      
+    
+  </body>
+</html>
