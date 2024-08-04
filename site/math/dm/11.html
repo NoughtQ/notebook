@@ -1,0 +1,3066 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="NoughtQ">
+      
+      
+        <link rel="canonical" href="https://notebook.noughtq.top/math/dm/11.html">
+      
+      
+        <link rel="prev" href="10.html">
+      
+      
+        <link rel="next" href="Glossary.html">
+      
+      
+      <link rel="icon" href="../../assets/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.27">
+    
+    
+      
+        <title>Chap 11 Trees - NoughtQ的笔记本</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.6543a935.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=JetBrains+Mono,+LXGW+WenKai+Screen+GB+Screen:300,300i,400,400i,700,700i%7CJetBrains+Mono,+Consolas,+LXGW+WenKai+Screen+GB+Screen:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"JetBrains Mono, LXGW WenKai Screen GB Screen";--md-code-font:"JetBrains Mono, Consolas, LXGW WenKai Screen GB Screen"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/toc_extra.css">
+    
+      <link rel="stylesheet" href="../../stylesheet/extra.css">
+    
+      <link rel="stylesheet" href="../../stylesheet/fold_toc.css">
+    
+      <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
+    
+      <link rel="stylesheet" href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css">
+    
+      <link rel="stylesheet" href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#chap-11-trees" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../.." title="NoughtQ的笔记本" class="md-header__button md-logo" aria-label="NoughtQ的笔记本" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.05 9H7.06V6h1.99V4.03H7.06v-1c0-1.11.89-1.99 1.99-1.99h5.98V8l2.47-1.5L20 8V1.04h1c1.05 0 2 .96 2 1.99V17c0 1.03-.95 2-2 2H9.05c-1.05 0-1.99-.95-1.99-2v-1h1.99v-2H7.06v-3h1.99V9M1 18h2v-3H1v-2h2v-3H1V8h2V5h2v3H3v2h2v3H3v2h2v3H3v2h2v1h16v2H5a2 2 0 0 1-2-2v-1H1v-2Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            NoughtQ的笔记本
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Chap 11 Trees
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefer-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Dark Mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Dark Mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3 3.19.09m3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95 2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefer-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Light Mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Light Mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5c-.84 0-1.65.15-2.39.42L12 2M3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29L3.34 7m.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14L3.36 17M20.65 7l-1.77 3.79a7.023 7.023 0 0 0-2.38-4.15l4.15.36m-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29L20.64 17M12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44L12 22Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/noughtq/notebook" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    NoughtQ/Notebook
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../index.html" class="md-tabs__link">
+          
+  
+    
+  
+  🏫主页
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../index.html" class="md-tabs__link">
+          
+  
+    
+  
+  📊数学相关
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../lang/index.html" class="md-tabs__link">
+          
+  
+    
+  
+  🔡语言
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../algorithms/index.html" class="md-tabs__link">
+          
+  
+    
+  
+  📝算法相关
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../hardware/index.html" class="md-tabs__link">
+          
+  
+    
+  
+  💻硬件相关
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../sec/ctf-101/index.html" class="md-tabs__link">
+          
+  
+    
+  
+  🛡️信息安全
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../misc/index.html" class="md-tabs__link">
+          
+  
+    
+  
+  🗃️杂项
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../tools/index.html" class="md-tabs__link">
+          
+  
+    
+  
+  🛠️工具
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="NoughtQ的笔记本" class="md-nav__button md-logo" aria-label="NoughtQ的笔记本" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.05 9H7.06V6h1.99V4.03H7.06v-1c0-1.11.89-1.99 1.99-1.99h5.98V8l2.47-1.5L20 8V1.04h1c1.05 0 2 .96 2 1.99V17c0 1.03-.95 2-2 2H9.05c-1.05 0-1.99-.95-1.99-2v-1h1.99v-2H7.06v-3h1.99V9M1 18h2v-3H1v-2h2v-3H1V8h2V5h2v3H3v2h2v3H3v2h2v3H3v2h2v1h16v2H5a2 2 0 0 1-2-2v-1H1v-2Z"/></svg>
+
+    </a>
+    NoughtQ的笔记本
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/noughtq/notebook" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    NoughtQ/Notebook
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../index.html" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    🏫主页
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+        
+        
+      
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../index.html" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    📊数学相关
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            📊数学相关
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../calculus/index.html" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    🔮微积分（甲）
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../linear-algebra/index.html" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    🔮线性代数（甲）
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" checked>
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="index.html" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    💠离散数学及其应用
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            💠离散数学及其应用
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="1.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 1 The Foundations: Logic and Proofs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="2.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 2 Basic Structures: Sets, Functions, Sequences, Sums, and Matrices
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="3.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 3 Algorithms
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="4.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 4 Number Theory and Cryptography
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="5.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 5 Induction and Recursion
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="6.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 6 Counting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="8.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 8 Advanced Counting Techniques
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="9.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 9 Relations
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="10.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chap 10 Graph
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Chap 11 Trees
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="11.html" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Chap 11 Trees
+  </span>
+  
+
+      </a>
+      
+        
+  
+    
+  
+  <nav class="md-nav md-nav--secondary " aria-label="目录">
+    
+    
+    
+      
+    
+    
+      <label class="md-nav__title" for="__toc">
+        <span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+      <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+        
+          <li class="md-nav__item">
+  <a href="#introduction-to-trees" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction to Trees
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Introduction to Trees">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rooted-trees" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rooted Trees
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trees-as-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      Trees as Models
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#properties-of-trees" class="md-nav__link">
+    <span class="md-ellipsis">
+      Properties of Trees
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supplementsfrom-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      Supplements(from Exercises)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#applications-of-trees" class="md-nav__link">
+    <span class="md-ellipsis">
+      Applications of Trees
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Applications of Trees">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#binary-search-trees" class="md-nav__link">
+    <span class="md-ellipsis">
+      Binary Search Trees
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decision-trees" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision Trees
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prefix-codes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prefix Codes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#game-trees" class="md-nav__link">
+    <span class="md-ellipsis">
+      Game Trees
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supplementsfrom-exercises_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Supplements(from Exercises)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tree-traversal" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tree Traversal
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Tree Traversal">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#universal-address-systems" class="md-nav__link">
+    <span class="md-ellipsis">
+      Universal Address Systems
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#traversal-algorithms" class="md-nav__link">
+    <span class="md-ellipsis">
+      Traversal Algorithms
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#infix-prefix-and-postfix-notation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Infix, Prefix, and Postfix Notation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supplementsfrom-exercises_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Supplements(from Exercises)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spanning-trees" class="md-nav__link">
+    <span class="md-ellipsis">
+      Spanning Trees
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Spanning Trees">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#depth-first-search" class="md-nav__link">
+    <span class="md-ellipsis">
+      Depth-First Search
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#breadth-first-search" class="md-nav__link">
+    <span class="md-ellipsis">
+      Breadth-First Search
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backtracking-applications" class="md-nav__link">
+    <span class="md-ellipsis">
+      Backtracking Applications
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#depth-first-search-in-directed-graphs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Depth-First Search in Directed Graphs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supplementsfrom-exercises_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Supplements(from Exercises)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#minimum-spanning-trees" class="md-nav__link">
+    <span class="md-ellipsis">
+      Minimum Spanning Trees
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Minimum Spanning Trees">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#algorithms-for-minimum-spanning-trees" class="md-nav__link">
+    <span class="md-ellipsis">
+      Algorithms for Minimum Spanning Trees
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supplementsfrom-exercises_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Supplements(from Exercises)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supplements" class="md-nav__link">
+    <span class="md-ellipsis">
+      Supplements
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    
+  </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Glossary.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Glossary
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../pro-sta/index.html" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    概率论与数理统计
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../lang/index.html" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    🔡语言
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../algorithms/index.html" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    📝算法相关
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../hardware/index.html" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    💻硬件相关
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    
+  
+  
+    <a href="../../sec/ctf-101/index.html" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    🛡️信息安全
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+          
+        
+      
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../misc/index.html" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    🗃️杂项
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../tools/index.html" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    🛠️工具
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+  
+    
+  
+  <nav class="md-nav md-nav--secondary " aria-label="目录">
+    
+    
+    
+      
+    
+    
+      <label class="md-nav__title" for="__toc">
+        <span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+      <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+        
+          <li class="md-nav__item">
+  <a href="#introduction-to-trees" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction to Trees
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Introduction to Trees">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rooted-trees" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rooted Trees
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trees-as-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      Trees as Models
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#properties-of-trees" class="md-nav__link">
+    <span class="md-ellipsis">
+      Properties of Trees
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supplementsfrom-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      Supplements(from Exercises)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#applications-of-trees" class="md-nav__link">
+    <span class="md-ellipsis">
+      Applications of Trees
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Applications of Trees">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#binary-search-trees" class="md-nav__link">
+    <span class="md-ellipsis">
+      Binary Search Trees
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decision-trees" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision Trees
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prefix-codes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prefix Codes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#game-trees" class="md-nav__link">
+    <span class="md-ellipsis">
+      Game Trees
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supplementsfrom-exercises_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Supplements(from Exercises)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tree-traversal" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tree Traversal
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Tree Traversal">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#universal-address-systems" class="md-nav__link">
+    <span class="md-ellipsis">
+      Universal Address Systems
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#traversal-algorithms" class="md-nav__link">
+    <span class="md-ellipsis">
+      Traversal Algorithms
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#infix-prefix-and-postfix-notation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Infix, Prefix, and Postfix Notation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supplementsfrom-exercises_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Supplements(from Exercises)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spanning-trees" class="md-nav__link">
+    <span class="md-ellipsis">
+      Spanning Trees
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Spanning Trees">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#depth-first-search" class="md-nav__link">
+    <span class="md-ellipsis">
+      Depth-First Search
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#breadth-first-search" class="md-nav__link">
+    <span class="md-ellipsis">
+      Breadth-First Search
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backtracking-applications" class="md-nav__link">
+    <span class="md-ellipsis">
+      Backtracking Applications
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#depth-first-search-in-directed-graphs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Depth-First Search in Directed Graphs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supplementsfrom-exercises_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Supplements(from Exercises)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#minimum-spanning-trees" class="md-nav__link">
+    <span class="md-ellipsis">
+      Minimum Spanning Trees
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Minimum Spanning Trees">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#algorithms-for-minimum-spanning-trees" class="md-nav__link">
+    <span class="md-ellipsis">
+      Algorithms for Minimum Spanning Trees
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supplementsfrom-exercises_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Supplements(from Exercises)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supplements" class="md-nav__link">
+    <span class="md-ellipsis">
+      Supplements
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    
+  </nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+
+                  
+
+  
+  
+
+
+<h1 id="chap-11-trees">Chap 11 Trees<a class="headerlink" href="#chap-11-trees" title="Permanent link">⚓︎</a></h1>
+<div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
+<p><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8V2m6.78 1a.69.69 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38-2.5-2.5Z"/></svg></span> 约 6944 个字 <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3L12.5 13Z"/></svg></span> 预计阅读时间 35 分钟</p>
+</div>
+<details class="abstract">
+<summary>核心知识</summary>
+<ul>
+<li>基本概念</li>
+<li>应用：二分查找树、决策树、<strong>前缀树</strong></li>
+<li>树的遍历、表达式树</li>
+<li><strong>生成树</strong><ul>
+<li>DFS(回溯算法)、BFS</li>
+<li>最小生成树：Prim算法、Kruskal算法</li>
+</ul>
+</li>
+</ul>
+</details>
+<blockquote>
+<p>注：</p>
+<ul>
+<li><a href="../fds/4.md">树的知识点</a>在fds已讲过，可以互为参照，之后考虑合并起来</li>
+<li>在树中，我更喜欢将"vertex"翻译成“节点”，而非“顶点”，感觉前者读起来更通顺一点</li>
+</ul>
+</blockquote>
+<h2 id="introduction-to-trees">Introduction to Trees<a class="headerlink" href="#introduction-to-trees" title="Permanent link">⚓︎</a></h2>
+<p>定义：<strong>树(trees)</strong>是没有简单环的连通无向图</p>
+<blockquote>
+<p>注：因为没有简单环，因此树也就不包含重边和自环</p>
+</blockquote>
+<p>没有简单环，但不连通的无向图称为<strong>森林(forests)</strong>，它的连通分量是一棵树</p>
+<p>🌰：</p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="Images/C11/Quicker_20240531_115224.png" width="70%" style="margin: 0 auto;">
+</div>
+
+<p><strong>定理1</strong>：当且仅当无向图上<u>任意两点间有唯一的一条路径</u>时，该图是一棵树</p>
+<blockquote>
+<p>证明难度不大（考虑充分性和必要性），故略</p>
+</blockquote>
+<h3 id="rooted-trees">Rooted Trees<a class="headerlink" href="#rooted-trees" title="Permanent link">⚓︎</a></h3>
+<p>定义：</p>
+<ul>
+<li><strong>有根树(rooted tree)</strong>是一棵树，它指定某一个节点作为整棵树的根，每条边被视为从根出发的“有方向”的边（实际上还是无向边）</li>
+<li><strong>m叉树(m-ary tree)</strong>：每个内部节点的孩子的个数不超过m的有根树</li>
+<li><strong>满m叉树(full m-ary tree)</strong>：每个内部节点有且有m个孩子的有根树(<a href="5.html#recursively-defined-sets-and-structures">之前</a>介绍过满二叉树)</li>
+<li><strong>二叉树(binary tree)</strong>：m = 2</li>
+<li><strong>有序根树(ordered rooted tree)</strong>：所有内部节点的孩子按顺序排列(从左往右)的有根树</li>
+</ul>
+<blockquote>
+<p>注：</p>
+<ul>
+<li>Chap 5中我们曾介绍过有根树的<a href="5.html#recursively-defined-sets-and-structures">递归定义</a></li>
+<li>选择不同的根，就会产生不同的有根树，边的“方向”也是不同的</li>
+</ul>
+<p>🌰：</p>
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="Images/C11/Quicker_20240531_140209.png" width="70%" style="margin: 0 auto;">
+</div></p>
+<ul>
+<li>有根树的其他基本概念(诸如什么是父节点、子节点……)见fds<a href="../fds/4.md#definitions">对应部分</a></li>
+<li>二叉树的基本概念：<strong>左孩子(left child)</strong>、<strong>右孩子(right child)</strong>、<strong>左子树(left subtree)</strong>、<strong>右子树(right subtree)</strong></li>
+</ul>
+</blockquote>
+<div class="admonition example">
+<p class="admonition-title"><img alt="⭐" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2b50.svg" title=":star:" />例题：非同构的树</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">无根树</label><label for="__tabbed_1_2">有根树</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p><div style="text-align: center; margin-top: 15px">
+<img src="Images/C11/Quicker_20240607_081159.png" width="60%" style="margin: 0 auto;">
+</div></p>
+<p>答案：3棵</p>
+</div>
+<div class="tabbed-block">
+<p><div style="text-align: center; margin-top: 15px">
+<img src="Images/C11/微信图片_20240614150106.jpg" width="60%" style="margin: 0 auto;">
+</div></p>
+<p>分析：在非同构的无根树的基础上判断(分类讨论)，需要考虑“方向”（根据有根树的定义，不是真正的方向）</p>
+<p>答案：9棵（蓝笔圈起来代表有根树的根节点）</p>
+</div>
+</div>
+</div>
+</div>
+<h3 id="trees-as-models">Trees as Models<a class="headerlink" href="#trees-as-models" title="Permanent link">⚓︎</a></h3>
+<p>树模型的应用：</p>
+<ul>
+<li><strong>饱和烃(saturated hydrocarbons)</strong><blockquote>
+<p>注：树模型的最早应用</p>
+</blockquote>
+</li>
+</ul>
+<div style="text-align: center; margin-top: 15px;">
+<img src="Images/C11/Quicker_20240531_141441.png" width="50%" style="margin: 0 auto;">
+</div>
+
+<ul>
+<li>组织架构</li>
+<li>计算机文件系统</li>
+</ul>
+<div style="text-align: center; margin-top: 15px;">
+<img src="Images/C11/Quicker_20240531_141537.png" width="70%" style="margin: 0 auto;">
+</div>
+<blockquote>
+<p>注：fds介绍过<a href="../fds/4.md#applicationfile-system">类似内容</a>，且更加详细</p>
+</blockquote>
+<ul>
+<li>树连通的并行处理器<blockquote>
+<p><a href="10.html#software-design-applications">前景回顾</a></p>
+</blockquote>
+</li>
+</ul>
+<p>这样的网络可以用一棵完全二叉树表示：</p>
+<ul>
+<li>既非叶子亦非根的节点可以双向连通：与父节点连通的1条连接，以及与孩子节点连通的2条连接</li>
+<li>根节点：与孩子节点连通的2条连接</li>
+<li>叶子节点：与父节点连通的1条连接</li>
+</ul>
+<p>🌰：</p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="Images/C11/Quicker_20240531_142241.png" width="30%" style="margin: 0 auto;">
+</div>
+
+<h3 id="properties-of-trees">Properties of Trees<a class="headerlink" href="#properties-of-trees" title="Permanent link">⚓︎</a></h3>
+<p><strong>定理2</strong>：一棵具有n个节点的树有n - 1条边</p>
+<blockquote>
+<p>证明可以采用归纳法——但我认为是小题大做，因为很容易理解：除了根外，每个节点的上头都有一条不同的边，因此n个节点有n - 1条边</p>
+</blockquote>
+<p>对于无向图G，下面3个条件中：</p>
+<ul>
+<li>G是连通的</li>
+<li>G没有简单环</li>
+<li>G有n - 1条边</li>
+</ul>
+<p>只要其中2个条件成立，就可以说明G是一棵树，且剩下的1条也一定成立</p>
+<p><strong>定理3</strong>：有i个内部节点的满m叉树具有n = mi + 1个节点</p>
+<p><strong>定理4</strong>：对于一棵满m叉树</p>
+<ul>
+<li>若有n个节点，内部节点<span class="arithmatex">\(i = \dfrac{n - 1}{m}\)</span>，叶子<span class="arithmatex">\(l = \dfrac{(m - 1)n + 1}{m}\)</span></li>
+<li>若有i个内部节点，节点<span class="arithmatex">\(n = mi + 1\)</span>，叶子<span class="arithmatex">\(l = (m - 1)i + 1\)</span></li>
+<li>若有l个叶子节点，节点<span class="arithmatex">\(n = \dfrac{ml - 1}{m - 1}\)</span>，内部节点<span class="arithmatex">\(i = \dfrac{l - 1}{m - 1}\)</span></li>
+</ul>
+<blockquote>
+<p>注：只要记住定理4的三条中的一条即可，剩余两条可以通过这一条推出来</p>
+</blockquote>
+<ul>
+<li>节点的<strong>层级(level)</strong>：根节点到该节点间路径的长度</li>
+<li>树的<strong>高度(height)</strong>：节点的最大层级，即根节点到任意节点的路径中的最长者</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">注意：这里的高度 = fds所说的深度，且根的高度 = 0，千万不要搞错!!!</p>
+</div>
+<p>如果有根m叉树的高度为h，且所有叶子的层级为h或h - 1，则这棵树是<strong>平衡的(balanced)</strong></p>
+<p><strong>定理5</strong>：高度为h的m叉树至多有<span class="arithmatex">\(m^h\)</span>个叶子</p>
+<blockquote>
+<p>注：证明还是用数学归纳法，具体内容略，这里放一张图，相信看了就会懂👌
+<div style="text-align: center; margin-top: 15px;">
+<img src="Images/C11/Quicker_20240531_143803.png" width="70%" style="margin: 0 auto;">
+</div></p>
+</blockquote>
+<p><strong>引理1</strong>：</p>
+<ul>
+<li>如果m叉树的高度为h，叶子数为l，则<span class="arithmatex">\(h \ge \lceil \log_m l \rceil\)</span></li>
+<li>如果m叉树是满的，且是平衡的，则<span class="arithmatex">\(h = \lceil \log_m l \rceil\)</span></li>
+</ul>
+<h3 id="supplementsfrom-exercises">Supplements(from Exercises)<a class="headerlink" href="#supplementsfrom-exercises" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li>对于一张简单图，当且仅当它是连通的，且删除任意一条边就会使整张图不连通时，该图是一棵树</li>
+<li><strong>完全m叉树(complete m-ary tree)</strong>：所有叶子的层级相同的满m叉树</li>
+<li>高度为h的满m叉平衡树的叶子数多于<span class="arithmatex">\(m^{h-1}\)</span>个</li>
+<li><strong>标记树(labeled tree)</strong>：每个节点被赋予一个标记的一棵树。当2棵标记树之间存在一种同构(isomorphism)，使得节点的标记得到保留，称这2棵树是同构的</li>
+<li>
+<p>无根树的节点的<strong>离心率(eccentricity)</strong>：从该节点出发的最长简单路径的长度。如果没有任何节点的离心率小于节点v，称v为<strong>中心(center)</strong></p>
+<ul>
+<li>要从1棵无根树中得到1棵高度最小的有根树，我们应该选取中心作为有根树的根</li>
+<li>一棵树要么有一个中心，要么有2个相邻的中心</li>
+<li>
+<p><strong>有根斐波那契树(rooted Fibonacci tree)</strong><span class="arithmatex">\(T_n\)</span>的递归定义：</p>
+</li>
+<li>
+<p><span class="arithmatex">\(T_1, T_2\)</span>为只有单个节点的有根树</p>
+</li>
+<li>对<span class="arithmatex">\(n = 3, 4, \dots\)</span>，将<span class="arithmatex">\(T_{n-1}\)</span>作为左子树，<span class="arithmatex">\(T_{n-2}\)</span>作为右子树，构建根树<span class="arithmatex">\(T_n\)</span></li>
+<li>具有n个节点二叉树叶子的平均深度为为<span class="arithmatex">\(\Omega(\log n)\)</span></li>
+</ul>
+</li>
+</ul>
+<h2 id="applications-of-trees">Applications of Trees<a class="headerlink" href="#applications-of-trees" title="Permanent link">⚓︎</a></h2>
+<h3 id="binary-search-trees">Binary Search Trees<a class="headerlink" href="#binary-search-trees" title="Permanent link">⚓︎</a></h3>
+<blockquote>
+<p>具体见<a href="../fds/4.md#the-search-tree-adt----binary-search-tree">fds</a>，这里就稍微提一下</p>
+</blockquote>
+<p>算法的伪代码：</p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="Images/C11/Quicker_20240531_145821.png" width="80%" style="margin: 0 auto;">
+</div>
+
+<h3 id="decision-trees">Decision Trees<a class="headerlink" href="#decision-trees" title="Permanent link">⚓︎</a></h3>
+<p><strong>决策树(decision trees)</strong>：一种有根树，内部节点表示一个决策，子树表示某种决策的结果</p>
+<p>🌰：</p>
+<ul>
+<li>找假币</li>
+</ul>
+<div style="text-align: center; margin-top: 15px;">
+<img src="Images/C11/Quicker_20240531_150114.png" width="80%" style="margin: 0 auto;">
+</div>
+<div style="text-align: center; margin-top: 0px;">
+<img src="Images/C11/Quicker_20240531_150122.png" width="80%" style="margin: 0 auto;">
+</div>
+
+<ul>
+<li>用决策树证明基于比较的排序的时间复杂度(<a href="../fds/7.md#general-lower-bound-for-sorting">fds</a>已讲过)</li>
+</ul>
+<p><strong>定理1</strong>：基于二分比较的排序算法需要至少<span class="arithmatex">\(\lceil \log_2 n! \rceil\)</span>次比较</p>
+<p><strong>引理1</strong>：基于二分比较的排序算法的比较次数为<span class="arithmatex">\(\Omega(n \log n)\)</span></p>
+<p><strong>定理2</strong>：基于二分比较的排序算法的平均比较次数为<span class="arithmatex">\(\Omega(n \log n)\)</span></p>
+<h3 id="prefix-codes">Prefix Codes<a class="headerlink" href="#prefix-codes" title="Permanent link">⚓︎</a></h3>
+<p>🎯：用位串对一些字符进行编码，实现<strong>数据压缩(data compression)</strong></p>
+<p><strong>前缀码(prefix code)</strong>：一种用位串编码字符的方式，保证一个位串只与其中一个字符序列相关联，而不会产生歧义。</p>
+<p>我们可以用二叉树表示前缀码：</p>
+<ul>
+<li>用带标记的叶子表示字符</li>
+<li>树的边用0或1标记，0表示前往左孩子，1表示前往右孩子</li>
+</ul>
+<p>利用树的性质：根节点到任意节点的路径是唯一的，我们可以为每个字符确定一个唯一对应的位串</p>
+<p>🌰：</p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="Images/C11/Quicker_20240531_151213.png" width="30%" style="margin: 0 auto;">
+</div>
+
+<p>如果知道了前缀码的二叉树，那么我们可以<u>将一个位串“解码“为原来的字符序列</u></p>
+<p>🌰：根据上图的二叉树(除了1111，其他位串均以0为结尾)，11111011100 <span class="arithmatex">\(\rightarrow\)</span> sane</p>
+<p><strong>哈夫曼编码(Huffman coding)</strong>：将字符串中字符出现的频率作为输入，输出一种前缀码，满足频率最高的字符采用尽可能短的位串的一种算法</p>
+<p>流程：</p>
+<ul>
+<li>初始状态下，我们有一片森林，其中每棵树只有一个表示不同字符的节点</li>
+<li>
+<p>每一步中，我们挑选权重(频率)最小的两棵树，组成新的树：</p>
+<ul>
+<li>引入一个新的根</li>
+<li>将权重较大的树作为左子树</li>
+<li>将权重较小的树作为右子树</li>
+<li>新的树的权重为2棵树的权重和</li>
+</ul>
+<p>然后将新的树放回原来的森林中</p>
+</li>
+<li>
+<p>直到只剩下一棵树时为止</p>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">注</p>
+<ul>
+<li>哈夫曼树的权重 = <span class="arithmatex">\(\sum\)</span> [每个节点出现的权重(一般为频率) <span class="arithmatex">\(\times\)</span> 表示该节点的位串长度]</li>
+<li>平均位串长度 = 哈夫曼树的权重 / 节点数</li>
+</ul>
+</div>
+<p>算法伪代码：</p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="Images/C11/Quicker_20240531_151725.png" width="80%" style="margin: 0 auto;">
+</div>
+
+<p>🌰：</p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="Images/C11/Quicker_20240531_152141.png" width="80%" style="margin: 0 auto;">
+</div>
+<div style="text-align: center; margin-top: 0px;">
+<img src="Images/C11/Quicker_20240531_152154.png" width="80%" style="margin: 0 auto;">
+</div>
+
+<blockquote>
+<p>注：</p>
+<ul>
+<li>哈夫曼编码是一种<em>贪心算法</em></li>
+<li>该算法具有许多变种，可参看<a href="https://en.wikipedia.org/wiki/Huffman_coding">wiki</a></li>
+</ul>
+</blockquote>
+<h3 id="game-trees"><del>Game Trees</del><a class="headerlink" href="#game-trees" title="Permanent link">⚓︎</a></h3>
+<blockquote>
+<p>注：这一小节在课上没有展开讲述</p>
+</blockquote>
+<p><strong>博弈树(game tree)</strong>：用来描述一类游戏(双方轮流行动，每个玩家可以了解对方的行动，且没有偶然因素出现)的一种树</p>
+<ul>
+<li>节点表示游戏进行到的某个位置</li>
+<li>边表示两个位置之间的合法行动</li>
+<li>通过同一个节点表示所有对称的位置的方法实现对博弈树的化简</li>
+<li>根表示游戏的开始位置</li>
+<li><em>偶</em>层级的节点用<em>方框</em>表示，此时是<em>第一位玩家</em>的回合</li>
+<li><em>奇</em>层级的节点用<em>圆圈</em>表示，此时是<em>第二位玩家</em>的回合</li>
+<li>这棵树可以是无穷大的，表示游戏进入了无限循环，但大多数游戏都采用一定的规则防止这种情况的发生</li>
+<li>
+<p>叶子表示游戏的最终位置，我们为每个叶子赋予某个值，表示游戏的最终结果</p>
+<ul>
+<li>'1'表示第一位玩家获胜</li>
+<li>‘-1’表示第二位玩家获胜</li>
+<li>‘0’表示平局</li>
+</ul>
+</li>
+</ul>
+<details class="example" open="open">
+<summary>Example</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">取物游戏(nim)</label><label for="__tabbed_2_2">井字棋(tic-tac-toe)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>有几堆石子，两位玩家轮流行动，每次可以从1堆石子中拿走一个或多个石子，但不能拿走所有剩下的石子，最后拿完石子的玩家输掉游戏。它的博弈树如下：</p>
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="Images/C11/Quicker_20240531_160209.png" width="80%" style="margin: 0 auto;">
+</div></p>
+</div>
+<div class="tabbed-block">
+<p>它的博弈树相当大，限于篇幅，这里就展示博弈树的一部分</p>
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="Images/C11/Quicker_20240531_160408.png" width="80%" style="margin: 0 auto;">
+</div> </p>
+</div>
+</div>
+</div>
+</details>
+<p><strong>策略(strategy)</strong>：采取一些规则，使玩家通过选定的行动赢得游戏</p>
+<p>(递归)定义：决策树的节点的值</p>
+<ul>
+<li>叶子的值是第一位玩家的比赛结果(上面已介绍过)</li>
+<li><em>偶</em>层级的中间节点的值为它所有孩子节点的<em>最大值</em></li>
+<li><em>奇</em>层级的中间节点的值为它所有孩子节点的<em>最小值</em></li>
+</ul>
+<p><strong>极小极大策略(minmax strategy)</strong>：第一位玩家向值最大的孩子移动，第二位玩家向值最小的孩子移动的策略。我们可以通过计算根对应的值来判断哪位玩家赢得游戏，这个值称为树的值</p>
+<p><strong>定理3</strong>：如果玩家双方从某个节点开始，均采用极小极大策略，那么该节点的值为比赛的最终结果</p>
+<blockquote>
+<p>证明见教材<span class="arithmatex">\(P_{803-804}\)</span></p>
+</blockquote>
+<p>注：极小极大策略对玩家双方来说都是最优的策略</p>
+<p>🌰：</p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="Images/C11/Quicker_20240531_163646.png" width="80%" style="margin: 0 auto;">
+</div>
+
+<p>一些知名的游戏的博弈树的规模很大，因此我们需要采用更优的策略：</p>
+<ul>
+<li><strong><span class="arithmatex">\(\alpha-\beta\)</span>剪枝(alpha-beta pruning)</strong></li>
+<li><strong>评估函数(evaluation function)</strong></li>
+</ul>
+<h3 id="supplementsfrom-exercises_1">Supplements(from Exercises)<a class="headerlink" href="#supplementsfrom-exercises_1" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li><strong>锦标赛排序(tournament sort)</strong>：采取[[Chap 10 Graph#^a518cd|单淘汰赛]]的机制，先选出最大的节点，然后将该点设为无穷小，再选取第二大的节点，以此类推，直至所有节点都被选出，这样我们便实现了升序排序<ul>
+<li>时间复杂度：<span class="arithmatex">\(\Theta(n \log n)\)</span></li>
+</ul>
+</li>
+</ul>
+<div style="text-align: center; margin-top: 15px;">
+<img src="Images/C11/Quicker_20240531_164747.png" width="70%" style="margin: 0 auto;">
+</div>
+
+<ul>
+<li>
+<p>对N个字符的m元哈夫曼编码类似前面提到的二元哈夫曼编码</p>
+<ul>
+<li>起始步骤：从由单个节点构成树中，挑选<span class="arithmatex">\(((N - 1) \ \mathbf{mod}\ (m - 1)) + 1\)</span>棵权值最小的树，形成一棵有根树</li>
+<li>后续步骤：挑选m棵权重最小的树，形成m叉树</li>
+<li>
+<p>在取物游戏中</p>
+</li>
+<li>
+<p>规定每人拿相同的石子(数量 <span class="arithmatex">\(\ge\)</span> 2)，如果双方均采取最优策略，则第二位玩家获胜</p>
+</li>
+<li>若开始于两堆不同数量的石子中，若双方均采取最优策略，则第一位玩家获胜</li>
+</ul>
+</li>
+</ul>
+<h2 id="tree-traversal">Tree Traversal<a class="headerlink" href="#tree-traversal" title="Permanent link">⚓︎</a></h2>
+<h3 id="universal-address-systems">Universal Address Systems<a class="headerlink" href="#universal-address-systems" title="Permanent link">⚓︎</a></h3>
+<p><strong>通用地址系统(universal address system)</strong>——一种有序根树的排序，其规则如下(递归方法)：</p>
+<ul>
+<li>根节点标记为0，它的孩子从左往右依次被标记为1, 2, 3, ..., k</li>
+<li>对于每个在层级n的节点v，它的标记为A，且有<span class="arithmatex">\(k_v\)</span>个孩子，则这些孩子从左往右依次被标记为A.1, A.2, ..., A.<span class="arithmatex">\(k_v\)</span></li>
+</ul>
+<p>我们可以在通用地址系统中定义<em>词典序</em>：规定当满足<u>下列条件之一</u>时，<span class="arithmatex">\(x_1.x_2. \dots .x_n &lt; y_1.y_2. \dots .y_n\)</span>成立</p>
+<ul>
+<li><span class="arithmatex">\(x_1 = y_1, x_2 = y_2, \dots, x_{i-1} = y_{i-1}, x_i &lt; y_i\)</span>，其中<span class="arithmatex">\(0 \le i \le n\)</span></li>
+<li><span class="arithmatex">\(n &lt; m, \forall i = 1, 2, \dots, n, x_i = y_i\)</span></li>
+</ul>
+<p>🌰：</p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="Images/C11/Quicker_20240604_192825.png" width="70%" style="margin: 0 auto;">
+</div>
+
+<h3 id="traversal-algorithms">Traversal Algorithms<a class="headerlink" href="#traversal-algorithms" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li><strong>前序遍历(preorder traversal)</strong>：先遍历根节点r，然后对它的子树<span class="arithmatex">\(T_1, T_2, \dots, T_n\)</span>分别进行前序遍历</li>
+</ul>
+<div style="text-align: center; margin-top: 15px;">
+<img src="Images/C11/Quicker_20240604_193340.png" width="60%" style="margin: 0 auto;">
+</div>
+
+<ul>
+<li><strong>中序遍历(inorder traversal)</strong>：先对子树<span class="arithmatex">\(T_1\)</span>进行中序遍历，然后遍历根节点r，最后依次对子树<span class="arithmatex">\(T_2, T_3, \dots, T_n\)</span>进行中序遍历</li>
+</ul>
+<div style="text-align: center; margin-top: 15px;">
+<img src="Images/C11/Quicker_20240604_193533.png" width="60%" style="margin: 0 auto;">
+</div>
+
+<ul>
+<li><strong>后序遍历(postorder traversal)</strong>：先对所有子树<span class="arithmatex">\(T_1, T_2, \dots, T_n\)</span>进行后序遍历，后遍历根节点r</li>
+</ul>
+<div style="text-align: center; margin-top: 15px;">
+<img src="Images/C11/Quicker_20240604_193658.png" width="60%" style="margin: 0 auto;">
+</div>
+
+<blockquote>
+<p>注：可以看出，我们采用了<em>递归定义</em></p>
+</blockquote>
+<details class="example">
+<summary>例题</summary>
+<p>对下图分别进行三种遍历
+<div style="text-align: center; margin-top: 15px;">
+<img src="Images/C11/Quicker_20240604_193818.png" width="30%" style="margin: 0 auto;">
+</div></p>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:3"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><input id="__tabbed_3_3" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">前序遍历</label><label for="__tabbed_3_2">中序遍历</label><label for="__tabbed_3_3">后序遍历</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="Images/C11/Quicker_20240604_193900.png" width="60%" style="margin: 0 auto;">
+</div></p>
+</div>
+<div class="tabbed-block">
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="Images/C11/Quicker_20240604_193910.png" width="60%" style="margin: 0 auto;">
+</div></p>
+</div>
+<div class="tabbed-block">
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="Images/C11/Quicker_20240604_193920.png" width="60%" style="margin: 0 auto;">
+</div></p>
+</div>
+</div>
+</div>
+</details>
+<div class="admonition tip">
+<p class="admonition-title">速记法：“树形描边大师”</p>
+<p>如图所示：</p>
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="Images/C11/Quicker_20240604_194217.png" width="60%" style="margin: 0 auto;">
+</div></p>
+<ul>
+<li>前序遍历：从根节点开始，按照蓝色路线走，遇到节点就输出</li>
+<li>中序遍历：从根节点开始，按照蓝色路线走，当遇到叶子节点时就输出，当第2次遇到内部节点时再输出</li>
+<li>后序遍历：从根节点开始，按照蓝色路线走，当最后一次(即沿蓝色路线向上走时)遇到节点时就输出</li>
+</ul>
+<p>问：对于该图，它的前序、中序和后序遍历的结果分别是什么？</p>
+<details class="success">
+<summary>答案</summary>
+<ul>
+<li>前序遍历：a, b, d, h, e, i, j, c, f, g, k</li>
+<li>中序遍历：h, d, b, i, e, j, a, f, c, k, g</li>
+<li>后序遍历：h, d, i, j, e, b, f, k, g, c, a</li>
+</ul>
+</details>
+</div>
+<div class="admonition note">
+<p class="admonition-title">算法的伪代码</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:3"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><input id="__tabbed_4_3" name="__tabbed_4" type="radio" /><div class="tabbed-labels"><label for="__tabbed_4_1">前序遍历</label><label for="__tabbed_4_2">中序遍历</label><label for="__tabbed_4_3">后序遍历</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="Images/C11/Quicker_20240604_195032.png" width="80%" style="margin: 0 auto;">
+</div>  </p>
+</div>
+<div class="tabbed-block">
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="Images/C11/Quicker_20240604_195041.png" width="80%" style="margin: 0 auto;">
+</div></p>
+</div>
+<div class="tabbed-block">
+<p><div style="text-align: center; margin-top: 15px;">
+<img src="Images/C11/Quicker_20240604_195050.png" width="80%" style="margin: 0 auto;">
+</div></p>
+</div>
+</div>
+</div>
+</div>
+<blockquote>
+<p>注：<u>前序</u>和<u>后序</u>遍历可以唯一确定一棵有序根树，因此它们可以对有序满m叉树的结构进行编码</p>
+</blockquote>
+<p>应用：</p>
+<ul>
+<li>前序遍历：拷贝二叉搜索树</li>
+<li>中序遍历：从二叉搜索树中得到节点值的升序排序</li>
+<li>后序遍历：删除一棵树；得到拓扑排序</li>
+</ul>
+<h3 id="infix-prefix-and-postfix-notation">Infix, Prefix, and Postfix Notation<a class="headerlink" href="#infix-prefix-and-postfix-notation" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li><strong>中缀式(infix form)</strong>：通过对表达式树的中序遍历得到的表达式，实际上就是原表达式</li>
+<li><strong>前缀式(prefix form)</strong>：通过对表达式树的前序遍历得到的表达式，又称为<strong>波兰表示法(Polish notation)</strong></li>
+<li><strong>后缀式(postfix form)</strong>：通过对表达式树的前序遍历得到的表达式，又称为<strong>逆波兰表示法(reverse Polish notation)</strong></li>
+</ul>
+<blockquote>
+<p>注：中缀式表达式可能会产生歧义，需要添加括号；而前缀式和后缀式表达式没有歧义，无需添加括号</p>
+</blockquote>
+<p>🌰：计算前缀式和后缀式</p>
+<div style="text-align: center; margin-top: 15px;">
+<img src="Images/C11/Quicker_20240604_200635.png" width="80%" style="margin: 0 auto;">
+</div>
+
+<blockquote>
+<p>注：'<span class="arithmatex">\(\uparrow\)</span>'表示幂运算</p>
+</blockquote>
+<ul>
+<li>前缀式：从右往左计算</li>
+<li>后缀式：从左往右计算</li>
+</ul>
+<hr />
+<p>根树除了用来表示算术表达式，还可以表示<u>复合命题</u>，原理类似，除了需要特别考虑单目运算符'<span class="arithmatex">\(\neg\)</span>'：它仅有一个操作数，因此在表达式树上它仅有一个孩子</p>
+<p>🌰：</p>
+<div style="text-align: center; margin-top: 0px;">
+<img src="Images/C11/Quicker_20240604_200958.png" width="80%" style="margin: 0 auto;">
+</div>
+<div style="text-align: center; margin-top: 0px;">
+<img src="Images/C11/Quicker_20240604_201006.png" width="80%" style="margin: 0 auto;">
+</div>
+
+<h3 id="supplementsfrom-exercises_2">Supplements(from Exercises)<a class="headerlink" href="#supplementsfrom-exercises_2" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li>
+<p>前缀式的<a href="5.html#recursively-defined-sets-and-structures">合式公式</a>的递归定义：</p>
+<ul>
+<li>如果x是个符号，则x是前缀式的合式公式</li>
+<li>如果X和Y是合式公式，*是一个操作符，则*XY是一个合式公式</li>
+</ul>
+</li>
+<li>
+<p>前缀式的合式公式中，符号的数量总是比操作符的数量多一个</p>
+</li>
+</ul>
+<h2 id="spanning-trees">Spanning Trees<a class="headerlink" href="#spanning-trees" title="Permanent link">⚓︎</a></h2>
+<p>简单图G的<strong>生成树(spanning tree)</strong>：G中包含所有顶点的子图</p>
+<p><strong>定理1</strong>：当且仅当简单图<em>连通</em>时，该图具有生成树</p>
+<details class="example">
+<summary>IP组播(multicasting)</summary>
+<ul>
+<li>单播(unicasting)：源计算机向所有接收计算机单独发送数据——效率低</li>
+<li>组播(multicasting)：源计算机仅发送一个数据副本，数据通过路由器一步步传播，直到发送至接收计算机。从下图可以看出，组播的数据传播图是一棵生成树</li>
+</ul>
+<p><div style="text-align: center; margin-top: 0px;">
+<img src="Images/C11/Quicker_20240604_202644.png" width="80%" style="margin: 0 auto;">
+</div></p>
+</details>
+<blockquote>
+<p>虽然我们可以通过对原图进行删边操作得到一棵生成树，但这样做效率太低了。相反，我们会采取添边的方式构建一棵生成树，下面介绍的DFS和BFS均采用这种方式</p>
+</blockquote>
+<h3 id="depth-first-search">Depth-First Search<a class="headerlink" href="#depth-first-search" title="Permanent link">⚓︎</a></h3>
+<p><strong>深度优先搜索(depth-first search, DFS)</strong>的思路：</p>
+<ul>
+<li>先在图中任意选取一个顶点作为根节点</li>
+<li>从根节点出发，连续添加顶点和边，其中新增的边一定与最后添加的顶点相关联，且新添的顶点尚不在路径中，尽可能地往下这样做</li>
+<li>当访问完所有顶点时，我们可以得到一棵生成树</li>
+<li>否则(遇到“死胡同”)，返回到路径中倒数第二个顶点，若有可能，从该顶点出发，按照上面的步骤重新寻找新的路径(要找未被访问过的顶点)。如果找完所有可能，再返回上一个顶点，再寻找新的路径，直至所有顶点均被访问过</li>
+</ul>
+<p>当我们将顶点v添加至树内，且后来又回溯到该顶点，这个过程称为从顶点v<em>探索(explore)</em></p>
+<blockquote>
+<p>注：DFS体现的思想：</p>
+<ul>
+<li>递归</li>
+<li><strong>回溯(backtracking)</strong></li>
+</ul>
+</blockquote>
+<p>🌰 </p>
+<div style="text-align: center; margin-top: 0px;">
+<img src="Images/C11/Quicker_20240604_203710.png" width="80%" style="margin: 0 auto;">
+</div>
+<div style="text-align: center; margin-top: 0px;">
+<img src="Images/C11/Quicker_20240604_203806.png" width="80%" style="margin: 0 auto;">
+</div>
+
+<p>在原图中标注生成树：</p>
+<div style="text-align: center; margin-top: 0px;">
+<img src="Images/C11/Quicker_20240604_203718.png" width="50%" style="margin: 0 auto;">
+</div>
+
+<ul>
+<li><strong>树边(tree edges)</strong>：图中作为生成树的边(即图中蓝色粗线)</li>
+<li><strong>回边(back edges)</strong>：连接顶点和它在生成树中的祖宗或后代节点的边(即图中黑色细线)</li>
+</ul>
+<p>算法的伪代码：</p>
+<div style="text-align: center; margin-top: 0px;">
+<img src="Images/C11/Quicker_20240604_204354.png" width="80%" style="margin: 0 auto;">
+</div>
+
+<p>时间复杂度：<span class="arithmatex">\(O(e)\)</span>或<span class="arithmatex">\(O(n^2)\)</span>，其中e和n分别是边和顶点的数量</p>
+<blockquote>
+<p>证明：很容易想到图中的每条边至多被访问2次</p>
+</blockquote>
+<p>应用：</p>
+<ul>
+<li>寻找连通分量(若图不连通)</li>
+<li>找割点(若图连通)</li>
+</ul>
+<h3 id="breadth-first-search">Breadth-First Search<a class="headerlink" href="#breadth-first-search" title="Permanent link">⚓︎</a></h3>
+<p><strong>宽度优先搜索(breadth-first search, BFS)</strong>的思路：</p>
+<ul>
+<li>先在图中任意选取一个顶点作为根节点</li>
+<li>将所有与根节点相邻的顶点添加至树内，对它们任意排序，这些顶点因而成为生成树中层级为1的节点，</li>
+<li>对于层级为1的所有节点，按顺序依次访问所有与这些顶点关联的边上的另一个顶点，且保证不会产生简单环，对得到的顶点进行任意排序</li>
+<li>这样，我们得到层级为1的节点的所有孩子，它们构成层级为2的节点</li>
+<li>如此往复，直至所有顶点被添加至树内</li>
+</ul>
+<p>我们使用"<em>加工(process)</em>"一词描述添加新顶点和关联边的过程</p>
+<p>🌰</p>
+<div style="text-align: center; margin-top: 0px;">
+<img src="Images/C11/Quicker_20240604_205231.png" width="80%" style="margin: 0 auto;">
+</div>
+<div style="text-align: center; margin-top: 0px;">
+<img src="Images/C11/Quicker_20240604_205238.png" width="80%" style="margin: 0 auto;">
+</div>
+
+<p>算法的伪代码：</p>
+<div style="text-align: center; margin-top: 0px;">
+<img src="Images/C11/Quicker_20240604_205529.png" width="80%" style="margin: 0 auto;">
+</div>
+
+<p>时间复杂度：<span class="arithmatex">\(O(e)\)</span>或<span class="arithmatex">\(O(n^2)\)</span></p>
+<blockquote>
+<p>理由同上</p>
+</blockquote>
+<p>应用：</p>
+<ul>
+<li>判断一张图是不是二分的</li>
+<li>找到图中2个顶点间边数最少的路径</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">DFS vs BFS</p>
+<p>要得到生成树,</p>
+<ul>
+<li>在稠密图中采用DFS</li>
+<li>在稀疏图中采用BFS</li>
+</ul>
+</div>
+<h3 id="backtracking-applications">Backtracking Applications<a class="headerlink" href="#backtracking-applications" title="Permanent link">⚓︎</a></h3>
+<details class="example" open="open">
+<summary>回溯的应用</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="5:3"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><input id="__tabbed_5_2" name="__tabbed_5" type="radio" /><input id="__tabbed_5_3" name="__tabbed_5" type="radio" /><div class="tabbed-labels"><label for="__tabbed_5_1">图上色(graph colorings)</label><label for="__tabbed_5_2">n皇后问题(the n-queens problem)</label><label for="__tabbed_5_3">子集求和(sums of subsets)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>看看就行，这种方法效率不高</p>
+<p><div style="text-align: center; margin-top: 0px;">
+<img src="Images/C11/Quicker_20240604_211759.png" width="80%" style="margin: 0 auto;">
+</div></p>
+</div>
+<div class="tabbed-block">
+<p>在<span class="arithmatex">\(n \times n\)</span>的棋盘上摆放n个皇后，使得任意两个皇后不会相互攻击，即任意两个皇后不在同一行、同一列以及同一条对角线上(2条对角线)</p>
+<p>下面给出<span class="arithmatex">\(4 \times 4\)</span>棋盘上摆放皇后的情况</p>
+<p><div style="text-align: center; margin-top: 0px;">
+<img src="Images/C11/Quicker_20240604_212036.png" width="50%" style="margin: 0 auto;">
+</div></p>
+</div>
+<div class="tabbed-block">
+<p>对于一个正整数集<span class="arithmatex">\(\{x_1, x_2, \dots, x_n\}\)</span>，要求找到一个子集，满足子集中元素之和 = 常数M</p>
+<p>🌰</p>
+<p><div style="text-align: center; margin-top: 0px;">
+<img src="Images/C11/Quicker_20240604_212249.png" width="60%" style="margin: 0 auto;">
+</div></p>
+</div>
+</div>
+</div>
+</details>
+<h3 id="depth-first-search-in-directed-graphs">Depth-First Search in Directed Graphs<a class="headerlink" href="#depth-first-search-in-directed-graphs" title="Permanent link">⚓︎</a></h3>
+<p>我们可以用DFS和BFS找到有向图的生成树，但是有时我们可能得到的是几棵生成树——<em>生成森林(spanning forest)</em>。这时，当我们使用这两种算法时，发现整个算法流程结束后还有一些顶点不在生成树内，那么我们需要在这些顶点中挑一个作为另一棵生成树的根节点，在剩余顶点中得到生成树。</p>
+<p>🌰</p>
+<div style="text-align: center; margin-top: 0px;">
+<img src="Images/C11/Quicker_20240604_212501.png" width="80%" style="margin: 0 auto;">
+</div>
+<div style="text-align: center; margin-top: 0px;">
+<img src="Images/C11/Quicker_20240604_212449.png" width="80%" style="margin: 0 auto;">
+</div>
+
+<p>DFS在有向图中的应用：</p>
+<ul>
+<li>判断是否有环</li>
+<li>得到拓扑排序</li>
+<li>找到强连通分量</li>
+</ul>
+<p>实际应用：<a href="https://en.wikipedia.org/wiki/Web_crawler">网络爬虫(web crawler)</a></p>
+<h3 id="supplementsfrom-exercises_3">Supplements(from Exercises)<a class="headerlink" href="#supplementsfrom-exercises_3" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li>在连通简单图中，顶点v和u之间的最短路径的长度 = 以v为根的BFS生成树中u的层级数</li>
+<li>令G为连通图，T为G的BFS生成树，那么G中不在T的一条边必须连接在相同层级或层级相差1的两个顶点</li>
+<li>令G为连通图，T为G的DFS生成树，那么G中不在T的一条边必须是回边</li>
+<li>令G为有向图，T为G的BFS生成树，那么G中的每条边的2个端点要么在相同层级，要么相差1个层级</li>
+<li>
+<p>令G为有向图，T为G的DFS生成树，那么不在生成树的边是下列3种边种的一种：</p>
+<ul>
+<li><strong>前边(forward edge)</strong>：祖先 <span class="arithmatex">\(\rightarrow\)</span> 后代</li>
+<li><strong>回边(back edge)</strong>：后代 <span class="arithmatex">\(\rightarrow\)</span> 祖先</li>
+<li><strong>叉边(cross edge)</strong>：顶点 <span class="arithmatex">\(\rightarrow\)</span> 在前一棵被访问的子树中的顶点</li>
+</ul>
+</li>
+<li>
+<p>令<span class="arithmatex">\(T_1, T_2\)</span>为一张图中的生成树，它们的<strong>距离(distance)</strong>为它们非公共边的条数</p>
+<ul>
+<li>假设<span class="arithmatex">\(T_1, T_2, T_3\)</span>是G的生成树，则<span class="arithmatex">\(\mathrm{dis}(T_1, T_3) \le \mathrm{dis}(T_1, T_2) + \mathrm{dis}(T_2, T_3)\)</span></li>
+<li>
+<p>假设<span class="arithmatex">\(T_1, T_2\)</span>为简单图G的生成树，<span class="arithmatex">\(e_1\)</span>为在<span class="arithmatex">\(T_1\)</span>但不在<span class="arithmatex">\(T_2\)</span>的一条边，那么在<span class="arithmatex">\(T_2\)</span>存在一条边<span class="arithmatex">\(e_2\)</span>，它不在<span class="arithmatex">\(T_1\)</span>，满足：</p>
+<ul>
+<li>若移除<span class="arithmatex">\(e_1\)</span>，添上<span class="arithmatex">\(e_2\)</span>，<span class="arithmatex">\(T_1\)</span>仍为一棵生成树</li>
+<li>若移除<span class="arithmatex">\(e_2\)</span>，添上<span class="arithmatex">\(e_1\)</span>，<span class="arithmatex">\(T_2\)</span>仍为一棵生成树</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>有向图的<strong>有根生成树(rooted spanning tree)</strong>：包含该图的边的有根树，满足图中任意顶点是树里某一条边的端点</p>
+<ul>
+<li>对于一棵连通有向图，若它的每个顶点的入度 = 出度，则它有一棵有根树</li>
+<li>令G为有向图，T为G的DFS生成树，那么，当且仅当G包含一条与T有关的回边时，该图有一个环</li>
+</ul>
+</li>
+</ul>
+<h2 id="minimum-spanning-trees">Minimum Spanning Trees<a class="headerlink" href="#minimum-spanning-trees" title="Permanent link">⚓︎</a></h2>
+<h3 id="algorithms-for-minimum-spanning-trees">Algorithms for Minimum Spanning Trees<a class="headerlink" href="#algorithms-for-minimum-spanning-trees" title="Permanent link">⚓︎</a></h3>
+<p><strong>最小生成树(minimum spanning tree)</strong>：连通带权图中的一棵生成树，满足所有边的权重和是最小的</p>
+<div class="admonition note">
+<p class="admonition-title">寻找最小生成树的算法</p>
+<blockquote>
+<p>注：</p>
+<ul>
+<li>这些算法均为<em>贪心算法</em></li>
+<li>m, n分别表示边数和顶点数</li>
+<li>同一张图的最小生成树可能不止一种</li>
+</ul>
+</blockquote>
+<div class="tabbed-set tabbed-alternate" data-tabs="6:2"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio" /><input id="__tabbed_6_2" name="__tabbed_6" type="radio" /><div class="tabbed-labels"><label for="__tabbed_6_1"><strong>Prim's algorithm</strong></label><label for="__tabbed_6_2"><strong>Kruskal's algorithm</strong></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>思想：在图中剩余的边里，将与树中节点有关联的权重最小的边加到树中</p>
+<p><div style="text-align: center; margin-top: 0px;">
+<img src="Images/C11/Quicker_20240604_215350.png" width="90%" style="margin: 0 auto;">
+</div></p>
+<p>时间复杂度：<span class="arithmatex">\(O(m \log n)\)</span></p>
+</div>
+<div class="tabbed-block">
+<p>思想：挑选当前图中剩余的边里权重最小的边，且不会产生环     </p>
+<p><div style="text-align: center; margin-top: 0px;">
+<img src="Images/C11/Quicker_20240604_215423.png" width="90%" style="margin: 0 auto;">
+</div></p>
+<p>时间复杂度：<span class="arithmatex">\(O(m \log m)\)</span></p>
+</div>
+</div>
+</div>
+<p>在稀疏图中，Kruskal算法效率更高；在稠密图中，两种算法效率差不多</p>
+</div>
+<details class="example" open="open">
+<summary>Example</summary>
+<p>对于下面给出的带权图，找出它的最小生成树</p>
+<p><div style="text-align: center; margin-top: 0px;">
+<img src="Images/C11/Quicker_20240604_215712.png" width="30%" style="margin: 0 auto;">
+</div></p>
+<div class="tabbed-set tabbed-alternate" data-tabs="7:2"><input checked="checked" id="__tabbed_7_1" name="__tabbed_7" type="radio" /><input id="__tabbed_7_2" name="__tabbed_7" type="radio" /><div class="tabbed-labels"><label for="__tabbed_7_1">Prim's algorithm</label><label for="__tabbed_7_2">Kruskal's algorithm</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p><div style="text-align: center; margin-top: 0px;">
+<img src="Images/C11/Quicker_20240604_215722.png" width="80%" style="margin: 0 auto;">
+</div></p>
+</div>
+<div class="tabbed-block">
+<p><div style="text-align: center; margin-top: 0px;">
+<img src="Images/C11/Quicker_20240604_215731.png" width="80%" style="margin: 0 auto;">
+</div></p>
+</div>
+</div>
+</div>
+</details>
+<h3 id="supplementsfrom-exercises_4">Supplements(from Exercises)<a class="headerlink" href="#supplementsfrom-exercises_4" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li>带权图的<strong>最小生成森林(minimum spanning forest)</strong>：最小权重的生成森林</li>
+<li>连通带权图的<strong>最大生成树(maximum spanning tree)</strong></li>
+<li>连通带权图中权重最小的边一定出现在所有的最小生成树内</li>
+<li>如果连通带权图的所有边的权重都不相同，则它的最小生成树是唯一的</li>
+<li><a href="https://en.wikipedia.org/wiki/Bor%C5%AFvka%27s_algorithm">Sollin's algorithm</a></li>
+</ul>
+<h2 id="supplements">Supplements<a class="headerlink" href="#supplements" title="Permanent link">⚓︎</a></h2>
+<details class="info">
+<summary>补充知识(可忽略，考试应该不会考这些)</summary>
+<ul>
+<li>至少有1条边的树，一定存在至少2个度为1的节点</li>
+<li>一棵有n个节点，n - 1个度为1的节点的数一定与<span class="arithmatex">\(K_{1, n - 1}\)</span>同构</li>
+<li>假设n个正整数<span class="arithmatex">\(d_1, d_2, \dots, d_n\)</span>，它们的和为2n-2，则存在一棵有n个节点的树，这些节点的度为<span class="arithmatex">\(d_1, d_2, \dots, d_n\)</span></li>
+<li>任何树都是平面图</li>
+<li>任何树都是二分图</li>
+<li>任何树可用2种颜色上色</li>
+<li>
+<p><strong>度为k的B树(B-tree of degree k)</strong>：一棵有根树，满足：</p>
+<ul>
+<li>所有叶子在同一层级</li>
+<li>它的根节点至少有2个孩子，至多有k个孩子(除非它是叶子)</li>
+<li>除了根节点的内部节点至少有<span class="arithmatex">\(\lceil \dfrac{k}{2} \rceil\)</span>个孩子，至多有k个孩子</li>
+</ul>
+<p>在计算机文件中使用B树可以提升访问效率</p>
+</li>
+<li>
+<p><strong>二项式树(binomial tree)</strong><span class="arithmatex">\(B_i\)</span>(i = 0, 1, 2, ...)是一棵有序根树，它的递归定义如下：</p>
+<ul>
+<li>基本步骤：<span class="arithmatex">\(B_0\)</span>为单节点树</li>
+<li>
+<p>递归步骤：令k为非负整数，要构建<span class="arithmatex">\(B_{k+1}\)</span>：得到2棵<span class="arithmatex">\(B_k\)</span>，第1棵<span class="arithmatex">\(B_k\)</span>的根节点作为第2棵<span class="arithmatex">\(B_k\)</span>根节点最左边的孩子，得到的新树即为<span class="arithmatex">\(B_{k+1}\)</span></p>
+</li>
+<li>
+<p><span class="arithmatex">\(B_k\)</span>中度最大的节点为根节点</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong><span class="arithmatex">\(S_k\)</span>树</strong>：一种有根树，满足下面的递归定义：</p>
+<ul>
+<li><span class="arithmatex">\(S_0\)</span>树：只有一个节点</li>
+<li>
+<p><span class="arithmatex">\(S_k\)</span>树：由2棵<span class="arithmatex">\(S_{k-1}\)</span>树构成，其中一棵<span class="arithmatex">\(S_{k-1}\)</span>树的根作为<span class="arithmatex">\(S_k\)</span>树的根，另一棵<span class="arithmatex">\(S_{k-1}\)</span>树的根作为第一棵<span class="arithmatex">\(S_{k-1}\)</span>树的孩子</p>
+</li>
+<li>
+<p><span class="arithmatex">\(S_k\)</span>树有<span class="arithmatex">\(2^k\)</span>个节点，且在层级<span class="arithmatex">\(k\)</span>上仅有一个节点，这个节点称为<strong>把手(handle)</strong></p>
+</li>
+</ul>
+</li>
+<li>
+<p>有根树的<strong>层序(level order)</strong>：从根节点开始，然后从左往右遍历第1层的节点，接着从左往右遍历第2层节点，以此类推。</p>
+</li>
+<li>
+<p>图的<strong>割集(cut set)</strong>为一组边的集合，当移除这些边后，将会产生一个比原图具有更多连通分量的子图，但是这个集合的真子集不具备这个性质</p>
+<ul>
+<li>割集中至少有一条边作为该图所有生成树的共有边</li>
+</ul>
+</li>
+<li>
+<p><a href="https://en.wikipedia.org/wiki/Cactus_graph"><strong>仙人掌图(cactus)</strong></a>：一张连通图，满足图上没有边出现在多个(&gt; 1)简单环上，这些简单环经过除起点外的顶点的次数不超过1次，且不在终点外的任何地方经过起点(若2个环包含相同的边，则这些边被认为是不同的)</p>
+</li>
+<li>
+<p>简单图G的<strong>度限制生成树(degree-constrained spanning tree)</strong>是一棵生成树，满足：树中节点的度不超过指定范围。这种树常用于交通系统的建模中</p>
+<ul>
+<li>对于一棵度限制生成树，若树中每个顶点的度不超过2，则它构成了简单哈密顿路</li>
+</ul>
+</li>
+<li>
+<p>对于一棵n节点的树，节点用整数1, 2, ..., n标记，若任意两个相邻节点的标记之差的绝对值互不相同，则认为这棵树是<strong>优雅的(graceful)</strong></p>
+</li>
+<li>
+<p><strong>毛虫(caterpillar)树</strong>是一棵树，它有一条简单路，使得所有不在该路径上的节点与在这条路径上的节点相邻</p>
+</li>
+<li>
+<p>假设e是带权图与顶点v关联的一条边，它的权重不超过与v关联的其他所有边，那么存在一棵包含此边的生成树</p>
+</li>
+<li>若带权图中所有边的权重都不同，则与顶点v关联的权重最小的边一定出现在任何最小生成树内</li>
+<li>
+<p>令G = (V, E)为有向图，r为G的顶点，以r为根的G的<strong>树状(arborescence)图</strong>是G的一个子图T = (V, F)，使得T的潜在无向图是G的潜在无向图的一棵生成树，且<span class="arithmatex">\(\forall v \in V\)</span>，在T中存在一条从r到v的路径(考虑方向)</p>
+<ul>
+<li>G有树状图T的充要条件是：T包含r，没有简单环，且<span class="arithmatex">\(\forall v \in V - {r}, \mathrm{deg}^-(v) = 1 \text{ in T}\)</span></li>
+<li>另一个充要条件：<span class="arithmatex">\(\forall v \in V\)</span>，存在从r到v的有向路径</li>
+</ul>
+</li>
+</ul>
+</details>
+
+
+
+
+
+
+
+  
+    
+  
+  
+    
+  
+
+
+  <aside class="md-source-file">
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="最后更新">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1-2.1-2M12.5 7v5.2l4 2.4-1 1L11 13V7h1.5M11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2v1.8Z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime">2024年8月3日 21:38:38</span>
+  </span>
+
+    
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="创建日期">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3h-2Z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime">2024年8月3日 21:38:38</span>
+  </span>
+
+    
+    
+    
+  </aside>
+
+
+
+
+<p style="font-size: 30px;">评论区</p>
+<div>
+  如果有什么问题或想法，欢迎大家在下方留言~
+</div>
+<!-- Insert generated snippet here -->
+<script src="https://giscus.app/client.js"
+        data-repo="noughtq/notebook"
+        data-repo-id="R_kgDOMAb9Zg"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOMAb9Zs4CfmpP"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="preferred_color_scheme"
+        data-lang="zh-CN"
+        crossorigin="anonymous"
+        async>
+</script>
+  <!-- Synchronize Giscus theme with palette -->
+<script>
+  var giscus = document.querySelector("script[src*=giscus]")
+
+  // Set palette on initial load
+  var palette = __md_get("__palette")
+  if (palette && typeof palette.color === "object") {
+    var theme = palette.color.scheme === "slate"
+      ? "transparent_dark"
+      : "light"
+
+    // Instruct Giscus to set theme
+    giscus.setAttribute("data-theme", theme) 
+  }
+
+  // Register event handlers after documented loaded
+  document.addEventListener("DOMContentLoaded", function() {
+    var ref = document.querySelector("[data-md-component=palette]")
+    ref.addEventListener("change", function() {
+      var palette = __md_get("__palette")
+      if (palette && typeof palette.color === "object") {
+        var theme = palette.color.scheme === "slate"
+          ? "transparent_dark"
+          : "light"
+
+        // Instruct Giscus to change theme
+        var frame = document.querySelector(".giscus-frame")
+        frame.contentWindow.postMessage(
+          { giscus: { setConfig: { theme } } },
+          "https://giscus.app"
+        )
+      }
+    })
+  })
+</script>
+                
+
+<link rel="stylesheet" href="/stylesheet/counter.css">
+
+
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="页脚" >
+        
+          
+          <a href="10.html" class="md-footer__link md-footer__link--prev" aria-label="上一页: Chap 10 Graph">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              <div class="md-ellipsis">
+                Chap 10 Graph
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="Glossary.html" class="md-footer__link md-footer__link--next" aria-label="下一页: Glossary">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              <div class="md-ellipsis">
+                Glossary
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2024 NoughtQ
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/noughtq" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://blog.noughtq.top" target="_blank" rel="noopener" title="blog.noughtq.top" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19.199 24C19.199 13.467 10.533 4.8 0 4.8V0c13.165 0 24 10.835 24 24h-4.801zM3.291 17.415a3.3 3.3 0 0 1 3.293 3.295A3.303 3.303 0 0 1 3.283 24C1.47 24 0 22.526 0 20.71s1.475-3.294 3.291-3.295zM15.909 24h-4.665c0-6.169-5.075-11.245-11.244-11.245V8.09c8.727 0 15.909 7.184 15.909 15.91z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.top", "navigation.footer", "navigation.indexes", "navigation.tracking", "navigation.prune", "content.code.copy", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.ad660dcc.min.js"></script>
+      
+        <script src="../../javascripts/katex.js"></script>
+      
+        <script src="../../javascripts/toc.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+      
+    
+  </body>
+</html>
