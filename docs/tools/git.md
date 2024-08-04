@@ -44,7 +44,7 @@ $ git config --global user.name "Nought"
 $ git config --global user.email "haha@hehe.xyz"
 ```
 
-## 基础命令
+## 基础操作
 
 ### 新建本地仓库
 
@@ -221,6 +221,22 @@ $ git log --graph --decorate --oneline
     <img src="images/git/15.png" width=50%>
 </div>
 
+#### git show
+
+``` bash
+# 列出提交中涉及的所有文件
+$ git show --pretty="" --name-only <hash_id>
+
+# 显示文件的特定版本（若省略哈希值则显示最近提交的文件内容）
+$ git show <hash_id>:path/to/file
+
+# 显示特定 tag 和特定哈希值的提交
+$ git show <tag> <hash_id>
+
+# 显示介于<commitA>与<commitB>之间的提交
+$ git show <commitA>...<commitB>
+
+```
 
 ### 向远程仓库上传变更
 
@@ -288,9 +304,9 @@ $ git remote prune <name>
 # 参数 --dry-run 会列出会被删掉的分支，但实际上不会删掉它们
 ```
 
-## 进阶命令
+## 进阶操作
 
-### 撤销提交或更改
+### 撤销、更改历史提交
 
 - 执行 `git checkout <hash_id>` 命令回到哈希值为 `<hash_id>` 的提交记录，可以查看、编译、运行甚至编辑该记录的文件，无需担心目前状态下文件的丢失问题（可以使用`git checkout <current_branch_name>` 命令回到当前状态（最新的提交））。
 
@@ -306,9 +322,100 @@ $ git remote prune <name>
 
     `git revert` 适用于撤销公共变更（远程仓库），而 `git reset` 适用于撤销私有变更（本地仓库）。
 
-- `git commit --amend` 可以用来修改最近一次的提交。比如你一顿 `git add xxx`、`git commit -m "xxx"` 操作后发现漏了几个文件没提交，这时可以先 `git add <forgotten_files>`，再 `git commit --amend`，就可以补上漏掉的文件而无需新开一个提交。
-
 - `git clean`：暂时略过
+
+- `git commit --amend` 可以用来修改最近一次的提交。比如你一顿 `git add xxx`、`git commit -m "xxx"` 操作后发现漏了几个文件没提交，这时可以先 `git add <forgotten_files>`，再 `git commit --amend`，就可以补上漏掉的文件而无需新开一个提交。但实际上，修补过的提交将完全取代原来最新的提交，对于 Git 来说这是一次全新的提交。
+    - `git commit --amend -m "xxx"` 可以修改最近一次的提交信息（不会改变提交内容）
+    - `git commit --amend --no-edit` 可以在不更改提交信息的情况下修改提交内容
+
+- `git reflog` 命令显示引用日志（reference logs），它是 Git 用来记录应用到分支节点的更新（对某个提交的各种操作都会被记录）和其他提交引用的一种机制。引用日志允许我们回到指定的提交记录，即使它们没有被任何分支或标签引用。每次分支节点由于任何原因进行更新时（通过切换分支、拉入新的变更、重写历史记录或简单地添加新的提交），一个新的条目将被添加到引用日志内。
+    - `git reflog`：显示本地仓库的引用日志。
+    <div style="text-align: center">
+        <img src="images/git/19.png" width=70%>
+    </div>
+
+    - `git reflog --relative-date`：额外显示相对日期，注意引用日志默认只保存 90 天内的记录。
+    <div style="text-align: center">
+        <img src="images/git/20.png" width=70%>
+    </div>
+
+    - 利用这条命令，我们可以精确定位到需要修改的提交，然后用前面提到的 `git reset` 等命令回到该提交，随后进行修改操作。
+
+- `git cherry-pick <hash_id>` 命令可以将选定任意 Git 提交并将其附加到当前工作的 HEAD 指针中，是一个很便利的工具。
+
+    示意图（将这里的字母看作哈希值）：
+
+    <figure style=" width: 70%" markdown="span">
+        ![](images/git/23_dark.png#only-dark)
+        ![](images/git/23_light.png#only-light)
+        <figcaption></figcaption>
+    </figure>
+
+    参数列表：
+
+    - `--edit`：让 Git 在 `cherry-pick` 操作前提示输入提交信息
+    - `--no-commit`：执行 `cherry pick` 但不会进行新的提交，而是将提交内容移动到当前分支的工作目录中
+    - `--signoff`：在提交消息末尾添加一个签名行
+
+!!! note "总结：git checkout、git reset、git revert"
+
+    === "提交级（commit-level）的操作"
+
+        - `git checkout`：在分支间切换，或者查看旧的提交记录
+
+            <figure style=" width: 70%" markdown="span">
+                ![](images/git/24_dark.png#only-dark)
+                ![](images/git/24_light.png#only-light)
+                <figcaption></figcaption>
+            </figure>
+
+            <figure style=" width: 60%" markdown="span">
+                ![](images/git/26_dark.png#only-dark)
+                ![](images/git/26_light.png#only-light)
+                <figcaption></figcaption>
+            </figure>
+
+        - `git reset`：扔掉私有分支的提交或者未提交的变更
+
+            <figure style=" width: 100%" markdown="span">
+                ![](images/git/25_dark.png#only-dark)
+                ![](images/git/25_light.png#only-light)
+                <figcaption></figcaption>
+            </figure>
+
+            有以下三种可选参数：
+
+            - --soft – 暂存快照和工作目录不会以任何方式更改。
+            - --mixed – 更新暂存的快照以匹配指定的提交，但工作目录不受影响。这是默认选项。
+            - --hard – 暂存的快照和工作目录都已更新以匹配指定的提交。
+
+        - `git revert`：撤销公共分支中的提交
+
+            <figure style=" width: 60%" markdown="span">
+                ![](images/git/27_dark.png#only-dark)
+                ![](images/git/27_light.png#only-light)
+                <figcaption></figcaption>
+            </figure>
+
+    === "文件级（file-level）操作"
+
+        - `git checkout`：撤销工作目录的变更，将文件还原到之前提交的版本
+
+            <figure style=" width: 70%" markdown="span">
+                ![](images/git/29_dark.png#only-dark)
+                ![](images/git/29_light.png#only-light)
+                <figcaption></figcaption>
+            </figure>
+
+        - `git reset`：取消暂存文件，将暂存文件设为之前提交的版本
+
+            <figure style=" width: 70%" markdown="span">
+                ![](images/git/28_dark.png#only-dark)
+                ![](images/git/28_light.png#only-light)
+                <figcaption></figcaption>
+            </figure>
+
+        没有文件级的 `git revert`！
 
 ### Git 分支
 
@@ -328,7 +435,7 @@ $ git branch
 $ git branch <name>
 
 # 在远程仓库 origin 创建名为 <name> 的新分支
-git push origin <name>~
+$ git push origin <name>
 
 # 安全删除名为 <name> 的分支
 $ git branch -d <name>
@@ -348,6 +455,99 @@ $ git branch -m <old_name> <new_name>
 $ git branch -a
 ```
 
+### 合并、变基
+
+#### 合并
+
+假设提交记录如下所示：
+
+<figure style=" width: 70%" markdown="span">
+    ![](images/git/21_dark.png#only-dark)
+    ![](images/git/21_light.png#only-light)
+    <figcaption></figcaption>
+</figure>
+
+现在需要将 main 分支合并到 branch_1 上，只需输入以下命令即可：
+
+``` bash
+# 切换到 branch_1 分支上
+$ git checkout branch_1
+# 合并 main 分支
+$ git merge main
+```
+
+更快速的写法：`git merge branch_1 main`
+
+结果：
+
+<figure style=" width: 70%" markdown="span">
+    ![](images/git/22_dark.png#only-dark)
+    ![](images/git/22_light.png#only-light)
+    <figcaption></figcaption>
+</figure>
+
+- 优点：合并是一种非破坏性的操作，不会更改现有分支，这避免了变基操作带来的隐患。
+- 缺点：如果被合并的分支（main）之后还有修改的话，就会影响到合并分支（branch_1）的历史记录，令开发者难以理解。
+
+
+#### 变基
+
+在多人协作完成一个项目时，总会出现很多条分支，因此当你打算 push 一份提交时，如果有组员已经先行上传提交，那么你得先 `git pull` 再 `git push`，这样的结果是这些提交记录将更加地凌乱。
+
+这里可以用到`git rebase` 变基命令，它的作用简单来说就是将分叉的本地历史提交记录整理成一条直线，看起来更加干净。下面将 branch_1 分支变基到 main 分支：
+
+``` bash
+$ git checkout feature
+$ git rebase main
+```
+
+然而，在使用该命令时务必遵守一条黄金法则：当有人需要用到某条分支的当前历史提交记录时，千万不要对这条分支进行变基操作，可另外尝试非破坏性的方法进行变更（比如 `gir revert` 命令）；如果没人需要方可使用。
+
+!!! info "补充"
+
+    如果需要强制将本地变基后的分支上传到远程仓库，使用 `git push --force` 强制上传，这会用变基后的本地分支覆盖原来的远程分支。当然，在执行该命令前请确保无人在用变基前原始版本的分支。
+
+执行 `git rebase -i <branch_name>` 命令可进行交互式变基操作，此时会打开一个文本编辑器，列出所有即将移动的提交，它准确表示执行变基后分支的样子。通过更改 pick 命令和/或重新排序条目可以调整历史提交记录。例如，如果第二次提交修复了第一次提交中的一个小问题，则可以使用 fixup 命令将它们压缩为一次提交，结果如下所示。
+
+``` bash
+pick 33d5b7a Message for commit #1
+fixup 9480b3d Message for commit #2
+pick 5c67e61 Message for commit #3
+```
+
+!!! summary "git rebase 示意图"
+
+    <figure style=" width: 80%" markdown="span">
+        ![](images/git/18_dark.png#only-dark)
+        ![](images/git/18_light.png#only-light)
+        <figcaption></figcaption>
+    </figure>
+
+---
+通过定期执行交互式变基，我们可以清理本地某一条分支的历史提交记录，使得该分支的每一次提交都是集中且有意义的。执行以下命令可以仅对最新的3个提交进行交互式变基：
+
+``` bash
+$ git checkout <branch_name> 
+$ git rebase -i HEAD~3
+```
+
+示意图：
+
+<figure style=" width: 70%" markdown="span">
+    ![](images/git/23_dark.png#only-dark)
+    ![](images/git/23_light.png#only-light)
+    <figcaption></figcaption>
+</figure>
+
+如果想要对整条分支进行无害的变基操作，我们得先找到这条分支的“起源”，或者说刚刚分叉的地方，使用下面的命令可以找到分支 A 和 分支 B 的祖先（交点）的哈希值：
+
+``` bash
+$ git merge-base A B
+```
+
+然后将该哈希值代入 `git rebase` 命令即可。
+
+
 ### 拉取请求
 
 #### 功能分支工作流
@@ -363,7 +563,7 @@ $ git branch -a
 就我个人感觉，这种方法对项目维护者来说可能更加“干净”一些：前面的「功能分支工作流」会让主仓库开出很多分支，有些凌乱；而 fork 项目维护者的仓库下来不会对主仓库有什么很大的影响。所以我更喜欢这种方法。
 
 
-## 其他
+## 拓展
 
 >注：可能不是那么重要的内容，或者扩展性的内容
 
@@ -483,3 +683,39 @@ $ ssh-keygen -t ed25519 -b 4096 -C "your_email@example.com"
 </div>
 
 这样的话 Linux 本地环境就可以与自己 Github 账户上的远程仓库进行连接了。
+
+### Git Hook
+
+#### 预提交 Hook
+
+Git 在执行 `git commit` 命令前会先执行预提交（pre-commit）脚本，开发者可以在脚本写一些自动化测试的代码，来检查即将提交的快照，确保该提交不具备破坏性。没有向预提交脚本传递参数，或者以非 0 状态退出均会导致提交终止。
+
+下面来看看内置的预提交脚本（简化版），如果此脚本发现任何空格错误，则中止提交。
+
+``` bash
+#!/bin/sh
+
+# Check if this is the initial commit
+if git rev-parse --verify HEAD >/dev/null 2>&1
+then
+    echo "pre-commit: About to create a new commit..."
+    against=HEAD
+else
+    echo "pre-commit: About to create the first commit..."
+    against=4b825dc642cb6eb9a060e54bf8d69288fbee4904
+fi
+
+# Use git diff-index to check for whitespace errors
+echo "pre-commit: Testing for whitespace errors..."
+if ! git diff-index --check --cached $against
+then
+    echo "pre-commit: Aborting commit due to whitespace errors"
+    exit 1
+else
+    echo "pre-commit: No whitespace errors :)"
+    exit 0
+fi
+
+```
+
+在预处理脚本中，除了调用 Git 命令外，还可以执行其他脚本、运行第三方测试套件或使用 Lint 检查代码风格等。
