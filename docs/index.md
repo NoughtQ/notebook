@@ -1,9 +1,5 @@
 # Welcome to NoughtQ's Notebook!
 
-!!! warning ""
-
-    <div style="text-align: center">【最近更新 8.1】[CS106L](lang/cpp/cs106l/index.md) Chap 7 & 8 !!!</div>
-
 !!! info "阅读前须知"
 
     + 若发现笔记内容有误，或有自己的想法，欢迎大家在评论区留言！（我不一定能够及时回复，请见谅）
@@ -29,6 +25,9 @@
 - 算法相关:
     - 💠数据结构基础(FDS)[note]: algorithms/fds/
     - ❌高级数据结构与算法分析(ADS)[note]: algorithms/ads/
+- Web 相关:
+    - 网络基础: web/basic
+    - HTTP 安全相关知识: web/security
 - 硬件相关:
     - 💠数字逻辑设计(DLD)[note]: hardware/dld/
     - ❌计算机组成(CO)[note]: hardware/co/

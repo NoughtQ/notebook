@@ -8,6 +8,10 @@ counter: true
 
     其实早在大一开学没多久就已接触到 Git，但是由于缺乏实践的磨炼（还没有上到很需要 Git 的课），所以我只记得一些最简单的用法，足够我平时更新自己的笔记本和博客仓库。然而，我想更深入地了解 Git 的用法，或者更进一步悟得「Git 之禅」，让我不至于只会用一些 `git add`、`git commit -m "xxx"`、`git push origin main` 之类简单的命令，或者看到报错不知所措。所以我用这篇笔记记录我第二次学习 Git 的过程。
 
+!!! warning "注意"
+
+    最好用白天模式阅读本文档，因为我的误操作，不小心将很多图片给删了，而且只备份了亮色的图片，用夜间模式很难看清这些图片（~~两天的努力白费了~~），请见谅！
+
 ## 开始
 
 ### 为什么用 Git
@@ -346,8 +350,8 @@ $ git remote prune <name>
     示意图（将这里的字母看作哈希值）：
 
     <figure style=" width: 70%" markdown="span">
-        ![](images/git/23_dark.png#only-dark)
-        ![](images/git/23_light.png#only-light)
+        ![](images/git/30_dark.png#only-dark)
+        ![](images/git/30_light.png#only-light)
         <figcaption></figcaption>
     </figure>
 
@@ -363,25 +367,19 @@ $ git remote prune <name>
 
         - `git checkout`：在分支间切换，或者查看旧的提交记录
 
-            <figure style=" width: 70%" markdown="span">
-                ![](images/git/24_dark.png#only-dark)
-                ![](images/git/24_light.png#only-light)
-                <figcaption></figcaption>
-            </figure>
+            <div style="text-align: center">
+                <img src="images/git/24_light.png" width=70%>
+            </div>
 
-            <figure style=" width: 60%" markdown="span">
-                ![](images/git/26_dark.png#only-dark)
-                ![](images/git/26_light.png#only-light)
-                <figcaption></figcaption>
-            </figure>
+            <div style="text-align: center">
+                <img src="images/git/26_light.png" width=60%>
+            </div>
 
         - `git reset`：扔掉私有分支的提交或者未提交的变更
 
-            <figure style=" width: 100%" markdown="span">
-                ![](images/git/25_dark.png#only-dark)
-                ![](images/git/25_light.png#only-light)
-                <figcaption></figcaption>
-            </figure>
+            <div style="text-align: center">
+                <img src="images/git/25_light.png" width=100%>
+            </div>
 
             有以下三种可选参数：
 
@@ -391,29 +389,23 @@ $ git remote prune <name>
 
         - `git revert`：撤销公共分支中的提交
 
-            <figure style=" width: 60%" markdown="span">
-                ![](images/git/27_dark.png#only-dark)
-                ![](images/git/27_light.png#only-light)
-                <figcaption></figcaption>
-            </figure>
+            <div style="text-align: center">
+                <img src="images/git/27_light.png" width=60%>
+            </div>
 
     === "文件级（file-level）操作"
 
         - `git checkout`：撤销工作目录的变更，将文件还原到之前提交的版本
 
-            <figure style=" width: 70%" markdown="span">
-                ![](images/git/29_dark.png#only-dark)
-                ![](images/git/29_light.png#only-light)
-                <figcaption></figcaption>
-            </figure>
+            <div style="text-align: center">
+                <img src="images/git/29_light.png" width=70%>
+            </div>
 
         - `git reset`：取消暂存文件，将暂存文件设为之前提交的版本
 
-            <figure style=" width: 70%" markdown="span">
-                ![](images/git/28_dark.png#only-dark)
-                ![](images/git/28_light.png#only-light)
-                <figcaption></figcaption>
-            </figure>
+            <div style="text-align: center">
+                <img src="images/git/26_light.png" width=70%>
+            </div>
 
         没有文件级的 `git revert`！
 
@@ -461,11 +453,9 @@ $ git branch -a
 
 假设提交记录如下所示：
 
-<figure style=" width: 70%" markdown="span">
-    ![](images/git/21_dark.png#only-dark)
-    ![](images/git/21_light.png#only-light)
-    <figcaption></figcaption>
-</figure>
+    <div style="text-align: center">
+        <img src="images/git/21_light.png" width=70%>
+    </div>
 
 现在需要将 main 分支合并到 branch_1 上，只需输入以下命令即可：
 
@@ -480,11 +470,9 @@ $ git merge main
 
 结果：
 
-<figure style=" width: 70%" markdown="span">
-    ![](images/git/22_dark.png#only-dark)
-    ![](images/git/22_light.png#only-light)
-    <figcaption></figcaption>
-</figure>
+<div style="text-align: center">
+    <img src="images/git/22_light.png" width=70%>
+</div>
 
 - 优点：合并是一种非破坏性的操作，不会更改现有分支，这避免了变基操作带来的隐患。
 - 缺点：如果被合并的分支（main）之后还有修改的话，就会影响到合并分支（branch_1）的历史记录，令开发者难以理解。
@@ -517,11 +505,9 @@ pick 5c67e61 Message for commit #3
 
 !!! summary "git rebase 示意图"
 
-    <figure style=" width: 80%" markdown="span">
-        ![](images/git/18_dark.png#only-dark)
-        ![](images/git/18_light.png#only-light)
-        <figcaption></figcaption>
-    </figure>
+    <div style="text-align: center">
+        <img src="images/git/18_light.png" width=80%>
+    </div>
 
 ---
 通过定期执行交互式变基，我们可以清理本地某一条分支的历史提交记录，使得该分支的每一次提交都是集中且有意义的。执行以下命令可以仅对最新的3个提交进行交互式变基：
@@ -533,11 +519,9 @@ $ git rebase -i HEAD~3
 
 示意图：
 
-<figure style=" width: 70%" markdown="span">
-    ![](images/git/23_dark.png#only-dark)
-    ![](images/git/23_light.png#only-light)
-    <figcaption></figcaption>
-</figure>
+<div style="text-align: center">
+    <img src="images/git/23_light.png" width=70%>
+</div>
 
 如果想要对整条分支进行无害的变基操作，我们得先找到这条分支的“起源”，或者说刚刚分叉的地方，使用下面的命令可以找到分支 A 和 分支 B 的祖先（交点）的哈希值：
 
