@@ -7,4 +7,8 @@
 
 如果大家觉得笔记对自己有所帮助的话，不妨点个Star支持一下作者吧 :smile:
 
-<iframe style="width:100%;height:auto;min-width:600px;min-height:400px;" src="https://star-history.com/embed?secret=Z2hwXzlvY0NNNTY2bUlqcUNraWFKRzMxWFRwT0prQVI3cDE0alJjWg==#NoughtQ/notebook&Date" frameBorder="0"></iframe>
+## Star History
+
+<div style="text-align: center">
+  <img src="https://api.star-history.com/svg?repos=noughtq/notebook&type=Date)](https://star-history.com/#noughtq/notebook&Date" width=80%>
+</div>
