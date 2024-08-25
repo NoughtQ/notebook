@@ -1,4 +1,4 @@
-/* The source code was written by @Tonycrane */
+/* The source code was written by @TonyCrane */
 (function (window, document) {
     function register($toc) {
       const currentInView = new Set();
