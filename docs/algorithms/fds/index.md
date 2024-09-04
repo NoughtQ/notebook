@@ -9,9 +9,9 @@
 
 !!! note "经验分享"
 
-    TODO
+    [我的博客帖子 - 数据结构基础](https://blog.noughtq.top/posts/41bc90c8.html#post-comment)
 
 !!! success "推荐阅读"
 
-    + [xg的笔记](https://note.tonycrane.cc/cs/algorithm/ds/)
-    + [咸鱼暄的ds入门路线](https://xuan-insr.github.io/math_ds_algo/getting_started/)
+    - [xg的笔记](https://note.tonycrane.cc/cs/algorithm/ds/)
+    - [咸鱼暄的ds入门路线](https://xuan-insr.github.io/math_ds_algo/getting_started/)

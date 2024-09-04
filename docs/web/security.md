@@ -9,6 +9,7 @@ counter: true
     - [维基百科：CORS](https://zh.wikipedia.org/wiki/%E8%B7%A8%E4%BE%86%E6%BA%90%E8%B3%87%E6%BA%90%E5%85%B1%E4%BA%AB)
     - [MDN：CORS](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/CORS)
     - [阮一峰的网络日志：跨域资源共享 CORS 详解](https://www.ruanyifeng.com/blog/2016/04/cors.html)
+    - [Fetch: 跨源请求](https://zh.javascript.info/fetch-crossorigin)
     - 密码学基础知识主要参考维基百科
 
 ## CORS
@@ -62,19 +63,32 @@ User-Agent: Mozilla/5.0...
         var xhr = new XMLHttpRequest();
         xhr.withCredentials = true;
         ```
+
         - 有时即使删掉这个字段，浏览器还是会发送 Cookie，这时需要显式关闭 `withCredentials`
 
         ``` js
         xhr.withCredentials = false;
         ```
-    - `Access-Control-Expose-Headers`：（可选）用来设置 `XMLHttpRequest` 对象的`getResponseHeader()` 方法额外获取的字段，比如下面的例子表明会调用`getResponseHeader('haha')`，返回 `haha` 字段的值
+        
+    - `Access-Control-Expose-Headers`：（可选）用来设置 `XMLHttpRequest` 对象的`getResponseHeader()` 方法额外获取的响应头字段（往往是不太安全的字段）（比如下面的例子表明会调用`getResponseHeader('Content-Length')`，返回 `Content-Length` 字段的值）
 
     ``` http
     Access-Control-Allow-Origin: http://www.example.com
     Access-Control-Allow-Credentials: true
-    Access-Control-Expose-Headers: haha
+    Access-Control-Expose-Headers: Content-Length
     Content-Type: text/html; charset=utf-8
     ```
+
+    ???+ info "默认可以访问的响应头字段"
+
+        - `Cache-Control`
+        - `Content-Language`
+        - `Content-Type`
+        - `Expires`
+        - `Last-Modified`
+        - `Pragma`
+
+        这些字段无需用 `Access-Control-Expose-Headers` 设置，它们时安全的响应头字段。
 
 - 若不同意，服务器会返回一个正常的 HTTP 响应，它的报头没有包含 `Access-Control-Allow-Origin` 字段，并给出错误消息（无法根据状态码判断，因为有可能显示 200），被 `XMLHttpRequest` 的 `onerror` 回调函数捕获。
 

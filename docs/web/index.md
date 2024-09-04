@@ -6,5 +6,18 @@
 
 ## Table of Content
 
-- [网络基础](basic.md)
-- [HTTP 安全相关知识](security.md)
+{{ BEGIN_TOC }}
+- Web 基础知识:
+    - 网络模型: model
+    - HTTP 安全相关知识: security
+- 前端技术栈:
+    - HTML: frontend/html
+    - CSS: frontend/css
+    - JavaScript: frontend/js
+- 后端技术栈:
+    - Go: backend/go/
+    - 数据库基础: backend/database
+- Web 相关工具:
+    - 工具汇总: tools/index
+    - curl: tools/curl
+{{ END_TOC }}

@@ -16,9 +16,7 @@
 
 !!! note "经验分享"
 
-    + 至少先完整地过一遍所有的知识点(包括例题)（离散数学的知识点又多又广 ~~又离散~~，需要花上一定的时间复习）。可以在考前一天拿一张纸，写下所有核心的知识点，梳理一下整个知识框架，有助于记忆
-    + 刷一下历年卷（到98上搜一下）
-    + 若还有时间回顾平时作业的错题（答案：[:link:](https://github.com/QSCTech/zju-icicles/tree/master/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8/%E4%BD%9C%E4%B8%9A/%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%20%E8%8B%B1%E6%96%87%E7%AC%AC%E5%85%AB%E7%89%88%E7%AD%94%E6%A1%88)）
+    [我的博客帖子 - 离散数学及其应用](https://blog.noughtq.top/posts/41bc90c8.html#post-comment)
     
 !!! success "推荐阅读"
 

@@ -15,7 +15,7 @@
 
 !!! note "经验分享"
 
-    TODO
+    [我的博客帖子 - 数字逻辑设计](https://blog.noughtq.top/posts/41bc90c8.html#post-comment)
 
 !!! success "推荐阅读"
 

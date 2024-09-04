@@ -2,8 +2,9 @@
 
 !!! abstract "概要"
 
-    其他（~~对CS不是那么有用的~~）课程的笔记或者相关链接
+    其它课程的笔记
 
 ## Table of Contents
 
-+ [大学物理（乙）](physics/index.md)
+- [大学物理（乙）](physics/index.md)
+- [计算机二级](ncre2.md)
