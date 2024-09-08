@@ -12,11 +12,14 @@ document.querySelectorAll('a').forEach(link => {
   
         if (cleanLinkUrl.origin === baseUrl.origin) {
           link.target = '_self';
+          link.style.textDecorationLine = 'none';
         } else {
           link.target = '_blank';
+          link.style.textDecorationLine = 'underline';
         }
       } catch (error) {
         link.target = '_blank';
+        link.style.textDecorationLine = 'underline';
       }
   
       // 阻止默认行为，防止空白页面的出现
