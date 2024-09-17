@@ -1,36 +1,34 @@
-// 跨源访问网页会打开新的标签页
-// Written by ChatGPT
-document.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', event => {
-      const href = link.getAttribute('href');
-      if (!href) return; // 忽略没有 href 属性的链接
-  
-      try {
-        const linkUrl = new URL(href, window.location.href);
-        const baseUrl = new URL(window.location.href);
-        const cleanLinkUrl = new URL(linkUrl.origin + linkUrl.pathname + linkUrl.search, baseUrl.origin);
-  
-        if (cleanLinkUrl.origin === baseUrl.origin) {
-          link.target = '_self';
-          link.style.textDecorationLine = 'none';
-        } else {
-          link.target = '_blank';
-          link.style.textDecorationLine = 'underline';
-        }
-      } catch (error) {
-        link.target = '_blank';
-        link.style.textDecorationLine = 'underline';
-      }
-  
-      // 阻止默认行为，防止空白页面的出现
-      event.preventDefault();
-  
-      // 如果不是同源，则手动打开新标签页
-      if (link.target === '_blank') {
-        window.open(href, '_blank');
-      } else {
-        window.location.href = href;
-      }
-    });
-  });
+// Written by ChatGPT 4o mini
+
+document.addEventListener('DOMContentLoaded', function () {
+  function processLinks() {
+      const links = document.querySelectorAll('a');
+      links.forEach(link => {
+          const href = link.getAttribute('href');
+          if (!href) return; // 忽略没有 href 属性的链接
+
+          try {
+              const linkUrl = new URL(href, window.location.href);
+              const baseUrl = new URL(window.location.href);
+	            const cleanLinkUrl = new URL(linkUrl.origin + linkUrl.pathname + linkUrl.search, baseUrl.origin);
+
+              if (cleanLinkUrl.origin === baseUrl.origin) {
+                  // 同源链接
+                  link.target = '_self';
+                  link.style.textDecoration = 'none'; // 确保没有下划线
+              } else {
+                  // 跨源链接
+                  link.target = '_blank';
+                  link.classList.add('cross-origin'); // 添加 cross-origin 类以设置下划线
+              }
+          } catch (error) {
+              // 如果 URL 解析失败，处理为跨源
+              link.target = '_blank';
+              link.classList.add('cross-origin'); // 添加 cross-origin 类以设置下划线
+          }
+      });
+  }
+
+  processLinks();
+});
   
