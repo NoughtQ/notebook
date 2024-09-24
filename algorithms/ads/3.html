@@ -653,16 +653,16 @@
 <p>下面给出一个简单的索引生成器的伪代码：</p>
 <details class="code" open="open">
 <summary>伪代码实现</summary>
-<p><code>c hl-lines="2-4 9"
-while (read a document D) {
-    while (read a term T in D) {
-        if (Find(Dictionary, T) == false) 
-            Insert(Dictionary, T);
-        Get T's posting list;
-        Insert a node to T's posting list;
-    }
-}
-Write the inverted index to disk;</code></p>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">read</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">document</span><span class="w"> </span><span class="n">D</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-2"><a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="hll"><span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">read</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">term</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">D</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span></span><span id="__span-0-3"><a href="#__codelineno-0-3" id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="hll"><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Find</span><span class="p">(</span><span class="n">Dictionary</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">false</span><span class="p">)</span><span class="w"> </span>
+</span></span><span id="__span-0-4"><a href="#__codelineno-0-4" id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="hll"><span class="w">            </span><span class="n">Insert</span><span class="p">(</span><span class="n">Dictionary</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="p">);</span>
+</span></span><span id="__span-0-5"><a href="#__codelineno-0-5" id="__codelineno-0-5" name="__codelineno-0-5"></a><span class="w">        </span><span class="n">Get</span><span class="w"> </span><span class="n">T</span><span class="err">'</span><span class="n">s</span><span class="w"> </span><span class="n">posting</span><span class="w"> </span><span class="n">list</span><span class="p">;</span>
+</span><span id="__span-0-6"><a href="#__codelineno-0-6" id="__codelineno-0-6" name="__codelineno-0-6"></a><span class="w">        </span><span class="n">Insert</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">node</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">T</span><span class="err">'</span><span class="n">s</span><span class="w"> </span><span class="n">posting</span><span class="w"> </span><span class="n">list</span><span class="p">;</span>
+</span><span id="__span-0-7"><a href="#__codelineno-0-7" id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-0-8"><a href="#__codelineno-0-8" id="__codelineno-0-8" name="__codelineno-0-8"></a><span class="p">}</span>
+</span><span id="__span-0-9"><a href="#__codelineno-0-9" id="__codelineno-0-9" name="__codelineno-0-9"></a><span class="hll"><span class="n">Write</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">inverted</span><span class="w"> </span><span class="n">index</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">disk</span><span class="p">;</span>
+</span></span></code></pre></div>
 </details>
 <p>伪代码中的每个高光部分分别对应以下搜索引擎的重要模块<span><span class="heti-spacing"> </span>(module)</span>，之后我们会展开介绍：</p>
 <ul>
@@ -702,25 +702,24 @@ Write the inverted index to disk;</code></p>
 <p>对于之前给出的伪代码，我们将会做出一些调整，使得它能够处理内存不够用的情况（高亮部分为新增的伪代码<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
 <details class="code" open="open">
 <summary>伪代码实现</summary>
-<p>``` c hl-lines="1 4-8 16-17"
-BlockCnt = 0;
-while (read a document D) {
-    while (read a term T in D) {
-        if (out of memory) {
-            Write BlockIndex[BlockCnt] to disk;
-            BlockCnt++;
-            FreeMemory;
-        }</p>
-<div class="language-text highlight"><pre><span></span><code>    if (Find(Dictionary, T) == false) 
-        Insert(Dictionary, T);
-    Get T's posting list;
-    Insert a node to T's posting list;
-}
-</code></pre></div>
-<p>}
-for (i = 0; i &lt; BlockCnt; i++) 
-    Merge(InvertedIndex, BlockIndex[i]);
-```</p>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="hll"><span class="n">BlockCnt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span></span><span id="__span-1-2"><a href="#__codelineno-1-2" id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">read</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">document</span><span class="w"> </span><span class="n">D</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-3"><a href="#__codelineno-1-3" id="__codelineno-1-3" name="__codelineno-1-3"></a><span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">read</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">term</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">D</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-4"><a href="#__codelineno-1-4" id="__codelineno-1-4" name="__codelineno-1-4"></a><span class="hll"><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">out</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">memory</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span></span><span id="__span-1-5"><a href="#__codelineno-1-5" id="__codelineno-1-5" name="__codelineno-1-5"></a><span class="hll"><span class="w">            </span><span class="n">Write</span><span class="w"> </span><span class="n">BlockIndex</span><span class="p">[</span><span class="n">BlockCnt</span><span class="p">]</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">disk</span><span class="p">;</span>
+</span></span><span id="__span-1-6"><a href="#__codelineno-1-6" id="__codelineno-1-6" name="__codelineno-1-6"></a><span class="hll"><span class="w">            </span><span class="n">BlockCnt</span><span class="o">++</span><span class="p">;</span>
+</span></span><span id="__span-1-7"><a href="#__codelineno-1-7" id="__codelineno-1-7" name="__codelineno-1-7"></a><span class="hll"><span class="w">            </span><span class="n">FreeMemory</span><span class="p">;</span>
+</span></span><span id="__span-1-8"><a href="#__codelineno-1-8" id="__codelineno-1-8" name="__codelineno-1-8"></a><span class="hll"><span class="w">        </span><span class="p">}</span>
+</span></span><span id="__span-1-9"><a href="#__codelineno-1-9" id="__codelineno-1-9" name="__codelineno-1-9"></a>
+</span><span id="__span-1-10"><a href="#__codelineno-1-10" id="__codelineno-1-10" name="__codelineno-1-10"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Find</span><span class="p">(</span><span class="n">Dictionary</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">false</span><span class="p">)</span><span class="w"> </span>
+</span><span id="__span-1-11"><a href="#__codelineno-1-11" id="__codelineno-1-11" name="__codelineno-1-11"></a><span class="w">            </span><span class="n">Insert</span><span class="p">(</span><span class="n">Dictionary</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="p">);</span>
+</span><span id="__span-1-12"><a href="#__codelineno-1-12" id="__codelineno-1-12" name="__codelineno-1-12"></a><span class="w">        </span><span class="n">Get</span><span class="w"> </span><span class="n">T</span><span class="err">'</span><span class="n">s</span><span class="w"> </span><span class="n">posting</span><span class="w"> </span><span class="n">list</span><span class="p">;</span>
+</span><span id="__span-1-13"><a href="#__codelineno-1-13" id="__codelineno-1-13" name="__codelineno-1-13"></a><span class="w">        </span><span class="n">Insert</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">node</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">T</span><span class="err">'</span><span class="n">s</span><span class="w"> </span><span class="n">posting</span><span class="w"> </span><span class="n">list</span><span class="p">;</span>
+</span><span id="__span-1-14"><a href="#__codelineno-1-14" id="__codelineno-1-14" name="__codelineno-1-14"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-1-15"><a href="#__codelineno-1-15" id="__codelineno-1-15" name="__codelineno-1-15"></a><span class="p">}</span>
+</span><span id="__span-1-16"><a href="#__codelineno-1-16" id="__codelineno-1-16" name="__codelineno-1-16"></a><span class="hll"><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">BlockCnt</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span>
+</span></span><span id="__span-1-17"><a href="#__codelineno-1-17" id="__codelineno-1-17" name="__codelineno-1-17"></a><span class="hll"><span class="w">    </span><span class="n">Merge</span><span class="p">(</span><span class="n">InvertedIndex</span><span class="p">,</span><span class="w"> </span><span class="n">BlockIndex</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+</span></span></code></pre></div>
 </details>
 <ul>
 <li>我们将填满的内存放入磁盘的一个存储块内，然后释放内存，继续用来装剩下的倒排索引</li>
@@ -864,13 +863,13 @@ for (i = 0; i &lt; BlockCnt; i++)
 <span class="md-icon" title="最后更新">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1-2.1-2M12.5 7v5.2l4 2.4-1 1L11 13V7h1.5M11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2v1.8Z"></path></svg>
 </span>
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime">2024年9月23日 13:07:55</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime">2024年9月24日 09:38:27</span>
 </span>
 <span class="md-source-file__fact">
 <span class="md-icon" title="创建日期">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3h-2Z"></path></svg>
 </span>
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime">2024年9月23日 13:07:56</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime">2024年9月24日 09:38:27</span>
 </span>
 </aside>
 <p style="font-size: 30px; font-weight: 600">评论区</p>
