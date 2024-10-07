@@ -9,6 +9,10 @@ counter: true
     - [MDN HTML 学习](https://developer.mozilla.org/zh-CN/docs/Learn/HTML)
     - [MDN HTML 参考](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Reference)
 
+!!! info "提示"
+
+    由于 HTML 有些「松散」，因此在编写 HTML 代码中很可能因为粗心犯了奇奇怪怪的语法错误。所以我们平时最好按照 [XHTML](https://zh.wikipedia.org/zh-cn/XHTML) 的严格标准来要求自己，这样可以让我们的 HTML 书写更加规范而准确。
+
 ## 基础知识
 
 这是一个 HTML 元素：

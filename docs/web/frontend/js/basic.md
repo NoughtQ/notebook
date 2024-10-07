@@ -111,8 +111,7 @@ counter: true
 - symbol：对象的唯一标识符（见“对象 symbol 类型”一节）
 - object：（见“对象”一章）
 
----
-**类型转换**
+#### 类型转换
 
 - `String(value)` 将 `value` 转为字符串型
 - 数字型
@@ -124,8 +123,7 @@ counter: true
         - 字符串转数字会先去掉空白字符，若剩余部分为空返回0，若无法转为数字返回 `NaN`
 - 布尔型：`Boolean(value)`，除了 `0`、空字符串、`null`、`undefined`、`NaN` 返回 `false`，其余值都返回 `true` 
 
----
-**数组**
+#### 数组
 
 - 数组本质上是一种特殊的对象（特殊之处在于数组存储的是**有序数据**），数组的元素可以是任意类型（对象、函数等均可）
 - 创建空数组（2 种方法）
@@ -252,7 +250,124 @@ let arr = [];          // 用的更多
 
 - `Array.isArray()` 方法：判断变量是否为数组，返回布尔值
 - 除了 `.sort()` 方法外，上述大多数调用函数的方法都有第二个参数 `thisArg`。当第一个参数 `func` 函数出现 `this` 时，如果没有第二个参数指定 `this` 对应的对象就会报错，所以需要 `thisArg` 显式指出对象
-        
+
+#### 映射
+
+映射是一个带键的数据项的集合，类似对象，但它允许**任何类型**（包括对象，~~甚至 `NaN`~~）的键。
+
+相关方法和属性：
+
+- `new Map()`：创建映射
+- `map.set(key, value)`：为指定键设置值
+- `map.get(key)`：获取特定键的值（若映射内不存在 `key`，返回 `undefined`）
+>注：我们一般用 `set` 和 `get` 访问映射内的元素。虽然可以用方括号表示法来访问，但这不是正确的使用方法，不推荐这样用。
+
+- `map.has(key)`：若 `key` 存在返回 `true`，否则返回 `false`
+- `map.delete(key)`：删除指定键的值
+- `map.clear()`：清空映射
+- `map.size`：返回映射内的元素个数
+
+??? example "例子"
+
+    ``` js
+    let map = new Map();
+
+    map.set('1', 'str1');   // 字符串键
+    map.set(1, 'num1');     // 数字键
+    map.set(true, 'bool1'); // 布尔值键
+
+    // 还记得普通的 Object 吗? 它会将键转化为字符串
+    // Map 则会保留键的类型，所以下面这两个结果不同：
+    alert( map.get(1)   ); // 'num1'
+    alert( map.get('1') ); // 'str1'
+
+    alert( map.size ); // 3
+    ```
+
+- 上述的方法可以链式调用，如下所示：
+``` js
+map.set('1', 'str1')
+  .set(1, 'num1')
+  .set(true, 'bool1');
+```
+
+- 映射的迭代（遍历顺序与插入时顺序相同）：
+    - `map.keys()`：遍历并返回一个包含所有键的可迭代对象
+    - `map.values()`：遍历并返回一个包含所有值的可迭代对象
+    - `map.entries()`：遍历并返回一个包含所有键值对（`[key, value]`）的可迭代对象（`for...of map` 默认使用这个）
+    - `map.forEach(value, key, map) => {...}`：为每个键值对调用一个函数，与数组的类似
+??? example "例子"
+
+    ``` js
+    let recipeMap = new Map([
+        ['cucumber', 500],
+        ['tomatoes', 350],
+        ['onion',    50]
+    ]);
+
+    // 遍历所有的键（vegetables）
+    for (let vegetable of recipeMap.keys()) {
+        alert(vegetable); // cucumber, tomatoes, onion
+    }
+
+    // 遍历所有的值（amounts）
+    for (let amount of recipeMap.values()) {
+        alert(amount); // 500, 350, 50
+    }
+
+    // 遍历所有的实体 [key, value]
+    for (let entry of recipeMap) { // 与 recipeMap.entries() 相同
+        alert(entry); // cucumber,500 (and so on)
+    }
+    ```
+
+- 对象 -> 映射：`let map = new Map(Object.entries(obj))`
+- 映射 -> 对象：`let obj = Object.fromEntries(map);`
+
+#### 集合
+
+集合是一个值的集合，每个值仅出现一次。
+
+相关方法和属性：
+
+- `new Set(iterable)`：创建集合，将可迭代对象（通常是数组）的值复制到集合内
+- `set.add(value)`：添加一个值，返回修改后的集合
+>注：重复添加同一个值不会使集合有任何变化
+
+- `set.delete(value)`：删除值，如果删除存在的值则返回 `true`，否则返回 `false`
+- `set.has(value)`：若 `value` 在集合内，返回 `true`，否则返回 `false`
+- `set.clear()`：清空集合
+- `set.size`：返回元素个数
+
+??? example "例子"
+
+    ``` js
+    let set = new Set();
+
+    let john = { name: "John" };
+    let pete = { name: "Pete" };
+    let mary = { name: "Mary" };
+
+    // visits，一些访客来访好几次
+    set.add(john);
+    set.add(pete);
+    set.add(mary);
+    set.add(john);
+    set.add(mary);
+
+    // set 只保留不重复的值
+    alert( set.size ); // 3
+
+    for (let user of set) {
+        alert(user.name); // John（然后 Pete 和 Mary）
+    }
+    ```
+
+集合的迭代：与映射使用相同的方法，但有以下不同点：
+
+- `set.keys()` 等同于 `set.values()`（集合里没有键）
+- 出现 `key` 的地方可以替换为 `value`（所以会出现两次 `value` 的情况，这是为了兼容映射）
+
 
 ### 运算符
 
@@ -498,6 +613,128 @@ setTimeout(function run() {
     - 如果该函数还引用了外部变量（形成一个闭包），那么只要该函数存在，外部变量就一直存在，可能比该函数占用更多的内存
 
     因此建议在程序最后使用 `clearInterval()` 或 `clearTimeout()`
+
+
+## 错误处理
+
+- 基本语法：`try...catch`
+
+    ``` js
+    try {
+        // 先执行这里的代码
+    } catch (err) {
+        // 若没有错误，则忽略这里的语句
+        // 若出现错误，则跳过 try 剩余语句，执行 catch 块内的雨具
+        // err 表示一个 error 对象
+    }
+    ```
+
+    - `catch` 只能捕捉运行时出现的错误(runtime errors)（或者叫做异常(exceptions)），如果有语法错误，程序将无法执行
+    - 如果 `try...catch` 内执行 `setTimeOut` 之类的函数，异常不会被捕获到。如果需要捕获异常，需要将 `try...catch` 作为 `setTimeOut` 的函数参数
+    - `catch`  部分的 `(err)` 可忽略（如果不用 `err` 的话）
+
+- Error 对象
+    - 相关属性有：
+        - `name`：error 名称，比如 `ReferenceError`
+        - `message`：error 详细描述
+        - `stack`：当前的调用栈
+        - ...
+
+        ??? example "例子"
+
+            ``` js
+            try {
+                lalala; // error, variable is not defined!
+            } catch (err) {
+                alert(err.name); // ReferenceError
+                alert(err.message); // lalala is not defined
+                alert(err.stack); // ReferenceError: lalala is not defined at (...call stack)
+
+                // 也可以将一个 error 作为整体显示出来
+                // error 信息被转换为像 "name: message" 这样的字符串
+                alert(err); // ReferenceError: lalala is not defined
+            }
+            ```
+
+    - 创建错误对象
+
+        ``` js
+        let error = new Error(message);
+        ```
+
+        - 其中 `Error` 是标准 error 构造函数的一种，同时作为 `error.name`，还包括 `SyntaxError`、`ReferenceError`、`TypeError` 等等
+        - `message` 作为 `error.message` 使用
+
+- 主动抛出错误：`throw <error object>;`，执行这条语句后就进入 `catch` 块内
+- 再次抛出(Rethrowing)：`catch` 应该只处理它知道的 error，并抛出所有其他的 error
+
+??? example "例子"
+
+    ``` js
+    function readData() {
+        let json = '{ "age": 30 }';
+
+        try {
+            // ...
+            blabla(); // error!
+        } catch (err) {
+            // ...
+            if (!(err instanceof SyntaxError)) {
+                throw err; // 再次抛出（不知道如何处理它）
+            }
+        }
+    }
+
+    try {
+        readData();
+    } catch (err) {
+        alert( "External catch got: " + err ); // 捕获了它！
+    }
+    ```
+
+- `try...catch...finally`
+
+    ``` js
+    try {
+        // 尝试执行的代码
+    } catch (err) {
+        // 处理 error
+    } finally {
+        // 总会执行的代码
+    }
+    ```
+
+    - 如果 `try` 语块内存在 `return` 语句，那么后面的 `finally` 从句还是会执行的
+    - 可以省略 `catch`，使用 `try...finally`：当 `try` 语块内发生异常时就直接执行 `finally` 中的代码
+
+    ??? example "例子"
+
+        ``` js
+        let num = +prompt("输入一个正整数？", 35)
+
+        let diff, result;
+
+        function fib(n) {
+        if (n < 0 || Math.trunc(n) != n) {
+            throw new Error("不能是负数，并且必须是整数。");
+        }
+        return n <= 1 ? n : fib(n - 1) + fib(n - 2);
+        }
+
+        let start = Date.now();
+
+        try {
+        result = fib(num);
+        } catch (err) {
+        result = 0;
+        } finally {
+        diff = Date.now() - start;
+        }
+
+        alert(result || "出现了 error");
+
+        alert( `执行花费了 ${diff}ms` );
+        ```
 
 
 ## 对象
@@ -991,6 +1228,288 @@ JSON（JS 对象表示法）是基于 JS 对象语法的数据格式，但它独
             alert( schedule.meetups[1].date.getDate() ); 
             ```
 
+## 类
+
+类的构成：
+
+- 构造函数
+- 实例方法和实例字段
+- 静态方法和静态字段
+
+``` js
+class MyClass {
+    // 构造函数
+    constructor() {
+        // ...
+    }
+
+    // 实例字段
+    myField = ...;
+
+    // 实例方法
+    myMethod() {
+        // ...
+    }
+
+
+    // 静态字段
+    static myStaticField = ...;
+
+    // 静态方法
+    static myStaticMethod() {
+        // ...
+    }
+
+    // 静态块
+    static {
+        // ...
+    }
+
+    // 私有形式
+    #myPrivateField = ...;
+}
+```
+
+??? info "注"
+
+下面的代码等价于上面的定义：
+
+``` js
+function MyClass() {
+    this.myField = ...;
+}
+
+MyClass.myStaticField = ...;
+MyClass.myStaticMethod = function () {
+    // ...
+};
+
+MyClass.prototype.method = function () {
+    // ...
+}
+```
+
+- 构造函数：当使用 `new` 运算符创建类的实例时，就会自动调用构造函数
+    - 构造函数里的 `this` 指向新创建的实例，并作为调用 `new` 函数的结果返回
+    - 不建议用 `return` 任何值，它会作为 `new` 函数的结果，覆盖掉 `this` 的值
+- 实例方法：可用于读取、写入实例的某些值
+``` js
+class Color {
+  constructor(r, g, b) {
+    this.values = [r, g, b];
+  }
+  getRed() {
+    return this.values[0];
+  }
+  setRed(value) {
+    this.values[0] = value;
+  }
+}
+
+const red = new Color(255, 0, 0);
+red.setRed(0);
+console.log(red.getRed()); // 0; 此时也即黑色
+```
+
+---
+创建类的实例（对象）：
+
+``` js
+let MyInstance = new MyClass();
+// 要声明之后才能使用类
+```
+
+---
+类表达式：
+
+``` js
+// 无名类
+const MyClass = class {
+    // ...
+};
+
+// 也可以带名字，但只在类里面可见
+const MyClass1 = class MyClassFirst {
+    // ...
+};
+// new MyClassFirst(); // Error
+```
+
+### 私有与公共字段
+
+- 私有字段：以 `#` 标识，无法在类声明的外部被直接访问（会被认为是语法错误）
+    - 声明私有字段的好处是使类得到较好的封装，可以防止用户直接访问类的底层数据，避免意外发生，从而提升代码的鲁棒性
+    - 只要属于同一个类，实例 A 的方法还是可以读取其他实例的私有字段
+    ??? example "例子"
+
+        ``` js
+        class Color {
+            #values;
+            constructor(r, g, b) {
+                this.#values = [r, g, b];
+            }
+            redDifference(anotherColor) {
+                // #values 不一定要从 this 访问：
+                // 你也可以访问属于同一个类的其他实例的私有字段。
+                return this.#values[0] - anotherColor.#values[0];
+            }
+        }
+
+        const red = new Color(255, 0, 0);
+        const crimson = new Color(220, 20, 60);
+        red.redDifference(crimson); // 35
+        ```
+
+    - 如果某个类实例访问另一个类实例（不同的类）中不存在的私有字段，JS 会抛出异常，可以使用 `in` 运算符判断某个实例是否存在某个私有字段
+
+    ??? example "例子"
+
+        ``` js
+        class Color {
+            #values;
+            constructor(r, g, b) {
+                this.#values = [r, g, b];
+            }
+            redDifference(anotherColor) {
+                if (!(#values in anotherColor)) {
+                    throw new TypeError("Color instance expected");
+                }
+                return this.#values[0] - anotherColor.#values[0];
+            }
+        }
+        ```
+
+    - 私有字段不得重复声明，也无法被 `delete` 删除，这些均会导致语法错误
+    - getter 和 setter 函数（接下来会讲到）也可以是私有的（函数名前加个 `#`）
+
+- 公共字段：实例可以直接获取公共字段的值
+    - 在类里面，公共字段的声明就像一般的变量，独立于构造函数之外，但它的值也自动赋值给 `this` 了
+
+    ??? example "例子"
+
+        ``` js
+        class MyClass {
+            luckyNumber = Math.random();
+        }
+        console.log(new MyClass().luckyNumber); // 0.5
+        console.log(new MyClass().luckyNumber); // 0.3
+        ```
+
+### getter 和 setter
+
+!!! example "例子"
+
+    ``` js
+    class Color {
+        constructor(r, g, b) {
+            this.values = [r, g, b];
+        }
+        get red() {
+            return this.values[0];
+        }
+        set red(value) {
+            this.values[0] = value;
+        }
+    }
+
+    const red = new Color(255, 0, 0);
+    red.red = 0;
+    console.log(red.red); // 0
+    ```
+
+可以看到，如果在类中有一个匹配的 getter 和 setter 字段，那么就好像为这个类创建一个新的「属性」，我们既可以读取这个属性，也可以修改这个属性。
+
+如果只设了 getter 而没有设置 setter，那么这个「属性」是只读的，不能修改的（若修改则会抛出类型错误）。
+
+### 静态属性
+
+静态属性包括静态方法、静态字段和静态的 getter 和 setter 函数。它们不属于任何一个类的实例，仅在类定义里面使用，无法直接被实例访问。
+
+!!! example "例子"
+
+    ``` js
+    class Color {
+    static isValid(r, g, b) {
+        return r >= 0 && r <= 255 && g >= 0 && g <= 255 && b >= 0 && b <= 255;
+    }
+    }
+
+    // 可以被类访问
+    Color.isValid(255, 0, 0); // true
+    Color.isValid(1000, 0, 0); // false
+
+    // 但无法被实例访问
+    console.log(new Color(0, 0, 0).isValid); // undefined
+    ```
+
+静态初始化块：在类的第一次加载时运行的代码块，此时可以访问静态的私有属性
+
+!!! example "例子"
+
+    ``` js
+    class MyClass {
+        static {
+            MyClass.myStaticProperty = "foo";
+        }
+    }
+
+    console.log(MyClass.myStaticProperty); // 'foo'
+    ```
+
+### 扩展与继承
+
+**派生类(derived class)**：由父类**继承**而来的类，可以访问父类的所有公共属性（包括静态属性），由 `extends` 子句声明。
+
+- 在构造函数内，如果要访问 `this`，**在此之前**一定要先调用 `super()` 函数：调用父类的构造函数来初始化 `this`
+??? example "例子"
+
+    ``` js
+    class ColorWithAlpha extends Color {
+        #alpha;
+        constructor(r, g, b, a) {
+            super(r, g, b);
+            this.#alpha = a;
+        }
+        get alpha() {
+            return this.#alpha;
+        }
+        set alpha(value) {
+            if (value < 0 || value > 1) {
+                throw new RangeError("Alpha 值必须在 0 与 1 之间");
+            }
+            this.#alpha = value;
+        }
+    }
+    ```
+
+- 派生类可以覆盖父类的方法
+- 使用 `super.method()` 来访问父类的方法 `method()`，可以在修改方法时减少代码量
+??? example "例子"
+
+    ``` js
+    class ColorWithAlpha extends Color {
+        #alpha;
+        // …
+        toString() {
+            // 调用父类的 toString()，并以此构建新的返回值
+            return `${super.toString()}, ${this.#alpha}`;
+        }
+    }
+
+    console.log(new ColorWithAlpha(255, 0, 0, 0.5).toString()); // '255, 0, 0, 0.5'
+    ```
+
+- 派生类无法访问父类的私有字段
+- 一个类至多只能扩展自一个父类
+- 派生类的实例同时也是父类的实例（可用 `instanceof` 运算符验证）
+
+``` js
+const color = new ColorWithAlpha(255, 0, 0, 0.5);
+console.log(color instanceof Color); // true
+console.log(color instanceof ColorWithAlpha); // true
+```
+
+
 ---
 ??? bug "JS 抽象行为大赏"
 
@@ -1002,3 +1521,4 @@ JSON（JS 对象表示法）是基于 JS 对象语法的数据格式，但它独
     - `0.1 + 0.2 == 0.3 -> false`（JS 无法精确存储小数，这是很多语言的通病）
     - `NaN === NaN -> false`（每个 `NaN` 值都是独一无二的）
     - `[] == [] -> false`（JS 认为这两个数组是不同的对象，只有对同一个数组的引用才是相等的）
+

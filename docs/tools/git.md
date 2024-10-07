@@ -613,15 +613,16 @@ SSH 密钥是 SSH（Secure Shell，安全外壳）网络协议的访问凭证，
 
 下面介绍在 Linux 上生成 SSH 密钥，并且在 Github 上添加 SSH 密钥（默认已注册 Github 账号）：
 
-1. 创建密钥
+- 创建密钥
 
-``` bash
-$ ssh-keygen -t ed25519 -b 4096 -C "your_email@example.com"
-```
+    ``` bash
+    $ ssh-keygen -t ed25519 -b 4096 -C "your_email@example.com"
+    ```
 
-2. 系统将提示输入要保存密钥的文件，既可以指定文件位置，也可以按回车键接受默认文件位置（这里选择后者）
+    >注：我这里使用 ed25519 加密算法，它比 常用的 rsa 算法更加安全。
 
-3. 系统接下来提示输入口令，这样每当使用 SSH 密钥时都需要口令，提供了额外的一层防护
+- 系统将提示输入要保存密钥的文件，既可以指定文件位置，也可以按回车键接受默认文件位置（这里选择后者）
+- 系统接下来提示输入口令，这样每当使用 SSH 密钥时都需要口令，提供了额外的一层防护
 
 结果：
 
@@ -629,7 +630,7 @@ $ ssh-keygen -t ed25519 -b 4096 -C "your_email@example.com"
     <img src="images/git/6.png" width=70%>
 </div>
 
-4. 将新的 SSH 密钥添加到 ssh-agent
+- 将新的 SSH 密钥添加到 ssh-agent
 
     - 先检查 ssh-agent 是否正常运行：
     
@@ -640,7 +641,7 @@ $ ssh-keygen -t ed25519 -b 4096 -C "your_email@example.com"
 
     - 若正常运行，将新的 SSH 密钥添加到本地 SSH 代理：
     ``` bash
-    ssh-add /Users/you/.ssh/id_rsa
+    ssh-add /Users/you/.ssh/id_ed25519
     ```
 
     还要输入一遍刚刚设定的口令才能完成添加。
@@ -651,16 +652,16 @@ $ ssh-keygen -t ed25519 -b 4096 -C "your_email@example.com"
     <img src="images/git/7.png" width=70%>
 </div>
 
-5. 进入 Github [官网](https://github.com)，点击右侧用户头像，在弹出的列表中找到 Settings，点击进入后在左侧列表中的 Access 区域中找到 SSH and GPG keys，点击后再点击右侧 New SSH key，开始新建 SSH 密钥。
+- 进入 Github [官网](https://github.com)，点击右侧用户头像，在弹出的列表中找到 Settings，点击进入后在左侧列表中的 Access 区域中找到 SSH and GPG keys，点击后再点击右侧 New SSH key，开始新建 SSH 密钥。
 
-6. 取好标题，并将公钥内容复制到 Key 一栏，如图所示：
+- 取好标题，并将公钥内容复制到 Key 一栏，如图所示：
 
 <div style="text-align: center">
     <img src="images/git/10.png" width=70%>
     <img src="images/git/8.png" width=70%>
 </div>
 
-7. 点击 Add SSH key 后完成创建，可以在 SSH keys 一栏查看结果
+- 点击 Add SSH key 后完成创建，可以在 SSH keys 一栏查看结果
 
 <div style="text-align: center">
     <img src="images/git/9.png" width=70%>

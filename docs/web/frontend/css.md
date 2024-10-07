@@ -1114,3 +1114,123 @@ a[href^="http"] {
     <div style="text-align: center">
         <img src="images/css/34.png" width=100%>
     </div> 
+
+### 定位
+
+- `position: static`：（默认）静态定位，将元素放在文档流(document flow)的正常位置
+
+<div style="text-align: center">
+    <img src="images/css/35.png" width=50%>
+</div>
+
+- `position: relative`：配合 `top`、`bottom`、`left` 和 `right` 属性，在默认位置的基础上进行修改
+
+下图中间的黄块用到以下样式：
+
+``` css
+.positioned {
+    position: relative;
+    background: yellow;
+    top: 30px;     /* 向下推30px*/
+    left: 30px;    /* 向右推30px*/
+}
+```
+
+<div style="text-align: center">
+    <img src="images/css/36.png" width=50%>
+</div>
+
+- `position: absolute`：使元素独立于原来的文档流之外
+    - 元素的位置仍然可以用前面提到的 4 个属性修改，但是它们的含义变成距离「包含元素」(containing element)的边的距离
+
+
+
+    ??? note "包含元素"
+
+        - 如果父元素没有显式使用 `position` 属性，那么绝对定位元素的包含元素是一个初始块容器(initial containing block)，它的尺寸同浏览器窗口一样大。因此绝对定位元素会被放在 `<html>` 元素外，且根据浏览器窗口定位
+
+        !!! example "例子"
+
+            黄块样式：
+
+            ``` css
+            .positioned {
+                position: absolute;
+                background: yellow;
+                top: 30px;
+                left: 30px;
+            }
+            ```
+
+            <div style="text-align: center">
+                <img src="images/css/37.png" width=80%>
+            </div>
+
+        - 如果父元素采用相对定位（`position: relative`），那么绝对定位元素的上下左右位置是相对父元素的位置而言的。
+
+        !!! example "例子"
+
+            黄块样式同前，但父元素 `<body>` 采用相对定位。
+
+            <div style="text-align: center">
+                <img src="images/css/38.png" width=50%>
+            </div>
+
+    - 此外， `margin` 也可以改变元素位置
+    - `z-index` 属性可以改变绝对定位元素的堆叠顺序
+
+    ??? example "例子"
+
+        在原来的基础上，第一段变成了一个绝对引用的绿块。但由于它在黄块的前面，因此黄块将它压在了下面。
+
+        绿块（第一段）样式：
+
+        ``` css
+        p:nth-of-type(1) {
+            position: absolute;
+            background: lime;
+            top: 10px;
+            right: 30px;
+        }
+        ```
+
+        <div style="text-align: center">
+            <img src="images/css/39.png" width=50%>
+        </div>
+
+        如果想让绿块在黄块的上面，只需修改其中一个块的 `z-index` 属性即可：
+
+        ``` css
+        /* 为绿块添加一个属性 */
+        z-index: 1;
+        ```
+
+        <div style="text-align: center">
+            <img src="images/css/40.png" width=50%>
+        </div>
+
+        
+- `position: fixed`：类似前面的绝对定位，但固定定位只相对于浏览器窗口
+
+??? example "例子"
+
+    标题设为固定定位，当我们滚动内容时，可以看到标题一直位于顶部。
+
+    ``` css
+    h1 {
+        position: fixed;
+        top: 0;
+        width: 500px;
+        margin: 0 auto;
+        background: white;
+        padding: 10px;
+    }
+    ```
+
+    <div style="text-align: center">
+        <img src="images/css/41.png" width=70%>
+    </div>
+
+
+- `position: sticky`：可以看作相对定位和绝对定位的结合，在滚动到某个阈值点之前，它表现得如同相对定位，但之后就固定在页面上了
+

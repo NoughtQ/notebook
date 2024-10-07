@@ -1460,7 +1460,7 @@ for (let [key, value] of response.headers) {
         ```
 
 - 跨源请求
-    - 回顾知识：[CORS（跨源资源共享）](../security.md#cors)
+    - 回顾知识：[CORS（跨源资源共享）](../../security.md#cors)
     - 简单请求
     ??? example "例子"
 

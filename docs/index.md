@@ -32,12 +32,12 @@ title: "NoughtQ的笔记本"
 
 !!! plan "更新计划"
 
-    - [概率论与数理统计](math/pro-sta/index.md)
-    - [汇编语言程序设计基础](lang/asm/index.md)
-    - [高级数据结构与算法分析](algorithms/ads/index.md)
-    - [计算机组成](hardware/co/index.md)
-    - [图像信息处理](misc/dip/index.md)
-    - 可能会更一些心理学课程的笔记
+    - [ ] [概率论与数理统计](math/pro-sta/index.md)
+    - [ ] [汇编语言程序设计基础](lang/asm/index.md)
+    - [ ] [高级数据结构与算法分析](algorithms/ads/index.md)
+    - [ ] [计算机组成](hardware/co/index.md)
+    - [ ] [图像信息处理](misc/dip/index.md)
+    - [ ] 可能会更一些心理学课程的笔记
 
     >~~哇哦，有点满呀~~ :dizzy_face:
 
