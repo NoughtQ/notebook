@@ -686,7 +686,11 @@
 <p>也许你会想到用<em>指针</em>来提升合并的速度，但这样做会影响到其他运算的效率：我们原来可以用数组索引快速定位到父节点和孩子节点（只需简单的移位和加法操作<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，用指针的话就会使这种定位变得更加困难。</p>
 </blockquote>
 </div>
-<p><strong>左偏堆</strong>（又称左式堆、左倾堆等）<span>(leftist heaps)<span class="heti-spacing"> </span></span>具有与一般的堆一致的顺序性质，即每个节点一定比它所有的孩子节点大<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>小；变化之处在于结构性质：它不再是一棵完全二叉树，而是一棵不平衡的树。</p>
+<p><strong>左偏堆</strong>（又称左式堆、左倾堆等）(leftist heaps)</p>
+<ul>
+<li>具有与一般的堆一致的<strong>顺序</strong>性质，即每个节点一定比它所有的孩子节点大<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>小</li>
+<li>变化之处在于<strong>结构</strong>性质：它不再是一棵完全二叉树，而是一棵不平衡的树。</li>
+</ul>
 <p>除此之外，左偏堆的节点还多了一个名为<strong>空指针路径长度</strong><span>(null path length)<span class="heti-spacing"> </span></span>的字段，记作<span><span class="heti-spacing"> </span><span class="arithmatex">\(\mathrm{Npl}(X)\)</span></span>，表示的是从节点<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(X\)</span><span class="heti-spacing"> </span></span>到没有两个孩子的节点（即叶节点或度为<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>的节点）的最短距离。定义<span><span class="heti-spacing"> </span><span class="arithmatex">\(\mathrm{Npl}(NULL) = -1\)</span></span>。这个字段用于准确表述左偏堆满足的性质：对于堆上的每个节点，它的左孩子的空指针路径长度不小于它的右孩子的空指针路径长度，因此整棵树会“向左歪”，即左子树的深度更深一些。空指针路径长度的递推关系式为：</p>
 <div class="arithmatex">\[
 \mathrm{Npl}(X) = \min \{\mathrm{Npl}(C) + 1\ \mathrm{for\ all}\ C\ \mathrm{as\ children\ of}\ X\}
@@ -759,7 +763,7 @@
 <p>递归版本的合并操作流程如下：</p>
 <ol>
 <li>
-<p>合并：<code>Merge(H1-&gt;Right, H2)</code></p>
+<p><strong>合并</strong>：<code>Merge(H1-&gt;Right, H2)</code></p>
 <ul>
 <li>由于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(H_1\)</span><span class="heti-spacing"> </span></span>的根节点更小，所以我们将<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(H_1\)</span><span class="heti-spacing"> </span></span>的右子树与<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(H_2\)</span><span class="heti-spacing"> </span></span>进行递归地合并</li>
 </ul>
@@ -768,7 +772,7 @@
 </div>
 </li>
 <li>
-<p>附加：<code>Attach(H2, H1-&gt;Right)</code></p>
+<p><strong>附加</strong>：<code>Attach(H2, H1-&gt;Right)</code></p>
 <ul>
 <li>将合并好的堆附加到<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(H_1\)</span><span class="heti-spacing"> </span></span>右子树的位置</li>
 </ul>
@@ -777,7 +781,7 @@
 </div>
 </li>
 <li>
-<p>如有必要，交换左右子树：<code>Swap(H1-&gt;Right, H1-&gt;Left)</code></p>
+<p>如有必要，<strong>交换</strong>左右子树：<code>Swap(H1-&gt;Right, H1-&gt;Left)</code></p>
 <p></p><div style="text-align: center">
 <img src="images/lec4/8.png" width="35%"/>
 </div>
