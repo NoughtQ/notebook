@@ -9,15 +9,14 @@
 <link href="6.html" rel="prev"/>
 <link href="8.html" rel="next"/>
 <link href="../../assets/favicon.png" rel="icon"/>
-<meta content="mkdocs-1.6.0, mkdocs-material-9.5.27" name="generator"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.5.42" name="generator"/>
 <title>Lec 7: Divide and Conquer - NoughtQ的笔记本</title>
-<link href="../../assets/stylesheets/main.6543a935.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/main.0253249f.min.css" rel="stylesheet"/>
 <link href="../../assets/stylesheets/palette.06af60db.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=JetBrains+Mono,+LXGW+WenKai+Screen+GB+Screen:300,300i,400,400i,700,700i%7CJetBrains+Mono,+Consolas:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
 <style>:root{--md-text-font:"JetBrains Mono, LXGW WenKai Screen GB Screen";--md-code-font:"JetBrains Mono, Consolas"}</style>
 <link href="../../css/heti.css" rel="stylesheet"/>
-<link href="../../css/toc_extra.css" rel="stylesheet"/>
 <link href="../../css/timeline.css" rel="stylesheet"/>
 <link href="../../stylesheet/custom.css" rel="stylesheet"/>
 <link href="../../stylesheet/extra_changelog.css" rel="stylesheet"/>
@@ -25,7 +24,7 @@
 <link href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css" rel="stylesheet"/>
 <link href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;display=swap" rel="stylesheet"/>
-<script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
 </head>
 <body data-md-color-accent="indigo" data-md-color-primary="indigo" data-md-color-scheme="slate" dir="ltr">
 <input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
@@ -41,10 +40,10 @@
 <header class="md-header" data-md-component="header">
 <nav aria-label="页眉" class="md-header__inner md-grid">
 <a aria-label="NoughtQ的笔记本" class="md-header__button md-logo" data-md-component="logo" href="../.." title="NoughtQ的笔记本">
-<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.05 9H7.06V6h1.99V4.03H7.06v-1c0-1.11.89-1.99 1.99-1.99h5.98V8l2.47-1.5L20 8V1.04h1c1.05 0 2 .96 2 1.99V17c0 1.03-.95 2-2 2H9.05c-1.05 0-1.99-.95-1.99-2v-1h1.99v-2H7.06v-3h1.99V9M1 18h2v-3H1v-2h2v-3H1V8h2V5h2v3H3v2h2v3H3v2h2v3H3v2h2v1h16v2H5a2 2 0 0 1-2-2v-1H1v-2Z"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.05 9H7.06V6h1.99V4.03H7.06v-1c0-1.11.89-1.99 1.99-1.99h5.98V8l2.47-1.5L20 8V1.04h1c1.05 0 2 .96 2 1.99V17c0 1.03-.95 2-2 2H9.05c-1.05 0-1.99-.95-1.99-2v-1h1.99v-2H7.06v-3h1.99zM1 18h2v-3H1v-2h2v-3H1V8h2V5h2v3H3v2h2v3H3v2h2v3H3v2h2v1h16v2H5a2 2 0 0 1-2-2v-1H1z"></path></svg>
 </a>
 <label class="md-header__button md-icon" for="__drawer">
-<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
 </label>
 <div class="md-header__title" data-md-component="header-title">
 <div class="md-header__ellipsis">
@@ -65,16 +64,16 @@
 <form class="md-header__option" data-md-component="palette">
 <input aria-label="Dark Mode" class="md-option" data-md-color-accent="indigo" data-md-color-media="(prefer-color-scheme: dark)" data-md-color-primary="indigo" data-md-color-scheme="slate" id="__palette_0" name="__palette" type="radio"/>
 <label class="md-header__button md-icon" for="__palette_1" hidden="" title="Dark Mode">
-<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3 3.19.09m3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95 2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31Z"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"></path></svg>
 </label>
 <input aria-label="Light Mode" class="md-option" data-md-color-accent="indigo" data-md-color-media="(prefer-color-scheme: light)" data-md-color-primary="indigo" data-md-color-scheme="default" id="__palette_1" name="__palette" type="radio"/>
 <label class="md-header__button md-icon" for="__palette_0" hidden="" title="Light Mode">
-<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5c-.84 0-1.65.15-2.39.42L12 2M3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29L3.34 7m.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14L3.36 17M20.65 7l-1.77 3.79a7.023 7.023 0 0 0-2.38-4.15l4.15.36m-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29L20.64 17M12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44L12 22Z"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"></path></svg>
 </label>
 </form>
-<script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
 <label class="md-header__button md-icon" for="__search">
-<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
 </label>
 <div class="md-search" data-md-component="search" role="dialog">
 <label class="md-search__overlay" for="__search"></label>
@@ -82,12 +81,12 @@
 <form class="md-search__form" name="search">
 <input aria-label="搜索" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="搜索" required="" spellcheck="false" type="text"/>
 <label class="md-search__icon md-icon" for="__search">
-<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"></path></svg>
-<svg viewbox="0 0 320 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 320 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path></svg>
 </label>
 <nav aria-label="查找" class="md-search__options">
 <button aria-label="清空当前内容" class="md-search__icon md-icon" tabindex="-1" title="清空当前内容" type="reset">
-<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
 </button>
 </nav>
 </form>
@@ -106,7 +105,7 @@
 <div class="md-header__source">
 <a class="md-source" data-md-component="source" href="https://github.com/noughtq/notebook" title="前往仓库">
 <div class="md-source__icon md-icon">
-<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"></path></svg>
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"></path></svg>
 </div>
 <div class="md-source__repository">
     NoughtQ/Notebook
@@ -230,14 +229,14 @@
 <nav aria-label="导航栏" class="md-nav md-nav--primary md-nav--lifted" data-md-level="0">
 <label class="md-nav__title" for="__drawer">
 <a aria-label="NoughtQ的笔记本" class="md-nav__button md-logo" data-md-component="logo" href="../.." title="NoughtQ的笔记本">
-<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.05 9H7.06V6h1.99V4.03H7.06v-1c0-1.11.89-1.99 1.99-1.99h5.98V8l2.47-1.5L20 8V1.04h1c1.05 0 2 .96 2 1.99V17c0 1.03-.95 2-2 2H9.05c-1.05 0-1.99-.95-1.99-2v-1h1.99v-2H7.06v-3h1.99V9M1 18h2v-3H1v-2h2v-3H1V8h2V5h2v3H3v2h2v3H3v2h2v3H3v2h2v1h16v2H5a2 2 0 0 1-2-2v-1H1v-2Z"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.05 9H7.06V6h1.99V4.03H7.06v-1c0-1.11.89-1.99 1.99-1.99h5.98V8l2.47-1.5L20 8V1.04h1c1.05 0 2 .96 2 1.99V17c0 1.03-.95 2-2 2H9.05c-1.05 0-1.99-.95-1.99-2v-1h1.99v-2H7.06v-3h1.99zM1 18h2v-3H1v-2h2v-3H1V8h2V5h2v3H3v2h2v3H3v2h2v3H3v2h2v1h16v2H5a2 2 0 0 1-2-2v-1H1z"></path></svg>
 </a>
     NoughtQ的笔记本
   </label>
 <div class="md-nav__source">
 <a class="md-source" data-md-component="source" href="https://github.com/noughtq/notebook" title="前往仓库">
 <div class="md-source__icon md-icon">
-<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"></path></svg>
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"></path></svg>
 </div>
 <div class="md-source__repository">
     NoughtQ/Notebook
@@ -359,11 +358,100 @@
 </li>
 <li class="md-nav__item md-nav__item--active">
 <input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    Lec 7: Divide and Conquer
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
 <a class="md-nav__link md-nav__link--active" href="7.html">
 <span class="md-ellipsis">
     Lec 7: Divide and Conquer
   </span>
 </a>
+<nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#examples">
+<span class="md-ellipsis">
+      Examples
+    </span>
+</a>
+<nav aria-label="Examples" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#closest-points-problem">
+<span class="md-ellipsis">
+      Closest Points Problem
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#analysis">
+<span class="md-ellipsis">
+      Analysis
+    </span>
+</a>
+<nav aria-label="Analysis" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#substitution">
+<span class="md-ellipsis">
+      Substitution
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#recursive-trees">
+<span class="md-ellipsis">
+      Recursive Trees
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#master-method">
+<span class="md-ellipsis">
+      Master Method
+    </span>
+</a>
+<nav aria-label="Master Method" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#form-1">
+<span class="md-ellipsis">
+      Form 1
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#form-2">
+<span class="md-ellipsis">
+      Form 2
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#form-3">
+<span class="md-ellipsis">
+      Form 3
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
 </li>
 <li class="md-nav__item">
 <a class="md-nav__link" href="8.html">
@@ -487,6 +575,87 @@
 <div class="md-sidebar__scrollwrap">
 <div class="md-sidebar__inner">
 <nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#examples">
+<span class="md-ellipsis">
+      Examples
+    </span>
+</a>
+<nav aria-label="Examples" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#closest-points-problem">
+<span class="md-ellipsis">
+      Closest Points Problem
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#analysis">
+<span class="md-ellipsis">
+      Analysis
+    </span>
+</a>
+<nav aria-label="Analysis" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#substitution">
+<span class="md-ellipsis">
+      Substitution
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#recursive-trees">
+<span class="md-ellipsis">
+      Recursive Trees
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#master-method">
+<span class="md-ellipsis">
+      Master Method
+    </span>
+</a>
+<nav aria-label="Master Method" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#form-1">
+<span class="md-ellipsis">
+      Form 1
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#form-2">
+<span class="md-ellipsis">
+      Form 2
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#form-3">
+<span class="md-ellipsis">
+      Form 3
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
 </nav>
 </div>
 </div>
@@ -495,18 +664,498 @@
 <article class="md-content__inner md-typeset">
 <h1 id="lec-7-divide-and-conquer">Lec 7: Divide and Conquer<a class="headerlink" href="#lec-7-divide-and-conquer" title="Permanent link">⚓︎</a></h1>
 <div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
-<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8V2m6.78 1a.69.69 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38-2.5-2.5Z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>5<span class="heti-spacing"> </span></span>个字 </p>
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>3749<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 640 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M392.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6m80.6 120.1c-12.5 12.5-12.5 32.8 0 45.3l89.3 89.4-89.4 89.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l112-112c12.5-12.5 12.5-32.8 0-45.3l-112-112c-12.5-12.5-32.8-12.5-45.3 0zm-306.7 0c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3l112 112c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l89.4-89.4c12.5-12.5 12.5-32.8 0-45.3"></path></svg></span> <span>13<span class="heti-spacing"> </span></span>行代码 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>19<span class="heti-spacing"> </span></span>分钟</p>
 </div>
+<p><strong>分治<span class="heti-skip"><span class="heti-spacing"> </span>(divide and conquer)<span class="heti-spacing"> </span></span>算法</strong>已经是我们的老朋友了：在<span class="heti-skip"><span class="heti-spacing"> </span>FDS<span class="heti-spacing"> </span></span>的学习中，我们已经在这些问题中用到了分治算法：</p>
+<ul>
+<li><a href="../fds/2.html#algorithm-3">求最大子序列之和</a>（<span class="arithmatex">\(O(N \log N)\)</span>）</li>
+<li><a href="../fds/4.html#tree-traversals">树的遍历</a>（<span class="arithmatex">\(O(N)\)</span>）</li>
+<li><a href="../fds/7.html#mergesort">归并排序</a>、<a href="../fds/7.html#quicksort">快速排序</a>（<span class="arithmatex">\(O(N \log N)\)</span>）</li>
+</ul>
+<p>再来简单回顾一下分治的大致思想：该算法<strong>递归</strong>地进行下列操作</p>
+<ul>
+<li>将问题分成<span class="heti-skip"><span class="heti-spacing"> </span>(divide)<span class="heti-spacing"> </span></span>一系列的子问题</li>
+<li>递归解决<span class="heti-skip"><span class="heti-spacing"> </span>(conquer)<span class="heti-spacing"> </span></span>这些子问题</li>
+<li>将子问题的解合并起来<span><span class="heti-spacing"> </span>(combine)</span>，构成原问题的解</li>
+</ul>
+<p>时间复杂度的递推公式为：</p>
+<div class="arithmatex">\[
+T(N) = aT(\dfrac{N}{b}) + f(N)
+\]</div>
+<h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">⚓︎</a></h2>
+<p>如果好久没有接触过分治算法，不妨拿下面这道题练练手，温习一下分治算法的使用。</p>
+<h3 id="closest-points-problem">Closest Points Problem<a class="headerlink" href="#closest-points-problem" title="Permanent link">⚓︎</a></h3>
+<div class="admonition question">
+<p class="admonition-title">问题描述</p>
+<p>在平面上给定<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(N\)</span><span class="heti-spacing"> </span></span>个点，请找出距离最近的一对点（如果两个点位于相同的位置，则认为它们之间的距离为<span><span class="heti-spacing"> </span>0</span>，但本题保证所有点均分布在不同的位置上<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">解法</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"/><input id="__tabbed_1_2" name="__tabbed_1" type="radio"/><div class="tabbed-labels"><label for="__tabbed_1_1">法<span><span class="heti-spacing"> </span>1</span>：简单的穷举查找</label><label for="__tabbed_1_2">法<span><span class="heti-spacing"> </span>2</span>：分治算法</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>一共有<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(N\)</span><span class="heti-spacing"> </span></span>个点，那么就有<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\dfrac{N(N - 1)}{2}\)</span><span class="heti-spacing"> </span></span>个距离，逐一遍历和比较这些距离，时间复杂度为<span><span class="heti-spacing"> </span><span class="arithmatex">\(T = O(N^2)\)</span></span>。</p>
+</div>
+<div class="tabbed-block">
+<p>回顾一下最大子序列之和的解法：我们先将整个序列拆成两半，然后分别计算左半边子序列，右半边子序列，以及分界线中间区域子序列的最大和，最后取这<span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span>个结果中的最大者，作为该序列的最大子序列之和。这里我们借鉴这种解法来解决这一问题。</p>
+<p></p><div style="text-align: center">
+<img src="images/lec7/1.png" width="40%"/>
+</div>
+<ul>
+<li>首先，我们根据这些点的<span class="heti-skip"><span class="heti-spacing"> </span>x<span class="heti-spacing"> </span></span>轴坐标来划分这些点（用绿色竖线隔开<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，确保两边的点的数目大致相等</li>
+<li>这里仅画了三根线，分别对应了三种不同的情况：左半边、中间和右半边</li>
+<li>其中左半边和右半边这两种情况可以递归解决，因此我们最关心的问题是如何处理<strong>中间</strong>的情况，如何确保它的时间复杂度是<strong>线性</strong>的（因为只有这样才确保整个算法的时间复杂度为<span><span class="heti-spacing"> </span><span class="arithmatex">\(O(N \log N)\)</span></span>）</li>
+</ul>
+<details class="proof">
+<summary>解释</summary>
+<p>在这个问题中，对于时间复杂度的递推公式<span><span class="heti-spacing"> </span><span class="arithmatex">\(T(N) = aT(\dfrac{N}{b}) + f(N)\)</span></span>，<span class="arithmatex">\(a = b = 2\)</span>，令<span><span class="heti-spacing"> </span><span class="arithmatex">\(f(N) = cN\)</span></span>，那么：</p>
+<div class="arithmatex">\[
+\begin{align}
+T(N) &amp; = 2T(\dfrac{N}{2}) + cN \notag \\
+&amp; = 2[2T(\dfrac{N}{2^2}) + c\dfrac{N}{2}] + cN \notag \\
+&amp; = 2^2 T(\dfrac{N}{2^2}) + 2cN \notag \\
+&amp; = \dots \notag \\
+&amp; = 2^k T(\dfrac{N}{2^k}) + kcN \notag \\
+&amp; = N + cN \log N = O(N \log N) \notag
+\end{align}
+\]</div>
+<p>如果<span><span class="heti-spacing"> </span><span class="arithmatex">\(f(N) = cN^2\)</span></span>，那么：</p>
+<div class="arithmatex">\[
+\begin{align}
+T(N) &amp; = 2T(\dfrac{N}{2}) + cN^2 \notag \\
+&amp; = 2[2T(\dfrac{N}{2^2}) + c\dfrac{N^2}{2^2}] + cN^2 \notag \\
+&amp; = 2^2 T(\dfrac{N}{2^2}) + cN^2(1 + \dfrac{1}{2}) \notag \\
+&amp; = \dots \notag \\
+&amp; = 2^k T(\dfrac{N}{2^k}) + cN^2(1 + \dfrac{1}{2} + \dots + \dfrac{1}{2^{k-1}}) \notag \\
+&amp; = O(N^2) \notag
+\end{align}
+\]</div>
+</details>
+<ul>
+<li>如果考虑分隔线两边所有的点，显而易见的是时间复杂度来到了<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(O(N^2)\)</span><span class="heti-spacing"> </span></span>的水平，这显然不是我们希望的</li>
+<li>
+<p>一种可行的改进方法是：仅考虑距分隔线水平距离为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\delta\)</span><span class="heti-spacing"> </span></span>内的点，其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\delta\)</span><span class="heti-spacing"> </span></span>是我们提前选定的常数。现在，我们得到了一个位于中间部分，且宽度为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(2\delta\)</span><span class="heti-spacing"> </span></span>的区域，称为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\delta\)</span><span class="heti-spacing"> </span></span>带<span><span class="heti-spacing"> </span>(<span class="arithmatex">\(\delta\)</span>-strip)</span>。这个区域之外的点显然不会是最近点对的可能点</p>
+<p></p><div style="text-align: center">
+<img src="images/lec7/2.png" width="40%"/>
+</div>
+<ul>
+<li>代码实现如下：</li>
+</ul>
+<details class="code">
+<summary>代码实现</summary>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="c1">// points are in the strip</span>
+</span><span id="__span-0-2"><a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NumPointsInStrip</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span><span id="__span-0-3"><a href="#__codelineno-0-3" id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NumPointsInStrip</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span>
+</span><span id="__span-0-4"><a href="#__codelineno-0-4" id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Dist</span><span class="p">(</span><span class="n">Pi</span><span class="p">,</span><span class="w"> </span><span class="n">Pj</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">delta</span><span class="p">)</span>
+</span><span id="__span-0-5"><a href="#__codelineno-0-5" id="__codelineno-0-5" name="__codelineno-0-5"></a><span class="w">            </span><span class="n">delta</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Dist</span><span class="p">(</span><span class="n">Pi</span><span class="p">,</span><span class="w"> </span><span class="n">Pj</span><span class="p">);</span>
+</span></code></pre></div>
+</details>
+<ul>
+<li>如果能够确保<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\delta\)</span><span class="heti-spacing"> </span></span>带内的点数为<span><span class="heti-spacing"> </span><span class="arithmatex">\(O(\sqrt{N})\)</span></span>，那么计算中间情况的时间复杂度就是<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(O(N)\)</span><span class="heti-spacing"> </span></span>了</li>
+<li>然而，如果<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\delta\)</span><span class="heti-spacing"> </span></span>没有选好，最坏情况下<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\delta\)</span><span class="heti-spacing"> </span></span>带内包含了所有点，那这个算法又退回到<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(O(N^2)\)</span><span class="heti-spacing"> </span></span>了。因此需要再次改进这个算法，避免这种最坏情况的发生</li>
+</ul>
+</li>
+<li>
+<p>进一步的改进方法是：在确定垂直<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\delta\)</span><span class="heti-spacing"> </span></span>带区域的基础上，再划分水平<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\delta\)</span><span class="heti-spacing"> </span></span>带区域。详细步骤为：</p>
+<ul>
+<li>根据点的<span class="heti-skip"><span class="heti-spacing"> </span>y<span class="heti-spacing"> </span></span>坐标，对位于垂直<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\delta\)</span><span class="heti-spacing"> </span></span>带内的点排序，这里我们假设从<span class="heti-skip"><span class="heti-spacing"> </span>y<span class="heti-spacing"> </span></span>坐标最大的点开始</li>
+<li>依次遍历垂直<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\delta\)</span><span class="heti-spacing"> </span></span>带内的每个点，对于每个点，我们仅计算位于该点下方且距离该点小于等于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\delta\)</span><span class="heti-spacing"> </span></span>的点和它之间的距离（划分水平<span><span class="heti-spacing"> </span>$</span>
+\delta$区域）</li>
+<li>对于<span class="heti-skip"><span class="heti-spacing"> </span>y<span class="heti-spacing"> </span></span>坐标相同的点，它们将会被一起处理</li>
+<li>
+<p>对于正在被处理的点<span><span class="heti-spacing"> </span><span class="arithmatex">\(p\)</span></span>，它一定位于一个<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(2\delta \times \delta\)</span><span class="heti-spacing"> </span></span>的矩形区域内，如图所示：</p>
+<p><figure markdown="span" style=" width: 50%">
+<img alt="" src="images/lec7/3_dark.png#only-dark"/>
+<img alt="" src="images/lec7/3_light.png#only-light"/>
+<figcaption></figcaption>
+</figure></p>
+<ul>
+<li>分隔线正好将矩形划分为<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>个方形<span class="heti-skip"><span class="heti-spacing"> </span>L<span class="heti-spacing"> </span></span>和<span><span class="heti-spacing"> </span>R</span></li>
+<li>可以验证，在最坏情况下，每个点只需要考虑与其他<span class="heti-skip"><span class="heti-spacing"> </span>7<span class="heti-spacing"> </span></span>个点的距离即可。此时，这些点分布于方形<span class="heti-skip"><span class="heti-spacing"> </span>L<span class="heti-spacing"> </span></span>的四个角以及方形<span class="heti-skip"><span class="heti-spacing"> </span>R<span class="heti-spacing"> </span></span>的四个角上（其中<span class="heti-skip"><span class="heti-spacing"> </span>L<span class="heti-spacing"> </span></span>的右侧与<span class="heti-skip"><span class="heti-spacing"> </span>R<span class="heti-spacing"> </span></span>的左侧重合，因此会有一些点重合<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，在上图分别为红色的四个点和绿色的四个点。如果在这个区域内，存在点不在这些角上，那么在该区域就会有两个点的距离小于<span><span class="heti-spacing"> </span><span class="arithmatex">\(\delta\)</span></span>，那么这就不是最坏的情况了</li>
+<li>因此，即使所有的点都在垂直<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\delta\)</span><span class="heti-spacing"> </span></span>带内，因为每个点的判断是常数次的，因此中间情况的时间复杂度就是<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(O(N)\)</span><span class="heti-spacing"> </span></span>了</li>
+</ul>
+</li>
+</ul>
+<details class="code">
+<summary>代码实现</summary>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="c1">// points are in the strip</span>
+</span><span id="__span-1-2"><a href="#__codelineno-1-2" id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="c1">// and sorted by y coordinates</span>
+</span><span id="__span-1-3"><a href="#__codelineno-1-3" id="__codelineno-1-3" name="__codelineno-1-3"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NumPointsInStrip</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span><span id="__span-1-4"><a href="#__codelineno-1-4" id="__codelineno-1-4" name="__codelineno-1-4"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NumPointsInStrip</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span>
+</span><span id="__span-1-5"><a href="#__codelineno-1-5" id="__codelineno-1-5" name="__codelineno-1-5"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Dist_y</span><span class="p">(</span><span class="n">Pi</span><span class="p">,</span><span class="w"> </span><span class="n">Pj</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">delta</span><span class="p">)</span>
+</span><span id="__span-1-6"><a href="#__codelineno-1-6" id="__codelineno-1-6" name="__codelineno-1-6"></a><span class="w">            </span><span class="k">break</span><span class="p">;</span>
+</span><span id="__span-1-7"><a href="#__codelineno-1-7" id="__codelineno-1-7" name="__codelineno-1-7"></a><span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Dist</span><span class="p">(</span><span class="n">Pi</span><span class="p">,</span><span class="w"> </span><span class="n">Pj</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">delta</span><span class="p">)</span>
+</span><span id="__span-1-8"><a href="#__codelineno-1-8" id="__codelineno-1-8" name="__codelineno-1-8"></a><span class="w">            </span><span class="n">delta</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Dist</span><span class="p">(</span><span class="n">Pi</span><span class="p">,</span><span class="w"> </span><span class="n">Pj</span><span class="p">);</span><span class="w">       </span>
+</span></code></pre></div>
+</details>
+<details class="play">
+<summary>动画演示</summary>
+<p></p><div style="text-align: center">
+<img src="images/lec7/4.gif" width="40%"/>
+</div>
+</details>
+</li>
+</ul>
+<p>综上，分治算法的时间复杂度为<span><span class="heti-spacing"> </span><span class="arithmatex">\(T(N) = 2T(\dfrac{N}{2}) + O(N) = O(N \log N)\)</span></span></p>
+</div>
+</div>
+</div>
+</div>
+<h2 id="analysis">Analysis<a class="headerlink" href="#analysis" title="Permanent link">⚓︎</a></h2>
+<p>对于时间复杂度的递推公式<span><span class="heti-spacing"> </span><span class="arithmatex">\(T(N) = aT(\dfrac{N}{b}) + f(N)\)</span></span>，我们有以下求解方法：</p>
+<ul>
+<li>代换<span class="heti-skip"><span class="heti-spacing"> </span>(substitution)<span class="heti-spacing"> </span></span>法</li>
+<li>递归树<span class="heti-skip"><span class="heti-spacing"> </span>(recursive-tree)<span class="heti-spacing"> </span></span>法</li>
+<li>主方法<span><span class="heti-spacing"> </span>(master method)</span></li>
+</ul>
+<p>在分析的时候，我们会忽略以下细节问题：</p>
+<ul>
+<li>不关心<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\dfrac{N}{b}\)</span><span class="heti-spacing"> </span></span>是否是整数</li>
+<li>对于较小的<span><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span></span>，始终假定<span><span class="heti-spacing"> </span><span class="arithmatex">\(T(n) = \Theta(1)\)</span></span></li>
+</ul>
+<h3 id="substitution">Substitution<a class="headerlink" href="#substitution" title="Permanent link">⚓︎</a></h3>
+<p>代换法是三种方法中最简单的一种（用来做判断、选择题较为方便<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。它的主要思路是：先<strong>猜</strong>一个结论，然后用<strong>归纳法</strong>证明该结论的正确性。</p>
+<details class="example" open="open">
+<summary>例子</summary>
+<p>已知<span><span class="heti-spacing"> </span><span class="arithmatex">\(T(N) = 2T(\lfloor \dfrac{N}{2} \rfloor) + N\)</span></span>，求<span><span class="heti-spacing"> </span><span class="arithmatex">\(T(N)\)</span></span>。</p>
+<ul>
+<li>先猜测<span><span class="heti-spacing"> </span><span class="arithmatex">\(T(N) = O(N \log N)\)</span></span></li>
+<li>再证明：</li>
+</ul>
+<details class="proof">
+<summary>证明</summary>
+<ul>
+<li>假设对于<span><span class="heti-spacing"> </span><span class="arithmatex">\(m &lt; N\)</span></span>，该结论成立</li>
+<li>
+<p>取<span><span class="heti-spacing"> </span><span class="arithmatex">\(m = \lfloor \dfrac{N}{2} \rfloor\)</span></span>，那么存在一个常数<span><span class="heti-spacing"> </span><span class="arithmatex">\(c &gt; 0\)</span></span>，使得
+$$
+T(\lfloor \dfrac{N}{2} \rfloor) \le c \lfloor \dfrac{N}{2} \rfloor \log \lfloor \dfrac{N}{2} \rfloor
+$$</p>
+</li>
+<li>
+<p>将这个式子带入递推公式，得：
+$$
+\begin{align}
+T(N) &amp; = 2T(\lfloor \dfrac{N}{2} \rfloor) + N \notag \
+&amp; \le 2c \lfloor \dfrac{N}{2} \rfloor \log \lfloor \dfrac{N}{2} \rfloor + N \notag \
+&amp; \le cN(\log N - \log 2) + N \notag \
+&amp; \le cN \log N \quad \text{for} c \ge 1 \notag
+\end{align}
+$$</p>
+</li>
+<li>
+<p>不必特别在意<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(N = 1\)</span><span class="heti-spacing"> </span></span>的情况：前面的假设<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>已经“忽略”这种<span><span class="heti-spacing"> </span>trivial case</span>；或者也可以将<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(N = 2\)</span><span class="heti-spacing"> </span></span>或<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(N = 3\)</span><span class="heti-spacing"> </span></span>作为基本情况<span><span class="heti-spacing"> </span>(base case)</span>，只要<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(c\)</span><span class="heti-spacing"> </span></span>足够大这个式子一定成立</p>
+</li>
+</ul>
+</details>
+<details class="bug">
+<summary>错误的猜测</summary>
+<p>如果我们猜测<span><span class="heti-spacing"> </span><span class="arithmatex">\(T(N) = O(N)\)</span></span>，那么会有以下证明：</p>
+<ul>
+<li>假设对于<span><span class="heti-spacing"> </span><span class="arithmatex">\(m &lt; N\)</span></span>，该结论成立</li>
+<li>
+<p>取<span><span class="heti-spacing"> </span><span class="arithmatex">\(m = \lfloor \dfrac{N}{2} \rfloor\)</span></span>，那么存在一个常数<span><span class="heti-spacing"> </span><span class="arithmatex">\(c &gt; 0\)</span></span>，使得
+$$
+T(\lfloor \dfrac{N}{2} \rfloor) \le c \lfloor \dfrac{N}{2} \rfloor
+$$</p>
+</li>
+<li>
+<p>将这个式子带入递推公式，得：
+$$
+\begin{align}
+T(N) &amp; = 2T(\lfloor \dfrac{N}{2} \rfloor) + N \notag \
+&amp; \le 2c \lfloor \dfrac{N}{2} \rfloor + N \notag \
+&amp; \le cN + N = O(N) \notag
+\end{align}
+$$        </p>
+</li>
+</ul>
+<p>这样的证明看起来没什么问题，但错误发生在最后一个不等式上：我们得到了<span><span class="heti-spacing"> </span><span class="arithmatex">\(cN + N = (c + 1)N\)</span></span>，虽然它的时间复杂度确实是<span><span class="heti-spacing"> </span><span class="arithmatex">\(O(N)\)</span></span>，但在形式上它是错误的，因为我们预先假设正确的结论是<span><span class="heti-spacing"> </span><span class="arithmatex">\(T(m) \le cm\)</span></span>，要根据这个条件证明出<span><span class="heti-spacing"> </span><span class="arithmatex">\(T(N) \le cN\)</span></span>，而不是<span><span class="heti-spacing"> </span><span class="arithmatex">\((c + 1)N\)</span></span>。换句话说，我们必须证明出<strong>精确的形式</strong>(exact form)，连常数也必须保持一致。</p>
+</details>
+</details>
+<p>通过这个例子的分析，我们发现这个方法最困难的点在于<strong>做出一个好的猜测</strong>。</p>
+<details class="note" open="open">
+<summary>小技巧</summary>
+<ul>
+<li>如果时间复杂度的递推关系式中出现类似<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(T(\sqrt{N})\)</span><span class="heti-spacing"> </span></span>等形式，可以考虑<strong>换元法</strong>：<ul>
+<li>令<span><span class="heti-spacing"> </span><span class="arithmatex">\(m = \log n\)</span></span>，那么<span><span class="heti-spacing"> </span><span class="arithmatex">\(T(\sqrt{n}) = T(2^{\frac{m}{2}})\)</span></span>，<span class="arithmatex">\(T(n) = T(2^m)\)</span></li>
+<li>再令<span><span class="heti-spacing"> </span><span class="arithmatex">\(S(m) = T(2^m)\)</span></span>，那么<span><span class="heti-spacing"> </span><span class="arithmatex">\(S(\dfrac{m}{2}) = T(2^{\frac{m}{2}})\)</span></span>，这样整个递推关系式就被转化为一般的形式了</li>
+</ul>
+</li>
+<li>如果出现形如<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(T(f(N) + c)\)</span><span class="heti-spacing"> </span></span>的形式（<span><span class="arithmatex">\(c\)</span><span class="heti-spacing"> </span></span>为常数<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，由于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(N\)</span><span class="heti-spacing"> </span></span>足够大，因此可以忽略常数<span><span class="heti-spacing"> </span><span class="arithmatex">\(c\)</span></span></li>
+</ul>
+</details>
+<h3 id="recursive-trees">Recursive Trees<a class="headerlink" href="#recursive-trees" title="Permanent link">⚓︎</a></h3>
+<p>顾名思义，就是根据递推关系递归地来画一棵树。这棵树具有以下特征（假如地推关系形如<span><span class="heti-spacing"> </span><span class="arithmatex">\(T(N) = aT(\dfrac{N}{b}) + f(N)\)</span></span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
+<ul>
+<li>根节点为<span><span class="heti-spacing"> </span><span class="arithmatex">\(f(N)\)</span></span></li>
+<li>一个节点有<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(a\)</span><span class="heti-spacing"> </span></span>个孩子，每个孩子节点为<span><span class="heti-spacing"> </span><span class="arithmatex">\(f(\dfrac{N}{b})\)</span></span>，因此这棵树根据递推公式延伸下去，体现了“递归”的特性</li>
+<li>叶子节点为<span><span class="heti-spacing"> </span><span class="arithmatex">\(T(1)\)</span></span></li>
+<li>树的高度为<span><span class="heti-spacing"> </span><span class="arithmatex">\(\log_b N\)</span></span></li>
+<li>时间复杂度<span class="heti-skip"><span class="heti-spacing"> </span>=<span class="heti-spacing"> </span></span>所有节点之和<span class="heti-skip"><span class="heti-spacing"> </span>=<span class="heti-spacing"> </span></span>内部节点（对应合并操作的时间复杂度）之和<span class="heti-skip"><span class="heti-spacing"> </span>+<span class="heti-spacing"> </span></span>叶子节点（对于<span class="heti-skip"><span class="heti-spacing"> </span>base case<span class="heti-spacing"> </span></span>的时间复杂度）之和</li>
+</ul>
+<details class="example" open="open">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:3"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"/><input id="__tabbed_2_2" name="__tabbed_2" type="radio"/><input id="__tabbed_2_3" name="__tabbed_2" type="radio"/><div class="tabbed-labels"><label for="__tabbed_2_1">例<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span></label><label for="__tabbed_2_2">例<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span></label><label for="__tabbed_2_3">例<span><span class="heti-spacing"> </span>3</span></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>已知<span><span class="heti-spacing"> </span><span class="arithmatex">\(T(N) = 3T(\dfrac{N}{4}) + \Theta(N^2)\)</span></span>，求<span><span class="heti-spacing"> </span><span class="arithmatex">\(T(N)\)</span></span>。</p>
+<p>根据这个递推关系和递归树的特征，我们可以一层层地画出这棵树：</p>
+<details class="play" open="open">
+<summary>动画演示</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:4"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio"/><input id="__tabbed_3_2" name="__tabbed_3" type="radio"/><input id="__tabbed_3_3" name="__tabbed_3" type="radio"/><input id="__tabbed_3_4" name="__tabbed_3" type="radio"/><div class="tabbed-labels"><label for="__tabbed_3_1">Step 1</label><label for="__tabbed_3_2">Step 2</label><label for="__tabbed_3_3">Step 3</label><label for="__tabbed_3_4">Step 4</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec7/5.png" width="60%"/>
+</div>
+<p>先令<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(T(N)\)</span><span class="heti-spacing"> </span></span>作为根节点  </p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec7/6.png" width="60%"/>
+</div>
+<p>展开<span><span class="heti-spacing"> </span><span class="arithmatex">\(T(N)\)</span></span>，令<span><span class="heti-spacing"> </span><span class="arithmatex">\(f(N)\)</span></span>，即<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(cN^2\)</span><span class="heti-spacing"> </span></span>作为根节点，剩下的三个<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(T(\dfrac{N}{4})\)</span><span class="heti-spacing"> </span></span>作为它的孩子节点</p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec7/7.png" width="60%"/>
+</div>
+<p>分别展开<span><span class="heti-spacing"> </span><span class="arithmatex">\(T(\dfrac{N}{4})\)</span></span>，令<span><span class="heti-spacing"> </span><span class="arithmatex">\(f(\dfrac{N}{4})\)</span></span>，即<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(c(\dfrac{N}{4})^2\)</span><span class="heti-spacing"> </span></span>作为根节点，剩下的三个<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(T(\dfrac{N}{16})\)</span><span class="heti-spacing"> </span></span>作为它的孩子节点 </p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec7/8.png" width="60%"/>
+</div>
+<p>一直展开下去，直到生成孩子节点<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(T(1)\)</span><span class="heti-spacing"> </span></span>为止</p>
+</div>
+</div>
+</div>
+</details>
+<p>对于这棵递归树，我们可以获得的信息有：</p>
+<ul>
+<li>树的高度为<span><span class="heti-spacing"> </span><span class="arithmatex">\(\log_4 N\)</span></span></li>
+<li>第<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(i\)</span><span class="heti-spacing"> </span></span>层一共有<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(3^i\)</span><span class="heti-spacing"> </span></span>个节点，且节点之和为<span><span class="heti-spacing"> </span><span class="arithmatex">\((\dfrac{3}{16})^i cN^2\)</span></span></li>
+<li>由以上两条信息，可以推得最后一层的节点（全是<span><span class="heti-spacing"> </span><span class="arithmatex">\(T(1)\)</span></span>）之和为<span><span class="heti-spacing"> </span><span class="arithmatex">\(3^{\log_4 N} = N^{\log_4 3} = \Theta(N^{\log_4 3})\)</span></span></li>
+</ul>
+<p></p><div style="text-align: center">
+<img src="images/lec7/9.png" width="70%"/>
+</div>
+<p>由以上信息，我们可以计算出<span><span class="heti-spacing"> </span><span class="arithmatex">\(T(N)\)</span></span>：</p>
+<div class="arithmatex">\[
+\begin{align}
+T(N) &amp; = \sum\limits_{i=0}^{\log_4 N - 1}(\dfrac{3}{16})^i cN^2 + \Theta(N^{\log_4 3}) \notag \\
+&amp; &lt; \sum\limits_{i=0}^{\infty}(\dfrac{3}{16})^i cN^2 + \Theta(N^{\log_4 3}) \notag \\
+&amp; = \dfrac{cN^2}{1 - \frac{3}{16}} + \Theta(N^{\log_4 3}) = O(N^2) \notag
+\end{align}
+\]</div>
+<ul>
+<li>
+<p>第<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>行到第<span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span>行的不等式中，用到了一个常用的幂级数展开公式：
+$$
+\dfrac{1}{1 - x} = \sum\limits_{n = 0}^{\infty} x^n, |x| &lt; 1
+$$</p>
+</li>
+<li>
+<p>这道题可以用代换法来验证答案的正确性</p>
+</li>
+</ul>
+</div>
+<div class="tabbed-block">
+<p>已知<span><span class="heti-spacing"> </span><span class="arithmatex">\(T(N) = T(\dfrac{N}{3}) + T(\dfrac{2N}{3}) + cN\)</span></span>，求<span><span class="heti-spacing"> </span><span class="arithmatex">\(T(N)\)</span></span>。</p>
+<ul>
+<li>先按照上个例子的方法画递归树</li>
+</ul>
+<p></p><div style="text-align: center">
+<img src="images/lec7/10.png" width="70%"/>
+</div>
+<ul>
+<li>由于这不是一个标准形式下的递推关系，因此画出来的递归树并不是一棵完全树（即不平衡<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，而且显然最右侧路径是最深的</li>
+<li>
+<p>但好消息是我们可以确定以下信息：</p>
+<ul>
+<li>树的高度为最右侧路径的高度。可以看到第<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(i\)</span><span class="heti-spacing"> </span></span>层中最右侧的节点为<span><span class="heti-spacing"> </span><span class="arithmatex">\(c(N \cdot (\dfrac{2}{3})^i) = c(\dfrac{N}{(\frac{3}{2})^i})\)</span></span>，因此树高为<span><span class="heti-spacing"> </span><span class="arithmatex">\(\log_{\frac{3}{2}} N\)</span></span></li>
+<li>每层节点和为<span><span class="heti-spacing"> </span><span class="arithmatex">\(cN\)</span></span></li>
+</ul>
+</li>
+<li>
+<p>根据这些信息，我们可以做一个稍微有把握的猜测：<span class="arithmatex">\(T(N) = O(N \log N)\)</span>——没错，接下来用代换法来证明这个结论的正确性！</p>
+</li>
+</ul>
+<details class="proof">
+<summary>证明</summary>
+<div class="arithmatex">\[
+\begin{align}
+T(N) &amp; = T(\dfrac{N}{3}) + T(\dfrac{2N}{3}) + cN \notag \\
+&amp; \le d(\dfrac{N}{3}) \log (\dfrac{N}{3}) + d(\dfrac{2N}{3}) \log (\dfrac{2N}{3}) + cN \notag \\
+&amp; = dN \log N - dN (\log_2 3 - \dfrac{2}{3}) + cN \notag \\
+&amp; \le dN \log N \quad \text{for}\ d \ge \dfrac{c}{\log_2 3 - \frac{2}{3}} \notag
+\end{align}
+\]</div>
+</details>
+</div>
+<div class="tabbed-block">
+<p>摘自<span class="heti-skip"><span class="heti-spacing"> </span>wyy<span class="heti-spacing"> </span></span>的<span class="heti-skip"><span class="heti-spacing"> </span>ADS<span class="heti-spacing"> </span></span>讲义，个人感觉这个例子有一定的难度：</p>
+<p></p><div style="text-align: center">
+<img src="images/lec7/15.png" width="80%"/>
+</div>
+</div>
+</div>
+</div>
+</details>
+<h3 id="master-method">Master Method<a class="headerlink" href="#master-method" title="Permanent link">⚓︎</a></h3>
+<p>主方法，或者<strong>主定理</strong>(master theorem)（更常用的叫法<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，一共有以下几种形式：</p>
+<h4 id="form-1">Form 1<a class="headerlink" href="#form-1" title="Permanent link">⚓︎</a></h4>
+<p>令常数<span><span class="heti-spacing"> </span><span class="arithmatex">\(a, b \ge 1\)</span></span>，<span><span class="arithmatex">\(f(N)\)</span><span class="heti-spacing"> </span></span>为关于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(N\)</span><span class="heti-spacing"> </span></span>的函数，<span class="arithmatex">\(T(N) = aT(\dfrac{N}{b}) + f(N)\)</span>，那么：</p>
+<ul>
+<li>若对于常数<span><span class="heti-spacing"> </span><span class="arithmatex">\(\varepsilon &gt; 0\)</span></span>，有<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f(N) = O(N^{\log_b a - \varepsilon})\)</span><span class="heti-spacing"> </span></span>成立，则<span><span class="heti-spacing"> </span><span class="arithmatex">\(T(N) = \Theta(N^{\log_b a})\)</span></span></li>
+<li>若<span><span class="heti-spacing"> </span><span class="arithmatex">\(f(N) = \Theta(N^{\log_b a})\)</span></span>，则<span><span class="heti-spacing"> </span><span class="arithmatex">\(T(N) = \Theta(N^{\log_b a} \log N)\)</span></span></li>
+<li>若对于常数<span><span class="heti-spacing"> </span><span class="arithmatex">\(\varepsilon &gt; 0\)</span></span>，有<span><span class="heti-spacing"> </span><span class="arithmatex">\(f(N) = \Omega(N^{\log_b a + \varepsilon})\)</span></span>，且对于常数<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(c &lt; 1\)</span><span class="heti-spacing"> </span></span>和充分大的数<span><span class="heti-spacing"> </span><span class="arithmatex">\(N\)</span></span>，有<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(af(\dfrac{N}{b}) &lt; cf(N)\)</span><span class="heti-spacing"> </span></span>成立（正则条件<span><span class="heti-spacing"> </span>(regularity condition)</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，那么<span><span class="heti-spacing"> </span><span class="arithmatex">\(T(N) = \Theta(f(N))\)</span></span></li>
+</ul>
+<p>需要注意的是，主定理并不是万金油，它没有覆盖所有的情况。</p>
+<details class="example">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio"/><input id="__tabbed_4_2" name="__tabbed_4" type="radio"/><div class="tabbed-labels"><label for="__tabbed_4_1">例<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span></label><label for="__tabbed_4_2">例<span><span class="heti-spacing"> </span>2</span></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>对于归并排序，<span class="arithmatex">\(a = b = 2\)</span>，且合并操作是线性时间的，那么根据第<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>类情况，我们可以直接得到它的时间复杂度为<span><span class="heti-spacing"> </span><span class="arithmatex">\(T = O(N \log N)\)</span></span></p>
+</div>
+<div class="tabbed-block">
+<p>若<span><span class="heti-spacing"> </span><span class="arithmatex">\(a = b = 2, f(N) = N \log N\)</span></span>，我们无法用这种主定理得到合适的时间复杂度：</p>
+<ul>
+<li>第<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>类：<span class="arithmatex">\(N^{\log_b a - \varepsilon} = N^{1 - \varepsilon} &lt; N \log N\)</span>，所以不符合第<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>类情况</li>
+<li>第<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>类：<span class="arithmatex">\(N^{\log_b a} = N \ne N \log N\)</span>，所以不符合第<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>类情况</li>
+<li>第<span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span>类：<span class="arithmatex">\(N^{\log_b a + \varepsilon} = N^{1 + \epsilon} &gt; N \log N\)</span>（因为<span><span class="heti-spacing"> </span><span class="arithmatex">\(N^{\varepsilon} &gt; \log N(\varepsilon &gt; 0)\)</span></span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，所以不符合第<span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span>类情况</li>
+</ul>
+</div>
+</div>
+</div>
+</details>
+<p>可以用<strong>递归树</strong>来证明主定理的正确性。</p>
+<details class="proof">
+<summary>证明</summary>
+<p>先令<span><span class="heti-spacing"> </span><span class="arithmatex">\(N = b^k\)</span></span>，其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(k\)</span><span class="heti-spacing"> </span></span>为整数</p>
+<p></p><div style="text-align: center">
+<img src="images/lec7/11.png" width="80%"/>
+</div>
+<p>那么这棵树的节点之和为：<span class="arithmatex">\(T(N) = \Theta(N^{log_b a}) + \sum\limits_{j = 0}^{\log_b N - 1}a^j f(\dfrac{N}{b^j})\)</span></p>
+<p>可以看到，最麻烦的部分在于这个求和公式。下面我们根据这三种不同的情况分类讨论（<del>后面两种情况我偷个懒，就直接贴上教材截图了</del><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="5:3"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio"/><input id="__tabbed_5_2" name="__tabbed_5" type="radio"/><input id="__tabbed_5_3" name="__tabbed_5" type="radio"/><div class="tabbed-labels"><label for="__tabbed_5_1">Case 1</label><label for="__tabbed_5_2">Case 2</label><label for="__tabbed_5_3">Case 3</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>此时<span><span class="heti-spacing"> </span><span class="arithmatex">\(f(N) = O(N^{\log_b a - \varepsilon})\)</span></span>，那么：</p>
+<div class="arithmatex">\[
+\begin{align}
+\sum\limits_{j = 0}^{\log_b N - 1}a^j f(\dfrac{N}{b^j}) &amp; = O(N^{\log_b a - \varepsilon} \sum\limits_{j = 0}^{\log_b N - 1} (b^{\varepsilon})^j) \notag \\
+&amp; = O(N^{\log_b a - \varepsilon} \dfrac{b^{\varepsilon \log_b N} - 1}{b^{\varepsilon} - 1}) \notag \\
+&amp; = O(N^{\log_b a - \varepsilon } N^{\varepsilon}) \notag \\
+&amp; = O(N^{\log_b a}) \notag \\
+\end{align}
+\]</div>
+<p>所以<span><span class="heti-spacing"> </span><span class="arithmatex">\(T(N) = T(N) = \Theta(N^{log_b a}) + O(N^{log_b a}) = \Theta(N^{log_b a})\)</span></span></p>
+</div>
+<div class="tabbed-block">
+<blockquote>
+<p>摘自《算法导论》</p>
+</blockquote>
+<p></p><div style="text-align: center">
+<img src="images/lec7/12.png" width="70%"/>
+</div>
+</div>
+<div class="tabbed-block">
+<blockquote>
+<p>摘自《算法导论》</p>
+</blockquote>
+<p></p><div style="text-align: center">
+<img src="images/lec7/13.png" width="70%"/>
+<img src="images/lec7/14.png" width="70%"/>
+</div>
+</div>
+</div>
+</div>
+</details>
+<h4 id="form-2">Form 2<a class="headerlink" href="#form-2" title="Permanent link">⚓︎</a></h4>
+<p>上面介绍的主定理在形式上过于复杂，因此这里给出一个简单形式的主定理（递推关系仍然是<span><span class="heti-spacing"> </span><span class="arithmatex">\(T(N) = aT(\dfrac{N}{b}) + f(N)\)</span></span>）</p>
+<ul>
+<li>若对于常数<span><span class="heti-spacing"> </span><span class="arithmatex">\(\kappa &lt; 1\)</span></span>，有<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(af(\dfrac{N}{b}) = \kappa f(N)\)</span><span class="heti-spacing"> </span></span>成立，则<span><span class="heti-spacing"> </span><span class="arithmatex">\(T(N) = \Theta(f(N))\)</span></span></li>
+<li>若对于常数<span><span class="heti-spacing"> </span><span class="arithmatex">\(K &gt; 1\)</span></span>，有<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(af(\dfrac{N}{b}) = K f(N)\)</span><span class="heti-spacing"> </span></span>成立，则<span><span class="heti-spacing"> </span><span class="arithmatex">\(T(N) = \Theta(N^{\log_b a})\)</span></span></li>
+<li>若<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(af(\dfrac{N}{b}) = f(N)\)</span><span class="heti-spacing"> </span></span>成立，则<span><span class="heti-spacing"> </span><span class="arithmatex">\(T(N) = \Theta(f(N) \log_b N)\)</span></span></li>
+</ul>
+<p>这个形式虽然简单，但是能够计算的时间复杂度相当有限，一些能由前一种形式的主定理解决的问题，用这种形式的主定理无法解决；前一种形式的主定理无法解决的问题，这种形式的主定理更无法解决。</p>
+<details class="example">
+<summary>例子</summary>
+<p>已知<span><span class="heti-spacing"> </span><span class="arithmatex">\(a = 4, b = 2, f(N) = N\log N\)</span></span>，能否用第二种形式的主定理算出时间复杂度呢？</p>
+<ul>
+<li>先计算<span><span class="heti-spacing"> </span><span class="arithmatex">\(af(\dfrac{N}{b}) = 4(\dfrac{N}{2}) \log (\dfrac{N}{2}) = 2 N \log N - 2N\)</span></span></li>
+<li>显然找不到任何常数<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(c\)</span><span class="heti-spacing"> </span></span>满足<span><span class="heti-spacing"> </span><span class="arithmatex">\(cf(N) = 2 N \log N - 2N\)</span></span>，因此无法用这种主定理计算</li>
+<li>然而，用前一种主定理是可以算出来的：发现<span><span class="heti-spacing"> </span><span class="arithmatex">\(O(N^{\log_b a - \varepsilon}) = O(N^{2 - \varepsilon}) = f(N)\)</span></span>，符合第<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>类情况，那么时间复杂度为<span><span class="heti-spacing"> </span><span class="arithmatex">\(T = O(N^2)\)</span></span></li>
+</ul>
+</details>
+<div class="admonition note">
+<p class="admonition-title">注</p>
+<p>想看证明过程的话可以参考<a href="https://note.isshikih.top/cour_note/D2CX_AdvancedDataStructure/Lec07/#%E5%BD%A2%E5%BC%8F%E4%BA%8C">修佬的笔记</a>。</p>
+</div>
+<h4 id="form-3">Form 3<a class="headerlink" href="#form-3" title="Permanent link">⚓︎</a></h4>
+<p>主定理还有一种更强大的形式：当<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(a \ge 1, b &gt; 1, p \ge 0\)</span><span class="heti-spacing"> </span></span>时，方程</p>
+<div class="arithmatex">\[
+T(N) = aT(\dfrac{N}{b}) + \Theta(N^k \log^p N)
+\]</div>
+<p>的解为</p>
+<div class="arithmatex">\[
+T(N) = \begin{cases}O(N^{\log_b a}) &amp; \text{if}\ a &gt; b^k \\ O(N^k \log^{p+1}N) &amp; \text{if}\ a = b^k \\ O(N^k \log^p N) &amp; \text{if}\ a &lt; b^k \end{cases}
+\]</div>
+<details class="example">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="6:3"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio"/><input id="__tabbed_6_2" name="__tabbed_6" type="radio"/><input id="__tabbed_6_3" name="__tabbed_6" type="radio"/><div class="tabbed-labels"><label for="__tabbed_6_1">例<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span></label><label for="__tabbed_6_2">例<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span></label><label for="__tabbed_6_3">例<span><span class="heti-spacing"> </span>3</span></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>对于归并排序，<span class="arithmatex">\(a = b = 2, p = 0, k = 1\)</span>，满足第<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>种情况（<span class="arithmatex">\(a = b^1\)</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，因此<span><span class="heti-spacing"> </span><span class="arithmatex">\(T(N) = O(N^k \log^{p+1} N) = O(N \log N)\)</span></span>。</p>
+</div>
+<div class="tabbed-block">
+<p>假设某种分治算法中，对于每次递归，<span class="arithmatex">\(a = 3, b = 2\)</span>，且合并操作的时间复杂度为<span><span class="heti-spacing"> </span><span class="arithmatex">\(O(N)\)</span></span>，即<span><span class="heti-spacing"> </span><span class="arithmatex">\(k = 1, p = 0\)</span></span>。</p>
+<p>不难发现，它符合第<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>种情况，因此<span><span class="heti-spacing"> </span><span class="arithmatex">\(T(N) = O(N^{\log_2 3}) = O(N^{1.59})\)</span></span>。</p>
+<blockquote>
+<p>如果合并时间复杂度为<span><span class="heti-spacing"> </span><span class="arithmatex">\(O(N^2)\)</span></span>，那么<span><span class="heti-spacing"> </span><span class="arithmatex">\(T(N) = O(N^2)\)</span></span>。</p>
+</blockquote>
+</div>
+<div class="tabbed-block">
+<p>再来解决前两种形式都没法计算的问题：<span class="arithmatex">\(a = b = 2, f(N) = N \log N\)</span>（即<span><span class="heti-spacing"> </span><span class="arithmatex">\(k = p = 1\)</span></span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。此时满足第<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>种情况，因此时间复杂度<span><span class="heti-spacing"> </span><span class="arithmatex">\(\T(N) = O(N^k \log^{p+1} N) = O(N \log^2 N)\)</span></span>。</p>
+</div>
+</div>
+</div>
+</details>
+<div class="admonition note">
+<p class="admonition-title">注</p>
+<p>个人建议只需要记住更强版本的主定理即可，毕竟适用场合更多一些。</p>
+</div>
+<details class="info">
+<summary>拓展：更更强大的主定理（不作要求）</summary>
+<p>对于递推关系<span><span class="heti-spacing"> </span><span class="arithmatex">\(T(N) = aT(\dfrac{N}{b}) + \Theta(N^k \log^p N)\)</span></span>，其中<span><span class="heti-spacing"> </span><span class="arithmatex">\(a \ge 1, b &gt; 1, k \ge 0\)</span></span>，<span><span class="arithmatex">\(p\)</span><span class="heti-spacing"> </span></span>为任意实数，那么：</p>
+<ul>
+<li>若<span><span class="heti-spacing"> </span><span class="arithmatex">\(a &gt; b^k\)</span></span>，则<span><span class="heti-spacing"> </span><span class="arithmatex">\(T(N) = \Theta(N^{\log_b a})\)</span></span></li>
+<li>若<span><span class="heti-spacing"> </span><span class="arithmatex">\(a = b^k\)</span></span>，则<ul>
+<li>若<span><span class="heti-spacing"> </span><span class="arithmatex">\(p &gt; -1\)</span></span>，<span class="arithmatex">\(T(N) = \Theta(N^k \log^{p+1} N)\)</span></li>
+<li>若<span><span class="heti-spacing"> </span><span class="arithmatex">\(p = -1\)</span></span>，<span class="arithmatex">\(T(N) = \Theta(N^k \log \log N)\)</span></li>
+<li>若<span><span class="heti-spacing"> </span><span class="arithmatex">\(p &lt; -1\)</span></span>，<span class="arithmatex">\(T(N) = \Theta(N^k)\)</span></li>
+</ul>
+</li>
+<li>若<span><span class="heti-spacing"> </span><span class="arithmatex">\(a &lt; b^k\)</span></span>，则<ul>
+<li>若<span><span class="heti-spacing"> </span><span class="arithmatex">\(p \ge 0\)</span></span>，<span class="arithmatex">\(T(N) = \Theta(N^k \log^p N)\)</span></li>
+<li>若<span><span class="heti-spacing"> </span><span class="arithmatex">\(p &lt; 0\)</span></span>，<span class="arithmatex">\(T(N) = \Theta(N^k)\)</span></li>
+</ul>
+</li>
+</ul>
+</details>
 <aside class="md-source-file">
 <span class="md-source-file__fact">
 <span class="md-icon" title="最后更新">
-<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1-2.1-2M12.5 7v5.2l4 2.4-1 1L11 13V7h1.5M11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2v1.8Z"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"></path></svg>
 </span>
 <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime">2024年10月7日 21:20:16</span>
 </span>
 <span class="md-source-file__fact">
 <span class="md-icon" title="创建日期">
-<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3h-2Z"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"></path></svg>
 </span>
 <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime">2024年10月7日 21:20:16</span>
 </span>
@@ -559,7 +1208,7 @@
 <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
 </div>
 <button class="md-top md-icon" data-md-component="top" hidden="" type="button">
-<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
   回到页面顶部
 </button>
 </main>
@@ -567,7 +1216,7 @@
 <nav aria-label="页脚" class="md-footer__inner md-grid">
 <a aria-label="上一页: Lec 6: Backtracking" class="md-footer__link md-footer__link--prev" href="6.html">
 <div class="md-footer__button md-icon">
-<svg viewbox="0 0 320 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path></svg>
+<svg viewbox="0 0 320 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path></svg>
 </div>
 <div class="md-footer__title">
 <span class="md-footer__direction">
@@ -588,7 +1237,7 @@
               </div>
 </div>
 <div class="md-footer__button md-icon">
-<svg viewbox="0 0 320 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"></path></svg>
+<svg viewbox="0 0 320 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"></path></svg>
 </div>
 </a>
 </nav>
@@ -607,13 +1256,13 @@
 </div>
 <div class="md-social">
 <a class="md-social__link" href="https://github.com/noughtq" rel="noopener" target="_blank" title="github.com">
-<svg viewbox="0 0 496 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"></path></svg>
+<svg viewbox="0 0 496 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"></path></svg>
 </a>
 <a class="md-social__link" href="https://blog.noughtq.top" rel="noopener" target="_blank" title="blog.noughtq.top">
-<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M192 32c0 17.7 14.3 32 32 32 123.7 0 224 100.3 224 224 0 17.7 14.3 32 32 32s32-14.3 32-32C512 128.9 383.1 0 224 0c-17.7 0-32 14.3-32 32zm0 96c0 17.7 14.3 32 32 32 70.7 0 128 57.3 128 128 0 17.7 14.3 32 32 32s32-14.3 32-32c0-106-86-192-192-192-17.7 0-32 14.3-32 32zm-96 16c0-26.5-21.5-48-48-48S0 117.5 0 144v224c0 79.5 64.5 144 144 144s144-64.5 144-144-64.5-144-144-144h-16v96h16c26.5 0 48 21.5 48 48s-21.5 48-48 48-48-21.5-48-48V144z"></path></svg>
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M192 32c0 17.7 14.3 32 32 32 123.7 0 224 100.3 224 224 0 17.7 14.3 32 32 32s32-14.3 32-32C512 128.9 383.1 0 224 0c-17.7 0-32 14.3-32 32m0 96c0 17.7 14.3 32 32 32 70.7 0 128 57.3 128 128 0 17.7 14.3 32 32 32s32-14.3 32-32c0-106-86-192-192-192-17.7 0-32 14.3-32 32m-96 16c0-26.5-21.5-48-48-48S0 117.5 0 144v224c0 79.5 64.5 144 144 144s144-64.5 144-144-64.5-144-144-144h-16v96h16c26.5 0 48 21.5 48 48s-21.5 48-48 48-48-21.5-48-48z"></path></svg>
 </a>
 <a class="md-social__link" href="mailto:noughtq666@gmail.com" rel="noopener" target="_blank" title="">
-<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m20 8-8 5-8-5V6l8 5 8-5m0-2H4c-1.11 0-2 .89-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Z"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m20 8-8 5-8-5V6l8 5 8-5m0-2H4c-1.11 0-2 .89-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2"></path></svg>
 </a>
 </div>
 </div>
@@ -623,8 +1272,8 @@
 <div class="md-dialog" data-md-component="dialog">
 <div class="md-dialog__inner md-typeset"></div>
 </div>
-<script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.top", "navigation.footer", "navigation.indexes", "navigation.tracking", "navigation.prune", "content.code.copy", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
-<script src="../../assets/javascripts/bundle.ad660dcc.min.js"></script>
+<script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.top", "navigation.footer", "navigation.indexes", "navigation.tracking", "navigation.prune", "content.code.copy", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
+<script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
 <script src="../../js/katex.js"></script>
 <script src="../../js/toc.js"></script>
 <script src="../../js/anchor.js"></script>
