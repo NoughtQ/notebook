@@ -366,11 +366,78 @@
 </li>
 <li class="md-nav__item md-nav__item--active">
 <input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    Lec 8: Dynamic Programming
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
 <a class="md-nav__link md-nav__link--active" href="8.html">
 <span class="md-ellipsis">
     Lec 8: Dynamic Programming
   </span>
 </a>
+<nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#background">
+<span class="md-ellipsis">
+      Background
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#examples">
+<span class="md-ellipsis">
+      Examples
+    </span>
+</a>
+<nav aria-label="Examples" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#fibonacci-numbers">
+<span class="md-ellipsis">
+      Fibonacci Numbers
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#ordering-matrix-multiplications">
+<span class="md-ellipsis">
+      Ordering Matrix Multiplications
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#optimal-binary-search-trees">
+<span class="md-ellipsis">
+      Optimal Binary Search Trees
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#floyd-shortest-path-algorithm">
+<span class="md-ellipsis">
+      Floyd Shortest Path Algorithm
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#product-assembly">
+<span class="md-ellipsis">
+      Product Assembly
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
 </li>
 <li class="md-nav__item">
 <a class="md-nav__link" href="9.html">
@@ -487,6 +554,65 @@
 <div class="md-sidebar__scrollwrap">
 <div class="md-sidebar__inner">
 <nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#background">
+<span class="md-ellipsis">
+      Background
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#examples">
+<span class="md-ellipsis">
+      Examples
+    </span>
+</a>
+<nav aria-label="Examples" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#fibonacci-numbers">
+<span class="md-ellipsis">
+      Fibonacci Numbers
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#ordering-matrix-multiplications">
+<span class="md-ellipsis">
+      Ordering Matrix Multiplications
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#optimal-binary-search-trees">
+<span class="md-ellipsis">
+      Optimal Binary Search Trees
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#floyd-shortest-path-algorithm">
+<span class="md-ellipsis">
+      Floyd Shortest Path Algorithm
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#product-assembly">
+<span class="md-ellipsis">
+      Product Assembly
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
 </nav>
 </div>
 </div>
@@ -495,8 +621,492 @@
 <article class="md-content__inner md-typeset">
 <h1 id="lec-8-dynamic-programming">Lec 8: Dynamic Programming<a class="headerlink" href="#lec-8-dynamic-programming" title="Permanent link">⚓︎</a></h1>
 <div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
-<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>个字 </p>
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>2968<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 640 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M392.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6m80.6 120.1c-12.5 12.5-12.5 32.8 0 45.3l89.3 89.4-89.4 89.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l112-112c12.5-12.5 12.5-32.8 0-45.3l-112-112c-12.5-12.5-32.8-12.5-45.3 0zm-306.7 0c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3l112 112c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l89.4-89.4c12.5-12.5 12.5-32.8 0-45.3"></path></svg></span> <span>142<span class="heti-spacing"> </span></span>行代码 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>17<span class="heti-spacing"> </span></span>分钟</p>
 </div>
+<div class="admonition info">
+<p class="admonition-title">注</p>
+<p>（噩）梦开始的地方<span><span class="heti-spacing"> </span>...</span></p>
+<p>相信很多同学会认为动态规划可能是<span class="heti-skip"><span class="heti-spacing"> </span>ADS<span class="heti-spacing"> </span></span>中最难的部分之一，然而课程安排上却只花了<span class="heti-skip"><span class="heti-spacing"> </span>2-3<span class="heti-spacing"> </span></span>个课时讲解这一部分，<span>PPT<span class="heti-spacing"> </span></span>也仅仅讲这么几个例子。如果光照着课程安排学习肯定是学不好的，甚至连考试都应付不过去，所以需要我们在课后投入更多的时间精力来学习<span><span class="heti-spacing"> </span>DP</span>（看教材、网上搜点资料，刷题等等<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
+<p>我会先按照<span class="heti-skip"><span class="heti-spacing"> </span>cy<span class="heti-spacing"> </span></span>的<span class="heti-skip"><span class="heti-spacing"> </span>PPT<span class="heti-spacing"> </span></span>分析那几个例子，之后会根据<span class="heti-skip"><span class="heti-spacing"> </span>wyy<span class="heti-spacing"> </span></span>的讲义以及其他资料进行更全面的补充。</p>
+</div>
+<h2 id="background">Background<a class="headerlink" href="#background" title="Permanent link">⚓︎</a></h2>
+<p><strong>动态规划</strong><span>(dynamic programming, DP)<span class="heti-spacing"> </span></span>的基本思想：</p>
+<ul>
+<li>每个子问题仅解决一次，将得到的解存入一张表中</li>
+<li>如果某个子问题需要其他子问题的解，可先查表，看是否已经求过解，若是则直接用，否则再计算</li>
+<li>“以空间换时间”</li>
+</ul>
+<blockquote>
+<p>注：下面的理论部分建议在阅读完<a href="#Examples"><span class="heti-skip"><span class="heti-spacing"> </span>Examples<span class="heti-spacing"> </span></span></a>一节的前<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>个例子后再来阅读，这样理解会更深刻些。</p>
+</blockquote>
+<p><img alt="⭐" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2b50.svg" title=":star:"/>动态规划的解题步骤：</p>
+<ol>
+<li>用符号化或数学化的语言描述问题的最优解（可能是最难的部分）</li>
+<li>递归地定义最优值（一般会得到一个递推关系式）</li>
+<li>确定好计算的顺序（比如自底向上——先解决小问题，后解决大问题）</li>
+<li>重新构造解决问题的策略（有些题目可能要求画出最优解情况的方案，比如画出一棵树或一条路径等）</li>
+</ol>
+<p>动态规划的适用场景：</p>
+<ul>
+<li>该问题具备最优子结构（这样使得子问题的最优解源自子子问题的最优解）</li>
+<li>该问题的子问题之间存在重叠关系（有些子问题可能会共用某些子子问题的解）</li>
+</ul>
+<p>反之，不适用的场景如下：</p>
+<ul>
+<li>不存在最优子结构，比如历史依赖<span class="heti-skip"><span class="heti-spacing"> </span>(history-dependency)<span class="heti-spacing"> </span></span>类的问题——前面的步骤会影响到后面步骤的进行</li>
+<li>子问题之间没有重叠关系（此时分治算法可能效果更佳）</li>
+</ul>
+<h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">⚓︎</a></h2>
+<h3 id="fibonacci-numbers">Fibonacci Numbers<a class="headerlink" href="#fibonacci-numbers" title="Permanent link">⚓︎</a></h3>
+<p>在<span class="heti-skip"><span class="heti-spacing"> </span>FDS<span class="heti-spacing"> </span></span>的第一节课中，我们已经探讨过<a href="../fds/2.html#general-rules">递归求解斐波那契数</a>的时间复杂度——指数级的复杂度，其原因在于某些子问题被重复计算了很多次。</p>
+<p>接下来我们使用动态规划的思想来进行优化：</p>
+<ul>
+<li>根据递推关系，要得到<span><span class="heti-spacing"> </span><span class="arithmatex">\(F_N\)</span></span>，只需知道<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(F_{N-1}\)</span><span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(F_{N_2}\)</span><span class="heti-spacing"> </span></span>的值</li>
+<li>那么我们可以在计算过程中保留这两个值，即上一次和上上次计算的结果，将它们相加即可得到本次计算的结果</li>
+<li>然后更新上一次和上上次的值，进入下一轮的计算（<span class="arithmatex">\(F(N+1)\)</span>）</li>
+<li>所以这种方法是<strong>自底向上</strong>计算的，而递归算法（这里也可以理解为简单的分治算法）是自顶向下计算的</li>
+</ul>
+<details class="code">
+<summary>代码实现</summary>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="kt">int</span><span class="w"> </span><span class="nf">Fibonacci</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">N</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-2"><a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">Last</span><span class="p">,</span><span class="w"> </span><span class="n">NextToLast</span><span class="p">,</span><span class="w"> </span><span class="n">Answer</span><span class="p">;</span>
+</span><span id="__span-0-3"><a href="#__codelineno-0-3" id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">N</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+</span><span id="__span-0-4"><a href="#__codelineno-0-4" id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+</span><span id="__span-0-5"><a href="#__codelineno-0-5" id="__codelineno-0-5" name="__codelineno-0-5"></a><span class="w">    </span><span class="n">Last</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NextToLast</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">    </span><span class="c1">// F(0) = F(1) = 1</span>
+</span><span id="__span-0-6"><a href="#__codelineno-0-6" id="__codelineno-0-6" name="__codelineno-0-6"></a>
+</span><span id="__span-0-7"><a href="#__codelineno-0-7" id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">N</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-8"><a href="#__codelineno-0-8" id="__codelineno-0-8" name="__codelineno-0-8"></a><span class="w">        </span><span class="n">Answer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Last</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">NextToLast</span><span class="p">;</span><span class="w">    </span><span class="c1">// F(i) = F(i - 1) + F(i - 2)</span>
+</span><span id="__span-0-9"><a href="#__codelineno-0-9" id="__codelineno-0-9" name="__codelineno-0-9"></a><span class="w">        </span><span class="n">NextToLast</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Last</span><span class="p">;</span><span class="w">    </span><span class="c1">// update F(i - 1) and F(i - 2)</span>
+</span><span id="__span-0-10"><a href="#__codelineno-0-10" id="__codelineno-0-10" name="__codelineno-0-10"></a><span class="w">        </span><span class="n">Last</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Answer</span><span class="p">;</span>
+</span><span id="__span-0-11"><a href="#__codelineno-0-11" id="__codelineno-0-11" name="__codelineno-0-11"></a><span class="w">    </span><span class="p">}</span><span class="w">    </span><span class="c1">// end-for</span>
+</span><span id="__span-0-12"><a href="#__codelineno-0-12" id="__codelineno-0-12" name="__codelineno-0-12"></a>
+</span><span id="__span-0-13"><a href="#__codelineno-0-13" id="__codelineno-0-13" name="__codelineno-0-13"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">Answer</span><span class="p">;</span>
+</span><span id="__span-0-14"><a href="#__codelineno-0-14" id="__codelineno-0-14" name="__codelineno-0-14"></a><span class="p">}</span>
+</span></code></pre></div>
+</details>
+<p>时间复杂度：<span class="arithmatex">\(T(N) = O(N)\)</span></p>
+<h3 id="ordering-matrix-multiplications">Ordering Matrix Multiplications<a class="headerlink" href="#ordering-matrix-multiplications" title="Permanent link">⚓︎</a></h3>
+<div class="admonition question">
+<p class="admonition-title">问题描述</p>
+<p>对于多个矩阵的乘法，乘法的顺序相当关键，如果顺序选择不当，会让计算次数变得相当多。</p>
+<details class="example">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<img src="images/lec8/1.png" width="70%"/>
+</div>
+</details>
+<p>对于一个给定的多矩阵乘法，请找出最优的乘法顺序。</p>
+</div>
+<details class="bug">
+<summary>Bad idea：穷举法</summary>
+<p>令<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(b_n\)</span><span class="heti-spacing"> </span></span>的值为计算矩阵乘法<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\mathbf{M}_1 \cdot \mathbf{M}_2 \cdot \dots \cdot \mathbf{M}_n\)</span><span class="heti-spacing"> </span></span>的顺序数。易知前几项为<span><span class="heti-spacing"> </span><span class="arithmatex">\(b_2 = 1, b_3 = 2, b_4 = 5, \dots\)</span></span>。</p>
+<p>再令<span><span class="heti-spacing"> </span><span class="arithmatex">\(\mathbf{M}_{ij} = \mathbf{M}_i \cdot \dots \cdot \mathbf{M}_j\)</span></span>，那么<span><span class="heti-spacing"> </span><span class="arithmatex">\(\mathbf{M}_{1n} = \mathbf{M}_1 \cdot \dots \cdot \mathbf{M}_n = \mathbf{M}_{1i} \cdot \mathbf{M}_{i+1\ n}\)</span></span>。</p>
+<p>如果令<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(b_n = \mathbf{M}_{1n}\)</span><span class="heti-spacing"> </span></span>的乘法顺序数，<span><span class="arithmatex">\(b_i = \mathbf{M}_{1i}\)</span><span class="heti-spacing"> </span></span>的乘法顺序数，<span><span class="arithmatex">\(b_{n - i} = \mathbf{M}_{i + 1\ n}\)</span><span class="heti-spacing"> </span></span>的乘法顺序数，不难想到<span><span class="heti-spacing"> </span><span class="arithmatex">\(b_n = \sum\limits_{i = 1}^{n - 1}b_i b_{n - i}\)</span></span>，其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n &gt; 1\)</span><span class="heti-spacing"> </span></span>且<span><span class="heti-spacing"> </span><span class="arithmatex">\(b_1 = 1\)</span></span>。</p>
+<p>经计算，<span class="arithmatex">\(b_n = O(\dfrac{4^n}{n\sqrt{n}})\)</span>，且<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(b_n\)</span><span class="heti-spacing"> </span></span>是一个<a href="https://en.wikipedia.org/wiki/Catalan_number">卡特兰数</a><span><span class="heti-spacing"> </span>(Catalan number)</span>，时间复杂度如此之大，因而想要实现穷举就不太现实了。</p>
+</details>
+<p>假设我们计算<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span><span class="heti-spacing"> </span></span>个矩阵的乘法<span><span class="heti-spacing"> </span><span class="arithmatex">\(\mathbf{M}_1 \cdot \dots \cdot \mathbf{M}_n\)</span></span>，其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\mathbf{M}_i\)</span><span class="heti-spacing"> </span></span>是一个规模为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(r_{i-1} \times r_i\)</span><span class="heti-spacing"> </span></span>的矩阵。令计算矩阵乘法<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\mathbf{M}_i \cdot \dots \cdot \mathbf{M}_j\)</span><span class="heti-spacing"> </span></span>的最优成本为<span><span class="heti-spacing"> </span><span class="arithmatex">\(m_{ij}\)</span></span>，那么我们可以得到以下递推关系式：</p>
+<div class="arithmatex">\[
+m_{ij} = \begin{cases}0 &amp; \text{if}\ i = j \\ \min\limits_{i \le l &lt; j}\{m_{il} + m_{l+1\ j} + r_{i-1}r_lr_j\} &amp; \text{if}\ j &gt; i\end{cases}
+\]</div>
+<ul>
+<li>我们需要计算的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(m_{ij}\)</span><span class="heti-spacing"> </span></span>有<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(O(N^2)\)</span><span class="heti-spacing"> </span></span>个（<span><span class="arithmatex">\(i, j\)</span><span class="heti-spacing"> </span></span>的范围在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\([1, n]\)</span><span class="heti-spacing"> </span></span>之间）</li>
+<li>根据递推关系式，某个子问题的解一定来自比该子问题规模更小的子问题的解中。因此为了节省计算次数，我们还是<strong>自底向上</strong>计算：先算最小规模（即<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(i = j\)</span><span class="heti-spacing"> </span></span>时）的<span><span class="heti-spacing"> </span><span class="arithmatex">\(m_{ij}\)</span></span>，再计算更大规模的<span><span class="heti-spacing"> </span><span class="arithmatex">\(m_{ij}\)</span></span>，这样规模较大的子问题可以利用规模较小的子问题的解直接计算，而无需重复计算更小规模的子问题</li>
+<li>在计算过程中，我们保存了一张形如下三角矩阵的表：</li>
+</ul>
+<div style="text-align: center">
+<img src="images/lec8/2.png" width="40%"/>
+</div>
+<details class="code">
+<summary>代码实现</summary>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="c1">// r contains numbers of columns for each of the N matrices</span>
+</span><span id="__span-1-2"><a href="#__codelineno-1-2" id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="c1">// r[0] is the number of rows in matrix 1</span>
+</span><span id="__span-1-3"><a href="#__codelineno-1-3" id="__codelineno-1-3" name="__codelineno-1-3"></a><span class="c1">// Minimum number of multiplications is left in M[1][N]</span>
+</span><span id="__span-1-4"><a href="#__codelineno-1-4" id="__codelineno-1-4" name="__codelineno-1-4"></a><span class="kt">void</span><span class="w"> </span><span class="nf">OptMatrix</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">r</span><span class="p">[],</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">N</span><span class="p">,</span><span class="w"> </span><span class="n">TwoDimArray</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-5"><a href="#__codelineno-1-5" id="__codelineno-1-5" name="__codelineno-1-5"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">l</span><span class="p">,</span><span class="w"> </span><span class="n">L</span><span class="p">;</span>
+</span><span id="__span-1-6"><a href="#__codelineno-1-6" id="__codelineno-1-6" name="__codelineno-1-6"></a><span class="w">    </span><span class="kt">long</span><span class="w"> </span><span class="n">ThisM</span><span class="p">;</span>
+</span><span id="__span-1-7"><a href="#__codelineno-1-7" id="__codelineno-1-7" name="__codelineno-1-7"></a>
+</span><span id="__span-1-8"><a href="#__codelineno-1-8" id="__codelineno-1-8" name="__codelineno-1-8"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">N</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span><span id="__span-1-9"><a href="#__codelineno-1-9" id="__codelineno-1-9" name="__codelineno-1-9"></a><span class="w">        </span><span class="n">M</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-1-10"><a href="#__codelineno-1-10" id="__codelineno-1-10" name="__codelineno-1-10"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">N</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="o">++</span><span class="p">)</span><span class="w">    </span><span class="c1">// k = j - i</span>
+</span><span id="__span-1-11"><a href="#__codelineno-1-11" id="__codelineno-1-11" name="__codelineno-1-11"></a><span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">N</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">k</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">    </span><span class="c1">// For each position</span>
+</span><span id="__span-1-12"><a href="#__codelineno-1-12" id="__codelineno-1-12" name="__codelineno-1-12"></a><span class="w">            </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">k</span><span class="p">;</span>
+</span><span id="__span-1-13"><a href="#__codelineno-1-13" id="__codelineno-1-13" name="__codelineno-1-13"></a><span class="w">            </span><span class="n">M</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Infinity</span><span class="p">;</span>
+</span><span id="__span-1-14"><a href="#__codelineno-1-14" id="__codelineno-1-14" name="__codelineno-1-14"></a><span class="w">            </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">L</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"> </span><span class="n">L</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">j</span><span class="p">;</span><span class="w"> </span><span class="n">L</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-15"><a href="#__codelineno-1-15" id="__codelineno-1-15" name="__codelineno-1-15"></a><span class="w">                </span><span class="n">ThisM</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">M</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">L</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">M</span><span class="p">[</span><span class="n">L</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">r</span><span class="p">[</span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">r</span><span class="p">[</span><span class="n">L</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">r</span><span class="p">[</span><span class="n">j</span><span class="p">];</span>
+</span><span id="__span-1-16"><a href="#__codelineno-1-16" id="__codelineno-1-16" name="__codelineno-1-16"></a><span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ThisM</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">M</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">])</span><span class="w">    </span><span class="c1">// Update min</span>
+</span><span id="__span-1-17"><a href="#__codelineno-1-17" id="__codelineno-1-17" name="__codelineno-1-17"></a><span class="w">                    </span><span class="n">M</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ThisM</span><span class="p">;</span>
+</span><span id="__span-1-18"><a href="#__codelineno-1-18" id="__codelineno-1-18" name="__codelineno-1-18"></a><span class="w">            </span><span class="p">}</span><span class="w">    </span><span class="c1">// end for-L</span>
+</span><span id="__span-1-19"><a href="#__codelineno-1-19" id="__codelineno-1-19" name="__codelineno-1-19"></a><span class="w">        </span><span class="p">}</span><span class="w">    </span><span class="c1">// end for-Left</span>
+</span><span id="__span-1-20"><a href="#__codelineno-1-20" id="__codelineno-1-20" name="__codelineno-1-20"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>可以看到这个函数只是计算了<span class="heti-skip"><span class="heti-spacing"> </span>n<span class="heti-spacing"> </span></span>个矩阵的乘法的最小计算次数，并没有保存乘法的顺序。感兴趣的读者可以尝试着在该代码的基础上增添这个功能，从而最终实现一个完整的矩阵乘法的程序。</p>
+<details class="code">
+<summary>改进版</summary>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-2-1"><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="c1">// Compute optimal ordering of matrix multiplication</span>
+</span><span id="__span-2-2"><a href="#__codelineno-2-2" id="__codelineno-2-2" name="__codelineno-2-2"></a><span class="c1">// c contains number of columns for each of the n matrices</span>
+</span><span id="__span-2-3"><a href="#__codelineno-2-3" id="__codelineno-2-3" name="__codelineno-2-3"></a><span class="c1">// c[0] is the number of rows in matrix 1 </span>
+</span><span id="__span-2-4"><a href="#__codelineno-2-4" id="__codelineno-2-4" name="__codelineno-2-4"></a><span class="c1">// Minimum number of multiplications is left in M[1][n] </span>
+</span><span id="__span-2-5"><a href="#__codelineno-2-5" id="__codelineno-2-5" name="__codelineno-2-5"></a><span class="c1">// Actual ordering can be computed via </span>
+</span><span id="__span-2-6"><a href="#__codelineno-2-6" id="__codelineno-2-6" name="__codelineno-2-6"></a><span class="c1">// another procedure using last_change </span>
+</span><span id="__span-2-7"><a href="#__codelineno-2-7" id="__codelineno-2-7" name="__codelineno-2-7"></a><span class="c1">// M and last_change are indexed starting at 1, instead of zero </span>
+</span><span id="__span-2-8"><a href="#__codelineno-2-8" id="__codelineno-2-8" name="__codelineno-2-8"></a>
+</span><span id="__span-2-9"><a href="#__codelineno-2-9" id="__codelineno-2-9" name="__codelineno-2-9"></a><span class="kt">void</span><span class="w"> </span><span class="nf">opt_matrix</span><span class="p">(</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="p">[],</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="n">two_d_array</span><span class="w"> </span><span class="n">M</span><span class="p">,</span><span class="w"> </span><span class="n">two_d_array</span><span class="w"> </span><span class="n">last_change</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-10"><a href="#__codelineno-2-10" id="__codelineno-2-10" name="__codelineno-2-10"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">Left</span><span class="p">,</span><span class="w"> </span><span class="n">Right</span><span class="p">,</span><span class="w"> </span><span class="n">this_M</span><span class="p">;</span>
+</span><span id="__span-2-11"><a href="#__codelineno-2-11" id="__codelineno-2-11" name="__codelineno-2-11"></a>
+</span><span id="__span-2-12"><a href="#__codelineno-2-12" id="__codelineno-2-12" name="__codelineno-2-12"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">Left</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">Left</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">Left</span><span class="o">++</span><span class="p">)</span>
+</span><span id="__span-2-13"><a href="#__codelineno-2-13" id="__codelineno-2-13" name="__codelineno-2-13"></a><span class="w">        </span><span class="n">M</span><span class="p">[</span><span class="n">Left</span><span class="p">][</span><span class="n">Left</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-2-14"><a href="#__codelineno-2-14" id="__codelineno-2-14" name="__codelineno-2-14"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="o">++</span><span class="p">)</span><span class="w">    </span><span class="c1">// k is Right-Left </span>
+</span><span id="__span-2-15"><a href="#__codelineno-2-15" id="__codelineno-2-15" name="__codelineno-2-15"></a><span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">Left</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">Left</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">n</span><span class="o">-</span><span class="n">k</span><span class="p">;</span><span class="w"> </span><span class="n">Left</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">    </span><span class="c1">// for each position </span>
+</span><span id="__span-2-16"><a href="#__codelineno-2-16" id="__codelineno-2-16" name="__codelineno-2-16"></a><span class="w">            </span><span class="n">Right</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Left</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">k</span><span class="p">;</span>
+</span><span id="__span-2-17"><a href="#__codelineno-2-17" id="__codelineno-2-17" name="__codelineno-2-17"></a><span class="w">            </span><span class="n">M</span><span class="p">[</span><span class="n">Left</span><span class="p">][</span><span class="n">Right</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">INT_MAX</span><span class="p">;</span>
+</span><span id="__span-2-18"><a href="#__codelineno-2-18" id="__codelineno-2-18" name="__codelineno-2-18"></a><span class="w">            </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Left</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">Right</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-19"><a href="#__codelineno-2-19" id="__codelineno-2-19" name="__codelineno-2-19"></a><span class="w">                </span><span class="n">this_M</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">M</span><span class="p">[</span><span class="n">Left</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">M</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="n">Right</span><span class="p">]</span>
+</span><span id="__span-2-20"><a href="#__codelineno-2-20" id="__codelineno-2-20" name="__codelineno-2-20"></a><span class="w">                </span><span class="o">+</span><span class="w"> </span><span class="n">c</span><span class="p">[</span><span class="n">Left</span><span class="mi">-1</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">c</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">c</span><span class="p">[</span><span class="n">Right</span><span class="p">];</span>
+</span><span id="__span-2-21"><a href="#__codelineno-2-21" id="__codelineno-2-21" name="__codelineno-2-21"></a><span class="w">                </span><span class="k">if</span><span class="p">(</span><span class="n">this_M</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">M</span><span class="p">[</span><span class="n">Left</span><span class="p">][</span><span class="n">Right</span><span class="p">])</span><span class="w"> </span><span class="p">{</span><span class="w">    </span><span class="c1">// Update min</span>
+</span><span id="__span-2-22"><a href="#__codelineno-2-22" id="__codelineno-2-22" name="__codelineno-2-22"></a><span class="w">                    </span><span class="n">M</span><span class="p">[</span><span class="n">Left</span><span class="p">][</span><span class="n">Right</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">this_M</span><span class="p">;</span>
+</span><span id="__span-2-23"><a href="#__codelineno-2-23" id="__codelineno-2-23" name="__codelineno-2-23"></a><span class="w">                    </span><span class="n">last_change</span><span class="p">[</span><span class="n">Left</span><span class="p">][</span><span class="n">Right</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+</span><span id="__span-2-24"><a href="#__codelineno-2-24" id="__codelineno-2-24" name="__codelineno-2-24"></a><span class="w">                </span><span class="p">}</span>
+</span><span id="__span-2-25"><a href="#__codelineno-2-25" id="__codelineno-2-25" name="__codelineno-2-25"></a><span class="w">            </span><span class="p">}</span>
+</span><span id="__span-2-26"><a href="#__codelineno-2-26" id="__codelineno-2-26" name="__codelineno-2-26"></a><span class="w">        </span><span class="p">}</span>
+</span><span id="__span-2-27"><a href="#__codelineno-2-27" id="__codelineno-2-27" name="__codelineno-2-27"></a><span class="p">}</span>
+</span></code></pre></div>
+</details>
+</details>
+<p>时间复杂度：<span class="arithmatex">\(T(N) = O(N^3)\)</span></p>
+<h3 id="optimal-binary-search-trees">Optimal Binary Search Trees<a class="headerlink" href="#optimal-binary-search-trees" title="Permanent link">⚓︎</a></h3>
+<p><strong>最优二叉查找树</strong>(optimal binary search trees, OBST)：静态查找<span><span class="heti-spacing"> </span>(static search)</span>（即没有插入和删除操作）的最优方法。</p>
+<div class="admonition question">
+<p class="admonition-title">问题描述</p>
+<p>给定<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(N\)</span><span class="heti-spacing"> </span></span>个单词，满足词典序<span><span class="heti-spacing"> </span><span class="arithmatex">\(w_1 &lt; w_2 &lt; \dots &lt; w_N\)</span></span>，且每个词<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w_i\)</span><span class="heti-spacing"> </span></span>出现的概率（以下称为“词频”）为<span><span class="heti-spacing"> </span><span class="arithmatex">\(p_i\)</span></span>。现在要求将这些词排列在一个二叉查找树上，使得所有单词的预期查找时间（<span class="arithmatex">\(T(N) = \sum\limits_{i=1}^N p_i \cdot (1 + d_i)\)</span>，其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(d_i\)</span><span class="heti-spacing"> </span></span>为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w_i\)</span><span class="heti-spacing"> </span></span>在树中的深度）尽可能小，即构造一棵<span><span class="heti-spacing"> </span>OBST</span>。</p>
+</div>
+<details class="example">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"/><input id="__tabbed_1_2" name="__tabbed_1" type="radio"/><div class="tabbed-labels"><label for="__tabbed_1_1">问题</label><label for="__tabbed_1_2">答案</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>下面给出一个程序用到的关键词以及对应的词频：</p>
+<p></p><div style="text-align: center">
+<img src="images/lec8/3.png" width="70%"/>
+</div>
+<p>请分别用<a href="9.html">贪心算法</a>（下一节会讲到，在这里指的是优先插入词频最大的单词<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>、红黑树来构建二叉查找树。</p>
+</div>
+<div class="tabbed-block">
+<p>这里分别给出用贪心算法、红黑树和<span class="heti-skip"><span class="heti-spacing"> </span>OBST<span class="heti-spacing"> </span></span>的方法构建出来的二叉查找树，以及对应的<span><span class="heti-spacing"> </span><span class="arithmatex">\(T(N)\)</span></span>：</p>
+<p></p><div style="text-align: center">
+<img src="images/lec8/4.png" width="80%"/>
+</div>
+<ul>
+<li>贪心算法之所以慢，是因为它优先考虑词频最大的单词，这可能导致某些高词频的单词被放在深度很大的地方，从而增大了总的查找时间。</li>
+<li>红黑树之所以慢，是因为它在构建树的过程中仅考虑了黑高，压根没有考虑词频的问题，所以可以看到虽然整棵树挺平衡的，但词频最大的那几个词全在深度最深的地方，使得总查找时间变的很大。</li>
+</ul>
+</div>
+</div>
+</div>
+</details>
+<p>构造<span class="heti-skip"><span class="heti-spacing"> </span>OBST<span class="heti-spacing"> </span></span>的解法与计算矩阵乘法的最优顺序类似。先令：</p>
+<ul>
+<li><span class="arithmatex">\(T_{ij}\)</span>：由单词<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w_i \dots w_j(i &lt; j)\)</span><span class="heti-spacing"> </span></span>构成的<span><span class="heti-spacing"> </span>OBST</span></li>
+<li><span class="arithmatex">\(c_{ij}\)</span>：<span><span class="arithmatex">\(T_{ij}\)</span><span class="heti-spacing"> </span></span>的成本（<span class="arithmatex">\(c_{ii} = p_i\)</span>，<span>PPT<span class="heti-spacing"> </span></span>上的是错的）</li>
+<li><span class="arithmatex">\(r_{ij}\)</span>：<span><span class="arithmatex">\(T_{ij}\)</span><span class="heti-spacing"> </span></span>的根节点</li>
+<li><span class="arithmatex">\(w_{ij}\)</span>：<span><span class="arithmatex">\(T_{ij}\)</span><span class="heti-spacing"> </span></span>的权重，等于<span><span class="heti-spacing"> </span><span class="arithmatex">\(\sum\limits_{k = i}^j p_k\)</span></span>（<span class="arithmatex">\(w_{ii} = p_i\)</span>）</li>
+</ul>
+<p>如果令<span><span class="heti-spacing"> </span><span class="arithmatex">\(w_k = r_{ij}\)</span></span>，那么<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(T_{ij}\)</span><span class="heti-spacing"> </span></span>的结构如下所示：</p>
+<div style="text-align: center">
+<img src="images/lec8/5.png" width="50%"/>
+</div>
+<p>对于这棵树，它的成本为：</p>
+<div class="arithmatex">\[
+\begin{align}
+c_{ij} &amp; = p_k + \text{cost}(L) + \text{cost}(R) + \text{weight}(L) + \text{weight}(R) \notag \\
+&amp; = p_k + c_{i, k - 1} + c_{k + 1, j} + w_{i, k - 1} + w_{k + 1, j} \notag \\
+&amp; = w_{ij} + c_{i, k - 1} + c_{k + 1, j} \notag
+\end{align}
+\]</div>
+<p>若<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(T_{ij}\)</span><span class="heti-spacing"> </span></span>是最优的，那么需要满足<span><span class="heti-spacing"> </span><span class="arithmatex">\(c_{ij} = w_{ij} + \min\limits_{i &lt; l \le j}\{c_{i, l - 1} + c_{l + 1, j}\}\)</span></span></p>
+<details class="example">
+<summary>例子</summary>
+<p>基于上面的那个例子，下面演示如何构建一棵<span><span class="heti-spacing"> </span>OBST</span>（这里还是依据<strong>自底向上</strong>的思想来计算的<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
+<p></p><div style="text-align: center">
+<img src="images/lec8/3.png" width="70%"/>
+</div>
+<details class="play" open="open">
+<summary>动画演示</summary>
+<p>这里只是简单地罗列结果，建议读者先自己动手画一下，然后再来与下面的结果比对。</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"/><input id="__tabbed_2_2" name="__tabbed_2" type="radio"/><div class="tabbed-labels"><label for="__tabbed_2_1">绘制表格</label><label for="__tabbed_2_2">构建<span><span class="heti-spacing"> </span>OBST</span></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="tabbed-set tabbed-alternate" data-tabs="3:7"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio"/><input id="__tabbed_3_2" name="__tabbed_3" type="radio"/><input id="__tabbed_3_3" name="__tabbed_3" type="radio"/><input id="__tabbed_3_4" name="__tabbed_3" type="radio"/><input id="__tabbed_3_5" name="__tabbed_3" type="radio"/><input id="__tabbed_3_6" name="__tabbed_3" type="radio"/><input id="__tabbed_3_7" name="__tabbed_3" type="radio"/><div class="tabbed-labels"><label for="__tabbed_3_1"><span>1<span class="heti-spacing"> </span></span>个单词</label><label for="__tabbed_3_2"><span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>个单词</label><label for="__tabbed_3_3"><span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span>个单词</label><label for="__tabbed_3_4"><span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>个单词</label><label for="__tabbed_3_5"><span class="heti-skip"><span class="heti-spacing"> </span>5<span class="heti-spacing"> </span></span>个单词</label><label for="__tabbed_3_6"><span class="heti-skip"><span class="heti-spacing"> </span>6<span class="heti-spacing"> </span></span>个单词</label><label for="__tabbed_3_7"><span class="heti-skip"><span class="heti-spacing"> </span>7<span class="heti-spacing"> </span></span>个单词</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec8/6.png" width="90%"/>
+</div>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec8/7.png" width="90%"/>
+</div>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec8/8.png" width="90%"/>
+</div>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec8/9.png" width="90%"/>
+</div>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec8/10.png" width="90%"/>
+</div>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec8/11.png" width="90%"/>
+</div>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec8/12.png" width="90%"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tabbed-block">
+<ul>
+<li>得到完整的表后，先将位于表格最后一行的单词插入树内，作为根节点</li>
+<li>根据词典序将剩余的单词划分为左右两半，按照中序遍历的顺序逐一插入</li>
+</ul>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:7"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio"/><input id="__tabbed_4_2" name="__tabbed_4" type="radio"/><input id="__tabbed_4_3" name="__tabbed_4" type="radio"/><input id="__tabbed_4_4" name="__tabbed_4" type="radio"/><input id="__tabbed_4_5" name="__tabbed_4" type="radio"/><input id="__tabbed_4_6" name="__tabbed_4" type="radio"/><input id="__tabbed_4_7" name="__tabbed_4" type="radio"/><div class="tabbed-labels"><label for="__tabbed_4_1">Step 1</label><label for="__tabbed_4_2">Step 2</label><label for="__tabbed_4_3">Step 3</label><label for="__tabbed_4_4">Step 4</label><label for="__tabbed_4_5">Step 5</label><label for="__tabbed_4_6">Step 6</label><label for="__tabbed_4_7">Step 7</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec8/13.png" width="90%"/>
+</div>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec8/14.png" width="90%"/>
+</div>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec8/15.png" width="90%"/>
+</div>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec8/16.png" width="90%"/>
+</div>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec8/17.png" width="90%"/>
+</div>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec8/18.png" width="90%"/>
+</div>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec8/19.png" width="90%"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</details>
+<p>可以看到<span class="heti-skip"><span class="heti-spacing"> </span>OBST<span class="heti-spacing"> </span></span>可以确保词频较大的单词的深度尽可能小，从而有效降低了总的查找时间。</p>
+</details>
+<p>时间复杂度：<span class="arithmatex">\(T(N) = O(N^3)\)</span></p>
+<blockquote>
+<p>注：教材<em>Data Structures and Algorithm Analysis in C</em>第十章课后习题还给出了一个<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(O(N^2)\)</span><span class="heti-spacing"> </span></span>的解法，感兴趣的同学可以自行研究一下。</p>
+</blockquote>
+<h3 id="floyd-shortest-path-algorithm">Floyd Shortest Path Algorithm<a class="headerlink" href="#floyd-shortest-path-algorithm" title="Permanent link">⚓︎</a></h3>
+<p>在<span class="heti-skip"><span class="heti-spacing"> </span>FDS<span class="heti-spacing"> </span></span>的课上，我们已经介绍过单源最短路算法——<a href="../fds/9.html#single-source-shortest-path-problem"><span>Dijkstra<span class="heti-spacing"> </span></span>算法</a>，它的时间复杂度为<span><span class="heti-spacing"> </span><span class="arithmatex">\(O(|V|^2)\)</span></span>（<span><span class="arithmatex">\(|V|\)</span><span class="heti-spacing"> </span></span>为图的顶点数<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，因此通过该算法计算任意两点间的最短路需要<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(O(|V|^3)\)</span><span class="heti-spacing"> </span></span>的复杂度（每个点都需要用一次该算法<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。这种算法在稀疏图上运行较快，对于稠密图而言，更快的算法是下面要讲的<strong><span>Floyd<span class="heti-spacing"> </span></span>算法</strong>：</p>
+<p>先给出定义：</p>
+<ul>
+<li><span class="arithmatex">\(D^k[i][j] = \min\{\text{length of path}\ i \rightarrow \{l \le k\} \rightarrow j\}\)</span>，其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(k\)</span><span class="heti-spacing"> </span></span>为当前判断的第<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(k\)</span><span class="heti-spacing"> </span></span>个节点（<span class="arithmatex">\(k \in [0, N - 1]\)</span>，共<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(N\)</span><span class="heti-spacing"> </span></span>个待判断的点）</li>
+<li><span class="arithmatex">\(D^{-1}[i][j] = \text{Cost}[i][j]\)</span>（<span><span class="arithmatex">\(k = -1\)</span><span class="heti-spacing"> </span></span>表示<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(i, j\)</span><span class="heti-spacing"> </span></span>之间没有任何节点，即初始状态）</li>
+</ul>
+<p>则从顶点<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(i\)</span><span class="heti-spacing"> </span></span>到顶点<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(j\)</span><span class="heti-spacing"> </span></span>之间的最短路径长度为<span><span class="heti-spacing"> </span><span class="arithmatex">\(D^{N-1}[i][j]\)</span></span>。</p>
+<p><span>Floyd<span class="heti-spacing"> </span></span>算法的大致思路：从<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(D^{-1}\)</span><span class="heti-spacing"> </span></span>开始，连续得到<span><span class="heti-spacing"> </span><span class="arithmatex">\(D^0, D^1, \dots, D^{N-1}\)</span></span>。如果已经解决了<span><span class="heti-spacing"> </span><span class="arithmatex">\(D^{k-1}\)</span></span>，则此时有两种可能的情况：</p>
+<ul>
+<li>第<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(k\)</span><span class="heti-spacing"> </span></span>个节点并不在最短路内，即<span><span class="heti-spacing"> </span><span class="arithmatex">\(D^k = D^{k - 1}\)</span></span></li>
+<li>第<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(k\)</span><span class="heti-spacing"> </span></span>个节点在最短路内，那么满足<span><span class="heti-spacing"> </span><span class="arithmatex">\(D^k[i][j] = D^{k-1}[i][k] + D^{k-1}[k][j]\)</span></span></li>
+</ul>
+<p>因此有递推关系：<span class="arithmatex">\(D^k[i][j] = \min\{D^{k-1}[i][j], D^{k-1}[i][k] + D^{k-1}[k][j]\}, k \ge 0\)</span></p>
+<details class="code">
+<summary>代码实现</summary>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-3-1"><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="c1">// A[] contains the adjacency matric with A[i][i] = 0</span>
+</span><span id="__span-3-2"><a href="#__codelineno-3-2" id="__codelineno-3-2" name="__codelineno-3-2"></a><span class="c1">// D[] contains the values of the shortest path</span>
+</span><span id="__span-3-3"><a href="#__codelineno-3-3" id="__codelineno-3-3" name="__codelineno-3-3"></a><span class="c1">// N is the number of vertices</span>
+</span><span id="__span-3-4"><a href="#__codelineno-3-4" id="__codelineno-3-4" name="__codelineno-3-4"></a><span class="c1">// A negative cycle exists iff D[i][i] &lt; 0</span>
+</span><span id="__span-3-5"><a href="#__codelineno-3-5" id="__codelineno-3-5" name="__codelineno-3-5"></a>
+</span><span id="__span-3-6"><a href="#__codelineno-3-6" id="__codelineno-3-6" name="__codelineno-3-6"></a><span class="kt">void</span><span class="w"> </span><span class="nf">AllPairs</span><span class="p">(</span><span class="n">TwoDimArray</span><span class="w"> </span><span class="n">A</span><span class="p">,</span><span class="w"> </span><span class="n">TwoDimArray</span><span class="w"> </span><span class="n">D</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">N</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-7"><a href="#__codelineno-3-7" id="__codelineno-3-7" name="__codelineno-3-7"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">;</span>
+</span><span id="__span-3-8"><a href="#__codelineno-3-8" id="__codelineno-3-8" name="__codelineno-3-8"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">N</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w">    </span><span class="c1">// initialize D</span>
+</span><span id="__span-3-9"><a href="#__codelineno-3-9" id="__codelineno-3-9" name="__codelineno-3-9"></a><span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">N</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span>
+</span><span id="__span-3-10"><a href="#__codelineno-3-10" id="__codelineno-3-10" name="__codelineno-3-10"></a><span class="w">            </span><span class="n">D</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">];</span>
+</span><span id="__span-3-11"><a href="#__codelineno-3-11" id="__codelineno-3-11" name="__codelineno-3-11"></a>
+</span><span id="__span-3-12"><a href="#__codelineno-3-12" id="__codelineno-3-12" name="__codelineno-3-12"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">N</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="o">++</span><span class="p">)</span><span class="w">      </span><span class="c1">// add the kth vertex into the path</span>
+</span><span id="__span-3-13"><a href="#__codelineno-3-13" id="__codelineno-3-13" name="__codelineno-3-13"></a><span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">N</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span><span id="__span-3-14"><a href="#__codelineno-3-14" id="__codelineno-3-14" name="__codelineno-3-14"></a><span class="w">            </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">N</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span>
+</span><span id="__span-3-15"><a href="#__codelineno-3-15" id="__codelineno-3-15" name="__codelineno-3-15"></a><span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">D</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">k</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">D</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">D</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">])</span><span class="w">    </span><span class="c1">// update shortest path</span>
+</span><span id="__span-3-16"><a href="#__codelineno-3-16" id="__codelineno-3-16" name="__codelineno-3-16"></a><span class="w">                    </span><span class="n">D</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">D</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">k</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">D</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">j</span><span class="p">];</span>
+</span><span id="__span-3-17"><a href="#__codelineno-3-17" id="__codelineno-3-17" name="__codelineno-3-17"></a><span class="p">}</span>
+</span></code></pre></div>
+<ul>
+<li>该算法适用于负权边，但不适用于负权环</li>
+<li>可以看到，上述函数仅计算了任意两点间的最短路径长度，并没有记住最短路径是什么样子的，读者可以尝试着添加这个功能。</li>
+</ul>
+<details class="code">
+<summary>记录路径的版本</summary>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-4-1"><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="c1">// Compute All-Shortest Paths </span>
+</span><span id="__span-4-2"><a href="#__codelineno-4-2" id="__codelineno-4-2" name="__codelineno-4-2"></a><span class="c1">// A[] contains the adjacency matrix </span>
+</span><span id="__span-4-3"><a href="#__codelineno-4-3" id="__codelineno-4-3" name="__codelineno-4-3"></a><span class="c1">// with A[i][i] presumed to be zero </span>
+</span><span id="__span-4-4"><a href="#__codelineno-4-4" id="__codelineno-4-4" name="__codelineno-4-4"></a><span class="c1">// D[] contains the values of shortest path </span>
+</span><span id="__span-4-5"><a href="#__codelineno-4-5" id="__codelineno-4-5" name="__codelineno-4-5"></a><span class="c1">// |V| is the number of vertices </span>
+</span><span id="__span-4-6"><a href="#__codelineno-4-6" id="__codelineno-4-6" name="__codelineno-4-6"></a><span class="c1">// A negative cycle exists iff </span>
+</span><span id="__span-4-7"><a href="#__codelineno-4-7" id="__codelineno-4-7" name="__codelineno-4-7"></a><span class="c1">// d[i][j] is set to a negative value</span>
+</span><span id="__span-4-8"><a href="#__codelineno-4-8" id="__codelineno-4-8" name="__codelineno-4-8"></a><span class="c1">// Actual Path can be computed via another procedure using path </span>
+</span><span id="__span-4-9"><a href="#__codelineno-4-9" id="__codelineno-4-9" name="__codelineno-4-9"></a><span class="c1">// All arrays are indexed starting at 0 </span>
+</span><span id="__span-4-10"><a href="#__codelineno-4-10" id="__codelineno-4-10" name="__codelineno-4-10"></a><span class="kt">void</span><span class="w"> </span><span class="nf">all_pairs</span><span class="p">(</span><span class="w"> </span><span class="n">two_d_array</span><span class="w"> </span><span class="n">A</span><span class="p">,</span><span class="w"> </span><span class="n">two_d_array</span><span class="w"> </span><span class="n">D</span><span class="p">,</span><span class="w"> </span><span class="n">two_d_array</span><span class="w"> </span><span class="n">path</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-11"><a href="#__codelineno-4-11" id="__codelineno-4-11" name="__codelineno-4-11"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">;</span>
+</span><span id="__span-4-12"><a href="#__codelineno-4-12" id="__codelineno-4-12" name="__codelineno-4-12"></a><span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="o">|</span><span class="n">V</span><span class="o">|</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="c1">// Initialize D and path </span>
+</span><span id="__span-4-13"><a href="#__codelineno-4-13" id="__codelineno-4-13" name="__codelineno-4-13"></a><span class="w">        </span><span class="k">for</span><span class="p">(</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="o">|</span><span class="n">V</span><span class="o">|</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-14"><a href="#__codelineno-4-14" id="__codelineno-4-14" name="__codelineno-4-14"></a><span class="w">            </span><span class="n">D</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">];</span>
+</span><span id="__span-4-15"><a href="#__codelineno-4-15" id="__codelineno-4-15" name="__codelineno-4-15"></a><span class="w">            </span><span class="n">path</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NOT_A_VERTEX</span><span class="p">;</span>
+</span><span id="__span-4-16"><a href="#__codelineno-4-16" id="__codelineno-4-16" name="__codelineno-4-16"></a><span class="w">        </span><span class="p">}</span>
+</span><span id="__span-4-17"><a href="#__codelineno-4-17" id="__codelineno-4-17" name="__codelineno-4-17"></a><span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="o">|</span><span class="n">V</span><span class="o">|</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="o">++</span><span class="w"> </span><span class="p">)</span>
+</span><span id="__span-4-18"><a href="#__codelineno-4-18" id="__codelineno-4-18" name="__codelineno-4-18"></a><span class="w">        </span><span class="c1">// Consider each vertex as an intermediate </span>
+</span><span id="__span-4-19"><a href="#__codelineno-4-19" id="__codelineno-4-19" name="__codelineno-4-19"></a><span class="w">        </span><span class="k">for</span><span class="p">(</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="o">|</span><span class="n">V</span><span class="o">|</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="w"> </span><span class="p">)</span>
+</span><span id="__span-4-20"><a href="#__codelineno-4-20" id="__codelineno-4-20" name="__codelineno-4-20"></a><span class="w">            </span><span class="k">for</span><span class="p">(</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="o">|</span><span class="n">V</span><span class="o">|</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="w"> </span><span class="p">)</span>
+</span><span id="__span-4-21"><a href="#__codelineno-4-21" id="__codelineno-4-21" name="__codelineno-4-21"></a><span class="w">                </span><span class="k">if</span><span class="p">(</span><span class="w"> </span><span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">k</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">d</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">    </span><span class="c1">// update min </span>
+</span><span id="__span-4-22"><a href="#__codelineno-4-22" id="__codelineno-4-22" name="__codelineno-4-22"></a><span class="w">                    </span><span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">k</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">d</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">j</span><span class="p">];</span>
+</span><span id="__span-4-23"><a href="#__codelineno-4-23" id="__codelineno-4-23" name="__codelineno-4-23"></a><span class="w">                    </span><span class="n">path</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">k</span><span class="p">;</span>
+</span><span id="__span-4-24"><a href="#__codelineno-4-24" id="__codelineno-4-24" name="__codelineno-4-24"></a><span class="w">                </span><span class="p">}</span>
+</span><span id="__span-4-25"><a href="#__codelineno-4-25" id="__codelineno-4-25" name="__codelineno-4-25"></a><span class="p">}</span>
+</span></code></pre></div>
+</details>
+</details>
+<p>时间复杂度：<span class="arithmatex">\(T(N) = O(N^3)\)</span>，但是在稠密图中表现较好。</p>
+<blockquote>
+<p>注：离散数学提到过与<span class="heti-skip"><span class="heti-spacing"> </span>Floyd<span class="heti-spacing"> </span></span>算法等价的算法——<a href="../../math/dm/9.html#warshalls-algorithm"><span>Warshall<span class="heti-spacing"> </span></span>算法</a>，用于计算传递闭包。</p>
+</blockquote>
+<h3 id="product-assembly">Product Assembly<a class="headerlink" href="#product-assembly" title="Permanent link">⚓︎</a></h3>
+<div class="admonition question">
+<p class="admonition-title">问题描述</p>
+<p>产品组装<span class="heti-skip"><span class="heti-spacing"> </span>(product assembly)<span class="heti-spacing"> </span></span>问题，有以下条件</p>
+<ul>
+<li>一辆车的生产需要用到两条组装线</li>
+<li>每个阶段会用到不同的工艺（时间，即不同的节点值）</li>
+<li>在各阶段中，可以随时切换组装线</li>
+</ul>
+<p>现在要求你求出最短的组装总时间。</p>
+<p></p><div style="text-align: center">
+<img src="images/lec8/20.png" width="90%"/>
+</div>
+</div>
+<details class="bug">
+<summary>穷举算法</summary>
+<p>把每个点当作一个二进制位，不同的二进制数对应不同的情况。</p>
+<ul>
+<li>时间复杂度：<span class="arithmatex">\(O(2^N)\)</span>（每个点都有选或不选这两种选择）</li>
+<li>空间复杂度：<span class="arithmatex">\(O(N)\)</span></li>
+</ul>
+<p>显然这种算法是不现实的。</p>
+</details>
+<p>下面我们严格按照<a href="#Background"><span class="heti-skip"><span class="heti-spacing"> </span>Background<span class="heti-spacing"> </span></span></a>提到的解题步骤来解决这一问题：</p>
+<ol>
+<li>
+<p>用符号化或数学化的语言描述问题的最优解</p>
+<p></p><div style="text-align: center">
+<img src="images/lec8/21.png" width="80%"/>
+</div>
+<ul>
+<li>这张图给出了在<em>stage</em>阶段时的最优解（绿点<span class="heti-skip"><span class="heti-spacing"> </span>+<span class="heti-spacing"> </span></span>蓝线）</li>
+<li>红色虚线表示虽然有一条同样能在<em>stage</em>阶段到达同一个点的路径，但这条路径所花的时间更差，因此被<span class="heti-skip"><span class="heti-spacing"> </span>pass<span class="heti-spacing"> </span></span>掉了</li>
+</ul>
+</li>
+<li>
+<p>递归地定义最优值</p>
+<p></p><div style="text-align: center">
+<img src="images/lec8/22.png" width="40%"/>
+</div>
+<ul>
+<li>可以看到，在<em>stage</em>阶段时，我们有两种到达对应点的路径：要么来自第一条组装线，要么来自第二条组装线</li>
+<li>因此，我们不难得出以下递推关系式：</li>
+</ul>
+<div class="arithmatex">\[
+\begin{align}
+f[line][stage] &amp; = \min\{f[line][stage - 1] + t_{process}[line][stage - 1] \notag \\ 
+&amp; , f[1 - line][stage - 1] + t_{transit}[1 - line][stage - 1]\} \notag 
+\end{align}
+\]</div>
+<p>其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f[line][stage]\)</span><span class="heti-spacing"> </span></span>表示在<em>stage</em>阶段时，在第<em>line</em>条组装线上的最优时间，<span><span class="arithmatex">\(t_{process}[line][stage]\)</span><span class="heti-spacing"> </span></span>表示在同一条组装线上进入<em>stage</em>阶段所需的时间，<span><span class="arithmatex">\(t_{process}[line][stage]\)</span><span class="heti-spacing"> </span></span>表示从不同组装线上进入<em>stage</em>阶段所需的时间。</p>
+</li>
+<li>
+<p>确定好计算的顺序。这里直接看代码：</p>
+</li>
+</ol>
+<details class="code">
+<summary>代码实现</summary>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-5-1"><a href="#__codelineno-5-1" id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="c1">// Initialization</span>
+</span><span id="__span-5-2"><a href="#__codelineno-5-2" id="__codelineno-5-2" name="__codelineno-5-2"></a><span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span>
+</span><span id="__span-5-3"><a href="#__codelineno-5-3" id="__codelineno-5-3" name="__codelineno-5-3"></a><span class="n">f</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-5-4"><a href="#__codelineno-5-4" id="__codelineno-5-4" name="__codelineno-5-4"></a><span class="c1">// Outer loop: start from the first stage, end with the last stage</span>
+</span><span id="__span-5-5"><a href="#__codelineno-5-5" id="__codelineno-5-5" name="__codelineno-5-5"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">stage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">stage</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">stage</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-5-6"><a href="#__codelineno-5-6" id="__codelineno-5-6" name="__codelineno-5-6"></a><span class="w">    </span><span class="c1">// Inner loop: test each line and find the minimum path</span>
+</span><span id="__span-5-7"><a href="#__codelineno-5-7" id="__codelineno-5-7" name="__codelineno-5-7"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">line</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">line</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-5-8"><a href="#__codelineno-5-8" id="__codelineno-5-8" name="__codelineno-5-8"></a><span class="w">        </span><span class="n">f</span><span class="p">[</span><span class="n">line</span><span class="p">][</span><span class="n">stage</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">min</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="n">line</span><span class="p">][</span><span class="n">stage</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">t_process</span><span class="p">[</span><span class="n">line</span><span class="p">][</span><span class="n">stage</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="n">f</span><span class="p">[</span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">line</span><span class="p">][</span><span class="n">stage</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">t_transit</span><span class="p">[</span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">line</span><span class="p">][</span><span class="n">stage</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">]);</span>
+</span><span id="__span-5-9"><a href="#__codelineno-5-9" id="__codelineno-5-9" name="__codelineno-5-9"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-5-10"><a href="#__codelineno-5-10" id="__codelineno-5-10" name="__codelineno-5-10"></a><span class="p">}</span>
+</span><span id="__span-5-11"><a href="#__codelineno-5-11" id="__codelineno-5-11" name="__codelineno-5-11"></a><span class="c1">// The solution comes from the last stage of two lines</span>
+</span><span id="__span-5-12"><a href="#__codelineno-5-12" id="__codelineno-5-12" name="__codelineno-5-12"></a><span class="n">Solution</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">min</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">n</span><span class="p">],</span><span class="w"> </span><span class="n">f</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">n</span><span class="p">]);</span>
+</span></code></pre></div>
+</details>
+<ol>
+<li>重新构造解决问题的策略。这里要求输出最短时间的组装顺序，代码如下所示：</li>
+</ol>
+<details class="code">
+<summary>代码实现</summary>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-6-1"><a href="#__codelineno-6-1" id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span>
+</span><span id="__span-6-2"><a href="#__codelineno-6-2" id="__codelineno-6-2" name="__codelineno-6-2"></a><span class="n">f</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-6-3"><a href="#__codelineno-6-3" id="__codelineno-6-3" name="__codelineno-6-3"></a>
+</span><span id="__span-6-4"><a href="#__codelineno-6-4" id="__codelineno-6-4" name="__codelineno-6-4"></a><span class="c1">// L[line][stage]: record the source of the stage, either 0 or 1(the number of assembly lines) </span>
+</span><span id="__span-6-5"><a href="#__codelineno-6-5" id="__codelineno-6-5" name="__codelineno-6-5"></a><span class="n">L</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-6-6"><a href="#__codelineno-6-6" id="__codelineno-6-6" name="__codelineno-6-6"></a><span class="n">L</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-6-7"><a href="#__codelineno-6-7" id="__codelineno-6-7" name="__codelineno-6-7"></a>
+</span><span id="__span-6-8"><a href="#__codelineno-6-8" id="__codelineno-6-8" name="__codelineno-6-8"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">stage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">stage</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">stage</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-6-9"><a href="#__codelineno-6-9" id="__codelineno-6-9" name="__codelineno-6-9"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">line</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">line</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-6-10"><a href="#__codelineno-6-10" id="__codelineno-6-10" name="__codelineno-6-10"></a><span class="w">        </span><span class="n">f_stay</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">f</span><span class="p">[</span><span class="n">line</span><span class="p">][</span><span class="n">stage</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">t_process</span><span class="p">[</span><span class="n">line</span><span class="p">][</span><span class="n">stage</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">];</span>
+</span><span id="__span-6-11"><a href="#__codelineno-6-11" id="__codelineno-6-11" name="__codelineno-6-11"></a><span class="w">        </span><span class="n">f_move</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">f</span><span class="p">[</span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">line</span><span class="p">][</span><span class="n">stage</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">t_transit</span><span class="p">[</span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">line</span><span class="p">][</span><span class="n">stage</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">];</span>
+</span><span id="__span-6-12"><a href="#__codelineno-6-12" id="__codelineno-6-12" name="__codelineno-6-12"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">f_stay</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">f_move</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-6-13"><a href="#__codelineno-6-13" id="__codelineno-6-13" name="__codelineno-6-13"></a><span class="w">            </span><span class="n">f</span><span class="p">[</span><span class="n">line</span><span class="p">][</span><span class="n">stage</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">f_stay</span><span class="p">;</span>
+</span><span id="__span-6-14"><a href="#__codelineno-6-14" id="__codelineno-6-14" name="__codelineno-6-14"></a><span class="w">            </span><span class="n">L</span><span class="p">[</span><span class="n">line</span><span class="p">][</span><span class="n">stage</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">line</span><span class="p">;</span>
+</span><span id="__span-6-15"><a href="#__codelineno-6-15" id="__codelineno-6-15" name="__codelineno-6-15"></a><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-6-16"><a href="#__codelineno-6-16" id="__codelineno-6-16" name="__codelineno-6-16"></a><span class="w">            </span><span class="n">f</span><span class="p">[</span><span class="n">line</span><span class="p">][</span><span class="n">stage</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">f_move</span><span class="p">;</span>
+</span><span id="__span-6-17"><a href="#__codelineno-6-17" id="__codelineno-6-17" name="__codelineno-6-17"></a><span class="w">            </span><span class="n">L</span><span class="p">[</span><span class="n">line</span><span class="p">][</span><span class="n">stage</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">line</span><span class="p">;</span><span class="w">       </span>
+</span><span id="__span-6-18"><a href="#__codelineno-6-18" id="__codelineno-6-18" name="__codelineno-6-18"></a><span class="w">        </span><span class="p">}</span>
+</span><span id="__span-6-19"><a href="#__codelineno-6-19" id="__codelineno-6-19" name="__codelineno-6-19"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-6-20"><a href="#__codelineno-6-20" id="__codelineno-6-20" name="__codelineno-6-20"></a><span class="p">}</span>
+</span><span id="__span-6-21"><a href="#__codelineno-6-21" id="__codelineno-6-21" name="__codelineno-6-21"></a>
+</span><span id="__span-6-22"><a href="#__codelineno-6-22" id="__codelineno-6-22" name="__codelineno-6-22"></a><span class="c1">// save the optimal path in plan[]</span>
+</span><span id="__span-6-23"><a href="#__codelineno-6-23" id="__codelineno-6-23" name="__codelineno-6-23"></a><span class="n">line</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">n</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">f</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">n</span><span class="p">]</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+</span><span id="__span-6-24"><a href="#__codelineno-6-24" id="__codelineno-6-24" name="__codelineno-6-24"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">stage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">stage</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">stage</span><span class="o">--</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-6-25"><a href="#__codelineno-6-25" id="__codelineno-6-25" name="__codelineno-6-25"></a><span class="w">    </span><span class="n">plan</span><span class="p">[</span><span class="n">stage</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">line</span><span class="p">;</span>
+</span><span id="__span-6-26"><a href="#__codelineno-6-26" id="__codelineno-6-26" name="__codelineno-6-26"></a><span class="w">    </span><span class="n">line</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">L</span><span class="p">[</span><span class="n">line</span><span class="p">][</span><span class="n">stage</span><span class="p">];</span>
+</span><span id="__span-6-27"><a href="#__codelineno-6-27" id="__codelineno-6-27" name="__codelineno-6-27"></a><span class="p">}</span>
+</span></code></pre></div>
+</details>
 <aside class="md-source-file">
 <span class="md-source-file__fact">
 <span class="md-icon" title="最后更新">
