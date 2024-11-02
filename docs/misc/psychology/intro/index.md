@@ -305,3 +305,566 @@ counter: true
 
     - 磁共振成像（MRI）：利用人体组织中氢原子核（质子）对强磁场的反应构建出大脑的三维图像
         - 功能磁共振成像（fMRI）：通过测量大脑对氧气的消耗来确定各脑区的认知功能
+
+## 感觉
+
+### 基本概念、测量方法
+
+**感觉**：是感觉器官（眼、耳）检测物理能量, 将其转化为神经信号并输送给大脑的过程。感觉系统塑造了我们聪明的大脑。
+
+感觉过程：
+
+<div style="text-align: center">
+    <img src="images/22.png" width="70%">
+</div>
+
+感觉的测量：
+
+- 绝对阈限：产生感觉所必需的最小物理量
+
+    <div style="text-align: center">
+        <img src="images/23.png" width="40%">
+    </div>
+
+    不同感觉的绝对阈限：
+
+    <div style="text-align: center">
+        <img src="images/24.png" width="50%">
+    </div>
+
+- 差别阈限：人们在辨别两种强度不同的刺激时所需要的刺激强度最小差异值，又被称为最小可觉差(Just Noticeable Difference, 简称JND)。
+
+    <div style="text-align: center">
+        <img src="images/25.png" width="50%">
+    </div>
+
+- 韦伯定律：引起最小可觉察的刺激变化量和原刺激强度的比值是一个常数，公式为：
+    $$
+    K = \dfrac{\Delta I}{I}
+    $$
+
+    其中$K$为韦伯常数，$\Delta I$为差别阈限，$I$为原刺激强度
+
+    - 不同感觉的韦伯常数：
+
+    <div style="text-align: center">
+        <img src="images/26.png" width="40%">
+    </div>
+
+- 费希纳定理：各刺激强度下最小感觉差别相等，揭示了刺激与感觉之间的数学关系：
+    $$
+    \begin{align}
+    \Delta S & = a \dfrac{\Delta I}{I} \notag \\
+    \text{d}S & = a \dfrac{\text{d}I}{I} \notag \\
+    S & = k \log I \notag
+    \end{align}
+    $$
+
+    其中$\Delta S$为韦伯定律，各刺激强度下$\dfrac{\Delta I}{I}$是常数，$S$为感觉大小，$k$和$a$是常数，对应的曲线图如下：
+
+    <div style="text-align: center">
+        <img src="images/27.png" width="60%">
+    </div>
+
+感觉适应：感觉器官因接受刺激太久，其敏感度暂时发生改变的现象。
+
+- 感觉不到手上带着表，脚上穿着鞋等，使得我们对变化更敏感，把注意集中到新的刺激上
+- 视觉没有适应特性，因为在没有眼动的情况下，视觉适应使我们无法看到东西
+
+??? example "[Troxler's effect](https://en.wikipedia.org/wiki/Troxler%27s_fading)"
+
+    盯着中间的小点看10s，你发现什么有趣的现象呢？
+
+    <div style="text-align: center">
+        <img src="images/28.png" width="60%">
+    </div>
+
+### 视觉
+
+- 70%的信息靠眼睛获取
+- 可见光谱范围：400-700nm
+
+<div style="text-align: center">
+    <img src="images/29.png" width="80%">
+</div>
+
+#### 眼睛的结构
+
+<div style="text-align: center">
+    <img src="images/30.png" width="40%">
+</div>
+
+- 眼睛的成像原理：
+
+<div style="text-align: center">
+    <img src="images/32.png" width="60%">
+</div>
+
+- 近视、远视、散光：
+
+<div style="text-align: center">
+    <img src="images/31.png" width="70%">
+</div>
+
+
+#### 视网膜及感光细胞
+
+- 感光细胞有：
+    - 视锥细胞(cone)：负责颜色和**白昼**视觉的光感受器；高分辨率；约700万个；3种视锥编码颜色信息
+    - 视杆细胞(rode)：对**暗光**敏感的视觉感受器，产生黑白感觉; 低分辨率；约1.2亿个
+
+    <div style="text-align: center">
+        <img src="images/33.png" width="30%">
+    </div>
+
+- 感光细胞在视网膜上的分布：
+
+<div style="text-align: center">
+    <img src="images/34.png" width="60%">
+</div>
+
+- 中央视野和外周视野
+    - 中央凹(fovea)：视网膜中央的一小块凹陷区域，视锥细胞密集，负责颜色、细节加工
+
+    <div style="text-align: center">
+        <img src="images/35.png" width="60%">
+    </div>
+
+    - 外周(periphery)：视网膜上的外围区域，主要分布于视杆细胞。视觉敏锐度差；颜色知觉差
+        - 对光线敏感，在暗环境下工作；对运动信息敏感。这种能力对运动员、驾车和走入黑暗走廊等环境下保持知觉能力是十分重要的。
+
+- [盲点](https://zh.wikipedia.org/wiki/%E7%9B%B2%E9%BB%9E_(%E7%9C%BC))：下图中，血管汇集处的高亮区域即为盲点
+
+    <div style="text-align: center">
+        <img src="images/36.jpg" width="30%">
+    </div>
+
+
+#### 视觉信息处理
+
+- 对光线的检测只是视觉的第一步，更重要的是对视觉感受器传来的神经信号的进行计算和处理
+- 照相机/计算机对图像是按像素来处理的，各像素之间是离散的、没有关联的；而大脑是以整体的方式来处理视觉信息
+- 视觉过程由很多阶段来完成，不同的阶段识别不同的模式
+- 视觉通路：
+
+    <div style="text-align: center">
+        <img src="images/37.png" width="45%">
+    </div>
+
+    - 视网膜（光点）
+    - 丘脑外膝体（圆形）
+    - 初级视皮层（线段）
+    - 高级视觉皮层（形状/物体）
+- 丘脑（外膝体）：圆形感受野
+    - 视网膜有1.3亿个感光细胞，但只有120万根视神经；每根视神经会接受多个感光细胞的输入
+    - **感受野**(receptive field)：能引起某个视觉细胞的反应视网膜区域
+        - 感受野结构：中央外周结构，有助于检测边界
+
+        <div style="text-align: center">
+            <img src="images/38.png" width="30%">
+        </div>
+
+        - On-off感受野：在感受野中央给光刺激时引起细胞放电，在外周区给光则抑制细胞的放电
+
+        <div style="text-align: center">
+            <img src="images/39.png" width="60%">
+        </div>
+
+        - Off-on感受野：在感受野中央给光刺激时抑制细胞放电，在外周区给光时引起细胞的放电
+
+        <div style="text-align: center">
+            <img src="images/40.png" width="60%">
+        </div>
+
+        - Off中心型神经节细胞对边界的反应
+
+        <div style="text-align: center">
+            <img src="images/41.png" width="70%">
+        </div>
+
+    - 马赫带：光线的明暗交界处有一条明显的光带，靠近暗处的更暗，靠近亮处的更亮的现象
+
+    <div style="text-align: center">
+        <img src="images/42.png" width="40%">
+    </div>
+
+    - 侧抑制：相邻的感觉神经元之间彼此有抑制作用
+
+        - 下面两张图中间的灰色看起来右边的那个更深一些，但实际上两种灰色是一样的
+
+        <div style="text-align: center">
+            <img src="images/43.png" width="50%">
+        </div>
+
+        - 首次发现海洋节肢动物[鲎](https://zh.wikipedia.org/zh-cn/%E9%B1%9F%E7%A7%91)复眼的不同小眼之间存在相互抑制，并提出了经验公式解释这种现象。这种对信息的预加工可增强刺激的反差。侧抑制现象普遍存在于各种感觉神经系统中，具有重要的生理功能
+
+        <div style="text-align: center">
+            <img src="images/44.png" width="60%">
+        </div>
+
+        ??? example "有趣的例子"
+
+            白色背景下有一个个黑色小方块，没有其他颜色。
+
+            <div style="text-align: center">
+                <img src="images/45.png" width="60%">
+            </div>
+
+- 视觉皮层——特征检测
+    - 丘脑的视觉信号传递到视觉皮层作进一步加工
+    - 不同的脑区，检测不同的特征（朝向、运动、颜色等）
+
+    <div style="text-align: center">
+        <img src="images/46.png" width="60%">
+    </div>
+
+    - 越高级的视觉脑区，检测的视觉特征越复杂（点、线、面、物体），脑区的损伤导致对应的识认症
+    - 各个脑区并行工作
+
+    <div style="text-align: center">
+        <img src="images/47.png" width="60%">
+    </div>
+
+#### 颜色视觉
+
+- 不同类型的电磁波之间的差别在波长；视觉系统把可见光的波长信息转化为颜色
+
+<div style="text-align: center">
+    <img src="images/48.png" width="70%">
+</div>
+
+- 颜色的混合：所有的颜色都可以通过三种基本的颜色按照一定比例的混合得到
+    - 580nm的纯光是黄色，可通过650nm (红)、500nm (绿)、450nm (蓝) 混合得到与580nm完全一样的颜色
+    - 颜色的混合说明颜色是一种心理量
+    - 颜色的混合是各种显示技术的基础（电视、电影、摄影、印刷等）
+
+    <div style="text-align: center">
+        <img src="images/49.png" width="70%">
+    </div>
+
+- **颜色三原色理论**：虽然我们能感知无数种颜色，但视觉系统只有三种颜色感受器（红绿蓝），不同颜色的光会引起这三种感受器不同比例的激活，造成不同的颜色感受。
+
+<div style="text-align: center">
+    <img src="images/50.png" width="70%">
+</div>
+
+- **颜色拮抗说**：视觉系统的颜色表征是由颜色相互对抗的机制构成，如红-绿拮抗、蓝-黄拮抗、黑-白拮抗。某个拮抗机制不能同时对它的两种颜色反应，它会被某种颜色激活，而被与其相对的颜色抑制。
+
+??? example "例子"
+
+    请盯着每张图片中矩形内的黑点10s，然后再看旁边那个单个的黑点，你看到了什么？
+
+    === "图1"
+
+        <div style="text-align: center">
+            <img src="images/51.png" width="70%">
+        </div>
+
+    === "图2"
+
+        <div style="text-align: center">
+            <img src="images/52.png" width="70%">
+        </div>
+
+    === "图3"
+
+        <div style="text-align: center">
+            <img src="images/53.png" width="70%">
+        </div>
+
+- 上述两种理论均正确，它们反映的是不同视觉信息处理阶段颜色的加工机制
+    - 三原色理论可解释视网膜颜色机制
+    - 颜色拮抗理论可解释视觉信息离开眼睛之后，大脑内的颜色机制
+
+- 不同动物对颜色的体验：
+
+<div style="text-align: center">
+    <img src="images/54.png" width="70%">
+</div>
+
+- 色盲：
+
+    <div style="text-align: center">
+        <img src="images/55.jpg" width="50%">
+    </div>
+
+    - 为什么没有绿色毛发的哺乳动物？因为大部分哺乳动物是红绿色盲
+
+    <div style="text-align: center">
+        <img src="images/56.png" width="60%">
+    </div>
+
+    - 人类为了采摘果实，再次进化出分辨红绿能力
+
+## 知觉
+
+### 认识知觉的误区
+
+- 感觉(sensatation)：把物理能量转化神经生理信号。这些信号是零碎的、分离的、无意义的
+- 知觉(perception)：对感觉神经信号进行解释和理解。该过程是整体的、综合的、有意义的
+
+
+知觉过程并不是对感觉信号忠实的解读（眼不见未必为虚，眼见未必为实），知觉的结果与感觉的物理输入可能有较大的差别。
+
+??? example "例子"
+
+    === "例1"
+
+        === "原图"
+
+            <div style="text-align: center">
+                <img src="images/57.jpg" width="50%">
+            </div>  
+
+            看起来方格A颜色更深，方格B颜色更浅
+
+        === "解释"
+
+            而实际上：
+
+            <div style="text-align: center">
+                <img src="images/58.jpg" width="50%">
+            </div>  
+
+    === "例2"
+
+        <div style="text-align: center">
+            <img src="images/59.png" width="70%">
+        </div>  
+
+        看起来图像在转动...
+
+### 知觉的形成过程
+
+知觉 (perception): 是通过对感觉信息进行组织、整合并根据已有的知识和经验对这些感觉信息进行理解的过程。
+
+- 知觉把无意义的感觉输入信息（如亮度、颜色、线条等）组织整合起来，赋予这些无意义的信息以意义
+- 知觉总试图赋予感觉刺激一定的意义，哪怕这些感觉输入本身无任何意义。知觉的过程是“不自觉的”，而且是“豪不费力”的；人脑特别擅长这种识别和理解（电脑只擅长记录和存储）
+
+知觉形成过程：
+
+<div style="text-align: center">
+    <img src="images/60.png" width="60%">
+</div>
+
+- 自下而上加工(bottom up processing)
+    - 对输入的基本感觉信息进行抽提，形成简单的知觉特征，如颜色、亮度、线条朝向等；自下而上的信息是形成知觉的原材料
+    - 原材料是零碎的、无序的、无意义的，只有对这些原材料进行合理的组织才能形成知觉
+
+- 自上而下加工(top down processing)：利用原有的知识经验，把“感觉原材料”组织成有意义的整体
+
+- 知识经验的作用：
+    - 加快感觉信息处理的速度
+
+    ??? example "例子"
+
+        心理学是门一常非有的趣学科，她以可帮助我们好更地识认自己。
+
+    - 当大量的感觉信息缺失时，可利用知识经验形成生动的知觉
+
+    ??? example "例子"
+
+        === "题目"
+
+            猜猜这几个字是什么？
+
+            <div style="text-align: center">
+                <img src="images/61.png" width="60%">
+            </div>       
+
+        === "答案"
+
+            <div style="text-align: center">
+                <img src="images/62.png" width="45%">
+            </div>
+
+
+### 知觉的恒常性
+
+知觉的恒常性：
+
+- 知觉能对目标物体的很多属性（颜色、亮度、形状、大小等）保持不变，即使它们投射在视网膜上的这些物理属性因视角/距离/光线等物理因素的变化而发生了极大的改变。
+- 知觉的恒常性表明知觉并不是直接解读感觉输入, 自上而下的经验在知觉中扮演重要角色。
+
+各类恒常性：
+
+- 明度的恒常性(brightness constancy)：物体本身所处照明环境发生改变，而对物体的亮度知觉仍然保持不变的心理倾向。
+    - 例子：暗光下的粉笔仍为白色，阳光下的木炭仍为黑色。
+- 颜色的恒常性(color constancy)：当物体的环境照明颜色发生改变，而知觉经验仍对物体颜色知觉保持不变的心理倾向。
+    - 颜色的恒常性存在的前提是要熟悉物体的颜色
+    - 看到什么样的颜色取决于你认为衣服处于什么样的照明环境下
+
+    ??? example "例子"
+
+        === "例1"
+
+            <div style="text-align: center">
+                <img src="images/63.png" width="60%">
+            </div>
+
+        === "例2"
+
+            === "原图"
+
+                <div style="text-align: center">
+                    <img src="images/64.png" width="60%">
+                </div>
+
+                两幅图中的魔方在不同的环境光下，它们的颜色看起来没有发生太大的改变。实际上它们的颜色物理上发生了颠覆性变化。
+
+            === "解释"
+
+                <div style="text-align: center">
+                    <img src="images/65.png" width="60%">
+                </div>
+
+        === "例3"
+
+            === "原图"
+
+                2015年2月，网上流行了一张裙子的照片，人们对裙子的颜色争论不休，有人认为它是蓝-黑（blue and black）色，有人认为它是白-黄色（white and gold），你认为是什么颜色？ 心理学家们很好奇为什么人们看到了不一样的颜色。
+
+                <div style="text-align: center">
+                    <img src="images/66.jpg" width="30%">
+                </div>
+
+            === 解释：
+
+            === "Step 1"
+
+                <div style="text-align: center">
+                    <img src="images/67.png" width="60%">
+                </div>
+
+            === "Step 2"
+
+                <div style="text-align: center">
+                    <img src="images/68.png" width="60%">
+                </div>   
+
+            === "Step 3"
+
+                <div style="text-align: center">
+                    <img src="images/69.png" width="60%">
+                </div> 
+
+- 大小的恒常性(size constancy)：物体在视网膜上图像大小发生改变时，对物体的知觉体验不会发生改变
+
+??? example "例子"
+
+    === "例1"
+
+        <div style="text-align: center">
+            <img src="images/70.png" width="60%">
+        </div> 
+
+    === "例2：月亮错觉"
+
+        <div style="text-align: center">
+            <img src="images/71.png" width="60%">
+        </div> 
+
+    === "例3：[Ames Room](https://en.wikipedia.org/wiki/Ames_room)"
+
+        <div style="text-align: center">
+            <img src="images/72.png" width="70%">
+            <img src="images/73.png" width="60%">
+        </div> 
+
+    === "例4：[Beuchet Chair](https://richardwiseman.wordpress.com/2016/08/07/a-new-beuchet-chair-illusion/)"
+
+
+
+
+### 深度知觉
+
+**深度知觉**(depth perception)：人们能够把二维的视网膜上的图像恢复为三维图像的知觉过程，对开车、投篮、穿针等日常行为十分关键。
+
+深度知觉线索来自两个方面：一方面是产生于视觉系统的特性；另一方面则是源自于刺激物的物理特征。
+
+<div style="text-align: center">
+    <img src="images/74.png" width="60%">
+</div> 
+
+- 生理线索
+    - 辐合作用(convergence)：由两眼球转动以聚合视线，从而获得深度知觉的双眼线索
+
+    <div style="text-align: center">
+        <img src="images/76.png" width="70%">
+    </div> 
+
+- 单眼线索
+    - 线条透视(linear perspective)：两条向远方延伸的平行线看来趋于接近
+
+    <div style="text-align: center">
+        <img src="images/77.png" width="70%">
+    </div> 
+
+    - 相对大小：远处的物体比近处的物体显得更小
+
+    <div style="text-align: center">
+        <img src="images/78.png" width="70%">
+    </div> 
+
+    - 遮挡/重叠：远处的物体被近处的物体遮挡
+
+    <div style="text-align: center">
+        <img src="images/82.png" width="70%">
+    </div> 
+
+    - 明暗(shading)/光影(shadow)：物体反射光的强弱以及它投下的光影 (影子) 反映了深度信息
+
+    <div style="text-align: center">
+        <img src="images/79.png" width="70%">
+    </div> 
+
+    ??? example "例子"
+
+        <div style="text-align: center">
+            <img src="images/80.png" width="60%">
+        </div> 
+
+    - 相对清晰度：因为空气对光线的散射，远处的物体显得更模糊
+
+    <div style="text-align: center">
+        <img src="images/81.png" width="70%">
+    </div> 
+
+- 双眼线索
+    - 双眼视差(binocular disparity): 视觉目标物体在两眼视网膜上成像位置的差别（应用：立体图、3D电影等）
+
+    <div style="text-align: center">
+        <img src="images/75.png" width="70%">
+    </div> 
+
+### 影响知觉的因素
+
+- 先天遗传：为自上而下的知觉过程打下基础，如亮度、颜色、边界、双眼视差等基本属性的检测
+- 后天经验：塑造形成了自上而下的知觉成分，是知觉的核心，没有后天经验的塑造将没有知觉
+
+??? example "例子"
+
+    === "例1"
+
+        一些生活在丛林里的原始部落居民不能利用相对大小线索来知觉远近，因为丛林中树木林立，日常生活中居民的视野范围很小。
+
+    === "例2"
+    
+        文化影响知觉：东方文化注重整体，西方文化注重个体。
+
+        <div style="text-align: center">
+            <img src="images/83.png" width="70%">
+        </div>   
+
+
+    === "例3"
+        
+        期待影响知觉：由于过程的不同造成了不同的期待，所以即使得到相同的结果，我们也会产生不同的知觉。
+
+        <div style="text-align: center">
+            <img src="images/84.png" width="50%">
+        </div>   
+
+    === "例4"
+    
+        不同通道间的知觉信息整合：如果视觉和听觉接受的信息产生矛盾，大脑更倾向于相信视觉得到的信息。

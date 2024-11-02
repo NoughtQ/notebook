@@ -7,8 +7,6 @@
 ## Table of Contents
 
 {{ BEGIN_TOC }}
-- CS 相关:
-    - 图像信息处理: dip
 - 心理学相关:
     - 心理学导论: psychology/intro
     - 社会心理学: psychology/social

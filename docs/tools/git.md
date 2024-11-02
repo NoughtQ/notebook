@@ -287,7 +287,7 @@ $ git remote
 $ git remote -v
 
 # 只列出指定仓库的 url
-$ git remote get-url <name>
+$ git remote git-url <name>
 # 参数 --push 查看 push url 而非 fetch url
 # 参数 --all 列出远程仓库的所有 url
 
