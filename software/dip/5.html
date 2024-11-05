@@ -10,7 +10,7 @@
 <link href="6.html" rel="next"/>
 <link href="../../assets/favicon.png" rel="icon"/>
 <meta content="mkdocs-1.6.1, mkdocs-material-9.5.42" name="generator"/>
-<title>Chap 5: Image Convolution - NoughtQ的笔记本</title>
+<title>Chap 5: Image Convolution and Filtering - NoughtQ的笔记本</title>
 <link href="../../assets/stylesheets/main.0253249f.min.css" rel="stylesheet"/>
 <link href="../../assets/stylesheets/palette.06af60db.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
@@ -34,7 +34,7 @@
 <input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
 <label class="md-overlay" for="__drawer"></label>
 <div data-md-component="skip">
-<a class="md-skip" href="#chap-5-image-convolution">
+<a class="md-skip" href="#chap-5-image-convolution-and-filtering">
           跳转至
         </a>
 </div>
@@ -58,7 +58,7 @@
 <div class="md-header__topic" data-md-component="header-topic">
 <span class="md-ellipsis">
             
-              Chap 5: Image Convolution
+              Chap 5: Image Convolution and Filtering
             
           </span>
 </div>
@@ -341,16 +341,130 @@
 </li>
 <li class="md-nav__item md-nav__item--active">
 <input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    Chap 5: Image Convolution and Filtering
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
 <a class="md-nav__link md-nav__link--active" href="5.html">
 <span class="md-ellipsis">
-    Chap 5: Image Convolution
+    Chap 5: Image Convolution and Filtering
   </span>
 </a>
+<nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1d-convolution">
+<span class="md-ellipsis">
+      1D Convolution
+    </span>
+</a>
+<nav aria-label="1D Convolution" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#continuous-1d-convolution">
+<span class="md-ellipsis">
+      Continuous 1D Convolution
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#properties-of-convolution">
+<span class="md-ellipsis">
+      Properties of Convolution
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#discrete-1d-convolution">
+<span class="md-ellipsis">
+      Discrete 1D Convolution
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#spatial-filtering">
+<span class="md-ellipsis">
+      Spatial Filtering
+    </span>
+</a>
+<nav aria-label="Spatial Filtering" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#principle">
+<span class="md-ellipsis">
+      Principle
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#smoothing">
+<span class="md-ellipsis">
+      Smoothing
+    </span>
+</a>
+<nav aria-label="Smoothing" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#linear-smoothing-filter">
+<span class="md-ellipsis">
+      Linear Smoothing Filter
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#statistical-sorting-filter">
+<span class="md-ellipsis">
+      Statistical Sorting Filter
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#sharpening-filter">
+<span class="md-ellipsis">
+      Sharpening Filter
+    </span>
+</a>
+<nav aria-label="Sharpening Filter" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#gradient-based-method">
+<span class="md-ellipsis">
+      Gradient-based Method
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#laplacian-operator">
+<span class="md-ellipsis">
+      Laplacian Operator
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
 </li>
 <li class="md-nav__item">
 <a class="md-nav__link" href="6.html">
 <span class="md-ellipsis">
-    Chap 6: Image Filtering
+    Chap 6: Convolution and Filtering
   </span>
 </a>
 </li>
@@ -423,16 +537,390 @@
 <div class="md-sidebar__scrollwrap">
 <div class="md-sidebar__inner">
 <nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1d-convolution">
+<span class="md-ellipsis">
+      1D Convolution
+    </span>
+</a>
+<nav aria-label="1D Convolution" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#continuous-1d-convolution">
+<span class="md-ellipsis">
+      Continuous 1D Convolution
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#properties-of-convolution">
+<span class="md-ellipsis">
+      Properties of Convolution
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#discrete-1d-convolution">
+<span class="md-ellipsis">
+      Discrete 1D Convolution
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#spatial-filtering">
+<span class="md-ellipsis">
+      Spatial Filtering
+    </span>
+</a>
+<nav aria-label="Spatial Filtering" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#principle">
+<span class="md-ellipsis">
+      Principle
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#smoothing">
+<span class="md-ellipsis">
+      Smoothing
+    </span>
+</a>
+<nav aria-label="Smoothing" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#linear-smoothing-filter">
+<span class="md-ellipsis">
+      Linear Smoothing Filter
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#statistical-sorting-filter">
+<span class="md-ellipsis">
+      Statistical Sorting Filter
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#sharpening-filter">
+<span class="md-ellipsis">
+      Sharpening Filter
+    </span>
+</a>
+<nav aria-label="Sharpening Filter" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#gradient-based-method">
+<span class="md-ellipsis">
+      Gradient-based Method
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#laplacian-operator">
+<span class="md-ellipsis">
+      Laplacian Operator
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
 </nav>
 </div>
 </div>
 </div>
 <div class="md-content" data-md-component="content">
 <article class="md-content__inner md-typeset">
-<h1 id="chap-5-image-convolution">Chap 5: Image Convolution<a class="headerlink" href="#chap-5-image-convolution" title="Permanent link">⚓︎</a></h1>
+<h1 id="chap-5-image-convolution-and-filtering">Chap 5: Image Convolution and Filtering<a class="headerlink" href="#chap-5-image-convolution-and-filtering" title="Permanent link">⚓︎</a></h1>
 <div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
-<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>个字 </p>
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>2558<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>13<span class="heti-spacing"> </span></span>分钟</p>
 </div>
+<h2 id="1d-convolution">1D Convolution<a class="headerlink" href="#1d-convolution" title="Permanent link">⚓︎</a></h2>
+<h3 id="continuous-1d-convolution">Continuous 1D Convolution<a class="headerlink" href="#continuous-1d-convolution" title="Permanent link">⚓︎</a></h3>
+<p>定义：两个一元函数<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f(x)\)</span><span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(h(x)\)</span><span class="heti-spacing"> </span></span>的卷积<span class="heti-skip"><span class="heti-spacing"> </span>(convolution)<span class="arithmatex">\(g(x)\)</span><span class="heti-spacing"> </span></span>为：</p>
+<div class="arithmatex">\[
+g(x) = f(x) * h(x) = \int_{-\infty}^{+\infty}f(t)h(x-t)\text{d}t
+\]</div>
+<p>它表示两个函数的卷积可以转化成乘积的积分来计算。通常将<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f(x)\)</span><span class="heti-spacing"> </span></span>称为<strong>输入函数</strong>，将<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(h(x)\)</span><span class="heti-spacing"> </span></span>称为<strong>卷积函数</strong>。</p>
+<div class="admonition example">
+<p class="admonition-title">例子</p>
+<p>已知两个函数，要求计算它们的卷积在任意点<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x\)</span><span class="heti-spacing"> </span></span>处的值。</p>
+<p></p><div style="text-align: center">
+<img src="images/C5/1.png" width="50%"/>
+</div>
+<p>具体的计算步骤如下：</p>
+<ul>
+<li>
+<p>将卷积函数<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(h(t)\)</span><span class="heti-spacing"> </span></span>沿<span class="heti-skip"><span class="heti-spacing"> </span>y<span class="heti-spacing"> </span></span>轴翻转，得到<span><span class="heti-spacing"> </span><span class="arithmatex">\(h(-t)\)</span></span></p>
+<p></p><div style="text-align: center">
+<img src="images/C5/2.png" width="50%"/>
+</div>
+</li>
+<li>
+<p>将翻转后的卷积函数向右移动距离<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x\)</span><span class="heti-spacing"> </span></span>个单位长度，得到<span><span class="heti-spacing"> </span><span class="arithmatex">\(h(x - t)\)</span></span></p>
+<p></p><div style="text-align: center">
+<img src="images/C5/3.png" width="55%"/>
+</div>
+</li>
+<li>
+<p>计算<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f\)</span><span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(h\)</span><span class="heti-spacing"> </span></span>在任意<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(t\)</span><span class="heti-spacing"> </span></span>的乘积，并积分</p>
+<p></p><div style="text-align: center">
+<img src="images/C5/4.png" width="55%"/>
+</div>
+</li>
+<li>
+<p>对每一个<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x\)</span><span class="heti-spacing"> </span></span>值重复上述计算过程，就得到了输出曲线<span><span class="heti-spacing"> </span><span class="arithmatex">\(g(x)\)</span></span></p>
+<ul>
+<li>当<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x\)</span><span class="heti-spacing"> </span></span>变化时，翻转的函数平移通过静止不动的输入函数，<span><span class="arithmatex">\(g(x)\)</span><span class="heti-spacing"> </span></span>值取决于这两个函数的重叠部分的积分</li>
+</ul>
+</li>
+</ul>
+</div>
+<h3 id="properties-of-convolution">Properties of Convolution<a class="headerlink" href="#properties-of-convolution" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li>交换律：<span class="arithmatex">\(f(x) * h(x) = h(x) * f(x)\)</span></li>
+<li>分配律：<span class="arithmatex">\(f * (g + h) = f * g + f * h\)</span></li>
+<li>结合律：<span class="arithmatex">\(f * (g * h) = (f * g) * h\)</span></li>
+</ul>
+<h3 id="discrete-1d-convolution">Discrete 1D Convolution<a class="headerlink" href="#discrete-1d-convolution" title="Permanent link">⚓︎</a></h3>
+<p>对于离散序列，其卷积可用与连续函数相类似的方法求得。对于两个长度均为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(M\)</span><span class="heti-spacing"> </span></span>的序列<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f(x)\)</span><span class="heti-spacing"> </span></span>和<span><span class="heti-spacing"> </span><span class="arithmatex">\(h(x)\)</span></span>，其卷积为：</p>
+<div class="arithmatex">\[
+g(x) = f(x) * h(x) = \dfrac{1}{M} \sum\limits_{t = 0}^{M - 1}f(t)h(x - t)
+\]</div>
+<div class="admonition example">
+<p class="admonition-title">例子</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"/><input id="__tabbed_1_2" name="__tabbed_1" type="radio"/><div class="tabbed-labels"><label for="__tabbed_1_1">例<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span></label><label for="__tabbed_1_2">例<span><span class="heti-spacing"> </span>2</span></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>已知以下输入函数和卷积函数，求它们的卷积。</p>
+<p></p><div style="text-align: center">
+<img src="images/C5/5.png" width="55%"/>
+</div>
+<p>具体的计算步骤如下：</p>
+<ul>
+<li>
+<p>将卷积函数<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(h(t)\)</span><span class="heti-spacing"> </span></span>沿<span class="heti-skip"><span class="heti-spacing"> </span>y<span class="heti-spacing"> </span></span>轴翻转，得到<span><span class="heti-spacing"> </span><span class="arithmatex">\(h(-t)\)</span></span></p>
+<p></p><div style="text-align: center">
+<img src="images/C5/6.png" width="60%"/>
+</div>
+</li>
+<li>
+<p>将翻转后的卷积函数向右移动距离<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x\)</span><span class="heti-spacing"> </span></span>个单位长度，得到<span><span class="heti-spacing"> </span><span class="arithmatex">\(h(x - t)\)</span></span></p>
+<p></p><div style="text-align: center">
+<img src="images/C5/7.png" width="60%"/>
+</div>
+</li>
+<li>
+<p>对每一个样本点<span><span class="heti-spacing"> </span><span class="arithmatex">\(t\)</span>(<span class="arithmatex">\(t \in [0, 399]\)</span>)</span>，计算乘积<span><span class="heti-spacing"> </span><span class="arithmatex">\(f(t)h(x-t)\)</span></span>，然后将这些乘积相加后除以常数<span><span class="heti-spacing"> </span><span class="arithmatex">\(M\)</span>(=400)</span>，就得到在位移<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x\)</span><span class="heti-spacing"> </span></span>下的卷积</p>
+<p></p><div style="text-align: center">
+<img src="images/C5/8.png" width="40%"/>
+</div>
+</li>
+<li>
+<p>对有效范围内的所有位移<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x\)</span><span class="heti-spacing"> </span></span>均计算一个卷积，这样，所有这些值就形成了一条曲线</p>
+<p></p><div style="text-align: center">
+<img src="images/C5/9.png" width="50%"/>
+</div>
+</li>
+</ul>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/C5/10.png" width="70%"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">总结</p>
+<p>卷积实质上是对图像像素的加权求和。</p>
+</div>
+<h2 id="spatial-filtering">Spatial Filtering<a class="headerlink" href="#spatial-filtering" title="Permanent link">⚓︎</a></h2>
+<h3 id="principle">Principle<a class="headerlink" href="#principle" title="Permanent link">⚓︎</a></h3>
+<p><strong>滤波器</strong><span>(filter)<span class="heti-spacing"> </span></span>是一个大小为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(M \times N\)</span><span class="heti-spacing"> </span></span>的窗口，窗口中的元素与原图像的处于窗口内的像素进行某种运算，结果作为新图像的一个像素。当窗口滑过原图像并完成上述运算之后，就能够得到一幅新图像。</p>
+<ul>
+<li>滤波器的别名：掩模<span><span class="heti-spacing"> </span>(mask)</span>、核<span><span class="heti-spacing"> </span>(kernel)</span>、模板<span><span class="heti-spacing"> </span>(template)</span>，窗口<span><span class="heti-spacing"> </span>(window)</span></li>
+<li>滤波器子图像中的值是系数值，而不是像素值，它代表了影响新像素产生的权重</li>
+<li>
+<p>滤波器的执行流程：在待处理图像中逐点移动<strong>掩模</strong>(mask)，在每一点<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\((x,y)\)</span><span class="heti-spacing"> </span></span>处，滤波器在该点的响应通过实现定义的关系来计算。</p>
+<ul>
+<li>对于线性空间滤波，其响应由滤波器系数与滤波掩模扫过区域的对应像素值的乘积之和给出</li>
+</ul>
+<p></p><div style="text-align: center">
+<img src="images/C5/11.png" width="40%"/>
+</div>
+<p>响应值<span><span class="heti-spacing"> </span><span class="arithmatex">\(R = w(-1, -1)f(x - 1, y - 1) + w(-1, 0)f(x - 1, y) + \dots + w(0, 0)f(x, y) + \dots + w(1, 0)f(x + 1, y) + w(1, 1)f(x + 1, y + 1)\)</span></span></p>
+</li>
+<li>
+<p>滤波器的响应值：通常，掩模的长宽都为奇数。假设分别为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(2a+1\)</span><span class="heti-spacing"> </span></span>和<span><span class="heti-spacing"> </span><span class="arithmatex">\(2b+1\)</span></span>。当窗口中心处于像素<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\((x,y)\)</span><span class="heti-spacing"> </span></span>处时，新的像素值为： </p>
+<div class="arithmatex">\[
+g(x, y) = \sum\limits_{s = -a}^a \sum\limits_{t = -b}^b w(s, t) f(x + s, y + t)
+\]</div>
+<p>对图像<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f\)</span><span class="heti-spacing"> </span></span>中所有像素都与掩模进行运算之后，最终产生一幅新图像<span><span class="heti-spacing"> </span><span class="arithmatex">\(g\)</span></span></p>
+<ul>
+<li>简化形式为：<span class="arithmatex">\(R = \sum\limits_{i = 1}^{mn} w_i z_i\)</span></li>
+</ul>
+</li>
+</ul>
+<h3 id="smoothing">Smoothing<a class="headerlink" href="#smoothing" title="Permanent link">⚓︎</a></h3>
+<p>图像在传输过程中，由于传输信道、采样系统质量较差，或受各种干扰的影响，而造成图像毛糙，此时，就需对图像进行平滑处理。平滑可以抑制高频成分，但也使图像变得模糊。</p>
+<p><strong>平滑空间滤波器</strong><span>(spatial smoothing filter)<span class="heti-spacing"> </span></span>用于模糊处理和减少噪声。模糊处理经常用于预处理，例如，在提取大的目标之前去除图像中一些琐碎的细节，桥接直线或曲线的缝隙。 </p>
+<h4 id="linear-smoothing-filter">Linear Smoothing Filter<a class="headerlink" href="#linear-smoothing-filter" title="Permanent link">⚓︎</a></h4>
+<p><strong>平滑线性空间滤波器</strong>的输出是包含在滤波掩模邻域内像素的简单平均值。因此，这些滤波器也称为<strong>均值滤波器</strong>。均值滤波器的主要应用是去除图像中的不相干细节，即那些与滤波掩模尺寸相比更小的像素区域。 </p>
+<details class="example" open="open">
+<summary>例子</summary>
+<ul>
+<li>简单平均，表示窗口中每一个像素对响应的贡献是一样的</li>
+<li>加权平均，表示窗口中的像素对相应的贡献有大小之分</li>
+<li>两个<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(3 \times 3\)</span><span class="heti-spacing"> </span></span>平滑（均值）滤波器掩模，每个掩模前边的乘数等于它的系数值的和，以计算平均值 </li>
+</ul>
+<p></p><div style="text-align: center">
+<img src="images/C5/12.png" width="50%"/>
+</div>
+</details>
+<p>它的方程为：</p>
+<div class="arithmatex">\[
+g(x, y) = \dfrac{\sum\limits_{s = -a}^a \sum\limits_{t = -b}^b w(s, t) f(x + s, y + t)}{\sum\limits_{s = -a}^a \sum\limits_{t = -b}^b w(s, t) }
+\]</div>
+<p>其中，滤波器大小为<span><span class="heti-spacing"> </span><span class="arithmatex">\((2a+1) \times (2b+1)\)</span></span>，<span><span class="arithmatex">\(w\)</span><span class="heti-spacing"> </span></span>为滤波器，<span><span class="arithmatex">\(f\)</span><span class="heti-spacing"> </span></span>为输入图像，<span><span class="arithmatex">\(g\)</span><span class="heti-spacing"> </span></span>为输出图像。</p>
+<p>滤波掩模的大小与图像的平滑效果有直接的关系。当掩模比较小时，可以观察到在整幅图像中有轻微的模糊，当掩模大小增加，模糊程度也随之增加。 </p>
+<details class="example">
+<summary>应用</summary>
+<p>为了对感兴趣物体得到一个粗略的描述而模糊一幅图像，这样，那些较小物体的强度与背景混合在一起了，较大物体变得像“斑点”而易于检测。掩模的大小由那些即将融入背景中去的物件尺寸来决定。 </p>
+<p></p><div style="text-align: center">
+<img src="images/C5/13.png" width="70%"/>
+</div>
+</details>
+<h4 id="statistical-sorting-filter">Statistical Sorting Filter<a class="headerlink" href="#statistical-sorting-filter" title="Permanent link">⚓︎</a></h4>
+<p><strong>统计滤波器</strong><span>(statistical filter)<span class="heti-spacing"> </span></span>是一种非线性的空间滤波器，它的响应是基于窗口内图像区域中像素值的排序，由统计排序结果决定的值代替中心像素的值。</p>
+<p>统计滤波器中最常见的例子就是<strong>中值滤波器</strong>(median filter)。</p>
+<ul>
+<li>用像素邻域内灰度的中值代替该像素的值</li>
+<li>提供了优秀的去噪能力，比小尺寸的线性平滑滤波器的模糊程度明显要低</li>
+<li>对处理脉冲噪声（也称为椒盐噪声）非常有效，因为这种噪声是以黑白点叠加在图像上的</li>
+<li>中值<span><span class="heti-spacing"> </span><span class="arithmatex">\(\xi\)</span></span>——数值集合中，有一半数值小于或等于<span><span class="heti-spacing"> </span><span class="arithmatex">\(\xi\)</span></span>，还有一半大于或等于<span><span class="heti-spacing"> </span><span class="arithmatex">\(\xi\)</span></span></li>
+<li>为了对一幅图像上的某个点作中值滤波处理。必须先将掩模内欲求的像素及其邻域的像素值排序，确定出中值，并将中值赋予该像素点</li>
+<li>常用<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n \times n\)</span><span class="heti-spacing"> </span></span>的中值滤波器去除那些相对于其邻域像素更亮或更暗，并且其区域小于<span><span class="heti-spacing"> </span><span class="arithmatex">\(\dfrac{n^2}{2}\)</span></span>（滤波器区域的一半）的孤立像素集</li>
+</ul>
+<details class="example">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<img src="images/C5/14.png" width="60%"/>
+</div>
+</details>
+<h3 id="sharpening-filter">Sharpening Filter<a class="headerlink" href="#sharpening-filter" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li><strong>锐化滤波器</strong><span>(sharpening filter)<span class="heti-spacing"> </span></span>的作用：突出图像中的细节或者增强被模糊了的细节。</li>
+<li>
+<p><strong>微分算子</strong><span>(differential operator)<span class="heti-spacing"> </span></span>是实现锐化的工具，其响应程度与图像在该点处的突变程度有关。微分算子增强了边缘和其他突变（如噪声）并削弱了灰度变化缓慢的区域。 </p>
+<ul>
+<li>基于二阶微分的图像增强——<strong>拉普拉斯算子</strong>(Laplacian operator)</li>
+<li>基于一阶微分的图像增强——<strong>梯度法</strong>(gradient-based method)</li>
+</ul>
+</li>
+<li>
+<p>对于函数<span><span class="heti-spacing"> </span><span class="arithmatex">\(f(x)\)</span></span>，我们用差分<span class="heti-skip"><span class="heti-spacing"> </span>(difference)<span class="heti-spacing"> </span></span>来表示微分算子：<span class="arithmatex">\(\dfrac{\partial f}{\partial x} = f(x + 1) - f(x)\)</span></p>
+<ul>
+<li>类似地，二阶差分为：<span class="arithmatex">\(\dfrac{\partial^2 f}{\partial x^2} = f(x + 1) + f(x - 1) - 2f(x)\)</span></li>
+</ul>
+</li>
+</ul>
+<details class="example">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<img src="images/C5/15.png" width="60%"/>
+</div>
+<ul>
+<li><span>(a)<span class="heti-spacing"> </span></span>一幅简单图像，包含各种实心物体、一条线及一个单一噪声点</li>
+<li><span>(b)<span class="heti-spacing"> </span></span>沿图像中心并且包含一个噪声点的一维水平灰度剖面图</li>
+<li><span>(c)<span class="heti-spacing"> </span></span>简化的剖面图（用虚线连接点以简化描述）</li>
+</ul>
+</details>
+<h4 id="gradient-based-method">Gradient-based Method<a class="headerlink" href="#gradient-based-method" title="Permanent link">⚓︎</a></h4>
+<p>对于二元函数<span><span class="heti-spacing"> </span><span class="arithmatex">\(f(x, y)\)</span></span>，定义一个二维向量：</p>
+<div class="arithmatex">\[
+\nabla \bm{f} = \begin{bmatrix}\dfrac{G_x}{G_y}\end{bmatrix} = \begin{bmatrix}\dfrac{\partial f}{\partial x} \\ \dfrac{\partial f}{\partial y}\end{bmatrix}
+\]</div>
+<p>它的模值<span class="heti-skip"><span class="heti-spacing"> </span>(magnitude)<span class="heti-spacing"> </span></span>为：</p>
+<div class="arithmatex">\[
+\nabla f = [G_x^2 + G_y^2]^{\frac{1}{2}} = [(\dfrac{\partial f}{\partial x})^2 + (\dfrac{\partial f}{\partial y})^2]^{\frac{1}{2}}
+\]</div>
+<p>当对整幅图像计算梯度时，运算量会很大，因此，在实际操作中，常用绝对值代替平方与平方根运算近似求梯度的模值：<span class="arithmatex">\(\nabla f \approx |G_x| + |G_y|\)</span> </p>
+<hr/>
+<p>另一种计算方法：罗伯特交叉梯度算子<span><span class="heti-spacing"> </span>(Robert cross gradient operator)</span></p>
+<div style="text-align: center">
+<img src="images/C5/16.png" width="20%"/>
+</div>
+<p>这是一幅原始图像，<span><span class="arithmatex">\(z_i\)</span><span class="heti-spacing"> </span></span>表示对应位置的像素值，<span><span class="arithmatex">\(z_5\)</span><span class="heti-spacing"> </span></span>为中心像素。记<span><span class="heti-spacing"> </span><span class="arithmatex">\(G_x = (z_9 - z_5), G_y = (z_8 - z_6)\)</span></span>，那么梯度算法为：</p>
+<div class="arithmatex">\[
+\nabla f = [(z_9 - z_5)^2 + (z_8 - z_6)^2]^{\frac{1}{2}} \approx |z_9 - z_5| + |z_8 - z_6|
+\]</div>
+<h4 id="laplacian-operator">Laplacian Operator<a class="headerlink" href="#laplacian-operator" title="Permanent link">⚓︎</a></h4>
+<p>对于二元函数<span><span class="heti-spacing"> </span><span class="arithmatex">\(f(x, y)\)</span></span>，拉普拉斯算子为：</p>
+<div class="arithmatex">\[
+\nabla^2 f = \dfrac{\partial^2 f}{\partial x^2} + \dfrac{\partial^2 f}{\partial y^2}
+\]</div>
+<ul>
+<li>沿<span class="heti-skip"><span class="heti-spacing"> </span>x<span class="heti-spacing"> </span></span>方向的二阶偏微分为：<span class="arithmatex">\(\dfrac{\partial^2 f}{\partial x^2} = f(x + 1, y) + f(x - 1, y) - 2f(x, y)\)</span></li>
+<li>沿<span class="heti-skip"><span class="heti-spacing"> </span>y<span class="heti-spacing"> </span></span>方向的二阶偏微分为：<span class="arithmatex">\(\dfrac{\partial^2 f}{\partial y^2} = f(x, y + 1) + f(x, y - 1) - 2f(x, y)\)</span></li>
+<li>
+<p>因此，离散形式的拉普拉斯算子为：</p>
+<div class="arithmatex">\[
+\nabla^2 f = [f(x + 1, y) + f(x - 1, y) + f(x, y + 1) + f(x, y - 1)] - 4f(x, y)
+\]</div>
+<p></p><div style="text-align: center">
+<img src="images/C5/17.png" width="20%"/>
+</div>
+<p>可以看到，这类拉普拉斯算子是旋转不变的，具有各向同性。</p>
+</li>
+<li>
+<p>对角线方向上的元素也可以考虑进来，这样就扩展了掩膜的设计：</p>
+<div class="arithmatex">\[
+\nabla^2 f = \sum\limits_{i = -1}^1 \sum\limits_{j = -1}^1 f(x + i, y + j) - 9f(x, y)
+\]</div>
+<p></p><div style="text-align: center">
+<img src="images/C5/18.png" width="20%"/>
+</div>
+<p>此类拉普拉斯算子也是旋转不变的，具有各向同性。
+- 当拉普拉斯滤波后的图像与其它图像合并时（相加或相减），则必须考虑符号上的差别</p>
+</li>
+</ul>
+<details class="example">
+<summary>应用</summary>
+<p>基于拉普拉斯算子的图像增强：</p>
+<div class="arithmatex">\[
+g(x, y) = \begin{cases}f(x, y) - \nabla^2 f(x, y) &amp; \text{if the center element of the mask is negative} \\ f(x, y) + \nabla^2 f(x, y) &amp; \text{if the center element of the mask is positive}\end{cases}
+\]</div>
+<p>将原始图像和拉普拉斯图像叠加在一起的简单方法可以保护拉普拉斯锐化处理的效果，同时又能复原背景信息。 </p>
+<p></p><div style="text-align: center">
+<img src="images/C5/19.png" width="60%"/>
+</div>
+<p></p><div style="text-align: center">
+<img src="images/C5/20.png" width="60%"/>
+</div>
+<p></p><div style="text-align: center">
+<img src="images/C5/21.png" width="60%"/>
+</div>
+</details>
 <aside class="md-source-file">
 <span class="md-source-file__fact">
 <span class="md-icon" title="最后更新">
@@ -514,13 +1002,13 @@
               </div>
 </div>
 </a>
-<a aria-label="下一页: Chap 6: Image Filtering" class="md-footer__link md-footer__link--next" href="6.html">
+<a aria-label="下一页: Chap 6: Convolution and Filtering" class="md-footer__link md-footer__link--next" href="6.html">
 <div class="md-footer__title">
 <span class="md-footer__direction">
                 下一页
               </span>
 <div class="md-ellipsis">
-                Chap 6: Image Filtering
+                Chap 6: Convolution and Filtering
               </div>
 </div>
 <div class="md-footer__button md-icon">
