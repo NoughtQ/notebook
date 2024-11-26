@@ -661,7 +661,7 @@
 <article class="md-content__inner md-typeset">
 <h1 id="chap-5-memory-hierarchy">Chap 5: Memory Hierarchy<a class="headerlink" href="#chap-5-memory-hierarchy" title="Permanent link">⚓︎</a></h1>
 <div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
-<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>4305<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>22<span class="heti-spacing"> </span></span>分钟</p>
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>6029<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>30<span class="heti-spacing"> </span></span>分钟</p>
 </div>
 <h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">⚓︎</a></h2>
 <p>内存层级中涉及到的一个重要思想是「局部性原则」(principle of locality)，它由以下两部分组成：</p>
@@ -911,7 +911,7 @@
 <li>重新执行第<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>步所对应的指令，此时处理器成功地在缓存中获取正确的指令</li>
 </ol>
 <h3 id="handling-writes">Handling Writes<a class="headerlink" href="#handling-writes" title="Permanent link">⚓︎</a></h3>
-<p>对缓存进行写操作时需要考虑以下问题：执行存储指令时，我们会向缓存写入一个新的数据，但由于此时并没有改变底下内存的数据，因此内存和缓存的数据就存在不一致<span class="heti-skip"><span class="heti-spacing"> </span>(inconsistent)<span class="heti-spacing"> </span></span>的现象</p>
+<p>对缓存进行写操作时需要考虑以下问题：执行存储指令时，我们会向缓存写入一个新的数据，但由于此时并没有改变底下内存的数据，因此内存和缓存的数据就存在不一致<span class="heti-skip"><span class="heti-spacing"> </span>(inconsistent)<span class="heti-spacing"> </span></span>的现象。</p>
 <p>下面提供了两类解决方案：</p>
 <ul>
 <li>
@@ -978,23 +978,181 @@
 \]</div>
 <details class="example">
 <summary>例题</summary>
-</details>
 <div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio"/><input id="__tabbed_4_2" name="__tabbed_4" type="radio"/><div class="tabbed-labels"><label for="__tabbed_4_1">题目</label><label for="__tabbed_4_2">解答</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<p>假设：</p>
+<p>假设有一个缓存，它有以下特征：</p>
 <ul>
 <li>指令缓存的失效率为<span><span class="heti-spacing"> </span>2%</span>，数据缓存的失效率为<span><span class="heti-spacing"> </span>4%</span></li>
 <li>若处理器在没有任何内存停顿的情况下，CPI = 2</li>
 <li>对于所有的失效，失效损失为<span class="heti-skip"><span class="heti-spacing"> </span>100<span class="heti-spacing"> </span></span>个时钟周期</li>
 <li>加载和失效指令的频率为<span><span class="heti-spacing"> </span>36%</span></li>
 </ul>
-<p>那么一个不发生任何停顿的完美处理器相比实际情况下的处理器快了多少倍？</p>
+<p>那么一个带有不发生任何停顿的完美缓存的处理器比带此类缓存的处理器快了多少倍？</p>
 </div>
-<div class="tabbed-block"></div>
+<div class="tabbed-block">
+<p>令<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(I\)</span><span class="heti-spacing"> </span></span>为指令数，则：</p>
+<div class="arithmatex">\[
+\begin{align}
+\text{Instruction miss cycles} &amp; = I \times 2% \times 100 = 2.00 \times I \notag \\
+\text{Data miss cycles} &amp; = I \times 36% \tmes 4% \times 100 = 1.44 \times I \notag \\
+\text{Memory-stall cycles} &amp; = 2.00 I + 1.44 I = 3.44 I \notag
+\end{align}
+\]</div>
+<p>因此算入内存停顿后，<span class="arithmatex">\(\text{CPI} = 2 + 3.44 = 5.44\)</span>，与未停顿的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\text{CPI}\)</span><span class="heti-spacing"> </span></span>算个比值，得到<span><span class="heti-spacing"> </span><span class="arithmatex">\(\dfrac{5.44}{2} = 2.72\)</span></span>，即完美处理器性能是一般处理器的<span class="heti-skip"><span class="heti-spacing"> </span>2.72<span class="heti-spacing"> </span></span>倍。</p>
 </div>
 </div>
+</div>
+</details>
+<details class="warning" open="open">
+<summary>注意</summary>
+<p>如果只提升<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>的速度（比如提高<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>的时钟频率，降低周期数等等<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，而没有对内存系统进行相应的提升，那么反而会拉长<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>的执行时间，即降低<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>的性能。比如降低<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>的<span class="heti-skip"><span class="heti-spacing"> </span>CPI<span class="heti-spacing"> </span></span>值（无停顿<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，由于内存的停顿周期数不变，那么内存的停顿对实际<span class="heti-skip"><span class="heti-spacing"> </span>CPI<span class="heti-spacing"> </span></span>的影响占比就会增大，这意味着在相同的执行时间内，这类“改进后”的<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>反而遭遇更多的内存停顿，因而性能不佳。</p>
+</details>
+<p>硬件设计师们还会用<strong>平均内存访问时间</strong><span>(average memory access time, AMAT)<span class="heti-spacing"> </span></span>这一指标来衡量缓存性能，因为它能同时反映命中和失效的情况，公式如下：</p>
+<div class="arithmatex">\[
+\text{AMAT} = \text{Time for a hit} + \text{Miss rate} \times \text{Miss penalty}
+\]</div>
+<p>接下来，我们从两方面对缓存的性能进行改进，之后会逐一介绍这些内容：</p>
+<ul>
+<li>降低失效率：联合置放方案<span><span class="heti-spacing"> </span>(associative placement schemes)</span>，包括全联合、组联合等</li>
+<li>降低失效损失：多级缓存</li>
+</ul>
 <h3 id="miss-rates-reduction">Miss Rates Reduction<a class="headerlink" href="#miss-rates-reduction" title="Permanent link">⚓︎</a></h3>
+<p>在前面已经介绍过<strong>直接映射</strong>这一类简单的置放方案：一个数据块对应于缓存的<strong>唯一</strong>位置。下面将介绍其余两种置放方案：</p>
+<ul>
+<li>
+<p><strong>全联合</strong>(fully-associative)：一个数据块可以放在缓存的<strong>任意</strong>位置上</p>
+<ul>
+<li>它的优势在于选择空间的增大，使得缓存失效发生的次数减少</li>
+<li>要想在这种缓存里找到指定的数据，需要查找<strong>所有缓存块的所有标签</strong></li>
+<li>较为实际的做法是用比较器<span class="heti-skip"><span class="heti-spacing"> </span>(comparator)<span class="heti-spacing"> </span></span>进行并行查找，提高查找速度，但显然会引入更大的硬件开销</li>
+</ul>
+</li>
+<li>
+<p><strong>组联合</strong>(set-associative)：一个数据块可以放在固定大小（<span class="arithmatex">\(\ge 2\)</span>）范围内的任意位置上</p>
+<ul>
+<li>若数据块可放在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span><span class="heti-spacing"> </span></span>个位置中的任意一个，则称该缓存为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span><span class="heti-spacing"> </span></span>路<span class="heti-skip"><span class="heti-spacing"> </span>(n-way)<span class="heti-spacing"> </span></span>组联合缓存</li>
+<li><span><span class="arithmatex">\(n\)</span><span class="heti-spacing"> </span></span>路组联合缓存可分为多个组，每个组由<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span><span class="heti-spacing"> </span></span>个缓存块构成，缓存块的数据可被组内任意的元素替代</li>
+<li>内存中的数据块根据内存地址，映射到缓存中<strong>唯一的某个组</strong></li>
+<li>内存块在缓存中的大致位置（位于哪个组）的计算：</li>
+</ul>
+<div class="arithmatex">\[
+(\text{Block number}) \text{ modulo } (\text{Number of } sets \text{ in the cache})
+\]</div>
+<ul>
+<li>要想找到内存块在缓存中的精确位置，需要查找它<strong>所在组内所有元素的所有标签</strong></li>
+</ul>
+</li>
+</ul>
+<p>下面这张图展示了这三类缓存置放方案的区别：</p>
+<div style="text-align: center">
+<img src="images/C5/12.png" width="80%"/>
+</div>
+<p>事实上，我们可以把直接映射和全联合两种方式看作组联合的两种特殊情况。以带有<span class="heti-skip"><span class="heti-spacing"> </span>8<span class="heti-spacing"> </span></span>个缓存块的缓存为例，直接映射是一种单路<span class="heti-skip"><span class="heti-spacing"> </span>(one-way)<span class="heti-spacing"> </span></span>组联合，而全联合是一种<span class="heti-skip"><span class="heti-spacing"> </span>8<span class="heti-spacing"> </span></span>路组联合，如下图所示：</p>
+<div style="text-align: center">
+<img src="images/C5/13.png" width="80%"/>
+</div>
+<details class="example">
+<summary>例题</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="5:2"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio"/><input id="__tabbed_5_2" name="__tabbed_5" type="radio"/><div class="tabbed-labels"><label for="__tabbed_5_1">题目</label><label for="__tabbed_5_2">解答</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>假设有一个具有<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>个单字缓存块的缓存，分别计算在采用以下三种不同置放方案后，根据以下给出的访问内存地址序列：0, 8, 0, 6, 8，计算缓存的失效次数。</p>
+<ul>
+<li>全联合</li>
+<li><span>2<span class="heti-spacing"> </span></span>路组联合</li>
+<li>直接映射</li>
+</ul>
+</div>
+<div class="tabbed-block">
+<div class="tabbed-set tabbed-alternate" data-tabs="6:3"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio"/><input id="__tabbed_6_2" name="__tabbed_6" type="radio"/><input id="__tabbed_6_3" name="__tabbed_6" type="radio"/><div class="tabbed-labels"><label for="__tabbed_6_1">直接映射</label><label for="__tabbed_6_2"><span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>路组联合</label><label for="__tabbed_6_3">全联合</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/C5/14.png" width="50%"/>
+</div>
+<p></p><div style="text-align: center">
+<img src="images/C5/15.png" width="80%"/>
+</div>
+<p>失效次数：5</p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/C5/16.png" width="50%"/>
+</div>
+<p></p><div style="text-align: center">
+<img src="images/C5/17.png" width="80%"/>
+</div>
+<p>失效次数：4</p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/C5/18.png" width="80%"/>
+</div>
+<p>失效次数：3</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</details>
+<p>下图展示了一个缓存块大小为<span class="heti-skip"><span class="heti-spacing"> </span>16<span class="heti-spacing"> </span></span>字的<span class="heti-skip"><span class="heti-spacing"> </span>64KiB<span class="heti-spacing"> </span></span>缓存，在采用不同的置放方案后，数据失效率的提升水平：</p>
+<div style="text-align: center">
+<img src="images/C5/19.png" width="80%"/>
+</div>
+<hr/>
+<p>下面考虑如何在组联合缓存中寻找缓存块。与直接映射缓存一样，我们将内存地址划分为以下几个字段：</p>
+<div style="text-align: center">
+<img src="images/C5/20.png" width="70%"/>
+</div>
+<ul>
+<li><strong>标签</strong>(tag)：用于区分同一组内的不同缓存块<ul>
+<li>需要通过比较器实现并行查找，对于<span class="heti-skip"><span class="heti-spacing"> </span>n<span class="heti-spacing"> </span></span>路组联合缓存，需要有<span class="heti-skip"><span class="heti-spacing"> </span>n<span class="heti-spacing"> </span></span>个比较器，以及一个<span class="heti-skip"><span class="heti-spacing"> </span>n-1<span class="heti-spacing"> </span></span>多路选择器</li>
+</ul>
+</li>
+<li><strong>索引</strong>(index)：用于区分不同的组<ul>
+<li>对于全联合缓存，它没有索引位，因为它只有一个组</li>
+<li><span><span class="arithmatex">\(n\)</span><span class="heti-spacing"> </span></span>位索引表示<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(2^n\)</span><span class="heti-spacing"> </span></span>个组</li>
+</ul>
+</li>
+<li>块偏移量<span><span class="heti-spacing"> </span>(block offset)</span>：表示单个缓存块的大小，块偏移量为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x\)</span><span class="heti-spacing"> </span></span>表示大小为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(2^x\)</span><span class="heti-spacing"> </span></span>字节<span class="heti-skip"><span class="heti-spacing"> </span>= <span class="arithmatex">\(2^{x-2}\)</span><span class="heti-spacing"> </span></span>字</li>
+</ul>
+<details class="example">
+<summary>例题</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="7:2"><input checked="checked" id="__tabbed_7_1" name="__tabbed_7" type="radio"/><input id="__tabbed_7_2" name="__tabbed_7" type="radio"/><div class="tabbed-labels"><label for="__tabbed_7_1">题目</label><label for="__tabbed_7_2">解答</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>假设一个缓存有<span class="heti-skip"><span class="heti-spacing"> </span>4096<span class="heti-spacing"> </span></span>个缓存块，每个块的大小为<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>字，并且内存采用<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位地址。请计算在直接映射、两路组联合、四路组联合以及全联合的置放方案下缓存的组数以及总的标签位数。</p>
+</div>
+<div class="tabbed-block">
+<ul>
+<li>每个块的大小为<span class="heti-skip"><span class="heti-spacing"> </span>16<span class="heti-spacing"> </span></span>字节，因此块偏移量为<span><span class="heti-spacing"> </span>4</span>，那么标签位和索引位的位数之和为<span><span class="heti-spacing"> </span>64 - 4 = 60</span></li>
+<li>直接映射：组数<span class="heti-skip"><span class="heti-spacing"> </span>=<span class="heti-spacing"> </span></span>块数，因此索引位数为<span><span class="heti-spacing"> </span><span class="arithmatex">\(\log_2(4096) = 12\)</span></span>，那么总的标签位数为<span><span class="heti-spacing"> </span>(60 - 12) * 4096 = 197Kb</span></li>
+<li>两路组联合：组数<span class="heti-skip"><span class="heti-spacing"> </span>=<span class="heti-spacing"> </span></span>块数<span><span class="heti-spacing"> </span>- <span class="arithmatex">\(\log_2(2)\)</span></span>，总的标签位数为<span><span class="heti-spacing"> </span>(60 - 12 + 1) * 2048 * 2 = 401Kb</span></li>
+<li>四路组联合：组数<span class="heti-skip"><span class="heti-spacing"> </span>=<span class="heti-spacing"> </span></span>块数<span><span class="heti-spacing"> </span>- <span class="arithmatex">\(\log_2(4)\)</span></span>，总的标签位数为<span><span class="heti-spacing"> </span>(60 - 12 + 2) * 1024 * 4 = 205Kb</span></li>
+<li>全联合：60 * 4096 * 1 = 246Kb</li>
+</ul>
+</div>
+</div>
+</div>
+</details>
+<p>下面展示一个<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>路组联合缓存的原理图：</p>
+<div style="text-align: center">
+<img src="images/C5/21.png" width="80%"/>
+</div>
+<p>不难发现，访问一个联合缓存需要先选择某个组，然后在组内进行查找，这带来了因比较和选择而产生的延时成本，因此在选择置放方案时需要权衡好<strong>失效<span class="heti-skip"><span class="heti-spacing"> </span>(miss)<span class="heti-spacing"> </span></span>成本</strong>和<strong>联合<span class="heti-skip"><span class="heti-spacing"> </span>(associativity)<span class="heti-spacing"> </span></span>成本</strong>。</p>
+<hr/>
+<p>在缓存中访问某个数据时，可能存在失效的情况，即该数据的对应缓存块已经放了别的数据。不同的置放方案会有不同的处理策略：</p>
+<ul>
+<li>直接映射：由于数据在缓存中的位置是唯一的，所以新访问的数据就直接替代原来缓存块内的数据</li>
+<li>全联合：由于可以随机访问缓存的任一位置，因此每个缓存块的原始数据都有被新数据替代的可能</li>
+<li>组联合：新来的数据可能替代它所在组内的任何缓存块中的数据<ul>
+<li>通常采取<strong>最早使用</strong>(least recently used, <strong>LRU</strong><span>)<span class="heti-spacing"> </span></span>策略，即那些很久没有被访问过的数据会优先被新数据替代掉</li>
+<li>实现这一策略需要跟踪组内缓存块数据的使用情况，对于<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>路组联合缓存来说只需额外保留<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>位即可，但对于更多分路的组联合，实现该策略就想对比较困难了</li>
+</ul>
+</li>
+</ul>
 <h3 id="miss-penalties-reduction">Miss Penalties Reduction<a class="headerlink" href="#miss-penalties-reduction" title="Permanent link">⚓︎</a></h3>
 <h3 id="software-optimization">Software Optimization<a class="headerlink" href="#software-optimization" title="Permanent link">⚓︎</a></h3>
 <h2 id="dependable-memory-hierarchy">Dependable Memory Hierarchy<a class="headerlink" href="#dependable-memory-hierarchy" title="Permanent link">⚓︎</a></h2>
