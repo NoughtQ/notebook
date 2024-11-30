@@ -11,7 +11,7 @@
     - [x] [Chap 1: Computer Abstractions and Technology](1.md)
     - [x] [Chap 2: Language of the Machine](2.md)
     - [x] [Chap 3: Arithmetic for Computer](3.md)
-    - [ ] [Chap 4: The Processor](4.md)
+    - [x] [Chap 4: The Processor](4.md)
     - [ ] [Chap 5: Memory Hierarchy](5.md)
     - [ ] [Appendix: Storage, Networks and Other Peripherals](appendix.md)
 

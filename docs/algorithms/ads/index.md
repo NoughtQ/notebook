@@ -15,7 +15,7 @@
 
 !!! plan "更新计划"
 
-    - [x] [Lec 1: AVL Tress, Splay Trees and Amortized Analysis](1.md)
+    - [x] [Lec 1: AVL Trees, Splay Trees and Amortized Analysis](1.md)
     - [x] [Lec 2: Red-Black Trees and B+ Trees](2.md) 
     - [x] [Lec 3: Inverted File Index](3.md) 
     - [x] [Lec 4: Leftist Heaps and Skew Heaps](4.md)
@@ -23,11 +23,11 @@
     - [x] [Lec 6: Backtracking](6.md)
     - [x] [Lec 7: Divide and Conquer](7.md)
     - [x] [Lec 8: Dynamic Programming](8.md)
-    - [ ] [Lec 9: Greedy Algorithms](9.md)
-    - [ ] [Lec 10: NP-Completeness](10.md)
-    - [ ] [Lec 11: Approximation](11.md)
-    - [ ] [Lec 12: Local Search](12.md)
-    - [ ] [Lec 13: Randomized Algorithms](13.md)
+    - [x] [Lec 9: Greedy Algorithms](9.md)
+    - [x] [Lec 10: NP-Completeness](10.md)
+    - [x] [Lec 11: Approximation](11.md)
+    - [x] [Lec 12: Local Search](12.md)
+    - [x] [Lec 13: Randomized Algorithms](13.md)
     - [ ] [Lec 14: Parallel Algorithms](14.md)
     - [ ] [Lec 15: External Sorting](15.md)
 

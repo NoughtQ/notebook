@@ -11,11 +11,11 @@
     - [x] [Chap 1: Basic Concepts and Programming Introduction](1.md)
     - [x] [Chap 2: Binary Image and Morphology](2.md)
     - [x] [Chap 3: Image Grayscale Transform](3.md)
-    - [ ] [Chap 4: Geometric Transform](4.md)
-    - [ ] [Chap 5: Image Convolution](5.md)
-    - [ ] [Chap 6: Image Filtering](6.md)
-    - [ ] [Chap 7: Frourier Transform](7.md)
-    - [ ] [Chap 8: Image Features](8.md)
+    - [x] [Chap 4: Geometric Transform](4.md)
+    - [x] [Chap 5: Image Convolution and Filtering](5.md)
+    - [x] [Chap 6: Fourier Transform](6.md)
+    - [x] [Chap 7: Image Features](7.md)
+    - [ ] [Chap 8: Deep Learning](8.md)
 
 !!! success "参考资料"
 

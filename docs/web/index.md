@@ -14,6 +14,7 @@
     - HTML: frontend/html
     - CSS: frontend/css
     - JavaScript: frontend/js
+    - Vue.js: frontend/vue
 - 后端技术栈:
     - Go: backend/go/
     - 数据库基础: backend/database
