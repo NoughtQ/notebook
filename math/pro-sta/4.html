@@ -823,6 +823,7 @@ Var(X) = E(X^2) - (E(X))^2
 <li><span class="arithmatex">\(Var(X + c) = Var(X)\)</span></li>
 <li><span class="arithmatex">\(Var(X) \le E[(X - c)^2]\)</span>，当且仅当<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(E(X) = c\)</span><span class="heti-spacing"> </span></span>时等号成立<ul>
 <li>当且仅当<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(P(X = E(X)) = 1\)</span><span class="heti-spacing"> </span></span>时，<span class="arithmatex">\(Var(X) = 0\)</span></li>
+<li>证明：不等号两边做个差，利用期望的性质化简计算</li>
 </ul>
 </li>
 <li><span class="arithmatex">\(Var(X + Y) = Var(X) + Var(Y) + 2E\{[X - E(X)][Y - E(Y)]\}\)</span></li>
@@ -861,6 +862,16 @@ Var(X) &amp; = \lambda^2 + \lambda - \lambda^2 = \lambda
 <div class="tabbed-block">
 <div class="arithmatex">\[
 \begin{align}
+E(X^2) &amp; = \int_{-\infty}^{+\infty} x^2 f(x) \text{d}x \notag \\
+&amp; = \int_{0}^{+\infty}x^2 \lambda e^{-\lambda x} \text{d} x = - \int_0^{+\infty} x^2 \text{d} e^{- \lambda x} \notag \\
+&amp; = -(x^2 e^{-\lambda x}) \Big|_0^{+\infty} + 2 \int_{0}^{+\infty} xe^{-\lambda x} \text{d}x = \dfrac{2}{\lambda} E(X)\notag \\
+Var(X) &amp; = \dfrac{2}{\lambda^2} - \dfrac{1}{\lambda^2} = \dfrac{1}{\lambda^2} \notag
+\end{align}
+\]</div>
+</div>
+<div class="tabbed-block">
+<div class="arithmatex">\[
+\begin{align}
 E(X^2) &amp; = \dfrac{1}{\sqrt{2 \pi}} \int_{-\infty}^{+\infty}x^2 \cdot e^{-\dfrac{x^2}{2}} \text{d}x \notag \\
 &amp; = - \dfrac{1}{\sqrt{2 \pi}} \int_{-\infty}^{+\infty}x \text{d}(e^{-\dfrac{x^2}{2}}) \notag \\
 &amp; = - \dfrac{1}{\sqrt{2 \pi}} [(xe^{-\dfrac{x^2}{2}}) \Big|_{-\infty}^{+\infty} - \int_{-\infty}^{+\infty} e^{-\dfrac{x^2}{2}} \text{d}x] \notag \\
@@ -870,21 +881,11 @@ Var(X) &amp; = 1 - 0^2 = 1 \notag
 \]</div>
 </div>
 <div class="tabbed-block">
-<div class="arithmatex">\[
-\begin{align}
-E(X^2) &amp; = \int_{-\infty}^{+\infty} x^2 f(x) \text{d}x \notag \\
-&amp; = \int_{0}^{+\infty}x^2 \lambda e^{-\lambda x} \text{d} x = - \int_0^{+\infty} x^2 \text{d} e^{- \lambda x} \notag \\
-&amp; = -(x^2 e^{-\lambda x}) \Big|_0^{+\infty} + 2 \int_{0}^{+\infty} xe^{-\lambda x} \text{d}x = \dfrac{2}{\lambda} E(X)\notag \\
-Var(X) &amp; = \dfrac{2}{\lambda^2} - \dfrac{1}{\lambda^2} = \dfrac{1}{\lambda^2} \notag
-\end{align}
-\]</div>
-</div>
-<div class="tabbed-block">
 <p>令<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(Y_i\)</span><span class="heti-spacing"> </span></span>表示服从参数为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(p\)</span><span class="heti-spacing"> </span></span>的<span class="heti-skip"><span class="heti-spacing"> </span>0-1<span class="heti-spacing"> </span></span>分布的相互独立的随机变量，则<span><span class="heti-spacing"> </span><span class="arithmatex">\(\sum_{i=1}^n Y_i \sim B(n, p)\)</span></span>。易知<span><span class="heti-spacing"> </span><span class="arithmatex">\(E(Y_i) = p, E(Y_i^2) = p, Var(Y_i) = p(1 - p)\)</span></span>，则：</p>
 <div class="arithmatex">\[
 \begin{align}
 Var(X) &amp; = Var(\sum\limits_{i=1}^n Y_i) = \sum\limits_{i = 1}^n Var(Y_i) \notag \\
-&amp; = \sum\limits_{i=1}^n p(1 - p) = np(1 - p)
+&amp; = \sum\limits_{i=1}^n p(1 - p) = np(1 - p) \notag
 \end{align}
 \]</div>
 </div>
@@ -941,6 +942,7 @@ Var(X) = Var(\sigma Z + \mu) = \sigma^2 Var(Z) = \sigma^2
 </tbody>
 </table>
 </div>
+<hr/>
 <p>若随机变量<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(X\)</span><span class="heti-spacing"> </span></span>的方差存在，则称<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(X^* = \dfrac{X - E(X)}{\sqrt{Var(X)}}\)</span><span class="heti-spacing"> </span></span>为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(X\)</span><span class="heti-spacing"> </span></span>的<strong>标准化变量</strong>。</p>
 <h2 id="_7">协方差与相关系数<a class="headerlink" href="#_7" title="Permanent link">⚓︎</a></h2>
 <h3 id="_8">协方差<a class="headerlink" href="#_8" title="Permanent link">⚓︎</a></h3>
@@ -972,6 +974,9 @@ Cov(X_1 + X_2, Y) = Cov(X_1, Y) + Cov(X_2, Y)
 <p>若<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(X, Y\)</span><span class="heti-spacing"> </span></span>相互独立，则<span><span class="heti-spacing"> </span><span class="arithmatex">\(Cov(X, Y) = 0\)</span></span>，但反之不然</p>
 </li>
 <li>当<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(Var(X) \cdot Var(Y) \ne 0\)</span><span class="heti-spacing"> </span></span>时，有<span><span class="heti-spacing"> </span><span class="arithmatex">\((Cov(X, Y))^2 \le Var(X) Var(Y)\)</span></span>，当且仅当<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(X, Y\)</span><span class="heti-spacing"> </span></span>之间有严格的线性关系（即存在常数<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(c_1, c_2\)</span><span class="heti-spacing"> </span></span>使得<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(P(Y = c_1 + c_2 X) = 1\)</span><span class="heti-spacing"> </span></span>成立）时等号成立</li>
+<li><span><span class="arithmatex">\(Cov(c, X) = E(cX) - E(c)E(X) = 0, c\)</span><span class="heti-spacing"> </span></span>为常数</li>
+<li><span class="arithmatex">\(Cov(X + Y, X - Y) = Cov(X, X) - Cov(Y, Y) = Var(X) - Var(Y)\)</span></li>
+<li><span class="arithmatex">\(Cov(aX + bY, cX + dY) = acVar(X) + bdVar(Y) + (ad + bc)Cov(X, Y)\)</span></li>
 </ul>
 <h3 id="_9">相关系数<a class="headerlink" href="#_9" title="Permanent link">⚓︎</a></h3>
 <p>对于随机变量<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(X\)</span><span class="heti-spacing"> </span></span>和<span><span class="heti-spacing"> </span><span class="arithmatex">\(Y\)</span></span>，当<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(E(X^2)\)</span><span class="heti-spacing"> </span></span>与<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(E(Y^2)\)</span><span class="heti-spacing"> </span></span>均存在且<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(Var(X), Var(Y)\)</span><span class="heti-spacing"> </span></span>均为非零实数时，称</p>
@@ -986,8 +991,10 @@ Cov(X_1 + X_2, Y) = Cov(X_1, Y) + Cov(X_2, Y)
 <p>性质：</p>
 <ul>
 <li>若<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(X\)</span><span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(Y\)</span><span class="heti-spacing"> </span></span>相互独立，则<span><span class="heti-spacing"> </span><span class="arithmatex">\(\rho_{XY} = 0\)</span></span>，但反之不然</li>
-<li><span class="arithmatex">\(|\rho_{XY}| \le 1\)</span>，当且仅当<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(X, Y\)</span><span class="heti-spacing"> </span></span>之间有严格的线性关系（即存在常数<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(c_1, c_2\)</span><span class="heti-spacing"> </span></span>使得<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(P(Y = c_1 + c_2 X) = 1\)</span><span class="heti-spacing"> </span></span>成立）时等号成立</li>
-</ul>
+<li>
+<p><span class="arithmatex">\(|\rho_{XY}| \le 1\)</span>，当且仅当<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(X, Y\)</span><span class="heti-spacing"> </span></span>之间有严格的线性关系（即存在常数<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(c_1, c_2\)</span><span class="heti-spacing"> </span></span>使得<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(P(Y = c_1 + c_2 X) = 1\)</span><span class="heti-spacing"> </span></span>成立）时等号成立</p>
+<details class="info">
+<summary>补充知识</summary>
 <p>协方差和相关系数都是刻画两变量间“线性”关系的一种数字特征，但相关系数是无量纲的指标，可视之为“标准尺度下的协方差”；且相关系数有时称为“线性相关系数”。</p>
 <p>考虑用<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(X\)</span><span class="heti-spacing"> </span></span>的线性函数<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(a + bX\)</span><span class="heti-spacing"> </span></span>逼近<span><span class="heti-spacing"> </span><span class="arithmatex">\(Y\)</span></span>，用均方误差<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(e(a, b) = E\{[Y - (a + bX)]^2\}\)</span><span class="heti-spacing"> </span></span>来衡量逼近的程度，且其值越小，逼近程度越好。下面求最佳近似式<span><span class="heti-spacing"> </span><span class="arithmatex">\(e(a_0, b_0) = \min\limits_{a, b}e(a, b)\)</span></span></p>
 <div class="arithmatex">\[
@@ -1005,8 +1012,11 @@ e(a_0, b_0) &amp; = E\{[Y - (a_0 + b_0 X)^2]\} \notag \\
 &amp; = (1 - \rho_{XY}^2) Var(Y) \notag
 \end{align}
 \]</div>
-<ul>
-<li>若<span><span class="heti-spacing"> </span><span class="arithmatex">\(\rho_{XY} = \pm 1\)</span></span>，则<span><span class="heti-spacing"> </span><span class="arithmatex">\(E\{[Y - (a_0 + b_0 X)^2]\} = 0\)</span></span>，可得<span><span class="heti-spacing"> </span><span class="arithmatex">\(P[Y - (a_0 + b_0 X) = 0] = 1\)</span></span></li>
+</details>
+</li>
+<li>
+<p>若<span><span class="heti-spacing"> </span><span class="arithmatex">\(\rho_{XY} = \pm 1\)</span></span>，则<span><span class="heti-spacing"> </span><span class="arithmatex">\(E\{[Y - (a_0 + b_0 X)^2]\} = 0\)</span></span>，可得<span><span class="heti-spacing"> </span><span class="arithmatex">\(P[Y - (a_0 + b_0 X) = 0] = 1\)</span></span></p>
+</li>
 <li>当<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(|\rho_{XY}| \rightarrow 1\)</span><span class="heti-spacing"> </span></span>时，用<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(a + bX\)</span><span class="heti-spacing"> </span></span>来逼近<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(Y\)</span><span class="heti-spacing"> </span></span>的偏差越少，即<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(X\)</span><span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(Y\)</span><span class="heti-spacing"> </span></span>的线性相关程度越强，反之则越弱</li>
 <li>当<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\rho_{XY} &gt; 0\)</span><span class="heti-spacing"> </span></span>时，称<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(X\)</span><span class="heti-spacing"> </span></span>与<span><span class="heti-spacing"> </span><span class="arithmatex">\(Y\)</span></span><strong>正相关</strong>；当<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\rho_{XY} &lt; 0\)</span><span class="heti-spacing"> </span></span>时，称<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(X\)</span><span class="heti-spacing"> </span></span>与<span><span class="heti-spacing"> </span><span class="arithmatex">\(Y\)</span></span><strong>负相关</strong></li>
 <li>当<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\rho_{XY} = 0\)</span><span class="heti-spacing"> </span></span>时，称<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(X\)</span><span class="heti-spacing"> </span></span>与<span><span class="heti-spacing"> </span><span class="arithmatex">\(Y\)</span></span><strong>不相关</strong>或零相关<ul>
