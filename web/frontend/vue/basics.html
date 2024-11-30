@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html class="no-js" lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="NoughtQ的笔记本" name="description"/>
+<meta content="NoughtQ" name="author"/>
+<link href="https://notebook.noughtq.top/web/frontend/vue/basics.html" rel="canonical"/>
+<link href="../../../assets/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.5.42" name="generator"/>
+<title>Vue 基础部分 - NoughtQ的笔记本</title>
+<link href="../../../assets/stylesheets/main.0253249f.min.css" rel="stylesheet"/>
+<link href="../../../assets/stylesheets/palette.06af60db.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=JetBrains+Mono,+LXGW+WenKai+Screen+GB+Screen:300,300i,400,400i,700,700i%7CJetBrains+Mono,+Consolas:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"JetBrains Mono, LXGW WenKai Screen GB Screen";--md-code-font:"JetBrains Mono, Consolas"}</style>
+<link href="../../../css/heti.css" rel="stylesheet"/>
+<link href="../../../css/toc_extra.css" rel="stylesheet"/>
+<link href="../../../css/timeline.css" rel="stylesheet"/>
+<link href="../../../stylesheet/custom.css" rel="stylesheet"/>
+<link href="../../../stylesheet/extra_changelog.css" rel="stylesheet"/>
+<link href="https://unpkg.com/katex@0/dist/katex.min.css" rel="stylesheet"/>
+<link href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css" rel="stylesheet"/>
+<link href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;display=swap" rel="stylesheet"/>
+<script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-43NH8CVRCJ"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-43NH8CVRCJ",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-43NH8CVRCJ",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+<script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+</head>
+<body data-md-color-accent="indigo" data-md-color-primary="indigo" data-md-color-scheme="slate" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#vue">
+          跳转至
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header" data-md-component="header">
+<nav aria-label="页眉" class="md-header__inner md-grid">
+<a aria-label="NoughtQ的笔记本" class="md-header__button md-logo" data-md-component="logo" href="../../.." title="NoughtQ的笔记本">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.05 9H7.06V6h1.99V4.03H7.06v-1c0-1.11.89-1.99 1.99-1.99h5.98V8l2.47-1.5L20 8V1.04h1c1.05 0 2 .96 2 1.99V17c0 1.03-.95 2-2 2H9.05c-1.05 0-1.99-.95-1.99-2v-1h1.99v-2H7.06v-3h1.99zM1 18h2v-3H1v-2h2v-3H1V8h2V5h2v3H3v2h2v3H3v2h2v3H3v2h2v1h16v2H5a2 2 0 0 1-2-2v-1H1z"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            NoughtQ的笔记本
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              Vue 基础部分
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="Dark Mode" class="md-option" data-md-color-accent="indigo" data-md-color-media="(prefer-color-scheme: dark)" data-md-color-primary="indigo" data-md-color-scheme="slate" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="Dark Mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"></path></svg>
+</label>
+<input aria-label="Light Mode" class="md-option" data-md-color-accent="indigo" data-md-color-media="(prefer-color-scheme: light)" data-md-color-primary="indigo" data-md-color-scheme="default" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="Light Mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="搜索" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="搜索" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 320 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path></svg>
+</label>
+<nav aria-label="查找" class="md-search__options">
+<button aria-label="清空当前内容" class="md-search__icon md-icon" tabindex="-1" title="清空当前内容" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header__source">
+<a class="md-source" data-md-component="source" href="https://github.com/noughtq/notebook" title="前往仓库">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"></path></svg>
+</div>
+<div class="md-source__repository">
+    NoughtQ/Notebook
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<nav aria-label="标签" class="md-tabs" data-md-component="tabs">
+<div class="md-grid">
+<ul class="md-tabs__list">
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../../index.html">
+          
+  
+    
+  
+  🏫主页
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../../lang/index.html">
+          
+  
+    
+  
+  🔡语言
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../../math/index.html">
+          
+  
+    
+  
+  📊数学相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../../algorithms/index.html">
+          
+  
+    
+  
+  🧮算法相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../../software/dip/index.html">
+          
+  
+    
+  
+  💾软件相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../../hardware/index.html">
+          
+  
+    
+  
+  💻硬件相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../index.html">
+          
+  
+    
+  
+  🌏Web相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../../sec/ctf-101/index.html">
+          
+  
+    
+  
+  🛡️信息安全
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../../misc/index.html">
+          
+  
+    
+  
+  🗃️杂项
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../../tools/index.html">
+          
+  
+    
+  
+  🛠️工具
+
+        </a>
+</li>
+</ul>
+</div>
+</nav>
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="导航栏" class="md-nav md-nav--primary md-nav--lifted" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="NoughtQ的笔记本" class="md-nav__button md-logo" data-md-component="logo" href="../../.." title="NoughtQ的笔记本">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.05 9H7.06V6h1.99V4.03H7.06v-1c0-1.11.89-1.99 1.99-1.99h5.98V8l2.47-1.5L20 8V1.04h1c1.05 0 2 .96 2 1.99V17c0 1.03-.95 2-2 2H9.05c-1.05 0-1.99-.95-1.99-2v-1h1.99v-2H7.06v-3h1.99zM1 18h2v-3H1v-2h2v-3H1V8h2V5h2v3H3v2h2v3H3v2h2v3H3v2h2v1h16v2H5a2 2 0 0 1-2-2v-1H1z"></path></svg>
+</a>
+    NoughtQ的笔记本
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-component="source" href="https://github.com/noughtq/notebook" title="前往仓库">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"></path></svg>
+</div>
+<div class="md-source__repository">
+    NoughtQ/Notebook
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../../index.html">
+<span class="md-ellipsis">
+    🏫主页
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../../lang/index.html">
+<span class="md-ellipsis">
+    🔡语言
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../../math/index.html">
+<span class="md-ellipsis">
+    📊数学相关
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../../algorithms/index.html">
+<span class="md-ellipsis">
+    🧮算法相关
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../../software/dip/index.html">
+<span class="md-ellipsis">
+    💾软件相关
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../../hardware/index.html">
+<span class="md-ellipsis">
+    💻硬件相关
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../index.html">
+<span class="md-ellipsis">
+    🌏Web相关
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../../sec/ctf-101/index.html">
+<span class="md-ellipsis">
+    🛡️信息安全
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../../misc/index.html">
+<span class="md-ellipsis">
+    🗃️杂项
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../../tools/index.html">
+<span class="md-ellipsis">
+    🛠️工具
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_1">
+<span class="md-ellipsis">
+      简介
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#vue_1">
+<span class="md-ellipsis">
+      创建 Vue 应用
+    </span>
+</a>
+<nav aria-label="创建 Vue 应用" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_2">
+<span class="md-ellipsis">
+      操作步骤
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_3">
+<span class="md-ellipsis">
+      应用实例
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_4">
+<span class="md-ellipsis">
+      模板语法
+    </span>
+</a>
+<nav aria-label="模板语法" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_5">
+<span class="md-ellipsis">
+      数据绑定
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_6">
+<span class="md-ellipsis">
+      指令
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_7">
+<span class="md-ellipsis">
+      响应式基础
+    </span>
+</a>
+<nav aria-label="响应式基础" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_8">
+<span class="md-ellipsis">
+      声明响应式状态
+    </span>
+</a>
+<nav aria-label="声明响应式状态" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#ref">
+<span class="md-ellipsis">
+      ref()
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#reactive">
+<span class="md-ellipsis">
+      reactive()
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#class-style">
+<span class="md-ellipsis">
+      Class 与 Style 绑定
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_9">
+<span class="md-ellipsis">
+      条件渲染
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_10">
+<span class="md-ellipsis">
+      列表渲染
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_11">
+<span class="md-ellipsis">
+      事件处理
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_12">
+<span class="md-ellipsis">
+      表单输入绑定
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_13">
+<span class="md-ellipsis">
+      生命周期
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_14">
+<span class="md-ellipsis">
+      侦听器
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_15">
+<span class="md-ellipsis">
+      模板引用
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_16">
+<span class="md-ellipsis">
+      组件基础
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<article class="md-content__inner md-typeset">
+<h1 id="vue"><span>Vue<span class="heti-spacing"> </span></span>基础部分<a class="headerlink" href="#vue" title="Permanent link">⚓︎</a></h1>
+<div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>3767<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 640 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M392.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6m80.6 120.1c-12.5 12.5-12.5 32.8 0 45.3l89.3 89.4-89.4 89.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l112-112c12.5-12.5 12.5-32.8 0-45.3l-112-112c-12.5-12.5-32.8-12.5-45.3 0zm-306.7 0c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3l112 112c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l89.4-89.4c12.5-12.5 12.5-32.8 0-45.3"></path></svg></span> <span>178<span class="heti-spacing"> </span></span>行代码 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>21<span class="heti-spacing"> </span></span>分钟</p>
+</div>
+<h2 id="_1">简介<a class="headerlink" href="#_1" title="Permanent link">⚓︎</a></h2>
+<p><span>Vue<span class="heti-spacing"> </span></span>的定义（摘自官方文档<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
+<blockquote>
+<p><span>Vue (<span class="heti-spacing"> </span></span>发音为<span><span class="heti-spacing"> </span>/vju</span>ː/，类似<span class="heti-skip"><span class="heti-spacing"> </span>view)<span class="heti-spacing"> </span></span>是一款用于构建用户界面的 <strong><span>JavaScript<span class="heti-spacing"> </span></span>框架</strong>。它基于标准<span><span class="heti-spacing"> </span>HTML</span>、<span>CSS<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>JavaScript<span class="heti-spacing"> </span></span>构建，并提供了一套<strong>声明式的、组件化的编程模型</strong>，帮助你高效地开发用户界面。无论是简单还是复杂的界面，<span>Vue<span class="heti-spacing"> </span></span>都可以胜任。</p>
+</blockquote>
+<p>核心功能：</p>
+<ul>
+<li><strong>声明式渲染</strong>：<span>Vue<span class="heti-spacing"> </span></span>基于标准<span class="heti-skip"><span class="heti-spacing"> </span>HTML<span class="heti-spacing"> </span></span>拓展了一套模板语法，使得我们可以声明式地描述最终输出的<span class="heti-skip"><span class="heti-spacing"> </span>HTML<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>JavaScript<span class="heti-spacing"> </span></span>状态之间的关系</li>
+<li><strong>响应性</strong>：<span>Vue<span class="heti-spacing"> </span></span>会自动跟踪<span class="heti-skip"><span class="heti-spacing"> </span>JavaScript<span class="heti-spacing"> </span></span>状态并在其发生变化时响应式地更新<span><span class="heti-spacing"> </span>DOM</span></li>
+</ul>
+<p><strong>单文件组件</strong>(single-file components, SFC)：将一个组件的逻辑<span><span class="heti-spacing"> </span>(JavaScript)</span>，模板<span class="heti-skip"><span class="heti-spacing"> </span>(HTML)<span class="heti-spacing"> </span></span>和样式<span class="heti-skip"><span class="heti-spacing"> </span>(CSS)<span class="heti-spacing"> </span></span>封装在同一个文件里。</p>
+<details class="code">
+<summary>代码示例</summary>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a>&lt;script setup&gt;
+</span><span id="__span-0-2"><a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a>    import { ref } from 'vue'
+</span><span id="__span-0-3"><a href="#__codelineno-0-3" id="__codelineno-0-3" name="__codelineno-0-3"></a>    const count = ref(0)
+</span><span id="__span-0-4"><a href="#__codelineno-0-4" id="__codelineno-0-4" name="__codelineno-0-4"></a>&lt;/script&gt;
+</span><span id="__span-0-5"><a href="#__codelineno-0-5" id="__codelineno-0-5" name="__codelineno-0-5"></a>
+</span><span id="__span-0-6"><a href="#__codelineno-0-6" id="__codelineno-0-6" name="__codelineno-0-6"></a>&lt;template&gt;
+</span><span id="__span-0-7"><a href="#__codelineno-0-7" id="__codelineno-0-7" name="__codelineno-0-7"></a>    &lt;button @click="count++"&gt;Count is: {{ count }}&lt;/button&gt;
+</span><span id="__span-0-8"><a href="#__codelineno-0-8" id="__codelineno-0-8" name="__codelineno-0-8"></a>&lt;/template&gt;
+</span><span id="__span-0-9"><a href="#__codelineno-0-9" id="__codelineno-0-9" name="__codelineno-0-9"></a>
+</span><span id="__span-0-10"><a href="#__codelineno-0-10" id="__codelineno-0-10" name="__codelineno-0-10"></a>&lt;style scoped&gt;
+</span><span id="__span-0-11"><a href="#__codelineno-0-11" id="__codelineno-0-11" name="__codelineno-0-11"></a>    button {
+</span><span id="__span-0-12"><a href="#__codelineno-0-12" id="__codelineno-0-12" name="__codelineno-0-12"></a>        font-weight: bold;
+</span><span id="__span-0-13"><a href="#__codelineno-0-13" id="__codelineno-0-13" name="__codelineno-0-13"></a>    }
+</span><span id="__span-0-14"><a href="#__codelineno-0-14" id="__codelineno-0-14" name="__codelineno-0-14"></a>&lt;/style&gt;
+</span></code></pre></div>
+</details>
+<p><span>API<span class="heti-spacing"> </span></span>风格：</p>
+<ul>
+<li>
+<p><strong>选项式<span><span class="heti-spacing"> </span>API</span></strong>(options API)：用包含多个选项的<strong>对象</strong>来描述组件的逻辑，例如<code>data</code>、<code>methods</code>和<code>mounted</code>。选项所定义的属性都会暴露在函数内部的<code>this</code>上，它会指向当前的组件实例。</p>
+<ul>
+<li>核心思想：<strong>组件实例</strong><span>(<span class="heti-spacing"> </span></span>即上述例子中的<span><span class="heti-spacing"> </span>this)</span>。对于有<strong>面向对象语言</strong>背景的用户来说，这通常与基于类的模型更为一致。同时，它将<strong>响应性</strong>相关的细节抽象出来，并强制按照选项来组织代码，从而对初学者而言更为友好。</li>
+<li>适用场合：不需要使用构建工具，或者打算主要在低复杂度的场景中使用<span><span class="heti-spacing"> </span>Vue</span>，例如渐进增强的应用场景。</li>
+</ul>
+</li>
+<li>
+<p><strong>组合式<span><span class="heti-spacing"> </span>API</span></strong>(composition API)：使用导入的 <strong><span>API<span class="heti-spacing"> </span></span>函数</strong>来描述组件逻辑。</p>
+<ul>
+<li>在单文件组件中，组合式<span class="heti-skip"><span class="heti-spacing"> </span>API<span class="heti-spacing"> </span></span>通常会与<code>&lt;script setup&gt;</code>搭配使用。这个<code>setup</code>属性是一个标识，告诉<span class="heti-skip"><span class="heti-spacing"> </span>Vue<span class="heti-spacing"> </span></span>需要在编译时进行一些处理，让我们可以更简洁地使用组合式<span><span class="heti-spacing"> </span>API</span>。比如<code>&lt;script setup&gt;</code>中的导入和顶层变量<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>函数都能够在模板中直接使用。</li>
+<li>核心思想：直接在<strong>函数</strong>作用域内定义响应式状态变量，并将从多个函数中得到的状态组合起来处理复杂问题。这种形式更加自由，也需要你对<span class="heti-skip"><span class="heti-spacing"> </span>Vue<span class="heti-spacing"> </span></span>的响应式系统有更深的理解才能高效使用。相应的，它的<strong>灵活性</strong>也使得组织和重用逻辑的模式变得更加强大。</li>
+<li>适用场合：用<span class="heti-skip"><span class="heti-spacing"> </span>Vue<span class="heti-spacing"> </span></span>构建完整的单页应用（同时配合单文件组件）</li>
+</ul>
+</li>
+</ul>
+<h2 id="vue_1">创建<span class="heti-skip"><span class="heti-spacing"> </span>Vue<span class="heti-spacing"> </span></span>应用<a class="headerlink" href="#vue_1" title="Permanent link">⚓︎</a></h2>
+<h3 id="_2">操作步骤<a class="headerlink" href="#_2" title="Permanent link">⚓︎</a></h3>
+<blockquote>
+<p>默认使用<code>npm</code>安装<span><span class="heti-spacing"> </span>Vue</span>。</p>
+</blockquote>
+<ol>
+<li>
+<p>在项目目录下执行以下命令：</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a>$<span class="w"> </span>npm<span class="w"> </span>create<span class="w"> </span>vue@latest
+</span><span id="__span-1-2"><a href="#__codelineno-1-2" id="__codelineno-1-2" name="__codelineno-1-2"></a>
+</span><span id="__span-1-3"><a href="#__codelineno-1-3" id="__codelineno-1-3" name="__codelineno-1-3"></a>...
+</span><span id="__span-1-4"><a href="#__codelineno-1-4" id="__codelineno-1-4" name="__codelineno-1-4"></a>✔<span class="w"> </span>Project<span class="w"> </span>name:<span class="w"> </span>…<span class="w"> </span>&lt;your-project-name&gt;
+</span><span id="__span-1-5"><a href="#__codelineno-1-5" id="__codelineno-1-5" name="__codelineno-1-5"></a>✔<span class="w"> </span>Add<span class="w"> </span>TypeScript?<span class="w"> </span>…<span class="w"> </span>No<span class="w"> </span>/<span class="w"> </span>Yes
+</span><span id="__span-1-6"><a href="#__codelineno-1-6" id="__codelineno-1-6" name="__codelineno-1-6"></a>✔<span class="w"> </span>Add<span class="w"> </span>JSX<span class="w"> </span>Support?<span class="w"> </span>…<span class="w"> </span>No<span class="w"> </span>/<span class="w"> </span>Yes
+</span><span id="__span-1-7"><a href="#__codelineno-1-7" id="__codelineno-1-7" name="__codelineno-1-7"></a>✔<span class="w"> </span>Add<span class="w"> </span>Vue<span class="w"> </span>Router<span class="w"> </span><span class="k">for</span><span class="w"> </span>Single<span class="w"> </span>Page<span class="w"> </span>Application<span class="w"> </span>development?<span class="w"> </span>…<span class="w"> </span>No<span class="w"> </span>/<span class="w"> </span>Yes
+</span><span id="__span-1-8"><a href="#__codelineno-1-8" id="__codelineno-1-8" name="__codelineno-1-8"></a>✔<span class="w"> </span>Add<span class="w"> </span>Pinia<span class="w"> </span><span class="k">for</span><span class="w"> </span>state<span class="w"> </span>management?<span class="w"> </span>…<span class="w"> </span>No<span class="w"> </span>/<span class="w"> </span>Yes
+</span><span id="__span-1-9"><a href="#__codelineno-1-9" id="__codelineno-1-9" name="__codelineno-1-9"></a>✔<span class="w"> </span>Add<span class="w"> </span>Vitest<span class="w"> </span><span class="k">for</span><span class="w"> </span>Unit<span class="w"> </span>testing?<span class="w"> </span>…<span class="w"> </span>No<span class="w"> </span>/<span class="w"> </span>Yes
+</span><span id="__span-1-10"><a href="#__codelineno-1-10" id="__codelineno-1-10" name="__codelineno-1-10"></a>✔<span class="w"> </span>Add<span class="w"> </span>an<span class="w"> </span>End-to-End<span class="w"> </span>Testing<span class="w"> </span>Solution?<span class="w"> </span>…<span class="w"> </span>No<span class="w"> </span>/<span class="w"> </span>Cypress<span class="w"> </span>/<span class="w"> </span>Nightwatch<span class="w"> </span>/<span class="w"> </span>Playwright
+</span><span id="__span-1-11"><a href="#__codelineno-1-11" id="__codelineno-1-11" name="__codelineno-1-11"></a>✔<span class="w"> </span>Add<span class="w"> </span>ESLint<span class="w"> </span><span class="k">for</span><span class="w"> </span>code<span class="w"> </span>quality?<span class="w"> </span>…<span class="w"> </span>No<span class="w"> </span>/<span class="w"> </span>Yes
+</span><span id="__span-1-12"><a href="#__codelineno-1-12" id="__codelineno-1-12" name="__codelineno-1-12"></a>✔<span class="w"> </span>Add<span class="w"> </span>Prettier<span class="w"> </span><span class="k">for</span><span class="w"> </span>code<span class="w"> </span>formatting?<span class="w"> </span>…<span class="w"> </span>No<span class="w"> </span>/<span class="w"> </span>Yes
+</span><span id="__span-1-13"><a href="#__codelineno-1-13" id="__codelineno-1-13" name="__codelineno-1-13"></a>✔<span class="w"> </span>Add<span class="w"> </span>Vue<span class="w"> </span>DevTools<span class="w"> </span><span class="m">7</span><span class="w"> </span>extension<span class="w"> </span><span class="k">for</span><span class="w"> </span>debugging?<span class="w"> </span><span class="o">(</span>experimental<span class="o">)</span><span class="w"> </span>…<span class="w"> </span>No<span class="w"> </span>/<span class="w"> </span>Yes
+</span><span id="__span-1-14"><a href="#__codelineno-1-14" id="__codelineno-1-14" name="__codelineno-1-14"></a>
+</span><span id="__span-1-15"><a href="#__codelineno-1-15" id="__codelineno-1-15" name="__codelineno-1-15"></a>Scaffolding<span class="w"> </span>project<span class="w"> </span><span class="k">in</span><span class="w"> </span>./&lt;your-project-name&gt;...
+</span><span id="__span-1-16"><a href="#__codelineno-1-16" id="__codelineno-1-16" name="__codelineno-1-16"></a>Done.
+</span></code></pre></div>
+<p>执行指令后会跳出一系列的可选功能提示，如果不确定是否要开启某个功能，可以直接敲回车（默认为<span><span class="heti-spacing"> </span>No</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
+</li>
+<li>
+<p>执行以下命令来安装依赖并启动开发服务器：</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-2-1"><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a>$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>&lt;your-project-name&gt;
+</span><span id="__span-2-2"><a href="#__codelineno-2-2" id="__codelineno-2-2" name="__codelineno-2-2"></a>$<span class="w"> </span>npm<span class="w"> </span>install
+</span><span id="__span-2-3"><a href="#__codelineno-2-3" id="__codelineno-2-3" name="__codelineno-2-3"></a>$<span class="w"> </span>npm<span class="w"> </span>run<span class="w"> </span>dev
+</span><span id="__span-2-4"><a href="#__codelineno-2-4" id="__codelineno-2-4" name="__codelineno-2-4"></a>
+</span><span id="__span-2-5"><a href="#__codelineno-2-5" id="__codelineno-2-5" name="__codelineno-2-5"></a>&gt;<span class="w"> </span>vue-project@0.0.0<span class="w"> </span>dev
+</span><span id="__span-2-6"><a href="#__codelineno-2-6" id="__codelineno-2-6" name="__codelineno-2-6"></a>&gt;<span class="w"> </span>vite
+</span><span id="__span-2-7"><a href="#__codelineno-2-7" id="__codelineno-2-7" name="__codelineno-2-7"></a>
+</span><span id="__span-2-8"><a href="#__codelineno-2-8" id="__codelineno-2-8" name="__codelineno-2-8"></a>➜<span class="w">  </span>Local:<span class="w"> </span>http://localhost:5173/
+</span><span id="__span-2-9"><a href="#__codelineno-2-9" id="__codelineno-2-9" name="__codelineno-2-9"></a>__devtools__/<span class="w"> </span>as<span class="w"> </span>a<span class="w"> </span>separate<span class="w"> </span>window
+</span><span id="__span-2-10"><a href="#__codelineno-2-10" id="__codelineno-2-10" name="__codelineno-2-10"></a>➜<span class="w">  </span>Vue<span class="w"> </span>DevTools:<span class="w"> </span>Press<span class="w"> </span>Alt<span class="o">(</span>⌥<span class="o">)</span>+Shift<span class="o">(</span>⇧<span class="o">)</span>+D<span class="w"> </span><span class="k">in</span><span class="w"> </span>App<span class="w"> </span>to<span class="w"> </span>toggle<span class="w"> </span>the<span class="w"> </span>Vue<span class="w"> </span>DevTools
+</span><span id="__span-2-11"><a href="#__codelineno-2-11" id="__codelineno-2-11" name="__codelineno-2-11"></a>
+</span><span id="__span-2-12"><a href="#__codelineno-2-12" id="__codelineno-2-12" name="__codelineno-2-12"></a>➜<span class="w">  </span>press<span class="w"> </span>h<span class="w"> </span>+<span class="w"> </span>enter<span class="w"> </span>to<span class="w"> </span>show<span class="w"> </span><span class="nb">help</span>
+</span></code></pre></div>
+<p>现在这个<span class="heti-skip"><span class="heti-spacing"> </span>Vue<span class="heti-spacing"> </span></span>项目已经运行起来了。</p>
+</li>
+<li>
+<p>执行以下命令将应用发布到生产环境：</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-3-1"><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a>$<span class="w"> </span>npm<span class="w"> </span>run<span class="w"> </span>build
+</span></code></pre></div>
+<p>此命令会在<code>./dist</code>目录中为<span class="heti-skip"><span class="heti-spacing"> </span>Vue<span class="heti-spacing"> </span></span>应用创建一个生产环境的构建版本。</p>
+</li>
+</ol>
+<h3 id="_3">应用实例<a class="headerlink" href="#_3" title="Permanent link">⚓︎</a></h3>
+<p>每个<span class="heti-skip"><span class="heti-spacing"> </span>Vue<span class="heti-spacing"> </span></span>应用都是通过<code>createApp()</code>函数创建一个新的<strong>应用实例</strong>：</p>
+<div class="language-js highlight"><pre><span></span><code><span id="__span-4-1"><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">createApp</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'vue'</span>
+</span><span id="__span-4-2"><a href="#__codelineno-4-2" id="__codelineno-4-2" name="__codelineno-4-2"></a>
+</span><span id="__span-4-3"><a href="#__codelineno-4-3" id="__codelineno-4-3" name="__codelineno-4-3"></a><span class="kd">const</span><span class="w"> </span><span class="nx">app</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">createApp</span><span class="p">({</span>
+</span><span id="__span-4-4"><a href="#__codelineno-4-4" id="__codelineno-4-4" name="__codelineno-4-4"></a><span class="w">  </span><span class="cm">/* 根组件选项 */</span>
+</span><span id="__span-4-5"><a href="#__codelineno-4-5" id="__codelineno-4-5" name="__codelineno-4-5"></a><span class="p">})</span>
+</span></code></pre></div>
+<ul>
+<li>传入<code>createApp()</code>的对象实际上是一个<strong>组件</strong>，每个应用都需要一个“<strong>根组件</strong>”，其他组件将作为其子组件。</li>
+<li>
+<p>从其他文件导入根组件：</p>
+<div class="language-js highlight"><pre><span></span><code><span id="__span-5-1"><a href="#__codelineno-5-1" id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">createApp</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'vue'</span>
+</span><span id="__span-5-2"><a href="#__codelineno-5-2" id="__codelineno-5-2" name="__codelineno-5-2"></a><span class="c1">// 从一个单文件组件中导入根组件</span>
+</span><span id="__span-5-3"><a href="#__codelineno-5-3" id="__codelineno-5-3" name="__codelineno-5-3"></a><span class="k">import</span><span class="w"> </span><span class="nx">App</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'./App.vue'</span>
+</span><span id="__span-5-4"><a href="#__codelineno-5-4" id="__codelineno-5-4" name="__codelineno-5-4"></a><span class="kd">const</span><span class="w"> </span><span class="nx">app</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">createApp</span><span class="p">(</span><span class="nx">App</span><span class="p">)</span>
+</span></code></pre></div>
+</li>
+<li>
+<p>大多数真实的应用都是由一棵嵌套的、可重用的<strong>组件树</strong>组成的（个人看法是：每个组件代表的是一个子功能，最底层的组件应当完成的是最基本的、不可分割的功能）</p>
+</li>
+<li>
+<p><strong>挂载应用</strong>：应用实例必须在调用了<code>.mount()</code>方法后才会渲染出来</p>
+<ul>
+<li>该方法应始终在整个应用配置和资源注册完成后被调用</li>
+<li>它接收一个<strong>“容器”参数</strong>，可以是一个实际的 <strong><span>DOM<span class="heti-spacing"> </span></span>元素</strong>或是一个 <strong><span>CSS<span class="heti-spacing"> </span></span>选择器字符串</strong></li>
+<li>返回值是<strong>根组件实例</strong>而非应用实例</li>
+<li>应用根组件的内容将会被渲染在容器元素里面，但<strong>容器元素</strong>自己将<strong>不会</strong>被视为应用的一部分</li>
+<li><strong>根组件的模板</strong>通常是组件本身的一部分，但也可以直接通过在挂载容器内编写模板来单独提供<ul>
+<li>当根组件没有设置<span class="heti-skip"><span class="heti-spacing"> </span>template<span class="heti-spacing"> </span></span>选项时，<span>Vue<span class="heti-spacing"> </span></span>将自动使用容器的<span class="heti-skip"><span class="heti-spacing"> </span>innerHTML<span class="heti-spacing"> </span></span>作为模板</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>应用配置</strong>：</p>
+<ul>
+<li>
+<p>应用实例通过<code>.config</code>对象允许我们配置一些<strong>应用级</strong>的选项</p>
+<ul>
+<li>例子：应用级的错误处理器，用来捕获所有子组件上的错误</li>
+</ul>
+<div class="language-js highlight"><pre><span></span><code><span id="__span-6-1"><a href="#__codelineno-6-1" id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="nx">app</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">errorHandler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="nx">err</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-6-2"><a href="#__codelineno-6-2" id="__codelineno-6-2" name="__codelineno-6-2"></a><span class="cm">/* 处理错误 */</span>
+</span><span id="__span-6-3"><a href="#__codelineno-6-3" id="__codelineno-6-3" name="__codelineno-6-3"></a><span class="p">}</span>
+</span></code></pre></div>
+</li>
+<li>
+<p>应用实例还提供了一些用于注册（个人理解为“创建”）应用范围内（个人理解为“全局范围”）可用的资源的方法</p>
+<ul>
+<li>例子：注册组件</li>
+</ul>
+<div class="language-js highlight"><pre><span></span><code><span id="__span-7-1"><a href="#__codelineno-7-1" id="__codelineno-7-1" name="__codelineno-7-1"></a><span class="nx">app</span><span class="p">.</span><span class="nx">component</span><span class="p">(</span><span class="s1">'TodoDeleteButton'</span><span class="p">,</span><span class="w"> </span><span class="nx">TodoDeleteButton</span><span class="p">)</span>
+</span></code></pre></div>
+</li>
+</ul>
+</li>
+<li>
+<p>同一个页面可以创建多个共存的<span class="heti-skip"><span class="heti-spacing"> </span>Vue<span class="heti-spacing"> </span></span>应用，而且每个应用都拥有自己的用于配置和全局资源的作用域</p>
+<div class="language-js highlight"><pre><span></span><code><span id="__span-8-1"><a href="#__codelineno-8-1" id="__codelineno-8-1" name="__codelineno-8-1"></a><span class="kd">const</span><span class="w"> </span><span class="nx">app1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">createApp</span><span class="p">({</span>
+</span><span id="__span-8-2"><a href="#__codelineno-8-2" id="__codelineno-8-2" name="__codelineno-8-2"></a><span class="cm">/* ... */</span>
+</span><span id="__span-8-3"><a href="#__codelineno-8-3" id="__codelineno-8-3" name="__codelineno-8-3"></a><span class="p">})</span>
+</span><span id="__span-8-4"><a href="#__codelineno-8-4" id="__codelineno-8-4" name="__codelineno-8-4"></a><span class="nx">app1</span><span class="p">.</span><span class="nx">mount</span><span class="p">(</span><span class="s1">'#container-1'</span><span class="p">)</span>
+</span><span id="__span-8-5"><a href="#__codelineno-8-5" id="__codelineno-8-5" name="__codelineno-8-5"></a>
+</span><span id="__span-8-6"><a href="#__codelineno-8-6" id="__codelineno-8-6" name="__codelineno-8-6"></a><span class="kd">const</span><span class="w"> </span><span class="nx">app2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">createApp</span><span class="p">({</span>
+</span><span id="__span-8-7"><a href="#__codelineno-8-7" id="__codelineno-8-7" name="__codelineno-8-7"></a><span class="cm">/* ... */</span>
+</span><span id="__span-8-8"><a href="#__codelineno-8-8" id="__codelineno-8-8" name="__codelineno-8-8"></a><span class="p">})</span>
+</span><span id="__span-8-9"><a href="#__codelineno-8-9" id="__codelineno-8-9" name="__codelineno-8-9"></a><span class="nx">app2</span><span class="p">.</span><span class="nx">mount</span><span class="p">(</span><span class="s1">'#container-2'</span><span class="p">)</span>
+</span></code></pre></div>
+<ul>
+<li>如果正在使用<span class="heti-skip"><span class="heti-spacing"> </span>Vue<span class="heti-spacing"> </span></span>来增强服务端渲染<span><span class="heti-spacing"> </span>HTML</span>，并且只想要<span class="heti-skip"><span class="heti-spacing"> </span>Vue<span class="heti-spacing"> </span></span>去控制一个大型页面中特殊的一小部分，应避免将一个单独的<span class="heti-skip"><span class="heti-spacing"> </span>Vue<span class="heti-spacing"> </span></span>应用实例挂载到整个页面上，而是应该创建多个小的应用实例，将它们分别挂载到所需的元素上去。</li>
+</ul>
+</li>
+</ul>
+<h2 id="_4">模板语法<a class="headerlink" href="#_4" title="Permanent link">⚓︎</a></h2>
+<ul>
+<li><span>Vue<span class="heti-spacing"> </span></span>使用一种<strong>基于<span class="heti-skip"><span class="heti-spacing"> </span>HTML<span class="heti-spacing"> </span></span>的模板语法</strong>，能够声明式地将组件实例的<strong>数据绑定</strong>到<span class="heti-skip"><span class="heti-spacing"> </span>DOM<span class="heti-spacing"> </span></span>上。所有的<span class="heti-skip"><span class="heti-spacing"> </span>Vue<span class="heti-spacing"> </span></span>模板都是语法层面合法的<span><span class="heti-spacing"> </span>HTML</span>，可以被符合规范的浏览器和<span class="heti-skip"><span class="heti-spacing"> </span>HTML<span class="heti-spacing"> </span></span>解析器解析。</li>
+<li>在底层机制中，<span>Vue<span class="heti-spacing"> </span></span>会将模板<strong>编译成高度优化的<span class="heti-skip"><span class="heti-spacing"> </span>JS<span class="heti-spacing"> </span></span>代码</strong>。结合响应式系统，当应用状态变更时，<span>Vue<span class="heti-spacing"> </span></span>能够智能地推导出需要重新渲染的组件的最少数量，并应用最少的<span class="heti-skip"><span class="heti-spacing"> </span>DOM<span class="heti-spacing"> </span></span>操作。</li>
+</ul>
+<h3 id="_5">数据绑定<a class="headerlink" href="#_5" title="Permanent link">⚓︎</a></h3>
+<p>下面介绍各种数据绑定的形式：</p>
+<ul>
+<li>
+<p>文本插值：使用的是“Mustache”语法<span class="heti-skip"><span class="heti-spacing"> </span>(<span class="heti-spacing"> </span></span>即<strong>双大括号</strong>)</p>
+<div class="language-html highlight"><pre><span></span><code><span id="__span-9-1"><a href="#__codelineno-9-1" id="__codelineno-9-1" name="__codelineno-9-1"></a><span class="p">&lt;</span><span class="nt">span</span><span class="p">&gt;</span>Message: {{ msg }}<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+</span><span id="__span-9-2"><a href="#__codelineno-9-2" id="__codelineno-9-2" name="__codelineno-9-2"></a><span class="cm">&lt;!-- 双大括号标签会被替换为相应组件实例中 msg 属性的值。 --&gt;</span>
+</span><span id="__span-9-3"><a href="#__codelineno-9-3" id="__codelineno-9-3" name="__codelineno-9-3"></a><span class="cm">&lt;!-- 同时每次 msg 属性更改时它也会同步更新。 --&gt;</span>
+</span></code></pre></div>
+<ul>
+<li>此时双大括号会将数据解释为纯文本，而不是<span><span class="heti-spacing"> </span>HTML</span></li>
+</ul>
+</li>
+<li>
+<p>插入原始<span><span class="heti-spacing"> </span>HTML</span>：使用 <code>v-html</code> 指令（由<span class="heti-skip"><span class="heti-spacing"> </span>Vue<span class="heti-spacing"> </span></span>提供的一种特殊的<span class="heti-skip"><span class="heti-spacing"> </span>HTML<span class="heti-spacing"> </span></span>属性<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，在当前组件实例上，将此元素的<span class="heti-skip"><span class="heti-spacing"> </span>innerHTML<span class="heti-spacing"> </span></span>与指定的属性（这里指 <code>v-html</code> 的值）对应保持同步。</p>
+<details class="example" open="open">
+<summary>例子</summary>
+<div class="language-html highlight"><pre><span></span><code><span id="__span-10-1"><a href="#__codelineno-10-1" id="__codelineno-10-1" name="__codelineno-10-1"></a><span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Using text interpolation: {{ rawHtml }}<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+</span><span id="__span-10-2"><a href="#__codelineno-10-2" id="__codelineno-10-2" name="__codelineno-10-2"></a><span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Using v-html directive: <span class="p">&lt;</span><span class="nt">span</span> <span class="na">v-html</span><span class="o">=</span><span class="s">"rawHtml"</span><span class="p">&gt;&lt;/</span><span class="nt">span</span><span class="p">&gt;&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+</span></code></pre></div>
+<p>结果：</p>
+<p><figure markdown="span" style=" width: 60%">
+<img alt="" src="../images/js/1_dark.png#only-dark"/>
+<img alt="" src="../images/js/1_light.png#only-light"/>
+<figcaption></figcaption>
+</figure></p>
+</details>
+<ul>
+<li>此时插入的内容为纯<span><span class="heti-spacing"> </span>HTML</span>，因此数据绑定将会被忽略</li>
+<li>不能用<code>v-html</code>来拼接组合模板</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">安全警告</p>
+<p>在网站上动态渲染任意<span class="heti-skip"><span class="heti-spacing"> </span>HTML<span class="heti-spacing"> </span></span>是非常危险的，因为这非常容易造成<a href="https://en.wikipedia.org/wiki/Cross-site_scripting"><span class="heti-skip"><span class="heti-spacing"> </span>XSS<span class="heti-spacing"> </span></span>漏洞</a>。请仅在内容安全可信时再使用<span><span class="heti-spacing"> </span>v-html</span>，并且永远不要使用用户提供的<span class="heti-skip"><span class="heti-spacing"> </span>HTML<span class="heti-spacing"> </span></span>内容。</p>
+</div>
+</li>
+<li>
+<p><span>HTML<span class="heti-spacing"> </span></span>属性<span class="heti-skip"><span class="heti-spacing"> </span>(attributes)<span class="heti-spacing"> </span></span>绑定：使用 <code>v-bind</code> 指令实现响应式地绑定<span class="heti-skip"><span class="heti-spacing"> </span>HTML<span class="heti-spacing"> </span></span>属性</p>
+<p></p><div class="language-html highlight"><pre><span></span><code><span id="__span-11-1"><a href="#__codelineno-11-1" id="__codelineno-11-1" name="__codelineno-11-1"></a><span class="p">&lt;</span><span class="nt">div</span> <span class="na">v-bind:attr</span><span class="o">=</span><span class="s">"dynamicAttr"</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></code></pre></div>
+<code>v-bind</code> 指令指示 Vue 将 HTML 元素的 <code>attr</code> 属性与组件的 <code>dynamicAttr</code> 属性保持一致。
+<ul>
+<li>如果绑定的值是 <code>null</code> 或者 <code>undefined</code>，那么该属性将会从渲染的元素上移除</li>
+<li>简写：<code>v-bind:attr</code> 可以简记为 <code>:attr</code>，所有支持<span class="heti-skip"><span class="heti-spacing"> </span>Vue<span class="heti-spacing"> </span></span>的浏览器都能正确解析它，此外，它们不会出现在最终渲染的<span class="heti-skip"><span class="heti-spacing"> </span>DOM<span class="heti-spacing"> </span></span>中</li>
+<li>同名简写：如果<span class="heti-skip"><span class="heti-spacing"> </span>HTML<span class="heti-spacing"> </span></span>属性名称与绑定的<span class="heti-skip"><span class="heti-spacing"> </span>JS<span class="heti-spacing"> </span></span>值的名称相同，那么可以进一步简化语法，省略<span class="heti-skip"><span class="heti-spacing"> </span>HTML<span class="heti-spacing"> </span></span>属性值，即：</li>
+</ul>
+<div class="language-html highlight"><pre><span></span><code><span id="__span-12-1"><a href="#__codelineno-12-1" id="__codelineno-12-1" name="__codelineno-12-1"></a><span class="p">&lt;</span><span class="nt">div</span> <span class="na">v-bind:attr</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span><span id="__span-12-2"><a href="#__codelineno-12-2" id="__codelineno-12-2" name="__codelineno-12-2"></a><span class="cm">&lt;!-- 等价于 &lt;div v-bind:attr="attr"&gt;&lt;/div&gt; --&gt;</span>
+</span></code></pre></div>
+<ul>
+<li>绑定多个值：利用<span class="heti-skip"><span class="heti-spacing"> </span>JS<span class="heti-spacing"> </span></span>对象可以同时为一个<span class="heti-skip"><span class="heti-spacing"> </span>HTML<span class="heti-spacing"> </span></span>元素的多个<span class="heti-skip"><span class="heti-spacing"> </span>HTML<span class="heti-spacing"> </span></span>属性绑定对应的<span class="heti-skip"><span class="heti-spacing"> </span>JS<span class="heti-spacing"> </span></span>值，此时 <code>v-bind</code> 无需带参数</li>
+</ul>
+<details class="example" open="open">
+<summary>例子</summary>
+<div class="language-js highlight"><pre><span></span><code><span id="__span-13-1"><a href="#__codelineno-13-1" id="__codelineno-13-1" name="__codelineno-13-1"></a><span class="kd">const</span><span class="w"> </span><span class="nx">objectOfAttrs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-13-2"><a href="#__codelineno-13-2" id="__codelineno-13-2" name="__codelineno-13-2"></a><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="s1">'container'</span><span class="p">,</span>
+</span><span id="__span-13-3"><a href="#__codelineno-13-3" id="__codelineno-13-3" name="__codelineno-13-3"></a><span class="kd">class</span><span class="o">:</span><span class="w"> </span><span class="s1">'wrapper'</span><span class="p">,</span>
+</span><span id="__span-13-4"><a href="#__codelineno-13-4" id="__codelineno-13-4" name="__codelineno-13-4"></a><span class="nx">style</span><span class="o">:</span><span class="w"> </span><span class="s1">'background-color:green'</span>
+</span><span id="__span-13-5"><a href="#__codelineno-13-5" id="__codelineno-13-5" name="__codelineno-13-5"></a><span class="p">}</span>
+</span></code></pre></div>
+<div class="language-html highlight"><pre><span></span><code><span id="__span-14-1"><a href="#__codelineno-14-1" id="__codelineno-14-1" name="__codelineno-14-1"></a><span class="p">&lt;</span><span class="nt">div</span> <span class="na">v-bind</span><span class="o">=</span><span class="s">"objectOfAttrs"</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></code></pre></div>
+</details>
+</li>
+<li>
+<p><span>JS<span class="heti-spacing"> </span></span>表达式：可用于文本插值（双大括号）中以及任何以<code>v-</code>开头的<span class="heti-skip"><span class="heti-spacing"> </span>HTML<span class="heti-spacing"> </span></span>属性（即<span class="heti-skip"><span class="heti-spacing"> </span>Vue<span class="heti-spacing"> </span></span>指令）中</p>
+<div class="language-html highlight"><pre><span></span><code><span id="__span-15-1"><a href="#__codelineno-15-1" id="__codelineno-15-1" name="__codelineno-15-1"></a>{{ number + 1 }}
+</span><span id="__span-15-2"><a href="#__codelineno-15-2" id="__codelineno-15-2" name="__codelineno-15-2"></a>
+</span><span id="__span-15-3"><a href="#__codelineno-15-3" id="__codelineno-15-3" name="__codelineno-15-3"></a>{{ ok ? 'YES' : 'NO' }}
+</span><span id="__span-15-4"><a href="#__codelineno-15-4" id="__codelineno-15-4" name="__codelineno-15-4"></a>
+</span><span id="__span-15-5"><a href="#__codelineno-15-5" id="__codelineno-15-5" name="__codelineno-15-5"></a>{{ message.split('').reverse().join('') }}
+</span><span id="__span-15-6"><a href="#__codelineno-15-6" id="__codelineno-15-6" name="__codelineno-15-6"></a>
+</span><span id="__span-15-7"><a href="#__codelineno-15-7" id="__codelineno-15-7" name="__codelineno-15-7"></a><span class="p">&lt;</span><span class="nt">div</span> <span class="na">:id</span><span class="o">=</span><span class="s">"`list-${id}`"</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></code></pre></div>
+<ul>
+<li>需要注意的是，每个绑定仅支持<strong>单一的表达式</strong>，不支持完整的一条<span class="heti-skip"><span class="heti-spacing"> </span>JS<span class="heti-spacing"> </span></span>语句</li>
+<li><strong>函数<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>方法调用</strong>也算一种表达式，但需要注意的是：绑定在表达式中的函数<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>方法在组件每次更新时都会被重新调用，因此<strong>不应该产生任何副作用</strong>，比如改变数据或触发异步操作。</li>
+<li>模板中的表达式只能进行受限的全局访问，即仅能够访问<a href="https://github.com/vuejs/core/blob/main/packages/shared/src/globalsAllowList.ts#L3">有限的全局对象列表</a>中的对象</li>
+<li><strong>计算属性</strong>：如果<span class="heti-skip"><span class="heti-spacing"> </span>JS<span class="heti-spacing"> </span></span>表达式过于复杂臃肿，此时推荐使用计算属性来描述依赖响应式状态的复杂逻辑。<ul>
+<li>它的值是一个方法，接收一个<span class="heti-skip"><span class="heti-spacing"> </span>getter<span class="heti-spacing"> </span></span>函数，返回值为一个计算属性<a href="#ref()"><span><span class="heti-spacing"> </span>ref</span></a>。可以用 <code>.value</code> 访问计算结果，在模板中它也会自动解包。<ul>
+<li><span>getter<span class="heti-spacing"> </span></span>不应有副作用（包括改变其他状态、在<span class="heti-skip"><span class="heti-spacing"> </span>getter<span class="heti-spacing"> </span></span>中做异步请求或者更改<span><span class="heti-spacing"> </span>DOM</span>）</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<details class="example">
+<summary>例子</summary>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-16-1"><a href="#__codelineno-16-1" id="__codelineno-16-1" name="__codelineno-16-1"></a>&lt;script setup&gt;
+</span><span id="__span-16-2"><a href="#__codelineno-16-2" id="__codelineno-16-2" name="__codelineno-16-2"></a>    import { reactive, computed } from 'vue'
+</span><span id="__span-16-3"><a href="#__codelineno-16-3" id="__codelineno-16-3" name="__codelineno-16-3"></a>
+</span><span id="__span-16-4"><a href="#__codelineno-16-4" id="__codelineno-16-4" name="__codelineno-16-4"></a>    const author = reactive({
+</span><span id="__span-16-5"><a href="#__codelineno-16-5" id="__codelineno-16-5" name="__codelineno-16-5"></a>        name: 'John Doe',
+</span><span id="__span-16-6"><a href="#__codelineno-16-6" id="__codelineno-16-6" name="__codelineno-16-6"></a>        books: [
+</span><span id="__span-16-7"><a href="#__codelineno-16-7" id="__codelineno-16-7" name="__codelineno-16-7"></a>            'Vue 2 - Advanced Guide',
+</span><span id="__span-16-8"><a href="#__codelineno-16-8" id="__codelineno-16-8" name="__codelineno-16-8"></a>            'Vue 3 - Basic Guide',
+</span><span id="__span-16-9"><a href="#__codelineno-16-9" id="__codelineno-16-9" name="__codelineno-16-9"></a>            'Vue 4 - The Mystery'
+</span><span id="__span-16-10"><a href="#__codelineno-16-10" id="__codelineno-16-10" name="__codelineno-16-10"></a>        ]
+</span><span id="__span-16-11"><a href="#__codelineno-16-11" id="__codelineno-16-11" name="__codelineno-16-11"></a>    })
+</span><span id="__span-16-12"><a href="#__codelineno-16-12" id="__codelineno-16-12" name="__codelineno-16-12"></a>
+</span><span id="__span-16-13"><a href="#__codelineno-16-13" id="__codelineno-16-13" name="__codelineno-16-13"></a>    // 一个计算属性 ref
+</span><span id="__span-16-14"><a href="#__codelineno-16-14" id="__codelineno-16-14" name="__codelineno-16-14"></a>    const publishedBooksMessage = computed(() =&gt; {
+</span><span id="__span-16-15"><a href="#__codelineno-16-15" id="__codelineno-16-15" name="__codelineno-16-15"></a>        return author.books.length &gt; 0 ? 'Yes' : 'No'
+</span><span id="__span-16-16"><a href="#__codelineno-16-16" id="__codelineno-16-16" name="__codelineno-16-16"></a>    })
+</span><span id="__span-16-17"><a href="#__codelineno-16-17" id="__codelineno-16-17" name="__codelineno-16-17"></a>&lt;/script&gt;
+</span><span id="__span-16-18"><a href="#__codelineno-16-18" id="__codelineno-16-18" name="__codelineno-16-18"></a>
+</span><span id="__span-16-19"><a href="#__codelineno-16-19" id="__codelineno-16-19" name="__codelineno-16-19"></a>&lt;template&gt;
+</span><span id="__span-16-20"><a href="#__codelineno-16-20" id="__codelineno-16-20" name="__codelineno-16-20"></a>    &lt;p&gt;Has published books:&lt;/p&gt;
+</span><span id="__span-16-21"><a href="#__codelineno-16-21" id="__codelineno-16-21" name="__codelineno-16-21"></a>    &lt;span&gt;{{ publishedBooksMessage }}&lt;/span&gt;
+</span><span id="__span-16-22"><a href="#__codelineno-16-22" id="__codelineno-16-22" name="__codelineno-16-22"></a>&lt;/template&gt;
+</span></code></pre></div>
+<div class="language-text highlight"><pre><span></span><code>- 计算属性会自动追踪响应式依赖，因此可以做到同步更新。
+- 直接调用函数也可以呈现出同样的效果，但不同之处在于**计算属性值会基于其响应式依赖被缓存**，这意味着只要依赖值不改变，无论多少次访问计算属性都会立即返回先前的计算结果，无需重复计算。
+- 计算属性默认**只读**，因此避免直接修改计算属性值。要想修改计算属性，需要在创建时同时提供 getter 和 setter。
+</code></pre></div>
+</details>
+<h3 id="_6">指令<a class="headerlink" href="#_6" title="Permanent link">⚓︎</a></h3>
+<p><strong>指令</strong><span>(directives)<span class="heti-spacing"> </span></span>是带有 <code>v-</code> 前缀的特殊<span class="heti-skip"><span class="heti-spacing"> </span>HTML<span class="heti-spacing"> </span></span>属性，它们一般接收的值为一个 <strong><span>JS<span class="heti-spacing"> </span></span>表达式</strong>。一个指令的任务是在其表达式的值变化时响应式地更新<span><span class="heti-spacing"> </span>DOM</span>。</p>
+<ul>
+<li>
+<p>参数<span><span class="heti-spacing"> </span>(arguments)</span>：指令名与参数之间用冒号隔开</p>
+<ul>
+<li>前面提到的“简写”：可以仅保留冒号和参数，省略指令名；有些指令还有特殊的简写规则，比如 <code>v-on</code> 可以简写为 <code>@</code></li>
+<li>参数可以是<span class="heti-skip"><span class="heti-spacing"> </span>HTML<span class="heti-spacing"> </span></span>属性、<span>DOM<span class="heti-spacing"> </span></span>事件等</li>
+<li>
+<p>参数可以是<strong>动态</strong>的——使用<span class="heti-skip"><span class="heti-spacing"> </span>JS<span class="heti-spacing"> </span></span>表达式作为参数，但需要额外用方括号包起来</p>
+<div class="language-html highlight"><pre><span></span><code><span id="__span-17-1"><a href="#__codelineno-17-1" id="__codelineno-17-1" name="__codelineno-17-1"></a><span class="p">&lt;</span><span class="nt">a</span> <span class="na">v-bind:</span><span class="err">[</span><span class="na">attributeName</span><span class="err">]="</span><span class="na">url</span><span class="err">"</span><span class="p">&gt;</span> ... <span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+</span><span id="__span-17-2"><a href="#__codelineno-17-2" id="__codelineno-17-2" name="__codelineno-17-2"></a><span class="p">&lt;</span><span class="nt">a</span> <span class="na">v-on:</span><span class="err">[</span><span class="na">eventName</span><span class="err">]="</span><span class="na">doSomething</span><span class="err">"</span><span class="p">&gt;</span> ... <span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+</span></code></pre></div>
+<ul>
+<li>限制：<ul>
+<li>动态参数中表达式的值应当是一个字符串，或者是<code>null</code>（用于显式移除该绑定）</li>
+<li>且字符串内不应出现空格、引号等非法的<span class="heti-skip"><span class="heti-spacing"> </span>HTML<span class="heti-spacing"> </span></span>属性名字符</li>
+<li>避免使用大写字母，因为浏览器会强制将其转化为小写</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>修饰符<span><span class="heti-spacing"> </span>(modifiers)</span>：以点开头的特殊后缀，表明指令需要以一些特殊的方式被绑定</p>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">总结</p>
+<p></p><div style="text-align: center">
+<image src="../images/vue/2.png" width="80%">
+</image></div>
+</div>
+<p>相关资料：所有<span class="heti-skip"><span class="heti-spacing"> </span>Vue<span class="heti-spacing"> </span></span>的<a href="https://cn.vuejs.org/api/built-in-directives">内置指令</a></p>
+<h2 id="_7">响应式基础<a class="headerlink" href="#_7" title="Permanent link">⚓︎</a></h2>
+<div class="admonition info">
+<p class="admonition-title">注</p>
+<p>这是我第一次学习<span><span class="heti-spacing"> </span>Vue</span>，虽然官方推荐新手先学选项式<span><span class="heti-spacing"> </span>API</span>，但从个人偏好上来说我还是更倾向于组合式<span><span class="heti-spacing"> </span>API</span>，因为选项式<span class="heti-skip"><span class="heti-spacing"> </span>API<span class="heti-spacing"> </span></span>那种面向对象的风格看起来略显臃肿，而组合式<span class="heti-skip"><span class="heti-spacing"> </span>API<span class="heti-spacing"> </span></span>做同样的工作只需几句话就搞定了。所以我目前先从<strong>组合式<span><span class="heti-spacing"> </span>API</span></strong>开始学习，笔记呈现的代码都是组合式<span class="heti-skip"><span class="heti-spacing"> </span>API<span class="heti-spacing"> </span></span>风格，之后有时间的话会补充选项式<span class="heti-skip"><span class="heti-spacing"> </span>API<span class="heti-spacing"> </span></span>的内容。</p>
+</div>
+<h3 id="_8">声明响应式状态<a class="headerlink" href="#_8" title="Permanent link">⚓︎</a></h3>
+<h4 id="ref">ref()<a class="headerlink" href="#ref" title="Permanent link">⚓︎</a></h4>
+<p>使用<code>ref()</code>函数声明响应式状态，它接收参数，返回一个带有 <code>.value</code> 属性的<span class="heti-skip"><span class="heti-spacing"> </span>ref<span class="heti-spacing"> </span></span>对象，其值为传入的参数值：</p>
+<div class="language-js highlight"><pre><span></span><code><span id="__span-18-1"><a href="#__codelineno-18-1" id="__codelineno-18-1" name="__codelineno-18-1"></a><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">ref</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'vue'</span>
+</span><span id="__span-18-2"><a href="#__codelineno-18-2" id="__codelineno-18-2" name="__codelineno-18-2"></a>
+</span><span id="__span-18-3"><a href="#__codelineno-18-3" id="__codelineno-18-3" name="__codelineno-18-3"></a><span class="kd">const</span><span class="w"> </span><span class="nx">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">ref</span><span class="p">(</span><span class="mf">0</span><span class="p">)</span>
+</span><span id="__span-18-4"><a href="#__codelineno-18-4" id="__codelineno-18-4" name="__codelineno-18-4"></a>
+</span><span id="__span-18-5"><a href="#__codelineno-18-5" id="__codelineno-18-5" name="__codelineno-18-5"></a><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">count</span><span class="p">)</span><span class="w"> </span><span class="c1">// { value: 0 }</span>
+</span><span id="__span-18-6"><a href="#__codelineno-18-6" id="__codelineno-18-6" name="__codelineno-18-6"></a><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">count</span><span class="p">.</span><span class="nx">value</span><span class="p">)</span><span class="w"> </span><span class="c1">// 0</span>
+</span><span id="__span-18-7"><a href="#__codelineno-18-7" id="__codelineno-18-7" name="__codelineno-18-7"></a>
+</span><span id="__span-18-8"><a href="#__codelineno-18-8" id="__codelineno-18-8" name="__codelineno-18-8"></a><span class="nx">count</span><span class="p">.</span><span class="nx">value</span><span class="o">++</span>
+</span><span id="__span-18-9"><a href="#__codelineno-18-9" id="__codelineno-18-9" name="__codelineno-18-9"></a><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">count</span><span class="p">.</span><span class="nx">value</span><span class="p">)</span><span class="w"> </span><span class="c1">// 1</span>
+</span></code></pre></div>
+<ul>
+<li>
+<p>在<strong>组件模板</strong>中访问<span><span class="heti-spacing"> </span>ref</span>：在 <code>setup()</code> 函数中声明并返回它们：</p>
+<div class="language-js highlight"><pre><span></span><code><span id="__span-19-1"><a href="#__codelineno-19-1" id="__codelineno-19-1" name="__codelineno-19-1"></a><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">ref</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'vue'</span>
+</span><span id="__span-19-2"><a href="#__codelineno-19-2" id="__codelineno-19-2" name="__codelineno-19-2"></a>
+</span><span id="__span-19-3"><a href="#__codelineno-19-3" id="__codelineno-19-3" name="__codelineno-19-3"></a><span class="k">export</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-19-4"><a href="#__codelineno-19-4" id="__codelineno-19-4" name="__codelineno-19-4"></a><span class="c1">// `setup` 是一个特殊的钩子，专门用于组合式 API。</span>
+</span><span id="__span-19-5"><a href="#__codelineno-19-5" id="__codelineno-19-5" name="__codelineno-19-5"></a><span class="hll"><span class="w">    </span><span class="nx">setup</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span></span><span id="__span-19-6"><a href="#__codelineno-19-6" id="__codelineno-19-6" name="__codelineno-19-6"></a><span class="w">        </span><span class="kd">const</span><span class="w"> </span><span class="nx">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">ref</span><span class="p">(</span><span class="mf">0</span><span class="p">)</span>
+</span><span id="__span-19-7"><a href="#__codelineno-19-7" id="__codelineno-19-7" name="__codelineno-19-7"></a>
+</span><span id="__span-19-8"><a href="#__codelineno-19-8" id="__codelineno-19-8" name="__codelineno-19-8"></a><span class="w">        </span><span class="c1">// 将 ref 暴露给模板</span>
+</span><span id="__span-19-9"><a href="#__codelineno-19-9" id="__codelineno-19-9" name="__codelineno-19-9"></a><span class="hll"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="p">{</span>
+</span></span><span id="__span-19-10"><a href="#__codelineno-19-10" id="__codelineno-19-10" name="__codelineno-19-10"></a><span class="hll"><span class="w">            </span><span class="nx">count</span>
+</span></span><span id="__span-19-11"><a href="#__codelineno-19-11" id="__codelineno-19-11" name="__codelineno-19-11"></a><span class="hll"><span class="w">        </span><span class="p">}</span>
+</span></span><span id="__span-19-12"><a href="#__codelineno-19-12" id="__codelineno-19-12" name="__codelineno-19-12"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-19-13"><a href="#__codelineno-19-13" id="__codelineno-19-13" name="__codelineno-19-13"></a><span class="p">}</span>
+</span></code></pre></div>
+<div class="language-html highlight"><pre><span></span><code><span id="__span-20-1"><a href="#__codelineno-20-1" id="__codelineno-20-1" name="__codelineno-20-1"></a><span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>{{ count }}<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></code></pre></div>
+<ul>
+<li>注意：在模板中使用<span class="heti-skip"><span class="heti-spacing"> </span>ref<span class="heti-spacing"> </span></span>时，由于<span class="heti-skip"><span class="heti-spacing"> </span>ref<span class="heti-spacing"> </span></span>会自动解包，因此<strong>不需要</strong>附加 <code>.value</code></li>
+<li>可以直接在事件监听器中改变<span class="heti-skip"><span class="heti-spacing"> </span>ref<span class="heti-spacing"> </span></span>值</li>
+</ul>
+<div class="language-html highlight"><pre><span></span><code><span id="__span-21-1"><a href="#__codelineno-21-1" id="__codelineno-21-1" name="__codelineno-21-1"></a><span class="p">&lt;</span><span class="nt">button</span> <span class="err">@</span><span class="na">click</span><span class="o">=</span><span class="s">"count++"</span><span class="p">&gt;</span>
+</span><span id="__span-21-2"><a href="#__codelineno-21-2" id="__codelineno-21-2" name="__codelineno-21-2"></a>    {{ count }}
+</span><span id="__span-21-3"><a href="#__codelineno-21-3" id="__codelineno-21-3" name="__codelineno-21-3"></a><span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+</span></code></pre></div>
+<ul>
+<li>对于更复杂的逻辑，可以在同一作用域内声明<strong>更改<span class="heti-skip"><span class="heti-spacing"> </span>ref<span class="heti-spacing"> </span></span>的函数</strong>，并将它们作为方法与状态一起公开，然后将该方法作为事件监听器</li>
+</ul>
+<details class="example">
+<summary>例子</summary>
+<div class="language-js highlight"><pre><span></span><code><span id="__span-22-1"><a href="#__codelineno-22-1" id="__codelineno-22-1" name="__codelineno-22-1"></a><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">ref</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'vue'</span>
+</span><span id="__span-22-2"><a href="#__codelineno-22-2" id="__codelineno-22-2" name="__codelineno-22-2"></a>
+</span><span id="__span-22-3"><a href="#__codelineno-22-3" id="__codelineno-22-3" name="__codelineno-22-3"></a><span class="k">export</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-22-4"><a href="#__codelineno-22-4" id="__codelineno-22-4" name="__codelineno-22-4"></a><span class="w">    </span><span class="nx">setup</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-22-5"><a href="#__codelineno-22-5" id="__codelineno-22-5" name="__codelineno-22-5"></a><span class="w">        </span><span class="kd">const</span><span class="w"> </span><span class="nx">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">ref</span><span class="p">(</span><span class="mf">0</span><span class="p">)</span>
+</span><span id="__span-22-6"><a href="#__codelineno-22-6" id="__codelineno-22-6" name="__codelineno-22-6"></a>
+</span><span id="__span-22-7"><a href="#__codelineno-22-7" id="__codelineno-22-7" name="__codelineno-22-7"></a><span class="w">        </span><span class="kd">function</span><span class="w"> </span><span class="nx">increment</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-22-8"><a href="#__codelineno-22-8" id="__codelineno-22-8" name="__codelineno-22-8"></a><span class="w">            </span><span class="c1">// 在 JavaScript 中需要 .value</span>
+</span><span id="__span-22-9"><a href="#__codelineno-22-9" id="__codelineno-22-9" name="__codelineno-22-9"></a><span class="w">            </span><span class="nx">count</span><span class="p">.</span><span class="nx">value</span><span class="o">++</span>
+</span><span id="__span-22-10"><a href="#__codelineno-22-10" id="__codelineno-22-10" name="__codelineno-22-10"></a><span class="w">        </span><span class="p">}</span>
+</span><span id="__span-22-11"><a href="#__codelineno-22-11" id="__codelineno-22-11" name="__codelineno-22-11"></a>
+</span><span id="__span-22-12"><a href="#__codelineno-22-12" id="__codelineno-22-12" name="__codelineno-22-12"></a><span class="w">        </span><span class="c1">// 不要忘记同时暴露 increment 函数</span>
+</span><span id="__span-22-13"><a href="#__codelineno-22-13" id="__codelineno-22-13" name="__codelineno-22-13"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-22-14"><a href="#__codelineno-22-14" id="__codelineno-22-14" name="__codelineno-22-14"></a><span class="w">            </span><span class="nx">count</span><span class="p">,</span>
+</span><span id="__span-22-15"><a href="#__codelineno-22-15" id="__codelineno-22-15" name="__codelineno-22-15"></a><span class="w">            </span><span class="nx">increment</span>
+</span><span id="__span-22-16"><a href="#__codelineno-22-16" id="__codelineno-22-16" name="__codelineno-22-16"></a><span class="w">        </span><span class="p">}</span>
+</span><span id="__span-22-17"><a href="#__codelineno-22-17" id="__codelineno-22-17" name="__codelineno-22-17"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-22-18"><a href="#__codelineno-22-18" id="__codelineno-22-18" name="__codelineno-22-18"></a><span class="p">}</span>
+</span></code></pre></div>
+<div class="language-html highlight"><pre><span></span><code><span id="__span-23-1"><a href="#__codelineno-23-1" id="__codelineno-23-1" name="__codelineno-23-1"></a><span class="p">&lt;</span><span class="nt">button</span> <span class="err">@</span><span class="na">click</span><span class="o">=</span><span class="s">"increment"</span><span class="p">&gt;</span>
+</span><span id="__span-23-2"><a href="#__codelineno-23-2" id="__codelineno-23-2" name="__codelineno-23-2"></a>{{ count }}
+</span><span id="__span-23-3"><a href="#__codelineno-23-3" id="__codelineno-23-3" name="__codelineno-23-3"></a><span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+</span></code></pre></div>
+</details>
+</li>
+<li>
+<p>在 <code>setup()</code> 函数中手动暴露大量的状态和方法非常繁琐，但可以通过使用<strong>单文件组件</strong><span>(SFC)<span class="heti-spacing"> </span></span>来避免这种情况——使用 <code>&lt;script setup&gt;</code> 来大幅度地简化代码</p>
+<details class="example">
+<summary>例子</summary>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-24-1"><a href="#__codelineno-24-1" id="__codelineno-24-1" name="__codelineno-24-1"></a>&lt;script setup&gt;
+</span><span id="__span-24-2"><a href="#__codelineno-24-2" id="__codelineno-24-2" name="__codelineno-24-2"></a>    import { ref } from 'vue'
+</span><span id="__span-24-3"><a href="#__codelineno-24-3" id="__codelineno-24-3" name="__codelineno-24-3"></a>
+</span><span id="__span-24-4"><a href="#__codelineno-24-4" id="__codelineno-24-4" name="__codelineno-24-4"></a>    const count = ref(0)
+</span><span id="__span-24-5"><a href="#__codelineno-24-5" id="__codelineno-24-5" name="__codelineno-24-5"></a>
+</span><span id="__span-24-6"><a href="#__codelineno-24-6" id="__codelineno-24-6" name="__codelineno-24-6"></a>    function increment() {
+</span><span id="__span-24-7"><a href="#__codelineno-24-7" id="__codelineno-24-7" name="__codelineno-24-7"></a>        count.value++
+</span><span id="__span-24-8"><a href="#__codelineno-24-8" id="__codelineno-24-8" name="__codelineno-24-8"></a>    }
+</span><span id="__span-24-9"><a href="#__codelineno-24-9" id="__codelineno-24-9" name="__codelineno-24-9"></a>&lt;/script&gt;
+</span><span id="__span-24-10"><a href="#__codelineno-24-10" id="__codelineno-24-10" name="__codelineno-24-10"></a>
+</span><span id="__span-24-11"><a href="#__codelineno-24-11" id="__codelineno-24-11" name="__codelineno-24-11"></a>&lt;template&gt;
+</span><span id="__span-24-12"><a href="#__codelineno-24-12" id="__codelineno-24-12" name="__codelineno-24-12"></a>    &lt;button @click="increment"&gt;
+</span><span id="__span-24-13"><a href="#__codelineno-24-13" id="__codelineno-24-13" name="__codelineno-24-13"></a>        {{ count }}
+</span><span id="__span-24-14"><a href="#__codelineno-24-14" id="__codelineno-24-14" name="__codelineno-24-14"></a>    &lt;/button&gt;
+</span><span id="__span-24-15"><a href="#__codelineno-24-15" id="__codelineno-24-15" name="__codelineno-24-15"></a>&lt;/template&gt;
+</span></code></pre></div>
+</details>
+<ul>
+<li><code>&lt;script setup&gt;</code> 中的顶层的导入、声明的变量和函数可在同一组件的模板中直接使用</li>
+</ul>
+</li>
+<li>
+<p>使用<span class="heti-skip"><span class="heti-spacing"> </span>ref<span class="heti-spacing"> </span></span>的原因：</p>
+<ul>
+<li>在标准的<span class="heti-skip"><span class="heti-spacing"> </span>JS<span class="heti-spacing"> </span></span>中，检测普通变量的访问或修改是行不通的；</li>
+<li>而<span class="heti-skip"><span class="heti-spacing"> </span>ref<span class="heti-spacing"> </span></span>的 <code>.value</code> 属性提供了检测<span class="heti-skip"><span class="heti-spacing"> </span>ref<span class="heti-spacing"> </span></span>何时被访问或修改的机会。当一个组件首次渲染时，<span>Vue<span class="heti-spacing"> </span></span>会<strong>追踪</strong><span>(track)<span class="heti-spacing"> </span></span>在渲染过程中使用的每一个<span><span class="heti-spacing"> </span>ref</span>。然后，当一个<span class="heti-skip"><span class="heti-spacing"> </span>ref<span class="heti-spacing"> </span></span>被修改时，它会<strong>触发</strong><span>(trigger)<span class="heti-spacing"> </span></span>追踪它的组件的一次重新渲染。</li>
+<li>另一个好处是，与普通变量不同， <span>ref<span class="heti-spacing"> </span></span>可以在被传递给函数的同时保留对最新值和响应式连接的访问。</li>
+</ul>
+</li>
+<li>
+<p><span>ref<span class="heti-spacing"> </span></span>具有<strong>深层响应性</strong>，即使改变嵌套对象或数组（它们作为<span class="heti-skip"><span class="heti-spacing"> </span>ref<span class="heti-spacing"> </span></span>的值）时，变化也会被检测到。</p>
+<ul>
+<li>也可以通过 <code>shallowRef()</code> 来放弃深层响应性</li>
+</ul>
+</li>
+<li>
+<p><span>DOM<span class="heti-spacing"> </span></span>更新时机：响应式状态被修改时，<span>DOM<span class="heti-spacing"> </span></span>会被自动更新。但更新不是同步的，<span>Vue<span class="heti-spacing"> </span></span>会在“next tick”更新周期中缓冲所有状态的修改，以确保不管进行了多少次状态修改，每个组件都只会被更新一次。</p>
+</li>
+</ul>
+<h4 id="reactive">reactive()<a class="headerlink" href="#reactive" title="Permanent link">⚓︎</a></h4>
+<p><code>reactive()</code> 是另一种声明响应式状态的方式，与 <code>ref()</code> 不同的是，将使<strong>对象</strong>本身具有响应性：</p>
+<div class="language-text highlight"><pre><span></span><code>```js
+import { reactive } from 'vue'
+
+const state = reactive({ count: 0 })
+```
+
+```html
+&lt;button @click="state.count++"&gt;
+    {{ state.count }}
+&lt;/button&gt;
+```
+</code></pre></div>
+<ul>
+<li><span>Vue<span class="heti-spacing"> </span></span>能够拦截对响应式对象所有属性的访问和修改，以便进行依赖追踪和触发更新</li>
+<li>
+<p><code>reactive()</code> 也具备深层响应性：当访问嵌套对象时，它们也会被 <code>reactive()</code> 包装</p>
+<ul>
+<li>可以使用<code>shallowReactive()</code><span class="heti-skip"><span class="heti-spacing"> </span>API<span class="heti-spacing"> </span></span>可以选择退出深层响应性</li>
+</ul>
+</li>
+<li>
+<p>局限性：</p>
+<ul>
+<li>有限的值类型：它只能用于<strong>对象类型</strong> <span>(<span class="heti-spacing"> </span></span>对象、数组和如 <code>Map</code>、<code>Set</code> 这样的集合类型<span><span class="heti-spacing"> </span>)</span>。它不能持有如 <code>string</code>、<code>number</code> 或 <code>boolean</code> 这样的原始类型</li>
+<li>不能替换整个对象，否则会丢失对原对象引用的响应式连接</li>
+<li>对解构操作不友好：当响应式对象的原始类型属性被解构为本地变量时，或者该属性被传递给函数时，将会丢失响应性连接</li>
+</ul>
+</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">注意</p>
+<p>因此，建议使用 <code>ref()</code> 作为声明响应式状态的主要<span><span class="heti-spacing"> </span>API</span>。</p>
+</div>
+<details class="info" open="open">
+<summary>额外的<span class="heti-skip"><span class="heti-spacing"> </span>ref<span class="heti-spacing"> </span></span>解包细节</summary>
+<p><strong>解包</strong>：我们可以直接访问<span class="heti-skip"><span class="heti-spacing"> </span>ref<span class="heti-spacing"> </span></span>值，而无需附加 <code>.value</code> 。</p>
+<ul>
+<li>
+<p><span>ref<span class="heti-spacing"> </span></span>作为<span class="heti-skip"><span class="heti-spacing"> </span>reactive<span class="heti-spacing"> </span></span>对象的属性时，当被访问或修改时会自动解包</p>
+<ul>
+<li>如果将一个新的<span class="heti-skip"><span class="heti-spacing"> </span>ref<span class="heti-spacing"> </span></span>赋值给一个关联了已有<span class="heti-skip"><span class="heti-spacing"> </span>ref<span class="heti-spacing"> </span></span>的属性，那么它会替换掉旧的<span><span class="heti-spacing"> </span>ref</span></li>
+<li>只有当嵌套在一个深层响应式对象内时，才会发生<span class="heti-skip"><span class="heti-spacing"> </span>ref<span class="heti-spacing"> </span></span>解包</li>
+</ul>
+</li>
+<li>
+<p>当<span class="heti-skip"><span class="heti-spacing"> </span>ref<span class="heti-spacing"> </span></span>作为响应式<strong>数组</strong>或原生<strong>集合</strong>类型<span class="heti-skip"><span class="heti-spacing"> </span>(<span class="heti-spacing"> </span></span>如<code>Map</code><span class="heti-skip"><span class="heti-spacing"> </span>)<span class="heti-spacing"> </span></span>中的元素被访问时，它<strong>不会</strong>被解包</p>
+</li>
+<li>在模板渲染上下文中，只有<strong>顶级</strong>的<span class="heti-skip"><span class="heti-spacing"> </span>ref<span class="heti-spacing"> </span></span>属性才会被解包</li>
+<li>如果<span class="heti-skip"><span class="heti-spacing"> </span>ref<span class="heti-spacing"> </span></span>是文本插值的最终计算值<span class="heti-skip"><span class="heti-spacing"> </span>(<span class="heti-spacing"> </span></span>即 <code>{{ }}</code> 标签<span><span class="heti-spacing"> </span>)</span>，那么它将被解包</li>
+</ul>
+</details>
+<h2 id="class-style"><span>Class<span class="heti-spacing"> </span></span>与<span class="heti-skip"><span class="heti-spacing"> </span>Style<span class="heti-spacing"> </span></span>绑定<a class="headerlink" href="#class-style" title="Permanent link">⚓︎</a></h2>
+<h2 id="_9">条件渲染<a class="headerlink" href="#_9" title="Permanent link">⚓︎</a></h2>
+<h2 id="_10">列表渲染<a class="headerlink" href="#_10" title="Permanent link">⚓︎</a></h2>
+<h2 id="_11">事件处理<a class="headerlink" href="#_11" title="Permanent link">⚓︎</a></h2>
+<h2 id="_12">表单输入绑定<a class="headerlink" href="#_12" title="Permanent link">⚓︎</a></h2>
+<h2 id="_13">生命周期<a class="headerlink" href="#_13" title="Permanent link">⚓︎</a></h2>
+<h2 id="_14">侦听器<a class="headerlink" href="#_14" title="Permanent link">⚓︎</a></h2>
+<h2 id="_15">模板引用<a class="headerlink" href="#_15" title="Permanent link">⚓︎</a></h2>
+<h2 id="_16">组件基础<a class="headerlink" href="#_16" title="Permanent link">⚓︎</a></h2>
+<aside class="md-source-file">
+<span class="md-source-file__fact">
+<span class="md-icon" title="最后更新">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"></path></svg>
+</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime">2024年11月30日 16:08:32</span>
+</span>
+<span class="md-source-file__fact">
+<span class="md-icon" title="创建日期">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"></path></svg>
+</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime">2024年11月30日 16:08:32</span>
+</span>
+</aside>
+<p style="font-size: 30px; font-weight: 600">评论区</p>
+<div>
+    如果大家有什么问题或想法，欢迎在下方留言~
+  </div>
+<!-- Insert generated snippet here -->
+<script async="" crossorigin="anonymous" data-category="Announcements" data-category-id="DIC_kwDOMAb9Zs4CfmpP" data-emit-metadata="0" data-input-position="bottom" data-lang="zh-CN" data-mapping="pathname" data-reactions-enabled="1" data-repo="noughtq/notebook" data-repo-id="R_kgDOMAb9Zg" data-strict="0" data-theme="preferred_color_scheme" src="https://giscus.app/client.js">
+</script>
+<!-- Synchronize Giscus theme with palette -->
+<script>
+    var giscus = document.querySelector("script[src*=giscus]")
+
+    // Set palette on initial load
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object") {
+      var theme = palette.color.scheme === "slate"
+        ? "transparent_dark"
+        : "light"
+
+      // Instruct Giscus to set theme
+      giscus.setAttribute("data-theme", theme) 
+    }
+
+    // Register event handlers after documented loaded
+    document.addEventListener("DOMContentLoaded", function() {
+      var ref = document.querySelector("[data-md-component=palette]")
+      ref.addEventListener("change", function() {
+        var palette = __md_get("__palette")
+        if (palette && typeof palette.color === "object") {
+          var theme = palette.color.scheme === "slate"
+            ? "dark"
+            : "light"
+
+          // Instruct Giscus to change theme
+          var frame = document.querySelector(".giscus-frame")
+          frame.contentWindow.postMessage(
+            { giscus: { setConfig: { theme } } },
+            "https://giscus.app"
+          )
+        }
+      })
+    })
+  </script>
+<link href="/stylesheet/counter.css" rel="stylesheet"/>
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+<button class="md-top md-icon" data-md-component="top" hidden="" type="button">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  回到页面顶部
+</button>
+</main>
+<footer class="md-footer">
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright">
+<div class="md-copyright__highlight">
+      Copyright © 2024 <a href="https://github.com/NoughtQ">NoughtQ</a>
+</div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+      Material for MkDocs
+    </a>
+</div>
+<div class="md-social">
+<a class="md-social__link" href="https://github.com/noughtq" rel="noopener" target="_blank" title="github.com">
+<svg viewbox="0 0 496 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"></path></svg>
+</a>
+<a class="md-social__link" href="https://blog.noughtq.top" rel="noopener" target="_blank" title="blog.noughtq.top">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M192 32c0 17.7 14.3 32 32 32 123.7 0 224 100.3 224 224 0 17.7 14.3 32 32 32s32-14.3 32-32C512 128.9 383.1 0 224 0c-17.7 0-32 14.3-32 32m0 96c0 17.7 14.3 32 32 32 70.7 0 128 57.3 128 128 0 17.7 14.3 32 32 32s32-14.3 32-32c0-106-86-192-192-192-17.7 0-32 14.3-32 32m-96 16c0-26.5-21.5-48-48-48S0 117.5 0 144v224c0 79.5 64.5 144 144 144s144-64.5 144-144-64.5-144-144-144h-16v96h16c26.5 0 48 21.5 48 48s-21.5 48-48 48-48-21.5-48-48z"></path></svg>
+</a>
+<a class="md-social__link" href="mailto:noughtq666@gmail.com" rel="noopener" target="_blank" title="">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m20 8-8 5-8-5V6l8 5 8-5m0-2H4c-1.11 0-2 .89-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2"></path></svg>
+</a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"base": "../../..", "features": ["content.code.copy", "content.code.annotate", "navigation.tabs", "navigation.top", "navigation.footer", "navigation.indexes", "navigation.tracking", "navigation.prune"], "search": "../../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
+<script src="../../../assets/javascripts/bundle.83f73b43.min.js"></script>
+<script src="../../../js/katex.js"></script>
+<script src="../../../js/toc.js"></script>
+<script src="../../../js/anchor.js"></script>
+<script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+<script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+</body>
+</html>
