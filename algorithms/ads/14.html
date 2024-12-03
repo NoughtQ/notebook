@@ -420,11 +420,82 @@
 </li>
 <li class="md-nav__item md-nav__item--active">
 <input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    Lec 14: Parallel Algorithms
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
 <a class="md-nav__link md-nav__link--active" href="14.html">
 <span class="md-ellipsis">
     Lec 14: Parallel Algorithms
   </span>
 </a>
+<nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#introduction">
+<span class="md-ellipsis">
+      Introduction
+    </span>
+</a>
+<nav aria-label="Introduction" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#pram-model">
+<span class="md-ellipsis">
+      PRAM Model
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#wd-model">
+<span class="md-ellipsis">
+      WD Model
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#examples">
+<span class="md-ellipsis">
+      Examples
+    </span>
+</a>
+<nav aria-label="Examples" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#prefix-sums">
+<span class="md-ellipsis">
+      Prefix-Sums
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#merging">
+<span class="md-ellipsis">
+      Merging
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#maximum-finding">
+<span class="md-ellipsis">
+      Maximum Finding
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
 </li>
 <li class="md-nav__item">
 <a class="md-nav__link" href="15.html">
@@ -507,6 +578,69 @@
 <div class="md-sidebar__scrollwrap">
 <div class="md-sidebar__inner">
 <nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#introduction">
+<span class="md-ellipsis">
+      Introduction
+    </span>
+</a>
+<nav aria-label="Introduction" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#pram-model">
+<span class="md-ellipsis">
+      PRAM Model
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#wd-model">
+<span class="md-ellipsis">
+      WD Model
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#examples">
+<span class="md-ellipsis">
+      Examples
+    </span>
+</a>
+<nav aria-label="Examples" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#prefix-sums">
+<span class="md-ellipsis">
+      Prefix-Sums
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#merging">
+<span class="md-ellipsis">
+      Merging
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#maximum-finding">
+<span class="md-ellipsis">
+      Maximum Finding
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
 </nav>
 </div>
 </div>
@@ -515,7 +649,543 @@
 <article class="md-content__inner md-typeset">
 <h1 id="lec-14-parallel-algorithms">Lec 14: Parallel Algorithms<a class="headerlink" href="#lec-14-parallel-algorithms" title="Permanent link">⚓︎</a></h1>
 <div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
-<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>个字 </p>
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>3515<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 640 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M392.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6m80.6 120.1c-12.5 12.5-12.5 32.8 0 45.3l89.3 89.4-89.4 89.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l112-112c12.5-12.5 12.5-32.8 0-45.3l-112-112c-12.5-12.5-32.8-12.5-45.3 0zm-306.7 0c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3l112 112c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l89.4-89.4c12.5-12.5 12.5-32.8 0-45.3"></path></svg></span> <span>74<span class="heti-spacing"> </span></span>行代码 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>18<span class="heti-spacing"> </span></span>分钟</p>
+</div>
+<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">⚓︎</a></h2>
+<p>实际上，我们在前面所学的所有算法都属于<strong>顺序算法</strong>(sequential algorithms)，这类算法的特点是<u>每步只完成一个操作</u>。要想提升算法的速度，除了可以设计更快的算法（降低时间复杂度）外，还可以采用<strong>并行</strong>的方法。</p>
+<p>所谓<strong>并行</strong>(parallelism)，就是指<u>每一步能够同时完成多个操作<span><span class="heti-spacing"> </span>&lt;</span></u>。可以分为以下几类并行方式：</p>
+<ul>
+<li>机器并行（硬件层面<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：包括了处理器并行、流水线、超长指令字<span class="heti-skip"><span class="heti-spacing"> </span>(VLIW)<span class="heti-spacing"> </span></span>等方法（这些均在<a href="../../hardware/co/index.html">计组</a>课程中有所涉及）</li>
+<li><strong>并行算法</strong>(parallel algorithms)（软件层面<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：这就是本讲的主题，下面会详细介绍。并行算法中常用的模型有：<ul>
+<li><strong>并行随机访问机</strong>(parallel random access machine, PRAM)</li>
+<li><strong>工作<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>深度</strong>(work-depth, WD)</li>
+</ul>
+</li>
+</ul>
+<h3 id="pram-model">PRAM Model<a class="headerlink" href="#pram-model" title="Permanent link">⚓︎</a></h3>
+<p>下面给出<span class="heti-skip"><span class="heti-spacing"> </span>PRAM<span class="heti-spacing"> </span></span>模型的图示：</p>
+<div style="text-align: center">
+<img src="images/lec14/1.png" width="40%"/>
+</div>
+<ul>
+<li><span><span class="arithmatex">\(P_1, \dots, P_n\)</span><span class="heti-spacing"> </span></span>表示<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span><span class="heti-spacing"> </span></span>个处理器，它们同时访问一块共享内存</li>
+<li>每个处理器与共享内存间的双向箭头表示<strong>单位时间内对内存的访问</strong>（包括读、写、计算等操作）<ul>
+<li>具体来说，向上的箭头表示读取，向下的箭头表示写入</li>
+</ul>
+</li>
+</ul>
+<details class="example" open="open">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"/><input id="__tabbed_1_2" name="__tabbed_1" type="radio"/><div class="tabbed-labels"><label for="__tabbed_1_1">例<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span></label><label for="__tabbed_1_2">例<span><span class="heti-spacing"> </span>2</span></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>处理器<span class="heti-skip"><span class="heti-spacing"> </span>i<span class="heti-spacing"> </span></span>执行操作：<code>c := a + b</code></p>
+<p></p><div style="text-align: center">
+<img src="images/lec14/2.png" width="40%"/>
+</div>
+</div>
+<div class="tabbed-block">
+<div class="language-c highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="c1">// 将每个处理器的结果写入到内存对应位置上</span>
+</span><span id="__span-0-2"><a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="k">for</span><span class="w"> </span><span class="n">P_i</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="n">pardo</span>
+</span><span id="__span-0-3"><a href="#__codelineno-0-3" id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="w">    </span><span class="n">A</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">B</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</span><span id="__span-0-4"><a href="#__codelineno-0-4" id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="c1">// pardo: do parallelly，即并行执行循环</span>
+</span><span id="__span-0-5"><a href="#__codelineno-0-5" id="__codelineno-0-5" name="__codelineno-0-5"></a><span class="c1">// 因此实际上执行这个循环所需时间为 O(1)</span>
+</span></code></pre></div>
+<p></p><div style="text-align: center">
+<img src="images/lec14/3.png" width="40%"/>
+</div>
+</div>
+</div>
+</div>
+</details>
+<p>不难发现，这个模型存在一个问题：如果多个处理器同时访问同一块内存（冲突发生<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，那么如何处理这个冲突呢？下面给出几种解决方案：</p>
+<ul>
+<li>专一读取<span class="heti-skip"><span class="heti-spacing"> </span>--<span class="heti-spacing"> </span></span>专一写入<span><span class="heti-spacing"> </span>(exclusive-read exclusive-write, EREW)</span></li>
+<li>并发读取<span class="heti-skip"><span class="heti-spacing"> </span>--<span class="heti-spacing"> </span></span>专一写入<span><span class="heti-spacing"> </span>(concurrent-read exclusive-write, CREW)</span></li>
+<li>并发读取<span class="heti-skip"><span class="heti-spacing"> </span>--<span class="heti-spacing"> </span></span>并发写入<span><span class="heti-spacing"> </span>(concurrent-read concurrent-write, CRCW)</span>，此时还有三种不同的写入规则：<ul>
+<li><strong>任意</strong><span>(arbitrary)<span class="heti-spacing"> </span></span>规则：任意选择一个处理器进行写入操作</li>
+<li><strong>优先级</strong><span>(priority)<span class="heti-spacing"> </span></span>规则：选择编号最小的处理器（规定编号越小优先级越高）进行写入操作</li>
+<li><strong>共同</strong><span>(common)<span class="heti-spacing"> </span></span>规则：只有当所有处理器的写入数据是一致的时候，才会执行写入操作</li>
+</ul>
+</li>
+</ul>
+<details class="example">
+<summary>例子：求和问题</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"/><input id="__tabbed_2_2" name="__tabbed_2" type="radio"/><div class="tabbed-labels"><label for="__tabbed_2_1">题目</label><label for="__tabbed_2_2">分析</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<ul>
+<li>输入：<span class="arithmatex">\(A(1), A(2), \dots, A(n)\)</span>（来自内存的数据）</li>
+<li>输出：<span class="arithmatex">\(A(1) + A(2) + \dots + A(n)\)</span></li>
+</ul>
+</div>
+<div class="tabbed-block">
+<p>下面给出用<span class="heti-skip"><span class="heti-spacing"> </span>PRAM<span class="heti-spacing"> </span></span>模型计算此题的过程图示：</p>
+<p></p><div style="text-align: center">
+<img src="images/lec14/4.png" width="80%"/>
+</div>
+<ul>
+<li>最底层表示初始情况，每层表示并行算法的每个步骤</li>
+<li>每层都有<span class="heti-skip"><span class="heti-spacing"> </span>8<span class="heti-spacing"> </span></span>个处理器，空白圆圈表示空闲的处理器</li>
+<li>观察发现，整个过程中所有工作的处理器构成了一棵满二叉树<ul>
+<li>因此层数为<span><span class="heti-spacing"> </span><span class="arithmatex">\(\log n\)</span></span>，即该算法在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\log n\)</span><span class="heti-spacing"> </span></span>时间内完成</li>
+</ul>
+</li>
+<li><span><span class="arithmatex">\(B(h, i)\)</span><span class="heti-spacing"> </span></span>表示第<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(h\)</span><span class="heti-spacing"> </span></span>步中第<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(i\)</span><span class="heti-spacing"> </span></span>个处理器的计算结果<ul>
+<li>有以下关系式成立：<span class="arithmatex">\(B(h, i) = B(h - 1, 2i - 1) + B(h - 1, 2i)\)</span></li>
+</ul>
+</li>
+</ul>
+<p>伪代码如下所示：</p>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="k">for</span><span class="w"> </span><span class="n">P_i</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="n">pardo</span>
+</span><span id="__span-1-2"><a href="#__codelineno-1-2" id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="w">    </span><span class="n">B</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">A</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</span><span id="__span-1-3"><a href="#__codelineno-1-3" id="__codelineno-1-3" name="__codelineno-1-3"></a><span class="k">for</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">log</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="k">do</span>
+</span><span id="__span-1-4"><a href="#__codelineno-1-4" id="__codelineno-1-4" name="__codelineno-1-4"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="o">^</span><span class="n">h</span>
+</span><span id="__span-1-5"><a href="#__codelineno-1-5" id="__codelineno-1-5" name="__codelineno-1-5"></a><span class="w">        </span><span class="n">B</span><span class="p">(</span><span class="n">h</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">B</span><span class="p">(</span><span class="n">h</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">B</span><span class="p">(</span><span class="n">h</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">i</span><span class="p">)</span>
+</span><span id="__span-1-6"><a href="#__codelineno-1-6" id="__codelineno-1-6" name="__codelineno-1-6"></a><span class="w">    </span><span class="k">else</span>
+</span><span id="__span-1-7"><a href="#__codelineno-1-7" id="__codelineno-1-7" name="__codelineno-1-7"></a><span class="w">        </span><span class="n">stay</span><span class="w"> </span><span class="n">idle</span>
+</span><span id="__span-1-8"><a href="#__codelineno-1-8" id="__codelineno-1-8" name="__codelineno-1-8"></a><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span>
+</span><span id="__span-1-9"><a href="#__codelineno-1-9" id="__codelineno-1-9" name="__codelineno-1-9"></a><span class="w">    </span><span class="n">output</span><span class="w"> </span><span class="n">B</span><span class="p">(</span><span class="n">log</span><span class="p">(</span><span class="n">n</span><span class="p">),</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+</span><span id="__span-1-10"><a href="#__codelineno-1-10" id="__codelineno-1-10" name="__codelineno-1-10"></a><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span>
+</span><span id="__span-1-11"><a href="#__codelineno-1-11" id="__codelineno-1-11" name="__codelineno-1-11"></a><span class="w">    </span><span class="n">stay</span><span class="w"> </span><span class="n">idle</span>
+</span></code></pre></div>
+<p>时间复杂度：<span class="arithmatex">\(T(n) = \log n + 2\)</span></p>
+</div>
+</div>
+</div>
+</details>
+<p>根据上面对例子的分析，我们可以得出关于操作数量和时间之间的关系图：</p>
+<div style="text-align: center">
+<img src="images/lec14/5.png" width="40%"/>
+</div>
+<ul>
+<li>横轴上的最大值为<span><span class="heti-spacing"> </span><span class="arithmatex">\(p\)</span></span>，等于用到过的处理器的最大数量</li>
+<li>纵轴上的最大值为<span><span class="heti-spacing"> </span><span class="arithmatex">\(t\)</span></span>，表示总的运行时间</li>
+<li>每个横条表示一个阶段（单位时间<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，蓝色部分表示工作的处理器，灰色部分表示空闲的处理器</li>
+</ul>
+<div class="admonition bug">
+<p class="admonition-title"><span>PRAM<span class="heti-spacing"> </span></span>模型的其他缺陷</p>
+<ul>
+<li>该模型无法揭示算法和实际使用的处理器个数之间的关系<ul>
+<li>对于上个例子，假如有<span class="heti-skip"><span class="heti-spacing"> </span>100<span class="heti-spacing"> </span></span>个处理器，但实际上只用了<span class="heti-skip"><span class="heti-spacing"> </span>8<span class="heti-spacing"> </span></span>个处理器，所以更多的处理器并不能使执行速度进一步加快</li>
+</ul>
+</li>
+<li>该模型需要指定哪个处理器处理哪部分的指令，这时就需要知道一些可能不太必要的细节（<heti-adjacent class="heti-adjacent-half">？</heti-adjacent>）</li>
+</ul>
+</div>
+<h3 id="wd-model">WD Model<a class="headerlink" href="#wd-model" title="Permanent link">⚓︎</a></h3>
+<details class="example" open="open">
+<summary>接着上面的例子</summary>
+<p>如果用的是<span class="heti-skip"><span class="heti-spacing"> </span>WD<span class="heti-spacing"> </span></span>模型，那么伪代码将会改写为如下形式：</p>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-2-1"><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="k">for</span><span class="w"> </span><span class="n">P_i</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="n">pardo</span>
+</span><span id="__span-2-2"><a href="#__codelineno-2-2" id="__codelineno-2-2" name="__codelineno-2-2"></a><span class="w">    </span><span class="n">B</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">A</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</span><span id="__span-2-3"><a href="#__codelineno-2-3" id="__codelineno-2-3" name="__codelineno-2-3"></a><span class="k">for</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">log</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="k">do</span>
+</span><span id="__span-2-4"><a href="#__codelineno-2-4" id="__codelineno-2-4" name="__codelineno-2-4"></a><span class="hll"><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">P_i</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="o">^</span><span class="n">h</span><span class="w"> </span><span class="n">pardo</span>
+</span></span><span id="__span-2-5"><a href="#__codelineno-2-5" id="__codelineno-2-5" name="__codelineno-2-5"></a><span class="w">        </span><span class="n">B</span><span class="p">(</span><span class="n">h</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">B</span><span class="p">(</span><span class="n">h</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">B</span><span class="p">(</span><span class="n">h</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">i</span><span class="p">)</span>
+</span><span id="__span-2-6"><a href="#__codelineno-2-6" id="__codelineno-2-6" name="__codelineno-2-6"></a><span class="hll"><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">pardo</span>
+</span></span><span id="__span-2-7"><a href="#__codelineno-2-7" id="__codelineno-2-7" name="__codelineno-2-7"></a><span class="w">    </span><span class="n">output</span><span class="w"> </span><span class="n">B</span><span class="p">(</span><span class="n">log</span><span class="p">(</span><span class="n">n</span><span class="p">),</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+</span></code></pre></div>
+<p>与<span class="heti-skip"><span class="heti-spacing"> </span>PRAM<span class="heti-spacing"> </span></span>的不同之处在于高亮的两个语句，这里用到的是并行处理的方式（<code>pardo</code><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，而且不再显式指出不工作的处理器。</p>
+</details>
+<p>因此对应的操作数量和时间之间的关系图变成了：</p>
+<div style="text-align: center">
+<img src="images/lec14/6.png" width="40%"/>
+</div>
+<p>由于没有了那些灰色区域（不工作的处理器<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，因此这张图更清楚地反映了真实情况下各个时间段内的用到的处理器数量。对于更一般的情况，如下所示：</p>
+<div style="text-align: center">
+<img src="images/lec14/7.png" width="40%"/>
+</div>
+<p>衡量<span class="heti-skip"><span class="heti-spacing"> </span>WD<span class="heti-spacing"> </span></span>模型下并行算法的性能的一些指标：</p>
+<ul>
+<li><span class="arithmatex">\(W(n)\)</span>：工作量，即运行并行算法所需的总操作数目</li>
+<li><span class="arithmatex">\(T(n)\)</span>：最坏情况下的运行时间</li>
+<li><span class="arithmatex">\(P(n) = \dfrac{W(n)}{T(n)}\)</span>：处理器的数量</li>
+<li>当所需处理器数量<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(p \le \dfrac{W(n)}{T(n)}\)</span><span class="heti-spacing"> </span></span>时，所需时间为<span><span class="heti-spacing"> </span><span class="arithmatex">\(\dfrac{W(n)}{p}\)</span></span></li>
+<li>使用任意数量为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(p\)</span><span class="heti-spacing"> </span></span>的处理器时，所需时间为<span><span class="heti-spacing"> </span><span class="arithmatex">\(\dfrac{W(n)}{p} + T(n)\)</span></span></li>
+</ul>
+<p>后面那三个指标实际上是<strong>渐进等价的</strong>(asymptotically equivalent)，即对于任意大的<span><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span></span>，这三者位于同一复杂度下。</p>
+<details class="example" open="open">
+<summary>又一次回到上面的例子</summary>
+<ul>
+<li><span class="arithmatex">\(T(n) = n + 2\)</span></li>
+<li><span class="arithmatex">\(W(n) = n + \dfrac{n}{2} + \dfrac{n}{2^2} + \dots + \dfrac{n}{2^k} + 1 = 2n\)</span>，其中<span><span class="heti-spacing"> </span><span class="arithmatex">\(2^k = n\)</span></span></li>
+</ul>
+</details>
+<p><strong><span>WD<span class="heti-spacing"> </span></span>表示法充分性定理</strong>(WD-presentation sufficiency theorem)：用<span class="heti-skip"><span class="heti-spacing"> </span>WD<span class="heti-spacing"> </span></span>模型表示的算法能够被任意<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(P(n)\)</span><span class="heti-spacing"> </span></span>个处理器在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(O(\dfrac{W(n)}{p} + T(n))\)</span><span class="heti-spacing"> </span></span>时间内实现，此时采用与<span class="heti-skip"><span class="heti-spacing"> </span>WD<span class="heti-spacing"> </span></span>表示法相同的并发写入规则<heti-adjacent class="heti-adjacent-half">。</heti-adjacent>（？？<heti-adjacent class="heti-adjacent-half">？</heti-adjacent>）</p>
+<p>虽然<span class="heti-skip"><span class="heti-spacing"> </span>PRAM<span class="heti-spacing"> </span></span>模型和<span class="heti-skip"><span class="heti-spacing"> </span>WD<span class="heti-spacing"> </span></span>模型本质上没有太大的区别，但是<span class="heti-skip"><span class="heti-spacing"> </span>WD<span class="heti-spacing"> </span></span>模型可以反映算法与处理器数量之间的关系，因此表现会更好。</p>
+<h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">⚓︎</a></h2>
+<h3 id="prefix-sums">Prefix-Sums<a class="headerlink" href="#prefix-sums" title="Permanent link">⚓︎</a></h3>
+<div class="admonition question">
+<p class="admonition-title">问题描述</p>
+<ul>
+<li>输入：<span class="arithmatex">\(A(1), A(2), \dots, A(n)\)</span></li>
+<li>输出：<span class="arithmatex">\(\sum\limits_{i=1}^1A(i), \sum\limits_{i=1}^2A(i), \dots, \sum\limits_{i=1}^nA(i)\)</span></li>
+</ul>
+</div>
+<p>解决这个问题的方法与前面的求和问题是类似的，首先还是借助一棵平衡二叉树模型来分析：</p>
+<div style="text-align: center">
+<img src="images/lec14/8.png" width="60%"/>
+</div>
+<p>可以看到，这里还是先计算了求和问题，为之后前缀和问题的解决打下基础。</p>
+<p>接下来，我们规定<strong>前缀和</strong><span class="arithmatex">\(C(h, i) = \sum\limits_{k=1}^\alpha A(k)\)</span>，其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\((0, \alpha)\)</span><span class="heti-spacing"> </span></span>表示二叉树的节点<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\((h, i)\)</span><span class="heti-spacing"> </span></span>最右侧路径上的叶子节点的位置。要得到<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(C(h, i)\)</span><span class="heti-spacing"> </span></span>的值，需要分以下情况讨论：</p>
+<p>=== Case 1</p>
+<div class="language-text highlight"><pre><span></span><code>&lt;div style="text-align: center"&gt;
+    &lt;img src="images/lec14/9.png" width="48%"&gt;
+    &lt;img src="images/lec14/10.png" width="46.5%"&gt;
+&lt;/div&gt;
+
+计算最左边路径上的节点：
+
+```c
+if (i == 1)
+    C(h, i) := B(h, i)
+```
+</code></pre></div>
+<p>=== Case 2</p>
+<div class="language-text highlight"><pre><span></span><code>&lt;div style="text-align: center"&gt;
+    &lt;img src="images/lec14/11.png" width="60%"&gt;
+&lt;/div&gt;
+
+计算每一层偶数位上的节点：
+
+```c
+if (i % 2 == 0)
+    C(h, i) := C(h + 1, i / 2)
+```
+</code></pre></div>
+<p>=== Case 3</p>
+<div class="language-text highlight"><pre><span></span><code>&lt;div style="text-align: center"&gt;
+    &lt;img src="images/lec14/12.png" width="60%"&gt;
+&lt;/div&gt;
+
+计算除最左边路径外每一层奇数位上的节点：
+
+```c
+if (i % 2 == 1 &amp;&amp; i != 1)
+    C(h, i) := C(h + 1, (i - 1) / 2) + B(h, i)
+```
+
+注意到计算$C(h, i)$并没有利用与它同一级上的节点，这是因为每层都是并行计算的，因此只能利用上一级的计算值以及自身的值。
+</code></pre></div>
+<p>总结一下：我们先<strong>自底向上</strong>计算求和问题，然后根据求和问题的结果<strong>自顶向下</strong>计算前缀和问题，这两趟计算都用到了并行算法。</p>
+<p>伪代码如下所示：</p>
+<details class="code" open="open">
+<summary>代码实现</summary>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-6-1"><a href="#__codelineno-6-1" id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="c1">// Same as summation problem</span>
+</span><span id="__span-6-2"><a href="#__codelineno-6-2" id="__codelineno-6-2" name="__codelineno-6-2"></a><span class="k">for</span><span class="w"> </span><span class="n">P_i</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="n">pardo</span>
+</span><span id="__span-6-3"><a href="#__codelineno-6-3" id="__codelineno-6-3" name="__codelineno-6-3"></a><span class="w">    </span><span class="n">B</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">A</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</span><span id="__span-6-4"><a href="#__codelineno-6-4" id="__codelineno-6-4" name="__codelineno-6-4"></a><span class="k">for</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">log</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+</span><span id="__span-6-5"><a href="#__codelineno-6-5" id="__codelineno-6-5" name="__codelineno-6-5"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="o">^</span><span class="n">h</span><span class="w"> </span><span class="n">pardo</span>
+</span><span id="__span-6-6"><a href="#__codelineno-6-6" id="__codelineno-6-6" name="__codelineno-6-6"></a><span class="w">        </span><span class="n">B</span><span class="p">(</span><span class="n">h</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">B</span><span class="p">(</span><span class="n">h</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">B</span><span class="p">(</span><span class="n">h</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">i</span><span class="p">)</span>
+</span><span id="__span-6-7"><a href="#__codelineno-6-7" id="__codelineno-6-7" name="__codelineno-6-7"></a>
+</span><span id="__span-6-8"><a href="#__codelineno-6-8" id="__codelineno-6-8" name="__codelineno-6-8"></a><span class="c1">// Now calculate the prefix sum problem</span>
+</span><span id="__span-6-9"><a href="#__codelineno-6-9" id="__codelineno-6-9" name="__codelineno-6-9"></a><span class="k">for</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">log</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="mi">0</span>
+</span><span id="__span-6-10"><a href="#__codelineno-6-10" id="__codelineno-6-10" name="__codelineno-6-10"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="n">even</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="o">^</span><span class="n">h</span><span class="w"> </span><span class="n">pardo</span>
+</span><span id="__span-6-11"><a href="#__codelineno-6-11" id="__codelineno-6-11" name="__codelineno-6-11"></a><span class="w">        </span><span class="n">C</span><span class="p">(</span><span class="n">h</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">C</span><span class="p">(</span><span class="n">h</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span>
+</span><span id="__span-6-12"><a href="#__codelineno-6-12" id="__codelineno-6-12" name="__codelineno-6-12"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">pardo</span>
+</span><span id="__span-6-13"><a href="#__codelineno-6-13" id="__codelineno-6-13" name="__codelineno-6-13"></a><span class="w">        </span><span class="n">C</span><span class="p">(</span><span class="n">h</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">B</span><span class="p">(</span><span class="n">h</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+</span><span id="__span-6-14"><a href="#__codelineno-6-14" id="__codelineno-6-14" name="__codelineno-6-14"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="n">odd</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="o">^</span><span class="n">h</span><span class="w"> </span><span class="n">pardo</span>
+</span><span id="__span-6-15"><a href="#__codelineno-6-15" id="__codelineno-6-15" name="__codelineno-6-15"></a><span class="w">        </span><span class="n">C</span><span class="p">(</span><span class="n">h</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">C</span><span class="p">(</span><span class="n">h</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">B</span><span class="p">(</span><span class="n">h</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">)</span>
+</span><span id="__span-6-16"><a href="#__codelineno-6-16" id="__codelineno-6-16" name="__codelineno-6-16"></a><span class="k">for</span><span class="w"> </span><span class="n">P_i</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="n">pardo</span>
+</span><span id="__span-6-17"><a href="#__codelineno-6-17" id="__codelineno-6-17" name="__codelineno-6-17"></a><span class="w">    </span><span class="n">Output</span><span class="w"> </span><span class="n">C</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">)</span>
+</span></code></pre></div>
+</details>
+<ul>
+<li>时间复杂度：<span class="arithmatex">\(T(n) = O(\log n)\)</span></li>
+<li>工作量：<span class="arithmatex">\(W(n) = O(n)\)</span></li>
+</ul>
+<h3 id="merging">Merging<a class="headerlink" href="#merging" title="Permanent link">⚓︎</a></h3>
+<div class="admonition question">
+<p class="admonition-title">问题描述</p>
+<p>合并两个非递减的数组<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(A(1), A(2), \dots, A(n)\)</span><span class="heti-spacing"> </span></span>和数组<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(B(1), B(2), \dots, B(m)\)</span><span class="heti-spacing"> </span></span>至另一个非递减的数组<span><span class="heti-spacing"> </span><span class="arithmatex">\(C(1), C(2), \dots, C(n + m)\)</span></span>。</p>
+</div>
+<p>为了简化后面的分析，我们规定：</p>
+<ul>
+<li>数组<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(A, B\)</span><span class="heti-spacing"> </span></span>之间没有重复元素</li>
+<li>令<span><span class="heti-spacing"> </span><span class="arithmatex">\(n = m\)</span></span></li>
+<li><span><span class="arithmatex">\(\log n, \dfrac{n}{\log n}\)</span><span class="heti-spacing"> </span></span>的结果均为整数</li>
+</ul>
+<blockquote>
+<p>即使没有这个规定，后面的分析也同样适用于一般的情况。</p>
+</blockquote>
+<p>解决该问题用到的关键方法：<strong>划分</strong>(partition)。下面介绍一下划分的范式<span><span class="heti-spacing"> </span>(paradigm)</span>：</p>
+<ul>
+<li><strong>划分</strong>：将输入数据划分为<span><span class="heti-spacing"> </span><span class="arithmatex">\(p\)</span></span>（很大的数字）个独立的小任务，每个小任务的规模大致为<span><span class="heti-spacing"> </span><span class="arithmatex">\(\dfrac{n}{p}\)</span></span></li>
+<li><strong>实际的工作</strong>：并发执行这些小任务，对于每个小任务使用（顺序）算法来解决</li>
+</ul>
+<p>我们可以将合并问题进一步转化为<strong>排行</strong>问题<span><span class="heti-spacing"> </span>(ranking)</span>，规定：</p>
+<div class="arithmatex">\[
+\text{RANK}(j, A) = \begin{cases}i &amp; \text{if } A(i) &lt; B(j) &lt; A(i + 1), \text{for } 1 \le i &lt; n \\ 0 &amp; \text{if } B(j) &lt; A(1) \\ n &amp; \text{if } B(j) &gt; A(n)\end{cases}
+\]</div>
+<p>那么排行问题可以被描述为<span><span class="heti-spacing"> </span><span class="arithmatex">\(\text{RANK}(A, B)\)</span></span>，此时需要计算的东西为：<span class="arithmatex">\(\forall 1 \le i \le n\)</span>，计算<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\text{RANK}(i, B)\)</span><span class="heti-spacing"> </span></span>和<span><span class="heti-spacing"> </span><span class="arithmatex">\(\text{RANK}(i, A)\)</span></span>。伪代码如下所示：</p>
+<details class="code" open="open">
+<summary>代码实现</summary>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-7-1"><a href="#__codelineno-7-1" id="__codelineno-7-1" name="__codelineno-7-1"></a><span class="k">for</span><span class="w"> </span><span class="n">P_i</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="n">pardo</span>
+</span><span id="__span-7-2"><a href="#__codelineno-7-2" id="__codelineno-7-2" name="__codelineno-7-2"></a><span class="w">    </span><span class="n">C</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">RANK</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">B</span><span class="p">))</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">A</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</span><span id="__span-7-3"><a href="#__codelineno-7-3" id="__codelineno-7-3" name="__codelineno-7-3"></a><span class="k">for</span><span class="w"> </span><span class="n">P_i</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="n">pardo</span>
+</span><span id="__span-7-4"><a href="#__codelineno-7-4" id="__codelineno-7-4" name="__codelineno-7-4"></a><span class="w">    </span><span class="n">C</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">RANK</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">A</span><span class="p">))</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">B</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</span></code></pre></div>
+</details>
+<details class="example">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio"/><input id="__tabbed_3_2" name="__tabbed_3" type="radio"/><div class="tabbed-labels"><label for="__tabbed_3_1">题目</label><label for="__tabbed_3_2">答案</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>对以下两个数组，先分别给出它们的排行，然后合并这两个数组。</p>
+<p></p><div style="text-align: center">
+<img src="images/lec14/13.png" width="60%"/>
+</div>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec14/14.png" width="60%"/>
+</div>
+</div>
+</div>
+</div>
+</details>
+<p>结论：根据排行问题给出的解，合并问题可以在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(O(1)\)</span><span class="heti-spacing"> </span></span>时间内得到结果，且工作量为<span><span class="heti-spacing"> </span><span class="arithmatex">\(O(n + m)\)</span></span>。</p>
+<details class="info" open="open">
+<summary>其他解决排行问题的方法</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio"/><input id="__tabbed_4_2" name="__tabbed_4" type="radio"/><div class="tabbed-labels"><label for="__tabbed_4_1">二分查找</label><label for="__tabbed_4_2">顺序排行</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-c highlight"><pre><span></span><code><span id="__span-8-1"><a href="#__codelineno-8-1" id="__codelineno-8-1" name="__codelineno-8-1"></a><span class="k">for</span><span class="w"> </span><span class="n">P_i</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="n">pardo</span>
+</span><span id="__span-8-2"><a href="#__codelineno-8-2" id="__codelineno-8-2" name="__codelineno-8-2"></a><span class="w">    </span><span class="n">RANK</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">B</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">BS</span><span class="p">(</span><span class="n">A</span><span class="p">(</span><span class="n">i</span><span class="p">),</span><span class="w"> </span><span class="n">B</span><span class="p">)</span>
+</span><span id="__span-8-3"><a href="#__codelineno-8-3" id="__codelineno-8-3" name="__codelineno-8-3"></a><span class="w">    </span><span class="n">RANK</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">A</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">BS</span><span class="p">(</span><span class="n">B</span><span class="p">(</span><span class="n">i</span><span class="p">),</span><span class="w"> </span><span class="n">A</span><span class="p">)</span>
+</span></code></pre></div>
+<ul>
+<li>时间复杂度：<span class="arithmatex">\(T(n) = O(\log n)\)</span></li>
+<li>工作量：<span class="arithmatex">\(W(n) = O(n \log n)\)</span></li>
+</ul>
+</div>
+<div class="tabbed-block">
+<div class="language-c highlight"><pre><span></span><code><span id="__span-9-1"><a href="#__codelineno-9-1" id="__codelineno-9-1" name="__codelineno-9-1"></a><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+</span><span id="__span-9-2"><a href="#__codelineno-9-2" id="__codelineno-9-2" name="__codelineno-9-2"></a><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">m</span><span class="p">)</span>
+</span><span id="__span-9-3"><a href="#__codelineno-9-3" id="__codelineno-9-3" name="__codelineno-9-3"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">A</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">B</span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">))</span>
+</span><span id="__span-9-4"><a href="#__codelineno-9-4" id="__codelineno-9-4" name="__codelineno-9-4"></a><span class="w">        </span><span class="n">RANK</span><span class="p">(</span><span class="o">++</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">B</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">j</span><span class="p">;</span>
+</span><span id="__span-9-5"><a href="#__codelineno-9-5" id="__codelineno-9-5" name="__codelineno-9-5"></a><span class="w">    </span><span class="k">else</span><span class="w"> </span>
+</span><span id="__span-9-6"><a href="#__codelineno-9-6" id="__codelineno-9-6" name="__codelineno-9-6"></a><span class="w">        </span><span class="n">RANK</span><span class="p">(</span><span class="o">++</span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">A</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+</span></code></pre></div>
+<ul>
+<li>时间复杂度：<span class="arithmatex">\(T(n) = O(n + m)\)</span></li>
+<li>工作量：<span class="arithmatex">\(W(n) = O(n + m)\)</span></li>
+</ul>
+</div>
+</div>
+</div>
+<p>但这些方法都不太好<span><span class="heti-spacing"> </span>......</span></p>
+</details>
+<hr/>
+<p>改进方案：<strong>并行排行</strong>(parallel ranking)</p>
+<ul>
+<li>假设<span><span class="heti-spacing"> </span><span class="arithmatex">\(n = m\)</span></span>，且确保<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(A(n + 1), B(n + 1)\)</span><span class="heti-spacing"> </span></span>比<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(A(n), B(n)\)</span><span class="heti-spacing"> </span></span>都要大</li>
+<li>
+<p>第一步：划分，令处理器数量<span><span class="heti-spacing"> </span><span class="arithmatex">\(p = \dfrac{n}{\log n}\)</span></span>，对<span><span class="heti-spacing"> </span><span class="arithmatex">\(1 \le i \le p\)</span></span>，有：</p>
+<ul>
+<li><span class="arithmatex">\(A_{\text{Select}}(i) = A(1 + (i - 1)\log n)\)</span></li>
+<li><span class="arithmatex">\(B_{\text{Select}}(i) = B(1 + (i - 1)\log n)\)</span></li>
+<li>计算每一个（根据上面两个式子）被选中的排行</li>
+</ul>
+</li>
+<li>
+<p>第二步：实际排行</p>
+<ul>
+<li>划分以后，整个问题被分为至多有<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(2p\)</span><span class="heti-spacing"> </span></span>个规模为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(O(\log n)\)</span><span class="heti-spacing"> </span></span>的子问题</li>
+</ul>
+</li>
+</ul>
+<details class="example">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="5:4"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio"/><input id="__tabbed_5_2" name="__tabbed_5" type="radio"/><input id="__tabbed_5_3" name="__tabbed_5" type="radio"/><input id="__tabbed_5_4" name="__tabbed_5" type="radio"/><div class="tabbed-labels"><label for="__tabbed_5_1">原数组</label><label for="__tabbed_5_2">选中元素</label><label for="__tabbed_5_3">对这些元素进行排行</label><label for="__tabbed_5_4">得到子问题</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec14/15.png" width="60%"/>
+</div>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec14/16.png" width="60%"/>
+</div>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec14/17.png" width="60%"/>
+</div>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec14/18.png" width="60%"/>
+</div>
+<p>绿色部分表示一个个的子问题（<del>这样表示有点丑</del>）</p>
+</div>
+</div>
+</div>
+</details>
+<p>分析：</p>
+<ul>
+<li>
+<p>划分：</p>
+<ul>
+<li>时间：<span class="arithmatex">\(T = O(\log n)\)</span></li>
+<li>工作量：<span class="arithmatex">\(W = O(p \log n) = O(n)\)</span></li>
+</ul>
+</li>
+<li>
+<p>实际排行：</p>
+<ul>
+<li>时间：<span class="arithmatex">\(T = O(\log n)\)</span></li>
+<li>工作量：<span class="arithmatex">\(W = O(p \log n) = O(n)\)</span></li>
+</ul>
+</li>
+<li>
+<p>总结：</p>
+<ul>
+<li>时间：<span class="arithmatex">\(T = O(\log n)\)</span></li>
+<li>工作量：<span class="arithmatex">\(W = O(p \log n) = O(n)\)</span></li>
+</ul>
+</li>
+</ul>
+<h3 id="maximum-finding">Maximum Finding<a class="headerlink" href="#maximum-finding" title="Permanent link">⚓︎</a></h3>
+<div class="admonition question">
+<p class="admonition-title">问题描述</p>
+<p>从<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span><span class="heti-spacing"> </span></span>个元素中找到最大值</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">各种解题方法</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="6:4"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio"/><input id="__tabbed_6_2" name="__tabbed_6" type="radio"/><input id="__tabbed_6_3" name="__tabbed_6" type="radio"/><input id="__tabbed_6_4" name="__tabbed_6" type="radio"/><div class="tabbed-labels"><label for="__tabbed_6_1">求和问题算法的改版</label><label for="__tabbed_6_2">比较所有的元素对</label><label for="__tabbed_6_3">划分：双对数范式<span class="heti-skip"><span class="heti-spacing"> </span>(doubly-logarithmic paradigm)<span class="heti-spacing"> </span></span></label><label for="__tabbed_6_4">划分：随机采样<span><span class="heti-spacing"> </span>(random sampling)</span></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>伪代码就不给了，结论为：</p>
+<ul>
+<li>时间：<span class="arithmatex">\(T(n) = O(\log n)\)</span></li>
+<li>工作量：<span class="arithmatex">\(W(n) = O(n)\)</span></li>
+</ul>
+</div>
+<div class="tabbed-block">
+<p>伪代码如下所示：</p>
+<details class="code" open="open">
+<summary>代码实现</summary>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-10-1"><a href="#__codelineno-10-1" id="__codelineno-10-1" name="__codelineno-10-1"></a><span class="k">for</span><span class="w"> </span><span class="n">P_i</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="n">pardo</span>
+</span><span id="__span-10-2"><a href="#__codelineno-10-2" id="__codelineno-10-2" name="__codelineno-10-2"></a><span class="w">    </span><span class="n">B</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="mi">0</span>
+</span><span id="__span-10-3"><a href="#__codelineno-10-3" id="__codelineno-10-3" name="__codelineno-10-3"></a><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="n">pardo</span>
+</span><span id="__span-10-4"><a href="#__codelineno-10-4" id="__codelineno-10-4" name="__codelineno-10-4"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">A</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">A</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">A</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">A</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">j</span><span class="p">)</span>
+</span><span id="__span-10-5"><a href="#__codelineno-10-5" id="__codelineno-10-5" name="__codelineno-10-5"></a><span class="w">        </span><span class="n">B</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+</span><span id="__span-10-6"><a href="#__codelineno-10-6" id="__codelineno-10-6" name="__codelineno-10-6"></a><span class="w">    </span><span class="k">else</span>
+</span><span id="__span-10-7"><a href="#__codelineno-10-7" id="__codelineno-10-7" name="__codelineno-10-7"></a><span class="w">        </span><span class="n">B</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+</span><span id="__span-10-8"><a href="#__codelineno-10-8" id="__codelineno-10-8" name="__codelineno-10-8"></a><span class="k">for</span><span class="w"> </span><span class="n">P_i</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="n">pardo</span>
+</span><span id="__span-10-9"><a href="#__codelineno-10-9" id="__codelineno-10-9" name="__codelineno-10-9"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">B</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span>
+</span><span id="__span-10-10"><a href="#__codelineno-10-10" id="__codelineno-10-10" name="__codelineno-10-10"></a><span class="w">        </span><span class="n">A</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">maximum</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">A</span>
+</span></code></pre></div>
+</details>
+<ul>
+<li>时间：<span class="arithmatex">\(T(n) = O(1)\)</span></li>
+<li>工作量：<span class="arithmatex">\(W(n) = O(n^2)\)</span></li>
+</ul>
+<div class="admonition bug">
+<p class="admonition-title">问题</p>
+<p>由于是并行比较<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(O(n^2)\)</span><span class="heti-spacing"> </span></span>对元素，因此不可避免地会出现多个处理器访问相同元素的冲突。</p>
+<p>解决方案：<strong><span>PRAM<span class="heti-spacing"> </span></span>模型<span class="heti-skip"><span class="heti-spacing"> </span>-CRCW<span class="heti-spacing"> </span></span>策略<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>共同规则</strong>（当所有处理器写入相同的数据时才能进行写入操作）</p>
+</div>
+</div>
+<div class="tabbed-block">
+<details class="info">
+<summary>根据上一种算法想到的划分方式</summary>
+<p>我们看到，上一种算法中还有一个问题是：虽然时间降为常数级了，但是工作量变成二次的了。所以我们希望通过划分来降低工作量。因此，我们先尝试将问题划分为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\sqrt{n}\)</span><span class="heti-spacing"> </span></span>个规模为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\sqrt{n}\)</span><span class="heti-spacing"> </span></span>的子问题：</p>
+<ul>
+<li><span class="arithmatex">\(A_1 = A(1), \dots, A(\sqrt{n}) \quad \Rightarrow M_1\)</span></li>
+<li><span class="arithmatex">\(A_2 = A(\sqrt{n} + 1), \dots, A(2 \sqrt{n}) \quad \Rightarrow M_2\)</span></li>
+<li>......</li>
+<li><span class="arithmatex">\(A_{\sqrt{n}} = A(n - \sqrt{n} + 1), \dots, A(n) \quad \Rightarrow M_{\sqrt{n}}\)</span></li>
+</ul>
+<p>最后从每个子问题得到的最大值<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(M_1, M_2, \dots M_{\sqrt{n}}\)</span><span class="heti-spacing"> </span></span>中选取最大值为<span><span class="heti-spacing"> </span><span class="arithmatex">\(A_{max}\)</span></span></p>
+<p>分析：</p>
+<ul>
+<li>对于每个子问题，所需时间为<span><span class="heti-spacing"> </span><span class="arithmatex">\(T(\sqrt{n})\)</span></span>，工作量为<span><span class="heti-spacing"> </span><span class="arithmatex">\(W(\sqrt{n})\)</span></span></li>
+<li>从这些子问题的最大值寻找整个问题的最大值时，采用的是前一种算法，因此所需时间为<span><span class="heti-spacing"> </span><span class="arithmatex">\(T(1)\)</span></span>，工作量为<span><span class="heti-spacing"> </span><span class="arithmatex">\(W((\sqrt{n})^2) = O(n)\)</span></span></li>
+<li>
+<p>由于是并行解决<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\sqrt{n}\)</span><span class="heti-spacing"> </span></span>个子问题，因此对于总问题而言，有以下递推式成立：</p>
+<ul>
+<li><span class="arithmatex">\(T(n) \le T(\sqrt{n}) + c_1\)</span></li>
+<li><span class="arithmatex">\(W(n) \le \sqrt{n}W(\sqrt{n}) + c_2 n\)</span></li>
+</ul>
+</li>
+<li>
+<p>根据递推式，最终解得：</p>
+<ul>
+<li>时间：<span class="arithmatex">\(T(n) = O(\log \log n)\)</span></li>
+<li>工作量：<span class="arithmatex">\(W(n) = O(n \log \log n)\)</span></li>
+</ul>
+</li>
+</ul>
+<p>可以看到，虽然工作量下降了，但是所需时间却变多了，因此这种改进方法还是不太好。</p>
+</details>
+<p>我们假设<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(h = \log \log n\)</span><span class="heti-spacing"> </span></span>为整数，此时<span><span class="heti-spacing"> </span><span class="arithmatex">\(n = 2^{2^h}\)</span></span>。现在将问题划分为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\dfrac{n}{h}\)</span><span class="heti-spacing"> </span></span>个规模为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(j\)</span><span class="heti-spacing"> </span></span>的子问题：</p>
+<ul>
+<li><span class="arithmatex">\(A_1 = A(1), \dots, A(h) \quad \Rightarrow M_1\)</span></li>
+<li><span class="arithmatex">\(A_2 = A(h + 1), \dots, A(2h) \quad \Rightarrow M_2\)</span></li>
+<li>......</li>
+<li><span class="arithmatex">\(A_{\frac{n}{h}} = A(n - h + 1), \dots, A(n) \quad \Rightarrow M_{\frac{n}{h}}\)</span></li>
+</ul>
+<p>最后从每个子问题得到的最大值<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(M_1, M_2, \dots M_{\frac{n}{h}}\)</span><span class="heti-spacing"> </span></span>中选取最大值为<span><span class="heti-spacing"> </span><span class="arithmatex">\(A_{max}\)</span></span></p>
+<p>分析：</p>
+<ul>
+<li>对于每个子问题，所需时间为<span><span class="heti-spacing"> </span><span class="arithmatex">\(T(h)\)</span></span>，工作量为<span><span class="heti-spacing"> </span><span class="arithmatex">\(W(h)\)</span></span></li>
+<li>根据对之前划分的分析，最终解得：<ul>
+<li>时间：<span class="arithmatex">\(T(n) = O(h + \log \log \dfrac{n}{h}) = O(\log \log n)\)</span></li>
+<li>工作量：<span class="arithmatex">\(W(n) = O(h \cdot \dfrac{n}{h} + \dfrac{n}{h} \log \log \dfrac{n}{h}) = O(n)\)</span></li>
+</ul>
+</li>
+</ul>
+<p>相比前一种划分而言，这次终于将工作量压到了线性复杂度，但是还是没能保住原来常数级的时间。</p>
+</div>
+<div class="tabbed-block">
+<p>具体步骤：</p>
+<ul>
+<li>这里采用的是<span class="heti-skip"><span class="heti-spacing"> </span>PRAM<span class="heti-spacing"> </span></span>模型<span class="heti-skip"><span class="heti-spacing"> </span>-CRCW<span class="heti-spacing"> </span></span>策略<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>任意规则（任意选择处理器进行写入操作）</li>
+<li>先从数组<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(A\)</span><span class="heti-spacing"> </span></span>中的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span><span class="heti-spacing"> </span></span>个元素中挑选<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n^{\frac{7}{8}}\)</span><span class="heti-spacing"> </span></span>个元素出来，形成数组<span><span class="heti-spacing"> </span><span class="arithmatex">\(B\)</span></span></li>
+<li>将数组<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(B\)</span><span class="heti-spacing"> </span></span>划分为多个大小为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n^{\frac{1}{8}}\)</span><span class="heti-spacing"> </span></span>的小块，因此有<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n^{\frac{3}{4}}\)</span><span class="heti-spacing"> </span></span>个这样的小块。然后对每个小块求出最大值，得到了<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n^{\frac{3}{4}}\)</span><span class="heti-spacing"> </span></span>局部最大值（使用方法<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>计算）</li>
+<li>接下来将这些最大值划分为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n^{\frac{1}{2}}\)</span><span class="heti-spacing"> </span></span>个大小为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n^{\frac{1}{4}}\)</span><span class="heti-spacing"> </span></span>的小块，然后对每个小块求出最大值，进而求出所有<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n^{\frac{7}{8}}\)</span><span class="heti-spacing"> </span></span>个元素的最大值（使用方法<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>计算）</li>
+</ul>
+<p>分析：</p>
+<ul>
+<li>
+<p>第<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>次划分：</p>
+<ul>
+<li>时间：<span class="arithmatex">\(M_i^{(1)} \sim T = O(1) \Rightarrow T(n) = O(1)\)</span></li>
+<li>工作量：<span class="arithmatex">\(W_i = O((n^{\frac{1}{8}})^2) = O(n^{\frac{1}{4}}) \Rightarrow W(n) = O(n)\)</span></li>
+</ul>
+</li>
+<li>
+<p>第<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>次划分：</p>
+<ul>
+<li>时间：<span class="arithmatex">\(M_i^{(2)} \sim T = O(1) \Rightarrow T(n) = O(1)\)</span></li>
+<li>工作量：<span class="arithmatex">\(W_i = O((n^{\frac{1}{4}})^2) = O(n^{\frac{1}{2}}) \Rightarrow W(n) = O(n)\)</span></li>
+</ul>
+</li>
+<li>
+<p>总结：</p>
+<ul>
+<li>时间：<span class="arithmatex">\(M(n^{\frac{7}{8}}) \sim T = O(1)\)</span></li>
+<li>工作量：<span class="arithmatex">\(W_i = O(n)\)</span></li>
+</ul>
+</li>
+</ul>
+<p>伪代码：</p>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-11-1"><a href="#__codelineno-11-1" id="__codelineno-11-1" name="__codelineno-11-1"></a><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">there</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">an</span><span class="w"> </span><span class="n">element</span><span class="w"> </span><span class="n">larger</span><span class="w"> </span><span class="n">than</span><span class="w"> </span><span class="n">M</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-11-2"><a href="#__codelineno-11-2" id="__codelineno-11-2" name="__codelineno-11-2"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">each</span><span class="w"> </span><span class="n">element</span><span class="w"> </span><span class="n">larger</span><span class="w"> </span><span class="n">than</span><span class="w"> </span><span class="n">M</span><span class="p">)</span>
+</span><span id="__span-11-3"><a href="#__codelineno-11-3" id="__codelineno-11-3" name="__codelineno-11-3"></a><span class="w">        </span><span class="n">Throw</span><span class="w"> </span><span class="n">it</span><span class="w"> </span><span class="n">into</span><span class="w"> </span><span class="n">random</span><span class="w"> </span><span class="n">place</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">new</span><span class="w"> </span><span class="n">B</span><span class="p">(</span><span class="n">n</span><span class="o">^</span><span class="p">{</span><span class="mi">7</span><span class="o">/</span><span class="mi">8</span><span class="p">})</span>
+</span><span id="__span-11-4"><a href="#__codelineno-11-4" id="__codelineno-11-4" name="__codelineno-11-4"></a><span class="w">    </span><span class="n">Compute</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">new</span><span class="w"> </span><span class="n">M</span><span class="p">;</span>
+</span><span id="__span-11-5"><a href="#__codelineno-11-5" id="__codelineno-11-5" name="__codelineno-11-5"></a><span class="p">}</span>
+</span></code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">注意</p>
+<p>由于是随机的，因此这个算法并不保证始终得到正确结果，但是得到正确结果的概率相当大（失败概率为<span><span class="heti-spacing"> </span><span class="arithmatex">\(O(\dfrac{1}{n^c})\)</span></span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(c\)</span><span class="heti-spacing"> </span></span>为一个正常数。</p>
+</div>
+</div>
+</div>
+</div>
 </div>
 <aside class="md-source-file">
 <span class="md-source-file__fact">
