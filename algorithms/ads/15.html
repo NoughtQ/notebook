@@ -427,11 +427,78 @@
 </li>
 <li class="md-nav__item md-nav__item--active">
 <input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    Lec 15: External Sorting
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
 <a class="md-nav__link md-nav__link--active" href="15.html">
 <span class="md-ellipsis">
     Lec 15: External Sorting
   </span>
 </a>
+<nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#introduction">
+<span class="md-ellipsis">
+      Introduction
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#pass-reduction">
+<span class="md-ellipsis">
+      Pass Reduction
+    </span>
+</a>
+<nav aria-label="Pass Reduction" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#k-way-merge">
+<span class="md-ellipsis">
+      k-way Merge
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#polyphase-merge">
+<span class="md-ellipsis">
+      Polyphase Merge
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#replacement-selection">
+<span class="md-ellipsis">
+      Replacement Selection
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#buffer-handling">
+<span class="md-ellipsis">
+      Buffer Handling
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#minimizing-the-merge-time">
+<span class="md-ellipsis">
+      Minimizing the Merge Time
+    </span>
+</a>
+</li>
+</ul>
+</nav>
 </li>
 </ul>
 </nav>
@@ -507,6 +574,65 @@
 <div class="md-sidebar__scrollwrap">
 <div class="md-sidebar__inner">
 <nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#introduction">
+<span class="md-ellipsis">
+      Introduction
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#pass-reduction">
+<span class="md-ellipsis">
+      Pass Reduction
+    </span>
+</a>
+<nav aria-label="Pass Reduction" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#k-way-merge">
+<span class="md-ellipsis">
+      k-way Merge
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#polyphase-merge">
+<span class="md-ellipsis">
+      Polyphase Merge
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#replacement-selection">
+<span class="md-ellipsis">
+      Replacement Selection
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#buffer-handling">
+<span class="md-ellipsis">
+      Buffer Handling
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#minimizing-the-merge-time">
+<span class="md-ellipsis">
+      Minimizing the Merge Time
+    </span>
+</a>
+</li>
+</ul>
 </nav>
 </div>
 </div>
@@ -515,8 +641,406 @@
 <article class="md-content__inner md-typeset">
 <h1 id="lec-15-external-sorting">Lec 15: External Sorting<a class="headerlink" href="#lec-15-external-sorting" title="Permanent link">⚓︎</a></h1>
 <div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
-<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>个字 </p>
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>3531<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>18<span class="heti-spacing"> </span></span>分钟</p>
 </div>
+<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">⚓︎</a></h2>
+<p>在<span class="heti-skip"><span class="heti-spacing"> </span>FDS<span class="heti-spacing"> </span></span>中，我们介绍过一系列经典的<a href="../fds/7.html">排序算法</a>，实际上这些算法都是在主存<span class="heti-skip"><span class="heti-spacing"> </span>(main memory)<span class="heti-spacing"> </span></span>运行的内部排序，在数据量不大（即主存能够容纳所有待排序数据）可以顺利地完成排序工作。</p>
+<p>然而，一旦数据量很大，主存无法容下所有待排序数据时，就需要用到本讲将要介绍的<strong>外部排序</strong><span>(external sorting)<span class="heti-spacing"> </span></span>算法了。所谓“外部”，就是要用到磁盘的空间了。磁盘相比主存空间更大，但访问速度更慢，举个例子：若要访问数组的某个元素<code>a[i]</code>，它们所需的时间分别为：</p>
+<ul>
+<li>主存：<span class="arithmatex">\(O(1)\)</span>（用索引寻找，随机访问）</li>
+<li>磁盘：找到元素所在的迹<span class="heti-skip"><span class="heti-spacing"> </span>(track) -&gt;<span class="heti-spacing"> </span></span>找到对应的区<span><span class="heti-spacing"> </span>(sector)</span>（磁盘存储信息的最小单位）<span>-&gt;<span class="heti-spacing"> </span></span>找到元素<code>a[i]</code>并传输数据<ul>
+<li>这一过程的快慢还取决于设备的性能</li>
+<li>要想提升访问速度，我们应尽可能让磁盘读写头沿着一个方向移动，以避免磁盘频繁的旋转</li>
+</ul>
+</li>
+</ul>
+<p>回顾前面学过的排序算法，我们发现<a href="../fds/7.html#mergesort"><strong>归并排序</strong></a><span>(mergesort)<span class="heti-spacing"> </span></span>是最适合作为外部排序的算法。为了简化后续的分析过程，我们假定：</p>
+<ul>
+<li>存储数据集的容器称为<strong>磁带</strong>(tape)，里面的元素只能按顺序访问（这符合磁盘读写头的特性）</li>
+<li>至少需要使用<span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span>个磁带（<span>2<span class="heti-spacing"> </span></span>个子序列合并成<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>个更大的序列）</li>
+</ul>
+<details class="example" open="open">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"/><input id="__tabbed_1_2" name="__tabbed_1" type="radio"/><div class="tabbed-labels"><label for="__tabbed_1_1">题目</label><label for="__tabbed_1_2">分析</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>假设主存一次最多只能处理<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(M = 3\)</span><span class="heti-spacing"> </span></span>条记录，请通过外部排序算法（归并排序）来实现对以下序列的排序：</p>
+<p></p><div style="text-align: center">
+<img src="images/lec15/1.png" width="60%"/>
+</div>
+</div>
+<div class="tabbed-block">
+<ul>
+<li>在主存中排好序的一组数据称为<strong>run</strong>（没有确切的中文表达，悲）</li>
+<li><strong>趟</strong>(pass)：在归并排序中指的是合并两个子序列，形成一个更大子序列的过程</li>
+</ul>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:3"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"/><input id="__tabbed_2_2" name="__tabbed_2" type="radio"/><input id="__tabbed_2_3" name="__tabbed_2" type="radio"/><div class="tabbed-labels"><label for="__tabbed_2_1">Pass 1</label><label for="__tabbed_2_2">Pass 2</label><label for="__tabbed_2_3">Pass 3</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec15/2.png" width="40%"/>
+</div>
+<ul>
+<li>由于一次最多只能对<span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span>条记录进行排序，所以将原序列分为若干组，每组有<span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span>条记录，一组组地进行排序（排序算法任意）</li>
+<li>由于归并排序至少需要<span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span>条磁带，因此不能将排好序的组放入同一个磁带内，要分开来放，这里规定相邻的两个组放在不同的磁带里</li>
+</ul>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec15/3.png" width="40%"/>
+</div>
+<p>这里开始合并<span class="heti-skip"><span class="heti-spacing"> </span>+<span class="heti-spacing"> </span></span>排序的操作了，注意还是要放在两个不同的磁带里（可以利用原有的空闲磁带） </p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec15/4.png" width="60%"/>
+</div>
+<ul>
+<li>进一步的合并<span class="heti-skip"><span class="heti-spacing"> </span>+<span class="heti-spacing"> </span></span>排序！</li>
+<li>离排序完成仅差一步，但这里就不给出最后的效果图了（<del>因为<span class="heti-skip"><span class="heti-spacing"> </span>cy<span class="heti-spacing"> </span></span>的<span class="heti-skip"><span class="heti-spacing"> </span>PPT<span class="heti-spacing"> </span></span>里没有</del>）</li>
+</ul>
+</div>
+</div>
+</div>
+<p>此题我们用到了<span class="heti-skip"><span class="heti-spacing"> </span>1 + 3 = 4<span class="heti-spacing"> </span></span>条磁带。</p>
+</div>
+</div>
+</div>
+</details>
+<p><strong>结论</strong>：若要对<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(N\)</span><span class="heti-spacing"> </span></span>条记录进行外部排序，且主存最多对<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(M\)</span><span class="heti-spacing"> </span></span>条记录进行排序，那么需要的<strong>趟数</strong><span>(number of passes)<span class="heti-spacing"> </span></span>为<span><span class="heti-spacing"> </span><span class="arithmatex">\(1 + \lceil \log_2 \dfrac{N}{M}\rceil\)</span></span>。</p>
+<p>在设计外部排序的时候，我们会关心以下问题：</p>
+<ul>
+<li><strong>寻找</strong>时间——<span class="arithmatex">\(O(\text{number of passes})\)</span></li>
+<li><strong>读<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>写</strong>一个记录<strong>块</strong>（一组记录集）的时间</li>
+<li>对<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(M\)</span><span class="heti-spacing"> </span></span>条记录进行<strong>内部排序</strong>的时间</li>
+<li>从输入缓存（就是磁带）<strong>合并</strong><span><span class="arithmatex">\(N\)</span><span class="heti-spacing"> </span></span>条记录到输出缓存所需的时间</li>
+</ul>
+<p>要实现外部排序，需要解决以下问题：</p>
+<ul>
+<li>减少趟的数量</li>
+<li>合并<span><span class="heti-spacing"> </span>run</span>（一组排好序的记录）</li>
+<li>用并行算法处理缓存<ul>
+<li>注意：计算机可以并行处理<span class="heti-skip"><span class="heti-spacing"> </span>I/O<span class="heti-spacing"> </span></span>和<span><span class="heti-spacing"> </span>CPU</span></li>
+</ul>
+</li>
+<li>生成<span><span class="heti-spacing"> </span>run</span></li>
+</ul>
+<h2 id="pass-reduction">Pass Reduction<a class="headerlink" href="#pass-reduction" title="Permanent link">⚓︎</a></h2>
+<h3 id="k-way-merge">k-way Merge<a class="headerlink" href="#k-way-merge" title="Permanent link">⚓︎</a></h3>
+<p>根据前面关于趟数的结论，要想减少趟数，一种很自然的想法便是增大对数函数的底数<span><span class="heti-spacing"> </span><span class="arithmatex">\(k\)</span></span>（原来<span><span class="heti-spacing"> </span><span class="arithmatex">\(k = 2\)</span></span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，也就是增加子序列的个数，下面以<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(k = 3\)</span><span class="heti-spacing"> </span></span>为例介绍改进后的归并排序：</p>
+<details class="example" open="open">
+<summary>例子</summary>
+<p>待排序的序列同上例。下面直接给出分析过程：</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio"/><input id="__tabbed_3_2" name="__tabbed_3" type="radio"/><div class="tabbed-labels"><label for="__tabbed_3_1">Pass 1: Sort</label><label for="__tabbed_3_2">Pass 1: Merge</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec15/5.png" width="60%"/>
+</div>
+<p>由于多出一路子序列，所以需要更多的磁带（下面还会用到其他额外的磁带）</p>
+</div>
+<div class="tabbed-block">
+<p>下面展示合并每个子序列的第<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>个<span class="heti-skip"><span class="heti-spacing"> </span>run<span class="heti-spacing"> </span></span>的过程：</p>
+<details class="play" open="open">
+<summary>动画演示</summary>
+<p></p><div style="text-align: center">
+<img src="images/lec15/6.gif" width="60%"/>
+</div>
+</details>
+<p>由于需要同时比较三个数据，因此这里用到了<strong>最小堆</strong>这一数据结构，便于随时取出最小的数据。</p>
+<p>剩余部分的合并与之类似，故不再展示其详细过程。下面给出合并后的结果：</p>
+<p></p><div style="text-align: center">
+<img src="images/lec15/7.png" width="50%"/>
+</div>
+<p>本例中，第<span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span>个子序列为空，但为了一般性的解释，我们还是为第<span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span>个子序列预留了一个磁带。</p>
+</div>
+</div>
+</div>
+<p>后续趟的处理过程与之类似，故不再赘述。</p>
+</details>
+<div class="admonition abstract">
+<p class="admonition-title">总结</p>
+<ul>
+<li>趟数降至<span><span class="heti-spacing"> </span><span class="arithmatex">\(1 + \lceil \log_k \dfrac{N}{M} \rceil\)</span></span></li>
+<li>但所需的磁带数升至<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(2k\)</span><span class="heti-spacing"> </span></span>个，这可是一笔不小的开销啊，因此这种改进方法不太令人满意</li>
+</ul>
+</div>
+<h3 id="polyphase-merge">Polyphase Merge<a class="headerlink" href="#polyphase-merge" title="Permanent link">⚓︎</a></h3>
+<p>我们希望在降低趟数的同时能够尽可能避免磁带数的提升，因此尝试一下在保持子序列个数不变的情况下减少所需磁带数，下面以<span><span class="heti-spacing"> </span><span class="arithmatex">\(k=2\)</span></span>，磁带数<span class="heti-skip"><span class="heti-spacing"> </span>=3<span class="heti-spacing"> </span></span>为例进行分析：</p>
+<details class="example">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio"/><input id="__tabbed_4_2" name="__tabbed_4" type="radio"/><div class="tabbed-labels"><label for="__tabbed_4_1">题目</label><label for="__tabbed_4_2">分析</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>已知<span><span class="heti-spacing"> </span><span class="arithmatex">\(k=2\)</span></span>，磁带数<span><span class="heti-spacing"> </span>=3</span>，且原序列的情况如下：</p>
+<p></p><div style="text-align: center">
+<img src="images/lec15/8.png" width="50%"/>
+</div>
+<p>“<span>34<span class="heti-spacing"> </span></span>个<span><span class="heti-spacing"> </span>run</span>”意味着原序列由<span class="heti-skip"><span class="heti-spacing"> </span>34<span class="heti-spacing"> </span></span>组内部已排好序的子序列构成。</p>
+</div>
+<div class="tabbed-block">
+<div class="tabbed-set tabbed-alternate" data-tabs="5:2"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio"/><input id="__tabbed_5_2" name="__tabbed_5" type="radio"/><div class="tabbed-labels"><label for="__tabbed_5_1">Pass 1</label><label for="__tabbed_5_2">Copy 1</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec15/9.png" width="50%"/>
+</div>
+<p>我们现将原来的<span class="heti-skip"><span class="heti-spacing"> </span>34<span class="heti-spacing"> </span></span>个<span class="heti-skip"><span class="heti-spacing"> </span>run<span class="heti-spacing"> </span></span>均分为包含<span class="heti-skip"><span class="heti-spacing"> </span>17<span class="heti-spacing"> </span></span>个<span class="heti-skip"><span class="heti-spacing"> </span>run<span class="heti-spacing"> </span></span>的两个子序列，然后对它们进行合并，形成一个<span class="heti-skip"><span class="heti-spacing"> </span>17<span class="heti-spacing"> </span></span>个<span class="heti-skip"><span class="heti-spacing"> </span>run<span class="heti-spacing"> </span></span>的完整序列，此时每个<span class="heti-skip"><span class="heti-spacing"> </span>run<span class="heti-spacing"> </span></span>会包含更多排好序的记录。</p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec15/10.png" width="50%"/>
+</div>
+<ul>
+<li>由于这么一趟下来后只有一条磁带里包含记录，为了继续合并，还是需要将所有的<span class="heti-skip"><span class="heti-spacing"> </span>run<span class="heti-spacing"> </span></span>一分为二。因此在进入下一趟操作前，需要将包含记录的磁带的一半的<span class="heti-skip"><span class="heti-spacing"> </span>run<span class="heti-spacing"> </span></span>拷贝到另一个空磁带上。</li>
+<li>但是对于磁盘来说，拷贝所需成本有些大，所以如果像这样简单地减少磁带数量，可能会带来更大的成本损耗。</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</details>
+<p>这里给出一种更聪明的算法——<strong>多相合并</strong>(polymerge sort)，它的改进之处在于：在起始步的时候，对原序列进行<strong>不均等的分割</strong>，形成大小不一的子序列。这样可以确保在每一趟结束后<heti-adjacent class="heti-adjacent-half">，</heti-adjacent>（除了最后阶段外）始终会有多个包含记录的子序列，因此无需额外高昂的拷贝操作。下面接着之前的例子来演示这一算法的执行过程：</p>
+<details class="example" open="open">
+<summary>例子</summary>
+<p>题目：与上例相同。下面直接展示每一趟的结果（并带有部分分析<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="6:8"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio"/><input id="__tabbed_6_2" name="__tabbed_6" type="radio"/><input id="__tabbed_6_3" name="__tabbed_6" type="radio"/><input id="__tabbed_6_4" name="__tabbed_6" type="radio"/><input id="__tabbed_6_5" name="__tabbed_6" type="radio"/><input id="__tabbed_6_6" name="__tabbed_6" type="radio"/><input id="__tabbed_6_7" name="__tabbed_6" type="radio"/><input id="__tabbed_6_8" name="__tabbed_6" type="radio"/><div class="tabbed-labels"><label for="__tabbed_6_1">Split</label><label for="__tabbed_6_2">Pass 1</label><label for="__tabbed_6_3">Pass 2</label><label for="__tabbed_6_4">Pass 3</label><label for="__tabbed_6_5">Pass 4</label><label for="__tabbed_6_6">Pass 5</label><label for="__tabbed_6_7">Pass 6</label><label for="__tabbed_6_8">Pass 7</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec15/11.png" width="50%"/>
+</div>
+<p>现将原序列划分为大小不一的两个子序列（34 -&gt; 21 + 13）</p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec15/12.png" width="50%"/>
+</div>
+<p>合并两个子序列后，还会剩下两个子序列，</p>
+<ul>
+<li>其中一个是刚合并好的结果序列（里面的<span class="heti-skip"><span class="heti-spacing"> </span>run<span class="heti-spacing"> </span></span>更大）其数量为原来更小的子序列的<span class="heti-skip"><span class="heti-spacing"> </span>run<span class="heti-spacing"> </span></span>的数量</li>
+<li>另一个是剩下未进行合并的子序列（里面的<span class="heti-skip"><span class="heti-spacing"> </span>run<span class="heti-spacing"> </span></span>更小）</li>
+</ul>
+<p>后续趟的操作与之类似，故后面只给出结果，不再分析详细过程。建议读者有时间的话可以自行画画看，然后再看后面给出的结果，这样有助于深入理解这个算法。</p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec15/13.png" width="50%"/>
+</div>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec15/14.png" width="50%"/>
+</div>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec15/15.png" width="50%"/>
+</div>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec15/16.png" width="50%"/>
+</div>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec15/17.png" width="50%"/>
+</div>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec15/18.png" width="50%"/>
+</div>
+</div>
+</div>
+</div>
+</details>
+<p>既然要不均匀地分割，那么怎么分才能达到上例呈现的效果呢？下面给出结论：</p>
+<ul>
+<li>对于两路归并排序，如果序列中<span class="heti-skip"><span class="heti-spacing"> </span>run<span class="heti-spacing"> </span></span>的数量是一个<strong>斐波那契数</strong><span class="arithmatex">\(F_N\)</span>，那么最好的分割情况是将它分成包含<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(F_{N-1}\)</span><span class="heti-spacing"> </span></span>个<span class="heti-skip"><span class="heti-spacing"> </span>run<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(F_{N-2}\)</span><span class="heti-spacing"> </span></span>个<span class="heti-skip"><span class="heti-spacing"> </span>run<span class="heti-spacing"> </span></span>的子序列。<ul>
+<li>如果初始<span class="heti-skip"><span class="heti-spacing"> </span>run<span class="heti-spacing"> </span></span>的数量不是一个斐波那契数的话也没有问题，只需找到离该数最接近的斐波那契数，然后按照这个斐波那契数的递推式将其分成两个子序列（注意其中一个子序列可能也不是斐波那契数）</li>
+</ul>
+</li>
+<li>对于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(k\)</span><span class="heti-spacing"> </span></span>路归并排序，<span class="arithmatex">\(F_N^{(k)} = F_{N-1}^{(k)} + \dots + F_{N-k}^{(k)}\)</span>，其中<span><span class="heti-spacing"> </span><span class="arithmatex">\(F_N^{(k)} = 0(0 \le N \le k - 2), F_{k-1}^{(k)} = 1\)</span></span><ul>
+<li>因此，对于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(k\)</span><span class="heti-spacing"> </span></span>路归并排序，只需要<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(k+1\)</span><span class="heti-spacing"> </span></span>个磁带就够了</li>
+</ul>
+</li>
+</ul>
+<h3 id="replacement-selection">Replacement Selection<a class="headerlink" href="#replacement-selection" title="Permanent link">⚓︎</a></h3>
+<blockquote>
+<p>没记错的话，好像在<span class="heti-skip"><span class="heti-spacing"> </span>FDS<span class="heti-spacing"> </span></span>的<span class="heti-skip"><span class="heti-spacing"> </span>bonus<span class="heti-spacing"> </span></span>编程题提到过类似的算法<span><span class="heti-spacing"> </span>...</span></p>
+</blockquote>
+<p>除了提升<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(k\)</span><span class="heti-spacing"> </span></span>值外，我们还可以尝试通过生成更长的<span class="heti-skip"><span class="heti-spacing"> </span>run<span class="heti-spacing"> </span></span>来减小趟数，这里我们用到一个称为<strong>置换选择</strong><span>(replacement selection)<span class="heti-spacing"> </span></span>的算法来实现这一目标。</p>
+<details class="example" open="open">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="7:2"><input checked="checked" id="__tabbed_7_1" name="__tabbed_7" type="radio"/><input id="__tabbed_7_2" name="__tabbed_7" type="radio"/><div class="tabbed-labels"><label for="__tabbed_7_1">题目</label><label for="__tabbed_7_2">分析</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>请基于下面给出的原序列生成较长的<span><span class="heti-spacing"> </span>run</span>：</p>
+<p></p><div style="text-align: center">
+<img src="images/lec15/24.png" width="50%"/>
+</div>
+</div>
+<div class="tabbed-block">
+<div class="tabbed-set tabbed-alternate" data-tabs="8:8"><input checked="checked" id="__tabbed_8_1" name="__tabbed_8" type="radio"/><input id="__tabbed_8_2" name="__tabbed_8" type="radio"/><input id="__tabbed_8_3" name="__tabbed_8" type="radio"/><input id="__tabbed_8_4" name="__tabbed_8" type="radio"/><input id="__tabbed_8_5" name="__tabbed_8" type="radio"/><input id="__tabbed_8_6" name="__tabbed_8" type="radio"/><input id="__tabbed_8_7" name="__tabbed_8" type="radio"/><input id="__tabbed_8_8" name="__tabbed_8" type="radio"/><div class="tabbed-labels"><label for="__tabbed_8_1">Step 1</label><label for="__tabbed_8_2">Step 2</label><label for="__tabbed_8_3">Step 3</label><label for="__tabbed_8_4">Step 4</label><label for="__tabbed_8_5">Step 4.5</label><label for="__tabbed_8_6">Step 5</label><label for="__tabbed_8_7">Step 6~n-1</label><label for="__tabbed_8_8">Step n</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec15/25.png" width="50%"/>
+</div>
+<p>该算法主要借助<strong>最小堆</strong>（大小为<span><span class="heti-spacing"> </span>3</span>）来生成<span><span class="heti-spacing"> </span>run</span>。先取出堆中最小的元素出来，作为第一个<span class="heti-skip"><span class="heti-spacing"> </span>run<span class="heti-spacing"> </span></span>的元素。</p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec15/26.png" width="50%"/>
+</div>
+<p>每次从堆中删除元素时，需要比较这个被删除的元素与下一个进入堆的元素：</p>
+<ul>
+<li>如果前者更小，说明后者将会与前者处于同一个<span class="heti-skip"><span class="heti-spacing"> </span>run<span class="heti-spacing"> </span></span>内（本阶段符合这一情况）</li>
+<li>否则的话，后者要放在与前者不同的<span class="heti-skip"><span class="heti-spacing"> </span>run<span class="heti-spacing"> </span></span>内，且它不会与堆内和它处于不同<span class="heti-skip"><span class="heti-spacing"> </span>run<span class="heti-spacing"> </span></span>下的元素进行堆排序</li>
+</ul>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec15/27.png" width="50%"/>
+</div>
+<p>现在就遇到了“否则”的情况了：12 &lt; 94，因此<span class="heti-skip"><span class="heti-spacing"> </span>12<span class="heti-spacing"> </span></span>要放入新的<span class="heti-skip"><span class="heti-spacing"> </span>run<span class="heti-spacing"> </span></span>内，且它目前不会参与堆排序。</p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec15/28.png" width="50%"/>
+</div>
+<p>还是“否则”的情况。</p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec15/29.png" width="20%"/>
+</div>
+<p>现在，第一个<span class="heti-skip"><span class="heti-spacing"> </span>run<span class="heti-spacing"> </span></span>内的所有元素都从堆中出来了，那么此时堆中剩下的元素将会进入下一个<span class="heti-skip"><span class="heti-spacing"> </span>run<span class="heti-spacing"> </span></span>中。</p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec15/30.png" width="50%"/>
+</div>
+</div>
+<div class="tabbed-block">
+<details class="play" open="open">
+<summary>动画演示</summary>
+<p></p><div style="text-align: center">
+<img src="images/lec15/31.gif" width="50%"/>
+</div>
+</details>
+<p>由于后面大部分时间都是风平浪静的状态，所以这里就用一段动画快速跳过了，不做过多分析。</p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec15/32.png" width="50%"/>
+</div>
+<p>由于最后读进去的<span class="heti-skip"><span class="heti-spacing"> </span>15<span class="heti-spacing"> </span></span>比当时被删除的堆元素小，因此它会被放入第<span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span>个<span class="heti-skip"><span class="heti-spacing"> </span>run<span class="heti-spacing"> </span></span>内。</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</details>
+<p>结论：</p>
+<ul>
+<li>用这种算法生成得到的<span class="heti-skip"><span class="heti-spacing"> </span>run<span class="heti-spacing"> </span></span>的平均长度<span><span class="heti-spacing"> </span><span class="arithmatex">\(L_{\text{avg}} = 2M\)</span></span></li>
+<li>当序列的数据处于接近排好序的状态时，这种算法的表现就很不错</li>
+</ul>
+<h2 id="buffer-handling">Buffer Handling<a class="headerlink" href="#buffer-handling" title="Permanent link">⚓︎</a></h2>
+<p>现在来看第三个问题：如何并行处理缓存？在了解并行的做法前，我们不妨先来看一下串行的做法：</p>
+<details class="example" open="open">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="9:2"><input checked="checked" id="__tabbed_9_1" name="__tabbed_9" type="radio"/><input id="__tabbed_9_2" name="__tabbed_9" type="radio"/><div class="tabbed-labels"><label for="__tabbed_9_1">题目</label><label for="__tabbed_9_2">分析</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>对一个包含<span class="heti-skip"><span class="heti-spacing"> </span>3250<span class="heti-spacing"> </span></span>份记录的文件排序，限制条件为：</p>
+<ul>
+<li>用于排序的计算机的主存最多能容纳<span class="heti-skip"><span class="heti-spacing"> </span>750<span class="heti-spacing"> </span></span>份记录</li>
+<li>单个的输入文件是一个包含<span class="heti-skip"><span class="heti-spacing"> </span>250<span class="heti-spacing"> </span></span>份记录的记录块</li>
+</ul>
+<p></p><div style="text-align: center">
+<img src="images/lec15/19.png" width="50%"/>
+</div>
+<p>可以看到，题目的模型与前面的例子是类似的，但这里我们要重点分析这个主存是如何输入和输出数据的。</p>
+</div>
+<div class="tabbed-block">
+<ul>
+<li>
+<p>首先，我们需要将主存划分为<strong>输入缓存</strong>和<strong>输出缓存</strong>两个部分（此时内部排序应为归并排序<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
+<p></p><div style="text-align: center">
+<img src="images/lec15/20.png" width="50%"/>
+</div>
+</li>
+<li>
+<p>然后从两个子序列中分别读出一个记录块到输入缓存中，开始进行内部排序。</p>
+<p></p><div style="text-align: center">
+<img src="images/lec15/21.png" width="60%"/>
+</div>
+</li>
+<li>
+<p>对于输入缓存的记录，我们需要逐条记录地进行比较和排序。</p>
+<details class="play" open="open">
+<summary>动画演示</summary>
+<p></p><div style="text-align: center">
+<img src="images/lec15/22.gif" width="50%"/>
+</div>
+</details>
+</li>
+<li>
+<p>由于输出缓存空间有限，所以还没排完序输出缓存空间已满。因此不得不暂停排序过程，将输出缓存排好序的部分记录块丢给空闲的磁带，然后清空缓存的内容，以迎接之后的排序结果。</p>
+<p></p><div style="text-align: center">
+<img src="images/lec15/23.png" width="60%"/>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</details>
+<p>接下来介绍并行的处理方法，还是以二路归并排序为例来分析：</p>
+<ul>
+<li>
+<p>修改输出缓存：</p>
+<ul>
+<li>在上例中，我们看到，当输出缓存空间爆满时，排序就得暂时中止，这样有些浪费时间。</li>
+<li>为了让主存在清空输出缓存的同时还能继续对输入缓存的记录进行排序，我们可以将输出缓存<strong>一分为二</strong>（不是增加额外的空间<heti-adjacent class="heti-adjacent-half">！</heti-adjacent><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。当其中一个输出缓存爆满，需要清空时，另一个闲置的输出缓存可以接替后续的排序任务，也就是两个输出缓存轮流保存排序结果，这样就可以确保排序的不间断进行了<span><span class="heti-spacing"> </span>~</span></li>
+</ul>
+</li>
+<li>
+<p>修改输入缓存：</p>
+<ul>
+<li>我们貌似还忽略了一个问题，输入缓存读取子序列的记录块也要时间，所以如果输入缓存的记录都排完后，那么就要到子序列读取新的记录块，这个过程也需要一定的时间，那么排序过程就又一次中断了。</li>
+<li>解决方案是借鉴输出缓存的做法，对于<span class="heti-skip"><span class="heti-spacing"> </span>k<span class="heti-spacing"> </span></span>路归并排序，我们将输入缓存划分为<strong>2k</strong>个子空间。其中的<span class="heti-skip"><span class="heti-spacing"> </span>k<span class="heti-spacing"> </span></span>个子空间用于容纳正在进行排序的记录，而另外<span class="heti-skip"><span class="heti-spacing"> </span>k<span class="heti-spacing"> </span></span>个子空间用于读取子序列的记录块，这样的话一半空间的记录排完后，可以紧接着对另一半的记录进行排序，不会被读取给耽搁了<span><span class="heti-spacing"> </span>~</span></li>
+<li><span class="arithmatex">\(k \uparrow\  \Rightarrow \text{number of input buffers} \uparrow\ \Rightarrow \text{buffer size} \downarrow\ \Rightarrow \text{block size on disk} \downarrow\ \Rightarrow \text{seek time} \uparrow\)</span>（即<span class="heti-skip"><span class="heti-spacing"> </span>I/O<span class="heti-spacing"> </span></span>时间的增加<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，因此这种划分方法对于更大的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(k\)</span><span class="heti-spacing"> </span></span>而言效果可能不是特别好。为了取得最佳效果，我们需要综合磁盘参数和用于缓存的主存空间容量来选择合适的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(k\)</span><span class="heti-spacing"> </span></span>值。</li>
+</ul>
+</li>
+</ul>
+<h2 id="minimizing-the-merge-time">Minimizing the Merge Time<a class="headerlink" href="#minimizing-the-merge-time" title="Permanent link">⚓︎</a></h2>
+<p>另一种提升外部排序的速度的想法是：令合并时间最小化。这里我们借助前面提到过的<a href="9.html#huffman-codes">哈夫曼编码</a>——在合并数个长度不一的<span class="heti-skip"><span class="heti-spacing"> </span>run<span class="heti-spacing"> </span></span>时，我们应避免多次合并长度较长的<span><span class="heti-spacing"> </span>run</span>，而哈夫曼编码的贪心策略正符合我们的需求。下面来看个例子，以便更清楚地了解该算法在合并过程中的应用：</p>
+<details class="exmaple" open="open">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="10:2"><input checked="checked" id="__tabbed_10_1" name="__tabbed_10" type="radio"/><input id="__tabbed_10_2" name="__tabbed_10" type="radio"/><div class="tabbed-labels"><label for="__tabbed_10_1">题目</label><label for="__tabbed_10_2">分析</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>假设我们有<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>个<span><span class="heti-spacing"> </span>run</span>，长度分别为<span><span class="heti-spacing"> </span>2, 4, 5, 15</span>。请计算最小的合并时长。</p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec15/33.png" width="30%"/>
+</div>
+<p>最小时间<span><span class="heti-spacing"> </span>= 2 * 3 + 4 * 3 + 5 * 2 + 15 * 1 = 43</span></p>
+<p><del>一棵哈夫曼树直接秒了</del></p>
+</div>
+</div>
+</div>
+</details>
+<p>结论：最小合并时间<span><span class="heti-spacing"> </span>= <span class="arithmatex">\(O(\text{the weighted external path length})\)</span></span>（哈夫曼树的带权路径和）</p>
 <aside class="md-source-file">
 <span class="md-source-file__fact">
 <span class="md-icon" title="最后更新">

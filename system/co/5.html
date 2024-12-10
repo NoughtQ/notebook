@@ -484,6 +484,13 @@
     </span>
 </a>
 </li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cache-controller">
+<span class="md-ellipsis">
+      Cache Controller
+    </span>
+</a>
+</li>
 </ul>
 </nav>
 </li>
@@ -532,13 +539,6 @@
 </li>
 </ul>
 </nav>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#cache-controller">
-<span class="md-ellipsis">
-      Cache Controller
-    </span>
-</a>
 </li>
 <li class="md-nav__item">
 <a class="md-nav__link" href="#fallacies-and-pitfalls">
@@ -713,6 +713,13 @@
     </span>
 </a>
 </li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cache-controller">
+<span class="md-ellipsis">
+      Cache Controller
+    </span>
+</a>
+</li>
 </ul>
 </nav>
 </li>
@@ -761,13 +768,6 @@
 </li>
 </ul>
 </nav>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#cache-controller">
-<span class="md-ellipsis">
-      Cache Controller
-    </span>
-</a>
 </li>
 <li class="md-nav__item">
 <a class="md-nav__link" href="#fallacies-and-pitfalls">
@@ -1020,7 +1020,7 @@
 </div>
 <div class="admonition info">
 <p class="admonition-title">注</p>
-<p>在一般的命名传统中，我们仅用高速缓存存储的子数据大小来表示高速缓存。对于上面的高速缓存，由于它一共可容纳<span class="heti-skip"><span class="heti-spacing"> </span>1024<span class="heti-spacing"> </span></span>个字数据，即<span class="heti-skip"><span class="heti-spacing"> </span>4096<span class="heti-spacing"> </span></span>字节的数据，因此可以称其为<span class="heti-skip"><span class="heti-spacing"> </span>4 KiB<span class="heti-spacing"> </span></span>高速缓存。</p>
+<p>在一般的命名传统中，我们仅用高速缓存存储的字数据大小来表示高速缓存。对于上面的高速缓存，由于它一共可容纳<span class="heti-skip"><span class="heti-spacing"> </span>1024<span class="heti-spacing"> </span></span>个字数据，即<span class="heti-skip"><span class="heti-spacing"> </span>4096<span class="heti-spacing"> </span></span>字节的数据，因此可以称其为<span class="heti-skip"><span class="heti-spacing"> </span>4 KiB<span class="heti-spacing"> </span></span>高速缓存。</p>
 </div>
 <details class="example">
 <summary>例题</summary>
@@ -1186,8 +1186,8 @@
 <p>令<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(I\)</span><span class="heti-spacing"> </span></span>为指令数，则：</p>
 <div class="arithmatex">\[
 \begin{align}
-\text{Instruction miss cycles} &amp; = I \times 2% \times 100 = 2.00 \times I \notag \\
-\text{Data miss cycles} &amp; = I \times 36% \tmes 4% \times 100 = 1.44 \times I \notag \\
+\text{Instruction miss cycles} &amp; = I \times 2\% \times 100 = 2.00 \times I \notag \\
+\text{Data miss cycles} &amp; = I \times 36\% \times 4\% \times 100 = 1.44 \times I \notag \\
 \text{Memory-stall cycles} &amp; = 2.00 I + 1.44 I = 3.44 I \notag
 \end{align}
 \]</div>
@@ -1596,6 +1596,46 @@
 </ul>
 </li>
 </ul>
+<h3 id="cache-controller">Cache Controller<a class="headerlink" href="#cache-controller" title="Permanent link">⚓︎</a></h3>
+<blockquote>
+<p>这部分<span class="heti-skip"><span class="heti-spacing"> </span>PPT<span class="heti-spacing"> </span></span>上没有，但是选做实验中要用到这部分知识</p>
+</blockquote>
+<p>这里我们只介绍一个简单高速缓存的控制器，首先规定一下何为“简单”的高速缓存：</p>
+<ul>
+<li>直接映射</li>
+<li>写回策略</li>
+<li>块大小为四字（<span>16<span class="heti-spacing"> </span></span>字节）</li>
+<li>高速缓存大小为<span><span class="heti-spacing"> </span>16KiB</span>，因此共有<span class="heti-skip"><span class="heti-spacing"> </span>1024<span class="heti-spacing"> </span></span>个块</li>
+<li><span>32<span class="heti-spacing"> </span></span>位地址</li>
+<li>每个块额外加一个合法位</li>
+</ul>
+<p>对于这样的高速缓存，它的控制器本质上是一个<strong>有限状态机</strong>(finite-state machine)。它是一个顺序逻辑函数，由一组输入、一组输出、一个生成下一状态的函数和一个输出函数（这些函数均根据当前状态和输入进行计算）构成（实际上这是摩尔<span class="heti-skip"><span class="heti-spacing"> </span>(Moore)<span class="heti-spacing"> </span></span>型状态机<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。下面是有限状态机的图示：</p>
+<div style="text-align: center">
+<img src="images/C5/43.png" width="60%"/>
+</div>
+<p>高速缓存控制器的状态图如下所示：</p>
+<div style="text-align: center">
+<img src="images/C5/44.png" width="70%"/>
+</div>
+<p>四种状态的简介：</p>
+<blockquote>
+<p>注：<span>Ready<span class="heti-spacing"> </span></span>信号用于表示高速缓存操作是否已经完成</p>
+</blockquote>
+<ul>
+<li>空闲<span><span class="heti-spacing"> </span>(idle)</span>：等待来自处理器的合法的读<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>写请求，若得到请求则进入下一状态（比较标签）</li>
+<li>比较标签<span><span class="heti-spacing"> </span>(compare tag)</span>：检测读<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>写是否命中<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>失效<ul>
+<li>若高速缓存块的数据合法，且标签位成功匹配，说明成功<strong>命中</strong>，并将<span class="heti-skip"><span class="heti-spacing"> </span>Cache Ready<span class="heti-spacing"> </span></span>信号置<span><span class="heti-spacing"> </span>1</span>。如果是写操作，还需将脏位置<span><span class="heti-spacing"> </span>1</span>。然后回到空闲状态。</li>
+<li>若发生失效，首先更新高速缓存标签，然后根据脏位决定下一状态：若脏位为<span><span class="heti-spacing"> </span>1</span>，进入写回状态；否则进入分配状态</li>
+</ul>
+</li>
+<li>写回<span><span class="heti-spacing"> </span>(write-back)</span>：根据标签和索引将高速缓存块的数据写入内存中，然后等待<span class="heti-skip"><span class="heti-spacing"> </span>Ready<span class="heti-spacing"> </span></span>信号。当完成对内存的写入时，进入分配状态</li>
+<li>分配<span><span class="heti-spacing"> </span>(allocate)</span>：从内存中获取新的数据块，然后等待<span class="heti-skip"><span class="heti-spacing"> </span>Ready<span class="heti-spacing"> </span></span>信号。当完成对内存的读取时，有限状态机会回到比较标签的状态</li>
+</ul>
+<p>这个有限状态机还可以再扩展，以提升性能：</p>
+<ul>
+<li>增加更多的状态</li>
+<li>增加一个写缓冲器</li>
+</ul>
 <h2 id="virtual-memory">Virtual Memory<a class="headerlink" href="#virtual-memory" title="Permanent link">⚓︎</a></h2>
 <p><strong>虚拟内存</strong>(virtual memory)：使主存表现得像作为二级存储的“高速缓存“一样的一种技术。我们需要虚拟内存的原因有：</p>
 <ul>
@@ -1825,46 +1865,6 @@
 <li>将页表放入受保护的地址空间，使得只有操作系统能够修改页表，而用户无权修改</li>
 </ul>
 </li>
-</ul>
-<h2 id="cache-controller">Cache Controller<a class="headerlink" href="#cache-controller" title="Permanent link">⚓︎</a></h2>
-<blockquote>
-<p>这部分<span class="heti-skip"><span class="heti-spacing"> </span>PPT<span class="heti-spacing"> </span></span>上没有，但是选做实验中要用到这部分知识</p>
-</blockquote>
-<p>这里我们只介绍一个简单高速缓存的控制器，首先规定一下何为“简单”的高速缓存：</p>
-<ul>
-<li>直接映射</li>
-<li>写回策略</li>
-<li>块大小为四字（<span>16<span class="heti-spacing"> </span></span>字节）</li>
-<li>高速缓存大小为<span><span class="heti-spacing"> </span>16KiB</span>，因此共有<span class="heti-skip"><span class="heti-spacing"> </span>1024<span class="heti-spacing"> </span></span>个块</li>
-<li><span>32<span class="heti-spacing"> </span></span>位地址</li>
-<li>每个块额外加一个合法位</li>
-</ul>
-<p>对于这样的高速缓存，它的控制器本质上是一个<strong>有限状态机</strong>(finite-state machine)。它是一个顺序逻辑函数，由一组输入、一组输出、一个生成下一状态的函数和一个输出函数（这些函数均根据当前状态和输入进行计算）构成（实际上这是摩尔<span class="heti-skip"><span class="heti-spacing"> </span>(Moore)<span class="heti-spacing"> </span></span>型状态机<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。下面是有限状态机的图示：</p>
-<div style="text-align: center">
-<img src="images/C5/43.png" width="60%"/>
-</div>
-<p>高速缓存控制器的状态图如下所示：</p>
-<div style="text-align: center">
-<img src="images/C5/44.png" width="70%"/>
-</div>
-<p>四种状态的简介：</p>
-<blockquote>
-<p>注：<span>Ready<span class="heti-spacing"> </span></span>信号用于表示高速缓存操作是否已经完成</p>
-</blockquote>
-<ul>
-<li>空闲<span><span class="heti-spacing"> </span>(idle)</span>：等待来自处理器的合法的读<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>写请求，若得到请求则进入下一状态（比较标签）</li>
-<li>比较标签<span><span class="heti-spacing"> </span>(compare tag)</span>：检测读<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>写是否命中<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>失效<ul>
-<li>若高速缓存块的数据合法，且标签位成功匹配，说明成功<strong>命中</strong>，并将<span class="heti-skip"><span class="heti-spacing"> </span>Cache Ready<span class="heti-spacing"> </span></span>信号置<span><span class="heti-spacing"> </span>1</span>。如果是写操作，还需将脏位置<span><span class="heti-spacing"> </span>1</span>。然后回到空闲状态。</li>
-<li>若发生失效，首先更新高速缓存标签，然后根据脏位决定下一状态：若脏位为<span><span class="heti-spacing"> </span>1</span>，进入写回状态；否则进入分配状态</li>
-</ul>
-</li>
-<li>写回<span><span class="heti-spacing"> </span>(write-back)</span>：根据标签和索引将高速缓存块的数据写入内存中，然后等待<span class="heti-skip"><span class="heti-spacing"> </span>Ready<span class="heti-spacing"> </span></span>信号。当完成对内存的写入时，进入分配状态</li>
-<li>分配<span><span class="heti-spacing"> </span>(allocate)</span>：从内存中获取新的数据块，然后等待<span class="heti-skip"><span class="heti-spacing"> </span>Ready<span class="heti-spacing"> </span></span>信号。当完成对内存的读取时，有限状态机会回到比较标签的状态</li>
-</ul>
-<p>这个有限状态机还可以再扩展，以提升性能：</p>
-<ul>
-<li>增加更多的状态</li>
-<li>增加一个写缓冲器</li>
 </ul>
 <h2 id="fallacies-and-pitfalls">Fallacies and Pitfalls<a class="headerlink" href="#fallacies-and-pitfalls" title="Permanent link">⚓︎</a></h2>
 <div class="admonition bug">
@@ -2096,13 +2096,13 @@
 <span class="md-icon" title="最后更新">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"></path></svg>
 </span>
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime">2024年12月9日 20:59:37</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime">2024年12月10日 20:18:13</span>
 </span>
 <span class="md-source-file__fact">
 <span class="md-icon" title="创建日期">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"></path></svg>
 </span>
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime">2024年12月9日 20:59:37</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime">2024年12月10日 20:18:13</span>
 </span>
 </aside>
 <p style="font-size: 30px; font-weight: 600">评论区</p>
