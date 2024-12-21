@@ -635,30 +635,30 @@
 <article class="md-content__inner md-typeset">
 <h1 id="lec-1-avl-trees-splay-trees-and-amortized-analysis">Lec 1: AVL Trees, Splay Trees and Amortized Analysis<a class="headerlink" href="#lec-1-avl-trees-splay-trees-and-amortized-analysis" title="Permanent link">⚓︎</a></h1>
 <div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
-<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>4314<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 640 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M392.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6m80.6 120.1c-12.5 12.5-12.5 32.8 0 45.3l89.3 89.4-89.4 89.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l112-112c12.5-12.5 12.5-32.8 0-45.3l-112-112c-12.5-12.5-32.8-12.5-45.3 0zm-306.7 0c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3l112 112c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l89.4-89.4c12.5-12.5 12.5-32.8 0-45.3"></path></svg></span> <span>110<span class="heti-spacing"> </span></span>行代码 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>23<span class="heti-spacing"> </span></span>分钟</p>
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>4536<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 640 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M392.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6m80.6 120.1c-12.5 12.5-12.5 32.8 0 45.3l89.3 89.4-89.4 89.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l112-112c12.5-12.5 12.5-32.8 0-45.3l-112-112c-12.5-12.5-32.8-12.5-45.3 0zm-306.7 0c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3l112 112c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l89.4-89.4c12.5-12.5 12.5-32.8 0-45.3"></path></svg></span> <span>110<span class="heti-spacing"> </span></span>行代码 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>24<span class="heti-spacing"> </span></span>分钟</p>
 </div>
 <div class="admonition warning">
 <p class="admonition-title">提醒</p>
 <p>不论是<span class="heti-skip"><span class="heti-spacing"> </span>AVL<span class="heti-spacing"> </span></span>树，还是<span class="heti-skip"><span class="heti-spacing"> </span>Splay<span class="heti-spacing"> </span></span>树，它们的原型还是<strong>二叉查找树</strong>，具备二叉查找树的所有性质。</p>
 </div>
 <h2 id="avl-trees">AVL Trees<a class="headerlink" href="#avl-trees" title="Permanent link">⚓︎</a></h2>
-<div class="admonition info">
-<p class="admonition-title">引入</p>
 <p>在<span class="heti-skip"><span class="heti-spacing"> </span>FDS<span class="heti-spacing"> </span></span>的学习中，我们知道：对一棵二叉查找树进行多次增删操作，有可能破坏二叉树的平衡性，从而降低查找效率。最糟糕的情况是将一组节点按照升<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>降序插入，这样的话二叉树就会退化成一个链表，访问节点的时间复杂度相应地从<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(O(\log N)\)</span><span class="heti-spacing"> </span></span>降到<span><span class="heti-spacing"> </span><span class="arithmatex">\(O(N)\)</span></span>。</p>
 <p>为了提升二叉查找树的查找效率，我们需要保证整棵树的平衡性，<span>AVL<span class="heti-spacing"> </span></span>树（以及后面要讲的伸展树）便是不错的解决之道。</p>
-</div>
 <div class="admonition note">
 <p class="admonition-title">定义</p>
-<p>空的二叉树被认为是平衡的。如果树<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(T\)</span><span class="heti-spacing"> </span></span>有左右子树<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(T_L\)</span><span class="heti-spacing"> </span></span>和<span><span class="heti-spacing"> </span><span class="arithmatex">\(T_R\)</span></span>，那么满足下列条件的树<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(T\)</span><span class="heti-spacing"> </span></span>才是平衡的：</p>
 <ul>
+<li>空的二叉树被认为是<strong>平衡的</strong></li>
+<li>如果树<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(T\)</span><span class="heti-spacing"> </span></span>有左右子树<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(T_L\)</span><span class="heti-spacing"> </span></span>和<span><span class="heti-spacing"> </span><span class="arithmatex">\(T_R\)</span></span>，那么满足下列条件的树<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(T\)</span><span class="heti-spacing"> </span></span>才是<strong>平衡的</strong>：<ul>
 <li><span><span class="arithmatex">\(T_L\)</span><span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(T_R\)</span><span class="heti-spacing"> </span></span>是平衡的</li>
 <li><span class="arithmatex">\(|h_L - h_R| \le 1\)</span>，其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(h_L\)</span><span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(h_R\)</span><span class="heti-spacing"> </span></span>分别是<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(T_L\)</span><span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(T_R\)</span><span class="heti-spacing"> </span></span>的高度</li>
+</ul>
+</li>
 </ul>
 <p><span>AVL<span class="heti-spacing"> </span></span>树的每个节点都有一个<strong>平衡因子</strong>(balance factor)<span class="arithmatex">\(BF(node) = h_L - h_R\)</span>。根据上面的定义知，它的取值仅有<span class="heti-skip"><span class="heti-spacing"> </span>-1, 0<span class="heti-spacing"> </span></span>或<span><span class="heti-spacing"> </span>1</span>。</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title"><span>AVL<span class="heti-spacing"> </span></span>树的高度</p>
-<p>一棵高度为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(h\)</span><span class="heti-spacing"> </span></span>的最小节点的平衡树应该长这个样子： </p>
+<p>一棵高为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(h\)</span><span class="heti-spacing"> </span></span>时节点数最小的平衡树的形状如下所示： </p>
 <p></p><div style="text-align: center">
 <img src="images/lec1/14.png" width="50%"/>
 </div>
@@ -666,7 +666,7 @@
 <div class="arithmatex">\[
 n_h = \begin{cases}n_{h - 1} + n_{h - 2} + 1 &amp; \mathrm{if}\ h &gt; 1\\ 2 &amp; \mathrm{if}\ h = 1\\ 1 &amp; \mathrm{if}\ h = 0\end{cases}
 \]</div>
-<p>事实上，<span class="arithmatex">\(n_h = F_{h + 3} - 1(h \ge -1)\)</span>。而斐波那契数<span><span class="heti-spacing"> </span><span class="arithmatex">\(F_h \approx \dfrac{1}{\sqrt{5}}(\dfrac{1 + \sqrt{5}}{2})^i\)</span></span>，所以：</p>
+<p>事实上，<span class="arithmatex">\(n_h = F_{h + 3} - 1(h \ge -1, F_0 = 0, F_1 = 1)\)</span>。而斐波那契数<span><span class="heti-spacing"> </span><span class="arithmatex">\(F_h \approx \dfrac{1}{\sqrt{5}}(\dfrac{1 + \sqrt{5}}{2})^i\)</span></span>，所以：</p>
 <div class="arithmatex">\[
 n_h  \approx \dfrac{1}{\sqrt{5}}(\dfrac{1 + \sqrt{5}}{2})^{h+3} - 1
 \]</div>
@@ -675,9 +675,9 @@ n_h  \approx \dfrac{1}{\sqrt{5}}(\dfrac{1 + \sqrt{5}}{2})^{h+3} - 1
 <p><span>AVL<span class="heti-spacing"> </span></span>树能够保持平衡的关键在于：每次插入或删除一个节点之后，都要检查一下这次操作是否会破坏原来二叉树的平衡性，</p>
 <ul>
 <li>如果没有被破坏，那么就<span class="heti-skip"><span class="heti-spacing"> </span>OK<span class="heti-spacing"> </span></span>了</li>
-<li>如果被破坏了：<ul>
-<li>先找到离插入节点（被称为<span><span class="heti-spacing"> </span>trouble maker</span>）<strong>最近</strong>的异常（<span class="arithmatex">\(|BF(tf)| &gt; 1\)</span>）节点<span><span class="heti-spacing"> </span><span class="arithmatex">\(tf\)</span>(trouble finder)</span></li>
-<li>然后通过<strong>「旋转」</strong><span>(rotate)<span class="heti-spacing"> </span></span>的方法，将<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(tf\)</span><span class="heti-spacing"> </span></span>旋转到合适的位置，使得原来以<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(tf\)</span><span class="heti-spacing"> </span></span>为根节点的子树继续保持<span class="heti-skip"><span class="heti-spacing"> </span>AVL<span class="heti-spacing"> </span></span>树的性质（此时这棵子树不一定以<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(tf\)</span><span class="heti-spacing"> </span></span>为根节点）</li>
+<li>如果被破坏了（以插入操作为例<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：<ul>
+<li>先找到离插入节点（被称为<strong>trouble maker</strong>）<strong>最近</strong>的异常（<span class="arithmatex">\(|BF(tf)| &gt; 1\)</span>）节点<span><span class="heti-spacing"> </span><span class="arithmatex">\(tf\)</span>(</span><strong>trouble finder</strong>)</li>
+<li>然后通过<strong>旋转</strong><span>(rotate)<span class="heti-spacing"> </span></span>的方法，将<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(tf\)</span><span class="heti-spacing"> </span></span>旋转到合适的位置，使得原来以<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(tf\)</span><span class="heti-spacing"> </span></span>为根节点的子树继续保持<span class="heti-skip"><span class="heti-spacing"> </span>AVL<span class="heti-spacing"> </span></span>树的性质（此时这棵子树不一定以<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(tf\)</span><span class="heti-spacing"> </span></span>为根节点）</li>
 </ul>
 </li>
 </ul>
@@ -695,7 +695,12 @@ n_h  \approx \dfrac{1}{\sqrt{5}}(\dfrac{1 + \sqrt{5}}{2})^{h+3} - 1
 <li>LR：插入的位置位于<span class="heti-skip"><span class="heti-spacing"> </span>trouble finder<span class="heti-spacing"> </span></span>的左孩子的右子树上</li>
 <li>RL：插入的位置位于<span class="heti-skip"><span class="heti-spacing"> </span>trouble finder<span class="heti-spacing"> </span></span>的右孩子的左子树上</li>
 </ul>
-<p>其中前两种情况和后两种情况分别是镜像对称的，也就是说本质上只有两种不同的旋转方法需要讨论，其中前两种情况的解决方法被称为「单旋」(single rotation)，后两种情况的解决方法被称为「双旋<heti-adjacent class="heti-adjacent-half">」</heti-adjacent>。下面将详细介绍这两种旋转方法。</p>
+<p>其中前两种情况和后两种情况分别是镜像对称的，也就是说本质上只有两种不同的旋转方法需要讨论，其中：</p>
+<ul>
+<li>前两种情况的解决方法被称为<strong>单旋</strong>(single rotation)</li>
+<li>后两种情况的解决方法被称为<strong>双旋</strong>(double rotation)</li>
+</ul>
+<p>下面将详细介绍这两种旋转方法。</p>
 <h3 id="ll-rr">LL &amp; RR<a class="headerlink" href="#ll-rr" title="Permanent link">⚓︎</a></h3>
 <p>先分析<span><span class="heti-spacing"> </span>LL</span>：</p>
 <div class="admonition play">
@@ -813,6 +818,13 @@ n_h  \approx \dfrac{1}{\sqrt{5}}(\dfrac{1 + \sqrt{5}}{2})^{h+3} - 1
 <div class="admonition abstract">
 <p class="admonition-title">总结</p>
 <p>我们应该记住的是两类旋转方法的具体步骤（<strong>增加<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>删除边</strong>和<strong>变换节点的祖先<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>后代关系</strong><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，而不是记所谓的左右旋转。因为在“旋转”前后，节点的水平相对位置并没有发生改变，变的只是它们的竖直方向上的相对位置（这样保证整棵树是一棵二叉搜索树<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，这样很难让人直观感受到旋转的过程，所以个人不太赞同将这种操作称为旋转。</p>
+<details class="note">
+<summary>我的记忆法（慎看，对我挺有效，但是可能会打乱读者的记忆法）</summary>
+<ul>
+<li>LL&amp;RR：将<span class="heti-skip"><span class="heti-spacing"> </span>touble finder<span class="heti-spacing"> </span></span>的左<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>右孩子作为新的根节点，<span>trouble finder<span class="heti-spacing"> </span></span>退化为这个孩子的右<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>左孩子，然后重新分配子树的归属，在操作过程中保持节点的相对水平位置不变</li>
+<li>LR&amp;RL：左子树右旋<span class="heti-skip"><span class="heti-spacing"> </span>+<span class="heti-spacing"> </span></span>整棵树左旋<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>右子树左旋<span class="heti-skip"><span class="heti-spacing"> </span>+<span class="heti-spacing"> </span></span>整棵树右旋</li>
+</ul>
+</details>
 </div>
 <div class="admonition note">
 <p class="admonition-title">关于删除</p>
@@ -860,7 +872,7 @@ n_h  \approx \dfrac{1}{\sqrt{5}}(\dfrac{1 + \sqrt{5}}{2})^{h+3} - 1
 </span><span id="__span-0-22"><a href="#__codelineno-0-22" id="__codelineno-0-22" name="__codelineno-0-22"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">Height</span><span class="p">;</span>
 </span><span id="__span-0-23"><a href="#__codelineno-0-23" id="__codelineno-0-23" name="__codelineno-0-23"></a><span class="p">}</span><span class="w"> </span>
 </span></code></pre></div>
-<div class="language-c highlight"><span class="filename">计算高度</span><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">Height</span><span class="p">(</span><span class="n">Position</span><span class="w"> </span><span class="n">P</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<div class="language-c highlight"><span class="filename">获取高度</span><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">Height</span><span class="p">(</span><span class="n">Position</span><span class="w"> </span><span class="n">P</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-1-2"><a href="#__codelineno-1-2" id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">P</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span>
 </span><span id="__span-1-3"><a href="#__codelineno-1-3" id="__codelineno-1-3" name="__codelineno-1-3"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
 </span><span id="__span-1-4"><a href="#__codelineno-1-4" id="__codelineno-1-4" name="__codelineno-1-4"></a><span class="w">    </span><span class="k">else</span><span class="w"> </span>
@@ -953,7 +965,7 @@ n_h  \approx \dfrac{1}{\sqrt{5}}(\dfrac{1 + \sqrt{5}}{2})^{h+3} - 1
 <ul>
 <li>它继承了<span class="heti-skip"><span class="heti-spacing"> </span>AVL<span class="heti-spacing"> </span></span>树的旋转操作；但是它并不维护节点的高度<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>平衡因子字段，因此它无法保障树的平衡</li>
 <li><span>Splay<span class="heti-spacing"> </span></span>树的核心操作在于：每当我们访问一个节点后，就将该节点通过<span class="heti-skip"><span class="heti-spacing"> </span>AVL<span class="heti-spacing"> </span></span>树的<strong>旋转</strong>方法将其调到<strong>根节点</strong>的位置上。</li>
-<li>因此它能够保证<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(M\)</span><span class="heti-spacing"> </span></span>次操作（增删查改）的<strong>均摊<span class="heti-skip"><span class="heti-spacing"> </span>(amortized)<span class="heti-spacing"> </span></span>复杂度</strong>为<span><span class="heti-spacing"> </span><span class="arithmatex">\(O(M \log N)\)</span></span>（在<a href="#amortized-analysis">均摊分析</a>一节再作具体分析）</li>
+<li>因此它能够保证<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(M\)</span><span class="heti-spacing"> </span></span>次操作（增删查改）的<strong>摊还<span class="heti-skip"><span class="heti-spacing"> </span>(amortized)<span class="heti-spacing"> </span></span>复杂度</strong>为<span><span class="heti-spacing"> </span><span class="arithmatex">\(O(M \log N)\)</span></span>（在<a href="#amortized-analysis">摊还分析</a>一节再作具体分析）</li>
 </ul>
 <details class="example" open="open">
 <summary>错误示范</summary>
@@ -986,7 +998,7 @@ n_h  \approx \dfrac{1}{\sqrt{5}}(\dfrac{1 + \sqrt{5}}{2})^{h+3} - 1
 <img src="images/lec1/17.png" width="70%"/>
 </div>
 <ul>
-<li>Case 2-2：<strong>Zig-zig</strong>（<span><span class="arithmatex">\(X, P, G\)</span><span class="heti-spacing"> </span></span>三者在一条直线上）<span>-&gt;<span class="heti-spacing"> </span></span>先转<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(P\)</span><span class="heti-spacing"> </span></span>节点，后转<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(X\)</span><span class="heti-spacing"> </span></span>节点（前半部分过程类似<span class="heti-skip"><span class="heti-spacing"> </span>AVL<span class="heti-spacing"> </span></span>树的<span class="heti-skip"><span class="heti-spacing"> </span>LL<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>RR<span class="heti-spacing"> </span></span>情况）</li>
+<li>Case 2-2：<strong>Zig-zig</strong>（<span><span class="arithmatex">\(X, P, G\)</span><span class="heti-spacing"> </span></span>三者在一条直线上）<span>-&gt;<span class="heti-spacing"> </span></span>先转<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(P\)</span><span class="heti-spacing"> </span></span>节点，后转<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(X\)</span><span class="heti-spacing"> </span></span>节点</li>
 </ul>
 <p></p><div style="text-align: center">
 <img src="images/lec1/18.png" width="70%"/>
@@ -998,35 +1010,35 @@ n_h  \approx \dfrac{1}{\sqrt{5}}(\dfrac{1 + \sqrt{5}}{2})^{h+3} - 1
 <div class="tabbed-set tabbed-alternate" data-tabs="4:5"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio"/><input id="__tabbed_4_2" name="__tabbed_4" type="radio"/><input id="__tabbed_4_3" name="__tabbed_4" type="radio"/><input id="__tabbed_4_4" name="__tabbed_4" type="radio"/><input id="__tabbed_4_5" name="__tabbed_4" type="radio"/><div class="tabbed-labels"><label for="__tabbed_4_1">初始状态</label><label for="__tabbed_4_2">旋转<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(P\)</span><span class="heti-spacing"> </span></span></label><label for="__tabbed_4_3">中间结果</label><label for="__tabbed_4_4">旋转<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(X\)</span><span class="heti-spacing"> </span></span></label><label for="__tabbed_4_5">最终结果</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<p><figure markdown="span" style=" width: 60%">
+<p><figure markdown="span" style=" width: 50%">
 <img alt="" src="images/lec1/19_dark.png#only-dark"/>
 <img alt="" src="images/lec1/19_light.png#only-light"/>
 <figcaption></figcaption>
 </figure></p>
 </div>
 <div class="tabbed-block">
-<p><figure markdown="span" style=" width: 60%">
+<p><figure markdown="span" style=" width: 50%">
 <img alt="" src="images/lec1/20_dark.png#only-dark"/>
 <img alt="" src="images/lec1/20_light.png#only-light"/>
 <figcaption></figcaption>
 </figure></p>
 </div>
 <div class="tabbed-block">
-<p><figure markdown="span" style=" width: 60%">
+<p><figure markdown="span" style=" width: 50%">
 <img alt="" src="images/lec1/21_dark.png#only-dark"/>
 <img alt="" src="images/lec1/21_light.png#only-light"/>
 <figcaption></figcaption>
 </figure></p>
 </div>
 <div class="tabbed-block">
-<p><figure markdown="span" style=" width: 60%">
+<p><figure markdown="span" style=" width: 50%">
 <img alt="" src="images/lec1/22_dark.png#only-dark"/>
 <img alt="" src="images/lec1/22_light.png#only-light"/>
 <figcaption></figcaption>
 </figure></p>
 </div>
 <div class="tabbed-block">
-<p><figure markdown="span" style=" width: 60%">
+<p><figure markdown="span" style=" width: 50%">
 <img alt="" src="images/lec1/23_dark.png#only-dark"/>
 <img alt="" src="images/lec1/23_light.png#only-light"/>
 <figcaption></figcaption>
@@ -1077,15 +1089,15 @@ n_h  \approx \dfrac{1}{\sqrt{5}}(\dfrac{1 + \sqrt{5}}{2})^{h+3} - 1
 </div>
 </div>
 </div>
-<p><span>Splay<span class="heti-spacing"> </span></span>树的复杂度涉及到均摊分析，下面将介绍这一知识点（在今后的学习中还会多次用到均摊分析，所以请务必认真阅读下面的内容<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
+<p><span>Splay<span class="heti-spacing"> </span></span>树的复杂度涉及到摊还分析，下面将介绍这一知识点（在今后的学习中还会多次用到摊还分析，所以请务必认真阅读下面的内容<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
 <h2 id="amortized-analysis">Amortized Analysis<a class="headerlink" href="#amortized-analysis" title="Permanent link">⚓︎</a></h2>
-<p>我们先来理解「均摊」这个词：</p>
+<p>我们先来理解「摊还」这个词：</p>
 <ul>
 <li>保证在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(N\)</span><span class="heti-spacing"> </span></span>个数据上的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(M\)</span><span class="heti-spacing"> </span></span>次运算的总体复杂度为<span><span class="heti-spacing"> </span><span class="arithmatex">\(O(M \log N)\)</span></span></li>
 <li>它考虑的是全局（所有数据）的耗时，因此允许在某些数据的运算上耗时久一些，因为可以用在另一些数据上耗时较短的运算来弥补这个损失</li>
-<li>区分<strong>最坏复杂度</strong>，<strong>均摊复杂度</strong>和<strong>平均复杂度</strong><ul>
+<li>区分<strong>最坏复杂度</strong>，<strong>摊还复杂度</strong>和<strong>平均复杂度</strong><ul>
 <li>最坏：保证单个运算以及整体运算的复杂度不超过某一边界（考虑数据最理想的情况）</li>
-<li>均摊：保证整体的运算复杂度不超过某一边界，但允许某几次运算可以超过该边界（考虑数据的真实情况）</li>
+<li>摊还：保证整体的运算复杂度不超过某一边界，但允许某几次运算可以超过该边界（考虑数据的真实情况）</li>
 <li>平均：在给定数据分布平均的情况下（是一种理想的假设<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，保证整体运算的复杂度不超过某一边界<blockquote>
 <p>注：只有平均复杂度考虑数据分布，前两者并不考虑数据的分布。</p>
 </blockquote>
@@ -1098,17 +1110,17 @@ n_h  \approx \dfrac{1}{\sqrt{5}}(\dfrac{1 + \sqrt{5}}{2})^{h+3} - 1
 <p>worst-case bound <span class="arithmatex">\(\ge\)</span> amortized-case bound <span class="arithmatex">\(\ge\)</span> average-case bound</p>
 </div>
 <details class="question">
-<summary>何时使用均摊分析？</summary>
-<p>个人的一些见解：当我们难以确定所有的数据分布（比如情况太多了，或者某些情况难以直接分析得到等等）从而无法用平均复杂度分析，且希望得到更精准的复杂度分析时（最坏复杂度假定每次操作都是最坏的，但并不是所有操作都会遇到最坏情况<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，均摊分析就能发挥较大的作用了！</p>
+<summary>何时使用摊还分析？</summary>
+<p>个人的一些见解：当我们难以确定所有的数据分布（比如情况太多了，或者某些情况难以直接分析得到等等）从而无法用平均复杂度分析，且希望得到更精准的复杂度分析时（最坏复杂度假定每次操作都是最坏的，但并不是所有操作都会遇到最坏情况<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，摊还分析就能发挥较大的作用了！</p>
 </details>
-<p>常见的均摊分析方法有：</p>
+<p>常见的摊还分析方法有：</p>
 <ul>
 <li><strong>聚合法</strong>(aggregate method)</li>
 <li><strong>核算法</strong>(accounting method)</li>
 <li><strong>势能法</strong>(potential method)</li>
 </ul>
 <h3 id="aggregate-method">Aggregate Method<a class="headerlink" href="#aggregate-method" title="Permanent link">⚓︎</a></h3>
-<p>思路：均摊复杂度<span class="heti-skip"><span class="heti-spacing"> </span>=<span class="heti-spacing"> </span></span>所有操作的总时间<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>操作次数，即<span><span class="heti-spacing"> </span><span class="arithmatex">\(T_{amortized} = \dfrac{\sum\limits^nT_i}{n}\)</span></span></p>
+<p>思路：摊还复杂度<span class="heti-skip"><span class="heti-spacing"> </span>=<span class="heti-spacing"> </span></span>所有操作的总时间<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>操作次数，即<span><span class="heti-spacing"> </span><span class="arithmatex">\(T_{amortized} = \dfrac{\sum\limits^nT_i}{n}\)</span></span></p>
 <blockquote>
 <p>这是最为简单暴力的方法</p>
 </blockquote>
@@ -1122,20 +1134,20 @@ n_h  \approx \dfrac{1}{\sqrt{5}}(\dfrac{1 + \sqrt{5}}{2})^{h+3} - 1
 </span><span id="__span-7-5"><a href="#__codelineno-7-5" id="__codelineno-7-5" name="__codelineno-7-5"></a><span class="w">    </span><span class="p">}</span>
 </span><span id="__span-7-6"><a href="#__codelineno-7-6" id="__codelineno-7-6" name="__codelineno-7-6"></a><span class="p">}</span>
 </span></code></pre></div>
-<p>易知<span><span class="heti-spacing"> </span><span class="arithmatex">\(size(S) \le n\)</span></span>（<span><span class="arithmatex">\(n\)</span><span class="heti-spacing"> </span></span>为数据总数<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，所以均摊复杂度<span><span class="heti-spacing"> </span><span class="arithmatex">\(T_{amortized} = \dfrac{O(n)}{n} = O(1)\)</span></span> </p>
+<p>易知<span><span class="heti-spacing"> </span><span class="arithmatex">\(size(S) \le n\)</span></span>（<span><span class="arithmatex">\(n\)</span><span class="heti-spacing"> </span></span>为数据总数<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，所以摊还复杂度<span><span class="heti-spacing"> </span><span class="arithmatex">\(T_{amortized} = \dfrac{O(n)}{n} = O(1)\)</span></span> </p>
 </details>
 <h3 id="accounting-method">Accounting Method<a class="headerlink" href="#accounting-method" title="Permanent link">⚓︎</a></h3>
 <blockquote>
 <p>一句话概括<heti-adjacent class="heti-adjacent-quarter">：</heti-adjacent>“取长补短”</p>
 </blockquote>
-<p>思路：当我们的<strong>均摊成本</strong><span>(amortized cost) <span class="arithmatex">\(\hat{c}_i\)</span><span class="heti-spacing"> </span></span>高于<strong>实际成本</strong><span>(actual cost) <span class="arithmatex">\(c_i\)</span><span class="heti-spacing"> </span></span>时，多出来的部分就转化为<strong>积分</strong>(credit)。如果之后的均摊成本小于实际成本时，可以用之前攒的积分抵消实际的成本（注意：不允许“均摊成本<span class="heti-skip"><span class="heti-spacing"> </span>+<span class="heti-spacing"> </span></span>积分<span class="heti-skip"><span class="heti-spacing"> </span>&lt;<span class="heti-spacing"> </span></span>实际成本”，不然的话均摊复杂度就沦为下界了<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。公式为：</p>
+<p>思路：当我们的<strong>摊还成本</strong><span>(amortized cost) <span class="arithmatex">\(\hat{c}_i\)</span><span class="heti-spacing"> </span></span>高于<strong>实际成本</strong><span>(actual cost) <span class="arithmatex">\(c_i\)</span><span class="heti-spacing"> </span></span>时，多出来的部分就转化为<strong>积分</strong>(credit)。如果之后的摊还成本小于实际成本时，可以用之前攒的积分抵消实际的成本（注意：不允许“摊还成本<span class="heti-skip"><span class="heti-spacing"> </span>+<span class="heti-spacing"> </span></span>积分<span class="heti-skip"><span class="heti-spacing"> </span>&lt;<span class="heti-spacing"> </span></span>实际成本”，不然的话摊还复杂度就沦为下界了<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。公式为：</p>
 <div class="arithmatex">\[
 T_{amortized} = \dfrac{\sum\limits^n\hat{c}_i}{n}
 \]</div>
-<p>其中<span><span class="heti-spacing"> </span><span class="arithmatex">\(\sum\limits^n\hat{c}_i \ge \sum\limits^nc_i\)</span></span>（确保了均摊复杂度是一个上界<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。实际上，均摊成本是我们预先设置的值，所以在设置的时候要预估好，确保均摊总成本高于实际总成本，即使积分保持非负状态。</p>
+<p>其中<span><span class="heti-spacing"> </span><span class="arithmatex">\(\sum\limits^n\hat{c}_i \ge \sum\limits^nc_i\)</span></span>（确保了摊还复杂度是一个上界<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。实际上，摊还成本是我们预先设置的值，所以在设置的时候要预估好，确保摊还总成本高于实际总成本，即使积分保持非负状态。</p>
 <details class="example" open="open">
 <summary>例子</summary>
-<p>接着上面 <code>MultiPop</code> 的例子，假如我们的实际成本和均摊成本分别如下：</p>
+<p>接着上面 <code>MultiPop</code> 的例子，假如我们的实际成本和摊还成本分别如下：</p>
 <ul>
 <li><span class="arithmatex">\(c_i\)</span>：<code>Push</code>：1，<code>Pop</code>：1，<code>MultiPop</code>：<code>min(sizeof(S), k)</code></li>
 <li><span class="arithmatex">\(\hat{c}_i\)</span>：<code>Push</code>：2，<code>Pop</code>：0，<code>MultiPop</code>：0</li>
@@ -1176,7 +1188,7 @@ sizeof(S) \ge 0 \Rightarrow Credits \ge 0 \Rightarrow O(n) = \sum\limits^n\hat{c
 <p><span class="arithmatex">\(\therefore \sum\limits_{i = 1}^n\hat{c}_i = \sum\limits_{i = 1}^nO(1) = O(n) \ge \sum\limits_{i=1}^nc_i \Rightarrow T_{amortized} = \dfrac{O(n)}{n} = 1\)</span></p>
 </details>
 <h3 id="analysis-for-splay-tree">Analysis for Splay Tree<a class="headerlink" href="#analysis-for-splay-tree" title="Permanent link">⚓︎</a></h3>
-<p>结论：<span>Splay<span class="heti-spacing"> </span></span>树的均摊复杂度为<span><span class="heti-spacing"> </span><span class="arithmatex">\(T_{amortized} = O(\log N)\)</span></span></p>
+<p>结论：<span>Splay<span class="heti-spacing"> </span></span>树的摊还复杂度为<span><span class="heti-spacing"> </span><span class="arithmatex">\(T_{amortized} = O(\log N)\)</span></span></p>
 <p>下面我们用<strong>势能法</strong>来进行势能分析。</p>
 <div class="admonition note">
 <p class="admonition-title">分析</p>
@@ -1189,7 +1201,7 @@ sizeof(S) \ge 0 \Rightarrow Credits \ge 0 \Rightarrow O(n) = \sum\limits^n\hat{c
 </ul>
 </li>
 <li>
-<p><span class="arithmatex">\(\Phi(T) = \sum\limits_{i \in T} \log S(i) = \sum\limits_{i \in T} R(i)\)</span>，其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(i\)</span><span class="heti-spacing"> </span></span>是<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(T\)</span><span class="heti-spacing"> </span></span>的后代，<span><span class="arithmatex">\(S(i)\)</span><span class="heti-spacing"> </span></span>是以<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(i\)</span><span class="heti-spacing"> </span></span>为根节点的子树的节点数，将其取对数就是<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(i\)</span><span class="heti-spacing"> </span></span>的<strong>秩</strong>(rank) <span class="arithmatex">\(R(i)\)</span></p>
+<p><span class="arithmatex">\(\Phi(T) = \sum\limits_{i \in T} \log S(i) = \sum\limits_{i \in T} R(i)\)</span>，其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(i\)</span><span class="heti-spacing"> </span></span>是<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(T\)</span><span class="heti-spacing"> </span></span>的后代，<span><span class="arithmatex">\(S(i)\)</span><span class="heti-spacing"> </span></span>是以<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(i\)</span><span class="heti-spacing"> </span></span>为根节点的子树的节点数，将其取对数就是<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(i\)</span><span class="heti-spacing"> </span></span>的<strong>秩</strong>(rank)<span class="arithmatex">\(R(i)\)</span></p>
 </li>
 <li>
 <p><span class="arithmatex">\(R(i) \approx H(i)\)</span>（<span><span class="arithmatex">\(H(i)\)</span><span class="heti-spacing"> </span></span>为树的高度）</p>
@@ -1199,7 +1211,7 @@ sizeof(S) \ge 0 \Rightarrow Credits \ge 0 \Rightarrow O(n) = \sum\limits^n\hat{c
 <summary>为什么不用树的高度作为势能函数</summary>
 <p>因为很多子树的高度在旋转的时候会发生改变，而大小在旋转的过程中虽然也有不小的变化，但是由于取了对数，所以秩的变化就变得很小了，这便于我们的计算。</p>
 </details>
-<p>下面我们就具体分析<span class="heti-skip"><span class="heti-spacing"> </span>Splay<span class="heti-spacing"> </span></span>树的三种情况：</p>
+<p>下面我们就具体分析<span class="heti-skip"><span class="heti-spacing"> </span>Splay<span class="heti-spacing"> </span></span>树的三种情况（记<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(R_k(X)\)</span><span class="heti-spacing"> </span></span>为第<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(k\)</span><span class="heti-spacing"> </span></span>次操作后节点<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(X\)</span><span class="heti-spacing"> </span></span>的秩<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="7:3"><input checked="checked" id="__tabbed_7_1" name="__tabbed_7" type="radio"/><input id="__tabbed_7_2" name="__tabbed_7" type="radio"/><input id="__tabbed_7_3" name="__tabbed_7" type="radio"/><div class="tabbed-labels"><label for="__tabbed_7_1">zig</label><label for="__tabbed_7_2">zig-zag</label><label for="__tabbed_7_3">zig-zig</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -1239,7 +1251,7 @@ sizeof(S) \ge 0 \Rightarrow Credits \ge 0 \Rightarrow O(n) = \sum\limits^n\hat{c
 \end{align}
 \]</div>
 <ul>
-<li>旋转前<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(G\)</span><span class="heti-spacing"> </span></span>的大小和旋转后<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(X\)</span><span class="heti-spacing"> </span></span>的大小相等，所以<span><span class="heti-spacing"> </span><span class="arithmatex">\(R_{k+1}(X) = R_{k}(P)\)</span></span>，可以相互抵消</li>
+<li>旋转前<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(G\)</span><span class="heti-spacing"> </span></span>的大小和旋转后<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(X\)</span><span class="heti-spacing"> </span></span>的大小相等，所以<span><span class="heti-spacing"> </span><span class="arithmatex">\(R_{k+1}(X) = R_{k}(G)\)</span></span>，可以相互抵消</li>
 <li>旋转后，<span class="arithmatex">\(S(X) \ge S(P) + S(G)\)</span>，根据上面的引理知，<span class="arithmatex">\(\log S(P) + \log S(G) \le 2 \log S(X) - 2\)</span>，即<span><span class="heti-spacing"> </span><span class="arithmatex">\(R_{k+1}(P) + R_{k+1}(G)\le 2 R_{k+1}(X) - 2\)</span></span></li>
 <li>旋转前，<span><span class="arithmatex">\(P\)</span><span class="heti-spacing"> </span></span>是<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(X\)</span><span class="heti-spacing"> </span></span>的父节点，因此<span><span class="heti-spacing"> </span><span class="arithmatex">\(R_k(P) \ge R_k(X)\)</span></span></li>
 <li>通过上述的转换和抵消，可以得到最终的不等式</li>
@@ -1260,7 +1272,7 @@ sizeof(S) \ge 0 \Rightarrow Credits \ge 0 \Rightarrow O(n) = \sum\limits^n\hat{c
 \]</div>
 <p>从放缩的角度看挺不错的，但是后面多出了个常数<span><span class="heti-spacing"> </span>2</span>，而我们不知道要执行多少次<span class="heti-skip"><span class="heti-spacing"> </span>zig-zig<span class="heti-spacing"> </span></span>旋转操作，所以会带来不确定的数据，这不利于我们的精确分析。</p>
 <blockquote>
-<p>上面的<span class="heti-skip"><span class="heti-spacing"> </span>zig<span class="heti-spacing"> </span></span>旋转可以带常数，是因为只有一次<span class="heti-skip"><span class="heti-spacing"> </span>zig<span class="heti-spacing"> </span></span>操作（很容易验证<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
+<p><span>zig<span class="heti-spacing"> </span></span>旋转的摊还成本可以带常数，是因为只有一次<span class="heti-skip"><span class="heti-spacing"> </span>zig<span class="heti-spacing"> </span></span>操作。</p>
 </blockquote>
 </details>
 <div class="arithmatex">\[
@@ -1280,27 +1292,33 @@ sizeof(S) \ge 0 \Rightarrow Credits \ge 0 \Rightarrow O(n) = \sum\limits^n\hat{c
 </div>
 </div>
 </div>
-</div>
-<div class="admonition abstract">
-<p class="admonition-title">结论</p>
-<p>最后，我们将这三部分并起来，得到最终的均摊成本。但在此之前，我们需要进一步的放缩，便于后续计算：</p>
+<p>现在我们将这三部分并起来，得到最终的摊还成本。但在此之前，我们需要进一步的放缩，便于后续计算：</p>
 <div class="arithmatex">\[
 \begin{align}
 \hat{c}_{zig} &amp; \le 1 + 3(R_{k+1}(X) - R_k(X)) \notag \\
-\hat{c}_{zig-zag} &amp; \le 3(R_{k+1}(X) - R_k(X)) \notag \\
-\hat{c}_{zig-zig} &amp; \le 3(R_{k+1}(X) - R_k(X)) \notag \\
+\hat{c}_{zig-zag} &amp; \le 2(R_{k+1}(X) - R_k(X)) \le 3(R_{k+1}(X) - R_k(X)) \notag \\
+\hat{c}_{zig-zig} &amp; \le 3(R_{k+1}(X) - R_k(X)) \notag
 \end{align}
 \]</div>
-<p>将所有旋转操作对应的均摊成本加起来：</p>
+<p>在最终计算之前，还得先确定这<span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span>种操作的总次数<span><span class="heti-spacing"> </span><span class="arithmatex">\(k\)</span></span>，不难得到：</p>
+<div class="arithmatex">\[
+k = \begin{cases}\dfrac{H(X)}{2} &amp; H(X) \text{ is even} \\ \dfrac{H(X) - 1}{2} + 1 &amp; H(X) \text{ is odd}\end{cases}
+\]</div>
+<ul>
+<li>当<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(k\)</span><span class="heti-spacing"> </span></span>为偶数时，每次操作要么是<span><span class="heti-spacing"> </span>zig-zig</span>，要么是<span><span class="heti-spacing"> </span>zig-zag</span></li>
+<li>当<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(k\)</span><span class="heti-spacing"> </span></span>为奇数时，前<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(k-1\)</span><span class="heti-spacing"> </span></span>次操作是<span class="heti-skip"><span class="heti-spacing"> </span>zig-zig<span class="heti-spacing"> </span></span>或<span><span class="heti-spacing"> </span>zig-zag</span>，最后一次操作是<span><span class="heti-spacing"> </span>zig</span></li>
+</ul>
+<p>将所有旋转操作对应的摊还成本加起来：</p>
 <div class="arithmatex">\[
 \begin{align}
-\hat{c}_X &amp; = \hat{c}_{zig} + \sum \hat{c}_{zig-zag} + \sum \hat{c}_{zig-zig} \notag \\
+\sum\limits_{i=1}^{k+1}\widehat{c_i} &amp; = \hat{c}_{zig} + \sum \hat{c}_{zig-zag} + \sum \hat{c}_{zig-zig} \notag \\
+&amp; = 1 + 3(R_{k+1}(X) - R_k(X)) + \sum\limits_{i=1}^k3(R_i(X) - R_{i-1}(X)) \notag \\
 &amp; = O(1) + 3(R_{k+1}(X) - R_0(X)) \notag \\
 &amp; = O(\log N) \notag
 \end{align}
 \]</div>
+<p>这样，我们成功证明了<span class="heti-skip"><span class="heti-spacing"> </span>Splay<span class="heti-spacing"> </span></span>树的摊还复杂度。</p>
 </div>
-<p>这样，我们成功证明了<span class="heti-skip"><span class="heti-spacing"> </span>Splay<span class="heti-spacing"> </span></span>树的均摊复杂度。</p>
 <aside class="md-source-file">
 <span class="md-source-file__fact">
 <span class="md-icon" title="最后更新">
