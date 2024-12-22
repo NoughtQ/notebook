@@ -640,17 +640,14 @@
 <article class="md-content__inner md-typeset">
 <h1 id="lec-3-inverted-file-index">Lec 3: Inverted File Index<a class="headerlink" href="#lec-3-inverted-file-index" title="Permanent link">⚓︎</a></h1>
 <div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
-<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>3305<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 640 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M392.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6m80.6 120.1c-12.5 12.5-12.5 32.8 0 45.3l89.3 89.4-89.4 89.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l112-112c12.5-12.5 12.5-32.8 0-45.3l-112-112c-12.5-12.5-32.8-12.5-45.3 0zm-306.7 0c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3l112 112c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l89.4-89.4c12.5-12.5 12.5-32.8 0-45.3"></path></svg></span> <span>26<span class="heti-spacing"> </span></span>行代码 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>17<span class="heti-spacing"> </span></span>分钟</p>
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>3394<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 640 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M392.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6m80.6 120.1c-12.5 12.5-12.5 32.8 0 45.3l89.3 89.4-89.4 89.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l112-112c12.5-12.5 12.5-32.8 0-45.3l-112-112c-12.5-12.5-32.8-12.5-45.3 0zm-306.7 0c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3l112 112c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l89.4-89.4c12.5-12.5 12.5-32.8 0-45.3"></path></svg></span> <span>26<span class="heti-spacing"> </span></span>行代码 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>17<span class="heti-spacing"> </span></span>分钟</p>
 </div>
 <div class="admonition info">
 <p class="admonition-title">注</p>
 <p>下文提到的“文档”和“网页”是同义词，不要误会<span><span class="heti-spacing"> </span>~</span></p>
 </div>
 <h2 id="concept">Concept<a class="headerlink" href="#concept" title="Permanent link">⚓︎</a></h2>
-<div class="admonition info">
-<p class="admonition-title">引入</p>
-<p>本节将会探讨相对轻松的话题：如何运用我们之前学过的数据结构，来实现<strong>搜索引擎</strong>的功能（这里只是简单介绍一下原理<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。现在我们来想一下，搜索引擎是如何根据在搜索框内输入的内容来找到符合要求的网页呢？</p>
-</div>
+<p>本节将会探讨相对轻松的话题：如何运用我们之前学过的数据结构，来实现一个简单的<strong>搜索引擎</strong>的功能。现在我们来想一下，搜索引擎是如何根据搜索框内输入的内容来找到符合要求的网页呢？</p>
 <div class="admonition bug">
 <p class="admonition-title"><span>Naive<span class="heti-spacing"> </span></span>的想法</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"/><input id="__tabbed_1_2" name="__tabbed_1" type="radio"/><div class="tabbed-labels"><label for="__tabbed_1_1">法<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span></label><label for="__tabbed_1_2">法<span><span class="heti-spacing"> </span>2</span></label></div>
@@ -682,14 +679,14 @@
 <p>我们关心表格的后两列信息：</p>
 <ul>
 <li>前者收集所有文档中出现过的词汇，这块区域被称为<strong>词典</strong>(term dictionary)</li>
-<li>后者记录了每个词汇对应的出现次数（或者说频率）以及出现位置（哪个文档<span class="heti-skip"><span class="heti-spacing"> </span>;<span class="heti-spacing"> </span></span>文档中的具体位置（一篇文档内可能有多个位置<heti-adjacent class="heti-adjacent-half">）</heti-adjacent><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，这块区域被称为<strong>倒排列表</strong>(posting list)<ul>
-<li>之所以要记录每个词汇出现的次数，是为了提升搜索的速度：对于一个包含多个关键词的搜索语句，搜索引擎优先搜索出现次数最少的网页，看这个网页是否包含其他所有的关键词，运用这种方式可以更快地排除不在搜索范围内的网页<ul>
+<li>后者记录了每个词汇对应的出现次数（或者说<strong>频率</strong>）以及出现<strong>位置</strong>（哪个文档<span class="heti-skip"><span class="heti-spacing"> </span>;<span class="heti-spacing"> </span></span>文档中的具体位置（注意同一个词在一篇文档可能出现多次<heti-adjacent class="heti-adjacent-half">）</heti-adjacent><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，这块区域被称为<strong>倒排列表</strong>(posting list)<ul>
+<li>之所以要记录每个词汇出现的次数，是为了提升搜索的速度：对于一个包含多个关键词的搜索语句，搜索引擎<strong>优先搜索出现次数最少的网页</strong>，看这个网页是否包含其他所有的关键词，运用这种方式可以更快地排除不在搜索范围内的网页<ul>
 <li>举个例子：假设我要搜索同时带有<code>delivery</code>、<code>silver</code>和<code>truck</code>的网页，如果先根据<code>truck</code>搜索，那么要判断<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>次才能找到符合要求的网页；而如果先根据次数较小的<code>delivery</code>搜索，那么只需判断<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>次就能找到了</li>
 </ul>
 </li>
 </ul>
 </li>
-<li>所以搜索引擎返回给我们的内容可以不单单是一个个网页的链接，还可以给出简短的网页信息，其中包含带有我们输入的搜索词（用高亮表示出来）的句子</li>
+<li>根据倒排索引的信息，搜索引擎不仅可以返回对应的网页链接，还可以给出简短的网页信息，其中包含带有我们输入的搜索词（用高亮表示出来）的句子</li>
 </ul>
 <details class="info">
 <summary>关于「倒排」</summary>
@@ -714,7 +711,7 @@
 </details>
 <p>伪代码中的每个高光部分分别对应以下搜索引擎的重要模块<span><span class="heti-spacing"> </span>(module)</span>，之后我们会展开介绍：</p>
 <ul>
-<li>Token Analyzer &amp; Stop Filter</li>
+<li>词元分析器<span><span class="heti-spacing"> </span>(token analyzer)</span>、停用词过滤器<span><span class="heti-spacing"> </span>(stop filter)</span></li>
 <li>词汇扫描器<span><span class="heti-spacing"> </span>(vocabulary scanner)</span></li>
 <li>词汇插入器<span><span class="heti-spacing"> </span>(vocabulary insertor)</span></li>
 <li>内存管理系统<span><span class="heti-spacing"> </span>(memeory management)</span></li>
@@ -728,7 +725,7 @@
 <img src="images/lec3/5.png" width="60%"/>
 </div>
 <p>在英语词汇中，一个单词可能有多种形式，但实际上它们的含义是一样的，因此为了节省空间，应该将这些形式各异但词干相同的词汇放在一起。</p>
-<p>我们甚至可以将某个单词的常见错误拼写收集起来，进行词干的匹配。</p>
+<p>我们甚至可以将某个单词常见的错误拼写收集起来，进行词干的匹配，实现更加智能的搜索。</p>
 </div>
 <h3 id="stop-words">Stop Words<a class="headerlink" href="#stop-words" title="Permanent link">⚓︎</a></h3>
 <p>对于某些过于常见，几乎出现于每一个文本的词汇（比如英文里的冠词、代词等<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>（这些词被称为<strong>停用词</strong>(stop words)<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，因为它们通常不具备特殊的含义，因此我们可以预先将它们从原始文本中去掉，然后再进行倒序索引的匹配。</p>
@@ -737,7 +734,7 @@
 <p>我们<strong>不会</strong>将停用词从倒排索引中踢掉——虽然在大部分情况下它们没什么意义可言，但还是存在一些特殊情况，比如英文单词<span><span class="heti-spacing"> </span>it</span>，除了代词的意思外，还有可能指的是<span><span class="heti-spacing"> </span>IT</span>（信息技术<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
 </div>
 <h3 id="term-access">Term Access<a class="headerlink" href="#term-access" title="Permanent link">⚓︎</a></h3>
-<p>我们通常会使用以下数据结构来存储倒排索引：</p>
+<p>不同的数据结构会带来不同的词汇访问效果，通常我们会使用以下数据结构来存储倒排索引：</p>
 <ul>
 <li><strong>搜索树</strong>（尤指<span class="heti-skip"><span class="heti-spacing"> </span>B<span class="heti-spacing"> </span></span>类树（<span>B-<span class="heti-spacing"> </span></span>树、<span>B+<span class="heti-spacing"> </span></span>树等<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>、字典树<span class="heti-skip"><span class="heti-spacing"> </span>(tries)<span class="heti-spacing"> </span></span>等）</li>
 <li><strong>散列</strong>(hashing)：相较于前者，它有以下优缺点：<ul>
@@ -795,13 +792,13 @@
 <li>文档可能会随时被添加进去：如果按照原来的方法，倒序索引就需要根据插入的文档来实时更新，这样的话效率太低了！</li>
 <li>文档也有被删掉的可能</li>
 </ul>
-<p>解决之道：</p>
+<p>解决方法：</p>
 <div style="text-align: center">
 <img src="images/lec3/8.png" width="50%"/>
 </div>
 <ul>
 <li>我们称原来存储索引的地方为<strong>主索引</strong>(main index)</li>
-<li>现在新增一个存储少量索引的空间，叫做<strong>辅助索引</strong>(auxiliary index)（可以理解为一个<span><span class="heti-spacing"> </span>cache</span>）</li>
+<li>现在新增一个存储少量索引的空间，叫做<strong>辅助索引</strong>(auxiliary index)（可以理解为一个<a href="../../system/co/5.html#caches"><span><span class="heti-spacing"> </span>cache</span></a>）</li>
 <li>新插入的文档对应的索引会暂时存放在辅助索引内</li>
 <li>如果要搜索网页的话，搜索引擎会同时在主索引和辅助索引内查找对应的索引，查找辅助索引的速度更快一些</li>
 <li>在适当的时候将辅助索引内的内容合并到主索引内（即归档<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，随后清空该索引，继续用于存放新插入的文档</li>
@@ -817,12 +814,12 @@
 </blockquote>
 </div>
 <h3 id="compression">Compression<a class="headerlink" href="#compression" title="Permanent link">⚓︎</a></h3>
-<p>这里有几种可压缩存储空间的场景：</p>
+<p>这里有几种可压缩存储空间的情况：</p>
 <ul>
 <li>
 <p>关于词汇</p>
 <ul>
-<li>一个简单的想法是将所有的词汇放在一个数组内，但是它的存储空间除了取决于词汇数量，可能还取决于最长词汇的位数，如果某个词汇很长，浪费的空间就特别多了</li>
+<li>一个简单的想法是将所有的词汇放在一个数组内，每个元素存储一个词汇，但是它的存储空间除了取决于词汇数量外，还取决于最长词汇的位数。如果某个词汇的长度远超其他词汇，那么浪费的空间就特别多了。</li>
 <li>因此一种压缩的策略是：<ul>
 <li>先去除停用词</li>
 <li>然后将所有的词汇放在同一个存储块内，词汇之间没有任何间隔，所以看起来就是一长串字符串</li>
@@ -841,7 +838,7 @@
 <li>
 <p>关于索引</p>
 <ul>
-<li><del>如果</del> 我们有大量的文档，那么词汇的倒排索引可能无法表示特别大的整数（即使<code>long long int</code>也救不了）</li>
+<li><del>如果</del> 我们有大量的文档，那么索引值可能会非常大，甚至无法直接表示出来（即使<code>long long int</code>也救不了）</li>
 <li>因此我们不再记录文档的绝对序号，而是记录某个词汇所在的两个最近的文档的间距，也就是说记录基于绝对序号的<strong>差分<span class="heti-skip"><span class="heti-spacing"> </span>(difference)<span class="heti-spacing"> </span></span>序列</strong>。根据实际经验可知，大多数的间距值不会超过<span><span class="heti-spacing"> </span>20 bit</span>，因而能够存储更大的文档序号</li>
 </ul>
 <div class="admonition example">
@@ -853,7 +850,12 @@
 </li>
 </ul>
 <h3 id="threshold">Threshold<a class="headerlink" href="#threshold" title="Permanent link">⚓︎</a></h3>
-<p>设置<strong>阈值</strong><span>(threshold)<span class="heti-spacing"> </span></span>的原因是：让搜索引擎查找或检索所有相关的网页是没有必要的，因为我们人类的时间精力有限，即使搜出来的网页都有价值（而实际上只有很少的一部分网页是有意义的<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，我们也不会将所有给出的网页都阅读一遍；而且检索所有网页这一行为所消耗的时间较多，所以需要设定一个阈值，我们只要这个范围内的网页就行了。下面将会从两个角度阐述这一思想：</p>
+<p>设置<strong>阈值</strong><span>(threshold)<span class="heti-spacing"> </span></span>的原因是：</p>
+<ul>
+<li>让搜索引擎查找或检索所有相关的网页是没有必要的，因为我们人类的时间精力有限，即使搜出来的网页都有价值（而实际上只有很少的一部分网页是有意义的<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，我们也不会将所有给出的网页都阅读一遍</li>
+<li>而且检索所有网页这一行为所消耗的时间较多，所以需要设定一个阈值，我们只要这个范围内的网页就行了。</li>
+</ul>
+<p>下面将会从两个角度阐述这一思想：</p>
 <ul>
 <li><strong>文档</strong>：只检索根据权重排名下来的前<span class="heti-skip"><span class="heti-spacing"> </span>x<span class="heti-spacing"> </span></span>个文档<ul>
 <li>缺点：对于布尔查询（用到与、或等布尔运算<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，可能会错过一些有意义的文档。比如我们要搜索<code>Computer &amp; Science</code>，搜索引擎只会搜与这两者的交集相关的文档，可能会忽略与<code>Computer</code>相关或与<code>Science</code>相关的文档</li>
@@ -872,7 +874,7 @@
 </li>
 </ul>
 <h2 id="measurement">Measurement<a class="headerlink" href="#measurement" title="Permanent link">⚓︎</a></h2>
-<p>我们可以从以下几个角度来测量搜索引擎的性能：</p>
+<p>我们可以从以下几个角度来衡量搜索引擎的性能：</p>
 <ul>
 <li>排索引的速度：每小时处理的文档数</li>
 <li>搜索的速度<ul>
@@ -887,19 +889,25 @@
 </ul>
 </li>
 </ul>
-<p>相关性的测量还需要以下几部分：</p>
+<p>相关性的衡量还需要以下几部分：</p>
 <ul>
-<li>一个作为基准文档集</li>
+<li>一个作为基准的文档集</li>
 <li>一套作为基准的查询语句</li>
 <li>
-<p>一个对于每个查询<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>文档对的二维评估，如下图所示：</p>
+<p>一个对于每个查询<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>文档对的二维的相关性评估表，如下图所示：</p>
 <p></p><div style="text-align: center">
 <img src="images/lec3/12.png" width="70%"/>
 </div>
 <p>评估中会用到两个指标：</p>
 <ul>
-<li><strong>精确度</strong>(precision)：所有检索到的文档中，有多少是有意义的</li>
-<li><strong>召回率</strong>(recall)：所有有意义的文档中，有多少是被检索到的</li>
+<li><strong>精确度</strong>(precision)：所有检索到的文档中，有多少是有意义的（考虑表格第一行）<ul>
+<li>公式：<span class="arithmatex">\(P = \dfrac{R_R}{R_R + I_R}\)</span></li>
+</ul>
+</li>
+<li><strong>召回率</strong>(recall)：所有有意义的文档中，有多少是被检索到的（考虑表格第一列）<ul>
+<li>公式：<span class="arithmatex">\(R = \dfrac{R_R}{R_R + R_N}\)</span></li>
+</ul>
+</li>
 </ul>
 <p></p><div style="text-align: center">
 <img src="images/lec3/13.png" width="70%"/>
