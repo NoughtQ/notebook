@@ -6,4 +6,6 @@
 
 ## Table of Contents
 
-- [Vue 基础部分](basics.md)
+- [基础部分](basics.md)
+- [组件](component.md)
+- [进阶部分](advanced.md)

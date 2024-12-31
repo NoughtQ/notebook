@@ -12,5 +12,5 @@
     - 社会心理学: psychology/social
 - 其他课程:
     - 大学物理（乙）: physics
-    - 大学物理实验: physics-lab
+    - 创业启程: entrepreneurship
 {{ END_TOC }}

@@ -32,14 +32,7 @@ title: "NoughtQ的笔记本"
 
 !!! plan "更新计划"
 
-    - [ ] [概率论与数理统计](math/pro-sta/index.md)
-    - [ ] [汇编语言程序设计基础](lang/asm/index.md)
-    - [ ] [高级数据结构与算法分析](algorithms/ads/index.md)
-    - [ ] [计算机组成](hardware/co/index.md)
-    - [ ] [图像信息处理](software/dip/index.md)
-    - [ ] 可能会更一些心理学课程的笔记
-
-    >~~哇哦，有点满呀~~ :dizzy_face:
+    大二上的笔记基本上都完工啦！
 
 !!! statistic inline end "站点统计"
 
@@ -53,9 +46,10 @@ title: "NoughtQ的笔记本"
 
 !!! recommend "推荐阅读"
 
-    - 📊[离散数学及其应用](math/dm/index.md)
-    - 📝[数据结构基础](algorithms/fds/index.md)
-    - 💻[数字逻辑设计](hardware/dld/index.md)
+    - 🔡[汇编语言程序设计基础](lang/asm/index.md)
+    - 🧮[高级数据结构与算法分析](algorithms/ads/index.md)
+    - 💻[计算机组成](system/co/index.md)
+    - 💾[图像信息处理](software/dip/index.md)
 
     <div style="text-align: center">
         笔记本正在持续更新 ing~

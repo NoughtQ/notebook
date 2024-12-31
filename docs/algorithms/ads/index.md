@@ -13,7 +13,7 @@
 
     如果图片无法加载成功，可以尝试禁用 AdBlock 插件（如果安装的话）。
 
-!!! plan "更新计划"
+!!! abstract "目录"
 
     - [x] [Lec 1: AVL Trees, Splay Trees and Amortized Analysis](1.md)
     - [x] [Lec 2: Red-Black Trees and B+ Trees](2.md) 
@@ -24,14 +24,16 @@
     - [x] [Lec 7: Divide and Conquer](7.md)
     - [x] [Lec 8: Dynamic Programming](8.md)
     - [x] [Lec 9: Greedy Algorithms](9.md)
-    - [x] [Lec 10: NP-Completeness](10.md)
+    - [x] [Lec 10: P/NP Problems](10.md)
     - [x] [Lec 11: Approximation](11.md)
     - [x] [Lec 12: Local Search](12.md)
     - [x] [Lec 13: Randomized Algorithms](13.md)
-    - [ ] [Lec 14: Parallel Algorithms](14.md)
-    - [ ] [Lec 15: External Sorting](15.md)
+    - [x] [Lec 14: Parallel Algorithms](14.md)
+    - [x] [Lec 15: External Sorting](15.md)
 
-!!! success "参考资料"
+    完结撒花:tada:，但还会根据我的期末复习情况随时对笔记内容进行一些小修改。
+
+!!! recommend "参考资料"
 
     - 上述的几本教材
     - cy的PPT
@@ -39,3 +41,4 @@
     - wyy的ADS讲义
     - [OI Wiki](https://oi-wiki.org/)
     - [Wikipedia](https://www.wikipedia.org/)
+    - [Hello 算法](https://www.hello-algo.com/)

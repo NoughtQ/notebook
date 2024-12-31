@@ -15,16 +15,18 @@ theme:
   favicon: assets/favicon.png
   custom_dir: overrides
   features:
-    # - content.action.edit
-    # - content.action.view
+    - content.action.edit
+    - content.action.view
     - content.code.copy
     - content.code.annotate
+    - header.autohide
     - navigation.tabs
     - navigation.top
     - navigation.footer
     - navigation.indexes
     - navigation.tracking
     - navigation.prune
+    - search.share
   font:
     text: JetBrains Mono, LXGW WenKai Screen GB Screen 
     code: JetBrains Mono, Consolas
@@ -113,6 +115,7 @@ markdown_extensions:
   - toc:
       permalink: ⚓︎
       title: 目录
+      slugify: !!python/object/apply:pymdownx.slugs.slugify {kwds: {case: lower}} # enable Unicode link
   - md_in_html
 
 extra:
@@ -130,6 +133,7 @@ extra:
 extra_css:
   - stylesheet/custom.css
   - stylesheet/extra_changelog.css
+  - stylesheet/card.css
   - https://unpkg.com/katex@0/dist/katex.min.css
   - https://gcore.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css
   - https://gcore.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css
@@ -172,21 +176,13 @@ nav:
         - lang/cpp/cs106l/12-13.md
         - lang/cpp/cs106l/14.md
         - lang/cpp/cs106l/15.md
-    - 汇编语言:
+    - x86 汇编语言:
       - lang/asm/index.md
-      - 基础部分:
-        - lang/asm/1.md
-        - lang/asm/2.md
-        - lang/asm/3.md
-        - lang/asm/4.md
-      - 调试: lang/asm/5.md
-      - x86指令系统: lang/asm/6.md
-      - 进阶部分:
-        - lang/asm/7.md
-        - lang/asm/8.md
-        - lang/asm/9.md
-        - lang/asm/10.md
-        - lang/asm/11.md
+      - lang/asm/1.md
+      - lang/asm/2.md
+      - lang/asm/3.md
+      - lang/asm/4.md
+      - lang/asm/5.md
 
   - 📊数学相关:
     - math/index.md
@@ -222,6 +218,7 @@ nav:
       - math/pro-sta/6.md
       - math/pro-sta/7.md
       - math/pro-sta/8.md
+      - math/pro-sta/exercises.md
       
   - 🧮算法相关:
     - algorithms/index.md
@@ -270,6 +267,7 @@ nav:
     #     - algorithms/game/10.md
 
   - 💾软件相关:
+      - software/index.md
       - 图像信息处理:
         - software/dip/index.md
         - software/dip/1.md
@@ -281,26 +279,26 @@ nav:
         - software/dip/7.md
         - software/dip/8.md
 
-  - 💻硬件相关:
-    - hardware/index.md
+  - 💻系统相关:
+    - system/index.md
     - 数字逻辑设计:
-      - hardware/dld/index.md
-      - hardware/dld/1.md
-      - hardware/dld/2.md
-      - hardware/dld/3.md
-      - hardware/dld/4.md
-      - hardware/dld/5.md
-      - hardware/dld/6.md
-      - hardware/dld/7.md
-      - hardware/dld/verilog.md
+      - system/dld/index.md
+      - system/dld/1.md
+      - system/dld/2.md
+      - system/dld/3.md
+      - system/dld/4.md
+      - system/dld/5.md
+      - system/dld/6.md
+      - system/dld/7.md
+      - system/dld/verilog.md
     - 计算机组成:
-      - hardware/co/index.md
-      - hardware/co/1.md
-      - hardware/co/2.md
-      - hardware/co/3.md
-      - hardware/co/4.md
-      - hardware/co/5.md
-      - hardware/co/appendix.md
+      - system/co/index.md
+      - system/co/1.md
+      - system/co/2.md
+      - system/co/3.md
+      - system/co/4.md
+      - system/co/5.md
+      - system/co/6.md
 
   - 🌏Web相关:
     - web/index.md
@@ -316,7 +314,9 @@ nav:
         - web/frontend/js/browser.md
       - Vue.js:
         - web/frontend/vue/index.md
-        - web/frontend/vue/basics.md      
+        - web/frontend/vue/basics.md
+        - web/frontend/vue/component.md
+        - web/frontend/vue/advanced.md 
     - 后端:
       - web/backend/index.md
       - Go:
@@ -349,6 +349,12 @@ nav:
       - sec/ctf-101/pwn.md
       - sec/ctf-101/crypto.md
 
+  - 🤖人工智能:
+    - CS188 | Intro to AI:
+      - ai/cs188/index.md
+      - ai/cs188/intro.md
+      - ai/cs188/search.md
+
   - 🗃️杂项:
     - misc/index.md
     - 心理学相关:
@@ -366,11 +372,7 @@ nav:
       - misc/physics/1.md
       - misc/physics/2.md
       - misc/physics/3.md
-    - 大学物理实验:
-      - misc/physics-lab/index.md
-      - misc/physics-lab/intro.md
-      - misc/physics-lab/1.md
-      - misc/physics-lab/2.md
+    - 创业启程: misc/entrepreneurship.md
    
 
   - 🛠️工具: 
