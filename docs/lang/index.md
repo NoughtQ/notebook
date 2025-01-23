@@ -8,4 +8,5 @@
 
 - [C](c/index.md)
 - [C++：CS106L](cpp/index.md)
-- [汇编语言](asm/index.md)
+- [Python](py/index.md)
+- [x86 汇编语言](asm/index.md)

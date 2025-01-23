@@ -17,7 +17,7 @@ title: "NoughtQ的笔记本"
 !!! info "关于我"
 
     <div style="text-align: center" markdown="1" class="tightBlock">
-    ZJU 本科 23 级 CSer，微辅修心理学
+    ZJU 本科 23 级 CSer
 
     正在摸索感兴趣的方向
 
@@ -30,9 +30,13 @@ title: "NoughtQ的笔记本"
     - :simple-github: [我的 GitHub 账号](https://github.com/noughtq)
     - :material-email: [我的邮箱](mailto:noughtq666@gmail.com)
 
-!!! plan "更新计划"
+!!! plan "更新计划（寒假小目标）"
 
-    大二上的笔记基本上都完工啦！
+    - 产一些自学课程笔记（也会讲做过的作业放在仓库里，大家可以找找看）：
+        - [ ] [UCB CS188: Intro to AI](ai/cs188)
+        - [ ] [MIT 6.102: Software Construction](software/construction)
+            
+    - 也许还会进一步魔改网站的主页，显得更加个性化些...
 
 !!! statistic inline end "站点统计"
 
