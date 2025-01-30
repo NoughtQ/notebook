@@ -619,7 +619,7 @@
 <p>在红黑树中<heti-adjacent class="heti-adjacent-half">，</heti-adjacent>「叶子节点」特别指的是<strong>空节点<span><span class="heti-spacing"> </span>(nil)</span></strong>，不要搞错啦<heti-adjacent class="heti-adjacent-half">！</heti-adjacent>（下面介绍定义的时候还会提到这一点的）</p>
 </div>
 <h3 id="definition">Definition<a class="headerlink" href="#definition" title="Permanent link">⚓︎</a></h3>
-<p><strong>红黑树</strong><span>(red-black trees)<span class="heti-spacing"> </span></span>本质上也是一棵<strong>二叉查找树</strong>，它的目标同<span class="heti-skip"><span class="heti-spacing"> </span>AVL<span class="heti-spacing"> </span></span>树一样，也是尽可能地维护二叉查找树的<strong>平衡</strong>。下图表示的是红黑树的一个节点：</p>
+<p><strong>红黑树</strong><span class="heti-skip"><span class="heti-spacing"> </span>(red-black trees)<span class="heti-spacing"> </span></span>本质上也是一棵<strong>二叉查找树</strong>，它的目标同<span class="heti-skip"><span class="heti-spacing"> </span>AVL<span class="heti-spacing"> </span></span>树一样，也是尽可能地维护二叉查找树的<strong>平衡</strong>。下图表示的是红黑树的一个节点：</p>
 <div style="text-align: center">
 <img src="images/lec2/1.png" width="20%"/>
 </div>
@@ -658,7 +658,7 @@
 </li>
 <li>
 <ul>
-<li>在红黑树中，实际存在的节点被称为<strong>内部节点</strong>(internal node)，而空节点<code>NIL</code>被称为<strong>外部节点</strong>(external node)</li>
+<li>在红黑树中，实际存在的节点被称为<strong>内部节点</strong><span><span class="heti-spacing"> </span>(internal node)</span>，而空节点<code>NIL</code>被称为<strong>外部节点</strong><span><span class="heti-spacing"> </span>(external node)</span></li>
 </ul>
 <p><img alt="🌟" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/1f31f.svg" title=":star2:"/>对于每个节点，从该节点出发，到它后代叶子节点（即<code>NIL</code>节点）的所有简单路径包含了<strong>相同数量的黑色节点</strong>（这是实现红黑树平衡的关键）</p>
 <p></p><div style="text-align: center">
@@ -667,7 +667,7 @@
 </li>
 </ul>
 </div>
-<p>为了量化红黑树的平衡程度，我们为节点<span class="heti-skip"><span class="heti-spacing"> </span>x<span class="heti-spacing"> </span></span>定义一个称为「<strong>黑高</strong>」<span>(black height)<span class="heti-spacing"> </span></span>的字段<span><span class="heti-spacing"> </span><span class="arithmatex">\(\mathrm{bh}(x)\)</span></span>：它表示从节点<span class="heti-skip"><span class="heti-spacing"> </span>x<span class="heti-spacing"> </span></span>出发到<strong>叶子节点<span><span class="heti-spacing"> </span>(NIL)</span></strong>的任意简单路径上黑色节点的个数（<strong>不包括</strong>节点<span><span class="heti-spacing"> </span>x</span>）</p>
+<p>为了量化红黑树的平衡程度，我们为节点<span class="heti-skip"><span class="heti-spacing"> </span>x<span class="heti-spacing"> </span></span>定义一个称为「<strong>黑高</strong>」<span>(black height)<span class="heti-spacing"> </span></span>的字段<span><span class="heti-spacing"> </span><span class="arithmatex">\(\mathrm{bh}(x)\)</span></span>：它表示从节点<span class="heti-skip"><span class="heti-spacing"> </span>x<span class="heti-spacing"> </span></span>出发到<strong>叶子节点<span class="heti-skip"><span class="heti-spacing"> </span>(NIL)<span class="heti-spacing"> </span></span></strong>的任意简单路径上黑色节点的个数（<strong>不包括</strong>节点<span><span class="heti-spacing"> </span>x</span>）</p>
 <ul>
 <li>根据定义的性质<span><span class="heti-spacing"> </span>5</span>，由于每条简单路径的黑色节点数相同，所以便可以<strong>任意</strong>选取其中<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>条路径</li>
 <li>整棵树的黑高等于根节点的黑高</li>
@@ -838,12 +838,12 @@
 <p>用双旋替代<span class="heti-skip"><span class="heti-spacing"> </span>Case 2<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>Case 3<span class="heti-spacing"> </span></span>的调整是否可行？答案是否定的（<del>如果是肯定的话，这里也就不会分两种情况来介绍了</del><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，简单的双旋不会根除不好的情况，因而会让我们一直陷入调整的死循环中，大家可以通过自己画图来具体探讨一下。</p>
 </details>
 <h4 id="deletion">Deletion<a class="headerlink" href="#deletion" title="Permanent link">⚓︎</a></h4>
-<p>我们通过「两步走」的方法实现整个删除操作：<strong>维护红黑树的平衡</strong> -&gt; <strong>删除树中节点</strong></p>
+<p>我们通过「两步走」的方法实现整个删除操作：<strong>维护红黑树的平衡</strong><span class="heti-skip"><span class="heti-spacing"> </span>-&gt;<span class="heti-spacing"> </span></span><strong>删除树中节点</strong></p>
 <p>先来看删除节点（共<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>种情况<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
 <ul>
 <li>删除树中的唯一节点<span class="heti-skip"><span class="heti-spacing"> </span>-&gt;<span class="heti-spacing"> </span></span>直接删</li>
-<li>被删除节点有<strong>两个孩子</strong> <span>-&gt;<span class="heti-spacing"> </span></span>用左子树最大节点或右子树最小节点的<strong>值</strong>替代被删除的节点的值（注意保持<strong>颜色不变</strong><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>（具体删除细节见<a href="../fds/4.html#delete"><span class="heti-skip"><span class="heti-spacing"> </span>FDS<span class="heti-spacing"> </span></span>相关部分</a><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，然后将用于替代的节点从原来的位置中删除（根据二叉查找树的性质知，它至多只有一个孩子，因此问题转换为后面两种情况）</li>
-<li>被删除节点<strong>没有孩子</strong> <span>-&gt;<span class="heti-spacing"> </span></span>直接用<code>NIL</code>替代（黑色）该节点</li>
+<li>被删除节点有<strong>两个孩子</strong><span class="heti-skip"><span class="heti-spacing"> </span>-&gt;<span class="heti-spacing"> </span></span>用左子树最大节点或右子树最小节点的<strong>值</strong>替代被删除的节点的值（注意保持<strong>颜色不变</strong><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>（具体删除细节见<a href="../fds/4.html#delete"><span class="heti-skip"><span class="heti-spacing"> </span>FDS<span class="heti-spacing"> </span></span>相关部分</a><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，然后将用于替代的节点从原来的位置中删除（根据二叉查找树的性质知，它至多只有一个孩子，因此问题转换为后面两种情况）</li>
+<li>被删除节点<strong>没有孩子</strong><span class="heti-skip"><span class="heti-spacing"> </span>-&gt;<span class="heti-spacing"> </span></span>直接用<code>NIL</code>替代（黑色）该节点</li>
 <li>被删除节点有<strong>一个孩子</strong><ul>
 <li>若孩子为红色<span class="heti-skip"><span class="heti-spacing"> </span>-&gt;<span class="heti-spacing"> </span></span>该节点为黑色<span class="heti-skip"><span class="heti-spacing"> </span>-&gt;<span class="heti-spacing"> </span></span>直接用孩子替代该节点并染黑即可</li>
 <li>若孩子为黑色<span class="heti-skip"><span class="heti-spacing"> </span>-&gt;<span class="heti-spacing"> </span></span>该节点可红可黑<ul>
