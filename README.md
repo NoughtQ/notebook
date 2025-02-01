@@ -10,7 +10,7 @@
 
 ## ToolChain
 
-- 用到了 [@TonyCrane] 前辈开发的很多插件，包括[statictics](https://github.com/TonyCrane/mkdocs-statistics-plugin)、[changelog](https://github.com/TonyCrane/mkdocs-changelog-plugin)、[heti](https://github.com/TonyCrane/mkdocs-heti-plugin)等，都挺好用的（xg tql！）
+- 用到了 [@TonyCrane](https://github.com/TonyCrane) 前辈开发的很多插件，包括[statictics](https://github.com/TonyCrane/mkdocs-statistics-plugin)、[changelog](https://github.com/TonyCrane/mkdocs-changelog-plugin)、[heti](https://github.com/TonyCrane/mkdocs-heti-plugin)等，都挺好用的（xg tql！）
 - 我自己开发了一个“笔记漫游”的插件：[mkdocs-random_walk-plugin](https://github.com/noughtq/mkdocs-random_walk-plugin)，实现了类似 Obsidian 的同名功能，感兴趣的小伙伴们可以玩玩看~
 
 
