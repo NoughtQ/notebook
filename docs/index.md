@@ -1,63 +1,66 @@
 ---
 statistics: true
+random_walk: true
 comments: false
 home: true
+hide:
+    - navigation
+    - toc
+    - footer
 title: "NoughtQ的笔记本"
 ---
 
-<div markdown="1" style="text-align: center">
-# 欢迎来到 NoughtQ 的笔记本!
+<div markdown="1" class="homepage">
+
+<h1 style="font-size: 2rem; margin-left: 4%"><span id="typed"></span></h1>
+
+<div markdown="1" style="margin-right: 0%; margin-top: -2%">
+[:material-clock-time-two-outline: 最近更新](changelog.md) | 
+[:material-bulletin-board: 留言板](board.md) | 
+<a href="#" id="randomLink" markdown="1">
+  :fontawesome-solid-person-walking: 笔记漫游
+</a>
+
+[:octicons-person-16: 关于我](javascript:toggle_about();) | 
+[:material-chart-line: 站点统计](javascript:toggle_statistics();) | 
+[:octicons-thumbsup-16: 推荐阅读](javascript:toggle_recommend();)
 </div>
 
-!!! abstract "阅读前须知"
+<div id="about" markdown="1" class="card" style="width: 40em; border-color: transparent; display: none; font-size: 80%">
+<div style="padding-left: 1em; text-align: center" markdown="1">
+ZJU 本科 23 级 CSer
 
-    - 若发现笔记内容有误，或有自己的想法，欢迎大家在评论区或在 Issues 留言！（~~我不一定能够及时回复，请见谅~~）
-    - 我的 ZJU-Courses 资料库（存放我的实验报告、历年卷等资料）：[NoughtQ/ZJU-courses-materials](https://github.com/NoughtQ/ZJU-courses-materials)
+正在摸索感兴趣的方向
 
-!!! info "关于我"
+平时喜欢阅读、打游戏等 ~~不用离开椅子的活动~~
 
-    <div style="text-align: center" markdown="1" class="tightBlock">
-    ZJU 本科 23 级 CSer
+欢迎找我玩捏~
 
-    正在摸索感兴趣的方向
+[:fontawesome-solid-blog: 我的博客](https://blog.noughtq.top) | 
+[:fontawesome-solid-box-archive: 我的 ZJU 课程资料库](https://github.com/NoughtQ/ZJU-Courses-Resources) | 
+[:simple-github: 我的 GitHub](https://github.com/noughtq) | 
+[:material-email: 我的邮箱](mailto:noughtq666@gmail.com)
+</div>
+</div>
 
-    平时喜欢阅读、打游戏等 ~~不用离开椅子的活动~~
+<div id="statistics" markdown="1" class="card" style="width: 27em; border-color: transparent; display: none; font-size: 80%">
+<div style="padding-left: 1em;" markdown="1">
+- :material-file-document: 页面总数：{{pages}}  
+- :material-circle-edit-outline: 总字数：{{words}}  
+- :fontawesome-solid-code: 代码块行数：{{codes}}  
+- :octicons-clock-16: 网站运行时间：<span id="web-time"></span>
+</div>
+</div>
 
-    欢迎找我玩捏~
-    </div>
+<div id="recommend" markdown="1" class="card" style="width: 27em; border-color: transparent; display: none; font-size: 80%">
+<div style="padding-left: 1em;" markdown="1">
+- 🧮[高级数据结构与算法分析](algorithms/ads/index.md)
+- 💻[计算机组成](system/co/index.md)
+- 💾[图像信息处理](software/dip/index.md)
+</div>
+</div>
+</div>
 
-    - :fontawesome-solid-blog: [我的博客](https://blog.noughtq.top)
-    - :simple-github: [我的 GitHub 账号](https://github.com/noughtq)
-    - :material-email: [我的邮箱](mailto:noughtq666@gmail.com)
-
-!!! plan "更新计划（寒假小目标）"
-
-    - 产一些自学课程笔记（也会讲做过的作业放在仓库里，大家可以找找看）：
-        - [ ] [UCB CS188: Intro to AI](ai/cs188)
-        - [ ] [MIT 6.102: Software Construction](software/construction)
-            
-    - 也许还会进一步魔改网站的主页，显得更加个性化些...
-
-!!! statistic inline end "站点统计"
-
-    <div style="text-align: center" markdown="1">
-    :material-file-document: 页面总数：{{ pages }}
-
-    :material-circle-edit-outline: 总字数：{{ words }}
-    
-    :fontawesome-solid-code: 代码块行数：{{ codes }}
-    </div>
-
-!!! recommend "推荐阅读"
-
-    - 🔡[汇编语言程序设计基础](lang/asm/index.md)
-    - 🧮[高级数据结构与算法分析](algorithms/ads/index.md)
-    - 💻[计算机组成](system/co/index.md)
-    - 💾[图像信息处理](software/dip/index.md)
-
-    <div style="text-align: center">
-        笔记本正在持续更新 ing~
-    </div>
 
 
 
