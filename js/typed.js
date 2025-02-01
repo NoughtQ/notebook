@@ -1,3 +1,5 @@
+// 打字机效果
+
 // 动态加载 CDN 脚本
 const script = document.createElement('script');
 script.src = 'https://cdn.jsdelivr.net/npm/typed.js@2.0.11';
