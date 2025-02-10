@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html class="no-js" lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="NoughtQ的笔记本" name="description"/>
+<meta content="NoughtQ" name="author"/>
+<link href="https://notebook.noughtq.top/system/csapp/1.html" rel="canonical"/>
+<link href="index.html" rel="prev"/>
+<link href="2.html" rel="next"/>
+<link href="../../assets/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.6.3" name="generator"/>
+<title>Chap 1: A Tour of Computer Systems - NoughtQ的笔记本</title>
+<link href="../../assets/stylesheets/main.d7758b05.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/palette.06af60db.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=JetBrains+Mono,+LXGW+WenKai+Screen+GB+Screen:300,300i,400,400i,700,700i%7CJetBrains+Mono,+Consolas:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"JetBrains Mono, LXGW WenKai Screen GB Screen";--md-code-font:"JetBrains Mono, Consolas"}</style>
+<link href="../../css/heti.css" rel="stylesheet"/>
+<link href="../../css/toc_extra.css" rel="stylesheet"/>
+<link href="../../css/timeline.css" rel="stylesheet"/>
+<link href="../../css/card.css" rel="stylesheet"/>
+<link href="../../css/custom.css" rel="stylesheet"/>
+<link href="../../css/extra_changelog.css" rel="stylesheet"/>
+<link href="https://unpkg.com/katex@0/dist/katex.min.css" rel="stylesheet"/>
+<link href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css" rel="stylesheet"/>
+<link href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;display=swap" rel="stylesheet"/>
+<script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-43NH8CVRCJ"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-43NH8CVRCJ",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-43NH8CVRCJ",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+<script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+</head>
+<body data-md-color-accent="indigo" data-md-color-primary="indigo" data-md-color-scheme="slate" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#chap-1-a-tour-of-computer-systems">
+          跳转至
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header" data-md-component="header">
+<nav aria-label="页眉" class="md-header__inner md-grid">
+<a aria-label="NoughtQ的笔记本" class="md-header__button md-logo" data-md-component="logo" href="../.." title="NoughtQ的笔记本">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.05 9H7.06V6h1.99V4.03H7.06v-1c0-1.11.89-1.99 1.99-1.99h5.98V8l2.47-1.5L20 8V1.04h1c1.05 0 2 .96 2 1.99V17c0 1.03-.95 2-2 2H9.05c-1.05 0-1.99-.95-1.99-2v-1h1.99v-2H7.06v-3h1.99zM1 18h2v-3H1v-2h2v-3H1V8h2V5h2v3H3v2h2v3H3v2h2v3H3v2h2v1h16v2H5a2 2 0 0 1-2-2v-1H1z"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            NoughtQ的笔记本
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              Chap 1: A Tour of Computer Systems
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="Dark Mode" class="md-option" data-md-color-accent="indigo" data-md-color-media="(prefer-color-scheme: dark)" data-md-color-primary="indigo" data-md-color-scheme="slate" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="Dark Mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"></path></svg>
+</label>
+<input aria-label="Light Mode" class="md-option" data-md-color-accent="indigo" data-md-color-media="(prefer-color-scheme: light)" data-md-color-primary="indigo" data-md-color-scheme="default" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="Light Mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="搜索" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="搜索" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 320 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path></svg>
+</label>
+<nav aria-label="查找" class="md-search__options">
+<a aria-label="分享" class="md-search__icon md-icon" data-clipboard="" data-clipboard-text="" data-md-component="search-share" href="javascript:void(0)" tabindex="-1" title="分享">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"></path></svg>
+</a>
+<button aria-label="清空当前内容" class="md-search__icon md-icon" tabindex="-1" title="清空当前内容" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header__source">
+<a class="md-source" data-md-component="source" href="https://github.com/noughtq/notebook" title="前往仓库">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"></path></svg>
+</div>
+<div class="md-source__repository">
+    NoughtQ/Notebook
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<nav aria-label="标签" class="md-tabs" data-md-component="tabs">
+<div class="md-grid">
+<ul class="md-tabs__list">
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../index.html">
+          
+  
+    
+  
+  🏫主页
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../lang/index.html">
+          
+  
+    
+  
+  🔡语言
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../math/index.html">
+          
+  
+    
+  
+  📊数学相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../algorithms/index.html">
+          
+  
+    
+  
+  🧮算法相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../software/index.html">
+          
+  
+    
+  
+  💾软件相关
+
+        </a>
+</li>
+<li class="md-tabs__item md-tabs__item--active">
+<a class="md-tabs__link" href="../index.html">
+          
+  
+    
+  
+  💻系统相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../web/index.html">
+          
+  
+    
+  
+  🌏Web相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../sec/ctf-101/index.html">
+          
+  
+    
+  
+  🛡️信息安全
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../ai/index.html">
+          
+  
+    
+  
+  🤖人工智能
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../misc/index.html">
+          
+  
+    
+  
+  🗃️杂项
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../tools/index.html">
+          
+  
+    
+  
+  🛠️工具
+
+        </a>
+</li>
+</ul>
+</div>
+</nav>
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="导航栏" class="md-nav md-nav--primary md-nav--lifted" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="NoughtQ的笔记本" class="md-nav__button md-logo" data-md-component="logo" href="../.." title="NoughtQ的笔记本">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.05 9H7.06V6h1.99V4.03H7.06v-1c0-1.11.89-1.99 1.99-1.99h5.98V8l2.47-1.5L20 8V1.04h1c1.05 0 2 .96 2 1.99V17c0 1.03-.95 2-2 2H9.05c-1.05 0-1.99-.95-1.99-2v-1h1.99v-2H7.06v-3h1.99zM1 18h2v-3H1v-2h2v-3H1V8h2V5h2v3H3v2h2v3H3v2h2v3H3v2h2v1h16v2H5a2 2 0 0 1-2-2v-1H1z"></path></svg>
+</a>
+    NoughtQ的笔记本
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-component="source" href="https://github.com/noughtq/notebook" title="前往仓库">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"></path></svg>
+</div>
+<div class="md-source__repository">
+    NoughtQ/Notebook
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../index.html">
+<span class="md-ellipsis">
+    🏫主页
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../lang/index.html">
+<span class="md-ellipsis">
+    🔡语言
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../math/index.html">
+<span class="md-ellipsis">
+    📊数学相关
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../algorithms/index.html">
+<span class="md-ellipsis">
+    🧮算法相关
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../software/index.html">
+<span class="md-ellipsis">
+    💾软件相关
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_6" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../index.html">
+<span class="md-ellipsis">
+    💻系统相关
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="true" aria-labelledby="__nav_6_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_6">
+<span class="md-nav__icon md-icon"></span>
+            💻系统相关
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_6_2" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="index.html">
+<span class="md-ellipsis">
+    CSAPP
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_6_2" id="__nav_6_2_label" tabindex="0">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="true" aria-labelledby="__nav_6_2_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_6_2">
+<span class="md-nav__icon md-icon"></span>
+            CSAPP
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    Chap 1: A Tour of Computer Systems
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="1.html">
+<span class="md-ellipsis">
+    Chap 1: A Tour of Computer Systems
+    
+  </span>
+</a>
+<nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#information">
+<span class="md-ellipsis">
+      Information
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#programs">
+<span class="md-ellipsis">
+      Programs
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#instructions-reading-and-interpretation">
+<span class="md-ellipsis">
+      Instructions Reading and Interpretation
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#caches">
+<span class="md-ellipsis">
+      Caches
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#memory-hierarchy">
+<span class="md-ellipsis">
+      Memory Hierarchy
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#operating-system">
+<span class="md-ellipsis">
+      Operating System
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#networks">
+<span class="md-ellipsis">
+      Networks
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#important-themes">
+<span class="md-ellipsis">
+      Important Themes
+    </span>
+</a>
+<nav aria-label="Important Themes" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#amdahls-law">
+<span class="md-ellipsis">
+      Amdahl's Law
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#concurrency-and-parallelism">
+<span class="md-ellipsis">
+      Concurrency and Parallelism
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#abstractions-in-computer-system">
+<span class="md-ellipsis">
+      Abstractions in Computer System
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#asides">
+<span class="md-ellipsis">
+      Asides
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="2.html">
+<span class="md-ellipsis">
+    Chap 2: Representing and Manipulating Information
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="3.html">
+<span class="md-ellipsis">
+    Chap 3: Machine-Level Representation of Programs
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="4.html">
+<span class="md-ellipsis">
+    Chap 4: Processor Architecture
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="5.html">
+<span class="md-ellipsis">
+    Chap 5: Optimizing Program Performance
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="6.html">
+<span class="md-ellipsis">
+    Chap 6: The Memory Hierarchy
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="7.html">
+<span class="md-ellipsis">
+    Chap 7: Linking
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="8.html">
+<span class="md-ellipsis">
+    Chap 8: Exceptional Control Flow
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="9.html">
+<span class="md-ellipsis">
+    Chap 9: Virtual Memory
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="10.html">
+<span class="md-ellipsis">
+    Chap 10: System I/O
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="11.html">
+<span class="md-ellipsis">
+    Chap 11: Network Programming
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="12.html">
+<span class="md-ellipsis">
+    Chap 12: Concurrent Programming
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../dld/index.html">
+<span class="md-ellipsis">
+    数字逻辑设计
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../co/index.html">
+<span class="md-ellipsis">
+    计算机组成
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../web/index.html">
+<span class="md-ellipsis">
+    🌏Web相关
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../sec/ctf-101/index.html">
+<span class="md-ellipsis">
+    🛡️信息安全
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ai/index.html">
+<span class="md-ellipsis">
+    🤖人工智能
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../misc/index.html">
+<span class="md-ellipsis">
+    🗃️杂项
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../tools/index.html">
+<span class="md-ellipsis">
+    🛠️工具
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#information">
+<span class="md-ellipsis">
+      Information
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#programs">
+<span class="md-ellipsis">
+      Programs
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#instructions-reading-and-interpretation">
+<span class="md-ellipsis">
+      Instructions Reading and Interpretation
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#caches">
+<span class="md-ellipsis">
+      Caches
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#memory-hierarchy">
+<span class="md-ellipsis">
+      Memory Hierarchy
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#operating-system">
+<span class="md-ellipsis">
+      Operating System
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#networks">
+<span class="md-ellipsis">
+      Networks
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#important-themes">
+<span class="md-ellipsis">
+      Important Themes
+    </span>
+</a>
+<nav aria-label="Important Themes" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#amdahls-law">
+<span class="md-ellipsis">
+      Amdahl's Law
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#concurrency-and-parallelism">
+<span class="md-ellipsis">
+      Concurrency and Parallelism
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#abstractions-in-computer-system">
+<span class="md-ellipsis">
+      Abstractions in Computer System
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#asides">
+<span class="md-ellipsis">
+      Asides
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<article class="md-content__inner md-typeset">
+<a class="md-content__button md-icon" href="https://github.com/noughtq/notebook/edit/master/docs/system/csapp/1.md" title="编辑此页">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"></path></svg>
+</a>
+<a class="md-content__button md-icon" href="https://github.com/noughtq/notebook/raw/master/docs/system/csapp/1.md" title="查看本页的源代码">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"></path></svg>
+</a>
+<h1 id="chap-1-a-tour-of-computer-systems">Chap 1: A Tour of Computer Systems<a class="headerlink" href="#chap-1-a-tour-of-computer-systems" title="Permanent link">⚓︎</a></h1>
+<div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>3807<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 640 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M392.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6m80.6 120.1c-12.5 12.5-12.5 32.8 0 45.3l89.3 89.4-89.4 89.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l112-112c12.5-12.5 12.5-32.8 0-45.3l-112-112c-12.5-12.5-32.8-12.5-45.3 0zm-306.7 0c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3l112 112c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l89.4-89.4c12.5-12.5 12.5-32.8 0-45.3"></path></svg></span> <span>4<span class="heti-spacing"> </span></span>行代码 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>19<span class="heti-spacing"> </span></span>分钟</p>
+</div>
+<p><strong>计算机系统</strong><span><span class="heti-spacing"> </span>(computer system)</span>：由硬件和系统软件构成的，以运行应用程序。</p>
+<p>本章是对计算机系统主干部分的梳理，后续章节的内容就是对以下概念的挖掘和深入。</p>
+<h2 id="information">Information<a class="headerlink" href="#information" title="Permanent link">⚓︎</a></h2>
+<p>一个程序起源于一份<strong>源程序<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>源文件</strong><span><span class="heti-spacing"> </span>(source program/file)</span>，程序员用编辑器创建源程序，并保存在一个文本文件中。</p>
+<p>计算机的文件可以分为：</p>
+<ul>
+<li><strong>文本文件</strong><span><span class="heti-spacing"> </span>(text files)</span>：仅由<span class="heti-skip"><span class="heti-spacing"> </span>ASCII<span class="heti-spacing"> </span></span>字符（也可以采用<span class="heti-skip"><span class="heti-spacing"> </span>Unicode<span class="heti-spacing"> </span></span>等编码方式）构成的文件</li>
+<li><strong>二进制文件</strong><span><span class="heti-spacing"> </span>(binary files)</span>：除文本文件外的所有文件<ul>
+<li>如果尝试用文本编辑器打开二进制文件，会得到一串乱码<span><span class="heti-spacing"> </span>(gibberish)</span></li>
+</ul>
+</li>
+</ul>
+<p>实际上，计算机系统内的所有信息（包括硬盘文件，存储在内存中的程序和用户数据，在网络中传输的数据等）都由一串二进制<strong>位</strong><span class="heti-skip"><span class="heti-spacing"> </span>(bit)<span class="heti-spacing"> </span></span>表示。我们用信息所处的<strong>上下文</strong><span class="heti-skip"><span class="heti-spacing"> </span>(context)<span class="heti-spacing"> </span></span>来区分不同的数据对象。</p>
+<p>作为程序员，我们应该要理解数字在机器中的表示。</p>
+<h2 id="programs">Programs<a class="headerlink" href="#programs" title="Permanent link">⚓︎</a></h2>
+<p>为了让<span class="heti-skip"><span class="heti-spacing"> </span>C<span class="heti-spacing"> </span></span>源程序能够被运行，需要将<span class="heti-skip"><span class="heti-spacing"> </span>C<span class="heti-spacing"> </span></span>语句转化为低层级的机器语言指令，这些指令被打包在<strong>可执行目标程序<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>文件</strong>中。而这一转变过程称为<strong>编译系统</strong><span><span class="heti-spacing"> </span>(compilation system)</span>，如下图所示：</p>
+<div style="text-align: center">
+<img src="images/C1/1.png" width="90%"/>
+</div>
+<p>编译系统分为以下四个阶段：</p>
+<ul>
+<li><strong>预处理</strong><span><span class="heti-spacing"> </span>(preprocessing)</span>：<strong>预处理器</strong><span><span class="heti-spacing"> </span>(preprocessor)</span>（cpp）根据以 <code>#</code> 字符开头的指示符<span><span class="heti-spacing"> </span>(directives)</span>（比如 <code class="language-c highlight"><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span></code>）修改原始的<span class="heti-skip"><span class="heti-spacing"> </span>C<span class="heti-spacing"> </span></span>程序，最后得到另一个通常以 <code>.i</code> 为后缀名的<span class="heti-skip"><span class="heti-spacing"> </span>C<span class="heti-spacing"> </span></span>程序。</li>
+<li><strong>编译</strong><span><span class="heti-spacing"> </span>(compilation)</span>：<strong>编译器</strong><span><span class="heti-spacing"> </span>(compiler)</span>（cc1）将 <code>.i</code> 文本文件转化为 <code>.s</code> 文本文件，里面包含汇编语言程序<span><span class="heti-spacing"> </span>(assembly-language program)</span>，其中主要的汇编指令实际上是机器语言指令的文本形式。由于不同的高级语言程序通过不同的编译器可以得到相同的汇编语言输出，因此汇编语言相当有用。 </li>
+<li><strong>汇编</strong><span><span class="heti-spacing"> </span>(assembly)</span>：<strong>汇编器</strong><span><span class="heti-spacing"> </span>(assembler)</span>（ss）将 <code>.s</code> 文件转化为机器指令，将其打包成<strong>可重定位的目标程序</strong><span><span class="heti-spacing"> </span>(relocatable object program)</span>，最后存储在 <code>.o</code> 后缀的目标文件中（二进制文件<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</li>
+<li><strong>链接</strong><span><span class="heti-spacing"> </span>(linking)</span>：<strong>链接器</strong><span><span class="heti-spacing"> </span>(linker)</span>（ld）将来自<span class="heti-skip"><span class="heti-spacing"> </span>C<span class="heti-spacing"> </span></span>标准库中的预编译目标文件与通过汇编得到的目标文件合并起来，最终得到可被系统执行的目标文件。</li>
+</ul>
+<p>在<span class="heti-skip"><span class="heti-spacing"> </span>UNIX<span class="heti-spacing"> </span></span>系统上，由编译器<span class="heti-skip"><span class="heti-spacing"> </span>GCC<span class="heti-spacing"> </span></span>实现上述过程：</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a>$<span class="w"> </span>gcc<span class="w"> </span>-o<span class="w"> </span>hello<span class="w"> </span>hello.c
+</span></code></pre></div>
+<p>了解编译系统的工作原理，有助于：</p>
+<ul>
+<li>优化程序性能</li>
+<li>理解链接时错误</li>
+<li>避免安全漏洞（比如缓冲区溢出错误）</li>
+</ul>
+<h2 id="instructions-reading-and-interpretation">Instructions Reading and Interpretation<a class="headerlink" href="#instructions-reading-and-interpretation" title="Permanent link">⚓︎</a></h2>
+<p>在理解程序如何在计算机系统运行前，先来认识一下系统的硬件组织：</p>
+<div style="text-align: center">
+<img src="images/C1/2.png" width="70%"/>
+</div>
+<ul>
+<li>
+<p><strong>总线</strong><span><span class="heti-spacing"> </span>(buses)</span>：遍布整个系统的电子管道，用于来回传输系统组件之间的信息。</p>
+<ul>
+<li>字<span><span class="heti-spacing"> </span>(word)</span>：总线内按固定大小被传输的字节块，现在大多数机器的字大小为<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>字节（<span>32<span class="heti-spacing"> </span></span>位机）或<span class="heti-skip"><span class="heti-spacing"> </span>8<span class="heti-spacing"> </span></span>字节（<span>64<span class="heti-spacing"> </span></span>位机）</li>
+</ul>
+</li>
+<li>
+<p><strong><span>I/O<span class="heti-spacing"> </span></span>设备</strong><span><span class="heti-spacing"> </span>(I/O devices)</span>：计算机系统与外部世界的连接。</p>
+<ul>
+<li>上图列出<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>种<span class="heti-skip"><span class="heti-spacing"> </span>I/O<span class="heti-spacing"> </span></span>设备：键盘、鼠标（作为用户输入<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>、显示器（作为用户输出<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>、硬盘驱动器（长期存储数据和程序）</li>
+<li>每个<span class="heti-skip"><span class="heti-spacing"> </span>I/O<span class="heti-spacing"> </span></span>设备通过<strong>控制器</strong><span class="heti-skip"><span class="heti-spacing"> </span>(controller)<span class="heti-spacing"> </span></span>或<strong>适配器</strong><span class="heti-skip"><span class="heti-spacing"> </span>(adapter)<span class="heti-spacing"> </span></span>与<span class="heti-skip"><span class="heti-spacing"> </span>I/O<span class="heti-spacing"> </span></span>总线相连。<ul>
+<li>控制器：位于设备或系统主板的芯片</li>
+<li>适配器：插在主板卡槽上的卡片</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>主存</strong><span><span class="heti-spacing"> </span>(main memory)</span>：一种临时的存储设备，存储正在处理器中执行的程序和被其处理的数据，由一组<strong><span><span class="heti-spacing"> </span>DRAM</span></strong><span><span class="heti-spacing"> </span>(dynamic random access memory</span>，动态随机访问存储器<span class="heti-skip"><span class="heti-spacing"> </span>)<span class="heti-spacing"> </span></span>构成</p>
+<ul>
+<li>逻辑上，我们将内存视为一个线性的字节数组，每个字节都有一个唯一的地址（数组索引，从<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>开始）</li>
+</ul>
+</li>
+<li>
+<p><strong>处理器</strong><span class="heti-skip"><span class="heti-spacing"> </span>(processor) /<span class="heti-spacing"> </span></span><strong>中央处理器</strong><span><span class="heti-spacing"> </span>(central processing unit, CPU)</span>：解释（或执行）存储在主存中的指令的引擎。</p>
+<ul>
+<li>它有一个字大小的存储设备——<strong>程序计数器</strong><span><span class="heti-spacing"> </span>(program counter, PC)</span>，指向位于主存的（正在执行的）机器语言指令（或者说存储指令的地址）</li>
+<li>从系统通电开始到断点这段时间之内，处理器会重复执行被<span class="heti-skip"><span class="heti-spacing"> </span>PC<span class="heti-spacing"> </span></span>指着的指令，并更新<span class="heti-skip"><span class="heti-spacing"> </span>PC<span class="heti-spacing"> </span></span>使其指向下一条指令</li>
+<li><strong>指令集架构</strong><span><span class="heti-spacing"> </span>(instruction set architecture)</span>：在该模型下，指令按严格的序列被执行，并且执行指令包括了一系列的步骤</li>
+<li>执行指令的一系列操作（比如加载<span><span class="heti-spacing"> </span>(load)</span>、存储<span><span class="heti-spacing"> </span>(store)</span>、运算<span><span class="heti-spacing"> </span>(operate)</span>、跳转<span class="heti-skip"><span class="heti-spacing"> </span>(jump)<span class="heti-spacing"> </span></span>等）往往会在主存、<strong>寄存器堆</strong><span><span class="heti-spacing"> </span>(register file)</span>、<strong>算术逻辑单元</strong><span class="heti-skip"><span class="heti-spacing"> </span>(arithmetic/logic unit, ALU)<span class="heti-spacing"> </span></span>这些设备之间打转<ul>
+<li>寄存器堆：一个小型的存储设备，包含一组字大小的寄存器，每个寄存器都有唯一的名称</li>
+<li>ALU：计算新的数据或地址</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr/>
+<p>要想在<span class="heti-skip"><span class="heti-spacing"> </span>UNIX<span class="heti-spacing"> </span></span>系统中运行可执行文件，只需将文件名输入到<strong><span><span class="heti-spacing"> </span>shell</span></strong>（一个命令行解释器，能够打印提示<span><span class="heti-spacing"> </span>(prompt)</span>、等待用户输入并执行指令）中并运行即可：</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a>$<span class="w"> </span>./hello
+</span><span id="__span-1-2"><a href="#__codelineno-1-2" id="__codelineno-1-2" name="__codelineno-1-2"></a>hello,<span class="w"> </span>world
+</span><span id="__span-1-3"><a href="#__codelineno-1-3" id="__codelineno-1-3" name="__codelineno-1-3"></a>$<span class="w"> </span>
+</span></code></pre></div>
+<p>下面来了解一下运行该程序后，系统的底层硬件发生了什么：</p>
+<ul>
+<li>
+<p>从键盘中读取 <code>hello</code> 命令</p>
+<p></p><div style="text-align: center">
+<img src="images/C1/3.png" width="70%"/>
+</div>
+</li>
+<li>
+<p>将可执行文件从硬盘加载到主存中（这里用到了一种叫做<strong>直接内存访问</strong><span class="heti-skip"><span class="heti-spacing"> </span>(direct memory access, DMA)<span class="heti-spacing"> </span></span>的技术）</p>
+<p></p><div style="text-align: center">
+<img src="images/C1/4.png" width="70%"/>
+</div>
+</li>
+<li>
+<p>将输出字符串从内存写到显示器上</p>
+<p></p><div style="text-align: center">
+<img src="images/C1/5.png" width="70%"/>
+</div>
+</li>
+</ul>
+<h2 id="caches">Caches<a class="headerlink" href="#caches" title="Permanent link">⚓︎</a></h2>
+<p>从上面的例子中可以看出：系统会在传输信息上花费大量时间，因此系统设计者需要实现的一大目标是使数据的拷贝操作运行得尽可能快。但受物理限制，更大的存储设备速度更慢，且更快的设备成本更高。因此，尽管这些年来半导体技术持续进步，但是<strong>处理器<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>内存差距</strong><span class="heti-skip"><span class="heti-spacing"> </span>(processor-memory gap)<span class="heti-spacing"> </span></span>持续拉大。而<strong>高速缓存</strong><span class="heti-skip"><span class="heti-spacing"> </span>(caches)<span class="heti-spacing"> </span></span>的出现正是为了解决这一问题——它作为存储处理器未来可能用到的信息的临时存储区，下图展示了典型系统中的高速缓存：</p>
+<div style="text-align: center">
+<img src="images/C1/6.png" width="70%"/>
+</div>
+<ul>
+<li>高速缓存通常分为<span class="heti-skip"><span class="heti-spacing"> </span>L1<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>L2<span class="heti-spacing"> </span></span>两级<ul>
+<li><span>L1<span class="heti-spacing"> </span></span>高速缓存：存储量较少，但访问速度媲美寄存器</li>
+<li><span>L2<span class="heti-spacing"> </span></span>高速缓存：春储量更大，速度更慢，通过特殊的总线与处理器连接</li>
+</ul>
+</li>
+<li>高速缓存对应的底层硬件技术是<strong><span><span class="heti-spacing"> </span>SRAM</span></strong><span><span class="heti-spacing"> </span>(static random access memory</span>，静态随机访问存储器<span><span class="heti-spacing"> </span>)</span></li>
+<li>有些更厉害的系统会采用三级高速缓存</li>
+<li>高速缓存中的一大重要思想是<strong>局部性</strong><span><span class="heti-spacing"> </span>(locality)</span>：程序访问局部区域内的数据和代码的趋势</li>
+</ul>
+<h2 id="memory-hierarchy">Memory Hierarchy<a class="headerlink" href="#memory-hierarchy" title="Permanent link">⚓︎</a></h2>
+<p>计算机系统内的存储设备按照<strong>存储器层级</strong><span class="heti-skip"><span class="heti-spacing"> </span>(memory heirarchy)<span class="heti-spacing"> </span></span>组织，如下图所示：</p>
+<div style="text-align: center">
+<img src="images/C1/7.png" width="80%"/>
+</div>
+<p>存储器层级的主要思想是：在某一级上的存储器可以作为底下更低层级的存储器的「高速缓存<heti-adjacent class="heti-adjacent-half">」</heti-adjacent>。</p>
+<h2 id="operating-system">Operating System<a class="headerlink" href="#operating-system" title="Permanent link">⚓︎</a></h2>
+<p>在运行程序时，程序不会直接访问任何一个设备，而是依赖<strong>操作系统</strong><span class="heti-skip"><span class="heti-spacing"> </span>(operating system)<span class="heti-spacing"> </span></span>提供的服务。我们可以将操作系统视为夹在应用程序和硬件之间的一层软件。应用程序操纵硬件时都必须经过操作系统。</p>
+<div style="text-align: center">
+<img src="images/C1/8.png" width="60%"/>
+</div>
+<p>操作系统的两大基本目标：</p>
+<ul>
+<li>保护硬件，以免被失控的应用程序误用</li>
+<li>为应用提供简单而统一的机制来操纵复杂而差异较大的底层硬件设备</li>
+</ul>
+<p>操作系统通过以下几种基本抽象<span class="heti-skip"><span class="heti-spacing"> </span>(abstraction)<span class="heti-spacing"> </span></span>来实现上述目标：</p>
+<div style="text-align: center">
+<img src="images/C1/9.png" width="50%"/>
+</div>
+<ul>
+<li>
+<p><strong>进程</strong><span><span class="heti-spacing"> </span>(process)</span>：处理器、主存和<span class="heti-skip"><span class="heti-spacing"> </span>I/O<span class="heti-spacing"> </span></span>设备的抽象</p>
+<ul>
+<li>多个进程能在同一个系统上<strong>并发</strong><span><span class="heti-spacing"> </span>(concurrently)</span>（一个进程内的指令与别的进程的指令交错放置）运行，并且每个进程看起来好像独占硬件设备</li>
+<li>多核<span class="heti-skip"><span class="heti-spacing"> </span>(multicore)<span class="heti-spacing"> </span></span>处理器能同时执行多个程序</li>
+<li>
+<p><strong>上下文切换</strong><span><span class="heti-spacing"> </span>(context switching)</span>：处理器切换执行进程的一种机制，使得单个的<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>看起来也能够并发执行多个进程</p>
+<ul>
+<li><strong>上下文</strong><span><span class="heti-spacing"> </span>(context)</span>：操作系统追踪的进程的状态信息，包括<span class="heti-skip"><span class="heti-spacing"> </span>PC<span class="heti-spacing"> </span></span>的当前值、寄存器堆、主存的内容等</li>
+<li>具体过程：保存当前进程的上下文<span class="heti-skip"><span class="heti-spacing"> </span>-&gt;<span class="heti-spacing"> </span></span>恢复新进程的上下文<span class="heti-skip"><span class="heti-spacing"> </span>-&gt;<span class="heti-spacing"> </span></span>将控制权交给新进程</li>
+</ul>
+<p></p><div style="text-align: center">
+<img src="images/C1/10.png" width="70%"/>
+</div>
+<ul>
+<li>运行程序时，<span>shell<span class="heti-spacing"> </span></span>通过唤起称为<strong>系统调用</strong><span class="heti-skip"><span class="heti-spacing"> </span>(system call)<span class="heti-spacing"> </span></span>的特殊函数（将控制权交给操作系统）来执行请求</li>
+<li>进程之间的转变通过操作系统<strong>核</strong><span class="heti-skip"><span class="heti-spacing"> </span>(kernel)<span class="heti-spacing"> </span></span>来实现。核是操作系统代码的一部分，位于内存中；实际上是代码和数据结构的组合，系统用它来管理所有的进程</li>
+</ul>
+</li>
+<li>
+<p><strong>线程</strong><span><span class="heti-spacing"> </span>(thread)</span>：位于进程中的执行单元，运行在进程的上下文中，与其他位于同一进程的线程共享相同的代码和全局数据。相比多进程而言，多线程更易于共享数据，常用于网络服务器的并发，以及提升程序运行的速度</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>虚拟内存</strong><span><span class="heti-spacing"> </span>(virtual memory)</span>：主存和硬盘<span class="heti-skip"><span class="heti-spacing"> </span>I/O<span class="heti-spacing"> </span></span>设备的抽象</p>
+<ul>
+<li>
+<p><strong>虚拟地址空间</strong><span><span class="heti-spacing"> </span>(virtual address space)</span>：进程看待内存的统一方式，由一组定义良好的区域构成，每块区域都有专门的用途。下图展示了<span class="heti-skip"><span class="heti-spacing"> </span>Linux<span class="heti-spacing"> </span></span>系统下的虚拟地址空间：</p>
+<p></p><div style="text-align: center">
+<img src="images/C1/11.png" width="60%"/>
+</div>
+<ul>
+<li><strong>程序代码和数据</strong>：对于所有的进程，代码起始于相同的定长地址，随后跟上的数据与<span class="heti-skip"><span class="heti-spacing"> </span>C<span class="heti-spacing"> </span></span>语言全局变量相关。这些代码和数据根据可执行目标文件的内容直接初始化</li>
+<li><strong>堆</strong><span><span class="heti-spacing"> </span>(heap)</span>：调用<span class="heti-skip"><span class="heti-spacing"> </span>C<span class="heti-spacing"> </span></span>标准库下的 <code>malloc</code> 或 <code>free</code> 函数，可以使堆的大小在运行时动态变化</li>
+<li><strong>共享库</strong><span><span class="heti-spacing"> </span>(shared libraries)</span>：存储像<span class="heti-skip"><span class="heti-spacing"> </span>C<span class="heti-spacing"> </span></span>标准库或其他库中的代码或数据，涉及到<strong>动态链接</strong><span class="heti-skip"><span class="heti-spacing"> </span>(dynamic linking)<span class="heti-spacing"> </span></span>概念</li>
+<li><strong>栈</strong><span><span class="heti-spacing"> </span>(stack)</span>：编译器用来实现函数调用的地方。调用函数时，栈大小变大；函数返回时，栈空间缩小</li>
+<li><strong>核虚拟内存</strong><span><span class="heti-spacing"> </span>(kernel virtual memory)</span>：地址空间中为核保留的区域，应用程序不得直接访问这块区域</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>文件</strong><span><span class="heti-spacing"> </span>(file)</span>：<span>I/O<span class="heti-spacing"> </span></span>设备的抽象，本质上就是一串字节序列</p>
+<ul>
+<li>所有的<span class="heti-skip"><span class="heti-spacing"> </span>I/O<span class="heti-spacing"> </span></span>设备都可视为一个文件，系统的输入输出通过<span><span class="heti-spacing"> </span>Unix I/O</span>，按照读写文件的方式执行</li>
+<li>这样做的好处是：对于样式各异的<span class="heti-skip"><span class="heti-spacing"> </span>I/O<span class="heti-spacing"> </span></span>设备，应用程序能以统一的视角看待这些设备，方便操纵</li>
+</ul>
+</li>
+</ul>
+<h2 id="networks">Networks<a class="headerlink" href="#networks" title="Permanent link">⚓︎</a></h2>
+<p>在前面的介绍中，我们将系统看作是一个孤立的软硬件组合。实际上，现代系统之间经常通过<strong>网络</strong><span class="heti-skip"><span class="heti-spacing"> </span>(network)<span class="heti-spacing"> </span></span>相互连接。在单个的系统中，我们可以将网络看作一个<span class="heti-skip"><span class="heti-spacing"> </span>I/O<span class="heti-spacing"> </span></span>设备。</p>
+<p>与网络相关的应用：电子邮件<span><span class="heti-spacing"> </span>(email)</span>、即时通信<span><span class="heti-spacing"> </span>(instant message)</span>、万维网<span><span class="heti-spacing"> </span>(World Wide Web)</span>、文件传输协议<span><span class="heti-spacing"> </span>(FTP)</span>、远程登录<span><span class="heti-spacing"> </span>(telnet)</span>。</p>
+<p>下图展示了使用<span class="heti-skip"><span class="heti-spacing"> </span>telnet<span class="heti-spacing"> </span></span>远程执行 <code>hello</code> 程序的过程：</p>
+<div style="text-align: center">
+<img src="images/C1/12.png" width="90%"/>
+</div>
+<h2 id="important-themes">Important Themes<a class="headerlink" href="#important-themes" title="Permanent link">⚓︎</a></h2>
+<h3 id="amdahls-law">Amdahl's Law<a class="headerlink" href="#amdahls-law" title="Permanent link">⚓︎</a></h3>
+<p><strong>阿姆达尔定律</strong><span><span class="heti-spacing"> </span>(Amdahl's Law)</span>：提升系统的一部分对整个系统性能提升的效果取决于该部分在整个系统中的占比，以及该部分提升的大小。</p>
+<p>令<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(T_{\text{old}}\)</span><span class="heti-spacing"> </span></span>为执行某个应用程序时系统所需时间，<span><span class="arithmatex">\(\alpha\)</span><span class="heti-spacing"> </span></span>为待提升的系统某部分的占比，<span><span class="arithmatex">\(k\)</span><span class="heti-spacing"> </span></span>表示性能提升因子，则提升后的系统执行时间为：</p>
+<div class="arithmatex">\[
+T_{\text{new}} = T_{\text{old}} [(1 - \alpha) + \alpha / k]
+\]</div>
+<p>令<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(S = \dfrac{T_{\text{old}}}{T_{\text{new}}}\)</span><span class="heti-spacing"> </span></span>为提升比<span><span class="heti-spacing"> </span>(speedup)</span>，则：</p>
+<div class="arithmatex">\[
+S = \dfrac{1}{(1 - \alpha) + \alpha / k}
+\]</div>
+<p>令<span><span class="heti-spacing"> </span><span class="arithmatex">\(k \rightarrow \infty\)</span></span>，可以得到：<span class="arithmatex">\(S_{\infty} = \dfrac{1}{1 - \alpha}\)</span></p>
+<p>启示：</p>
+<ul>
+<li>整个系统的提升比显著小于系统某部分的提升比</li>
+<li>想要显著提升整个系统的性能，我们需要提升系统中占比较大的那部分</li>
+<li>阿姆达尔定律可用于其他领域，比如如何提升你的<span><span class="heti-spacing"> </span>GPA</span>（悲）</li>
+</ul>
+<h3 id="concurrency-and-parallelism">Concurrency and Parallelism<a class="headerlink" href="#concurrency-and-parallelism" title="Permanent link">⚓︎</a></h3>
+<p>计算机系统中有两个十分相近的概念：<strong>并发</strong><span class="heti-skip"><span class="heti-spacing"> </span>(concurrency)<span class="heti-spacing"> </span></span>和<strong>并行</strong><span><span class="heti-spacing"> </span>(parallelism)</span>。</p>
+<ul>
+<li>并发：执行多个同步<span class="heti-skip"><span class="heti-spacing"> </span>(simultaneous)<span class="heti-spacing"> </span></span>活动的系统</li>
+<li>
+<p>并行：利用并发使系统运行更快。在计算机系统中，有多层级的并行抽象：</p>
+<ul>
+<li>
+<p><strong>线程级并发</strong></p>
+<p></p><div style="text-align: center">
+<img src="images/C1/13.png" width="50%"/>
+</div>
+<ul>
+<li>在<strong>单处理器系统</strong><span class="heti-skip"><span class="heti-spacing"> </span>(uniprocessor system)<span class="heti-spacing"> </span></span>中，通过<a href="#operating-system">上下文切换</a>，单个进程得以拥有多个控制流，这使得多用户可访问一个<span class="heti-skip"><span class="heti-spacing"> </span>Web<span class="heti-spacing"> </span></span>服务器，或者单用户并发执行多任务</li>
+<li>
+<p><strong>多处理器系统</strong><span><span class="heti-spacing"> </span>(mutliprocessor system)</span>：由受单个操作系统核控制的多个处理器构成的系统，包括：</p>
+<ul>
+<li><strong>多核处理器</strong><span><span class="heti-spacing"> </span>(multi-core processors)</span>：对于一个四核处理器，它的组织结构如下所示：</li>
+</ul>
+<p></p><div style="text-align: center">
+<img src="images/C1/14.png" width="70%"/>
+</div>
+<ul>
+<li>
+<p><strong>超线程</strong><span><span class="heti-spacing"> </span>(hyperthreading)</span>（有时称为同步多线程<span><span class="heti-spacing"> </span>(simultaneous multi-threading)</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：允许单个<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>执行多个控制流</p>
+<ul>
+<li>它包含一些<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>硬件的多个拷贝，比如程序计数器和寄存器堆；也有单份的拷贝，比如做浮点算术运算的单元</li>
+<li>它能使<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>充分利用处理资源<span><span class="heti-spacing"> </span>(processing resources)</span>，比如：若一个线程正在等待数据被加载到高速缓存的话，则<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>能够继续执行不同的线程</li>
+</ul>
+</li>
+<li>
+<p>从两个角度看待多处理器对系统的提升：</p>
+<ul>
+<li>减少执行多任务时模拟并发的需求</li>
+<li>运行单个应用程序时会更快，但仅当程序能以多线程的方式被表述时，才能有效地以并行方式执行</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>指令级并行</strong>：同时执行多条指令，涉及到的概念有：</p>
+<ul>
+<li><strong>流水线</strong><span><span class="heti-spacing"> </span>(pipelining)</span>：将指令划分为多个步骤，并将处理器硬件按一系列的阶段组织起来，每个阶段执行指令中的某一步，且每个阶段处理不同指令的不同部分，从而做到并行执行</li>
+<li><strong>超标量</strong><span class="heti-skip"><span class="heti-spacing"> </span>(superscalar)<span class="heti-spacing"> </span></span>处理器：能够把执行速度维持在每个时钟周期<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>条指令以上的处理器</li>
+</ul>
+</li>
+<li>
+<p><strong>单指令，多数据<span class="heti-skip"><span class="heti-spacing"> </span>(SIMD, single-instruction, multiple-data)<span class="heti-spacing"> </span></span>并行</strong></p>
+<ul>
+<li>常用于提升处理图像、音频、视频数据的应用程序</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="abstractions-in-computer-system">Abstractions in Computer System<a class="headerlink" href="#abstractions-in-computer-system" title="Permanent link">⚓︎</a></h3>
+<p>在计算机科学中，<strong>抽象</strong><span class="heti-skip"><span class="heti-spacing"> </span>(abstractions)<span class="heti-spacing"> </span></span>是最重要的概念之一。</p>
+<p>下图展示了一些有关计算机系统的抽象：</p>
+<div style="text-align: center">
+<img src="images/C1/15.png" width="70%"/>
+</div>
+<p>这里稍微介绍一下之前没有讲过的<strong>虚拟机</strong><span><span class="heti-spacing"> </span>(virtual machine)</span>：它是对整个计算机的抽象，包括了操作系统、处理器和程序，使得同一台计算机能够在多种或不同版本下的操作系统中运行程序。</p>
+<h2 id="asides">Asides<a class="headerlink" href="#asides" title="Permanent link">⚓︎</a></h2>
+<ul>
+<li>
+<p><span>C<span class="heti-spacing"> </span></span>语言</p>
+<ul>
+<li>可用于系统级编程</li>
+<li>成功之处：<ul>
+<li>贴近<span class="heti-skip"><span class="heti-spacing"> </span>Unix<span class="heti-spacing"> </span></span>操作系统</li>
+<li>小而简单的语言</li>
+<li>为实用目的而设计</li>
+</ul>
+</li>
+<li>不足：<ul>
+<li><span>C<span class="heti-spacing"> </span></span>指针的使用很麻烦，且很容易因此产生编程错误</li>
+<li>缺乏一些有用的抽象，比如类、对象和异常等</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><a href="https://www.gnu.org/"><span>GNU<span class="heti-spacing"> </span></span>项目</a></p>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Free_software_movement">自由软件运动</a>的领导者</li>
+<li>产品：<a href="https://www.gnu.org/software/emacs/">EMACS</a>、<a href="https://www.gnu.org/software/gcc/">GCC</a>、<a href="https://www.sourceware.org/gdb/"><span>GDB<span class="heti-spacing"> </span></span></a>等等</li>
+</ul>
+</li>
+<li>
+<p><a href="https://en.wikipedia.org/wiki/Unix">Unix</a>、<a href="https://en.wikipedia.org/wiki/POSIX"><span>Posix<span class="heti-spacing"> </span></span></a>和标准<span class="heti-skip"><span class="heti-spacing"> </span>Unix<span class="heti-spacing"> </span></span>规范</p>
+</li>
+<li><a href="https://en.wikipedia.org/wiki/Linux">Linux</a></li>
+</ul>
+<aside class="md-source-file">
+<span class="md-source-file__fact">
+<span class="md-icon" title="最后更新">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"></path></svg>
+</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime">2025年2月10日 18:17:40</span>
+</span>
+<span class="md-source-file__fact">
+<span class="md-icon" title="创建日期">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"></path></svg>
+</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime">2025年2月10日 18:17:40</span>
+</span>
+</aside>
+<p style="font-size: 30px; font-weight: 600">评论区</p>
+<div>
+    如果大家有什么问题或想法，欢迎在下方留言~
+  </div>
+<!-- Insert generated snippet here -->
+<script async="" crossorigin="anonymous" data-category="Announcements" data-category-id="DIC_kwDOMAb9Zs4CfmpP" data-emit-metadata="0" data-input-position="bottom" data-lang="zh-CN" data-mapping="pathname" data-reactions-enabled="1" data-repo="noughtq/notebook" data-repo-id="R_kgDOMAb9Zg" data-strict="0" data-theme="preferred_color_scheme" src="https://giscus.app/client.js">
+</script>
+<!-- Synchronize Giscus theme with palette -->
+<script>
+    var giscus = document.querySelector("script[src*=giscus]")
+
+    // Set palette on initial load
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object") {
+      var theme = palette.color.scheme === "slate"
+        ? "transparent_dark"
+        : "light"
+
+      // Instruct Giscus to set theme
+      giscus.setAttribute("data-theme", theme) 
+    }
+
+    // Register event handlers after documented loaded
+    document.addEventListener("DOMContentLoaded", function() {
+      var ref = document.querySelector("[data-md-component=palette]")
+      ref.addEventListener("change", function() {
+        var palette = __md_get("__palette")
+        if (palette && typeof palette.color === "object") {
+          var theme = palette.color.scheme === "slate"
+            ? "dark"
+            : "light"
+
+          // Instruct Giscus to change theme
+          var frame = document.querySelector(".giscus-frame")
+          frame.contentWindow.postMessage(
+            { giscus: { setConfig: { theme } } },
+            "https://giscus.app"
+          )
+        }
+      })
+    })
+  </script>
+<!-- 标题计数器 -->
+<link href="/css/counter.css" rel="stylesheet"/>
+<!-- 主页个性化 -->
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+<button class="md-top md-icon" data-md-component="top" hidden="" type="button">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  回到页面顶部
+</button>
+</main>
+<footer class="md-footer">
+<nav aria-label="页脚" class="md-footer__inner md-grid">
+<a aria-label="上一页: CSAPP" class="md-footer__link md-footer__link--prev" href="index.html">
+<div class="md-footer__button md-icon">
+<svg viewbox="0 0 320 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path></svg>
+</div>
+<div class="md-footer__title">
+<span class="md-footer__direction">
+                上一页
+              </span>
+<div class="md-ellipsis">
+                CSAPP
+              </div>
+</div>
+</a>
+<a aria-label="下一页: Chap 2: Representing and Manipulating Information" class="md-footer__link md-footer__link--next" href="2.html">
+<div class="md-footer__title">
+<span class="md-footer__direction">
+                下一页
+              </span>
+<div class="md-ellipsis">
+                Chap 2: Representing and Manipulating Information
+              </div>
+</div>
+<div class="md-footer__button md-icon">
+<svg viewbox="0 0 320 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"></path></svg>
+</div>
+</a>
+</nav>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright">
+<div class="md-copyright__highlight">
+        Copyright © 2024-2025 <a href="https://github.com/NoughtQ">NoughtQ</a>
+</div>
+    
+    
+      Powered by
+      <a href="https://www.mkdocs.org/" rel="noopener" target="_blank">
+        MkDocs
+      </a>
+      with theme
+      <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+        Material
+      </a>
+      modified by
+      <a href="https://github.com/NoughtQ" rel="noopener" target="_blank">
+        NoughtQ
+      </a>
+</div>
+<div class="md-social">
+<a class="md-social__link" href="https://github.com/noughtq" rel="noopener" target="_blank" title="github.com">
+<svg viewbox="0 0 496 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"></path></svg>
+</a>
+<a class="md-social__link" href="https://blog.noughtq.top" rel="noopener" target="_blank" title="blog.noughtq.top">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M192 32c0 17.7 14.3 32 32 32 123.7 0 224 100.3 224 224 0 17.7 14.3 32 32 32s32-14.3 32-32C512 128.9 383.1 0 224 0c-17.7 0-32 14.3-32 32m0 96c0 17.7 14.3 32 32 32 70.7 0 128 57.3 128 128 0 17.7 14.3 32 32 32s32-14.3 32-32c0-106-86-192-192-192-17.7 0-32 14.3-32 32m-96 16c0-26.5-21.5-48-48-48S0 117.5 0 144v224c0 79.5 64.5 144 144 144s144-64.5 144-144-64.5-144-144-144h-16v96h16c26.5 0 48 21.5 48 48s-21.5 48-48 48-48-21.5-48-48z"></path></svg>
+</a>
+<a class="md-social__link" href="mailto:noughtq666@gmail.com" rel="noopener" target="_blank" title="">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m20 8-8 5-8-5V6l8 5 8-5m0-2H4c-1.11 0-2 .89-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2"></path></svg>
+</a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"base": "../..", "features": ["content.action.edit", "content.action.view", "content.code.copy", "content.code.annotate", "header.autohide", "navigation.tabs", "navigation.top", "navigation.footer", "navigation.indexes", "navigation.tracking", "navigation.prune", "search.share"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
+<script src="../../assets/javascripts/bundle.f1b6f286.min.js"></script>
+<script src="../../js/anchor.js"></script>
+<script src="../../js/katex.js"></script>
+<script src="../../js/toc.js"></script>
+<script src="../../js/typed.js"></script>
+<script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+<script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+</body>
+</html>
