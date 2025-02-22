@@ -447,6 +447,17 @@
       More General Framework
     </span>
 </a>
+<nav aria-label="More General Framework" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#backpropogation">
+<span class="md-ellipsis">
+      Backpropogation
+    </span>
+</a>
+</li>
+</ul>
+</nav>
 </li>
 <li class="md-nav__item">
 <a class="md-nav__link" href="#deep-learning">
@@ -679,6 +690,17 @@
       More General Framework
     </span>
 </a>
+<nav aria-label="More General Framework" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#backpropogation">
+<span class="md-ellipsis">
+      Backpropogation
+    </span>
+</a>
+</li>
+</ul>
+</nav>
 </li>
 <li class="md-nav__item">
 <a class="md-nav__link" href="#deep-learning">
@@ -702,7 +724,7 @@
 </a>
 <h1 id="lec-1-intro-to-machinedeep-learning">Lec 1: Intro to Machine/Deep Learning<a class="headerlink" href="#lec-1-intro-to-machinedeep-learning" title="Permanent link">⚓︎</a></h1>
 <div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
-<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>2736<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>14<span class="heti-spacing"> </span></span>分钟</p>
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>3921<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>20<span class="heti-spacing"> </span></span>分钟</p>
 </div>
 <h2 id="machine-learning">Machine Learning<a class="headerlink" href="#machine-learning" title="Permanent link">⚓︎</a></h2>
 <p>我们可以将机器学习简单理解为<strong>寻找一个函数</strong>，典型的函数类型有：</p>
@@ -907,37 +929,134 @@ y = b + \sum\limits_{2i} c_i\ max(b + \sum\limits_{j=1} w_j x_j)
 </ul>
 </li>
 </ul>
+<h3 id="backpropogation">Backpropogation<a class="headerlink" href="#backpropogation" title="Permanent link">⚓︎</a></h3>
+<p>在机器学习中，未知参数<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\theta = \{w_1, w_2, \dots, b_1, b_2, \dots\}\)</span><span class="heti-spacing"> </span></span>通常会包含很多项。在使用梯度下降法时，每次都要对里面的每一项求偏微分；而且如果训练多次的话，计算量就会变得相当地大，因而效率就很低了。为了提高计算的效率，我们引入了一种新的计算技巧：<strong>反向传播</strong><span><span class="heti-spacing"> </span>(backpropogation)</span>。</p>
+<details class="info">
+<summary>数学基础：偏微分的链式法则</summary>
+<ul>
+<li>
+<p>情况<span><span class="heti-spacing"> </span>1</span>：若<span><span class="heti-spacing"> </span><span class="arithmatex">\(y = g(x), z = h(y)\)</span></span></p>
+<div class="arithmatex">\[
+\dfrac{dz}{dx} = \dfrac{dz}{dy} \dfrac{dy}{dx}
+\]</div>
+</li>
+<li>
+<p>情况<span><span class="heti-spacing"> </span>2</span>：若<span><span class="heti-spacing"> </span><span class="arithmatex">\(x = g(s), y = h(s) z = k(x, y)\)</span></span></p>
+<div class="arithmatex">\[
+\dfrac{dz}{ds} = \dfrac{\partial z}{\partial x} \dfrac{\partial x}{\partial s} + \dfrac{\partial z}{\partial y} \dfrac{\partial y}{\partial s}
+\]</div>
+</li>
+</ul>
+</details>
+<p>记第<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span><span class="heti-spacing"> </span></span>项数据<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x^n\)</span><span class="heti-spacing"> </span></span>在神经网络中，训练得到的预测值<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(y^n\)</span><span class="heti-spacing"> </span></span>与实际值<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\hat{y}^n\)</span><span class="heti-spacing"> </span></span>之差为<span><span class="heti-spacing"> </span><span class="arithmatex">\(C^n\)</span></span>，并且记损失<span><span class="heti-spacing"> </span><span class="arithmatex">\(L(\theta) = \sum\limits_{n=1}^n C^n(\theta)\)</span></span>（<span><span class="arithmatex">\(N\)</span><span class="heti-spacing"> </span></span>项数据的误差和<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。因此，对其中的一项参数<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w\)</span><span class="heti-spacing"> </span></span>求偏微分就是<span><span class="heti-spacing"> </span><span class="arithmatex">\(\dfrac{\partial L(\theta)}{\partial w} = \sum\limits_{n=1}^N \dfrac{\partial C^n(\theta)}{\partial w}\)</span></span>，这样我们将求梯度的问题从对损失<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(L\)</span><span class="heti-spacing"> </span></span>求偏导转换为对每个数据对应的误差<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(C^n\)</span><span class="heti-spacing"> </span></span>求偏导了。</p>
+<p>现在考虑如何计算<span><span class="heti-spacing"> </span><span class="arithmatex">\(\dfrac{\partial C}{\partial w}\)</span></span>——根据链式法则，我们可以将其转化为<span><span class="heti-spacing"> </span><span class="arithmatex">\(\dfrac{\partial z}{\partial w} \dfrac{\partial C}{\partial z}\)</span></span>。其中这个<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(z\)</span><span class="heti-spacing"> </span></span>是通过数据输入、权重和偏移计算得到的，如下图所示（简化版本<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
+<div style="text-align: center">
+<img src="images/lec1/27.png" width="70%/"/>
+</div>
+<p>现在计算就被分为两部分了，这两部分同时也是反向传播的组成部分：</p>
+<ul>
+<li><strong>前递</strong><span><span class="heti-spacing"> </span>(forward pass)</span>：对所有的参数，计算<span><span class="heti-spacing"> </span><span class="arithmatex">\(\dfrac{\partial z}{\partial w}\)</span></span></li>
+<li><strong>后递</strong><span><span class="heti-spacing"> </span>(backward pass)</span>：对所有的激活函数输入值<span><span class="heti-spacing"> </span><span class="arithmatex">\(z\)</span></span>，计算<span><span class="heti-spacing"> </span><span class="arithmatex">\(\dfrac{\partial C}{\partial z}\)</span></span></li>
+</ul>
+<p>其中前递的计算相当简单：<span><span class="arithmatex">\(\dfrac{\partial z}{\partial w}\)</span><span class="heti-spacing"> </span></span>的值就是与权重相关联的输入数据，因此在训练的过程中，我们顺手就可以将这些值个计算出来。拿上图的例子来说，<span class="arithmatex">\(\dfrac{\partial z}{\partial w_1} = x_1, \dfrac{\partial z}{\partial w_2} = x_2\)</span>。</p>
+<details class="example">
+<summary>例子</summary>
+<p>对于更多次的训练，道理也是一样简单。</p>
+<p></p><div style="text-align: center">
+<img src="images/lec1/28.png" width="80%/"/>
+</div>
+</details>
+<p>难点在于计算后递，乍看上去好像无从下手。事实上，后递的计算又一次用到了链式法则：<span class="arithmatex">\(\dfrac{\partial C}{\partial z} = \dfrac{\partial a}{\partial z} \dfrac{\partial C}{\partial a}\)</span>，其中<span><span class="heti-spacing"> </span><span class="arithmatex">\(a = \sigma(z)\)</span></span>（<span>sigmoid<span class="heti-spacing"> </span></span>函数<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
+<ul>
+<li>
+<p><span class="arithmatex">\(\dfrac{\partial a}{\partial z} = \sigma'(z)\)</span>，因为我们直到<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(z\)</span><span class="heti-spacing"> </span></span>的值（前面的计算中已经算过了<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，所以<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\sigma'(z)\)</span><span class="heti-spacing"> </span></span>就是一个常量</p>
+<details class="info">
+<summary><span>sigmoid<span class="heti-spacing"> </span></span>函数及其导函数的图像</summary>
+<p></p><div style="text-align: center">
+<img src="images/lec1/29.png" width="50%/"/>
+</div>
+</details>
+</li>
+<li>
+<p><span class="arithmatex">\(\dfrac{\partial C}{\partial a}\)</span>：又又一次用到链式法则，借助下图来理解这个过程：</p>
+<p></p><div style="text-align: center">
+<img src="images/lec1/30.png" width="80%/"/>
+</div>
+<p>可以看到，<span><span class="arithmatex">\(a\)</span><span class="heti-spacing"> </span></span>的值会影响到<span><span class="heti-spacing"> </span><span class="arithmatex">\(z', z''\)</span></span>，因此<span><span class="heti-spacing"> </span><span class="arithmatex">\(\dfrac{\partial C}{\partial a} = \dfrac{\partial z'}{\partial a} \dfrac{\partial C}{\partial z'} + \dfrac{\partial z''}{\partial a} \dfrac{\partial C}{\partial z''}\)</span></span>。其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\dfrac{\partial z'}{\partial a}, \dfrac{\partial z''}{\partial a}\)</span><span class="heti-spacing"> </span></span>的值很容易计算，就是对应的权重<span><span class="heti-spacing"> </span><span class="arithmatex">\(w_3, w_4\)</span></span>，而<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\dfrac{\partial C}{\partial z'}, \dfrac{\partial C}{\partial z''}\)</span><span class="heti-spacing"> </span></span>的值我们先暂时假设它们是已知量</p>
+</li>
+</ul>
+<p>总结一下：<span class="arithmatex">\(\dfrac{\partial C}{\partial z} = \sigma'(z) \Big[w_3 \dfrac{\partial C}{\partial z'} + w_4 \dfrac{\partial C}{\partial z''}\Big]\)</span>。最后有待求解的就是刚才假设已知的那两个偏导数，这里我们分为两种情况讨论：</p>
+<ol>
+<li>
+<p>如果它们位于最后一次的训练过程中（即在输出层中<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，那么：</p>
+<p></p><div style="text-align: center">
+<img src="images/lec1/31.png" width="80%/"/>
+</div>
+<div class="arithmatex">\[
+\dfrac{\partial C}{\partial z'} = \dfrac{\partial y_1}{\partial z'} \dfrac{\partial C}{\partial y_1}
+\quad
+\dfrac{\partial C}{\partial z''} = \dfrac{\partial y_2}{\partial z''} \dfrac{\partial C}{\partial y_2}
+\]</div>
+<p>这些量都是相当好计算的，所以结果自然就求出来了</p>
+</li>
+<li>
+<p>如果是在中间的训练过程中，那计算思路如下图所示：</p>
+<p></p><div style="text-align: center">
+<img src="images/lec1/32.png" width="80%/"/>
+</div>
+<p>以<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(z'\)</span><span class="heti-spacing"> </span></span>为例稍作解释：要求<span><span class="heti-spacing"> </span><span class="arithmatex">\(\dfrac{\partial C}{\partial z'}\)</span></span>，可以像求<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\dfrac{\partial C}{\partial z}\)</span><span class="heti-spacing"> </span></span>那样继续借助后面的计算值<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(z_a, z_b\)</span><span class="heti-spacing"> </span></span>求解，连计算思路都是一样的。如此往复计算，直到计算到达输出层（即第一种情况时<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，我们可以依次往前计算前面所有的这些偏导数了！</p>
+</li>
+</ol>
+<p>事实上，在计算形如<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\dfrac{\partial C}{\partial z}\)</span><span class="heti-spacing"> </span></span>这类偏导数时，我们可以直接通过输出值<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(y_1, y_2, \dots\)</span><span class="heti-spacing"> </span></span>按反方向计算，这也就是该算法名称的由来。</p>
+<div style="text-align: center">
+<img src="images/lec1/33.png" width="80%/"/>
+</div>
+<details class="abstract">
+<summary>总结</summary>
+<p></p><div style="text-align: center">
+<img src="images/lec1/34.png" width="70%/"/>
+</div>
+</details>
 <h2 id="deep-learning">Deep Learning<a class="headerlink" href="#deep-learning" title="Permanent link">⚓︎</a></h2>
 <p>通过上述的训练过程，找到合适的参数后，便可以通过模型得到一组较为准确的一组预测值<span><span class="heti-spacing"> </span><span class="arithmatex">\(\bm{a}\)</span></span>（向量<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。难道这样就结束了吗？我们还可以将<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\bm{a}\)</span><span class="heti-spacing"> </span></span>再一次代入这个模型中，得到<span><span class="heti-spacing"> </span><span class="arithmatex">\(\bm{a}'\)</span></span>，...，以此类推。</p>
 <div style="text-align: center">
-<img src="images/lec1/22.png" width="80%/"/>
+<img src="images/lec1/26.png" width="80%/"/>
+<img src="images/lec1/25.png" width="80%/"/>
 </div>
 <p>在机器学习中，我们通常为上图的计算过程赋予这些名称：</p>
 <ul>
-<li><strong>神经元</strong><span><span class="heti-spacing"> </span>(neuron)</span>：即激活函数</li>
-<li><strong>神经网络</strong><span><span class="heti-spacing"> </span>(neural network)</span>：由众多这样的神经元构成的集体，类似一张网（模拟人类的大脑）</li>
-<li><strong>隐藏层</strong><span><span class="heti-spacing"> </span>(hidden layer)</span>：一排的神经元（一次训练）</li>
+<li><strong>神经元</strong><span><span class="heti-spacing"> </span>(neuron)</span>：包括输入（通过权重和偏移对一组数据求和<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>、激活函数和输出<ul>
+<li>网络参数<span><span class="heti-spacing"> </span>(network parameter)<span class="arithmatex">\(\theta\)</span></span>：神经元的所有权重和偏移</li>
 </ul>
-<p>由于多次训练后，就会产生多个隐含层，看起来就很“深”，因此称之为<strong>深度学习</strong><span><span class="heti-spacing"> </span>(deep learning)</span>。</p>
+</li>
+<li><strong>神经网络</strong><span><span class="heti-spacing"> </span>(neural network)</span>：由众多这样的神经元构成的集体，类似一张网（模拟人类的大脑）</li>
+<li>层<span><span class="heti-spacing"> </span>(layer)</span>：相当于一次训练的过程<ul>
+<li><strong>输入层</strong><span><span class="heti-spacing"> </span>(input layer)</span>：初始输入的数据集</li>
+<li><strong>隐藏层</strong><span><span class="heti-spacing"> </span>(hidden layer)</span>：中间的一排神经元</li>
+<li><strong>输出层</strong><span><span class="heti-spacing"> </span>(output layer)</span>：最后一层神经元，得到训练结果</li>
+</ul>
+</li>
+</ul>
+<p>多次训练意味着有多层的神经元，看起来就很“深”，因此称之为<strong>深度学习</strong><span><span class="heti-spacing"> </span>(deep learning)</span>。</p>
 <details class="example">
 <summary>（有些过时的）例子</summary>
 <p></p><div style="text-align: center">
 <img src="images/lec1/23.png" width="80%/"/>
 </div>
 </details>
-<p>根据实际经验，随着层数的加深，训练结果的质量会不断提升，但也不是始终能够提升——到达一定层数后，虽然对于训练数据的预测更准确，但是对未来的预测结果的质量反而会下降，这种情况称为<strong>过拟合</strong><span><span class="heti-spacing"> </span>(overfitting)</span>。因此，我们不会让层数一直深下去的。</p>
+<p>根据实际经验，随着层数的加深，训练结果的质量会不断提升，但也不是始终能够提升——到达一定层数后，虽然对于训练数据的预测更准确，但是对未来的预测结果的质量反而会下降，这种情况称为<strong>过拟合</strong><span><span class="heti-spacing"> </span>(overfitting)</span>。因此，我们不会让层数一直深下去的，合适的层数需要通过直觉<span class="heti-skip"><span class="heti-spacing"> </span>(intuition)<span class="heti-spacing"> </span></span>和不断的试错<span class="heti-skip"><span class="heti-spacing"> </span>(trial and error)<span class="heti-spacing"> </span></span>得到。</p>
 <aside class="md-source-file">
 <span class="md-source-file__fact">
 <span class="md-icon" title="最后更新">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"></path></svg>
 </span>
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime">2025年2月21日 21:29:32</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime">2025年2月22日 15:48:22</span>
 </span>
 <span class="md-source-file__fact">
 <span class="md-icon" title="创建日期">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"></path></svg>
 </span>
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime">2025年2月21日 21:29:33</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime">2025年2月22日 15:48:22</span>
 </span>
 </aside>
 <p style="font-size: 30px; font-weight: 600">评论区</p>
