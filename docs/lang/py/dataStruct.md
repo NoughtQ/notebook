@@ -46,7 +46,7 @@ counter: true
         - 基本容器类型的 [UML 类图](https://zh.wikipedia.org/wiki/%E9%A1%9E%E5%88%A5%E5%9C%96)，介绍了 Python 中最重要的容器接口
 
         <div style="text-align: center">
-            <img src="images/dataStruct/1.png" width="50%">
+            <img src="images/1.png" width="50%">
         </div>
 
         - 图中所有的类都是**抽象基类**（后面会详细讨论的），斜体方法都是抽象方法（带“抽象”的不能直接创建实例或直接使用，只能通过子类继承间接使用）
@@ -107,8 +107,8 @@ counter: true
 ???+ example "例子"
 
     <figure style=" width: 70%" markdown="span">
-        ![](images/dataStruct/1_dark.png#only-dark)
-        ![](images/dataStruct/1_light.png#only-light)
+        ![](images/2_dark.png#only-dark)
+        ![](images/2_light.png#only-light)
         <figcaption></figcaption>
     </figure>
 
@@ -421,6 +421,8 @@ counter: true
         for item in line_items:
             print(item[UNIT_PRICE], item[DESCRIPTION])
         ```
+
+    - 切片类型除了有 `start`、`stop`、`step` 属性外，还有 `indices` 属性，它的用法为：`#!py s.indices(len) -> (start, stop, stride)` —— 给定长度为 `len` 的序列，计算 `s` 表示的扩展切片的起始索引(start)和结尾索引(stop)，以及步幅(stride)，超出边界的索引会被裁掉，就像常规切片一样。
 
 - `[]` 内可接受多个索引或切片，以逗号分隔，相关的特殊方法 `__getitem__` 和 `__setitem__` 会将这多个索引或切片看作一个元组
     - 在 Numpy 中，`numpy.ndarray` 表示的二维数组可用 `a[i, j]` 获取数组元素，还可用 `a[m:n, k:l]` 获取二维切片
@@ -758,7 +760,7 @@ Python 标准库还提供以下队列实现：
 
 `**` 前缀用于映射的拆包，可以应用在：
 
-- 函数参数：`**` 可用于多个参数，但要求所有键都是字符串且是唯一的
+- 函数参数：`**` 可用于多个参数，但要求所有键都是字符串且是唯一的，这类参数可用于捕获没有明确指定名称的关键字参数
 
     ??? example "例子"
 
@@ -1187,10 +1189,14 @@ Python 3 中，`str` 对象中获取的项是 Unicode 字符。下面简单介�
 
 - **码点**(codepoint)：字符的标识，取值范围是U+0000~U+10FFFF（U+ 为十六进制前缀）
     - 由此可见，一个字符的大小在1字节到3字节之间
+    - 在 Python 中，码点可以用形如 `'\u0000'` 的形式表示 
 - **编码**(code)：码点与字节序列之间转换时使用的算法，比如 UTF-8、UTF-16LE 等
     - **编码**(encode)：码点 -> 字节序列，`str` 对象的对应方法为 `.decode()`
     - **解码**(decode)：字节序列 -> 码点，`bytes` 对象的对应方法为 `.encode()`
-
+- 在 Python 3中，Unicode 字面量还可以用 `\N{}` 转义字符表示，花括号内填写字符的官方名称，比如：
+    - `'…'` <-> `'\N{HORIZONTAL ELLIPSIS}'`
+    - `'∞'` <-> `'\N{INFINITY}'`
+    - `'㊷'` <-> `'\N{CIRCLED NUMBER FORTY TWO}'`
 
 ### 字节序列
 
@@ -1336,31 +1342,613 @@ Python 内置2类基本的字节序列类型：不可变类型 `bytes` 和可变
 
 关于文件访问的函数或方法：
 
-- `open(filename, method, encoding='utf_8')`：打开文件
+- `fp = open(filename, method, encoding='utf_8')`：打开文件
+    - 默认采用文本模式（`method` 不带 `'b'` 时），返回一个使用指定编码的 `TextIOWrapper` 对象
+    - 若 `method` 带 `'b'`，则表示以二进制模式读取文件，此时返回一个 `BufferedReader` 对象
+        - 通常情况下，不要以二进制模式读取文本文件，它一般只用于打开二进制文件
+- `fp.read(encoding='utf_8')`：读取文件内容（字符串）
+- `fp.write(text, encoding='utf_8')`：向文件写入内容（字符串），并返回 Unicode 字符数
+
+!!! note "建议"
+
+    对于上述函数，请最好指明 `encoding` 参数，否则的话 Python 会采用默认编码方式，而这很容易会导致错误。
+
+- `fp.encoding`：返回编码方式（字符串）
+- `os.stat(filename).st_size`：返回文件的字节数（需导入 `os` 模块）
+
+??? example "例子：查看自己电脑的默认编码方式"
+
+    执行以下脚本：
+
+    ```py title="default_encodings.py"
+    import locale
+    import sys
+
+    expressions = """
+        locale.getpreferredencoding()
+        type(my_file)
+        my_file.encoding
+        sys.stdout.isatty()
+        sys.stdout.encoding
+        sys.stdin.isatty()
+        sys.stdin.encoding
+        sys.stderr.isatty()
+        sys.stderr.encoding
+        sys.getdefaultencoding()
+        sys.getfilesystemencoding()
+    """
+
+    my_file = open('dummy', 'w')
+
+    for expression in expressions.split():
+        value = eval(expression)
+        print(f'{expression:>30} -> {value!r}')
+    ```
+
+    执行结果：
+
+    === "Windows 11 24H2"
+
+        ```sh
+        $ python default_encodings.py
+        locale.getpreferredencoding() -> 'cp936'
+                        type(my_file) -> <class '_io.TextIOWrapper'>
+                    my_file.encoding -> 'cp936'
+                sys.stdout.isatty() -> True
+                sys.stdout.encoding -> 'utf-8'
+                    sys.stdin.isatty() -> True
+                    sys.stdin.encoding -> 'utf-8'
+                sys.stderr.isatty() -> True
+                sys.stderr.encoding -> 'utf-8'
+            sys.getdefaultencoding() -> 'utf-8'
+        sys.getfilesystemencoding() -> 'utf-8'
+        ```
+
+    === "Ubuntu 24.04 LTS"
+
+        ```sh
+        $ python default_encodings.py
+        locale.getpreferredencoding() -> 'UTF-8'
+                        type(my_file) -> <class '_io.TextIOWrapper'>
+                    my_file.encoding -> 'UTF-8'
+                sys.stdout.isatty() -> True
+                sys.stdout.encoding -> 'utf-8'
+                    sys.stdin.isatty() -> True
+                    sys.stdin.encoding -> 'utf-8'
+                sys.stderr.isatty() -> True
+                sys.stderr.encoding -> 'utf-8'
+            sys.getdefaultencoding() -> 'utf-8'
+        sys.getfilesystemencoding() -> 'utf-8'
+        ```
+
+    === "MacOS"
+
+        等我暑假买了 MacBook 再说...
+
+    由此可见，Windows 中更容易遇到编码问题（~~Only Windows can do（误）~~）
+
+!!! abstract "总结：Python 的默认编码"
+
+    - 打开文件时若没有指定 `encoding` 参数，则默认编码由 `locale.getpreferredencoding()` 指定
+    - 在 Python 3.6 之前，`sys.stdout/stdin/stderr` 编码由环境变量 `PYTHONIOENCODING` 设置；之后的 Python 会忽略这个变量，在交互式环境下的标准I/O使用 UTF-8 编码，重定向概念股到文件中的I/O则使用 `locale.getpreferredencoding()` 定义的编码
+    - 在二进制数据与 `str` 之间转换时，Python 内部使用 `sys.getdefaultencoding()`
+    - 编解码文件名时使用 `sys.getfilesystemencoding()`
+    - 对于 `open()` 函数，若传入的文件名参数是 `str` 类型，则使用 `sys.getfilesystemencoding()`；若传入的是 `bytes` 类型，直接传给操作系统 API
 
 
 ### Unicode 字符串规范化
 
+Python 认为不同码点但等价的 Unicode 字符表示法（称为标准等价物(canonical equivalent)）是不同的，但我们希望将其视为相同的表示法，因此在比较前需要将 Unicode 字符串规范化。具体来说要使用 `unicodedata.normalize(strategy, string)` 函数，它接受两个参数：
+
+- `strategy`：规范化的策略，可取值有：`NFC`、`NFD`、`NFKC`、`NFKD`
+    - NFC(Normalization Form C)：使用最少的码点构成等价的字符串
+        - 用户输入的文本默认采取这种规范策略，但建议还是用 `normalize()` 函数显式规范化
+        - 有些单体字符在 NFC 规范化后会变成另一个单体字符，即使两者看起来没什么区别，需要当心
+    - NFD(Normalization Form D)：把合成字符分解成基字符和单独的组合字符
+    - NFKC/NFKD：更严格的 NFC/NFD
+        - K 表示兼容性(compatibility)，因为这类策略对“兼容字符”有影响——兼容字符会被替换为一个或多个字符，以兼容现有标准
+        - 因此这种策略可能会导致数据损失和信息曲解（比如将 `'½'` 分解成 `'1⁄2'`），应只在特殊情况下使用
+
+- `string`：要被规范化的字符串
+
+---
+有时，我们不希望区分字符串的大小写，因此需要对字符串进行大小写同一化——先把所有文本变成小写，再做些其他转换。具体操作由 `str.casefold()` 方法实现。
+
+- 对于只包含 `latin1` 字符的字符串 `s`，`s.casefold()` 的结果等同于 `s.lower()`
+- 两个例外：
+    - “微”符号 `'μ'` 变成小写希腊字母 `'μ'`（对于大多数字体，两者看起来是一样的）
+    - 德语 Eszett(ß) 变成 ss
+
+
 ### Unicode 文本排序
+
+Python 内置的排序方法或函数对 ASCII 字符串的排序表现良好，但是对非 ASCII 字符串就不太行。Python 对非 ASCII 字符串的标准排序方式是使用 `locale.strxfrm` 函数，以便采用适合所在区域的字符串比较方法。使用格式为：`sorted(str, key=locale.strxfrm)`。使用前需注意：
+
+- 在排序前要先设置合适的区域——调用 `locale.setlocale(locale.LC_COLLATE, <your_locale>)`
+- 区域设置全局有效，因此不应在库内调用该函数；程序在启动进程设定区域，此后不应修改
+- 操作系统必须支持所设定的区域，否则 `setlocale` 函数会抛出异常
+
+更简便的方法是使用第三方库 [pyuca](https://github.com/jtauber/pyuca)，实现了更为好用的 Unicode 排序算法，无需考虑区域设置，并且可以自定义排序方式。
+
+??? example "使用例子"
+
+    ```py
+    # 这个例子只是稍微展示一下这个库的用法
+    # 由于非 ASCII 字符很难用键盘敲出来，所以排序的都是 ASCII 字符，因此很难看出这个库的威力
+    >> import pyuca
+    >>> coll = pyuca.Collator()
+    >>> fruits = ['caju', 'atemoia', 'caja', 'acai', 'acerola']
+    >>> sorted_fruits = sorted(fruits, key=coll.sort_key)
+    >>> sorted_fruits
+    ['acai', 'acerola', 'atemoia', 'caja', 'caju']
+    ```
+
+另一个表现更好的 Unicode 排序方法是采用 [PyICU](https://github.com/ovalhub/pyicu) 库。
+
 
 ### Unicode 数据库
 
-### 双模式 API
+Unicode 标准提供了一个完整的数据库（许多结构化文本文件），不仅包含了码点与字符名称之间的映射表，还包括了各个字符的元数据，以及字符之间的关系，很多字符串方法都是基于这些信息实现的。
+
+- `unicodedata.category(char)` 函数返回 `char` 在 Unicode 数据库中的类别（用两个字母表示）
+    - 一般不会直接用这个方法，而是用诸如 `str.isalpha()`、`str.isdigit()` 等方法来做粗略的判断
+- `unicodedata.name(char)` 函数返回一个字符在 Unicode 标准中的官方名称 
+- Unicode 标准知道数字符号中的数值内容，这点可以用 `unicodedata.name()`、`unicodedata.numeric()`、`str.isdecimal()`、`str.isnumeric()` 函数或方法来判断
 
 
 ## 数据类构建器
 
+**数据类**(data class)是一种简单的类，仅作为字段的容器，几乎没有额外的功能。
+
+如果使用常规的类的创建方法来保存字段，对于同一个字段至少需要写3遍（作为 `__init__` 方法的参数、`self.属性 = 参数` 中的属性和参数），这样的实现相当繁琐；并且功能有限（无法直接比较字段，缺乏有效的字符串表示法等等）。好在，Python 提供了以下几种简化数据类构建过程的类构建器：
+
+- `collections.namedtuple`：具名元组
+- `typing.NamedTuple`：带类型提示的具名元组
+- `@dataclasses.dataclass`：一种类装饰器，可实现更为复杂的功能
+
+这些类构建器的主要功能如下：
+
+???+ note "主要功能"
+
+    >`x`表示数据类的实例
+
+    |功能|`namedtuple`|`NamedTuple`|`dataclass`|
+    |:--|:-----------|:-----------|:----------|
+    |可变实例|否|否|是|
+    |`class` 语句句法|否|是|是|
+    |构造字典|`x._asdict()`|`x._asdict()`|`dataclasses.asdict(x)`|
+    |获取字段名称|`x._fields`|`x._fields`|`[f.name for f in dataclasses.fields(x)]`|
+    |获取默认值|`x._field_defaults`|`x._field_defaults`|`[f.default for f in dataclasses.fields(x)]`|
+    |获取字段类型|N/A|`x.__annotations__`|`x.__annotations__`|
+    |更改之后创建新实例|`x._replace(...)`|`x._replace(...)`|`dataclasses.replace(x, ...)`|
+    |运行时定义新类|`namedtuple(...)`|`NamedTuple(...)`|`dataclasses.make_dataclass(...)`|
+
+    - 可变实例：
+        - 由于 `namedtuple` 和 `NamedTuple` 构建的类是 `tuple` 的子类，因此它们的实例是不可变的
+        - `dataclass` 默认构建可变的类，但也可以用关键字参数 `frozen=True` 指定不可变的实例
+    - `class` 语句句法：`NamedTuple` 和 `dataclass` 支持常规的 `class` 语句句法，方便为构建的类添加方法和文档字符串
+    - 构造字典：三者都提供了构建字典的方法或函数
+    - 获取字段名称和默认值：
+        - `namedtuple` 和 `NamedTuple` 的名称和默认值均分别从类属性 `._fileds` 和 `._field_defaults` 中获取
+        - 而 `dataclass` 的名称和默认值则来自由 `fields` 函数返回的 `Field` 对象中的 `name` 和 `default` 属性
+    - 获取字段类型：虽然 `NamedTuple` 和 `dataclass` 的字段类型可以从 `__annotations__` 类属性（值为字段名到类型的映射）中获取，但不应直接读取这个属性，建议通过 `typing.get_type_hints(MyClass)` 函数获取
+    - 更改之后创建新实例：三者都提供了相应的方法或函数
+    - 运行时定义新类：三者均提供了默认的函数调用句法，便于动态构建数据类，更加灵活
+
+
 ### namedtuple
+
+`namedtuple` 是一个工厂(factory)方法，使用指定名称和字段构建 `tuple` 子类，具有字段名称、类名和提供有用信息的 `__repr__` 方法。
+
+- 创建 `namedtuple` 时（调用函数 `namedtuple()`）需要的参数
+    - 【必】类名（`str`）
+    - 【必】字段名称列表：产生字符串的可迭代对象，或一个以空格分隔字段名的字符串
+    - 【选】`defaults`关键字参数，值为一个包含 N 项的可迭代对象，为右侧 N 个字段指定默认值
+
+- 创建 `namedtuple` 实例的方法有：
+    - 构造函数：提供的字段值必须与字段一一对应
+    - `._make()` 方法：根据可迭代对象构建实例
+- 可通过字段名或索引来访问字段
+
+??? example "例子"
+
+    ```py
+    # 定义一个具名元组类型
+    >>> from collections import namedtuple
+    >>> City = namedtuple('City', 'name country population coordinates')
+    >>> tokyo = City('Tokyo', 'JP', 36.933, (35.689722, 139.691667))
+    >>> tokyo
+    City(name='Tokyo', country='JP', population=36.933, coordinates=(35.689722, 139.691667))
+    >>> tokyo.population
+    36.933
+    >>> tokyo.coordinates
+    (35.689722, 139.691667)
+    >>> tokyo[1]
+    'JP'
+
+    # 具名元组的属性和方法
+    >>> City._fields
+    ('name', 'country', 'population', 'coordinates')
+    >>> Coordinate = namedtuple('Coordinate', 'lat lon')
+    >>> delhi_data = ('Delhi NCR', 'IN', 21.935, Coordinate(28.613889, 77.208889))
+    >>> delhi = City._make(delhi_data)
+    >>> delhi._asdict()
+    {'name': 'Delhi NCR', 'country': 'IN', 'population': 21.935, 'coordinates': Coordinate(lat=28.613889, lon=77.208889)}
+    >>> import json
+    >>> json.dumps(delhi._asdict())
+    '{"name": "Delhi NCR", "country": "IN", "population": 21.935, "coordinates": [28.613889, 77.208889]}'
+
+    # 构建一个具名元组，为字段指定默认值
+    >>> Coordinate = namedtuple('Coordinate', 'lat lon reference', defaults=['WGS84'])
+    >>> Coordinate(0, 0)
+    Coordinate(lat=0, lon=0, reference='WGS84')
+    >>> Coordinate._field_defaults
+    {'reference': 'WGS84'}
+    ```
+
+- 虽然 `namedtuple` 没有 `class` 句法，但是也可以为其注入方法（过程有些麻烦）。由于一般不会这样做，所以就不展开描述了。
+
 
 ### NamedTuple
 
+`NamedTuple` 是一种带类型提示的具名元组，与 `namedtuple` 最大的区别在于多了类属性 `__annotations__`。
+
+- 既可以调用 `NamedTuple()` 函数创建 `NamedTuple`
+    - 法1：
+    
+        ```py
+        Coordinate = typing.NamedTuple('Coordinate', [('lat', float), ('lon', float)])
+        ```
+
+    - 法2：
+
+        ```py
+        Coordinate = typing.NamedTuple('Coordinate', lat=float, lon=float)
+        ```
+
+
+- 也可以用 `class` 句法定义 `NamedTuple`
+
+    ```py
+    from typing import NamedTuple
+
+    # 虽然 NamedTuple 看起来是超类，但实际上并不是，这里使用元类这一高级功能创建类
+    class Coordinate(NamedTuple):
+        lat: float                  # 每个实例字段都要标出类型
+        lon: float
+        reference: str = 'WGS84'    # 还可以指定默认值
+    ```
+
+#### 类型提示
+
+**类型提示**（或注解）：声明函数参数、返回值、变量和属性的预期类型。
+
+- Python 编译器和解释器不强制要求指明类型信息，并且类型提示不影响 Python 程序的运行，即使实际类型与预期类型不一致，Python 既不报错，也不发出警告
+- 因此，类型提示主要为第三方类型检查工具提供支持，比如 [Mypy](https://mypy-lang.org/) 或 [Pycharm IDE](https://www.jetbrains.com/pycharm/) 内置的类型检查器。
+- 变量注解的基本语法：
+
+    ```py
+    # 注意代码风格
+    var_name: some_type = default_value
+    ```
+
+    - `var_name`：变量名
+    - `some_type`：类型，定义数据类时最常用以下几种类型：
+        - 一个具体类（比如 `str`、`FrenchDeck` 等）
+        - 一个参数化容器类型（比如 `list[int]`、`tuple[str, float]` 等）
+        - `typing.Optional`（比如 `Optional[str]` 等）
+    - `default_value`：（可选）默认值
+
+- 虽然类型提示不影响 Python 程序运行，但 Python 在导入模块时会读取类型提示，以增强数据类的功能
+
+    ???+ note "案例分析"
+
+        对比以下两个类：
+
+        === "一个简单的类，带有类型提示"
+
+            ```py
+            class DemoPlainClass:
+                a: int            # a 出现在 __annotations__ 中，但不是类属性，因为没有绑定值
+                b: float = 1.1    # b 既在 __annotations__ 中，也是一个类属性
+                c = 'spam'        # c 不在 __annotations__ 中，是一个类属性
+            ```
+            这 3 个属性均不出现在 DemoPlainClass 的实例中，若访问实例 o 的这些属性，
+            
+            - o.a 会抛出 AttributeError，
+            - o.b 和 o.c 会检索类属性，值分别为 1.1 和 'spam'
+
+
+        === "使用 `typing.NamedTuple` 构建一个类"
+
+            ```py
+            class DemoNTClass(typing.NamedTuple):
+                a: int            # a 既在 __annotations__ 中，也是实例属性
+                b: float = 1.1    # b 既在 __annotations__ 中，也是实例属性
+                c = 'spam'        # c 不在 __annotations__ 中，是一个普通的类属性
+            ```
+
+            - 类属性 `a` 和 `b` 是**描述符**，可理解为特性读值方法(property getter)，即不带调用运算符 `()` 的方法，用于读取实例属性
+            - 注意这些属性都是不可变的，并且创建实例后不得添加新的属性
+            
+            ??? code "运行结果"
+
+                ```py
+                >>> DemoNTClass.__annotations__
+                {'a': <class 'int'>, 'b': <class 'float'>}
+                >>> DemoNTClass.a
+                _tuplegetter(0, 'Alias for field number 0')
+                >>> DemoNTClass.b
+                _tuplegetter(1, 'Alias for field number 1')
+                >>> DemoNTClass.c
+                'spam'
+                >>> DemoNTClass.__doc__
+                'DemoNTClass(a, b)'
+                >>> nt = DemoNTClass(8)
+                >>> nt.a
+                8
+                >>> nt.b
+                1.1
+                >>> nt.c
+                'spam'
+                ```
+
 ### dataclass
 
-### 类型提示
+- `dataclass` 使用 `class` 句法创建：
+
+    ```py
+    from dataclasses import dataclass
+
+    @dataclass
+    class DemoDataClass:
+        a: int
+        b: float = 1.1
+        c = 'spam'
+    ```
+
+    - 与 `NamedTuple` 相比最大的区别在于没有所谓的描述符，因此属性 `a` 仅在实例中存在，并不存在类里面
+    - 此外，该数据类的实例是可变的，甚至可以为不存在的属性赋值
+    - `@dataclass` 不允许为字段赋予可变的默认值（会报错，但仅对 `list`、`dict`、`set` 有效，其他可变值不会引起 `@dataclass` 的注意）
+        - 解决方法为：调用 `dataclasses.field` 函数，设置参数 `default_factory=value`，其中 `value` 可以是一个函数，一个类或其他可调用对象。此外，`field` 函数还接受以下参数：
+
+        ??? abstract "`field` 函数接受的关键字参数"
+
+            |参数|作用|默认值|
+            |:-|:-|:-|
+            |`default`|字段的默认值|`_MISSING_TYPE`（哨符值，表示未提供该参数）|
+            |`default_factory`|不接受参数的函数，用于产生默认值|`_MISSING_TYPE`|
+            |`init`|把字段作为参数传给 `__init__` 方法|`True`|
+            |`repr`|把 `__repr__` 方法中使用手段|`True`|
+            |`compare`|在 `__eq__`、`__lt__` 等比较方法中使用字段|`True`|
+            |`hash`|在 `__hash__` 方法中使用字段计算哈希值|`None`|
+            |`metadata`|用户定义的数据映射，`@dataclass` 忽略该参数|`None`|
+
+
+        - 这样的话每个实例获得的都是默认值的副本，而不是共用一个默认值对象
+
+        ??? example "例子"
+
+            ```py
+            from dataclasses import dataclass, field
+
+            @dataclass
+            class ClubMember:
+                name: str
+                guests: list = field(default_factory=list)
+            ```
+
+- `@dataclass` 装饰器可以接受的参数有：
+
+    ```py
+    @dataclass(*, init=True, repr=True, eq=True, order=False, 
+                  unsafe_hash=False, frozen=False)
+    ```
+
+    ??? abstract "详细说明"
+
+        |参数|作用|默认值|备注|
+        |:-|:-|:-|:-|
+        |`init`|生成 `__init__`|`True`|若用户自己实现了 `__init__`，则忽略该参数|
+        |`repr`|生成 `__repr__`|`True`|若用户自己实现了 `__repr__`，则忽略该参数|
+        |`eq`|生成 `__eq__`|`True`|若用户自己实现了 `__eq__`，则忽略该参数|
+        |`order`|生成 `__lt__`、`__le__`、`__gt__`、`__ge__`|`False`|设为 `True` 时，表示允许排序数据类的实例；若 `eq=False`，或自行定义或继承其他用于比较的方法，则抛出异常|
+        |`unsafe_hash`|生成 `__hash__`|`False`|语义复杂，有多个问题需要注意，详见 `dataclass` 函数的文档|
+        |`frozen`|让实例不可变|`False`|防止意外更改实例，相对安全，但不是绝对不可变|
+
+    - 通常会更改以下参数的值：`frozen=True`（防止意外更改类的实例），`order=True`（允许排序类的实例）
+    - 若 `eq` 和 `frozen` 参数的值都是 `True`，那么 `@dataclass` 将生成一个合适的 `__hash__` 方法，确保实例是可哈希的
+    - 若 `frozen=False`，那么 `@dataclass` 把 `__hash__` 设为 `None`，覆盖从任何超类继承的 `__hash__` 方法，表示实例不可哈希
+
+- 初始化后处理方法 `__post_init__` 经常用于执行验证，以及根据其他字段计算一个字段的值
+
+    ??? example "例子"
+
+        ```py
+        from dataclasses import dataclass
+        from club import ClubMember
+
+        @dataclass
+        class HackerClubMember(ClubMember):                        
+            all_handles = set()                                     
+            handle: str = ''                                       
+
+            def __post_init__(self):
+                cls = self.__class__                                
+                if self.handle == '':                               
+                    self.handle = self.name.split()[0]
+                if self.handle in cls.all_handles:                  
+                    msg = f'handle {self.handle!r} already exists.'
+                    raise ValueError(msg)
+                cls.all_handles.add(self.handle)                    
+        ```
+
+- 有时需要为类变量添加类型提示，此时需要用到 `typing.ClassVar` 伪类型，借助泛型表示法 `[]` 设定变量类型，同时声明为类属性（比如 `#!py all_handles: ClassVar[set[str]] = set()` 表示一个类型为字符串构成的集合，默认值为空集合的类属性）
+    - 若类型为 `ClassVar` 时，不为属性生成实例字段
+
+- 有时还会将不作为实例字段的参数传给 `__init__` 方法，这种参数称为“仅作初始化的变量”(init-only variable)，通过伪类型 `typing.InitVar` 实现，句法与 `ClassVar` 一致。`InitVar` 会阻止 `@database` 把参数视为常规字段，因而该参数不会被设为实例属性，也就不会出现在 `.fields` 函数返回的列表中，但可以被传入 `__post_init__` 方法内
+
 
 ### 代码异味
 
+**代码异味**(code smell)：代码中的任何可能导致深层次问题的症状。
+
+>关于“代码异味”的具体表述参见 [wiki](https://zh.wikipedia.org/wiki/%E4%BB%A3%E7%A0%81%E5%BC%82%E5%91%B3)
+
+数据类的使用可能会导致代码异味，因为数据类只是存放数据的容器，自身并没有定义其他行为或功能，而别的函数或方法会用到这些数据类的实例，这样就会给代码维护带来很大的麻烦，并且这违背了面向对象编程的一个原则：数据和处理数据的函数应放在同一个类里。因此，除非遇到以下情况，否则的话平时建议不要构建和使用数据类：
+
+- 把数据类当作脚手架：刚开始设计类的时候，可以先临时用数据类进行简单实现，之后再为其定义方法。
+- 把数据类作为中间表述：数据类可用于构建将要导出为 JSON 或其他交换格式的记录，也可用于存储刚从其他系统导入的数据。注意此时应把数据类实例当作不可变对象处理。
+
+
 ### 模式匹配
+
+在 `match/case` 语句的模式匹配中，类模式通过类型和属性（可选）匹配类实例，而类模式的匹配对象可以是任何类的实例。类模式有3种变体：
+
+- 简单类模式：
+    - 最简单的形式：`#!py case type():`，其中 `type` 可以是以下几种内置类型：`bytes`、`dict`、`float`、`frozenset`、`int`、`list`、`set`、`str`、`tuple`，注意括号不要省去（否则会视为普通的变量名）
+    - 括号内也可以指明变量名（比如 `#!py case[str(name), _, _, (float(lat), float(lon))]:`）
+- 关键字类模式：
+    - 此时类模式的句法是一个类的实例，`#!py case MyClass(attr1=val1):` 表示只要匹配到的 `MyClass` 实例中 `attr1` 属性的值等于 `val1` 就算成功匹配了，其余属性就不需考虑了
+    - 还可以将变量绑定到实例的属性上，比如 `#!py case MyClass(attr1=val1, attr2=var)`，这里将属性 `attr2` 绑定到变量 `var` 上
+        - `attr2` 与 `var` 重名也没有问题
+    
+    - 这种方法可读性高，但使用较为繁琐
+
+- 位置类模式：
+    - `#!py case MyClass(val1)`：设置第一个属性的值为 `val1`
+    - `#!py case MyClass(val1, _, var)`：设置第一个属性的值为 `val1`，并将变量 `var` 绑定到第三个属性上
+    - 若类里面有一个特殊类属性 `__match_args__`，则该类可以采用这种位置类模式，而位置类模式中属性的顺序就是 `__match_args__` 声明的顺序
+    
+一个类模式中可以同时使用关键字参数和位置参数。
 
 
 ## 对象引用、可变性、垃圾回收
+
+### 对象引用
+
+#### 变量
+
+Python 变量不是一个个独立的“盒子”，应该将其理解为附加在对象上的标注，也就是说，**变量是对象的引用**。
+
+- 若两个变量引用同一个对象，那么通过其中一个变量改变对象后，从另一个变量中可以看到该对象的改变
+- 对变量的赋值，实际上是将变量分配给对象的过程，更确切的说法是将变量**绑定**到对象上
+- 在赋值语句中，`=` 右侧先执行，因为在绑定名称前，对象必须存在
+- 对于增量赋值（比如 `+=`、`*=`等），若左边变量绑定的是不可变对象，则创建新对象；若为可变对象，则就地修改
+- 同一个对象可以被绑定多个变量，这些变量称为**别名**
+    - 用 `is` 运算符（比较两个对象的标识）或 `id` 函数（返回对象标识的整数表示，这个值在对象的生命周期内不会改变，平时很少直接使用）检验这些别名，发现它们是相同的，即具备同一性
+    - 而对于不同的对象，即使它们的值是相等的，它们的标识仍然是不同的
+
+- 一般情况下，我们更加关心对象的相等性，而非同一性，这时需要用到 `==` 运算符比较两个对象的值
+    - 一般来说，`is` 运算符只用于检测 `None`，如果不确定的话，还是建议用 `==` 比较
+    - 但是 `is` 运算符比 `==` 快，因为它不能重载
+
+- 像[元组](#元组)这样的不可变容器，存储的是对象的引用，而它们的“不变性”指的是容器内项的标识不变，而容器的值可能因为可变项的值的变化而变化
+
+
+
+#### 浅拷贝和深拷贝
+
+- **浅拷贝**：仅复制最外层的容器，副本中的项是源容器中的项的引用
+    - 可通过构造函数（比如 `list()`）或切片 `[:]` 实现（对不可变类型同样有效），也可以使用 `copy.copy` 函数对任意对象做浅拷贝
+    - 若所有项都是不可变的，这种复制不会出现什么问题；但如果存在可变项，就会产生 bug
+
+    ??? example "一个很有意思的例子"
+
+        ```py
+        l1 = [3, [66, 55, 44], (7, 8, 9)]
+        l2 = list(l1)
+        l1.append(100)
+        l1[1].remove(55)          # <1>
+        print('l1:', l1)
+        print('l2:', l2)
+        l2[1] += [33, 22]
+        l2[2] += (10, 11)         # <2>
+        print('l1:', l1)
+        print('l2:', l2)
+        ```
+
+        建议用 [Python Tutor](https://pythontutor.com/visualize.html) 执行上述代码并观看动画效果，有助于对“浅拷贝”这一概念更深入的理解。
+
+        === "<1>"
+
+            <div style="text-align: center">
+                <img src="images/3.png" width="50%">
+            </div>
+
+        === "<2>"
+
+            <div style="text-align: center">
+                <img src="images/4.png" width="60%">
+            </div>
+
+- **深拷贝**：副本不共享内部对象的引用，使用 `copy.deepcopy` 函数对任意对象做深拷贝
+    - 深拷贝时，如果对象有循环引用，那么就可能会陷入无限循环，`deepcopy` 函数会以优雅的方式处理循环引用
+
+    ??? example "例子"
+
+        ```py
+        >>> a = [10, 20]
+        >>> b = [a, 30]
+        >>> a.append(b)
+        >>> a
+        [10, 20, [[...], 30]]
+        >>> from copy import deepcopy
+        >>> c = deepcopy(a)
+        >>> c
+        [10, 20, [[...], 30]]
+        ```
+
+- 可通过实现特殊方法 `__copy__` 和 `__deepcopy__` 来修改 `copy` 和 `deepcopy` 的行为
+
+
+#### 函数参数
+
+Python 唯一支持的参数传递模式是**共享传参**(call by sharing)：函数的形参获取实参引用的副本，也就是说函数的形参是实参的别名。
+>这种传参方式结合了常规的按值传递（形参为实参副本）和按引用传递（形参为指向实参的指针）。
+
+- 因此，函数可能会修改作为参数传入的可变对象（比如会修改 `list` 的实参，但不会改变 `int` 或 `tuple` 类型的实参），但无法修改对象的标识
+- 避免使用可变对象作为参数的默认值，否则会出现意想不到的 bug。因为根据 Python 的共享传参模式，如果这个默认值被赋给类属性（此时类属性变成参数默认值的别名），且这个类的多个实例都用到这个默认值，那么对类属性值的修改就会改变这个默认值，从而影响后续的函数调用
+    - 因此，建议将 `None` 作为接受可变对象参数的默认值
+
+- 如果不希望通过函数形参的改变来修改实参的话，记得在函数内部创建形参的副本，然后让函数在这个副本上操作
+
+
+#### 驻留
+
+**驻留**(interning)：共享字符串或整数字面量的一种优化措施
+    - CPython 不会驻留所有字符串和整数，并且没有相关文档的说明
+    - 千万不要依赖这种驻留行为，它只是 Python 解释器内部实现的功能，用于提升解释器的速度
+
+??? example "例子"
+
+    ```py
+    >>> s1 = "123"
+    >>> s2 = "123"
+    >>> s1 is s2
+    True
+    >>> i1 = 1
+    >>> i2 = 1
+    >>> i1 is i2
+    True
+    >>> i1 = 114514
+    >>> i2 = 114514
+    >>> i1 is i2
+    False
+    ```
+
+
+### del 和垃圾回收
+
+- 关于 `del`：
+    - `del` 不是函数而是语句，尽管它可以写做 `del x` 或 `del(x)`，但后者不是函数调用
+    - `del` 语句删除的是引用而不是对象，当然如果删除的是最后一个引用，那么可能会导致对象被当作垃圾回收了
+
+- 关于**垃圾回收**(garbage collection)：
+    >“对象绝不会自行销毁；然而，对象不可达时，可能会被当作垃圾回收。”
+
+    - 除了用 `del` 可能会删除最后一个引用外，对变量的重新绑定也可能会导致对象的销毁
+    - 在 [CPython](https://github.com/python/cpython)（最广泛使用的 Python 解释器，用 C 语言实现）中，垃圾回收使用的主要算法是**引用计数**，当引用计数归时，对象立即被销毁：CPython 在对象上调用 `__del__` 方法（如果定义的话），然后释放分配给对象的内存
+    - CPython 2.0 新增分代垃圾回收算法，用于检测引用循环涉及的对象组
+    - 对象的**弱引用**(weak reference)不增加对象的引用计数，因而不阻碍目标对象被当作垃圾回收（比如 `weakref.finalize(my_obj, callback)` 函数会为对象 `my_obj` 注册一个回调函数 `callback`，当对象被销毁时调用该函数，因此该函数需要引用 `my_obj`，但不会影响它的垃圾回收）
+    - Python 没有直接销毁对象的机制

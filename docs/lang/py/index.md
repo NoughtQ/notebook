@@ -4,6 +4,8 @@
 
     由于浙江选考独有的技术选课，我早在高中就掌握了基本的Python语法，到了大学就没怎么用过（除了大物实验作图用到了 Matplotlib 库外）。为了进一步掌握 Python，我打算在寒假抽出一点时间深入掌握 Python 语法（主要参考《流畅的 Python》），但基本上要拖到开学几周了，因为寒假也有不少事 + 有一些拖延症。
 
+    在学习 Python 的时候，我采用 Python 最新的稳定版本 3.13。
+
     此外，这里时不时会放上我学过的一些库，比如 Matplotlib、PyQt6 等等。
 
 !!! abstract "参考资料 & 常用工具"
@@ -15,7 +17,9 @@
         - [PEP 8: Style Code for Python Code](https://peps.python.org/pep-0008/)：官方的 Python 代码风格规范
 
     - 工具：
-        - [Python Tutor](https://pythontutor.com/python-compiler.html#mode=edit)：Python
+        - [Python Tutor](https://pythontutor.com/python-compiler.html#mode=edit)：Python 代码可视化工具，超级推荐！
+        - [Mypy](https://github.com/python/mypy)：Python 类型检查工具
+        - [flake8](https://github.com/PyCQA/flake8)：Python 代码风格检查工具
 
 ## Table of Contents
 
