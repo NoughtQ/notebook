@@ -1,5 +1,3 @@
-// Written by ChatGPT 4o mini
-
 document.addEventListener('DOMContentLoaded', function () {
     function processLinks() {
         const links = document.querySelectorAll('a');
