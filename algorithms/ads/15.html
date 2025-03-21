@@ -9,9 +9,9 @@
 <link href="14.html" rel="prev"/>
 <link href="../../software/index.html" rel="next"/>
 <link href="../../assets/favicon.png" rel="icon"/>
-<meta content="mkdocs-1.6.1, mkdocs-material-9.6.3" name="generator"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.6.9" name="generator"/>
 <title>Lec 15: External Sorting - NoughtQ的笔记本</title>
-<link href="../../assets/stylesheets/main.d7758b05.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/main.4af4bdda.min.css" rel="stylesheet"/>
 <link href="../../assets/stylesheets/palette.06af60db.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=JetBrains+Mono,+LXGW+WenKai+Screen+GB+Screen:300,300i,400,400i,700,700i%7CJetBrains+Mono,+Consolas:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
@@ -702,7 +702,7 @@
 </div>
 <h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">⚓︎</a></h2>
 <p>在<span class="heti-skip"><span class="heti-spacing"> </span>FDS<span class="heti-spacing"> </span></span>中，我们介绍过一系列经典的<a href="../fds/7.html">排序算法</a>，实际上这些算法都是在主存<span class="heti-skip"><span class="heti-spacing"> </span>(main memory)<span class="heti-spacing"> </span></span>运行的内部排序，在数据量不大（即主存能够容纳所有待排序数据）的情况下可以顺利地完成排序工作。</p>
-<p>然而，一旦数据量很大，主存无法容下所有待排序数据时，就需要用到本讲要介绍的<strong>外部排序</strong><span class="heti-skip"><span class="heti-spacing"> </span>(external sorting)<span class="heti-spacing"> </span></span>算法了。所谓“外部”，就是要用到<strong>磁盘</strong>的空间了。磁盘相比主存空间更大，但访问速度更慢，举个例子：若要访问数组的某个元素<code>a[i]</code>，它们所需的时间分别为：</p>
+<p>然而，一旦数据量很大，主存无法容下所有待排序数据时，就需要用到本讲要介绍的<strong>外部排序</strong><span>(external sorting)<span class="heti-spacing"> </span></span>算法了。所谓“外部”，就是要用到<strong>磁盘</strong>的空间了。磁盘相比主存空间更大，但访问速度更慢，举个例子：若要访问数组的某个元素<code>a[i]</code>，它们所需的时间分别为：</p>
 <ul>
 <li>主存：<span class="arithmatex">\(O(1)\)</span>（用索引寻找，随机访问）</li>
 <li>磁盘：找到元素所在的迹<span class="heti-skip"><span class="heti-spacing"> </span>(track) -&gt;<span class="heti-spacing"> </span></span>找到对应的区<span><span class="heti-spacing"> </span>(sector)</span>（磁盘存储信息的最小单位）<span>-&gt;<span class="heti-spacing"> </span></span>找到元素<code>a[i]</code>并传输数据<ul>
@@ -711,12 +711,12 @@
 </ul>
 </li>
 </ul>
-<p>回顾前面学过的排序算法，我们发现<a href="../fds/7.html#mergesort"><strong>归并排序</strong></a><span class="heti-skip"><span class="heti-spacing"> </span>(mergesort)<span class="heti-spacing"> </span></span>是最适合作为外部排序的算法。为了简化后续的分析过程，我们假定：</p>
+<p>回顾前面学过的排序算法，我们发现<a href="../fds/7.html#mergesort"><strong>归并排序</strong></a><span>(mergesort)<span class="heti-spacing"> </span></span>是最适合作为外部排序的算法。为了简化后续的分析过程，我们假定：</p>
 <ul>
-<li>存储数据集的容器称为<strong>磁带</strong><span><span class="heti-spacing"> </span>(tape)</span>，里面的元素只能按顺序访问（这符合磁盘读写头的特性）</li>
+<li>存储数据集的容器称为<strong>磁带</strong>(tape)，里面的元素只能按顺序访问（这符合磁盘读写头的特性）</li>
 <li>至少需要使用<span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span>个磁带（<span>2<span class="heti-spacing"> </span></span>个子序列合并成<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>个更大的序列）</li>
-<li>在主存中排好序的一组数据块称为<strong><span><span class="heti-spacing"> </span>run</span></strong>（没有确切的中文表达，悲）</li>
-<li><strong>趟</strong><span><span class="heti-spacing"> </span>(pass)</span>：在归并排序中指的是对所有数据进行一趟遍历、排序、合并成更大的<span class="heti-skip"><span class="heti-spacing"> </span>run<span class="heti-spacing"> </span></span>的过程<blockquote>
+<li>在主存中排好序的一组数据块称为<strong>run</strong>（没有确切的中文表达，悲）</li>
+<li><strong>趟</strong>(pass)：在归并排序中指的是对所有数据进行一趟遍历、排序、合并成更大的<span class="heti-skip"><span class="heti-spacing"> </span>run<span class="heti-spacing"> </span></span>的过程<blockquote>
 <p>自认为还是描述的不够准确，感觉很难说清楚这个概念<span><span class="heti-spacing"> </span>...</span></p>
 </blockquote>
 </li>
@@ -765,13 +765,13 @@
 </div>
 </div>
 </details>
-<p><strong>结论</strong>：若要对<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(N\)</span><span class="heti-spacing"> </span></span>条记录进行外部排序，且主存最多对<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(M\)</span><span class="heti-spacing"> </span></span>条记录进行排序，那么需要的<strong>趟数</strong><span class="heti-skip"><span class="heti-spacing"> </span>(number of passes)<span class="heti-spacing"> </span></span>为<span><span class="heti-spacing"> </span><span class="arithmatex">\(1 + \lceil \log_2 \dfrac{N}{M}\rceil\)</span></span>。</p>
+<p><strong>结论</strong>：若要对<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(N\)</span><span class="heti-spacing"> </span></span>条记录进行外部排序，且主存最多对<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(M\)</span><span class="heti-spacing"> </span></span>条记录进行排序，那么需要的<strong>趟数</strong><span>(number of passes)<span class="heti-spacing"> </span></span>为<span><span class="heti-spacing"> </span><span class="arithmatex">\(1 + \lceil \log_2 \dfrac{N}{M}\rceil\)</span></span>。</p>
 <p>在设计外部排序的时候，我们会关心以下问题：</p>
 <ul>
 <li><strong>寻找</strong>时间——<span class="arithmatex">\(O(\text{number of passes})\)</span></li>
 <li><strong>读<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>写</strong>一个记录<strong>块</strong>（一组记录集）的时间</li>
 <li>对<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(M\)</span><span class="heti-spacing"> </span></span>条记录进行<strong>内部排序</strong>的时间</li>
-<li>从输入缓存（就是磁带）<strong>合并</strong><span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(N\)</span><span class="heti-spacing"> </span></span>条记录到输出缓存所需的时间</li>
+<li>从输入缓存（就是磁带）<strong>合并</strong><span><span class="arithmatex">\(N\)</span><span class="heti-spacing"> </span></span>条记录到输出缓存所需的时间</li>
 </ul>
 <p>要实现外部排序，需要解决以下问题：</p>
 <ul>
@@ -896,7 +896,7 @@
 </div>
 </div>
 </details>
-<p>这里给出一种更聪明的算法——<strong>多相合并</strong><span><span class="heti-spacing"> </span>(polymerge sort)</span>，它的改进之处在于：在起始步的时候，对原序列进行<strong>不均等的分割</strong>，形成大小不一的子序列。这样可以确保在每一趟结束后<heti-adjacent class="heti-adjacent-half">，</heti-adjacent>（除了最后阶段外）始终会有多个包含记录的子序列，因此无需额外高昂的拷贝操作。下面接着之前的例子来演示这一算法的执行过程：</p>
+<p>这里给出一种更聪明的算法——<strong>多相合并</strong>(polymerge sort)，它的改进之处在于：在起始步的时候，对原序列进行<strong>不均等的分割</strong>，形成大小不一的子序列。这样可以确保在每一趟结束后<heti-adjacent class="heti-adjacent-half">，</heti-adjacent>（除了最后阶段外）始终会有多个包含记录的子序列，因此无需额外高昂的拷贝操作。下面接着之前的例子来演示这一算法的执行过程：</p>
 <details class="example" open="open">
 <summary>例子</summary>
 <p>题目：与上例相同。下面直接展示每一趟的结果（并带有部分分析<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
@@ -954,7 +954,7 @@
 </details>
 <p>既然要不均匀地分割，那么怎么分才能达到上例呈现的效果呢？下面给出结论：</p>
 <ul>
-<li>对于两路归并排序，如果序列中<span class="heti-skip"><span class="heti-spacing"> </span>run<span class="heti-spacing"> </span></span>的数量是一个<strong>斐波那契数</strong><span><span class="heti-spacing"> </span><span class="arithmatex">\(F_N\)</span></span>，那么最好的分割情况是将它分成包含<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(F_{N-1}\)</span><span class="heti-spacing"> </span></span>个<span class="heti-skip"><span class="heti-spacing"> </span>run<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(F_{N-2}\)</span><span class="heti-spacing"> </span></span>个<span class="heti-skip"><span class="heti-spacing"> </span>run<span class="heti-spacing"> </span></span>的子序列。<ul>
+<li>对于两路归并排序，如果序列中<span class="heti-skip"><span class="heti-spacing"> </span>run<span class="heti-spacing"> </span></span>的数量是一个<strong>斐波那契数</strong><span class="arithmatex">\(F_N\)</span>，那么最好的分割情况是将它分成包含<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(F_{N-1}\)</span><span class="heti-spacing"> </span></span>个<span class="heti-skip"><span class="heti-spacing"> </span>run<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(F_{N-2}\)</span><span class="heti-spacing"> </span></span>个<span class="heti-skip"><span class="heti-spacing"> </span>run<span class="heti-spacing"> </span></span>的子序列。<ul>
 <li>如果初始<span class="heti-skip"><span class="heti-spacing"> </span>run<span class="heti-spacing"> </span></span>的数量不是一个斐波那契数的话也没有问题，只需找到离该数最接近的斐波那契数，然后按照这个斐波那契数的递推式将其分成两个子序列（注意其中一个子序列可能也不是斐波那契数）</li>
 </ul>
 </li>
@@ -965,7 +965,7 @@
 </li>
 </ul>
 <h3 id="replacement-selection">Replacement Selection<a class="headerlink" href="#replacement-selection" title="Permanent link">⚓︎</a></h3>
-<p>除了提升<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(k\)</span><span class="heti-spacing"> </span></span>值外，我们还可以尝试通过生成更长的<span class="heti-skip"><span class="heti-spacing"> </span>run<span class="heti-spacing"> </span></span>来减小趟数，这里我们用到一个称为<strong>置换选择</strong><span class="heti-skip"><span class="heti-spacing"> </span>(replacement selection)<span class="heti-spacing"> </span></span>的算法来实现这一目标。</p>
+<p>除了提升<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(k\)</span><span class="heti-spacing"> </span></span>值外，我们还可以尝试通过生成更长的<span class="heti-skip"><span class="heti-spacing"> </span>run<span class="heti-spacing"> </span></span>来减小趟数，这里我们用到一个称为<strong>置换选择</strong><span>(replacement selection)<span class="heti-spacing"> </span></span>的算法来实现这一目标。</p>
 <details class="example" open="open">
 <summary>例子</summary>
 <div class="tabbed-set tabbed-alternate" data-tabs="7:2"><input checked="checked" id="__tabbed_7_1" name="__tabbed_7" type="radio"/><input id="__tabbed_7_2" name="__tabbed_7" type="radio"/><div class="tabbed-labels"><label for="__tabbed_7_1">例<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span></label><label for="__tabbed_7_2">例<span><span class="heti-spacing"> </span>2</span></label></div>
@@ -1064,7 +1064,7 @@
 </details>
 <p>结论：</p>
 <ul>
-<li>用这种算法生成得到的<span class="heti-skip"><span class="heti-spacing"> </span>run<span class="heti-spacing"> </span></span>的<strong>平均长度</strong><span><span class="heti-spacing"> </span><span class="arithmatex">\(L_{\text{avg}} = 2M\)</span></span></li>
+<li>用这种算法生成得到的<span class="heti-skip"><span class="heti-spacing"> </span>run<span class="heti-spacing"> </span></span>的<strong>平均长度</strong><span class="arithmatex">\(L_{\text{avg}} = 2M\)</span></li>
 <li>当序列的数据处于接近排好序的状态时，这种算法的表现就很不错</li>
 </ul>
 <details class="code">
@@ -1310,14 +1310,14 @@
 <p>修改<strong>输出缓存</strong>：</p>
 <ul>
 <li>在上例中，我们看到，当输出缓存空间爆满时，排序就得暂时中止，这样有些浪费时间。</li>
-<li>为了让主存在清空输出缓存的同时还能继续对输入缓存的记录进行排序，我们可以<u>将输出缓存<strong>一分为二</strong>（不用增加额外的空间<heti-adjacent class="heti-adjacent-half">！</heti-adjacent><heti-adjacent class="heti-adjacent-half">）</heti-adjacent></u>。当其中一个输出缓存爆满，需要清空时，另一个闲置的输出缓存可以接替后续的排序任务，也就是两个输出缓存轮流保存排序结果，这样就可以确保排序的不间断进行了<span><span class="heti-spacing"> </span>~</span></li>
+<li>为了让主存在清空输出缓存的同时还能继续对输入缓存的记录进行排序，我们可以<u>将输出缓存<strong>一分为二</strong>（不用增加额外的空间<heti-adjacent class="heti-adjacent-half">！</heti-adjacent>）</u>。当其中一个输出缓存爆满，需要清空时，另一个闲置的输出缓存可以接替后续的排序任务，也就是两个输出缓存轮流保存排序结果，这样就可以确保排序的不间断进行了<span><span class="heti-spacing"> </span>~</span></li>
 </ul>
 </li>
 <li>
 <p>修改<strong>输入缓存</strong>：</p>
 <ul>
 <li>我们貌似还忽略了一个问题，输入缓存读取子序列的记录块也要时间，所以如果输入缓存的记录都排完后，那么就要到子序列读取新的记录块，这个过程也需要一定的时间，那么排序过程就又一次中断了。</li>
-<li>解决方案是借鉴输出缓存的做法，对于<span class="heti-skip"><span class="heti-spacing"> </span>k<span class="heti-spacing"> </span></span>路归并排序，我们<u>将输入缓存划分为<strong><span class="heti-skip"><span class="heti-spacing"> </span>2k<span class="heti-spacing"> </span></span></strong>个子空间（同样不用增加额外的空间<heti-adjacent class="heti-adjacent-half">！</heti-adjacent><heti-adjacent class="heti-adjacent-half">）</heti-adjacent></u>。其中的<span class="heti-skip"><span class="heti-spacing"> </span>k<span class="heti-spacing"> </span></span>个子空间用于容纳正在进行排序的记录，而另外<span class="heti-skip"><span class="heti-spacing"> </span>k<span class="heti-spacing"> </span></span>个子空间用于读取子序列的记录块，这样的话一半空间的记录排完后，可以紧接着对另一半的记录进行排序，不会被读取给耽搁了<span><span class="heti-spacing"> </span>~</span></li>
+<li>解决方案是借鉴输出缓存的做法，对于<span class="heti-skip"><span class="heti-spacing"> </span>k<span class="heti-spacing"> </span></span>路归并排序，我们<u>将输入缓存划分为<strong>2k</strong>个子空间（同样不用增加额外的空间<heti-adjacent class="heti-adjacent-half">！</heti-adjacent>）</u>。其中的<span class="heti-skip"><span class="heti-spacing"> </span>k<span class="heti-spacing"> </span></span>个子空间用于容纳正在进行排序的记录，而另外<span class="heti-skip"><span class="heti-spacing"> </span>k<span class="heti-spacing"> </span></span>个子空间用于读取子序列的记录块，这样的话一半空间的记录排完后，可以紧接着对另一半的记录进行排序，不会被读取给耽搁了<span><span class="heti-spacing"> </span>~</span></li>
 <li><span class="arithmatex">\(k \uparrow\  \Rightarrow \text{number of input buffers} \uparrow\ \Rightarrow \text{buffer size} \downarrow\ \Rightarrow \text{block size on disk} \downarrow\ \Rightarrow \text{seek time} \uparrow\)</span>（即<span class="heti-skip"><span class="heti-spacing"> </span>I/O<span class="heti-spacing"> </span></span>时间的增加<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，因此这种划分方法对于更大的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(k\)</span><span class="heti-spacing"> </span></span>而言效果可能不是特别好。为了取得最佳效果，我们需要综合磁盘参数和用于缓存的主存空间容量来选择合适的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(k\)</span><span class="heti-spacing"> </span></span>值。</li>
 </ul>
 </li>
@@ -1347,13 +1347,13 @@
 <span class="md-icon" title="最后更新">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"></path></svg>
 </span>
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime">2024年12月31日 21:13:50</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年3月21日 15:57:34">2025年3月21日 15:57:34</span>
 </span>
 <span class="md-source-file__fact">
 <span class="md-icon" title="创建日期">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"></path></svg>
 </span>
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime">2024年10月7日 21:20:16</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2024年10月7日 21:20:16">2024年10月7日 21:20:16</span>
 </span>
 </aside>
 <p style="font-size: 30px; font-weight: 600">评论区</p>
@@ -1479,7 +1479,7 @@
 <div class="md-dialog__inner md-typeset"></div>
 </div>
 <script id="__config" type="application/json">{"base": "../..", "features": ["content.action.edit", "content.action.view", "content.code.copy", "content.code.annotate", "header.autohide", "navigation.tabs", "navigation.top", "navigation.footer", "navigation.indexes", "navigation.tracking", "navigation.prune", "search.share"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
-<script src="../../assets/javascripts/bundle.f1b6f286.min.js"></script>
+<script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
 <script src="../../js/anchor.js"></script>
 <script src="../../js/katex.js"></script>
 <script src="../../js/toc.js"></script>

@@ -9,9 +9,9 @@
 <link href="1.html" rel="prev"/>
 <link href="3.html" rel="next"/>
 <link href="../../assets/favicon.png" rel="icon"/>
-<meta content="mkdocs-1.6.1, mkdocs-material-9.6.3" name="generator"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.6.9" name="generator"/>
 <title>Machine Learning - P2 - NoughtQ的笔记本</title>
-<link href="../../assets/stylesheets/main.d7758b05.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/main.4af4bdda.min.css" rel="stylesheet"/>
 <link href="../../assets/stylesheets/palette.06af60db.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=JetBrains+Mono,+LXGW+WenKai+Screen+GB+Screen:300,300i,400,400i,700,700i%7CJetBrains+Mono,+Consolas:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
@@ -794,7 +794,7 @@
 </div>
 <h2 id="more-insight-into-optimization">More Insight into Optimization<a class="headerlink" href="#more-insight-into-optimization" title="Permanent link">⚓︎</a></h2>
 <h3 id="backpropogation">Backpropogation<a class="headerlink" href="#backpropogation" title="Permanent link">⚓︎</a></h3>
-<p>在机器学习中，未知参数<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\theta = \{w_1, w_2, \dots, b_1, b_2, \dots\}\)</span><span class="heti-spacing"> </span></span>通常会包含很多项。在使用梯度下降法时，每次都要对里面的每一项求偏微分；而且如果训练多次的话，计算量就会变得相当地大，因而效率就很低了。为了提高计算的效率，我们引入了一种新的计算技巧：<strong>反向传播</strong><span><span class="heti-spacing"> </span>(backpropogation)</span>。</p>
+<p>在机器学习中，未知参数<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\theta = \{w_1, w_2, \dots, b_1, b_2, \dots\}\)</span><span class="heti-spacing"> </span></span>通常会包含很多项。在使用梯度下降法时，每次都要对里面的每一项求偏微分；而且如果训练多次的话，计算量就会变得相当地大，因而效率就很低了。为了提高计算的效率，我们引入了一种新的计算技巧：<strong>反向传播</strong>(backpropogation)。</p>
 <details class="info">
 <summary>数学基础：偏微分的链式法则</summary>
 <ul>
@@ -819,8 +819,8 @@
 </div>
 <p>现在计算就被分为两部分了，这两部分同时也是反向传播的组成部分：</p>
 <ul>
-<li><strong>前递</strong><span><span class="heti-spacing"> </span>(forward pass)</span>：对所有的参数，计算<span><span class="heti-spacing"> </span><span class="arithmatex">\(\dfrac{\partial z}{\partial w}\)</span></span></li>
-<li><strong>后递</strong><span><span class="heti-spacing"> </span>(backward pass)</span>：对所有的激活函数输入值<span><span class="heti-spacing"> </span><span class="arithmatex">\(z\)</span></span>，计算<span><span class="heti-spacing"> </span><span class="arithmatex">\(\dfrac{\partial C}{\partial z}\)</span></span></li>
+<li><strong>前递</strong>(forward pass)：对所有的参数，计算<span><span class="heti-spacing"> </span><span class="arithmatex">\(\dfrac{\partial z}{\partial w}\)</span></span></li>
+<li><strong>后递</strong>(backward pass)：对所有的激活函数输入值<span><span class="heti-spacing"> </span><span class="arithmatex">\(z\)</span></span>，计算<span><span class="heti-spacing"> </span><span class="arithmatex">\(\dfrac{\partial C}{\partial z}\)</span></span></li>
 </ul>
 <p>其中前递的计算相当简单：<span><span class="arithmatex">\(\dfrac{\partial z}{\partial w}\)</span><span class="heti-spacing"> </span></span>的值就是与权重相关联的输入数据，因此在训练的过程中，我们顺手就可以将这些值个计算出来。拿上图的例子来说，<span class="arithmatex">\(\dfrac{\partial z}{\partial w_1} = x_1, \dfrac{\partial z}{\partial w_2} = x_2\)</span>。</p>
 <details class="example">
@@ -882,23 +882,23 @@
 </div>
 </details>
 <h3 id="critical-points">Critical Points<a class="headerlink" href="#critical-points" title="Permanent link">⚓︎</a></h3>
-<p>在训练模型的时候，我们可能会遇到模型的损失无法进一步减小，也就是无法继续优化的情况。以梯度下降法为例，当<strong>梯度接近<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span></strong>的时候就会出现这种情况，如下图所示：</p>
+<p>在训练模型的时候，我们可能会遇到模型的损失无法进一步减小，也就是无法继续优化的情况。以梯度下降法为例，当<strong>梯度接近<span><span class="heti-spacing"> </span>0</span></strong>的时候就会出现这种情况，如下图所示：</p>
 <div style="text-align: center">
 <img src="images/lec2/52.png" width="60%/"/>
 </div>
-<p>当梯度为<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>时，除了前面介绍过的<strong>局部最小</strong><span class="heti-skip"><span class="heti-spacing"> </span>(local minima)<span class="heti-spacing"> </span></span>的情况，还有一种情况是位于<strong>鞍点</strong><span><span class="heti-spacing"> </span>(saddle point)</span>：在某些方向上它是局部最小值，但是在另外的方向上它是局部最大值，因而可以逃脱局部最小值的困境。从形状看像一个马鞍，因而得名。我们将这两种情况统称为<strong>关键点</strong><span><span class="heti-spacing"> </span>(critical point)</span>。</p>
+<p>当梯度为<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>时，除了前面介绍过的<strong>局部最小</strong><span>(local minima)<span class="heti-spacing"> </span></span>的情况，还有一种情况是位于<strong>鞍点</strong>(saddle point)：在某些方向上它是局部最小值，但是在另外的方向上它是局部最大值，因而可以逃脱局部最小值的困境。从形状看像一个马鞍，因而得名。我们将这两种情况统称为<strong>关键点</strong>(critical point)。</p>
 <div style="text-align: center">
 <img src="images/lec2/54.png" width="70%/"/>
 </div>
 <p>那么现在的问题是：已知梯度为<span><span class="heti-spacing"> </span>0</span>，我们该如何区分这属于哪一类关键点呢？这里就要用到一些微积分和线性代数的知识了。</p>
-<p>首先要利用<strong>泰勒级数</strong><span class="heti-skip"><span class="heti-spacing"> </span>(Taylor Series)<span class="heti-spacing"> </span></span>进行近似表示。假设某个参数下的损失为<span><span class="heti-spacing"> </span><span class="arithmatex">\(L(\bm{\theta})\)</span></span>，并且已知<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\bm{\theta}'\)</span><span class="heti-spacing"> </span></span>附近很小的一个范围内的有一个<span><span class="heti-spacing"> </span><span class="arithmatex">\(\bm{\theta}\)</span></span>，那么<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(L(\bm{\theta})\)</span><span class="heti-spacing"> </span></span>可以被表示为：</p>
+<p>首先要利用<strong>泰勒级数</strong><span>(Taylor Series)<span class="heti-spacing"> </span></span>进行近似表示。假设某个参数下的损失为<span><span class="heti-spacing"> </span><span class="arithmatex">\(L(\bm{\theta})\)</span></span>，并且已知<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\bm{\theta}'\)</span><span class="heti-spacing"> </span></span>附近很小的一个范围内的有一个<span><span class="heti-spacing"> </span><span class="arithmatex">\(\bm{\theta}\)</span></span>，那么<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(L(\bm{\theta})\)</span><span class="heti-spacing"> </span></span>可以被表示为：</p>
 <div class="arithmatex">\[
 L(\bm{\theta}) = L(\bm{\theta}') + (\bm{\theta} - \bm{\theta}')^T \bm{g} + \dfrac{1}{2} (\bm{\theta} - \bm{\theta}')^T H (\bm{\theta} - \bm{\theta}')
 \]</div>
 <p>其中：</p>
 <ul>
-<li><strong>梯度</strong><span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\bm{g} = \nabla L(\bm{\theta}')\)</span><span class="heti-spacing"> </span></span>是一个向量，向量内元素<span><span class="heti-spacing"> </span><span class="arithmatex">\(\bm{g}_i = \dfrac{\partial L(\bm{\theta}')}{\partial \bm{\theta}_i}\)</span></span></li>
-<li><a href="https://en.wikipedia.org/wiki/Hessian_matrix"><strong>黑塞矩阵</strong></a><span class="heti-skip"><span class="heti-spacing"> </span>(Hessian matrix) <span class="arithmatex">\(H\)</span><span class="heti-spacing"> </span></span>的元素为<span><span class="heti-spacing"> </span><span class="arithmatex">\(H_{ij} = \dfrac{\partial^2}{\partial \bm{\theta}_i \partial \bm{\theta}_j} L(\bm{\theta}')\)</span></span></li>
+<li><strong>梯度</strong> <span><span class="arithmatex">\(\bm{g} = \nabla L(\bm{\theta}')\)</span><span class="heti-spacing"> </span></span>是一个向量，向量内元素<span><span class="heti-spacing"> </span><span class="arithmatex">\(\bm{g}_i = \dfrac{\partial L(\bm{\theta}')}{\partial \bm{\theta}_i}\)</span></span></li>
+<li><a href="https://en.wikipedia.org/wiki/Hessian_matrix"><strong>黑塞矩阵</strong></a><span>(Hessian matrix) <span class="arithmatex">\(H\)</span><span class="heti-spacing"> </span></span>的元素为<span><span class="heti-spacing"> </span><span class="arithmatex">\(H_{ij} = \dfrac{\partial^2}{\partial \bm{\theta}_i \partial \bm{\theta}_j} L(\bm{\theta}')\)</span></span></li>
 </ul>
 <div style="text-align: center">
 <img src="images/lec2/55.png" width="40%/"/>
@@ -910,11 +910,11 @@ L(\bm{\theta}) = L(\bm{\theta}') + \dfrac{1}{2} (\bm{\theta} - \bm{\theta}')^T H
 <p>我们正是通过最后一项来判断关键点的类型。为了便于后续讲述，先令<span><span class="heti-spacing"> </span><span class="arithmatex">\(\bm{v}^T H \bm{v} = (\bm{\theta} - \bm{\theta}')^T H (\bm{\theta} - \bm{\theta}')\)</span></span>。对于所有的<span><span class="heti-spacing"> </span><span class="arithmatex">\(\bm{v}\)</span></span>，如果：</p>
 <ul>
 <li><span class="arithmatex">\(\bm{v}^T H \bm{v} &gt; 0\)</span>，那么对于在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\bm{\theta}'\)</span><span class="heti-spacing"> </span></span>附近的<span><span class="heti-spacing"> </span><span class="arithmatex">\(\bm{\theta}\)</span></span>，满足<span><span class="heti-spacing"> </span><span class="arithmatex">\(L(\bm{\theta}) &gt; L(\bm{\theta}')\)</span></span>，因此这是一个<strong>局部最小点</strong><ul>
-<li>等价表述：当<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(H\)</span><span class="heti-spacing"> </span></span>为<strong>正定</strong><span class="heti-skip"><span class="heti-spacing"> </span>(positive definite)<span class="heti-spacing"> </span></span>矩阵，即所有特征值<span class="heti-skip"><span class="heti-spacing"> </span>(eigen values)<span class="heti-spacing"> </span></span>均为正数时，表明到达了局部最小点</li>
+<li>等价表述：当<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(H\)</span><span class="heti-spacing"> </span></span>为<strong>正定</strong><span>(positive definite)<span class="heti-spacing"> </span></span>矩阵，即所有特征值<span class="heti-skip"><span class="heti-spacing"> </span>(eigen values)<span class="heti-spacing"> </span></span>均为正数时，表明到达了局部最小点</li>
 </ul>
 </li>
 <li><span class="arithmatex">\(\bm{v}^T H \bm{v} &lt; 0\)</span>，那么对于在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\bm{\theta}'\)</span><span class="heti-spacing"> </span></span>附近的<span><span class="heti-spacing"> </span><span class="arithmatex">\(\bm{\theta}\)</span></span>，满足<span><span class="heti-spacing"> </span><span class="arithmatex">\(L(\bm{\theta}) &lt; L(\bm{\theta}')\)</span></span>，因此这是一个<strong>局部最大点</strong><ul>
-<li>等价表述：当<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(H\)</span><span class="heti-spacing"> </span></span>为<strong>负定</strong><span class="heti-skip"><span class="heti-spacing"> </span>(negative definite)<span class="heti-spacing"> </span></span>矩阵，即所有特征值均为负数时，表明到达了局部最大点</li>
+<li>等价表述：当<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(H\)</span><span class="heti-spacing"> </span></span>为<strong>负定</strong><span>(negative definite)<span class="heti-spacing"> </span></span>矩阵，即所有特征值均为负数时，表明到达了局部最大点</li>
 </ul>
 </li>
 <li>有时<span><span class="heti-spacing"> </span><span class="arithmatex">\(\bm{v}^T H \bm{v} &gt; 0\)</span></span>，而有时<span><span class="heti-spacing"> </span><span class="arithmatex">\(\bm{v}^T H \bm{v} &lt; 0\)</span></span>，那么这是一个<strong>鞍点</strong><ul>
@@ -960,13 +960,13 @@ L(\bm{\theta}) = L(\bm{\theta}') + \dfrac{1}{2} (\bm{\theta} - \bm{\theta}')^T H
 <div style="text-align: center">
 <img src="images/lec2/61.png" width="80%/"/>
 </div>
-<p>其中横轴表示<strong>最小值比率</strong><span><span class="heti-spacing"> </span>(minimum ratio)</span>，即局部最小点在所有关键点中的占比，计算公式为：</p>
+<p>其中横轴表示<strong>最小值比率</strong>(minimum ratio)，即局部最小点在所有关键点中的占比，计算公式为：</p>
 <div class="arithmatex">\[
 \text{Minimum ratio} = \dfrac{\text{Number of Positive Eigen values}}{\text{Number of Eigen values}}
 \]</div>
 <p>可以看到，当我们通过不断的训练将损失降得尽可能低时，最小值比率维持在<span class="heti-skip"><span class="heti-spacing"> </span>0.5-0.6<span class="heti-spacing"> </span></span>之间，也就是说始终没法达到真正的局部最小值（最小值比率<span><span class="heti-spacing"> </span>= 1</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，因此局部最小点在具体实现中属于罕见的情况。</p>
 <h3 id="batches">Batches<a class="headerlink" href="#batches" title="Permanent link">⚓︎</a></h3>
-<p>前面提到过，对于参数量很大的模型，会使用分<strong>批</strong><span class="heti-skip"><span class="heti-spacing"> </span>(batch)<span class="heti-spacing"> </span></span>使用梯度下降法来更新参数，而不是一次性对所有参数求梯度。下面就通过对比更新小批量和大批量参数的效果，来说明为何需要分批更新。</p>
+<p>前面提到过，对于参数量很大的模型，会使用分<strong>批</strong><span>(batch)<span class="heti-spacing"> </span></span>使用梯度下降法来更新参数，而不是一次性对所有参数求梯度。下面就通过对比更新小批量和大批量参数的效果，来说明为何需要分批更新。</p>
 <p>假如模型有<span class="heti-skip"><span class="heti-spacing"> </span>N = 20<span class="heti-spacing"> </span></span>的参数，现提供两种（极端的）大小：大批的大小为<span><span class="heti-spacing"> </span>N</span>，小批的大小为<span><span class="heti-spacing"> </span>1</span>。下面通过误差曲面来分析两者的优化效果：</p>
 <div style="text-align: center">
 <img src="images/lec2/63.png" width="80%/"/>
@@ -1014,11 +1014,11 @@ L(\bm{\theta}) = L(\bm{\theta}') + \dfrac{1}{2} (\bm{\theta} - \bm{\theta}')^T H
 <p></p><div style="text-align: center">
 <img src="images/lec2/69.png" width="80%/"/>
 </div>
-<p>批量大小是一个<strong>超参数</strong><span><span class="heti-spacing"> </span>(hyperparameter)</span>，我们可以根据需要进行手工调整。</p>
+<p>批量大小是一个<strong>超参数</strong>(hyperparameter)，我们可以根据需要进行手工调整。</p>
 </div>
 <details>
 <summary>在线<span class="heti-skip"><span class="heti-spacing"> </span>vs<span class="heti-spacing"> </span></span>离线</summary>
-<p>我们可以将两种极端情况——一次只更新一笔数据（最小的批量<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，以及一次更新所有数据（最大的批量）分别对应两类算法：<strong>在线</strong><span class="heti-skip"><span class="heti-spacing"> </span>(off-line)<span class="heti-spacing"> </span></span>和<strong>离线</strong><span><span class="heti-spacing"> </span>(on-line)</span>，它们各自的用途为：</p>
+<p>我们可以将两种极端情况——一次只更新一笔数据（最小的批量<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，以及一次更新所有数据（最大的批量）分别对应两类算法：<strong>在线</strong><span>(off-line)<span class="heti-spacing"> </span></span>和<strong>离线</strong>(on-line)，它们各自的用途为：</p>
 <ul>
 <li>在线：当内存空间有限时，我们可以采用此法</li>
 <li>离线：当内存空间足够时，且需要更简单的训练过程时，采用此法</li>
@@ -1026,7 +1026,7 @@ L(\bm{\theta}) = L(\bm{\theta}') + \dfrac{1}{2} (\bm{\theta} - \bm{\theta}')^T H
 <p>在之后的讨论中，我们默认采用离线算法。</p>
 </details>
 <h3 id="momentum">Momentum<a class="headerlink" href="#momentum" title="Permanent link">⚓︎</a></h3>
-<p>在梯度下降法中，当梯度接近于<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>的时候，就会停在这些点上了。但是在物理世界中，即使某段路相当平坦（鞍点<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，甚至是一个小坑（局部最小点<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，由于物体具有惯性，因此还会继续移动，不会马上停下来。这给我们改进梯度下降法提供了一个不错的想法——引入<strong>动量</strong><span class="heti-skip"><span class="heti-spacing"> </span>(momentum)<span class="heti-spacing"> </span></span>的概念，让之前的移动过程影响当下的移动过程，有助于摆脱局部最小的困境。</p>
+<p>在梯度下降法中，当梯度接近于<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>的时候，就会停在这些点上了。但是在物理世界中，即使某段路相当平坦（鞍点<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，甚至是一个小坑（局部最小点<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，由于物体具有惯性，因此还会继续移动，不会马上停下来。这给我们改进梯度下降法提供了一个不错的想法——引入<strong>动量</strong><span>(momentum)<span class="heti-spacing"> </span></span>的概念，让之前的移动过程影响当下的移动过程，有助于摆脱局部最小的困境。</p>
 <details class="tip">
 <summary>对比</summary>
 <p></p><div style="text-align: center">
@@ -1065,7 +1065,7 @@ L(\bm{\theta}) = L(\bm{\theta}') + \dfrac{1}{2} (\bm{\theta} - \bm{\theta}')^T H
 </div>
 <div class="admonition note">
 <p class="admonition-title">注</p>
-<p>梯度下降法<span class="heti-skip"><span class="heti-spacing"> </span>+<span class="heti-spacing"> </span></span>动量的优化方法一般简称为<strong><span><span class="heti-spacing"> </span>SGDM</span></strong>。</p>
+<p>梯度下降法<span class="heti-skip"><span class="heti-spacing"> </span>+<span class="heti-spacing"> </span></span>动量的优化方法一般简称为 <strong>SGDM</strong>。</p>
 </div>
 <h3 id="adaptive-learning-rate">Adaptive Learning Rate<a class="headerlink" href="#adaptive-learning-rate" title="Permanent link">⚓︎</a></h3>
 <p>不少人会认为在训练过程中，如果模型无法得到进一步的优化（假定使用梯度下降法优化<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，那么应该是参数到达关键点附近的位置。然而，实际上并不一定是这种情况<span><span class="heti-spacing"> </span>...</span></p>
@@ -1105,11 +1105,11 @@ L(\bm{\theta}) = L(\bm{\theta}') + \dfrac{1}{2} (\bm{\theta} - \bm{\theta}')^T H
 <div class="arithmatex">\[
 \theta_i^{t+1} = \theta_i^t - \dfrac{\eta}{\sigma_i^t} \bm{g}_i^t
 \]</div>
-<p>其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\sigma_i^t\)</span><span class="heti-spacing"> </span></span>的值为前<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(t\)</span><span class="heti-spacing"> </span></span>次（<span class="arithmatex">\(0 \sim t - 1\)</span>）迭代的梯度的<strong>均方根</strong><span><span class="heti-spacing"> </span>(root mean square)</span>，即：</p>
+<p>其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\sigma_i^t\)</span><span class="heti-spacing"> </span></span>的值为前<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(t\)</span><span class="heti-spacing"> </span></span>次（<span class="arithmatex">\(0 \sim t - 1\)</span>）迭代的梯度的<strong>均方根</strong>(root mean square)，即：</p>
 <div class="arithmatex">\[
 \sigma_i^t = \sqrt{\dfrac{1}{t+1}\sum\limits_{i=0}^t (\bm{g}_i^t)^2}
 \]</div>
-<p>实际上，这种优化方法称为<strong><span><span class="heti-spacing"> </span>Adagrad</span></strong>。这样，对于不同的参数，便可以做到在梯度小的地方，迈的步子更大；在梯度大的地方，迈的步子更小。</p>
+<p>实际上，这种优化方法称为 <strong>Adagrad</strong>。这样，对于不同的参数，便可以做到在梯度小的地方，迈的步子更大；在梯度大的地方，迈的步子更小。</p>
 <div style="text-align: center">
 <img src="images/lec2/5.png" width="40%/"/>
 </div>
@@ -1130,7 +1130,7 @@ L(\bm{\theta}) = L(\bm{\theta}') + \dfrac{1}{2} (\bm{\theta} - \bm{\theta}')^T H
 </div>
 </div>
 </details>
-<p>所以，接下来引入一种更好的优化方法，称为<strong><span><span class="heti-spacing"> </span>RMSProp</span></strong>。它的迭代更新公式与<span class="heti-skip"><span class="heti-spacing"> </span>Adagrad<span class="heti-spacing"> </span></span>类似，区别在于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\sigma_i^t\)</span><span class="heti-spacing"> </span></span>的公式发生了变化：</p>
+<p>所以，接下来引入一种更好的优化方法，称为 <strong>RMSProp</strong>。它的迭代更新公式与<span class="heti-skip"><span class="heti-spacing"> </span>Adagrad<span class="heti-spacing"> </span></span>类似，区别在于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\sigma_i^t\)</span><span class="heti-spacing"> </span></span>的公式发生了变化：</p>
 <div class="arithmatex">\[
 \sigma_i^t = \sqrt{\alpha (\sigma_i^{t-1})^2 + (1 - \alpha)(\bm{g}_i^t)^2} 
 \]</div>
@@ -1139,7 +1139,7 @@ L(\bm{\theta}) = L(\bm{\theta}') + \dfrac{1}{2} (\bm{\theta} - \bm{\theta}')^T H
 <img src="images/lec2/7.png" width="70%/"/>
 </div>
 <h4 id="adam">Adam<a class="headerlink" href="#adam" title="Permanent link">⚓︎</a></h4>
-<p>将前面介绍过的动量方法与<span class="heti-skip"><span class="heti-spacing"> </span>RMSProp<span class="heti-spacing"> </span></span>结合起来，我们便可以得到一种很常用的优化方法，称为<strong><span><span class="heti-spacing"> </span>Adam</span></strong>，其算法实现如下所示：</p>
+<p>将前面介绍过的动量方法与<span class="heti-skip"><span class="heti-spacing"> </span>RMSProp<span class="heti-spacing"> </span></span>结合起来，我们便可以得到一种很常用的优化方法，称为 <strong>Adam</strong>，其算法实现如下所示：</p>
 <div style="text-align: center">
 <img src="images/lec2/8.png" width="90%/"/>
 </div>
@@ -1181,10 +1181,10 @@ L(\bm{\theta}) = L(\bm{\theta}') + \dfrac{1}{2} (\bm{\theta} - \bm{\theta}')^T H
 </div>
 <p>可以看到，使用这种方法可以使模型获得最优的参数，但是在优化过程中会出现红圈所示的一些“爆炸”的情况。这是因为刚开始的时候沿竖直方向的梯度很大，但后来梯度变得很小（来到了平坦的区域<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>；而<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\sigma_i^t\)</span><span class="heti-spacing"> </span></span>会计算之前迭代过程中计算的所有梯度值，所以在平坦区域时，<span><span class="arithmatex">\(\sigma_i^t\)</span><span class="heti-spacing"> </span></span>会累积一些沿竖直方向很小的梯度，那么有的时候学习速率就会变得很大，因此就会一下子“飞出去”，偏离预期更新的路径。</p>
 <p>但是该优化方法有办法修正这一偏离，因为当偏出去后，梯度就会变大，那么学习速率就会减小（好比有股“摩擦力”<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，于是就又慢慢回到正轨了。</p>
-<p>这样的优化并不完美，还有改进的空间，使其不会出现这么多的偏离现象，具体做法是使用一种叫做<strong>学习速率调度</strong><span class="heti-skip"><span class="heti-spacing"> </span>(learning rate scheduling)<span class="heti-spacing"> </span></span>的方法，让学习速率不仅随梯度（空间）变化，还随<strong>迭代次数</strong>（时间）的变化而变化（下面记第<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(t\)</span><span class="heti-spacing"> </span></span>次迭代的学习速率为<span><span class="heti-spacing"> </span><span class="arithmatex">\(\eta^t\)</span></span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。这里介绍两种不同的方法：</p>
+<p>这样的优化并不完美，还有改进的空间，使其不会出现这么多的偏离现象，具体做法是使用一种叫做<strong>学习速率调度</strong><span>(learning rate scheduling)<span class="heti-spacing"> </span></span>的方法，让学习速率不仅随梯度（空间）变化，还随<strong>迭代次数</strong>（时间）的变化而变化（下面记第<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(t\)</span><span class="heti-spacing"> </span></span>次迭代的学习速率为<span><span class="heti-spacing"> </span><span class="arithmatex">\(\eta^t\)</span></span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。这里介绍两种不同的方法：</p>
 <ul>
 <li>
-<p><strong>学习速率衰减</strong><span><span class="heti-spacing"> </span>(learning rate decay)</span>：由于随着训练的深入，模型逐渐靠近最合适的参数目标，因此学习速率会随迭代次数的增加而下降，如下图所示：</p>
+<p><strong>学习速率衰减</strong>(learning rate decay)：由于随着训练的深入，模型逐渐靠近最合适的参数目标，因此学习速率会随迭代次数的增加而下降，如下图所示：</p>
 <p></p><div style="text-align: center">
 <img src="images/lec2/10.png" width="30%/"/>
 </div>
@@ -1195,7 +1195,7 @@ L(\bm{\theta}) = L(\bm{\theta}') + \dfrac{1}{2} (\bm{\theta} - \bm{\theta}')^T H
 <p>现在的优化过程变得非常“丝滑”了<span><span class="heti-spacing"> </span>~</span></p>
 </li>
 <li>
-<p><strong>热身</strong><span><span class="heti-spacing"> </span>(warm up)</span>：随着迭代次数的增加，学习速率先增后减</p>
+<p><strong>热身</strong>(warm up)：随着迭代次数的增加，学习速率先增后减</p>
 <p></p><div style="text-align: center">
 <img src="images/lec2/12.png" width="30%/"/>
 </div>
@@ -1225,9 +1225,9 @@ L(\bm{\theta}) = L(\bm{\theta}') + \dfrac{1}{2} (\bm{\theta} - \bm{\theta}')^T H
 </ul>
 <p>遗憾的是，世界上没有一种通用的优化器，还需后人不断地探索出更棒的优化器！</p>
 <h2 id="classfication">Classfication<a class="headerlink" href="#classfication" title="Permanent link">⚓︎</a></h2>
-<p>前面介绍的机器学习研究的都是<strong>回归</strong><span class="heti-skip"><span class="heti-spacing"> </span>(regression)<span class="heti-spacing"> </span></span>问题，即模型根据输入数据集，输出单个标量<span><span class="heti-spacing"> </span><span class="arithmatex">\(y\)</span></span>，并于真实值（标签）<span><span class="arithmatex">\(\hat{y}\)</span><span class="heti-spacing"> </span></span>比较。现在我们来探讨<strong>分类</strong><span class="heti-skip"><span class="heti-spacing"> </span>(classification)<span class="heti-spacing"> </span></span>问题，它与回归的不同在于：模型会从多个选项（称为类别<span><span class="heti-spacing"> </span>(classes)</span>）中挑选一个作为输出。</p>
+<p>前面介绍的机器学习研究的都是<strong>回归</strong><span>(regression)<span class="heti-spacing"> </span></span>问题，即模型根据输入数据集，输出单个标量<span><span class="heti-spacing"> </span><span class="arithmatex">\(y\)</span></span>，并于真实值（标签）<span><span class="arithmatex">\(\hat{y}\)</span><span class="heti-spacing"> </span></span>比较。现在我们来探讨<strong>分类</strong><span>(classification)<span class="heti-spacing"> </span></span>问题，它与回归的不同在于：模型会从多个选项（称为类别<span><span class="heti-spacing"> </span>(classes)</span>）中挑选一个作为输出。</p>
 <p>那我们是否可以将分类问题转化为回归问题呢？因为输出的都是单个量，那么也许可以尝试用单个标量表示挑选出来的类别；并且规定每个选项都用一个数值表示，便于将输出<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(y\)</span><span class="heti-spacing"> </span></span>与标签<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\hat{y}\)</span><span class="heti-spacing"> </span></span>比较。然而，这样会带来一个明显的问题：类别之间的关系可不像数值之间的大小这么直接，也许类别之间的关系很复杂，也许压根没有关系，那么<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\hat{y} - y\)</span><span class="heti-spacing"> </span></span>也就无法准确表示输出类别与真实类别之间的关系，所以这不是一个好方法。</p>
-<p>实际上，我们采用<strong>独热向量</strong><span class="heti-skip"><span class="heti-spacing"> </span>(one-hot vector)<span class="heti-spacing"> </span></span>来表示每个类别。独热向量的特点是：向量里面的元素只有<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>和<span><span class="heti-spacing"> </span>1</span>，而且只有其中一位是<span><span class="heti-spacing"> </span>1</span>，其余位均为<span><span class="heti-spacing"> </span>0</span>。对于任意两个不同类别的独热向量，它们值为<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>的元素是不同的。这种方法的好处在于：任意不同两个类别之间的区别是一致的，因为它们对应的独热向量之间的距离是一样的，这样便于输出类别与真实类别的比较。</p>
+<p>实际上，我们采用<strong>独热向量</strong><span>(one-hot vector)<span class="heti-spacing"> </span></span>来表示每个类别。独热向量的特点是：向量里面的元素只有<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>和<span><span class="heti-spacing"> </span>1</span>，而且只有其中一位是<span><span class="heti-spacing"> </span>1</span>，其余位均为<span><span class="heti-spacing"> </span>0</span>。对于任意两个不同类别的独热向量，它们值为<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>的元素是不同的。这种方法的好处在于：任意不同两个类别之间的区别是一致的，因为它们对应的独热向量之间的距离是一样的，这样便于输出类别与真实类别的比较。</p>
 <div style="text-align: center">
 <img src="images/lec2/14.png" width="40%/"/>
 </div>
@@ -1243,7 +1243,7 @@ L(\bm{\theta}) = L(\bm{\theta}') + \dfrac{1}{2} (\bm{\theta} - \bm{\theta}')^T H
 <p>相比回归模型，分类模型有一些小变化：</p>
 <ul>
 <li>由于输出量从标量变为向量，因此对应地，权重从向量<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\bm{c}^T\)</span><span class="heti-spacing"> </span></span>变为矩阵<span><span class="heti-spacing"> </span><span class="arithmatex">\(W'\)</span></span>，偏移从标量<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(b\)</span><span class="heti-spacing"> </span></span>变成向量<span><span class="heti-spacing"> </span><span class="arithmatex">\(\bm{b}'\)</span></span></li>
-<li>最后，还要将模型的输出值放到<strong><span class="heti-skip"><span class="heti-spacing"> </span>softmax<span class="heti-spacing"> </span></span>函数</strong>做进一步的转化。这是因为通过模型得到的输出量可以是任意值，而我们要求的输出量中每个元素只能是<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>和<span><span class="heti-spacing"> </span>1</span>。而<span class="heti-skip"><span class="heti-spacing"> </span>softmax<span class="heti-spacing"> </span></span>就帮我们做了这步转化，它能将任何值映射到<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>或<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>上</li>
+<li>最后，还要将模型的输出值放到 <strong><span>softmax<span class="heti-spacing"> </span></span>函数</strong>做进一步的转化。这是因为通过模型得到的输出量可以是任意值，而我们要求的输出量中每个元素只能是<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>和<span><span class="heti-spacing"> </span>1</span>。而<span class="heti-skip"><span class="heti-spacing"> </span>softmax<span class="heti-spacing"> </span></span>就帮我们做了这步转化，它能将任何值映射到<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>或<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>上</li>
 </ul>
 <h3 id="softmax">Softmax<a class="headerlink" href="#softmax" title="Permanent link">⚓︎</a></h3>
 <p>下面大致介绍一下<span class="heti-skip"><span class="heti-spacing"> </span>softmax<span class="heti-spacing"> </span></span>函数的原理。假设原始的输出向量中包含<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(y_1, y_2, y_3\)</span><span class="heti-spacing"> </span></span>三个元素，它们在<span class="heti-skip"><span class="heti-spacing"> </span>softmax<span class="heti-spacing"> </span></span>函数的输出分别为<span><span class="heti-spacing"> </span><span class="arithmatex">\(y_1', y_2', y_3'\)</span></span>，那么<span class="heti-skip"><span class="heti-spacing"> </span>softmax<span class="heti-spacing"> </span></span>的计算公式为：</p>
@@ -1275,7 +1275,7 @@ y_i' = \dfrac{exp(y_i)}{\sum_j exp(y_i)}
 <ul>
 <li>损失<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(L\)</span><span class="heti-spacing"> </span></span>还是可以用误差的均值计算</li>
 <li>
-<p>误差<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(e\)</span><span class="heti-spacing"> </span></span>也可以继续沿用回归模型中的<span><span class="heti-spacing"> </span>MSE</span>，即<span><span class="heti-spacing"> </span><span class="arithmatex">\(e = \sum\limits_i (\hat{\bm{y}}_i - \bm{y}_i')^2\)</span></span>。然而，在分类模型中，更好的误差计算方法是<strong>交叉熵</strong><span><span class="heti-spacing"> </span>(cross-entropy)</span>，即<span><span class="heti-spacing"> </span><span class="arithmatex">\(e = -\sum\limits_i \hat{\bm{y}}_i \ln \bm{y}_i'\)</span></span>。虽然两者都能正确反映误差的大小，但是交叉熵更适用于分类模型的优化过程。下面通过一个例子来解释原因（严谨的数学推导过程见<a href="http://speech.ee.ntu.edu.tw/~tlkagk/courses/MLDS_2015_2/Lecture/Deep%20More%20(v2).ecm.mp4/index.html">过去的视频</a><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
+<p>误差<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(e\)</span><span class="heti-spacing"> </span></span>也可以继续沿用回归模型中的<span><span class="heti-spacing"> </span>MSE</span>，即<span><span class="heti-spacing"> </span><span class="arithmatex">\(e = \sum\limits_i (\hat{\bm{y}}_i - \bm{y}_i')^2\)</span></span>。然而，在分类模型中，更好的误差计算方法是<strong>交叉熵</strong>(cross-entropy)，即<span><span class="heti-spacing"> </span><span class="arithmatex">\(e = -\sum\limits_i \hat{\bm{y}}_i \ln \bm{y}_i'\)</span></span>。虽然两者都能正确反映误差的大小，但是交叉熵更适用于分类模型的优化过程。下面通过一个例子来解释原因（严谨的数学推导过程见<a href="http://speech.ee.ntu.edu.tw/~tlkagk/courses/MLDS_2015_2/Lecture/Deep%20More%20(v2).ecm.mp4/index.html">过去的视频</a><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
 <details class="example">
 <summary>例子</summary>
 <p>给定以下分类模型：</p>
@@ -1307,7 +1307,7 @@ y_i' = \dfrac{exp(y_i)}{\sum_j exp(y_i)}
 </ul>
 </div>
 <h3 id="example-pokémondigimon-classifier">Example: Pokémon/Digimon Classifier<a class="headerlink" href="#example-pokémondigimon-classifier" title="Permanent link">⚓︎</a></h3>
-<p>下面将以宝可梦<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>数码宝贝分类器为例，加深对机器学习原理的认识，同时也会学习到<strong>模型复杂度</strong><span class="heti-skip"><span class="heti-spacing"> </span>(model complexity)<span class="heti-spacing"> </span></span>对训练的影响。</p>
+<p>下面将以宝可梦<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>数码宝贝分类器为例，加深对机器学习原理的认识，同时也会学习到<strong>模型复杂度</strong><span>(model complexity)<span class="heti-spacing"> </span></span>对训练的影响。</p>
 <h4 id="function-with-unknown-parameters">Function with Unknown Parameters<a class="headerlink" href="#function-with-unknown-parameters" title="Permanent link">⚓︎</a></h4>
 <p>回顾一下训练的过程——第一步是<u>基于我们的领域知识，去找一个带有未知参数的函数</u>。这个函数大致长这样：</p>
 <div style="text-align: center">
@@ -1343,7 +1343,7 @@ L(h, D) = \dfrac{1}{N} \sum\limits_{n=1}^N l(h, x^n, \hat{y}^n)
 \]</div>
 <ul>
 <li>每个数据的损失（或者说误差）可以用一个简单的函数计算：<span class="arithmatex">\(I(f_h(x^n) \ne \hat{y}^n) = \begin{cases}1 &amp; \text{If } f_h(x^n) \ne \hat{y}^n \\ 0 &amp; \text{Otherwise}\end{cases}\)</span></li>
-<li>那么损失函数的取值范围为<span><span class="heti-spacing"> </span><span class="arithmatex">\([0, 1]\)</span></span>，因此这里的损失函数又称为<strong>错误率</strong><span><span class="heti-spacing"> </span>(error rate)</span></li>
+<li>那么损失函数的取值范围为<span><span class="heti-spacing"> </span><span class="arithmatex">\([0, 1]\)</span></span>，因此这里的损失函数又称为<strong>错误率</strong>(error rate)</li>
 <li>当然，由于这是一个分类问题，所以也可以用<strong>交叉熵</strong>来计算误差。但为了方便后续的解释，而且这是一个二项分类问题，所以后面还是按照这里定义的误差函数来分析</li>
 </ul>
 </li>
@@ -1493,19 +1493,19 @@ P(\textcolor{cornflowerblue}{D_{train}}\ is\ \bm{bad}\ due\ to\ \textcolor{green
 <div style="text-align: center">
 <img src="images/lec2/87.png" width="70%/"/>
 </div>
-<p>那么，是否存在一种“鱼和熊掌可以兼得”的方法呢？答案便是下一节介绍的<strong>深度学习</strong><span><span class="heti-spacing"> </span>(deep learning)</span>！</p>
+<p>那么，是否存在一种“鱼和熊掌可以兼得”的方法呢？答案便是下一节介绍的<strong>深度学习</strong>(deep learning)！</p>
 <aside class="md-source-file">
 <span class="md-source-file__fact">
 <span class="md-icon" title="最后更新">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"></path></svg>
 </span>
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime">2025年3月2日 21:04:42</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年3月21日 15:57:34">2025年3月21日 15:57:34</span>
 </span>
 <span class="md-source-file__fact">
 <span class="md-icon" title="创建日期">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"></path></svg>
 </span>
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime">2025年3月2日 21:04:42</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年3月2日 21:04:42">2025年3月2日 21:04:42</span>
 </span>
 </aside>
 <p style="font-size: 30px; font-weight: 600">评论区</p>
@@ -1631,7 +1631,7 @@ P(\textcolor{cornflowerblue}{D_{train}}\ is\ \bm{bad}\ due\ to\ \textcolor{green
 <div class="md-dialog__inner md-typeset"></div>
 </div>
 <script id="__config" type="application/json">{"base": "../..", "features": ["content.action.edit", "content.action.view", "content.code.copy", "content.code.annotate", "header.autohide", "navigation.tabs", "navigation.top", "navigation.footer", "navigation.indexes", "navigation.tracking", "navigation.prune", "search.share"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
-<script src="../../assets/javascripts/bundle.f1b6f286.min.js"></script>
+<script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
 <script src="../../js/anchor.js"></script>
 <script src="../../js/katex.js"></script>
 <script src="../../js/toc.js"></script>

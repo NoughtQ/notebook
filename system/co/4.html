@@ -9,9 +9,9 @@
 <link href="3.html" rel="prev"/>
 <link href="5.html" rel="next"/>
 <link href="../../assets/favicon.png" rel="icon"/>
-<meta content="mkdocs-1.6.1, mkdocs-material-9.6.3" name="generator"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.6.9" name="generator"/>
 <title>Chap 4: The Processor - NoughtQ的笔记本</title>
-<link href="../../assets/stylesheets/main.d7758b05.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/main.4af4bdda.min.css" rel="stylesheet"/>
 <link href="../../assets/stylesheets/palette.06af60db.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=JetBrains+Mono,+LXGW+WenKai+Screen+GB+Screen:300,300i,400,400i,700,700i%7CJetBrains+Mono,+Consolas:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
@@ -1033,18 +1033,18 @@
 <h2 id="single-cycle">Single-Cycle<a class="headerlink" href="#single-cycle" title="Permanent link">⚓︎</a></h2>
 <p>在第<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>章和第<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>章的学习中，我们已经知道：计算机的性能由以下因素衡量：</p>
 <ul>
-<li><strong>指令数</strong><span><span class="heti-spacing"> </span>(instruction count)</span>：取决于指令集架构<span class="heti-skip"><span class="heti-spacing"> </span>(ISA)<span class="heti-spacing"> </span></span>和编译器（<a href="2.html">第<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>章</a>已介绍）</li>
-<li><strong>时钟周期</strong><span class="heti-skip"><span class="heti-spacing"> </span>(clock cycle time)<span class="heti-spacing"> </span></span>和<strong>每条指令周期数<span><span class="heti-spacing"> </span>(CPI)</span></strong>：取决于<span><span class="heti-spacing"> </span>CPU</span>（第<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>章，也就是接下来要讲的内容）</li>
+<li><strong>指令数</strong>(instruction count)：取决于指令集架构<span class="heti-skip"><span class="heti-spacing"> </span>(ISA)<span class="heti-spacing"> </span></span>和编译器（<a href="2.html">第<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>章</a>已介绍）</li>
+<li><strong>时钟周期</strong><span>(clock cycle time)<span class="heti-spacing"> </span></span>和<strong>每条指令周期数<span><span class="heti-spacing"> </span>(CPI)</span></strong>：取决于<span><span class="heti-spacing"> </span>CPU</span>（第<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>章，也就是接下来要讲的内容）</li>
 </ul>
 <p><strong>单周期<span><span class="heti-spacing"> </span>(single-cycle)CPU</span></strong>：一个时钟周期内仅执行一条指令的<span><span class="heti-spacing"> </span>CPU</span>。</p>
-<p><span>CPU<span class="heti-spacing"> </span></span>主要由两部分构成——<strong>数据通路</strong><span class="heti-skip"><span class="heti-spacing"> </span>(datapath)<span class="heti-spacing"> </span></span>和<strong>控制单元</strong><span><span class="heti-spacing"> </span>(control unit)</span>，下面按顺序介绍这两者。</p>
+<p><span>CPU<span class="heti-spacing"> </span></span>主要由两部分构成——<strong>数据通路</strong><span>(datapath)<span class="heti-spacing"> </span></span>和<strong>控制单元</strong>(control unit)，下面按顺序介绍这两者。</p>
 <h3 id="datapath">Datapath<a class="headerlink" href="#datapath" title="Permanent link">⚓︎</a></h3>
 <h4 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">⚓︎</a></h4>
 <p><span>RISC-V<span class="heti-spacing"> </span></span>指令集架构下的最最简单的<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>应该要实现以下核心指令：</p>
 <ul>
-<li><strong>内存引用指令</strong><span><span class="heti-spacing"> </span>(memory-reference instructions)</span>：<code>ld</code>、<code>sd</code>...</li>
-<li><strong>算术逻辑指令</strong><span class="heti-skip"><span class="heti-spacing"> </span>(arithmetic-logical instructions)/R<span class="heti-spacing"> </span></span>型指令：<code>add</code>、<code>sub</code>、<code>and</code>、<code>or</code>...</li>
-<li><strong>条件分支指令</strong><span><span class="heti-spacing"> </span>(conditional branch instructions)</span>：<code>beq</code>...</li>
+<li><strong>内存引用指令</strong>(memory-reference instructions)：<code>ld</code>、<code>sd</code>...</li>
+<li><strong>算术逻辑指令</strong><span>(arithmetic-logical instructions)/R<span class="heti-spacing"> </span></span>型指令：<code>add</code>、<code>sub</code>、<code>and</code>、<code>or</code>...</li>
+<li><strong>条件分支指令</strong>(conditional branch instructions)：<code>beq</code>...</li>
 </ul>
 <blockquote>
 <p>注：实验课上还需要实现更多的指令，包括与立即数相关的<span class="heti-skip"><span class="heti-spacing"> </span>I<span class="heti-spacing"> </span></span>型指令，以及无条件分支指令</p>
@@ -1091,7 +1091,7 @@
 <li>中间：写回寄存器的数据也有两个来源：<span>ALU<span class="heti-spacing"> </span></span>的运算结果，或来自内存的值</li>
 <li>下面的<span><span class="heti-spacing"> </span>ALU</span>：第二个输入也有两个来源：寄存器或立即数</li>
 </ul>
-<p>显然，一个输入端不可能同时接受两个来源的数据，因此需要由一个<a href="../dld/3.html#multiplexer"><strong>多路选择器</strong></a><span><span class="heti-spacing"> </span>(multiplexor, MUX)</span>，根据来自控制单元的控制信号（从指令中获取）去选择其中一个来源。下图展示了添加控制单元后的原理图：</p>
+<p>显然，一个输入端不可能同时接受两个来源的数据，因此需要由一个<a href="../dld/3.html#multiplexer"><strong>多路选择器</strong></a>(multiplexor, MUX)，根据来自控制单元的控制信号（从指令中获取）去选择其中一个来源。下图展示了添加控制单元后的原理图：</p>
 <div style="text-align: center">
 <img src="images/C4/2.png" width="80%"/>
 </div>
@@ -1109,8 +1109,8 @@
 <ul>
 <li>如不做特殊说明，笔记中所涉及到的时序电路均属于<strong>上升沿触发</strong>的时序电路</li>
 <li>一些术语：<ul>
-<li><strong>有效</strong><span><span class="heti-spacing"> </span>(asserted)</span>：高电平</li>
-<li><strong>无效</strong><span><span class="heti-spacing"> </span>(deasserted)</span>：低电平</li>
+<li><strong>有效</strong>(asserted)：高电平</li>
+<li><strong>无效</strong>(deasserted)：低电平</li>
 <li>总线<span><span class="heti-spacing"> </span>(bus)</span></li>
 </ul>
 </li>
@@ -1141,7 +1141,7 @@
 </div>
 <ul>
 <li>
-<p><strong>寄存器堆</strong><span><span class="heti-spacing"> </span>(register file)</span>（左图<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：存储了所有的寄存器，通过指定具体的寄存器编号<span class="heti-skip"><span class="heti-spacing"> </span>(register numbers)<span class="heti-spacing"> </span></span>来控制对应寄存器的读写</p>
+<p><strong>寄存器堆</strong>(register file)（左图<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：存储了所有的寄存器，通过指定具体的寄存器编号<span class="heti-skip"><span class="heti-spacing"> </span>(register numbers)<span class="heti-spacing"> </span></span>来控制对应寄存器的读写</p>
 <ul>
 <li>寄存器编号为<span class="heti-skip"><span class="heti-spacing"> </span>5<span class="heti-spacing"> </span></span>位，因为一共只有<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(2^5 = 32\)</span><span class="heti-spacing"> </span></span>个寄存器</li>
 <li>多数指令需要两个可读的（源）寄存器（<code>rs1</code><heti-adjacent class="heti-adjacent-half">、</heti-adjacent><code>rs2</code>）和一个可写的（目标）寄存器（<code>rd</code>）</li>
@@ -1207,7 +1207,7 @@
 <li>这里标出了所有的控制信号（共<span class="heti-skip"><span class="heti-spacing"> </span>7<span class="heti-spacing"> </span></span>个，<span>11<span class="heti-spacing"> </span></span>位<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，但是没有画出控制单元，因为现在我们只关心数据通路的结构</li>
 </ul>
 <details class="note" open="open">
-<summary><img alt="🌟" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/1f31f.svg" title=":star2:"/>各类指令在数据通路中如何执行</summary>
+<summary><img alt="🌟" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f31f.svg" title=":star2:"/>各类指令在数据通路中如何执行</summary>
 <p>虽然<span class="heti-skip"><span class="heti-spacing"> </span>PPT<span class="heti-spacing"> </span></span>上画的有点丑，但还算比较清楚，值得一看。</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:5"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"/><input id="__tabbed_1_2" name="__tabbed_1" type="radio"/><input id="__tabbed_1_3" name="__tabbed_1" type="radio"/><input id="__tabbed_1_4" name="__tabbed_1" type="radio"/><input id="__tabbed_1_5" name="__tabbed_1" type="radio"/><div class="tabbed-labels"><label for="__tabbed_1_1"><span>R<span class="heti-spacing"> </span></span>型指令</label><label for="__tabbed_1_2"><span class="heti-skip"><span class="heti-spacing"> </span>I<span class="heti-spacing"> </span></span>型指令（<code>ld</code>）</label><label for="__tabbed_1_3"><span>S<span class="heti-spacing"> </span></span>型指令</label><label for="__tabbed_1_4"><span class="heti-skip"><span class="heti-spacing"> </span>SB<span class="heti-spacing"> </span></span>型指令</label><label for="__tabbed_1_5"><span class="heti-skip"><span class="heti-spacing"> </span>J<span class="heti-spacing"> </span></span>型指令</label></div>
 <div class="tabbed-content">
@@ -1341,7 +1341,7 @@
 <img src="images/C4/12.png" width="90%"/>
 </div>
 <blockquote>
-<p>正因为我们设计的指令格式相当规整（不同的指令也具备相似的格式<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，因此这有效降低了设计电路的成本，很好地体现了<span class="heti-skip"><span class="heti-spacing"> </span>"<span class="heti-spacing"> </span></span><strong><span class="heti-skip"><span class="heti-spacing"> </span>Simplicity favors regularity<span class="heti-spacing"> </span></span></strong><span class="heti-skip"><span class="heti-spacing"> </span>"<span class="heti-spacing"> </span></span>的理念。</p>
+<p>正因为我们设计的指令格式相当规整（不同的指令也具备相似的格式<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，因此这有效降低了设计电路的成本，很好地体现了<span><span class="heti-spacing"> </span>"</span><strong>Simplicity favors regularity</strong><span>"<span class="heti-spacing"> </span></span>的理念。</p>
 </blockquote>
 <p>下表展示了剩下的<span class="heti-skip"><span class="heti-spacing"> </span>6<span class="heti-spacing"> </span></span>个控制信号的作用：</p>
 <div style="text-align: center">
@@ -1415,7 +1415,7 @@
 </div>
 </div>
 <h4 id="conclusion">Conclusion<a class="headerlink" href="#conclusion" title="Permanent link">⚓︎</a></h4>
-<p>在设计控制单元时，我们并没有用主控制单元来直接控制所有需要控制的元件，而是采取用<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>控制（<code>ALUOp</code>）来控制<span><span class="heti-spacing"> </span>ALU</span>，再由主控制单元改变<code>ALUOp</code>的值的方法——这样的设计风格称为<strong>多级控制</strong><span><span class="heti-spacing"> </span>(multiple levels of control)</span>，它的优势在于：</p>
+<p>在设计控制单元时，我们并没有用主控制单元来直接控制所有需要控制的元件，而是采取用<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>控制（<code>ALUOp</code>）来控制<span><span class="heti-spacing"> </span>ALU</span>，再由主控制单元改变<code>ALUOp</code>的值的方法——这样的设计风格称为<strong>多级控制</strong>(multiple levels of control)，它的优势在于：</p>
 <ul>
 <li>减小主控制单元的规模<span class="heti-skip"><span class="heti-spacing"> </span>-&gt;<span class="heti-spacing"> </span></span>减少成本</li>
 <li>某个控制单元的故障并不会影响其他控制单元的运行<span class="heti-skip"><span class="heti-spacing"> </span>-&gt;<span class="heti-spacing"> </span></span>减小控制单元的时延<span class="heti-skip"><span class="heti-spacing"> </span>(latency) -&gt;<span class="heti-spacing"> </span></span>提高效率</li>
@@ -1426,11 +1426,11 @@
 <li>每个时钟周期内只能执行一条指令</li>
 <li>执行每条指令所需的时钟周期一样长，因而<u><span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>中的最长通路（耗时最久的指令）决定了时钟周期的长度</u></li>
 </ul>
-<p>因此单周期<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>的效率很低。改进方法便是下面即将介绍的<strong>流水线</strong><span class="heti-skip"><span class="heti-spacing"> </span>(pipelining)<span class="heti-spacing"> </span></span>的思想。</p>
+<p>因此单周期<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>的效率很低。改进方法便是下面即将介绍的<strong>流水线</strong><span>(pipelining)<span class="heti-spacing"> </span></span>的思想。</p>
 </div>
 <h2 id="pipelining">Pipelining<a class="headerlink" href="#pipelining" title="Permanent link">⚓︎</a></h2>
 <h3 id="overview_1">Overview<a class="headerlink" href="#overview_1" title="Permanent link">⚓︎</a></h3>
-<p><strong>流水线</strong><span class="heti-skip"><span class="heti-spacing"> </span>(pipeline)<span class="heti-spacing"> </span></span>是一种使多条指令能够被重叠（同时）执行的技术，类似工厂里的组装线。在正式介绍流水线<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>之前，不妨先看看下面的类比，对流水线的概念有一个大致的印象。</p>
+<p><strong>流水线</strong><span>(pipeline)<span class="heti-spacing"> </span></span>是一种使多条指令能够被重叠（同时）执行的技术，类似工厂里的组装线。在正式介绍流水线<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>之前，不妨先看看下面的类比，对流水线的概念有一个大致的印象。</p>
 <details class="example">
 <summary>类比（洗衣服）</summary>
 <p>假设要洗一堆脏衣服，我们将这件事分为四个步骤：用洗衣机洗、用烘干机烘干、折叠衣物、放入衣柜，并且为了方便后续解释，假定这四个步骤所花的时间是一样的。现在有四堆脏衣服要洗，如果一个时间段只完成一个步骤，那么整个过程如下所示（耗时：16<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
@@ -1443,23 +1443,23 @@
 </div>
 </details>
 <ul>
-<li>从上面的例子中可以看到，在单个周期内，我们可以并行执行多个任务。<u>因此，流水线虽然没有缩短单步所花的时间（即<strong>时延</strong><span><span class="heti-spacing"> </span>(latency)</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，但是它增加了每个周期内能够执行的任务（即增大了<strong>吞吐量</strong><span><span class="heti-spacing"> </span>(throughput)</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，从而缩短完成整个任务的总时间。</u></li>
+<li>从上面的例子中可以看到，在单个周期内，我们可以并行执行多个任务。<u>因此，流水线虽然没有缩短单步所花的时间（即<strong>时延</strong>(latency)<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，但是它增加了每个周期内能够执行的任务（即增大了<strong>吞吐量</strong>(throughput)<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，从而缩短完成整个任务的总时间。</u></li>
 <li>但并不是所有周期都是满负载的，不难发现开头和结尾部分的阶段仅执行部分任务。在任务数特别大的情况下可以忽视这一点。</li>
 </ul>
 <div class="admonition warning">
 <p class="admonition-title">注意</p>
-<p>流水线<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>的时钟周期<span class="heti-skip"><span class="heti-spacing"> </span>=<span class="heti-spacing"> </span></span>耗时最长的<strong>阶段</strong><span class="heti-skip"><span class="heti-spacing"> </span>(stage)<span class="heti-spacing"> </span></span>所花的时间</p>
+<p>流水线<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>的时钟周期<span class="heti-skip"><span class="heti-spacing"> </span>=<span class="heti-spacing"> </span></span>耗时最长的<strong>阶段</strong><span>(stage)<span class="heti-spacing"> </span></span>所花的时间</p>
 <ul>
 <li>因此对于<span class="heti-skip"><span class="heti-spacing"> </span>k<span class="heti-spacing"> </span></span>级流水线<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>而言，执行<span class="heti-skip"><span class="heti-spacing"> </span>n<span class="heti-spacing"> </span></span>条指令所需周期数为<span><span class="heti-spacing"> </span>n + k - 1</span></li>
 </ul>
 </div>
 <p>在<span class="heti-skip"><span class="heti-spacing"> </span>RISC-V<span class="heti-spacing"> </span></span>的流水线<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>中，单个<span class="heti-skip"><span class="heti-spacing"> </span>RISC-V<span class="heti-spacing"> </span></span>指令划分为<span class="heti-skip"><span class="heti-spacing"> </span>5<span class="heti-spacing"> </span></span>个阶段（前面已经提到过<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，包括：</p>
 <ul>
-<li><strong>IF（取指<heti-adjacent class="heti-adjacent-half">）</heti-adjacent></strong>：从内存中获取指令</li>
-<li><strong>ID（译码<heti-adjacent class="heti-adjacent-half">）</heti-adjacent></strong>：对指令进行译码，读取寄存器</li>
-<li><strong>EX（执行<heti-adjacent class="heti-adjacent-half">）</heti-adjacent></strong>：执行（算术<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>逻辑）运算或计算地址</li>
-<li><strong>MEM（访存<heti-adjacent class="heti-adjacent-half">）</heti-adjacent></strong>：从数据内存中访问操作数</li>
-<li><strong>WB（写回<heti-adjacent class="heti-adjacent-half">）</heti-adjacent></strong>：将结果写回寄存器中</li>
+<li><strong>IF（取指）</strong>：从内存中获取指令</li>
+<li><strong>ID（译码）</strong>：对指令进行译码，读取寄存器</li>
+<li><strong>EX（执行）</strong>：执行（算术<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>逻辑）运算或计算地址</li>
+<li><strong>MEM（访存）</strong>：从数据内存中访问操作数</li>
+<li><strong>WB（写回）</strong>：将结果写回寄存器中</li>
 </ul>
 <p>用图形符号表示这五个阶段：</p>
 <div style="text-align: center">
@@ -1551,7 +1551,7 @@
 <div style="text-align: center">
 <img src="images/C4/37.png" width="70%"/>
 </div>
-<p>这里要连续执行三个<code>ld</code>指令。可以看到对于每条指令，指令内存只用了一次（取指阶段<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，因为指令内存还要供后面的指令使用，但是指令剩余阶段的执行需要知道指令的内容，所以需要用寄存器来保存尚在执行的指令。这样的寄存器称为<strong>流水线寄存器</strong><span><span class="heti-spacing"> </span>(pipeline registers)</span>，它们位于各阶段之间的中间位置，用于保存指令执行各阶段产生的中间数据，供下一阶段使用。一共有<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>类这样的寄存器，分别称为<span><span class="heti-spacing"> </span>IF/ID, ID/EX, EX/MEM, MEM/WB</span>，如下图所示：</p>
+<p>这里要连续执行三个<code>ld</code>指令。可以看到对于每条指令，指令内存只用了一次（取指阶段<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，因为指令内存还要供后面的指令使用，但是指令剩余阶段的执行需要知道指令的内容，所以需要用寄存器来保存尚在执行的指令。这样的寄存器称为<strong>流水线寄存器</strong>(pipeline registers)，它们位于各阶段之间的中间位置，用于保存指令执行各阶段产生的中间数据，供下一阶段使用。一共有<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>类这样的寄存器，分别称为<span><span class="heti-spacing"> </span>IF/ID, ID/EX, EX/MEM, MEM/WB</span>，如下图所示：</p>
 <div style="text-align: center">
 <img src="images/C4/38.png" width="100%"/>
 </div>
@@ -1670,19 +1670,19 @@
 <img src="images/C4/54.png" width="100%"/>
 </div>
 <h3 id="pipeline-hazards">Pipeline Hazards<a class="headerlink" href="#pipeline-hazards" title="Permanent link">⚓︎</a></h3>
-<p>在流水线<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>的运行中，可能会遇到无法继续执行下条指令的情况，这称为<strong>流水线冒险</strong><span><span class="heti-spacing"> </span>(pipeline hazards)</span>。有以下几类不同的冒险类型：</p>
+<p>在流水线<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>的运行中，可能会遇到无法继续执行下条指令的情况，这称为<strong>流水线冒险</strong>(pipeline hazards)。有以下几类不同的冒险类型：</p>
 <ul>
-<li><strong>结构冒险</strong><span><span class="heti-spacing"> </span>(structural hazard)</span>：因硬件不支持某些指令的组合（比如在同一时段访问同一资源（寄存器<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>内存）的两条指令）而无法继续执行指令<ul>
+<li><strong>结构冒险</strong>(structural hazard)：因硬件不支持某些指令的组合（比如在同一时段访问同一资源（寄存器<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>内存）的两条指令）而无法继续执行指令<ul>
 <li>举例：多条加载<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>存储指令在同一个时钟周期对同一内存进行访问，可能产生数据竞争问题</li>
 <li>解决方法：需要在<span class="heti-skip"><span class="heti-spacing"> </span>IF<span class="heti-spacing"> </span></span>阶段停止执行后面的指令；且最好划分多个单独的内存块，以避免多条指令访问同一内存块的情况</li>
 </ul>
 </li>
 <li>
-<p><strong>数据冒险</strong><span><span class="heti-spacing"> </span>(data hazard)</span>：因指令尚未得到所需的数据而不得不停下来<span><span class="heti-spacing"> </span>(stall)</span>，直到获取数据后才能继续执行（出现这类冒险的频率较高）</p>
+<p><strong>数据冒险</strong>(data hazard)：因指令尚未得到所需的数据而不得不停下来<span><span class="heti-spacing"> </span>(stall)</span>，直到获取数据后才能继续执行（出现这类冒险的频率较高）</p>
 <ul>
 <li>原因：指令之间存在依赖关系，比如后面的指令依赖前面指令的计算结果等</li>
 <li>
-<p>解决方案：添加额外的硬件，称为<strong>前递</strong><span class="heti-skip"><span class="heti-spacing"> </span>(forwarding)<span class="heti-spacing"> </span></span>或<strong>旁路</strong><span><span class="heti-spacing"> </span>(bypassing)</span>（下图用蓝色连线表示<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，用于从内部资源中检索指令所缺失的数据</p>
+<p>解决方案：添加额外的硬件，称为<strong>前递</strong><span>(forwarding)<span class="heti-spacing"> </span></span>或<strong>旁路</strong>(bypassing)（下图用蓝色连线表示<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，用于从内部资源中检索指令所缺失的数据</p>
 <p></p><div style="text-align: center">
 <img src="images/C4/32.png" width="80%"/>
 </div>
@@ -1692,12 +1692,12 @@
 </ul>
 </li>
 <li>
-<p>上面的图给出的是两个<span class="heti-skip"><span class="heti-spacing"> </span>R<span class="heti-spacing"> </span></span>型指令的执行，只要加一个前递就能保证指令的连续执行。但是如果先执行加载指令，后执行依赖于该加载指令数据的指令，即使加了一个前递，<span>CPU<span class="heti-spacing"> </span></span>还是不得不暂停一个时钟周期，这种情况称为<strong>加载相关的数据冒险</strong><span><span class="heti-spacing"> </span>(load-use data hazard)</span>，如下图所示：</p>
+<p>上面的图给出的是两个<span class="heti-skip"><span class="heti-spacing"> </span>R<span class="heti-spacing"> </span></span>型指令的执行，只要加一个前递就能保证指令的连续执行。但是如果先执行加载指令，后执行依赖于该加载指令数据的指令，即使加了一个前递，<span>CPU<span class="heti-spacing"> </span></span>还是不得不暂停一个时钟周期，这种情况称为<strong>加载相关的数据冒险</strong>(load-use data hazard)，如下图所示：</p>
 <p></p><div style="text-align: center">
 <img src="images/C4/33.png" width="80%"/>
 </div>
 <ul>
-<li>这种暂停的操作则称为<strong>流水线停顿</strong><span><span class="heti-spacing"> </span>(pipeline stall)</span>（或者叫做<strong>冒泡</strong><span><span class="heti-spacing"> </span>(bubble)</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，上图中用蓝色的气泡图表示</li>
+<li>这种暂停的操作则称为<strong>流水线停顿</strong>(pipeline stall)（或者叫做<strong>冒泡</strong>(bubble)<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，上图中用蓝色的气泡图表示</li>
 <li>具体的实现可见<a href="#stalling">下面的小节</a></li>
 <li>虽然这种停顿能够解决此类数据冒险，但这么一停顿肯定会损失一些时间，所以如果可以的话，应尽量避免停顿。一种做法是：由硬件检测此类数据冒险是否发生，若发生的话由软件重新为指令序列排序，使其尽可能地减少停顿</li>
 </ul>
@@ -1736,7 +1736,7 @@
 </ul>
 </li>
 <li>
-<p><strong>控制冒险<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>分支冒险</strong><span><span class="heti-spacing"> </span>(control hazard/branch hazard)</span>：取到的指令并不是<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>所需要的，即指令地址的流向并不在<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>的预期内（<del>好奇怪的表述</del>）</p>
+<p><strong>控制冒险<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>分支冒险</strong>(control hazard/branch hazard)：取到的指令并不是<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>所需要的，即指令地址的流向并不在<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>的预期内（<del>好奇怪的表述</del>）</p>
 <ul>
 <li>举例：由于<code>beq</code>指令在<span class="heti-skip"><span class="heti-spacing"> </span>ID<span class="heti-spacing"> </span></span>阶段结束前不知道跳转地址是什么，因此在下个时钟周期不能执行下一条指令，需要等<code>beq</code>指令译码完成后再执行</li>
 <li>
@@ -1749,7 +1749,7 @@
 </div>
 </li>
 <li>
-<p><strong>分支预测</strong><span><span class="heti-spacing"> </span>(branch prediction)</span>：预先假设每次执行<code>beq</code>指令后，都会继续执行下一条指令（<code>PC + 4</code><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，而不是跳转到指定指令（这是一种<strong>静态预测</strong><span class="heti-skip"><span class="heti-spacing"> </span>(static prediction)<span class="heti-spacing"> </span></span>方法，称为<span><span class="heti-spacing"> </span>always not taken</span>）</p>
+<p><strong>分支预测</strong>(branch prediction)：预先假设每次执行<code>beq</code>指令后，都会继续执行下一条指令（<code>PC + 4</code><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，而不是跳转到指定指令（这是一种<strong>静态预测</strong><span>(static prediction)<span class="heti-spacing"> </span></span>方法，称为<span><span class="heti-spacing"> </span>always not taken</span>）</p>
 <ul>
 <li>如果预测正确，就无需停顿，可以连续地执行指令了（上图）</li>
 <li>而预测失败的话就要撤回那个错误的下条指令，这需要额外的一个时钟周期，其效果与停顿一样（下图）</li>
@@ -1759,7 +1759,7 @@
 <img src="images/C4/35.png" width="80%"/>
 </div>
 <ul>
-<li>还有一种优化的方法——<strong>动态预测</strong><span><span class="heti-spacing"> </span>(dynamic prediction)</span>，比如为每个分支指令分别保存历史记录，当下次执行分支指令时会根据上一次的执行情况选择是否跳转到指定地址，若预测失败则需要撤回该指令，并更新历史记录。这种方法考虑到了不同分支指令的执行情况，从而做出更明智的预测。</li>
+<li>还有一种优化的方法——<strong>动态预测</strong>(dynamic prediction)，比如为每个分支指令分别保存历史记录，当下次执行分支指令时会根据上一次的执行情况选择是否跳转到指定地址，若预测失败则需要撤回该指令，并更新历史记录。这种方法考虑到了不同分支指令的执行情况，从而做出更明智的预测。</li>
 </ul>
 </li>
 <li>
@@ -1771,7 +1771,7 @@
 </li>
 </ul>
 <h3 id="data-hazards">Data Hazards<a class="headerlink" href="#data-hazards" title="Permanent link">⚓︎</a></h3>
-<p>在<a href="#pipeline-hazards">前面</a>我们大致介绍过数据冒险的问题及其解决方案：<strong>前递</strong><span class="heti-skip"><span class="heti-spacing"> </span>(forward)<span class="heti-spacing"> </span></span>和<strong>停顿</strong><span><span class="heti-spacing"> </span>(stall)</span>，本节将会从逻辑设计的角度上来介绍如何具体实现这些方法。</p>
+<p>在<a href="#pipeline-hazards">前面</a>我们大致介绍过数据冒险的问题及其解决方案：<strong>前递</strong><span>(forward)<span class="heti-spacing"> </span></span>和<strong>停顿</strong>(stall)，本节将会从逻辑设计的角度上来介绍如何具体实现这些方法。</p>
 <h4 id="forwarding">Forwarding<a class="headerlink" href="#forwarding" title="Permanent link">⚓︎</a></h4>
 <p>给定以下指令段：</p>
 <div class="language-asm highlight"><pre><span></span><code><span id="__span-4-1"><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="nf">sub</span><span class="w"> </span><span class="no">x2</span><span class="p">,</span><span class="w"> </span><span class="no">x1</span><span class="p">,</span><span class="w"> </span><span class="no">x3</span>
@@ -1785,7 +1785,7 @@
 <img src="images/C4/55.png" width="80%"/>
 </div>
 <p>可以看到，左边两根蓝线的方向是不对的，我们不可能将未来得到的数据传给过去要用到该数据的指令，所以<code>and</code>和<code>or</code>指令得到的是之前的<code>x2</code>（其值为<span><span class="heti-spacing"> </span>10</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，而<code>add</code>和<code>sd</code>指令得到的<code>x2</code>才是更新过的（其值为<span><span class="heti-spacing"> </span>-20</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
-<p>为了解决这个问题，首先要做的是<strong>依赖检测</strong><span><span class="heti-spacing"> </span>(dependency detection)</span>：确定何时发生数据冒险问题。下面用符号化的语言归纳了两大类数据冒险的情况：</p>
+<p>为了解决这个问题，首先要做的是<strong>依赖检测</strong>(dependency detection)：确定何时发生数据冒险问题。下面用符号化的语言归纳了两大类数据冒险的情况：</p>
 <ul>
 <li>EX/MEM.RegisterRd = ID/EX.RegisterRs1(or ID/EX.RegisterRs2)</li>
 <li>MEM/WB.RegisterRd = ID/EX.RegisterRs1(or ID/EX.RegisterRs2)</li>
@@ -1838,12 +1838,12 @@
 <ul>
 <li>默认<code>ForwardA = 00</code><span><span class="heti-spacing"> </span>,</span> <code>ForwardB = 00</code></li>
 </ul>
-<p>理论部分分析完毕，接下来我们将前递的功能添加到流水线<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>中（用一个<strong>前递单元</strong><span class="heti-skip"><span class="heti-spacing"> </span>(forwarding unit)<span class="heti-spacing"> </span></span>来表示<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，如下所示：</p>
+<p>理论部分分析完毕，接下来我们将前递的功能添加到流水线<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>中（用一个<strong>前递单元</strong><span>(forwarding unit)<span class="heti-spacing"> </span></span>来表示<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，如下所示：</p>
 <div style="text-align: center">
 <img src="images/C4/59.png" width="100%"/>
 </div>
 <h4 id="stalling">Stalling<a class="headerlink" href="#stalling" title="Permanent link">⚓︎</a></h4>
-<p>虽然前递能够解决大多数情况下的数据冒险问题，但还是无法克服与加载指令相关的数据冒险问题。前面提到过此类问题的解决方法是<strong>停顿</strong><span class="heti-skip"><span class="heti-spacing"> </span>(stall)<span class="heti-spacing"> </span></span>一个时钟周期，那么何时需要停顿呢？所以需要在原来的<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>中再加入一个<strong>冒险检测单元</strong><span><span class="heti-spacing"> </span>(hazard detection unit)</span>，用于发现合适的停顿时机。与上面的分析类似，这里也给出相应的处理语句：</p>
+<p>虽然前递能够解决大多数情况下的数据冒险问题，但还是无法克服与加载指令相关的数据冒险问题。前面提到过此类问题的解决方法是<strong>停顿</strong><span>(stall)<span class="heti-spacing"> </span></span>一个时钟周期，那么何时需要停顿呢？所以需要在原来的<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>中再加入一个<strong>冒险检测单元</strong>(hazard detection unit)，用于发现合适的停顿时机。与上面的分析类似，这里也给出相应的处理语句：</p>
 <div class="language-cpp highlight"><pre><span></span><code><span id="__span-6-1"><a href="#__codelineno-6-1" id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ID</span><span class="o">/</span><span class="n">EX</span><span class="p">.</span><span class="n">MemRead</span><span class="w"> </span><span class="k">and</span><span class="w">        </span><span class="c1">// MemRead represents load instruction</span>
 </span><span id="__span-6-2"><a href="#__codelineno-6-2" id="__codelineno-6-2" name="__codelineno-6-2"></a><span class="w">    </span><span class="p">((</span><span class="n">ID</span><span class="o">/</span><span class="n">EX</span><span class="p">.</span><span class="n">RegisterRd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">IF</span><span class="o">/</span><span class="n">ID</span><span class="p">.</span><span class="n">RegisterRs1</span><span class="p">)</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="p">(</span><span class="n">ID</span><span class="o">/</span><span class="n">EX</span><span class="p">.</span><span class="n">RegisterRd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">IF</span><span class="o">/</span><span class="n">ID</span><span class="p">.</span><span class="n">RegisterRs2</span><span class="p">)))</span>
 </span><span id="__span-6-3"><a href="#__codelineno-6-3" id="__codelineno-6-3" name="__codelineno-6-3"></a><span class="w">    </span><span class="n">stall</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">pipeline</span><span class="w">       </span><span class="c1">// the load instruction is stalled in the ID stage</span>
@@ -1852,9 +1852,9 @@
 <ul>
 <li>停止<span><span class="heti-spacing"> </span>IF</span>：不能改变<span class="heti-skip"><span class="heti-spacing"> </span>PC<span class="heti-spacing"> </span></span>寄存器的值（读取重复的指令<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，所以要为<span class="heti-skip"><span class="heti-spacing"> </span>PC<span class="heti-spacing"> </span></span>寄存器添加写信号<span><span class="heti-spacing"> </span>PCWrite</span>。当<span class="heti-skip"><span class="heti-spacing"> </span>PCWrite = 0<span class="heti-spacing"> </span></span>时，就能做到停止<span class="heti-skip"><span class="heti-spacing"> </span>IF<span class="heti-spacing"> </span></span>了</li>
 <li>停止<span><span class="heti-spacing"> </span>ID</span>：不能改变<span class="heti-skip"><span class="heti-spacing"> </span>IF/ID<span class="heti-spacing"> </span></span>流水线寄存器的值（读取重复的值）所以要为该寄存器添加写信号<span><span class="heti-spacing"> </span>IF/IDWrite</span>。当<span class="heti-skip"><span class="heti-spacing"> </span>IF/IDWrite = 0<span class="heti-spacing"> </span></span>时，就能做到停止<span class="heti-skip"><span class="heti-spacing"> </span>ID<span class="heti-spacing"> </span></span>了</li>
-<li>停顿的那段时间，虽然<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>仍然在运行，但实际上没有改变任何状态，这种情况称为<strong>空操作</strong><span><span class="heti-spacing"> </span>(nops)</span>。为了保证所有元件状态不变，还需要<u>确保所有的控制信号均为<span><span class="heti-spacing"> </span>0</span></u><span class="heimu">（事实上，只有<span class="heti-skip"><span class="heti-spacing"> </span>RegWrite<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>MemWrite<span class="heti-spacing"> </span></span>一定要设为<span><span class="heti-spacing"> </span>0</span>，其他的控制信号是<span class="heti-skip"><span class="heti-spacing"> </span>don't care<span class="heti-spacing"> </span></span>的）</span></li>
+<li>停顿的那段时间，虽然<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>仍然在运行，但实际上没有改变任何状态，这种情况称为<strong>空操作</strong>(nops)。为了保证所有元件状态不变，还需要<u>确保所有的控制信号均为<span><span class="heti-spacing"> </span>0</span></u><span class="heimu">（事实上，只有<span class="heti-skip"><span class="heti-spacing"> </span>RegWrite<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>MemWrite<span class="heti-spacing"> </span></span>一定要设为<span><span class="heti-spacing"> </span>0</span>，其他的控制信号是<span class="heti-skip"><span class="heti-spacing"> </span>don't care<span class="heti-spacing"> </span></span>的）</span></li>
 </ul>
-<p>下面展示添加了<strong>冒险检测单元</strong><span class="heti-skip"><span class="heti-spacing"> </span>(hazard detection unit)<span class="heti-spacing"> </span></span>后的流水线<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>原理图，可以看到冒险检测单元的三个输出对应了上面的三个处理：</p>
+<p>下面展示添加了<strong>冒险检测单元</strong><span>(hazard detection unit)<span class="heti-spacing"> </span></span>后的流水线<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>原理图，可以看到冒险检测单元的三个输出对应了上面的三个处理：</p>
 <div style="text-align: center">
 <img src="images/C4/61.png" width="100%"/>
 </div>
@@ -1911,21 +1911,21 @@
 <li>所以实际上是经过一系列的调整改进后，<code>beq</code>才会在<span class="heti-skip"><span class="heti-spacing"> </span>ID<span class="heti-spacing"> </span></span>阶段知道要跳转的地方，之后会介绍如何实现这一改进</li>
 </ul>
 <h4 id="static-branch-prediction">Static Branch Prediction<a class="headerlink" href="#static-branch-prediction" title="Permanent link">⚓︎</a></h4>
-<p><a href="#pipeline-hazards">前面</a>提到过<strong>静态分支预测</strong><span class="heti-skip"><span class="heti-spacing"> </span>(static branch prediction)<span class="heti-spacing"> </span></span>中<span><span class="heti-spacing"> </span>"always not taken"</span>（不跳转）的大致原理。当然也有<span class="heti-skip"><span class="heti-spacing"> </span>"always taken"<span class="heti-spacing"> </span></span>的预测，虽然这种预测的表现更好（因为统计数据显示，多数条件分支指令会发生跳转<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，但是这类预测实现起来更加复杂，因此通常还是采用<span class="heti-skip"><span class="heti-spacing"> </span>"<span class="heti-spacing"> </span></span><strong><span class="heti-skip"><span class="heti-spacing"> </span>always not taken<span class="heti-spacing"> </span></span></strong><span class="heti-skip"><span class="heti-spacing"> </span>"<span class="heti-spacing"> </span></span>的预测。</p>
+<p><a href="#pipeline-hazards">前面</a>提到过<strong>静态分支预测</strong><span>(static branch prediction)<span class="heti-spacing"> </span></span>中<span><span class="heti-spacing"> </span>"always not taken"</span>（不跳转）的大致原理。当然也有<span class="heti-skip"><span class="heti-spacing"> </span>"always taken"<span class="heti-spacing"> </span></span>的预测，虽然这种预测的表现更好（因为统计数据显示，多数条件分支指令会发生跳转<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，但是这类预测实现起来更加复杂，因此通常还是采用<span><span class="heti-spacing"> </span>"</span><strong>always not taken</strong><span>"<span class="heti-spacing"> </span></span>的预测。</p>
 <blockquote>
 <p>如果不发生跳转的概率为<span><span class="heti-spacing"> </span>50%</span>，且抛弃指令的成本较低，则这种优化方法能减少解决控制冒险的一半成本。</p>
 </blockquote>
-<p>抛弃指令的具体做法为：除了将控制信号置<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>外，还要<strong>清除</strong><span class="heti-skip"><span class="heti-spacing"> </span>(flush)<span class="heti-spacing"> </span></span>前<span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span>个阶段的指令（此时分支指令进行到<span class="heti-skip"><span class="heti-spacing"> </span>MEM<span class="heti-spacing"> </span></span>阶段<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，然而这种做法使得跳转分支的成本过高。</p>
+<p>抛弃指令的具体做法为：除了将控制信号置<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>外，还要<strong>清除</strong><span>(flush)<span class="heti-spacing"> </span></span>前<span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span>个阶段的指令（此时分支指令进行到<span class="heti-skip"><span class="heti-spacing"> </span>MEM<span class="heti-spacing"> </span></span>阶段<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，然而这种做法使得跳转分支的成本过高。</p>
 <p>为了降低成本，就需要将条件分支的执行提到前面来，具体来说需要做到两件事：</p>
 <ul>
-<li><strong>提前计算分支跳转地址</strong><span><span class="heti-spacing"> </span>(easy)</span><ul>
+<li><strong>提前计算分支跳转地址</strong>(easy)<ul>
 <li>实际上，<span>PC<span class="heti-spacing"> </span></span>值和立即数字段已经存储在<span class="heti-skip"><span class="heti-spacing"> </span>IF/ID<span class="heti-spacing"> </span></span>寄存器内，所以只需要<u>将分支地址的计算移到<span class="heti-skip"><span class="heti-spacing"> </span>ID<span class="heti-spacing"> </span></span>阶段</u>即可，即在<span class="heti-skip"><span class="heti-spacing"> </span>ID<span class="heti-spacing"> </span></span>阶段添一个专门的分支加法器</li>
 <li>虽然这个加法器可能会在任何指令执行到<span class="heti-skip"><span class="heti-spacing"> </span>ID<span class="heti-spacing"> </span></span>阶段时会进行加法运算，但是只有在条件分支指令时会用到它的计算结果</li>
 </ul>
 </li>
-<li><strong>提前进行分支跳转决策</strong><span><span class="heti-spacing"> </span>(hard)</span><ul>
+<li><strong>提前进行分支跳转决策</strong>(hard)<ul>
 <li>要提前进行寄存器值的比较，需要额外的前递和冒险检测装置</li>
-<li>在<span class="heti-skip"><span class="heti-spacing"> </span>ID<span class="heti-spacing"> </span></span>阶段新增一个<strong>相等检验单元</strong><span><span class="heti-spacing"> </span>(equality test unit)</span>，用于比较两个寄存器的值，其判断结果会存在<span class="heti-skip"><span class="heti-spacing"> </span>ID/EX<span class="heti-spacing"> </span></span>寄存器中</li>
+<li>在<span class="heti-skip"><span class="heti-spacing"> </span>ID<span class="heti-spacing"> </span></span>阶段新增一个<strong>相等检验单元</strong>(equality test unit)，用于比较两个寄存器的值，其判断结果会存在<span class="heti-skip"><span class="heti-spacing"> </span>ID/EX<span class="heti-spacing"> </span></span>寄存器中</li>
 <li>在下一个周期上，冒险检测单元会获取<span class="heti-skip"><span class="heti-spacing"> </span>ID/EX<span class="heti-spacing"> </span></span>的值（实现前递<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，发现有一个<code>beq</code>指令，且需要跳转分支，因此会先清除当前时钟周期内<span class="heti-skip"><span class="heti-spacing"> </span>IF<span class="heti-spacing"> </span></span>阶段的指令，并取得跳转后的指令（只需清除一条指令即可，成本降低了不少）<ul>
 <li>通过<span class="heti-skip"><span class="heti-spacing"> </span>IF.Flush<span class="heti-spacing"> </span></span>控制信号实现清除</li>
 <li>此时的<span class="heti-skip"><span class="heti-spacing"> </span>ID<span class="heti-spacing"> </span></span>阶段执行空操作<span><span class="heti-spacing"> </span>(nop)</span></li>
@@ -1964,8 +1964,8 @@
 </div>
 </details>
 <h4 id="dynamic-branch-prediction">Dynamic Branch Prediction<a class="headerlink" href="#dynamic-branch-prediction" title="Permanent link">⚓︎</a></h4>
-<p>虽然上述的静态分支预测足以应付五级流水线的控制冒险问题，但是对于更高级数，或更高要求的处理器，这种预测的失败成本还是太大，于是引入了<strong>动态分支预测</strong><span><span class="heti-spacing"> </span>(dynamic branch prediction)</span>——在程序执行过程中，根据上一条条件分支指令的运行结果来预测分支是否跳转。</p>
-<p>实现动态分支预测需要借助<strong>分支预测缓存</strong><span><span class="heti-spacing"> </span>(branch prediction buffer)</span>（或<strong>分支历史表</strong><span><span class="heti-spacing"> </span>(branch history table)</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，它是一块由分支指令的低位地址来索引的很小的内存，包含<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>位或多位关于分支跳转的信息。</p>
+<p>虽然上述的静态分支预测足以应付五级流水线的控制冒险问题，但是对于更高级数，或更高要求的处理器，这种预测的失败成本还是太大，于是引入了<strong>动态分支预测</strong>(dynamic branch prediction)——在程序执行过程中，根据上一条条件分支指令的运行结果来预测分支是否跳转。</p>
+<p>实现动态分支预测需要借助<strong>分支预测缓存</strong>(branch prediction buffer)（或<strong>分支历史表</strong>(branch history table)<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，它是一块由分支指令的低位地址来索引的很小的内存，包含<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>位或多位关于分支跳转的信息。</p>
 <ul>
 <li>对于最简单的<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>位缓存，可以仅用<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>区别上次的分支指令是否发生跳转。如果预测失败，则需要翻转这个比特。然而缺陷是即使几乎所有的分支指令都发生跳转（比如循环语句：循环前未执行过跳转指令，循环的最后没发生跳转<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，这种方法还是会有两次错误预测（一次在开头，一次在结尾）</li>
 <li><span>2<span class="heti-spacing"> </span></span>位缓存能够提高预测精度，虽然它需要<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>次预测错误才会改变预测值，但是对于执行一连串跳转情况一致的指令时这种方法的优势更大，下面给出对应的有限状态机图：</li>
@@ -1986,7 +1986,7 @@
 <img src="images/C4/69.png" width="100%"/>
 </div>
 <h2 id="exceptions">Exceptions<a class="headerlink" href="#exceptions" title="Permanent link">⚓︎</a></h2>
-<p>控制是处理器设计中最难处理的部分，其中一项控制要完成的任务是实现<strong>异常</strong><span class="heti-skip"><span class="heti-spacing"> </span>(exception)<span class="heti-spacing"> </span></span>和<strong>中断</strong><span><span class="heti-spacing"> </span>(interrupt)</span>。这两个词往往会被混为一谈，均指除分支指令外改变指令流的意外事件；但在教材中这两者是有所区分的，下表展示它们的区别和各自对应的事件：</p>
+<p>控制是处理器设计中最难处理的部分，其中一项控制要完成的任务是实现<strong>异常</strong><span>(exception)<span class="heti-spacing"> </span></span>和<strong>中断</strong>(interrupt)。这两个词往往会被混为一谈，均指除分支指令外改变指令流的意外事件；但在教材中这两者是有所区分的，下表展示它们的区别和各自对应的事件：</p>
 <div style="text-align: center">
 <img src="images/C4/70.png" width="80%"/>
 </div>
@@ -1994,24 +1994,24 @@
 <li>异常一般是由程序或系统内部引起的，且是同步的</li>
 <li>中断一般是由外部设备引起的，且是异步的</li>
 </ul>
-<p>下面仅考虑<strong>未定义指令</strong><span class="heti-skip"><span class="heti-spacing"> </span>(undefined instruction)<span class="heti-spacing"> </span></span>和<strong>硬件故障</strong><span class="heti-skip"><span class="heti-spacing"> </span>(hardware malfunction)<span class="heti-spacing"> </span></span>这两种事件，其余事件的处理放在第<span class="heti-skip"><span class="heti-spacing"> </span>5<span class="heti-spacing"> </span></span>章讲解。这里给出了解决异常的步骤：</p>
+<p>下面仅考虑<strong>未定义指令</strong><span>(undefined instruction)<span class="heti-spacing"> </span></span>和<strong>硬件故障</strong><span>(hardware malfunction)<span class="heti-spacing"> </span></span>这两种事件，其余事件的处理放在第<span class="heti-skip"><span class="heti-spacing"> </span>5<span class="heti-spacing"> </span></span>章讲解。这里给出了解决异常的步骤：</p>
 <ul>
 <li>
 <p>保存发生异常的指令地址，并将控制权交给操作系统</p>
 <ul>
-<li>第一步用到了两个寄存器（这类寄存器称为<strong>控制和状态寄存器</strong><span><span class="heti-spacing"> </span>(CSR)</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：<ul>
-<li><strong><span>SEPC<span class="heti-spacing"> </span></span></strong><span>(supervisor exception program counter,<span class="heti-spacing"> </span></span>超级用户异常程序计数器<span><span class="heti-spacing"> </span>)</span>：一个用于保存受影响的指令地址的<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位寄存器</li>
-<li><strong><span>SCAUSE<span class="heti-spacing"> </span></span></strong><span>(supervisor exception cause register,<span class="heti-spacing"> </span></span>超级用户异常原因寄存器<span><span class="heti-spacing"> </span>)</span>：记录异常原因的<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位寄存器（尽管大多数位没有用到<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，这里假设用<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>位记录未定义指令事件，用<span class="heti-skip"><span class="heti-spacing"> </span>12<span class="heti-spacing"> </span></span>位表示硬件故障事件</li>
+<li>第一步用到了两个寄存器（这类寄存器称为<strong>控制和状态寄存器</strong>(CSR)<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：<ul>
+<li><strong>SEPC</strong><span>(supervisor exception program counter,<span class="heti-spacing"> </span></span>超级用户异常程序计数器<span><span class="heti-spacing"> </span>)</span>：一个用于保存受影响的指令地址的<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位寄存器</li>
+<li><strong>SCAUSE</strong><span>(supervisor exception cause register,<span class="heti-spacing"> </span></span>超级用户异常原因寄存器<span><span class="heti-spacing"> </span>)</span>：记录异常原因的<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位寄存器（尽管大多数位没有用到<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，这里假设用<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>位记录未定义指令事件，用<span class="heti-skip"><span class="heti-spacing"> </span>12<span class="heti-spacing"> </span></span>位表示硬件故障事件</li>
 </ul>
 </li>
-<li>第二步的实现：跳转到操作系统的<strong>处理程序</strong><span class="heti-skip"><span class="heti-spacing"> </span>(handler)<span class="heti-spacing"> </span></span>上，假设处理程序的地址为<span><span class="heti-spacing"> </span><span class="arithmatex">\(\mathtt{0000\ 0000\ 1C09\ 0000}_{\text{hex}}\)</span></span><ul>
+<li>第二步的实现：跳转到操作系统的<strong>处理程序</strong><span>(handler)<span class="heti-spacing"> </span></span>上，假设处理程序的地址为<span><span class="heti-spacing"> </span><span class="arithmatex">\(\mathtt{0000\ 0000\ 1C09\ 0000}_{\text{hex}}\)</span></span><ul>
 <li>不同的异常处理程序可能需要不同的权限</li>
 </ul>
 </li>
 </ul>
 </li>
 <li>
-<p><strong>中断向量</strong><span><span class="heti-spacing"> </span>(interrupt vectors)</span>：依据不同异常原因得到的处理程序的地址，该地址会被加到向量表基寄存器<span class="heti-skip"><span class="heti-spacing"> </span>(vector table base register)<span class="heti-spacing"> </span></span>上：</p>
+<p><strong>中断向量</strong>(interrupt vectors)：依据不同异常原因得到的处理程序的地址，该地址会被加到向量表基寄存器<span class="heti-skip"><span class="heti-spacing"> </span>(vector table base register)<span class="heti-spacing"> </span></span>上：</p>
 <p></p><div style="text-align: center">
 <img src="images/C4/71.png" width="80%"/>
 </div>
@@ -2063,7 +2063,7 @@
 <li>在第<span class="heti-skip"><span class="heti-spacing"> </span>7<span class="heti-spacing"> </span></span>个时钟周期中，<code>add</code>指令和之后的指令被清除（但<code>add</code>指令地址被保存<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，且与异常处理相关的第一条指令进入<span class="heti-skip"><span class="heti-spacing"> </span>IF<span class="heti-spacing"> </span></span>阶段</li>
 </ul>
 </details>
-<p>在单个时钟周期中，因为流水线可以执行多条指令，因此有可能发生<strong>多重异常</strong><span><span class="heti-spacing"> </span>(multiple exception)</span>。解决方法是：给这些异常排个优先级，决定先解决哪个异常。在<span class="heti-skip"><span class="heti-spacing"> </span>RISC-V<span class="heti-spacing"> </span></span>中，由硬件为异常排序，最早执行的指令先被处理。</p>
+<p>在单个时钟周期中，因为流水线可以执行多条指令，因此有可能发生<strong>多重异常</strong>(multiple exception)。解决方法是：给这些异常排个优先级，决定先解决哪个异常。在<span class="heti-skip"><span class="heti-spacing"> </span>RISC-V<span class="heti-spacing"> </span></span>中，由硬件为异常排序，最早执行的指令先被处理。</p>
 <hr/>
 <p>上面给出的是一种“精确”的异常处理，而“不精确”的异常处理方法是：</p>
 <ul>
@@ -2079,22 +2079,22 @@
 <blockquote>
 <p>注：这一知识点并不是计组的重点内容，在《计算机体系结构》课程中将会更详细地介绍这部分的知识。</p>
 </blockquote>
-<p><strong>流水线</strong>利用指令的并行处理来提升处理器的执行速度，这种并行方式被称为<strong>指令级并行</strong><span><span class="heti-spacing"> </span>(instruction-level parallelism)</span>。除了用流水线来实现指令级并行，本节将会介绍另一种方法——<strong>多发射</strong><span><span class="heti-spacing"> </span>(multiple issue)</span>，即通过复制多个处理器元件，实现在一个时钟周期内发射多条指令。</p>
+<p><strong>流水线</strong>利用指令的并行处理来提升处理器的执行速度，这种并行方式被称为<strong>指令级并行</strong>(instruction-level parallelism)。除了用流水线来实现指令级并行，本节将会介绍另一种方法——<strong>多发射</strong>(multiple issue)，即通过复制多个处理器元件，实现在一个时钟周期内发射多条指令。</p>
 <ul>
-<li>多发射使得处理器的<span class="heti-skip"><span class="heti-spacing"> </span>CPI<span class="heti-spacing"> </span></span>小于<span><span class="heti-spacing"> </span>1</span>，为了便于衡量多发射处理器的性能，我们引入<span class="heti-skip"><span class="heti-spacing"> </span>CPI<span class="heti-spacing"> </span></span>的倒数<strong><span class="heti-skip"><span class="heti-spacing"> </span>IPC<span class="heti-spacing"> </span></span></strong><span class="heti-skip"><span class="heti-spacing"> </span>(instructions per clock cycle)<span class="heti-spacing"> </span></span>作为衡量指标<ul>
+<li>多发射使得处理器的<span class="heti-skip"><span class="heti-spacing"> </span>CPI<span class="heti-spacing"> </span></span>小于<span><span class="heti-spacing"> </span>1</span>，为了便于衡量多发射处理器的性能，我们引入<span class="heti-skip"><span class="heti-spacing"> </span>CPI<span class="heti-spacing"> </span></span>的倒数<strong>IPC</strong><span>(instructions per clock cycle)<span class="heti-spacing"> </span></span>作为衡量指标<ul>
 <li>发射<span class="heti-skip"><span class="heti-spacing"> </span>n<span class="heti-spacing"> </span></span>条指令的处理器的<span class="heti-skip"><span class="heti-spacing"> </span>CPI<span class="heti-spacing"> </span></span>为<span><span class="heti-spacing"> </span>1/n</span>，或者说<span><span class="heti-spacing"> </span>IPC = n</span></li>
 </ul>
 </li>
 <li>多发射的局限：指令间的依赖问题，哪些指令可以并行处理</li>
-<li><strong>发射槽</strong><span><span class="heti-spacing"> </span>(issue slot)</span>：指令发射时所处的位置</li>
+<li><strong>发射槽</strong>(issue slot)：指令发射时所处的位置</li>
 <li>分类：<ul>
-<li><strong>静态多发射</strong><span><span class="heti-spacing"> </span>(static multiple issue)</span>：在执行前由<strong>编译器</strong>（软件）决定如何实现多发射，如何检测和避免各类冒险问题等</li>
-<li><strong>动态多发射</strong><span><span class="heti-spacing"> </span>(dynamic multiple issue)</span>：在执行过程中由<strong>处理器</strong>（硬件）决定如何实现多发射，通过一些高级工艺来处理各类冒险问题，而编译器负责对指令重新排序</li>
+<li><strong>静态多发射</strong>(static multiple issue)：在执行前由<strong>编译器</strong>（软件）决定如何实现多发射，如何检测和避免各类冒险问题等</li>
+<li><strong>动态多发射</strong>(dynamic multiple issue)：在执行过程中由<strong>处理器</strong>（硬件）决定如何实现多发射，通过一些高级工艺来处理各类冒险问题，而编译器负责对指令重新排序</li>
 </ul>
 </li>
 </ul>
 <hr/>
-<p><strong>猜测</strong><span><span class="heti-spacing"> </span>(speculation)</span>：编译器或处理器“猜测<span><span class="heti-spacing"> </span>(guess)</span>”指令的结果，以消除该指令和其他指令的依赖关系。</p>
+<p><strong>猜测</strong>(speculation)：编译器或处理器“猜测<span><span class="heti-spacing"> </span>(guess)</span>”指令的结果，以消除该指令和其他指令的依赖关系。</p>
 <p>举例：</p>
 <ul>
 <li>猜测分支指令的结果，使得分支指令后面的指令得以提前执行</li>
@@ -2123,7 +2123,7 @@
 <li>处理器：将异常放入缓存中，直到能够肯定导致这种异常出现的指令不再可猜测且即将完成，此时真正的异常将会出现，由处理程序应对这个异常</li>
 </ul>
 <h3 id="static-multiple-issue-processors">Static Multiple-Issue Processors<a class="headerlink" href="#static-multiple-issue-processors" title="Permanent link">⚓︎</a></h3>
-<p>在静态多发射处理器中，由<strong>编译器</strong>全权负责指令的打包和冒险的处理。我们可以将同时发射的这些指令看作一个包含多种操作的大型指令，这称为<strong>发射包</strong><span><span class="heti-spacing"> </span>(issue packet)</span>，或者称为<strong>超长指令字</strong><span><span class="heti-spacing"> </span>(very long instruction word, VLIW)</span>。</p>
+<p>在静态多发射处理器中，由<strong>编译器</strong>全权负责指令的打包和冒险的处理。我们可以将同时发射的这些指令看作一个包含多种操作的大型指令，这称为<strong>发射包</strong>(issue packet)，或者称为<strong>超长指令字</strong>(very long instruction word, VLIW)。</p>
 <p>编译器必须移除部分或全部的冒险问题，具体做法为：</p>
 <ul>
 <li>将指令重新排序后再打包</li>
@@ -2144,7 +2144,7 @@
 <div style="text-align: center">
 <img src="images/C4/76.png" width="90%"/>
 </div>
-<p>双发射处理器的问题：如果发射包内的其中一条指令是加载指令，由于加载指令存在<strong>使用时延</strong><span><span class="heti-spacing"> </span>(use latency)</span>，所以如果有指令用到加载得到的数据，则需要停顿一个时钟周期，这样的话会拖累与加载指令配对的另一条指令，因为本来无需等待的这条指令现在被迫停下来。</p>
+<p>双发射处理器的问题：如果发射包内的其中一条指令是加载指令，由于加载指令存在<strong>使用时延</strong>(use latency)，所以如果有指令用到加载得到的数据，则需要停顿一个时钟周期，这样的话会拖累与加载指令配对的另一条指令，因为本来无需等待的这条指令现在被迫停下来。</p>
 <details class="example">
 <summary>例子</summary>
 <p>用静态双发射处理器执行下面的循环：</p>
@@ -2168,7 +2168,7 @@
 <li>此时的<span><span class="heti-spacing"> </span>CPI = 4 / 5 = 0.8</span>，低于理论上的<span><span class="heti-spacing"> </span>0.5</span>，所以效率不是很高</li>
 </ul>
 </details>
-<p>一种提高执行循环的效率编译器的技术是<strong>循环展开</strong><span><span class="heti-spacing"> </span>(loop unrolling)</span>：复制多份不同迭代下的循环体指令。</p>
+<p>一种提高执行循环的效率编译器的技术是<strong>循环展开</strong>(loop unrolling)：复制多份不同迭代下的循环体指令。</p>
 <details class="example">
 <summary>对上个例子的改进</summary>
 <p>对于前面给出的循环代码，我们可以先复制<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>份循环体的指令，然后重新安排这些指令，并去除没用的指令，这样下来我们保留了<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>份<code>ld</code>、<code>add</code>和<code>sd</code>指令，而仅保留<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>份的<code>addi</code>和<code>blt</code>指令。下图展示了新的指令执行安排：</p>
@@ -2177,7 +2177,7 @@
 </div>
 <ul>
 <li>
-<p>在展开过程中，我们还用到了别的寄存器（<code>x28</code>、<code>x29</code><heti-adjacent class="heti-adjacent-half">、</heti-adjacent><code>x30</code><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，这种做法叫作<strong>寄存器重命名</strong><span><span class="heti-spacing"> </span>(register renaming)</span>，用于消除<strong>反依赖</strong><span><span class="heti-spacing"> </span>(antidependence)</span>，同时保留了真正的依赖关系</p>
+<p>在展开过程中，我们还用到了别的寄存器（<code>x28</code>、<code>x29</code><heti-adjacent class="heti-adjacent-half">、</heti-adjacent><code>x30</code><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，这种做法叫作<strong>寄存器重命名</strong>(register renaming)，用于消除<strong>反依赖</strong>(antidependence)，同时保留了真正的依赖关系</p>
 </li>
 <li>
 <p>反依赖，又称名义依赖<span><span class="heti-spacing"> </span>(name dependence)</span>，指的是由于名称复用而导致的排序（比如<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>个循环中都用到了<code>x31</code><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，并不是真正意义上的依赖关系（即多个<code>x31</code>只是“障眼法”，只要用别的寄存器代替它，就能消除这种表面上的依赖关系了）</p>
@@ -2190,13 +2190,13 @@
 </ul>
 </details>
 <h3 id="dynamic-multiple-issue-processors">Dynamic Multiple-Issue Processors<a class="headerlink" href="#dynamic-multiple-issue-processors" title="Permanent link">⚓︎</a></h3>
-<p><strong>动态多发射处理器</strong>又称<strong>超标量</strong><span class="heti-skip"><span class="heti-spacing"> </span>(superscalar)<span class="heti-spacing"> </span></span>处理器，</p>
+<p><strong>动态多发射处理器</strong>又称<strong>超标量</strong><span>(superscalar)<span class="heti-spacing"> </span></span>处理器，</p>
 <ul>
 <li>由处理器来决定一个时钟周期内发生多少条指令，这样可以避免结构和数据冒险问题</li>
 <li>虽然编译器仍然会参与动态多发射的过程，但不同于静态多发射处理器的地方在于：由处理器保证代码的正确执行，无论代码是否被刻意安排过</li>
 <li>编译的代码总是能够正确运行，与发射速率和流水线结构无关</li>
 </ul>
-<p>很多动态多发射处理器都会用到<strong>动态流水线调度</strong><span><span class="heti-spacing"> </span>(dynamic pipeline scheduling)</span>：由处理器选择要执行的指令，以尝试避免冒险和停顿的出现。因为这样会导致指令的执行顺序和获取顺序不同，因而称这种执行方式为<strong>无序执行</strong><span><span class="heti-spacing"> </span>(out-of-order execution)</span>。</p>
+<p>很多动态多发射处理器都会用到<strong>动态流水线调度</strong>(dynamic pipeline scheduling)：由处理器选择要执行的指令，以尝试避免冒险和停顿的出现。因为这样会导致指令的执行顺序和获取顺序不同，因而称这种执行方式为<strong>无序执行</strong>(out-of-order execution)。</p>
 <details class="example">
 <summary>例子</summary>
 <div class="language-asm highlight"><pre><span></span><code><span id="__span-12-1"><a href="#__codelineno-12-1" id="__codelineno-12-1" name="__codelineno-12-1"></a><span class="nf">ld</span><span class="w">   </span><span class="no">x31</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">(</span><span class="no">x21</span><span class="p">)</span>
@@ -2212,10 +2212,10 @@
 </div>
 <p>这种流水线也能够实现寄存器重命名的效果，具体流程为（<del>直接翻译教材</del><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
 <ul>
-<li>当一条指令发射时，该指令会被复制到某个<strong>功能单元</strong><span class="heti-skip"><span class="heti-spacing"> </span>(functional unit)<span class="heti-spacing"> </span></span>的<strong>保留区</strong><span><span class="heti-spacing"> </span>(reservation station)</span>（一块保留操作数或操作的缓存）中。在寄存器堆或<strong>重排缓存</strong><span><span class="heti-spacing"> </span>(reorder buffer)</span>（一块保留动态调度处理器结果的缓存，直到能够安全地将结果存储到寄存器或内存为止）内的任何空闲操作数也都会被复制到保留区中。指令将会一直存在保留区中，直到所有的操作数和功能单元处于空闲状态。对于正在发射的指令，操作数的寄存器拷贝不再需要，其值可被覆写。</li>
+<li>当一条指令发射时，该指令会被复制到某个<strong>功能单元</strong><span>(functional unit)<span class="heti-spacing"> </span></span>的<strong>保留区</strong>(reservation station)（一块保留操作数或操作的缓存）中。在寄存器堆或<strong>重排缓存</strong>(reorder buffer)（一块保留动态调度处理器结果的缓存，直到能够安全地将结果存储到寄存器或内存为止）内的任何空闲操作数也都会被复制到保留区中。指令将会一直存在保留区中，直到所有的操作数和功能单元处于空闲状态。对于正在发射的指令，操作数的寄存器拷贝不再需要，其值可被覆写。</li>
 <li>如果操作数不在寄存器堆或重排缓存中，那一定是在等待功能单元生成这个操作数，该功能单元的名字将会被追踪。当该单元生成结果后，该结果的拷贝会绕过寄存器，被直接放入保留区中。</li>
 </ul>
-<p>虽然前面说动态调度是一种无序执行，但是为了让程序看起来像是按顺序执行指令的，因此需要保证<span class="heti-skip"><span class="heti-spacing"> </span>IF<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>ID<span class="heti-spacing"> </span></span>阶段按顺序执行，并记录顺序，以便让<strong>提交单元</strong><span><span class="heti-spacing"> </span>(commit unit)</span>（决定是否能够安全释放运算的结果给寄存器或内存的装置）将结果按顺序写给寄存器或内存。这种提交方式称为<strong>有序提交</strong><span><span class="heti-spacing"> </span>(in-order commit)</span>。</p>
+<p>虽然前面说动态调度是一种无序执行，但是为了让程序看起来像是按顺序执行指令的，因此需要保证<span class="heti-skip"><span class="heti-spacing"> </span>IF<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>ID<span class="heti-spacing"> </span></span>阶段按顺序执行，并记录顺序，以便让<strong>提交单元</strong>(commit unit)（决定是否能够安全释放运算的结果给寄存器或内存的装置）将结果按顺序写给寄存器或内存。这种提交方式称为<strong>有序提交</strong>(in-order commit)。</p>
 <p>所以在动态调度流水线中，流水线的首尾两端是有序执行指令的，但中间部分是可以按照任意顺序执行指令的。</p>
 <p>关于猜测：</p>
 <ul>
@@ -2289,13 +2289,13 @@
 <span class="md-icon" title="最后更新">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"></path></svg>
 </span>
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime">2025年1月23日 15:16:49</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年3月21日 15:57:34">2025年3月21日 15:57:34</span>
 </span>
 <span class="md-source-file__fact">
 <span class="md-icon" title="创建日期">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"></path></svg>
 </span>
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime">2024年10月7日 21:20:16</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2024年10月7日 21:20:16">2024年10月7日 21:20:16</span>
 </span>
 </aside>
 <p style="font-size: 30px; font-weight: 600">评论区</p>
@@ -2421,7 +2421,7 @@
 <div class="md-dialog__inner md-typeset"></div>
 </div>
 <script id="__config" type="application/json">{"base": "../..", "features": ["content.action.edit", "content.action.view", "content.code.copy", "content.code.annotate", "header.autohide", "navigation.tabs", "navigation.top", "navigation.footer", "navigation.indexes", "navigation.tracking", "navigation.prune", "search.share"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
-<script src="../../assets/javascripts/bundle.f1b6f286.min.js"></script>
+<script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
 <script src="../../js/anchor.js"></script>
 <script src="../../js/katex.js"></script>
 <script src="../../js/toc.js"></script>

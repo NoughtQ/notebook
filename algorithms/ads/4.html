@@ -9,9 +9,9 @@
 <link href="3.html" rel="prev"/>
 <link href="5.html" rel="next"/>
 <link href="../../assets/favicon.png" rel="icon"/>
-<meta content="mkdocs-1.6.1, mkdocs-material-9.6.3" name="generator"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.6.9" name="generator"/>
 <title>Lec 4: Leftist Heaps and Skew Heaps - NoughtQ的笔记本</title>
-<link href="../../assets/stylesheets/main.d7758b05.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/main.4af4bdda.min.css" rel="stylesheet"/>
 <link href="../../assets/stylesheets/palette.06af60db.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=JetBrains+Mono,+LXGW+WenKai+Screen+GB+Screen:300,300i,400,400i,700,700i%7CJetBrains+Mono,+Consolas:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
@@ -716,8 +716,8 @@
 <h3 id="definition">Definition<a class="headerlink" href="#definition" title="Permanent link">⚓︎</a></h3>
 <div class="admonition info">
 <p class="admonition-title">引入</p>
-<p>在<span class="heti-skip"><span class="heti-spacing"> </span>FDS<span class="heti-spacing"> </span></span>中，我们已经学过了<a href="../fds/6.html"><strong>堆（优先队列<heti-adjacent class="heti-adjacent-half">）</heti-adjacent></strong></a>，通过这一数据结构，我们可以在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(O(1)\)</span><span class="heti-spacing"> </span></span>时间内找到数据集中的最大值或最小值，同时它的插入和删除元素的操作也相当快（<span class="arithmatex">\(O(\log N)\)</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
-<p>尽管如此，我们还会用到<strong>合并</strong><span class="heti-skip"><span class="heti-spacing"> </span>(merge)<span class="heti-spacing"> </span></span>操作。在一般的堆中，合并的时间复杂度为<span><span class="heti-spacing"> </span><span class="arithmatex">\(\Theta(N)\)</span></span>：</p>
+<p>在<span class="heti-skip"><span class="heti-spacing"> </span>FDS<span class="heti-spacing"> </span></span>中，我们已经学过了<a href="../fds/6.html"><strong>堆（优先队列）</strong></a>，通过这一数据结构，我们可以在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(O(1)\)</span><span class="heti-spacing"> </span></span>时间内找到数据集中的最大值或最小值，同时它的插入和删除元素的操作也相当快（<span class="arithmatex">\(O(\log N)\)</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
+<p>尽管如此，我们还会用到<strong>合并</strong><span>(merge)<span class="heti-spacing"> </span></span>操作。在一般的堆中，合并的时间复杂度为<span><span class="heti-spacing"> </span><span class="arithmatex">\(\Theta(N)\)</span></span>：</p>
 <ul>
 <li>首先，要将一个堆（数组）内的数据拷贝到另一个堆（数组）上，需要<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\Omega(N)\)</span><span class="heti-spacing"> </span></span>的时间</li>
 <li>之后还得用<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\mathrm{BuildHeap}\)</span><span class="heti-spacing"> </span></span>的方法整理合并后的堆，需要<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(O(N)\)</span><span class="heti-spacing"> </span></span>的时间</li>
@@ -732,7 +732,7 @@
 <li>它保留了堆的<strong>顺序</strong>性质，即每个节点一定比它所有的孩子节点大<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>小</li>
 <li>变化之处在于<strong>结构</strong>性质：它不再是一棵完全二叉树，而是一棵不平衡的树</li>
 </ul>
-<p>除此之外，左偏堆的节点还多了一个名为<strong>空指针路径长度</strong><span class="heti-skip"><span class="heti-spacing"> </span>(null path length)<span class="heti-spacing"> </span></span>的字段，记作<span><span class="heti-spacing"> </span><span class="arithmatex">\(\mathrm{Npl}(X)\)</span></span>，表示的是从节点<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(X\)</span><span class="heti-spacing"> </span></span>到没有两个孩子的节点（即叶节点或度为<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>的节点）的最短距离。</p>
+<p>除此之外，左偏堆的节点还多了一个名为<strong>空指针路径长度</strong><span>(null path length)<span class="heti-spacing"> </span></span>的字段，记作<span><span class="heti-spacing"> </span><span class="arithmatex">\(\mathrm{Npl}(X)\)</span></span>，表示的是从节点<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(X\)</span><span class="heti-spacing"> </span></span>到没有两个孩子的节点（即叶节点或度为<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>的节点）的最短距离。</p>
 <ul>
 <li>记<span><span class="heti-spacing"> </span><span class="arithmatex">\(\mathrm{Npl}(NULL) = -1\)</span></span></li>
 <li>这个字段用于准确表述左偏堆满足的性质：对于堆上的每个节点，它的左孩子的空指针路径长度不小于它的右孩子的空指针路径长度，因此整棵树会“向左歪”，即左子树的深度更深一些。</li>
@@ -1028,7 +1028,7 @@
 </details>
 <h2 id="skew-heaps">Skew Heaps<a class="headerlink" href="#skew-heaps" title="Permanent link">⚓︎</a></h2>
 <h3 id="definition_1">Definition<a class="headerlink" href="#definition_1" title="Permanent link">⚓︎</a></h3>
-<p><strong>斜堆</strong><span class="heti-skip"><span class="heti-spacing"> </span>(skew heaps)<span class="heti-spacing"> </span></span>是左偏堆的一种简单形式，它们之间的关系类似<span class="heti-skip"><span class="heti-spacing"> </span>AVL<span class="heti-spacing"> </span></span>树和伸展树。斜堆去除了<code>Npl</code>字段，但它像伸展树一样，能够保证在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(M\)</span><span class="heti-spacing"> </span></span>次连续操作消耗至多<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(O(M \log N)\)</span><span class="heti-spacing"> </span></span>的时间。</p>
+<p><strong>斜堆</strong><span>(skew heaps)<span class="heti-spacing"> </span></span>是左偏堆的一种简单形式，它们之间的关系类似<span class="heti-skip"><span class="heti-spacing"> </span>AVL<span class="heti-spacing"> </span></span>树和伸展树。斜堆去除了<code>Npl</code>字段，但它像伸展树一样，能够保证在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(M\)</span><span class="heti-spacing"> </span></span>次连续操作消耗至多<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(O(M \log N)\)</span><span class="heti-spacing"> </span></span>的时间。</p>
 <p>斜堆的合并操作的大致思路类似左偏堆，但不同之处在于：由于斜堆不维护<code>Npl</code>字段，因此即将被附加的待比较堆（它的根节点更小，包括最开始的目标堆）在拆开右子树后，需要把待比较堆的左子树换到右子树的位置上，然后再加到目标堆上。也就是说每一次的附加都需要一次交换操作，而不是最后根据<code>Npl</code>的情况来交换。</p>
 <div class="admonition warning">
 <p class="admonition-title">注意</p>
@@ -1068,7 +1068,7 @@
 <p>由于插入和删除本质上还是合并操作，所以这里我们就讨论合并操作的<a href="1.html#amortized-analysis">摊还复杂度</a>，结论是：<span class="arithmatex">\(T_{\mathrm{amortized}} = O(\log N)\)</span>，下面我们就来证明这个复杂度。</p>
 <div class="admonition proof">
 <p class="admonition-title">证明</p>
-<p>摊还分析的三种方法中，势能分析法最为强大，因此我们使用这个方法。势能分析法中最重要的便是确定<strong>势能函数</strong>：我们令第<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(i\)</span><span class="heti-spacing"> </span></span>次操作后的数据集<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(D_i\)</span><span class="heti-spacing"> </span></span>为目标堆的根节点，势能函数<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\Phi(D_i)\)</span><span class="heti-spacing"> </span></span>为这个堆上<strong>重节点</strong><span class="heti-skip"><span class="heti-spacing"> </span>(heavy node)<span class="heti-spacing"> </span></span>的个数。</p>
+<p>摊还分析的三种方法中，势能分析法最为强大，因此我们使用这个方法。势能分析法中最重要的便是确定<strong>势能函数</strong>：我们令第<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(i\)</span><span class="heti-spacing"> </span></span>次操作后的数据集<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(D_i\)</span><span class="heti-spacing"> </span></span>为目标堆的根节点，势能函数<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\Phi(D_i)\)</span><span class="heti-spacing"> </span></span>为这个堆上<strong>重节点</strong><span>(heavy node)<span class="heti-spacing"> </span></span>的个数。</p>
 <p>所谓「重节点<heti-adjacent class="heti-adjacent-half">」</heti-adjacent>，指的是满足<strong>右子树的节点个数占整棵树节点个数（包括这个根节点）的一半以上</strong>的节点。对应的也有「轻节点」的概念，即不是重节点的节点。</p>
 <details class="question">
 <summary>为什么势能函数不是右子树的节点个数</summary>
@@ -1137,7 +1137,7 @@ T_{\mathrm{amortized}} &amp; = T_{\mathrm{worst}} + \Phi_{i+1} - \Phi_i \notag \
 </ul>
 </details>
 <details class="info">
-<summary><strong>自调整</strong><span class="heti-skip"><span class="heti-spacing"> </span>(self-adjusting)<span class="heti-spacing"> </span></span>的数据结构</summary>
+<summary><strong>自调整</strong><span>(self-adjusting)<span class="heti-spacing"> </span></span>的数据结构</summary>
 <p>自调整数据结构是一类在操作过程中会根据访问或修改的历史信息动态调整自身结构，以提高效率的数据结构。这些数据结构没有固定的形态，能通过自适应性调整，在特定情况下优化常用操作的性能。前面介绍过的<strong>伸展树</strong>和<strong>斜堆</strong>均有这种自调整的特性，它们的共同点有：</p>
 <ul>
 <li>节省空间（因为无需记录额外的平衡信息）</li>
@@ -1151,13 +1151,13 @@ T_{\mathrm{amortized}} &amp; = T_{\mathrm{worst}} + \Phi_{i+1} - \Phi_i \notag \
 <span class="md-icon" title="最后更新">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"></path></svg>
 </span>
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime">2025年1月23日 15:16:49</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年3月21日 15:57:34">2025年3月21日 15:57:34</span>
 </span>
 <span class="md-source-file__fact">
 <span class="md-icon" title="创建日期">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"></path></svg>
 </span>
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime">2024年10月7日 21:20:16</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2024年10月7日 21:20:16">2024年10月7日 21:20:16</span>
 </span>
 </aside>
 <p style="font-size: 30px; font-weight: 600">评论区</p>
@@ -1283,7 +1283,7 @@ T_{\mathrm{amortized}} &amp; = T_{\mathrm{worst}} + \Phi_{i+1} - \Phi_i \notag \
 <div class="md-dialog__inner md-typeset"></div>
 </div>
 <script id="__config" type="application/json">{"base": "../..", "features": ["content.action.edit", "content.action.view", "content.code.copy", "content.code.annotate", "header.autohide", "navigation.tabs", "navigation.top", "navigation.footer", "navigation.indexes", "navigation.tracking", "navigation.prune", "search.share"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
-<script src="../../assets/javascripts/bundle.f1b6f286.min.js"></script>
+<script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
 <script src="../../js/anchor.js"></script>
 <script src="../../js/katex.js"></script>
 <script src="../../js/toc.js"></script>

@@ -9,9 +9,9 @@
 <link href="4.html" rel="prev"/>
 <link href="6.html" rel="next"/>
 <link href="../../assets/favicon.png" rel="icon"/>
-<meta content="mkdocs-1.6.1, mkdocs-material-9.6.3" name="generator"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.6.9" name="generator"/>
 <title>Chap 5: Image Convolution and Filtering - NoughtQ的笔记本</title>
-<link href="../../assets/stylesheets/main.d7758b05.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/main.4af4bdda.min.css" rel="stylesheet"/>
 <link href="../../assets/stylesheets/palette.06af60db.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=JetBrains+Mono,+LXGW+WenKai+Screen+GB+Screen:300,300i,400,400i,700,700i%7CJetBrains+Mono,+Consolas:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
@@ -991,12 +991,12 @@ g(x) = f(x) * h(x) = \dfrac{1}{M} \sum\limits_{t = 0}^{M - 1}f(t)h(x - t)
 </details>
 <h2 id="spatial-filtering">Spatial Filtering<a class="headerlink" href="#spatial-filtering" title="Permanent link">⚓︎</a></h2>
 <h3 id="principle">Principle<a class="headerlink" href="#principle" title="Permanent link">⚓︎</a></h3>
-<p><strong>滤波器</strong><span class="heti-skip"><span class="heti-spacing"> </span>(filter)<span class="heti-spacing"> </span></span>是一个大小为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(M \times N\)</span><span class="heti-spacing"> </span></span>的窗口，窗口中的元素与原图像的处于窗口内的像素进行某种运算，结果作为新图像的一个像素。当窗口滑过原图像并完成上述运算之后，就能够得到一幅新图像。</p>
+<p><strong>滤波器</strong><span>(filter)<span class="heti-spacing"> </span></span>是一个大小为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(M \times N\)</span><span class="heti-spacing"> </span></span>的窗口，窗口中的元素与原图像的处于窗口内的像素进行某种运算，结果作为新图像的一个像素。当窗口滑过原图像并完成上述运算之后，就能够得到一幅新图像。</p>
 <ul>
 <li>滤波器的别名：掩模<span><span class="heti-spacing"> </span>(mask)</span>、核<span><span class="heti-spacing"> </span>(kernel)</span>、模板<span><span class="heti-spacing"> </span>(template)</span>，窗口<span><span class="heti-spacing"> </span>(window)</span></li>
 <li>滤波器子图像中的值是系数值，而不是像素值，它代表了影响新像素产生的权重</li>
 <li>
-<p>滤波器的执行流程：在待处理图像中逐点移动<strong>掩模</strong><span><span class="heti-spacing"> </span>(mask)</span>，在每一点<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\((x,y)\)</span><span class="heti-spacing"> </span></span>处，滤波器在该点的响应通过实现定义的关系来计算。</p>
+<p>滤波器的执行流程：在待处理图像中逐点移动<strong>掩模</strong>(mask)，在每一点<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\((x,y)\)</span><span class="heti-spacing"> </span></span>处，滤波器在该点的响应通过实现定义的关系来计算。</p>
 <ul>
 <li>对于线性空间滤波，其响应由滤波器系数与滤波掩模扫过区域的对应像素值的乘积之和给出</li>
 </ul>
@@ -1018,7 +1018,7 @@ g(x, y) = \sum\limits_{s = -a}^a \sum\limits_{t = -b}^b w(s, t) f(x + s, y + t)
 </ul>
 <h2 id="smoothing-filtering">Smoothing Filtering<a class="headerlink" href="#smoothing-filtering" title="Permanent link">⚓︎</a></h2>
 <p>图像在传输过程中，由于传输信道、采样系统质量较差，或受各种干扰的影响，而造成图像毛糙，此时，就需对图像进行平滑处理。平滑可以抑制高频成分，但也使图像变得模糊。</p>
-<p><strong>平滑空间滤波器</strong><span class="heti-skip"><span class="heti-spacing"> </span>(spatial smoothing filter)<span class="heti-spacing"> </span></span>用于模糊处理和减少噪声。模糊处理经常用于预处理，例如，在提取大的目标之前去除图像中一些琐碎的细节，桥接直线或曲线的缝隙。 </p>
+<p><strong>平滑空间滤波器</strong><span>(spatial smoothing filter)<span class="heti-spacing"> </span></span>用于模糊处理和减少噪声。模糊处理经常用于预处理，例如，在提取大的目标之前去除图像中一些琐碎的细节，桥接直线或曲线的缝隙。 </p>
 <h3 id="linear-smoothing-filter">Linear Smoothing Filter<a class="headerlink" href="#linear-smoothing-filter" title="Permanent link">⚓︎</a></h3>
 <p><strong>平滑线性空间滤波器</strong>的输出是包含在滤波掩模邻域内像素的简单平均值。因此，这些滤波器也称为<strong>均值滤波器</strong>。均值滤波器的主要应用是去除图像中的不相干细节，即那些与滤波掩模尺寸相比更小的像素区域。 </p>
 <details class="example" open="open">
@@ -1046,8 +1046,8 @@ g(x, y) = \dfrac{\sum\limits_{s = -a}^a \sum\limits_{t = -b}^b w(s, t) f(x + s, 
 </div>
 </details>
 <h3 id="statistical-sorting-filter">Statistical Sorting Filter<a class="headerlink" href="#statistical-sorting-filter" title="Permanent link">⚓︎</a></h3>
-<p><strong>统计滤波器</strong><span class="heti-skip"><span class="heti-spacing"> </span>(statistical filter)<span class="heti-spacing"> </span></span>是一种非线性的空间滤波器，它的响应是基于窗口内图像区域中像素值的排序，由统计排序结果决定的值代替中心像素的值。</p>
-<p>统计滤波器中最常见的例子就是<strong>中值滤波器</strong><span><span class="heti-spacing"> </span>(median filter)</span>。</p>
+<p><strong>统计滤波器</strong><span>(statistical filter)<span class="heti-spacing"> </span></span>是一种非线性的空间滤波器，它的响应是基于窗口内图像区域中像素值的排序，由统计排序结果决定的值代替中心像素的值。</p>
+<p>统计滤波器中最常见的例子就是<strong>中值滤波器</strong>(median filter)。</p>
 <ul>
 <li>用像素邻域内灰度的中值代替该像素的值</li>
 <li>提供了优秀的去噪能力，比小尺寸的线性平滑滤波器的模糊程度明显要低</li>
@@ -1066,7 +1066,7 @@ g(x, y) = \dfrac{\sum\limits_{s = -a}^a \sum\limits_{t = -b}^b w(s, t) f(x + s, 
 </ul>
 </details>
 <h3 id="gaussian-filter">Gaussian Filter<a class="headerlink" href="#gaussian-filter" title="Permanent link">⚓︎</a></h3>
-<p><strong>高斯滤波<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>模糊</strong><span class="heti-skip"><span class="heti-spacing"> </span>(Gaussian filter/blur)<span class="heti-spacing"> </span></span>的公式如下所示，可以发现它是对像素的加权平均：</p>
+<p><strong>高斯滤波<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>模糊</strong><span>(Gaussian filter/blur)<span class="heti-spacing"> </span></span>的公式如下所示，可以发现它是对像素的加权平均：</p>
 <div class="arithmatex">\[
 GB[i]_p = \sum\limits_{\bm{q} \in S} \underbrace{G_{\sigma}(|\bm{p} - \bm{q}|)}_{\text{normalized Gaussian}}I_q
 \]</div>
@@ -1094,16 +1094,16 @@ GB[i]_p = \sum\limits_{\bm{q} \in S} \underbrace{G_{\sigma}(|\bm{p} - \bm{q}|)}_
 <img src="images/C5/25.png" width="70%"/>
 </div>
 <h3 id="bilateral-filter">Bilateral Filter<a class="headerlink" href="#bilateral-filter" title="Permanent link">⚓︎</a></h3>
-<p><strong>双边滤波</strong><span class="heti-skip"><span class="heti-spacing"> </span>(bilateral filter)<span class="heti-spacing"> </span></span>的目标是使图像更加平滑，具体来说：</p>
+<p><strong>双边滤波</strong><span>(bilateral filter)<span class="heti-spacing"> </span></span>的目标是使图像更加平滑，具体来说：</p>
 <ul>
-<li><strong>保留</strong>大规模的特征——<strong>结构</strong><span><span class="heti-spacing"> </span>(structure)</span></li>
-<li><strong>去掉</strong>小规模的特征——<strong>纹路</strong><span><span class="heti-spacing"> </span>(texture)</span></li>
+<li><strong>保留</strong>大规模的特征——<strong>结构</strong>(structure)</li>
+<li><strong>去掉</strong>小规模的特征——<strong>纹路</strong>(texture)</li>
 </ul>
 <p><u>它的大致思想是：</u></p>
 <ul>
 <li>每张图像有两个主要特征：<ul>
-<li><strong>空间域</strong><span><span class="heti-spacing"> </span><span class="arithmatex">\(S\)</span></span>：在图像内所有可能位置的集合，与图像的分辨率相关（比如图像的行和列）</li>
-<li><strong>强度域</strong><span><span class="heti-spacing"> </span><span class="arithmatex">\(R\)</span></span>：可能像素值的集合。对于不同的图像，用于表示像素值的位长可能因值的不同而变化，通常用无符号字节和浮点数来表示</li>
+<li><strong>空间域</strong><span class="arithmatex">\(S\)</span>：在图像内所有可能位置的集合，与图像的分辨率相关（比如图像的行和列）</li>
+<li><strong>强度域</strong><span class="arithmatex">\(R\)</span>：可能像素值的集合。对于不同的图像，用于表示像素值的位长可能因值的不同而变化，通常用无符号字节和浮点数来表示</li>
 </ul>
 </li>
 <li>每个样本点用它的相邻样本点的加权平均来代替</li>
@@ -1316,7 +1316,7 @@ BF[I]_p = \dfrac{1}{W_p} \sum\limits_{\bm{q} \in S} \underbrace{G_{\sigma_s}(|\b
 <p><a href="http://people.csail.mit.edu/sparis/bf/#code">源代码链接</a></p>
 </blockquote>
 <h3 id="guided-filter">Guided Filter<a class="headerlink" href="#guided-filter" title="Permanent link">⚓︎</a></h3>
-<p><u><strong>导向滤波</strong><span class="heti-skip"><span class="heti-spacing"> </span>(guided filter)<span class="heti-spacing"> </span></span>的概览：</u></p>
+<p><u><strong>导向滤波</strong><span>(guided filter)<span class="heti-spacing"> </span></span>的概览：</u></p>
 <div style="text-align: center">
 <img src="images/C5/56.png" width="70%"/>
 </div>
@@ -1429,16 +1429,16 @@ q_i &amp; = \dfrac{1}{|\omega|} \sum\limits_{k|i \in \omega_k}(a_k I_i + b_k) \n
 </div>
 <h2 id="sharpening-filtering">Sharpening Filtering<a class="headerlink" href="#sharpening-filtering" title="Permanent link">⚓︎</a></h2>
 <ul>
-<li><strong>锐化滤波器</strong><span class="heti-skip"><span class="heti-spacing"> </span>(sharpening filter)<span class="heti-spacing"> </span></span>的作用：突出图像中的细节或者增强被模糊了的细节。</li>
+<li><strong>锐化滤波器</strong><span>(sharpening filter)<span class="heti-spacing"> </span></span>的作用：突出图像中的细节或者增强被模糊了的细节。</li>
 <li>
-<p><strong>微分算子</strong><span class="heti-skip"><span class="heti-spacing"> </span>(differential operator)<span class="heti-spacing"> </span></span>是实现锐化的工具，其响应程度与图像在该点处的突变程度有关。微分算子增强了边缘和其他突变（如噪声）并削弱了灰度变化缓慢的区域。 </p>
+<p><strong>微分算子</strong><span>(differential operator)<span class="heti-spacing"> </span></span>是实现锐化的工具，其响应程度与图像在该点处的突变程度有关。微分算子增强了边缘和其他突变（如噪声）并削弱了灰度变化缓慢的区域。 </p>
 <ul>
-<li>基于一阶微分的图像增强——<strong>梯度法</strong><span><span class="heti-spacing"> </span>(gradient-based method)</span></li>
-<li>基于二阶微分的图像增强——<strong>拉普拉斯算子</strong><span><span class="heti-spacing"> </span>(Laplacian operator)</span></li>
+<li>基于一阶微分的图像增强——<strong>梯度法</strong>(gradient-based method)</li>
+<li>基于二阶微分的图像增强——<strong>拉普拉斯算子</strong>(Laplacian operator)</li>
 </ul>
 </li>
 <li>
-<p>对于函数<span><span class="heti-spacing"> </span><span class="arithmatex">\(f(x)\)</span></span>，我们用<strong>差分</strong><span class="heti-skip"><span class="heti-spacing"> </span>(difference)<span class="heti-spacing"> </span></span>来表示微分算子：<span class="arithmatex">\(\dfrac{\partial f}{\partial x} = f(x + 1) - f(x)\)</span></p>
+<p>对于函数<span><span class="heti-spacing"> </span><span class="arithmatex">\(f(x)\)</span></span>，我们用<strong>差分</strong><span>(difference)<span class="heti-spacing"> </span></span>来表示微分算子：<span class="arithmatex">\(\dfrac{\partial f}{\partial x} = f(x + 1) - f(x)\)</span></p>
 <ul>
 <li>类似地，二阶差分为：<span class="arithmatex">\(\dfrac{\partial^2 f}{\partial x^2} = f(x + 1) + f(x - 1) - 2f(x)\)</span></li>
 </ul>
@@ -1467,7 +1467,7 @@ q_i &amp; = \dfrac{1}{|\omega|} \sum\limits_{k|i \in \omega_k}(a_k I_i + b_k) \n
 \]</div>
 <p>当对整幅图像计算梯度时，运算量会很大，因此，在实际操作中，常用绝对值代替平方与平方根运算近似求梯度的模值：<span class="arithmatex">\(\nabla f \approx |G_x| + |G_y| = |f(x + 1, y) - f(x, y)| + |f(x, y + 1) - f(x, y)|\)</span> </p>
 <p>除了用差分法计算梯度外，还有以下计算方法：</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="4:3"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio"/><input id="__tabbed_4_2" name="__tabbed_4" type="radio"/><input id="__tabbed_4_3" name="__tabbed_4" type="radio"/><div class="tabbed-labels"><label for="__tabbed_4_1"><strong>罗伯特交叉梯度算子</strong><span class="heti-skip"><span class="heti-spacing"> </span>(Robert cross gradient operator)<span class="heti-spacing"> </span></span></label><label for="__tabbed_4_2"><span class="heti-skip"><span class="heti-spacing"> </span>Sobel<span class="heti-spacing"> </span></span>算子</label><label for="__tabbed_4_3"><span class="heti-skip"><span class="heti-spacing"> </span>Prewitt<span class="heti-spacing"> </span></span>算子</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:3"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio"/><input id="__tabbed_4_2" name="__tabbed_4" type="radio"/><input id="__tabbed_4_3" name="__tabbed_4" type="radio"/><div class="tabbed-labels"><label for="__tabbed_4_1"><strong>罗伯特交叉梯度算子</strong>(Robert cross gradient operator)</label><label for="__tabbed_4_2"><span>Sobel<span class="heti-spacing"> </span></span>算子</label><label for="__tabbed_4_3"><span class="heti-skip"><span class="heti-spacing"> </span>Prewitt<span class="heti-spacing"> </span></span>算子</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>计算公式为：</p>
@@ -1557,7 +1557,7 @@ g(x, y) = \begin{cases}f(x, y) - \nabla^2 f(x, y) &amp; \text{if the center elem
 </ul>
 </li>
 <li>
-<p><strong>稀疏范式滤波</strong><span><span class="heti-spacing"> </span>(sparse norm filter, SNF)</span>：为了让滤波器能够保留边缘特征，我们将上式的范式改为更加稀疏的范式，得到：</p>
+<p><strong>稀疏范式滤波</strong>(sparse norm filter, SNF)：为了让滤波器能够保留边缘特征，我们将上式的范式改为更加稀疏的范式，得到：</p>
 <div class="arithmatex">\[
 \min\limits_{I_i^{\text{new}}} \sum\limits_{j \in N_i} |I_i^{\text{new}} - I_j|^p, 0 &lt; p \le 2
 \]</div>
@@ -1713,13 +1713,13 @@ g(x, y) = \begin{cases}f(x, y) - \nabla^2 f(x, y) &amp; \text{if the center elem
 <span class="md-icon" title="最后更新">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"></path></svg>
 </span>
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime">2025年1月23日 15:16:49</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年3月21日 15:57:34">2025年3月21日 15:57:34</span>
 </span>
 <span class="md-source-file__fact">
 <span class="md-icon" title="创建日期">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"></path></svg>
 </span>
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime">2024年10月7日 21:20:16</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2024年10月7日 21:20:16">2024年10月7日 21:20:16</span>
 </span>
 </aside>
 <p style="font-size: 30px; font-weight: 600">评论区</p>
@@ -1845,7 +1845,7 @@ g(x, y) = \begin{cases}f(x, y) - \nabla^2 f(x, y) &amp; \text{if the center elem
 <div class="md-dialog__inner md-typeset"></div>
 </div>
 <script id="__config" type="application/json">{"base": "../..", "features": ["content.action.edit", "content.action.view", "content.code.copy", "content.code.annotate", "header.autohide", "navigation.tabs", "navigation.top", "navigation.footer", "navigation.indexes", "navigation.tracking", "navigation.prune", "search.share"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
-<script src="../../assets/javascripts/bundle.f1b6f286.min.js"></script>
+<script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
 <script src="../../js/anchor.js"></script>
 <script src="../../js/katex.js"></script>
 <script src="../../js/toc.js"></script>

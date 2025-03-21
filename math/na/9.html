@@ -9,9 +9,9 @@
 <link href="8.html" rel="prev"/>
 <link href="../../algorithms/index.html" rel="next"/>
 <link href="../../assets/favicon.png" rel="icon"/>
-<meta content="mkdocs-1.6.1, mkdocs-material-9.6.3" name="generator"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.6.9" name="generator"/>
 <title>Chap 9: Approximating Eigenvalues - NoughtQ的笔记本</title>
-<link href="../../assets/stylesheets/main.d7758b05.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/main.4af4bdda.min.css" rel="stylesheet"/>
 <link href="../../assets/stylesheets/palette.06af60db.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=JetBrains+Mono,+LXGW+WenKai+Screen+GB+Screen:300,300i,400,400i,700,700i%7CJetBrains+Mono,+Consolas:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
@@ -428,12 +428,66 @@
 </li>
 <li class="md-nav__item md-nav__item--active">
 <input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    Chap 9: Approximating Eigenvalues
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
 <a class="md-nav__link md-nav__link--active" href="9.html">
 <span class="md-ellipsis">
     Chap 9: Approximating Eigenvalues
     
   </span>
 </a>
+<nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#the-power-method">
+<span class="md-ellipsis">
+      The Power Method
+    </span>
+</a>
+<nav aria-label="The Power Method" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#the-original-method">
+<span class="md-ellipsis">
+      The Original Method
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#normalization">
+<span class="md-ellipsis">
+      Normalization
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#rate-of-convergence">
+<span class="md-ellipsis">
+      Rate of Convergence
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#inverse-power-method">
+<span class="md-ellipsis">
+      Inverse Power Method
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
 </li>
 </ul>
 </nav>
@@ -531,6 +585,51 @@
 <div class="md-sidebar__scrollwrap">
 <div class="md-sidebar__inner">
 <nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#the-power-method">
+<span class="md-ellipsis">
+      The Power Method
+    </span>
+</a>
+<nav aria-label="The Power Method" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#the-original-method">
+<span class="md-ellipsis">
+      The Original Method
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#normalization">
+<span class="md-ellipsis">
+      Normalization
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#rate-of-convergence">
+<span class="md-ellipsis">
+      Rate of Convergence
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#inverse-power-method">
+<span class="md-ellipsis">
+      Inverse Power Method
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
 </nav>
 </div>
 </div>
@@ -545,20 +644,120 @@
 </a>
 <h1 id="chap-9-approximating-eigenvalues">Chap 9: Approximating Eigenvalues<a class="headerlink" href="#chap-9-approximating-eigenvalues" title="Permanent link">⚓︎</a></h1>
 <div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
-<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>个字 </p>
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>897<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 640 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M392.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6m80.6 120.1c-12.5 12.5-12.5 32.8 0 45.3l89.3 89.4-89.4 89.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l112-112c12.5-12.5 12.5-32.8 0-45.3l-112-112c-12.5-12.5-32.8-12.5-45.3 0zm-306.7 0c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3l112 112c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l89.4-89.4c12.5-12.5 12.5-32.8 0-45.3"></path></svg></span> <span>19<span class="heti-spacing"> </span></span>行代码 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>5<span class="heti-spacing"> </span></span>分钟</p>
 </div>
+<p>目标：计算矩阵的主特征值<span><span class="heti-spacing"> </span>(dominant eigenvalue)</span>，以及对应的特征向量。</p>
+<h2 id="the-power-method">The Power Method<a class="headerlink" href="#the-power-method" title="Permanent link">⚓︎</a></h2>
+<h3 id="the-original-method">The Original Method<a class="headerlink" href="#the-original-method" title="Permanent link">⚓︎</a></h3>
+<p>假设<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(A\)</span><span class="heti-spacing"> </span></span>是一个<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n \times n\)</span><span class="heti-spacing"> </span></span>的矩阵，满足<span><span class="heti-spacing"> </span><span class="arithmatex">\(|\textcolor{red}{\lambda_1}| \textcolor{red}{&gt;} |\lambda_2| \ge \dots \ge |\lambda_n| \ge 0\)</span></span>，且这些特征值对应<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span><span class="heti-spacing"> </span></span>个线性独立的特征向量。</p>
+<p>思路：从任意<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\bm{x^{(0)}} \ne \bm{0}\)</span><span class="heti-spacing"> </span></span>以及<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\((\bm{x^{0}}, \bm{v_1})\)</span><span class="heti-spacing"> </span></span>出发</p>
+<div class="arithmatex">\[
+\begin{align}
+\bm{x^{(0)}} &amp; = \sum\limits_{j=1}^n \beta_j \bm{v_j}, \beta_1 \ne 0 \notag \\
+\bm{x^{(1)}} &amp; = A\bm{x^{(0)}} = \sum\limits_{j=1}^n \beta_j \lambda_j \bm{v_j} \notag \\
+\bm{x^{(2)}} &amp; = A\bm{x^{(1)}} = \sum\limits_{j=1}^n \beta_j \lambda_j^2 \bm{v_j} \notag \\
+&amp; \dots \notag
+\end{align}
+\]</div>
+<p>发现规律：</p>
+<div class="arithmatex">\[
+\begin{align}
+\bm{x^{(k)}} &amp; = A \bm{x^{(k-1)}} = \sum\limits_{j=1}^n \beta_j \lambda_j^k \bm{v_j} \notag \\
+&amp; = \lambda_1^k \sum\limits_{j=1}^n \Big(\dfrac{\lambda_j}{\lambda_1}\Big)^k \bm{v_j} \notag
+\end{align}
+\]</div>
+<p>当<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(k\)</span><span class="heti-spacing"> </span></span>足够大时，我们有：</p>
+<div class="arithmatex">\[
+\bm{x^{(k)}} \approx \lambda_1^k \beta_1 \bm{v_1}, \bm{x^{(k-1)}} \approx \lambda_1^{k-1} \beta_1 \bm{v_1} \Rightarrow \dfrac{(\bm{x^{(k)}})_i}{(\bm{x^{(k-1)}})_i} \approx \lambda_i
+\]</div>
+<h3 id="normalization">Normalization<a class="headerlink" href="#normalization" title="Permanent link">⚓︎</a></h3>
+<p>确保在每一步满足<span><span class="heti-spacing"> </span><span class="arithmatex">\(\| \bm{x} \|_{\infty} = 1\)</span></span>，以确保稳定性。</p>
+<p>令<span><span class="heti-spacing"> </span><span class="arithmatex">\(\| \bm{x^{(k)}} \|_{\infty} = |\bm{x_{p_k}^{(k)}}|\)</span></span>，那么<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\bm{u^{(k-1)}} = \dfrac{\bm{x^{(k-1)}}}{\bm{x^{(k-1)}_{p_{k-1}}}}\)</span><span class="heti-spacing"> </span></span>且<span><span class="heti-spacing"> </span><span class="arithmatex">\(\bm{x^{(k)}} = A \bm{u^{(k-1)}}\)</span></span>。因而得到：</p>
+<div class="arithmatex">\[
+\bm{u^{(k)}} = \dfrac{\bm{x^{(k)}}}{|\bm{x^{(k)}_{p_k}}|} \rightarrow \bm{v_1} \quad \text{and} \quad \lambda_1 \approx \dfrac{\bm{x_i^{(k)}}}{u_i^{(k-1)}} = \bm{x^{(k)}_{p_{k-1}}}
+\]</div>
+<details class="code" open="open">
+<summary>算法：幂法</summary>
+<p>从非零初始向量开始，近似求解规模为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n \times n\)</span><span class="heti-spacing"> </span></span>的矩阵<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(A\)</span><span class="heti-spacing"> </span></span>的主特征值及其特征向量。</p>
+<ul>
+<li>输入：维度<span><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span></span>，矩阵<span><span class="heti-spacing"> </span><span class="arithmatex">\(a[][]\)</span></span>，初始向量<span><span class="heti-spacing"> </span><span class="arithmatex">\(x0[]\)</span></span>，容忍值<span><span class="heti-spacing"> </span><span class="arithmatex">\(TOL\)</span></span>，最大迭代次数<span><span class="heti-spacing"> </span><span class="arithmatex">\(N_{max}\)</span></span></li>
+<li>输出：近似特征值<span><span class="heti-spacing"> </span><span class="arithmatex">\(\lambda\)</span></span>，近似（规范化的）特征向量</li>
+</ul>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="n">Step</span><span class="w"> </span><span class="mi">1</span><span class="w">  </span><span class="n">Set</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+</span><span id="__span-0-2"><a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="n">Step</span><span class="w"> </span><span class="mi">2</span><span class="w">  </span><span class="n">Find</span><span class="w"> </span><span class="n">index</span><span class="w"> </span><span class="n">such</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="p">[</span><span class="n">x0</span><span class="p">[</span><span class="n">index</span><span class="p">]]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">x0</span><span class="w"> </span><span class="o">||</span><span class="n">_infty</span><span class="p">;</span>
+</span><span id="__span-0-3"><a href="#__codelineno-0-3" id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="n">Step</span><span class="w"> </span><span class="mi">3</span><span class="w">  </span><span class="n">Set</span><span class="w"> </span><span class="n">x0</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x0</span><span class="p">[]</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">x0</span><span class="p">[</span><span class="n">index</span><span class="p">];</span><span class="w">    </span><span class="c1">// normalize x0</span>
+</span><span id="__span-0-4"><a href="#__codelineno-0-4" id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="n">Step</span><span class="w"> </span><span class="mi">4</span><span class="w">  </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">k</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">N_max</span><span class="p">)</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="n">steps</span><span class="w"> </span><span class="mi">5-11</span>
+</span><span id="__span-0-5"><a href="#__codelineno-0-5" id="__codelineno-0-5" name="__codelineno-0-5"></a><span class="w">        </span><span class="n">Step</span><span class="w"> </span><span class="mi">5</span><span class="w">  </span><span class="n">x</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">A</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">x0</span><span class="p">[];</span>
+</span><span id="__span-0-6"><a href="#__codelineno-0-6" id="__codelineno-0-6" name="__codelineno-0-6"></a><span class="w">        </span><span class="n">Step</span><span class="w"> </span><span class="mi">6</span><span class="w">  </span><span class="n">lambda</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+</span><span id="__span-0-7"><a href="#__codelineno-0-7" id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="w">        </span><span class="n">Step</span><span class="w"> </span><span class="mi">7</span><span class="w">  </span><span class="n">Find</span><span class="w"> </span><span class="n">index</span><span class="w"> </span><span class="n">such</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="n">index</span><span class="p">]]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">||</span><span class="n">_infty</span><span class="p">;</span>
+</span><span id="__span-0-8"><a href="#__codelineno-0-8" id="__codelineno-0-8" name="__codelineno-0-8"></a><span class="w">        </span><span class="n">Step</span><span class="w"> </span><span class="mi">8</span><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="n">x</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="n">then</span>
+</span><span id="__span-0-9"><a href="#__codelineno-0-9" id="__codelineno-0-9" name="__codelineno-0-9"></a><span class="w">                    </span><span class="n">Output</span><span class="p">(</span><span class="s">"A has the eigenvalue 0"</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+</span><span id="__span-0-10"><a href="#__codelineno-0-10" id="__codelineno-0-10" name="__codelineno-0-10"></a><span class="w">                    </span><span class="n">STOP</span><span class="p">.</span>
+</span><span id="__span-0-11"><a href="#__codelineno-0-11" id="__codelineno-0-11" name="__codelineno-0-11"></a><span class="w">                </span><span class="c1">// the matrix is singular and user should try a new x0</span>
+</span><span id="__span-0-12"><a href="#__codelineno-0-12" id="__codelineno-0-12" name="__codelineno-0-12"></a><span class="w">        </span><span class="n">Step</span><span class="w"> </span><span class="mi">9</span><span class="w">  </span><span class="n">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">x0</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">x</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="w"> </span><span class="o">||</span><span class="n">_infty</span><span class="p">;</span>
+</span><span id="__span-0-13"><a href="#__codelineno-0-13" id="__codelineno-0-13" name="__codelineno-0-13"></a><span class="w">                </span><span class="n">x0</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="p">[]</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">x</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="w">      </span><span class="c1">// computer u^k</span>
+</span><span id="__span-0-14"><a href="#__codelineno-0-14" id="__codelineno-0-14" name="__codelineno-0-14"></a><span class="w">        </span><span class="n">Step</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">err</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">TOL</span><span class="p">)</span><span class="w"> </span><span class="n">then</span>
+</span><span id="__span-0-15"><a href="#__codelineno-0-15" id="__codelineno-0-15" name="__codelineno-0-15"></a><span class="w">                    </span><span class="n">Output</span><span class="p">(</span><span class="n">lambda</span><span class="p">,</span><span class="w"> </span><span class="n">x0</span><span class="p">[]);</span>
+</span><span id="__span-0-16"><a href="#__codelineno-0-16" id="__codelineno-0-16" name="__codelineno-0-16"></a><span class="w">                    </span><span class="n">STOP</span><span class="p">.</span>
+</span><span id="__span-0-17"><a href="#__codelineno-0-17" id="__codelineno-0-17" name="__codelineno-0-17"></a><span class="w">        </span><span class="n">Step</span><span class="w"> </span><span class="mi">11</span><span class="w"> </span><span class="n">Set</span><span class="w"> </span><span class="n">k</span><span class="o">++</span><span class="p">;</span>
+</span><span id="__span-0-18"><a href="#__codelineno-0-18" id="__codelineno-0-18" name="__codelineno-0-18"></a><span class="n">Step</span><span class="w"> </span><span class="mi">12</span><span class="w"> </span><span class="n">Output</span><span class="p">(</span><span class="n">Maximum</span><span class="w"> </span><span class="n">number</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">iterations</span><span class="w"> </span><span class="n">exceeded</span><span class="p">);</span>
+</span><span id="__span-0-19"><a href="#__codelineno-0-19" id="__codelineno-0-19" name="__codelineno-0-19"></a><span class="w">        </span><span class="n">STOP</span><span class="p">.</span><span class="w">    </span><span class="c1">// unsucessful</span>
+</span></code></pre></div>
+</details>
+<div class="admonition note">
+<p class="admonition-title">注</p>
+<ul>
+<li>
+<p>该方法在<strong>多重特征值</strong>（即存在<span><span class="heti-spacing"> </span><span class="arithmatex">\(\lambda_1 = \lambda_2 = \dots = \lambda_r\)</span></span>）也能生效，因为：</p>
+<div class="arithmatex">\[
+\bm{x^{(k)}} = \lambda_1^k \Big[ \sum\limits_{j=1}^r \beta_j \bm{v_j} + \sum\limits_{j=r+1}^n \beta_j \Big(\dfrac{\lambda_j}{\lambda_1}\Big)^k \bm{v_j} \Big] \approx \lambda_1^k \Big( \sum\limits_{j=1}^r \beta_j \bm{v_j} \Big)
+\]</div>
+</li>
+<li>
+<p>若存在类似<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\lambda_1 = -\lambda_2\)</span><span class="heti-spacing"> </span></span>的情况，那么该方法就会失效。</p>
+</li>
+<li>因为我们无法确保对于任意初始近似向量<span><span class="heti-spacing"> </span><span class="arithmatex">\(\bm{x^{(0)}}\)</span></span>，<span class="arithmatex">\(\beta_1 \ne 0\)</span>，所以在这种情况下的迭代结果就可能不是<span><span class="heti-spacing"> </span><span class="arithmatex">\(\bm{v_1}\)</span></span>，而时第一个满足<span><span class="heti-spacing"> </span><span class="arithmatex">\((\bm{x^{(0)}}, \bm{v_m}) \ne 0\)</span></span>，关联的特征值为<span><span class="heti-spacing"> </span><span class="arithmatex">\(\lambda_m\)</span></span>。</li>
+<li><span>Aitken <span class="arithmatex">\(\Delta^2\)</span><span class="heti-spacing"> </span></span>法也能用在这里加快收敛速度。</li>
+</ul>
+</div>
+<h3 id="rate-of-convergence">Rate of Convergence<a class="headerlink" href="#rate-of-convergence" title="Permanent link">⚓︎</a></h3>
+<p>在前面的计算中，我们已经得到：</p>
+<p><span class="arithmatex">\(\bm{x^{(k)}} = A\bm{x^{(k-1)}} = \lambda_1^k \sum\limits_{j=1}^n \Big(\dfrac{\lambda_j}{\lambda_1}\Big)^k \bm{v_j}\)</span></p>
+<p>现在，我们的目标是使<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\dfrac{\lambda_2}{\lambda_1}\)</span><span class="heti-spacing"> </span></span>的值尽可能小。</p>
+<p>假设<span><span class="heti-spacing"> </span><span class="arithmatex">\(\lambda_1 &gt; \lambda_2 \ge \dots \lambda_n\)</span></span>，且<span><span class="heti-spacing"> </span><span class="arithmatex">\(|\lambda_2| &gt; |\lambda_n|\)</span></span>。</p>
+<div style="text-align: center">
+<img src="images/C9/1.png" width="70%/"/>
+</div>
+<p>思路：令<span><span class="heti-spacing"> </span><span class="arithmatex">\(B = A - pl\)</span></span>，那么<span><span class="heti-spacing"> </span><span class="arithmatex">\(|\lambda / - A| = |\lambda / - (B + pl)| = |(\lambda - p) / - B|\)</span></span>，这样可以得到<span><span class="heti-spacing"> </span><span class="arithmatex">\(\lambda_A - p = \lambda_B\)</span></span>。因为<span><span class="heti-spacing"> </span><span class="arithmatex">\(\dfrac{\lambda_2 - p}{\lambda_1 - p} &lt; \dfrac{|\lambda_2|}{|\lambda_1|}\)</span></span>，寻找<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(B\)</span><span class="heti-spacing"> </span></span>的特征值的迭代收敛速度快于关于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(A\)</span><span class="heti-spacing"> </span></span>的迭代。</p>
+<h3 id="inverse-power-method">Inverse Power Method<a class="headerlink" href="#inverse-power-method" title="Permanent link">⚓︎</a></h3>
+<p>如果<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(A\)</span><span class="heti-spacing"> </span></span>有特征值<span><span class="heti-spacing"> </span><span class="arithmatex">\(|\lambda_1| \ge |\lambda_2| \ge \dots \textcolor{red}{&gt; |\lambda_n|}\)</span></span>，那么对于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(A^{-1}\)</span><span class="heti-spacing"> </span></span>满足：</p>
+<div class="arithmatex">\[
+\textcolor{red}{\Big|\dfrac{1}{\lambda_n}\Big| &gt; } \Big|\dfrac{1}{\lambda_{n-1}}\Big| \ge \dots \ge \Big| \dfrac{1}{\lambda_n} \Big|
+\]</div>
+<p>并且这些特征值对应于相同的特征向量。</p>
+<blockquote>
+<p>这一块也有待整理。</p>
+</blockquote>
+<p><span><span class="arithmatex">\(A^{-1}\)</span><span class="heti-spacing"> </span></span>的主特征值<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\Leftrightarrow\)</span> <span class="arithmatex">\(A\)</span><span class="heti-spacing"> </span></span>的特征值中的最小值</p>
+<div class="arithmatex">\[
+\begin{align}
+\bm{x^{(k+1)}} &amp; = A^{-1} \bm{x^{(k)}} \notag \\
+A \bm{x^{(k+1)}} &amp; = \bm{x^(k)} \notag
+\end{align}
+\]</div>
+<p>思路：如果我们知道<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(A\)</span><span class="heti-spacing"> </span></span>的一个特征值<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\lambda_i\)</span><span class="heti-spacing"> </span></span>最接近一个指定值<span><span class="heti-spacing"> </span><span class="arithmatex">\(p\)</span></span>，那么对于任意的<span><span class="heti-spacing"> </span><span class="arithmatex">\(j \ne i\)</span></span>，我们有<span><span class="heti-spacing"> </span><span class="arithmatex">\(|\lambda_i - p| &lt;&lt; |\lambda_j - p|\)</span></span>。并且，如果存在<span><span class="heti-spacing"> </span><span class="arithmatex">\((A - p')^{-1}\)</span></span>，那么逆幂法能以更快的收敛速度寻找到<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\((A - p')^{-1}\)</span><span class="heti-spacing"> </span></span>的主特征值<span><span class="heti-spacing"> </span><span class="arithmatex">\(\dfrac{1}{\lamnda_i - p}\)</span></span>。</p>
 <aside class="md-source-file">
 <span class="md-source-file__fact">
 <span class="md-icon" title="最后更新">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"></path></svg>
 </span>
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime">2025年3月2日 21:04:42</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年3月21日 15:57:34">2025年3月21日 15:57:34</span>
 </span>
 <span class="md-source-file__fact">
 <span class="md-icon" title="创建日期">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"></path></svg>
 </span>
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime">2025年3月2日 21:04:42</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年3月2日 21:04:42">2025年3月2日 21:04:42</span>
 </span>
 </aside>
 <p style="font-size: 30px; font-weight: 600">评论区</p>
@@ -684,7 +883,7 @@
 <div class="md-dialog__inner md-typeset"></div>
 </div>
 <script id="__config" type="application/json">{"base": "../..", "features": ["content.action.edit", "content.action.view", "content.code.copy", "content.code.annotate", "header.autohide", "navigation.tabs", "navigation.top", "navigation.footer", "navigation.indexes", "navigation.tracking", "navigation.prune", "search.share"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
-<script src="../../assets/javascripts/bundle.f1b6f286.min.js"></script>
+<script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
 <script src="../../js/anchor.js"></script>
 <script src="../../js/katex.js"></script>
 <script src="../../js/toc.js"></script>

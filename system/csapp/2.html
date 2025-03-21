@@ -9,9 +9,9 @@
 <link href="1.html" rel="prev"/>
 <link href="3.html" rel="next"/>
 <link href="../../assets/favicon.png" rel="icon"/>
-<meta content="mkdocs-1.6.1, mkdocs-material-9.6.3" name="generator"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.6.9" name="generator"/>
 <title>Chap 2: Representing and Manipulating Information - NoughtQ的笔记本</title>
-<link href="../../assets/stylesheets/main.d7758b05.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/main.4af4bdda.min.css" rel="stylesheet"/>
 <link href="../../assets/stylesheets/palette.06af60db.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=JetBrains+Mono,+LXGW+WenKai+Screen+GB+Screen:300,300i,400,400i,700,700i%7CJetBrains+Mono,+Consolas:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
@@ -1010,16 +1010,16 @@
 <p>本章介绍的知识偏向数学理论，若想深入了解与硬件相关的内容，推荐阅读我的<a href="../co/2.html">计组笔记<span><span class="heti-spacing"> </span>Chap 3</span></a>。</p>
 <p>这里不会记录过于基础的知识，比如各种进制的表示和转化之类的<span><span class="heti-spacing"> </span>...</span></p>
 </div>
-<p>本章会介绍三种最重要的表示数字的方法：<strong>无符号数</strong><span><span class="heti-spacing"> </span>(unsigned)</span>、<strong>补码</strong><span><span class="heti-spacing"> </span>(two's complement)</span>（对应符号数）和<strong>浮点数</strong><span><span class="heti-spacing"> </span>(floating-point)</span>，其中前两者都是整数的表示法。深入了解这些数字表示法，有助于我们在编写的代码在不同机器、操作系统或编译器上能够正确运行，而不会因为数值方面的问题产生<span><span class="heti-spacing"> </span>bug</span>，甚至安全漏洞（比如各种溢出<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
+<p>本章会介绍三种最重要的表示数字的方法：<strong>无符号数</strong>(unsigned)、<strong>补码</strong>(two's complement)（对应符号数）和<strong>浮点数</strong>(floating-point)，其中前两者都是整数的表示法。深入了解这些数字表示法，有助于我们在编写的代码在不同机器、操作系统或编译器上能够正确运行，而不会因为数值方面的问题产生<span><span class="heti-spacing"> </span>bug</span>，甚至安全漏洞（比如各种溢出<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
 <h2 id="information-storage">Information Storage<a class="headerlink" href="#information-storage" title="Permanent link">⚓︎</a></h2>
-<p>前一章介绍过，信息以<strong>字节</strong><span class="heti-skip"><span class="heti-spacing"> </span>(byte)<span class="heti-spacing"> </span></span>为基本单位（最小的可被处理的内存单元，注意不是位<span><span class="heti-spacing"> </span>(bit)</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，存储在内存中。计算机程序将内存视为一个很大的字节数组，称为虚拟内存；每个字节对应一个唯一的编号，称为地址；这一组地址就成为虚拟地址空间。</p>
-<p>而在之后的章节中，我们会了解到编译器和运行中的程序是怎样将内存空间分为更多的可管理单元，以存储不同的<strong>程序对象</strong><span><span class="heti-spacing"> </span>(program objects)</span>，即程序数据、指令和控制信息。以<span class="heti-skip"><span class="heti-spacing"> </span>C<span class="heti-spacing"> </span></span>语言的指针为例，指针的值为所指程序对象的首字节地址，并且通过类型<span class="heti-skip"><span class="heti-spacing"> </span>(type)<span class="heti-spacing"> </span></span>来决定如何读取程序对象的值。</p>
+<p>前一章介绍过，信息以<strong>字节</strong><span>(byte)<span class="heti-spacing"> </span></span>为基本单位（最小的可被处理的内存单元，注意不是位<span><span class="heti-spacing"> </span>(bit)</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，存储在内存中。计算机程序将内存视为一个很大的字节数组，称为虚拟内存；每个字节对应一个唯一的编号，称为地址；这一组地址就成为虚拟地址空间。</p>
+<p>而在之后的章节中，我们会了解到编译器和运行中的程序是怎样将内存空间分为更多的可管理单元，以存储不同的<strong>程序对象</strong>(program objects)，即程序数据、指令和控制信息。以<span class="heti-skip"><span class="heti-spacing"> </span>C<span class="heti-spacing"> </span></span>语言的指针为例，指针的值为所指程序对象的首字节地址，并且通过类型<span class="heti-skip"><span class="heti-spacing"> </span>(type)<span class="heti-spacing"> </span></span>来决定如何读取程序对象的值。</p>
 <div class="admonition warning">
 <p class="admonition-title">注意</p>
 <p>本笔记默认读者了解进制转换相关的知识，这里不再介绍这块内容。</p>
 </div>
 <h3 id="data-sizes">Data Sizes<a class="headerlink" href="#data-sizes" title="Permanent link">⚓︎</a></h3>
-<p>每台计算机都规定了一个<strong>字长</strong><span><span class="heti-spacing"> </span>(word size)</span>，表示名义上指针数据的大小。由字长决定的最重要的计算机系统参数是<u>虚拟地址空间的最大大小</u>——对于字长为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w\)</span> bit<span class="heti-spacing"> </span></span>的机器，程序最多能访问<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(2^w\)</span><span class="heti-spacing"> </span></span>个字节。近几年，最常见的机器字长为<span class="heti-skip"><span class="heti-spacing"> </span>32<span class="heti-spacing"> </span></span>位（现在已经很少了）或<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位，前者仅能表示<span class="heti-skip"><span class="heti-spacing"> </span>4GB<span class="heti-spacing"> </span></span>大小的虚拟地址空间，而后者可以表示<span class="heti-skip"><span class="heti-spacing"> </span>16EB<span class="heti-spacing"> </span></span>的巨大空间。大多数<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位的机器能够运行由<span class="heti-skip"><span class="heti-spacing"> </span>32<span class="heti-spacing"> </span></span>位机器编译的程序（向后兼容<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。对于<span class="heti-skip"><span class="heti-spacing"> </span>GCC<span class="heti-spacing"> </span></span>编译器，使用命令行参数 <code>-m32</code> 和 <code>-m64</code> 可以分别指定以<span class="heti-skip"><span class="heti-spacing"> </span>32<span class="heti-spacing"> </span></span>位或<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位机器编译<span class="heti-skip"><span class="heti-spacing"> </span>C<span class="heti-spacing"> </span></span>程序。</p>
+<p>每台计算机都规定了一个<strong>字长</strong>(word size)，表示名义上指针数据的大小。由字长决定的最重要的计算机系统参数是<u>虚拟地址空间的最大大小</u>——对于字长为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w\)</span> bit<span class="heti-spacing"> </span></span>的机器，程序最多能访问<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(2^w\)</span><span class="heti-spacing"> </span></span>个字节。近几年，最常见的机器字长为<span class="heti-skip"><span class="heti-spacing"> </span>32<span class="heti-spacing"> </span></span>位（现在已经很少了）或<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位，前者仅能表示<span class="heti-skip"><span class="heti-spacing"> </span>4GB<span class="heti-spacing"> </span></span>大小的虚拟地址空间，而后者可以表示<span class="heti-skip"><span class="heti-spacing"> </span>16EB<span class="heti-spacing"> </span></span>的巨大空间。大多数<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位的机器能够运行由<span class="heti-skip"><span class="heti-spacing"> </span>32<span class="heti-spacing"> </span></span>位机器编译的程序（向后兼容<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。对于<span class="heti-skip"><span class="heti-spacing"> </span>GCC<span class="heti-spacing"> </span></span>编译器，使用命令行参数 <code>-m32</code> 和 <code>-m64</code> 可以分别指定以<span class="heti-skip"><span class="heti-spacing"> </span>32<span class="heti-spacing"> </span></span>位或<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位机器编译<span class="heti-skip"><span class="heti-spacing"> </span>C<span class="heti-spacing"> </span></span>程序。</p>
 <p><span>C<span class="heti-spacing"> </span></span>语言支持多种整数和浮点数类型，如下表所示：</p>
 <div style="text-align: center">
 <img src="images/C2/1.png" width="50%"/>
@@ -1029,12 +1029,12 @@
 <h3 id="addressing-and-byte-ordering">Addressing and Byte Ordering<a class="headerlink" href="#addressing-and-byte-ordering" title="Permanent link">⚓︎</a></h3>
 <p>对于由多个字节构成的程序对象，我们需要确定两件事：对象的地址是什么，即如何寻址；以及其字节在内存中的排列顺序。</p>
 <ul>
-<li><strong>寻址</strong><span><span class="heti-spacing"> </span>(addressing)</span>：多字节对象是一个连续的字节序列，它的地址即为对象内字节的最小地址（即首字节地址）</li>
+<li><strong>寻址</strong>(addressing)：多字节对象是一个连续的字节序列，它的地址即为对象内字节的最小地址（即首字节地址）</li>
 <li>
-<p><strong>字节顺序</strong><span><span class="heti-spacing"> </span>(byte ordering)</span>：分为小端序和大端序</p>
+<p><strong>字节顺序</strong>(byte ordering)：分为小端序和大端序</p>
 <ul>
-<li><strong>小端序</strong><span><span class="heti-spacing"> </span>(little endian)</span>：低位字节在低地址上，高位字节在高地址上。大多数与<span class="heti-skip"><span class="heti-spacing"> </span>Intel<span class="heti-spacing"> </span></span>兼容的机器、<span>Android<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>IOS<span class="heti-spacing"> </span></span>这两个操作系统采用小端序</li>
-<li><strong>大端序</strong><span><span class="heti-spacing"> </span>(big endian)</span>：低位字节在高地址上，高位字节在低地址上。大多数来自<span class="heti-skip"><span class="heti-spacing"> </span>IBM<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>Oracle<span class="heti-spacing"> </span></span>的机器采用大端序</li>
+<li><strong>小端序</strong>(little endian)：低位字节在低地址上，高位字节在高地址上。大多数与<span class="heti-skip"><span class="heti-spacing"> </span>Intel<span class="heti-spacing"> </span></span>兼容的机器、<span>Android<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>IOS<span class="heti-spacing"> </span></span>这两个操作系统采用小端序</li>
+<li><strong>大端序</strong>(big endian)：低位字节在高地址上，高位字节在低地址上。大多数来自<span class="heti-skip"><span class="heti-spacing"> </span>IBM<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>Oracle<span class="heti-spacing"> </span></span>的机器采用大端序</li>
 </ul>
 <p></p><div style="text-align: center">
 <img src="images/C2/2.png" width="50%"/>
@@ -1046,7 +1046,7 @@
 <ul>
 <li>通过网络在不同的机器上进行数据通信：如果一个机器是大端序的，另一个机器是小端序的，且不对数据做任何处理，那么这两台机器因按不同顺序解读字节，从而带来问题。因此，网络应用会按网络标准对数据做一步中间转换，然后再将数据发送给其他机器或者接收数据</li>
 <li>
-<p>查看表示整数数据的字节序列：假如我们通过<strong>反汇编器</strong><span class="heti-skip"><span class="heti-spacing"> </span>(disassmbler)<span class="heti-spacing"> </span></span>将可执行文件的机器码转化为<span class="heti-skip"><span class="heti-spacing"> </span>x86-64<span class="heti-spacing"> </span></span>汇编指令：</p>
+<p>查看表示整数数据的字节序列：假如我们通过<strong>反汇编器</strong><span>(disassmbler)<span class="heti-spacing"> </span></span>将可执行文件的机器码转化为<span class="heti-skip"><span class="heti-spacing"> </span>x86-64<span class="heti-spacing"> </span></span>汇编指令：</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a>4004d3: 01 05 43 0b 20 00        add    %eax, 0x200b43(%rip)
 </span></code></pre></div>
 <p>这条指令对应的机器码的后四个字节 <code>43 0b 20 00</code> 对应指令中的 <code>0x200b43</code>，而这台机器用小端序表示字节顺序，因此那四个字节为 <code>00 20 0b 43</code>，这样就与指令上的数字对应上了</p>
@@ -1151,11 +1151,11 @@ B2U_w: \{0, 1\}^w \rightarrow \{0, \dots, UMax_w\}
 \]</div>
 <div class="admonition note">
 <p class="admonition-title">无符号数编码的唯一性<span><span class="heti-spacing"> </span>(uniqueness)</span></p>
-<p>函数<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(B2U_w\)</span><span class="heti-spacing"> </span></span>是一个<strong>双射</strong><span><span class="heti-spacing"> </span>(bijection)</span>。</p>
+<p>函数<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(B2U_w\)</span><span class="heti-spacing"> </span></span>是一个<strong>双射</strong>(bijection)。</p>
 </div>
 <p>因此，<span><span class="arithmatex">\(B2U_w\)</span><span class="heti-spacing"> </span></span>有一个反函数<span><span class="heti-spacing"> </span><span class="arithmatex">\(U2B_w\)</span></span>，可以将一个范围在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(0 \sim 2^w - 1\)</span><span class="heti-spacing"> </span></span>内的无符号数映射到唯一的一个<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w\)</span><span class="heti-spacing"> </span></span>位位向量上。</p>
 <h3 id="twos-complement-encodings">Two's Complement Encodings<a class="headerlink" href="#twos-complement-encodings" title="Permanent link">⚓︎</a></h3>
-<p>对于符号数，计算机中最常用的编码是<strong>补码</strong><span><span class="heti-spacing"> </span>(two's complement)</span>，用最高位表示<strong>符号位</strong><span><span class="heti-spacing"> </span>(sign bit)</span>。</p>
+<p>对于符号数，计算机中最常用的编码是<strong>补码</strong>(two's complement)，用最高位表示<strong>符号位</strong>(sign bit)。</p>
 <div class="admonition note">
 <p class="admonition-title">补码编码的定义</p>
 <p>对于位向量<span><span class="heti-spacing"> </span><span class="arithmatex">\(\vec{x} = [x_{w-1}, x_{w-2}, \dots, x_0]\)</span></span>，对应的二进制<span class="heti-skip"><span class="heti-spacing"> </span>-&gt;<span class="heti-spacing"> </span></span>补码的函数为：</p>
@@ -1173,7 +1173,7 @@ B2T_w: \{0, 1\}^w \rightarrow \{TMin_w, \dots, TMax_w\}
 \]</div>
 <div class="admonition note">
 <p class="admonition-title">补码编码的唯一性</p>
-<p>函数<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(B2T_w\)</span><span class="heti-spacing"> </span></span>是一个<strong>双射</strong><span><span class="heti-spacing"> </span>(bijection)</span>。</p>
+<p>函数<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(B2T_w\)</span><span class="heti-spacing"> </span></span>是一个<strong>双射</strong>(bijection)。</p>
 </div>
 <h3 id="signed-vs-unsigned">Signed vs. Unsigned<a class="headerlink" href="#signed-vs-unsigned" title="Permanent link">⚓︎</a></h3>
 <p>现在将具体值（都是<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>的幂）代入<span><span class="heti-spacing"> </span><span class="arithmatex">\(w\)</span></span>，获得<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(UMax, TMin, TMax\)</span><span class="heti-spacing"> </span></span>等值，结果如下所示：</p>
@@ -1243,18 +1243,18 @@ U2T_w(x) = \begin{cases}u, &amp; u \le TMax_w \\ u - 2^w, &amp; u \ge TMax_w\end
 </ul>
 </div>
 <h3 id="numbers-expansion-and-truncation">Numbers Expansion and Truncation<a class="headerlink" href="#numbers-expansion-and-truncation" title="Permanent link">⚓︎</a></h3>
-<p>整数之间除了有符号数与无符号数之间的转换外，还有不同位长的整数之间的转换，包括<strong>扩展</strong><span class="heti-skip"><span class="heti-spacing"> </span>(expansion)<span class="heti-spacing"> </span></span>和<strong>截断</strong><span class="heti-skip"><span class="heti-spacing"> </span>(trunctation)<span class="heti-spacing"> </span></span>两类操作。</p>
+<p>整数之间除了有符号数与无符号数之间的转换外，还有不同位长的整数之间的转换，包括<strong>扩展</strong><span>(expansion)<span class="heti-spacing"> </span></span>和<strong>截断</strong><span>(trunctation)<span class="heti-spacing"> </span></span>两类操作。</p>
 <div class="admonition info">
 <p class="admonition-title">注</p>
 <p>在<span class="heti-skip"><span class="heti-spacing"> </span>C<span class="heti-spacing"> </span></span>语言中，通过强制类型转换来同时改变整数类型的大小（位宽）和类型（符号数<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>无符号数）时，会先改变大小，再改变类型。比如<code>short</code><span><span class="heti-spacing"> </span>-&gt;</span> <code>unsigned</code>，等价操作为 <code>(unsigned) (int) short</code>。</p>
 </div>
 <h4 id="expansion">Expansion<a class="headerlink" href="#expansion" title="Permanent link">⚓︎</a></h4>
 <div class="admonition note">
-<p class="admonition-title">无符号数的<strong>零扩展</strong><span><span class="heti-spacing"> </span>(zero expansion)</span></p>
+<p class="admonition-title">无符号数的<strong>零扩展</strong>(zero expansion)</p>
 <p>定义位宽为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w\)</span><span class="heti-spacing"> </span></span>的位向量<span><span class="heti-spacing"> </span><span class="arithmatex">\(\vec{u} = [u_{w-1}, u_{w-2}, \dots, u_0]\)</span></span>，以及位宽为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w'\)</span><span class="heti-spacing"> </span></span>的位向量<span><span class="heti-spacing"> </span><span class="arithmatex">\(\vec{u'} = [0, \dots, 0, u_{w-1}, u_{w-2}, \dots, u_0]\)</span></span>，其中<span><span class="heti-spacing"> </span><span class="arithmatex">\(w' &gt; w\)</span></span>，那么<span><span class="heti-spacing"> </span><span class="arithmatex">\(B2U_w(\vec{u}) = B2U_{w'}(\vec{u'})\)</span></span>。</p>
 </div>
 <div class="admonition note">
-<p class="admonition-title">补码的<strong>符号扩展</strong><span><span class="heti-spacing"> </span>(sign expansion)</span></p>
+<p class="admonition-title">补码的<strong>符号扩展</strong>(sign expansion)</p>
 <p>定义位宽为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w\)</span><span class="heti-spacing"> </span></span>的位向量<span><span class="heti-spacing"> </span><span class="arithmatex">\(\vec{x} = [\underbrace{x_{w-1}}, x_{w-2}, \dots, x_0]\)</span></span>，以及位宽为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w'\)</span><span class="heti-spacing"> </span></span>的位向量<span><span class="heti-spacing"> </span><span class="arithmatex">\(\vec{x'} = [\underbrace{x_{w-1}, \dots, x_{w-1}, x_{w-1}}, x_{w-2}, \dots, x_0]\)</span></span>，其中<span><span class="heti-spacing"> </span><span class="arithmatex">\(w' &gt; w\)</span></span>，那么<span><span class="heti-spacing"> </span><span class="arithmatex">\(B2T_w(\vec{x}) = B2T_{w'}(\vec{x'})\)</span></span>。</p>
 </div>
 <h4 id="trunctation">Trunctation<a class="headerlink" href="#trunctation" title="Permanent link">⚓︎</a></h4>
@@ -1268,7 +1268,7 @@ U2T_w(x) = \begin{cases}u, &amp; u \le TMax_w \\ u - 2^w, &amp; u \ge TMax_w\end
 </div>
 <h2 id="integer-arithmetic">Integer Arithmetic<a class="headerlink" href="#integer-arithmetic" title="Permanent link">⚓︎</a></h2>
 <h3 id="unsigned-arithmetic">Unsigned Arithmetic<a class="headerlink" href="#unsigned-arithmetic" title="Permanent link">⚓︎</a></h3>
-<p>对于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w\)</span><span class="heti-spacing"> </span></span>位的无符号数加法，其结果有可能超过<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w\)</span><span class="heti-spacing"> </span></span>位，达到<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w + 1\)</span><span class="heti-spacing"> </span></span>位，这种情况称为<strong>溢出</strong><span><span class="heti-spacing"> </span>(overflow)</span>。</p>
+<p>对于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w\)</span><span class="heti-spacing"> </span></span>位的无符号数加法，其结果有可能超过<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w\)</span><span class="heti-spacing"> </span></span>位，达到<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w + 1\)</span><span class="heti-spacing"> </span></span>位，这种情况称为<strong>溢出</strong>(overflow)。</p>
 <div class="admonition note">
 <p class="admonition-title">无符号数加法<span><span class="heti-spacing"> </span><span class="arithmatex">\(+_w^u\)</span></span></p>
 <p>对于<span><span class="heti-spacing"> </span><span class="arithmatex">\(x, y \in [0, 2^w)\)</span></span>，有：</p>
@@ -1285,11 +1285,11 @@ x +_w^u y = \begin{cases}x + y, &amp; x + y &lt; 2^w \quad \text{Normal} \\ x + 
 <p class="admonition-title">检测无符号数加法的溢出</p>
 <p>对于<span><span class="heti-spacing"> </span><span class="arithmatex">\(x, y \in [0, UMax_w]\)</span></span>，令<span><span class="heti-spacing"> </span><span class="arithmatex">\(s \doteq x +_w^u y\)</span></span>，那么当且仅当<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(s &lt; x\)</span><span class="heti-spacing"> </span></span>或<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(s &lt; y\)</span><span class="heti-spacing"> </span></span>时，计算<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(s\)</span><span class="heti-spacing"> </span></span>时溢出。</p>
 </div>
-<p>可以看到，无符号数加法本质上是模除加法<span><span class="heti-spacing"> </span>(modular addition)</span>，这种运算构成了一种称为<strong>阿贝尔群</strong><span class="heti-skip"><span class="heti-spacing"> </span>(abelian group)<span class="heti-spacing"> </span></span>的数学结构，该结构具备以下特征：</p>
+<p>可以看到，无符号数加法本质上是模除加法<span><span class="heti-spacing"> </span>(modular addition)</span>，这种运算构成了一种称为<strong>阿贝尔群</strong><span>(abelian group)<span class="heti-spacing"> </span></span>的数学结构，该结构具备以下特征：</p>
 <ul>
 <li>满足交换律<span class="heti-skip"><span class="heti-spacing"> </span>(commutative)<span class="heti-spacing"> </span></span>和结合律<span><span class="heti-spacing"> </span>(associative)</span></li>
 <li>有单位元素<span><span class="heti-spacing"> </span>0</span></li>
-<li>每个元素都有一个<strong>加法逆元</strong><span><span class="heti-spacing"> </span>(additive inverse)</span>，即对于任何值<span><span class="heti-spacing"> </span><span class="arithmatex">\(x\)</span></span>，都有某个值<span><span class="heti-spacing"> </span><span class="arithmatex">\(-_w^u x\)</span></span>，使得<span><span class="heti-spacing"> </span><span class="arithmatex">\(-_w^u x +_w^u x = 0\)</span></span>。加法逆元运算可按以下原理描述：</li>
+<li>每个元素都有一个<strong>加法逆元</strong>(additive inverse)，即对于任何值<span><span class="heti-spacing"> </span><span class="arithmatex">\(x\)</span></span>，都有某个值<span><span class="heti-spacing"> </span><span class="arithmatex">\(-_w^u x\)</span></span>，使得<span><span class="heti-spacing"> </span><span class="arithmatex">\(-_w^u x +_w^u x = 0\)</span></span>。加法逆元运算可按以下原理描述：</li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">无符号数求反<span><span class="heti-spacing"> </span>(negation)</span></p>
@@ -1316,8 +1316,8 @@ x +_w^t y &amp; = \begin{cases}x + y - 2^w, &amp; 2^{w-1} &lt; x + y \quad \text
 </div>
 <p>可以看到，补码加法的溢出分为两类：</p>
 <ul>
-<li><strong>正溢出</strong><span><span class="heti-spacing"> </span>(positive overflow)</span>：<span class="arithmatex">\(x + y &gt; TMax_w\)</span></li>
-<li><strong>负溢出</strong><span><span class="heti-spacing"> </span>(negative overflow)</span>：<span class="arithmatex">\(x + y &lt; TMin_w\)</span></li>
+<li><strong>正溢出</strong>(positive overflow)：<span class="arithmatex">\(x + y &gt; TMax_w\)</span></li>
+<li><strong>负溢出</strong>(negative overflow)：<span class="arithmatex">\(x + y &lt; TMin_w\)</span></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">检测补码加法的溢出</p>
@@ -1418,14 +1418,14 @@ T2B_w(x *_w^t y) = U2B(x' *_w^u y')
 <ul>
 <li><strong>规范化<span class="heti-skip"><span class="heti-spacing"> </span>(normalized)<span class="heti-spacing"> </span></span>值</strong>：这是最常见的情况——当指数位不是全<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>或全<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>时即为规范化值。<ul>
 <li>指数值<span><span class="heti-spacing"> </span><span class="arithmatex">\(E = e - Bias\)</span></span>，其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(e\)</span><span class="heti-spacing"> </span></span>为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(e_{k-1} \dots e_1 e_0\)</span><span class="heti-spacing"> </span></span>的无符号数表示，<span><span class="arithmatex">\(Bias\)</span><span class="heti-spacing"> </span></span>为偏移值<span><span class="heti-spacing"> </span><span class="arithmatex">\(2^{k-1} - 1\)</span></span>（单精度为<span><span class="heti-spacing"> </span>127</span>，双精度为<span><span class="heti-spacing"> </span>1023</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，因此对于单精度，<span class="arithmatex">\(E \in [-126, +127]\)</span>；对于双精度，<span class="arithmatex">\(E \in [-1022. 1023]\)</span></li>
-<li>尾数值<span><span class="heti-spacing"> </span><span class="arithmatex">\(f \in [0, 1)\)</span></span>，对应的二进制表示为<span><span class="heti-spacing"> </span><span class="arithmatex">\(0.f_{n-1} \dots f_1 f_0\)</span></span>。而有效值<span><span class="heti-spacing"> </span><span class="arithmatex">\(M = 1 + f \in[1, 2)\)</span></span>，因此在二进制表示法中，小数点前的<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>被隐藏起来了，这称为<span><span class="heti-spacing"> </span>"</span><strong><span><span class="heti-spacing"> </span>implied leading 1</span></strong><span><span class="heti-spacing"> </span>"</span></li>
+<li>尾数值<span><span class="heti-spacing"> </span><span class="arithmatex">\(f \in [0, 1)\)</span></span>，对应的二进制表示为<span><span class="heti-spacing"> </span><span class="arithmatex">\(0.f_{n-1} \dots f_1 f_0\)</span></span>。而有效值<span><span class="heti-spacing"> </span><span class="arithmatex">\(M = 1 + f \in[1, 2)\)</span></span>，因此在二进制表示法中，小数点前的<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>被隐藏起来了，这称为<span><span class="heti-spacing"> </span>"</span><strong>implied leading 1</strong>"</li>
 </ul>
 </li>
 <li><strong>非规范化<span class="heti-skip"><span class="heti-spacing"> </span>(denormalized)<span class="heti-spacing"> </span></span>值</strong>：当指数位全为<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>时，表示的数为非规范化值<ul>
 <li>指数值<span><span class="heti-spacing"> </span><span class="arithmatex">\(E = 1 - Bias\)</span></span>；有效值<span><span class="heti-spacing"> </span><span class="arithmatex">\(M = f\)</span></span>，即没有用到<span><span class="heti-spacing"> </span>"implied leading 1"</span></li>
 <li>非规范化值的作用：<ul>
 <li>提供了能够表示<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>的方法：因为规范化形式下，<span class="arithmatex">\(M \ge 1\)</span>，因而无法表示<span><span class="heti-spacing"> </span>0</span>。实际上，当二进制位全为<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>时，表示的就是<span><span class="heti-spacing"> </span>+0.0</span>；而当符号位为<span><span class="heti-spacing"> </span>1</span>，其余位为<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>时，表示的是<span><span class="heti-spacing"> </span>-0.0</span>。有时这两种<span class="heti-skip"><span class="heti-spacing"> </span>"0"<span class="heti-spacing"> </span></span>表示的含义不同</li>
-<li>用于表示非常接近<span class="heti-skip"><span class="heti-spacing"> </span>0.0<span class="heti-spacing"> </span></span>的数字，这样的性质称为<strong>逐渐下溢</strong><span><span class="heti-spacing"> </span>(gradual underflow)</span></li>
+<li>用于表示非常接近<span class="heti-skip"><span class="heti-spacing"> </span>0.0<span class="heti-spacing"> </span></span>的数字，这样的性质称为<strong>逐渐下溢</strong>(gradual underflow)</li>
 </ul>
 </li>
 </ul>
@@ -1447,15 +1447,15 @@ T2B_w(x *_w^t y) = U2B(x' *_w^u y')
 <li>最大的规范化值<span><span class="heti-spacing"> </span><span class="arithmatex">\(V = (1 - 2^{-n-1}) \times 2^{2^{k-1}}\)</span></span></li>
 </ul>
 <h3 id="rounding">Rounding<a class="headerlink" href="#rounding" title="Permanent link">⚓︎</a></h3>
-<p>受限于二进制表示的范围和精度，浮点数只能近似表示实数。但对于一个实数值<span><span class="heti-spacing"> </span><span class="arithmatex">\(x\)</span></span>，我们希望找到一个最接近<span><span class="heti-spacing"> </span><span class="arithmatex">\(x\)</span></span>，且能以浮点数形式表示的值<span><span class="heti-spacing"> </span><span class="arithmatex">\(x'\)</span></span>，这样的操作称为<strong>舍入</strong><span><span class="heti-spacing"> </span>(rounding)</span>。<span>IEEE<span class="heti-spacing"> </span></span>浮点数格式定义了以下四种不同的<strong>舍入模式</strong><span><span class="heti-spacing"> </span>(rounding modes)</span>：</p>
+<p>受限于二进制表示的范围和精度，浮点数只能近似表示实数。但对于一个实数值<span><span class="heti-spacing"> </span><span class="arithmatex">\(x\)</span></span>，我们希望找到一个最接近<span><span class="heti-spacing"> </span><span class="arithmatex">\(x\)</span></span>，且能以浮点数形式表示的值<span><span class="heti-spacing"> </span><span class="arithmatex">\(x'\)</span></span>，这样的操作称为<strong>舍入</strong>(rounding)。<span>IEEE<span class="heti-spacing"> </span></span>浮点数格式定义了以下四种不同的<strong>舍入模式</strong>(rounding modes)：</p>
 <ul>
-<li><strong>舍入到偶数</strong><span><span class="heti-spacing"> </span>(round-to-even/round-to-nearest)</span>：默认的舍入模式。会尝试舍入到最近的数，如果向上或向下舍入误差相等，那么会舍入到最近的偶数<ul>
+<li><strong>舍入到偶数</strong>(round-to-even/round-to-nearest)：默认的舍入模式。会尝试舍入到最近的数，如果向上或向下舍入误差相等，那么会舍入到最近的偶数<ul>
 <li>如果只是向上或向下舍入，那么对于大量的数据，它们的平均值会逐渐偏离真实的平均值（过大或过小<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，而舍入到偶数的策略能尽可能避免舍入的统计偏差</li>
 </ul>
 </li>
-<li><strong>舍入到零</strong><span><span class="heti-spacing"> </span>(round-toward-zero)</span>：对于正数向下舍入，对于负数向上舍入（使得近似值尽可能接近<span><span class="heti-spacing"> </span>0</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，也就是说舍入得到的值<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\hat{x}\)</span><span class="heti-spacing"> </span></span>满足<span><span class="heti-spacing"> </span><span class="arithmatex">\(|\hat{x}| \le |x|\)</span></span></li>
-<li><strong>向下舍入</strong><span><span class="heti-spacing"> </span>(round-down)</span>：舍入得到的值<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x^-\)</span><span class="heti-spacing"> </span></span>满足<span><span class="heti-spacing"> </span><span class="arithmatex">\(x^- \le x\)</span></span></li>
-<li><strong>向上舍入</strong><span><span class="heti-spacing"> </span>(round-up)</span>：舍入得到的值<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x^+\)</span><span class="heti-spacing"> </span></span>满足<span><span class="heti-spacing"> </span><span class="arithmatex">\(x \le x^+\)</span></span></li>
+<li><strong>舍入到零</strong>(round-toward-zero)：对于正数向下舍入，对于负数向上舍入（使得近似值尽可能接近<span><span class="heti-spacing"> </span>0</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，也就是说舍入得到的值<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\hat{x}\)</span><span class="heti-spacing"> </span></span>满足<span><span class="heti-spacing"> </span><span class="arithmatex">\(|\hat{x}| \le |x|\)</span></span></li>
+<li><strong>向下舍入</strong>(round-down)：舍入得到的值<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x^-\)</span><span class="heti-spacing"> </span></span>满足<span><span class="heti-spacing"> </span><span class="arithmatex">\(x^- \le x\)</span></span></li>
+<li><strong>向上舍入</strong>(round-up)：舍入得到的值<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x^+\)</span><span class="heti-spacing"> </span></span>满足<span><span class="heti-spacing"> </span><span class="arithmatex">\(x \le x^+\)</span></span></li>
 </ul>
 <details class="example" open="open">
 <summary>例子</summary>
@@ -1498,7 +1498,7 @@ T2B_w(x *_w^t y) = U2B(x' *_w^u y')
 <li><code>int</code> -&gt; <code>float</code>：不会溢出，但可能有舍入</li>
 <li><code>int</code>/<code>float</code> -&gt; <code>double</code>：数值会被保留（因为范围和精度都变大了）</li>
 <li><code>double</code> -&gt; <code>float</code>：值可能会溢出（范围缩小<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，且可能有舍入（精度减小）</li>
-<li><code>float</code>/<code>double</code> -&gt; <code>int</code>：值会舍入到整数，且可能会溢出（此时得到的值称为<strong>整数不确定</strong><span class="heti-skip"><span class="heti-spacing"> </span>(integer indefinite)<span class="heti-spacing"> </span></span>值）</li>
+<li><code>float</code>/<code>double</code> -&gt; <code>int</code>：值会舍入到整数，且可能会溢出（此时得到的值称为<strong>整数不确定</strong><span>(integer indefinite)<span class="heti-spacing"> </span></span>值）</li>
 </ul>
 <h2 id="asides">Asides<a class="headerlink" href="#asides" title="Permanent link">⚓︎</a></h2>
 <ul>
@@ -1545,8 +1545,8 @@ T2B_w(x *_w^t y) = U2B(x' *_w^u y')
 <li>
 <p>无符号数的其他表示法</p>
 <ul>
-<li><strong>反码</strong><span><span class="heti-spacing"> </span>(one's complement)</span>：<span class="arithmatex">\(B2O_w(\vec{x}) \doteq -x_{w-1}(2^{w-1} - 1) + \sum\limits_{i=0}^{w-2} x_i 2^i\)</span></li>
-<li><strong>原码</strong><span><span class="heti-spacing"> </span>(sign magnitude)</span>：<span class="arithmatex">\(B2S_w(\vec{x}) \doteq (-1)^{x_{w-1}} \cdot \Big(\sum\limits_{i=0}^{w-2} x_i 2^i\Big)\)</span></li>
+<li><strong>反码</strong>(one's complement)：<span class="arithmatex">\(B2O_w(\vec{x}) \doteq -x_{w-1}(2^{w-1} - 1) + \sum\limits_{i=0}^{w-2} x_i 2^i\)</span></li>
+<li><strong>原码</strong>(sign magnitude)：<span class="arithmatex">\(B2S_w(\vec{x}) \doteq (-1)^{x_{w-1}} \cdot \Big(\sum\limits_{i=0}^{w-2} x_i 2^i\Big)\)</span></li>
 </ul>
 <p>之所以不用这些表示法，有一个重要的原因在于它们能够同时表示<span><span class="heti-spacing"> </span>+0</span>（[00...0]）和<span><span class="heti-spacing"> </span>-0</span>（[11...1]）</p>
 </li>
@@ -1563,13 +1563,13 @@ T2B_w(x *_w^t y) = U2B(x' *_w^u y')
 <span class="md-icon" title="最后更新">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"></path></svg>
 </span>
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime">2025年3月2日 21:04:42</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年3月21日 15:57:34">2025年3月21日 15:57:34</span>
 </span>
 <span class="md-source-file__fact">
 <span class="md-icon" title="创建日期">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"></path></svg>
 </span>
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime">2025年3月2日 21:04:42</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年3月2日 21:04:42">2025年3月2日 21:04:42</span>
 </span>
 </aside>
 <p style="font-size: 30px; font-weight: 600">评论区</p>
@@ -1695,7 +1695,7 @@ T2B_w(x *_w^t y) = U2B(x' *_w^u y')
 <div class="md-dialog__inner md-typeset"></div>
 </div>
 <script id="__config" type="application/json">{"base": "../..", "features": ["content.action.edit", "content.action.view", "content.code.copy", "content.code.annotate", "header.autohide", "navigation.tabs", "navigation.top", "navigation.footer", "navigation.indexes", "navigation.tracking", "navigation.prune", "search.share"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
-<script src="../../assets/javascripts/bundle.f1b6f286.min.js"></script>
+<script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
 <script src="../../js/anchor.js"></script>
 <script src="../../js/katex.js"></script>
 <script src="../../js/toc.js"></script>

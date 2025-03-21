@@ -9,9 +9,9 @@
 <link href="2.html" rel="prev"/>
 <link href="4.html" rel="next"/>
 <link href="../../assets/favicon.png" rel="icon"/>
-<meta content="mkdocs-1.6.1, mkdocs-material-9.6.3" name="generator"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.6.9" name="generator"/>
 <title>Chap 3: Arithmetic for Computer - NoughtQ的笔记本</title>
-<link href="../../assets/stylesheets/main.d7758b05.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/main.4af4bdda.min.css" rel="stylesheet"/>
 <link href="../../assets/stylesheets/palette.06af60db.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=JetBrains+Mono,+LXGW+WenKai+Screen+GB+Screen:300,300i,400,400i,700,700i%7CJetBrains+Mono,+Consolas:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
@@ -944,7 +944,7 @@
 </ul>
 </div>
 <h2 id="overflow">Overflow<a class="headerlink" href="#overflow" title="Permanent link">⚓︎</a></h2>
-<p>在加法或减法的运算中，<strong>溢出</strong><span class="heti-skip"><span class="heti-spacing"> </span>(overflow)<span class="heti-spacing"> </span></span>是我们常常会遇到的问题。下面总结一下（符号数的）溢出会<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>不会出现的情况：</p>
+<p>在加法或减法的运算中，<strong>溢出</strong><span>(overflow)<span class="heti-spacing"> </span></span>是我们常常会遇到的问题。下面总结一下（符号数的）溢出会<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>不会出现的情况：</p>
 <ul>
 <li>加法<ul>
 <li>不会溢出：两个符号不同的操作数相加</li>
@@ -962,7 +962,7 @@
 <img src="images/C3/22.png" width="60%"/>
 </div>
 <ul>
-<li>对于<strong>无符号数</strong>，我们会将“溢出”看作<strong>进位</strong><span class="heti-skip"><span class="heti-spacing"> </span>(carry)<span class="heti-spacing"> </span></span>或<strong>借位</strong><span><span class="heti-spacing"> </span>(borrow)</span>，因此计算机会将其视为一般情况而不做特殊处理</li>
+<li>对于<strong>无符号数</strong>，我们会将“溢出”看作<strong>进位</strong><span>(carry)<span class="heti-spacing"> </span></span>或<strong>借位</strong>(borrow)，因此计算机会将其视为一般情况而不做特殊处理</li>
 <li>对于<strong>符号数</strong>，计算机提供了以下应对<strong>溢出</strong>的处理方式：<ul>
 <li><span>ALU<span class="heti-spacing"> </span></span>检测到溢出问题</li>
 <li>处理器会抛出<a href="4.html#exceptions">异常</a><span class="heti-skip"><span class="heti-spacing"> </span>(exception)<span class="heti-spacing"> </span></span>或中断<span><span class="heti-spacing"> </span>(interrupt)</span>，将指令地址保存在特定的寄存器<span class="heti-skip"><span class="heti-spacing"> </span>EPC<span class="heti-spacing"> </span></span>上</li>
@@ -996,7 +996,7 @@ D. 0x12 + 0x78</p>
 </details>
 <p>具体的加减法由<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>来实现，下面我们将会从零开始搭建<span><span class="heti-spacing"> </span>ALU~</span></p>
 <h2 id="constructing-a-basic-alu">Constructing a Basic ALU<a class="headerlink" href="#constructing-a-basic-alu" title="Permanent link">⚓︎</a></h2>
-<p><strong>算术逻辑单元</strong><span class="heti-skip"><span class="heti-spacing"> </span>(arithmetic logic unit,<span class="heti-spacing"> </span></span><strong><span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span></strong><span class="heti-skip"><span class="heti-spacing"> </span>)<span class="heti-spacing"> </span></span>用于执行各种类型的算术（加、减等）和逻辑（与、或等）运算。由于<span class="heti-skip"><span class="heti-spacing"> </span>RISC-V<span class="heti-spacing"> </span></span>寄存器是<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位宽的，因此我们需要设计<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位宽的<span><span class="heti-spacing"> </span>ALU</span>。对于初学<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>的各位，先从学习<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>位的<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>的搭建开始吧！</p>
+<p><strong>算术逻辑单元</strong>(arithmetic logic unit, <strong>ALU</strong><span>)<span class="heti-spacing"> </span></span>用于执行各种类型的算术（加、减等）和逻辑（与、或等）运算。由于<span class="heti-skip"><span class="heti-spacing"> </span>RISC-V<span class="heti-spacing"> </span></span>寄存器是<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位宽的，因此我们需要设计<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位宽的<span><span class="heti-spacing"> </span>ALU</span>。对于初学<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>的各位，先从学习<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>位的<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>的搭建开始吧！</p>
 <h3 id="a-1-bit-alu">A 1-Bit ALU<a class="headerlink" href="#a-1-bit-alu" title="Permanent link">⚓︎</a></h3>
 <p>我们希望这个<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>位的<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>能够实现：</p>
 <ul>
@@ -1027,12 +1027,12 @@ D. 0x12 + 0x78</p>
 <img src="images/C3/4.png" width="40%"/>
 </div>
 <h3 id="a-64-bit-alu">A 64-Bit ALU<a class="headerlink" href="#a-64-bit-alu" title="Permanent link">⚓︎</a></h3>
-<p>现在我们手边有了<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>位的<span><span class="heti-spacing"> </span>ALU</span>，要想构建一个<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位的<span><span class="heti-spacing"> </span>ALU</span>，很自然的想法是：将这些<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>位<span><span class="heti-spacing"> </span>ALU</span>（可看作黑箱，此时我们并不需关心底层的实现细节）一个个串连起来，此时每个<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>的进位出<span class="heti-skip"><span class="heti-spacing"> </span>(CarryOut)<span class="heti-spacing"> </span></span>和下一个<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>的进位入<span class="heti-skip"><span class="heti-spacing"> </span>(CarryIn)<span class="heti-spacing"> </span></span>相连。这样的话，单个的进位就会从最低位一直传到最高位，因此我们把这种加法器称为<a href="../dld/3.html#ripple-carry-adder"><strong>行波加法器</strong></a><span><span class="heti-spacing"> </span>(ripple carry adder)</span>，最终效果如下图所示：</p>
+<p>现在我们手边有了<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>位的<span><span class="heti-spacing"> </span>ALU</span>，要想构建一个<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位的<span><span class="heti-spacing"> </span>ALU</span>，很自然的想法是：将这些<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>位<span><span class="heti-spacing"> </span>ALU</span>（可看作黑箱，此时我们并不需关心底层的实现细节）一个个串连起来，此时每个<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>的进位出<span class="heti-skip"><span class="heti-spacing"> </span>(CarryOut)<span class="heti-spacing"> </span></span>和下一个<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>的进位入<span class="heti-skip"><span class="heti-spacing"> </span>(CarryIn)<span class="heti-spacing"> </span></span>相连。这样的话，单个的进位就会从最低位一直传到最高位，因此我们把这种加法器称为<a href="../dld/3.html#ripple-carry-adder"><strong>行波加法器</strong></a>(ripple carry adder)，最终效果如下图所示：</p>
 <div style="text-align: center">
 <img src="images/C3/5.png" width="40%"/>
 </div>
 <blockquote>
-<p>正如数逻提到过的，这是一种<strong>迭代电路</strong><span><span class="heti-spacing"> </span>(iterative circuit)</span></p>
+<p>正如数逻提到过的，这是一种<strong>迭代电路</strong>(iterative circuit)</p>
 </blockquote>
 <hr/>
 <p>在这个<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>的基础上，我们还可以添加更多的功能：</p>
@@ -1049,7 +1049,7 @@ D. 0x12 + 0x78</p>
 </div>
 <p>可以看到，这里给输入<span class="heti-skip"><span class="heti-spacing"> </span>B<span class="heti-spacing"> </span></span>加了一个非门和一个<span><span class="heti-spacing"> </span>MUX</span>，并且新增一个输入<code>Binvert</code>，用于决定<span class="heti-skip"><span class="heti-spacing"> </span>B<span class="heti-spacing"> </span></span>是否应该按位取反（得到<span class="heti-skip"><span class="heti-spacing"> </span>B<span class="heti-spacing"> </span></span>的反码<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
 <hr/>
-<p>（2）实现<strong>或非<span class="heti-skip"><span class="heti-spacing"> </span>(NOR)<span class="heti-spacing"> </span></span></strong>运算。</p>
+<p>（2）实现<strong>或非<span><span class="heti-spacing"> </span>(NOR)</span></strong>运算。</p>
 <p>由德摩根定律，<span class="arithmatex">\(\overline{a + b} = \overline{a} \cdot \overline{b}\)</span>，所以只要让输入<span class="heti-skip"><span class="heti-spacing"> </span>a<span class="heti-spacing"> </span></span>像输入<span class="heti-skip"><span class="heti-spacing"> </span>b<span class="heti-spacing"> </span></span>一样能够选择取反，并配合与运算，就可以实现或非运算了：</p>
 <div style="text-align: center">
 <img src="images/C3/7.png" width="50%"/>
@@ -1073,7 +1073,7 @@ D. 0x12 + 0x78</p>
 <img src="images/C3/9.png" width="50%"/>
 </div>
 <ul>
-<li>为了处理溢出问题，还在最高位的<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>内专门添加一个<strong>溢出侦测</strong><span class="heti-skip"><span class="heti-spacing"> </span>(overflow detection)<span class="heti-spacing"> </span></span>装置</li>
+<li>为了处理溢出问题，还在最高位的<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>内专门添加一个<strong>溢出侦测</strong><span>(overflow detection)<span class="heti-spacing"> </span></span>装置</li>
 <li>最终的实现效果：</li>
 </ul>
 <div style="text-align: center">
@@ -1147,7 +1147,7 @@ D. 0x12 + 0x78</p>
 <p>下面讲到的“进位”一般指的都是<span><span class="heti-spacing"> </span>CarryIn</span>。</p>
 </div>
 <p><span>64<span class="heti-spacing"> </span></span>位<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>的加法器（行波加法器）是通过<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>个<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>位<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>内的加法器串联而成的，因此加法的执行速度非常地慢——拿最高位的<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>来说，它的加法运算要从最低位的运算开始一直等待，直到前<span class="heti-skip"><span class="heti-spacing"> </span>63<span class="heti-spacing"> </span></span>位运算产生的进位传到最高位的<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>内。</p>
-<p>所以，提升加法速度的关键在于：<strong>让高位进位更快地传到高位加法器内</strong>。下面将介绍一种将速度<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(O(N)\)</span><span class="heti-spacing"> </span></span>提升到<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(O(\log N)\)</span><span class="heti-spacing"> </span></span>的加法器：<strong>超前进位加法器</strong><span><span class="heti-spacing"> </span>(carry lookahead adder)</span>。</p>
+<p>所以，提升加法速度的关键在于：<strong>让高位进位更快地传到高位加法器内</strong>。下面将介绍一种将速度<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(O(N)\)</span><span class="heti-spacing"> </span></span>提升到<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(O(\log N)\)</span><span class="heti-spacing"> </span></span>的加法器：<strong>超前进位加法器</strong>(carry lookahead adder)。</p>
 <details class="failure">
 <summary>简单粗暴的实现方法</summary>
 <p>我们将当前位上的加法器的进位计算公式全部展开，尝试仅用<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>的两个操作数的前面几位，以及来自外部的进位（最低位的进位）表示该位产生的进位。因为这些量都是已知的，且不受前面加法器的影响，因此只需要<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(O(1)\)</span><span class="heti-spacing"> </span></span>的时间，加法器就能几乎在同一时间完成所有位上的加法运算。</p>
@@ -1174,7 +1174,7 @@ c_{i+1} &amp; = (b_i \cdot c_i) + (a_i \cdot c_i) + (a_i \cdot b_i) \notag \\
 <div class="arithmatex">\[
 c_2 = (a_1 \cdot b_1) + (a_1 + b_1) \cdot ((a_0 \cdot b_0) + (a_0 + b_0) \cdot c_0)
 \]</div>
-<p>不难看到，有很多类似<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\((a_i \cdot b_i)\)</span><span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\((a_i + b_i)\)</span><span class="heti-spacing"> </span></span>的项出现在公式内，它们分别被称为<strong>生成项<span class="heti-skip"><span class="heti-spacing"> </span>(generate)<span class="heti-spacing"> </span></span></strong><span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(g_i\)</span><span class="heti-spacing"> </span></span>和<strong>传播项<span><span class="heti-spacing"> </span>(propagate)</span></strong><span><span class="heti-spacing"> </span><span class="arithmatex">\(p_i\)</span></span>。因此进位公式还可以表示成以下形式：</p>
+<p>不难看到，有很多类似<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\((a_i \cdot b_i)\)</span><span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\((a_i + b_i)\)</span><span class="heti-spacing"> </span></span>的项出现在公式内，它们分别被称为<strong>生成项<span><span class="heti-spacing"> </span>(generate)</span></strong><span><span class="arithmatex">\(g_i\)</span><span class="heti-spacing"> </span></span>和<strong>传播项<span><span class="heti-spacing"> </span>(propagate)</span></strong><span class="arithmatex">\(p_i\)</span>。因此进位公式还可以表示成以下形式：</p>
 <div class="arithmatex">\[
 c_{i+1} = g_i + p_i \cdot c_i
 \]</div>
@@ -1232,7 +1232,7 @@ c_{i+1} = g_i + p_i \cdot c_i
 </div>
 <div class="admonition note">
 <p class="admonition-title">行波加法器与超前进位加法器的速度比较</p>
-<p>为了便于讨论，我们用数据（或者说信号）经过门的数量来估算时间（也被称为<strong>门延迟</strong><span><span class="heti-spacing"> </span>(gate delay)</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。下面我们就<span class="heti-skip"><span class="heti-spacing"> </span>16<span class="heti-spacing"> </span></span>位加法器来比较两种加法器的速度</p>
+<p>为了便于讨论，我们用数据（或者说信号）经过门的数量来估算时间（也被称为<strong>门延迟</strong>(gate delay)<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。下面我们就<span class="heti-skip"><span class="heti-spacing"> </span>16<span class="heti-spacing"> </span></span>位加法器来比较两种加法器的速度</p>
 <ul>
 <li>行波加法器：进位值每经过一个加法器，就需要经过两个门电路，因此<span class="heti-skip"><span class="heti-spacing"> </span>16<span class="heti-spacing"> </span></span>位加法器就需要经过<span class="heti-skip"><span class="heti-spacing"> </span>32<span class="heti-spacing"> </span></span>个门电路</li>
 <li>超前进位加法器：在前面的分析中，我们知道这种加法器用到了两层抽象，每层抽象都是两级逻辑电路，外加<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(g_i\)</span><span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(p_i\)</span><span class="heti-spacing"> </span></span>都用到了一个门，所以总共经过的门数量为<span class="heti-skip"><span class="heti-spacing"> </span>2 + 2 + 1 = 5<span class="heti-spacing"> </span></span>个<span class="heti-skip"><span class="heti-spacing"> </span>= <span class="arithmatex">\(\log_2 32\)</span><span class="heti-spacing"> </span></span>个</li>
@@ -1353,7 +1353,7 @@ c_{i+1} = g_i + p_i \cdot c_i
 <li>对两个符号位进行异或运算，得到乘积符号位（相同为<span><span class="heti-spacing"> </span>0</span>，不同为<span><span class="heti-spacing"> </span>1</span>）</li>
 </ul>
 <hr/>
-<p>更好的方法：<a href="https://en.wikipedia.org/wiki/Booth%27s_multiplication_algorithm"><strong><span>Booth<span class="heti-spacing"> </span></span>算法</strong></a>。相比前面多次使用加法和移位操作实现的乘法运算，这种算法更侧重于使用<strong>移位</strong>运算——它对<strong>乘数</strong><span class="heti-skip"><span class="heti-spacing"> </span>(multiplier)<span class="heti-spacing"> </span></span>做了一些变化，使得计算过程中仅涉及一次加法和一次减法。如果移位运算所需时间比加法运算少，那么这种方法的优势就比较明显了。这么说可能有点抽象，结合下面的例子理解就比较清楚了：</p>
+<p>更好的方法：<a href="https://en.wikipedia.org/wiki/Booth%27s_multiplication_algorithm"><strong><span>Booth<span class="heti-spacing"> </span></span>算法</strong></a>。相比前面多次使用加法和移位操作实现的乘法运算，这种算法更侧重于使用<strong>移位</strong>运算——它对<strong>乘数</strong><span>(multiplier)<span class="heti-spacing"> </span></span>做了一些变化，使得计算过程中仅涉及一次加法和一次减法。如果移位运算所需时间比加法运算少，那么这种方法的优势就比较明显了。这么说可能有点抽象，结合下面的例子理解就比较清楚了：</p>
 <div style="text-align: center">
 <img src="images/C3/37.png" width="70%"/>
 </div>
@@ -1404,7 +1404,7 @@ c_{i+1} = g_i + p_i \cdot c_i
 <li>组成部分：<ul>
 <li><span>128<span class="heti-spacing"> </span></span>位除数<span class="heti-skip"><span class="heti-spacing"> </span>(divisor)<span class="heti-spacing"> </span></span>寄存器：初始状态下，<span>64<span class="heti-spacing"> </span></span>位的除数被存储在除数寄存器的<strong>左半边</strong>（由于我们不清楚被除数有多大，所以先将除数扩大很多倍，然后再慢慢缩小，最终找到合适的位数，因此除数寄存器的位数留的有点多）</li>
 <li><span>64<span class="heti-spacing"> </span></span>位商<span class="heti-skip"><span class="heti-spacing"> </span>(quotient)<span class="heti-spacing"> </span></span>寄存器</li>
-<li><span>128<span class="heti-spacing"> </span></span>位余数<span class="heti-skip"><span class="heti-spacing"> </span>(remainder)<span class="heti-spacing"> </span></span>寄存器：初始状态下，<span>64<span class="heti-spacing"> </span></span>位的<strong>被除数</strong><span class="heti-skip"><span class="heti-spacing"> </span>(dividend)<span class="heti-spacing"> </span></span>被存储在余数寄存器的<strong>右半边</strong>（从低位开始存储）</li>
+<li><span>128<span class="heti-spacing"> </span></span>位余数<span class="heti-skip"><span class="heti-spacing"> </span>(remainder)<span class="heti-spacing"> </span></span>寄存器：初始状态下，<span>64<span class="heti-spacing"> </span></span>位的<strong>被除数</strong><span>(dividend)<span class="heti-spacing"> </span></span>被存储在余数寄存器的<strong>右半边</strong>（从低位开始存储）</li>
 <li><span>128<span class="heti-spacing"> </span></span>位<span><span class="heti-spacing"> </span>ALU</span></li>
 <li>控制器</li>
 </ul>
@@ -1422,7 +1422,7 @@ c_{i+1} = g_i + p_i \cdot c_i
 </ul>
 </li>
 <li>将除数寄存器的值右移一位</li>
-<li>如果上面的步骤已经重复了<strong><span class="heti-skip"><span class="heti-spacing"> </span>65<span class="heti-spacing"> </span></span>次</strong>，中止整个流程，否则返回第一步</li>
+<li>如果上面的步骤已经重复了<strong><span>65<span class="heti-spacing"> </span></span>次</strong>，中止整个流程，否则返回第一步</li>
 </ol>
 </li>
 </ul>
@@ -1505,8 +1505,8 @@ c_{i+1} = g_i + p_i \cdot c_i
 </details>
 <h2 id="floating-point-numbers">Floating Point Numbers<a class="headerlink" href="#floating-point-numbers" title="Permanent link">⚓︎</a></h2>
 <h3 id="ieee-754-floating-point-standard">IEEE 754 Floating-Point Standard<a class="headerlink" href="#ieee-754-floating-point-standard" title="Permanent link">⚓︎</a></h3>
-<p>下面对浮点数的规定来自于<a href="https://en.wikipedia.org/wiki/IEEE_754"><strong><span class="heti-skip"><span class="heti-spacing"> </span>IEEE 754<span class="heti-spacing"> </span></span></strong></a>标准，而<span class="heti-skip"><span class="heti-spacing"> </span>RISC-V<span class="heti-spacing"> </span></span>的浮点数便采用这一标准。该标准提升了浮点数程序的可移植性，并且保证了算术运算的质量。</p>
-<p>在接下来的讨论中，我们统一使用<strong>科学计数法</strong><span class="heti-skip"><span class="heti-spacing"> </span>(scientific notation)<span class="heti-spacing"> </span></span>表示<strong>浮点数</strong>，在这种表示法下小数点左边只有<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>位数字。如果小数点左边的数字不是<span><span class="heti-spacing"> </span>0</span>，那么称这种数为<strong>规范化数</strong><span><span class="heti-spacing"> </span>(normalized number)</span>。</p>
+<p>下面对浮点数的规定来自于<a href="https://en.wikipedia.org/wiki/IEEE_754"><strong>IEEE 754</strong></a>标准，而<span class="heti-skip"><span class="heti-spacing"> </span>RISC-V<span class="heti-spacing"> </span></span>的浮点数便采用这一标准。该标准提升了浮点数程序的可移植性，并且保证了算术运算的质量。</p>
+<p>在接下来的讨论中，我们统一使用<strong>科学计数法</strong><span>(scientific notation)<span class="heti-spacing"> </span></span>表示<strong>浮点数</strong>，在这种表示法下小数点左边只有<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>位数字。如果小数点左边的数字不是<span><span class="heti-spacing"> </span>0</span>，那么称这种数为<strong>规范化数</strong>(normalized number)。</p>
 <p>二进制的规范化数形如下面的数字：</p>
 <div class="arithmatex">\[
 1.xxxxxxxxx_{\mathrm{two}} \times 2^{yyyy}
@@ -1517,11 +1517,11 @@ c_{i+1} = g_i + p_i \cdot c_i
 <li>简化浮点数的算术运算</li>
 <li>提升存储数字的精度</li>
 </ul>
-<p>浮点数表示法由三部分组成：符号<span><span class="heti-spacing"> </span><span class="arithmatex">\(S\)</span></span>、<strong>指数</strong><span><span class="heti-spacing"> </span>(exponent)<span class="arithmatex">\(E\)</span></span>、<strong>尾数</strong><span><span class="heti-spacing"> </span>(fraction)<span class="arithmatex">\(F\)</span></span>。其中指数和尾数分别指定了浮点数的范围和精度。由于数据宽度是固定的，因此需要权衡好指数与位数的大小，即权衡好浮点数的范围和精度。用符号化的语言可以将浮点数表示为：</p>
+<p>浮点数表示法由三部分组成：符号<span><span class="heti-spacing"> </span><span class="arithmatex">\(S\)</span></span>、<strong>指数</strong>(exponent)<span class="arithmatex">\(E\)</span>、<strong>尾数</strong>(fraction)<span class="arithmatex">\(F\)</span>。其中指数和尾数分别指定了浮点数的范围和精度。由于数据宽度是固定的，因此需要权衡好指数与位数的大小，即权衡好浮点数的范围和精度。用符号化的语言可以将浮点数表示为：</p>
 <div class="arithmatex">\[
 (-1)^S \times F \times 2^E
 \]</div>
-<p>浮点数的表示形式（这种表示法被称为<em><span><span class="heti-spacing"> </span>sign and magnitude</span></em><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
+<p>浮点数的表示形式（这种表示法被称为<em>sign and magnitude</em><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
 <ul>
 <li>
 <p>单精度（<code>float</code>）</p>
@@ -1553,7 +1553,7 @@ c_{i+1} = g_i + p_i \cdot c_i
 </ul>
 </li>
 </ul>
-<p>不难发现，二进制下的非零规范化数的小数点左边那一位一定是<span><span class="heti-spacing"> </span>1</span>，因此为了存储更多的数字，我们就省去这个<span><span class="heti-spacing"> </span>1</span>（称为<strong><span><span class="heti-spacing"> </span>hidden 1</span></strong><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，并将这一位的空间挪出来给尾数用（即单精度浮点数的尾数增至<span class="heti-skip"><span class="heti-spacing"> </span>24<span class="heti-spacing"> </span></span>位，双精度浮点数的尾数增至<span class="heti-skip"><span class="heti-spacing"> </span>53<span class="heti-spacing"> </span></span>位<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。实际上用于表示浮点数的尾数位被称为<strong>有效数字</strong><span><span class="heti-spacing"> </span>(significand)</span>（不包括低位的一串<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>和省去的<span><span class="heti-spacing"> </span>1</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。于是我们可以这么表示一个浮点数：</p>
+<p>不难发现，二进制下的非零规范化数的小数点左边那一位一定是<span><span class="heti-spacing"> </span>1</span>，因此为了存储更多的数字，我们就省去这个<span><span class="heti-spacing"> </span>1</span>（称为<strong>hidden 1</strong><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，并将这一位的空间挪出来给尾数用（即单精度浮点数的尾数增至<span class="heti-skip"><span class="heti-spacing"> </span>24<span class="heti-spacing"> </span></span>位，双精度浮点数的尾数增至<span class="heti-skip"><span class="heti-spacing"> </span>53<span class="heti-spacing"> </span></span>位<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。实际上用于表示浮点数的尾数位被称为<strong>有效数字</strong>(significand)（不包括低位的一串<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>和省去的<span><span class="heti-spacing"> </span>1</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。于是我们可以这么表示一个浮点数：</p>
 <div class="arithmatex">\[
 (-1)^S \times (1 + \mathrm{Fraction}) \times 2^E
 \]</div>
@@ -1562,7 +1562,7 @@ c_{i+1} = g_i + p_i \cdot c_i
 (-1)^S \times (1 + (s_1 \times 2^{-1}) + (s_2 \times 2^{-2}) + (s_3 \times 2^{-3}) + \dots) \times 2^E
 \]</div>
 <p>之所以<span class="heti-skip"><span class="heti-spacing"> </span>RISC-V<span class="heti-spacing"> </span></span>会按照符号、指数、尾数的顺序存储浮点数，其中一个原因是为了方便浮点数的比较或排序：先比较符号位，再比较指数，最后比较尾数，这样的比较顺序符合我们的直觉。但正数和负数之间的比较就比较麻烦了：如果用补码表示指数位，那么负数的指数看起来就比正数的指数大很多（负数符号位，即最高位为<span><span class="heti-spacing"> </span>1</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，比较起来就没那么直接了。</p>
-<p>因此，<span>IEEE 754<span class="heti-spacing"> </span></span>标准引入了<strong>偏移标记法</strong><span class="heti-skip"><span class="heti-spacing"> </span>(biased notation)<span class="heti-spacing"> </span></span>的概念，使得最小的指数（负数）对应<span><span class="heti-spacing"> </span><span class="arithmatex">\(00 \dots 00_{\mathrm{two}}\)</span></span>，最大的指数对应<span><span class="heti-spacing"> </span><span class="arithmatex">\(11 \dots 11_{\mathrm{two}}\)</span></span>，这样就可以直接做无符号数的比较，便于计算机处理。</p>
+<p>因此，<span>IEEE 754<span class="heti-spacing"> </span></span>标准引入了<strong>偏移标记法</strong><span>(biased notation)<span class="heti-spacing"> </span></span>的概念，使得最小的指数（负数）对应<span><span class="heti-spacing"> </span><span class="arithmatex">\(00 \dots 00_{\mathrm{two}}\)</span></span>，最大的指数对应<span><span class="heti-spacing"> </span><span class="arithmatex">\(11 \dots 11_{\mathrm{two}}\)</span></span>，这样就可以直接做无符号数的比较，便于计算机处理。</p>
 <ul>
 <li>偏移值的计算公式：<span class="arithmatex">\(\text{Bias} = 2^{\text{Number of Exp bits } - 1} - 1\)</span></li>
 <li>单精度浮点数的偏移值<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\mathrm{Bias}\)</span><span class="heti-spacing"> </span></span>为<span><span class="heti-spacing"> </span>127</span>，双精度浮点数的偏移值<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\mathrm{Bias}\)</span><span class="heti-spacing"> </span></span>为<span><span class="heti-spacing"> </span>1023</span></li>
@@ -1590,8 +1590,8 @@ c_{i+1} = g_i + p_i \cdot c_i
 </details>
 <p>异常情况的处理：</p>
 <ul>
-<li><strong>溢出</strong>：虽然浮点数表示的范围很大，但还是可能会出现这一情况。在浮点数中，溢出分为<strong>上溢</strong><span class="heti-skip"><span class="heti-spacing"> </span>(overflow)<span class="heti-spacing"> </span></span>和<strong>下溢</strong><span><span class="heti-spacing"> </span>(underflow)</span>，分别表示浮点数的<u>正指数过大</u>或<u>负指数过小</u>的情况。具体处理方法在<a href="#overflow">前面</a>已经提到过了，这里便不再赘述</li>
-<li><strong>NaN</strong>(Not a Number)：表示<strong>未定义的</strong><span class="heti-skip"><span class="heti-spacing"> </span>(undefined)<span class="heti-spacing"> </span></span>或<strong>非法的</strong><span class="heti-skip"><span class="heti-spacing"> </span>(illegal)<span class="heti-spacing"> </span></span>结果，比如：<ul>
+<li><strong>溢出</strong>：虽然浮点数表示的范围很大，但还是可能会出现这一情况。在浮点数中，溢出分为<strong>上溢</strong><span>(overflow)<span class="heti-spacing"> </span></span>和<strong>下溢</strong>(underflow)，分别表示浮点数的<u>正指数过大</u>或<u>负指数过小</u>的情况。具体处理方法在<a href="#overflow">前面</a>已经提到过了，这里便不再赘述</li>
+<li><strong>NaN</strong>(Not a Number)：表示<strong>未定义的</strong><span>(undefined)<span class="heti-spacing"> </span></span>或<strong>非法的</strong><span>(illegal)<span class="heti-spacing"> </span></span>结果，比如：<ul>
 <li>任何涉及<span class="heti-skip"><span class="heti-spacing"> </span>NaN<span class="heti-spacing"> </span></span>的运算结果</li>
 <li>不定式（无穷之间的运算、无穷与<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>的运算<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：<ul>
 <li>除法运算：0/0、<span class="arithmatex">\(\infty\)</span>/<span class="arithmatex">\(\infty\)</span>、<span class="arithmatex">\(\infty\)</span>/(<span class="arithmatex">\(-\infty\)</span>)、(<span class="arithmatex">\(-\infty\)</span>)/<span class="arithmatex">\(\infty\)</span>、(<span class="arithmatex">\(-\infty\)</span>)/(<span class="arithmatex">\(-\infty\)</span>)</li>
@@ -1618,9 +1618,9 @@ c_{i+1} = g_i + p_i \cdot c_i
 <summary>补充：半精度浮点数</summary>
 <p><a href="https://en.wikipedia.org/wiki/Half-precision_floating-point_format">半精度浮点数</a>是<span class="heti-skip"><span class="heti-spacing"> </span>16<span class="heti-spacing"> </span></span>位的浮点数，它同样来自<span class="heti-skip"><span class="heti-spacing"> </span>IEEE 754<span class="heti-spacing"> </span></span>标准，它的组成部分为：</p>
 <ul>
-<li>最高位仍然是<strong>符号位</strong><span><span class="heti-spacing"> </span>S</span></li>
-<li>中间<span class="heti-skip"><span class="heti-spacing"> </span>5<span class="heti-spacing"> </span></span>位是<strong>指数位</strong><span><span class="heti-spacing"> </span>E</span></li>
-<li>低<span class="heti-skip"><span class="heti-spacing"> </span>11<span class="heti-spacing"> </span></span>位是<strong>尾数位</strong><span><span class="heti-spacing"> </span>F</span></li>
+<li>最高位仍然是<strong>符号位</strong>S</li>
+<li>中间<span class="heti-skip"><span class="heti-spacing"> </span>5<span class="heti-spacing"> </span></span>位是<strong>指数位</strong>E</li>
+<li>低<span class="heti-skip"><span class="heti-spacing"> </span>11<span class="heti-spacing"> </span></span>位是<strong>尾数位</strong>F</li>
 <li>偏移码<span class="heti-skip"><span class="heti-spacing"> </span>(bias)<span class="heti-spacing"> </span></span>为<span><span class="heti-spacing"> </span><span class="arithmatex">\(2^{5-1} - 1 = 15\)</span></span></li>
 </ul>
 <p>能够表示的数的范围：<span class="arithmatex">\(\pm 1.0 \times 2^{-14} \sim \pm 2.0 \times 2^{15}\)</span></p>
@@ -1632,16 +1632,16 @@ c_{i+1} = g_i + p_i \cdot c_i
 <img src="images/C3/53.png" width="50%"/>
 </div>
 <ol>
-<li><strong>对齐</strong><span><span class="heti-spacing"> </span>(alignment)</span>：比较两个数的指数部分，将指数较小的数的尾数部分往右移（对应地，指数部分就会增大<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，直到两个数指数部分相同为止</li>
-<li><strong>相加</strong><span><span class="heti-spacing"> </span>(addition)</span>：将两个数的有效数字<span class="heti-skip"><span class="heti-spacing"> </span>(significand)<span class="heti-spacing"> </span></span>相加</li>
+<li><strong>对齐</strong>(alignment)：比较两个数的指数部分，将指数较小的数的尾数部分往右移（对应地，指数部分就会增大<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，直到两个数指数部分相同为止</li>
+<li><strong>相加</strong>(addition)：将两个数的有效数字<span class="heti-skip"><span class="heti-spacing"> </span>(significand)<span class="heti-spacing"> </span></span>相加</li>
 <li>
-<p><strong>规范化</strong><span><span class="heti-spacing"> </span>(normalization)</span>：使结果规范化（见前面“规范化数”的定义<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，可以通过右移尾数来增加指数，或者左移尾数来减小指数的方式实现</p>
+<p><strong>规范化</strong>(normalization)：使结果规范化（见前面“规范化数”的定义<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，可以通过右移尾数来增加指数，或者左移尾数来减小指数的方式实现</p>
 <blockquote>
 <p>注：前往下一步之前还要判断一下数字是否溢出，如果是的话抛出异常，否则继续下一步</p>
 </blockquote>
 </li>
 <li>
-<p><strong>舍入</strong><span><span class="heti-spacing"> </span>(rounding)</span>：如果舍入后结果变得不规范，则需要返回到第<span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span>步再做调整，否则的话计算完成</p>
+<p><strong>舍入</strong>(rounding)：如果舍入后结果变得不规范，则需要返回到第<span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span>步再做调整，否则的话计算完成</p>
 </li>
 </ol>
 <p>对应的逻辑电路图如下所示（仅做了解即可<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
@@ -1707,9 +1707,9 @@ c_{i+1} = g_i + p_i \cdot c_i
 </ul>
 </details>
 <h3 id="accurate-arithmetic">Accurate Arithmetic<a class="headerlink" href="#accurate-arithmetic" title="Permanent link">⚓︎</a></h3>
-<p>为了提高舍入的精度，<span>IEEE 754<span class="heti-spacing"> </span></span>标准规定为浮点数额外添加低<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>位，从左到右分别称为<strong><span class="heti-skip"><span class="heti-spacing"> </span>guard<span class="heti-spacing"> </span></span></strong>和<strong><span><span class="heti-spacing"> </span>round</span></strong>，这两位数字保留了浮点数计算的中间过程，从而尽可能地避免精度上的损失。</p>
+<p>为了提高舍入的精度，<span>IEEE 754<span class="heti-spacing"> </span></span>标准规定为浮点数额外添加低<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>位，从左到右分别称为<strong>guard</strong>和<strong>round</strong>，这两位数字保留了浮点数计算的中间过程，从而尽可能地避免精度上的损失。</p>
 <blockquote>
-<p>还可以再额外添加第<span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span>位，称为<strong><span><span class="heti-spacing"> </span>sticky</span></strong>。</p>
+<p>还可以再额外添加第<span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span>位，称为<strong>sticky</strong>。</p>
 </blockquote>
 <div class="admonition example">
 <p class="admonition-title">例子</p>
@@ -1743,7 +1743,7 @@ c_{i+1} = g_i + p_i \cdot c_i
 </div>
 </div>
 </div>
-<p>最后一位上的单位值<span><span class="heti-spacing"> </span>(unit in the last place,</span><strong><span><span class="heti-spacing"> </span>ulp</span></strong><span><span class="heti-spacing"> </span>)</span>：看不太懂，就引用了原文<span><span class="heti-spacing"> </span>...</span></p>
+<p>最后一位上的单位值<span><span class="heti-spacing"> </span>(unit in the last place,</span> <strong>ulp</strong>)：看不太懂，就引用了原文<span><span class="heti-spacing"> </span>...</span></p>
 <blockquote>
 <p>The number of bits in error in the least significant bits of the significant between the actual number and the number that can be represented.</p>
 </blockquote>
@@ -1800,13 +1800,13 @@ c_{i+1} = g_i + p_i \cdot c_i
 <span class="md-icon" title="最后更新">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"></path></svg>
 </span>
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime">2025年1月23日 15:16:49</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年3月21日 15:57:34">2025年3月21日 15:57:34</span>
 </span>
 <span class="md-source-file__fact">
 <span class="md-icon" title="创建日期">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"></path></svg>
 </span>
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime">2024年10月7日 21:20:16</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2024年10月7日 21:20:16">2024年10月7日 21:20:16</span>
 </span>
 </aside>
 <p style="font-size: 30px; font-weight: 600">评论区</p>
@@ -1932,7 +1932,7 @@ c_{i+1} = g_i + p_i \cdot c_i
 <div class="md-dialog__inner md-typeset"></div>
 </div>
 <script id="__config" type="application/json">{"base": "../..", "features": ["content.action.edit", "content.action.view", "content.code.copy", "content.code.annotate", "header.autohide", "navigation.tabs", "navigation.top", "navigation.footer", "navigation.indexes", "navigation.tracking", "navigation.prune", "search.share"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
-<script src="../../assets/javascripts/bundle.f1b6f286.min.js"></script>
+<script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
 <script src="../../js/anchor.js"></script>
 <script src="../../js/katex.js"></script>
 <script src="../../js/toc.js"></script>
