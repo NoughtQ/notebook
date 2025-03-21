@@ -19,16 +19,20 @@
 
 !!! abstract "目录"
 
+    - [Introduction](1.md)
+    - [STL Containers](2.md)
+    - [Classes and Objects](3.md)
+    - [Functions](4.md)
+    - [Composition](5.md)
+
     TBD
 
 !!! recommend "参考资料"
 
     - *Effective C++*, 3rd Edition
     - [cppreference.com](https://en.cppreference.com/w/)
+    - [Jerryhzy 大佬的笔记](https://blog.jerryhzy.top/oop-lec1-using-object/)：笔记内容详细，读起来十分舒服，比干啃 PPT 好太多了！
     - [咸鱼暄前辈的笔记](https://xuan-insr.github.io/cpp/cpp_restart/)
-    - [HobbitQia 前辈的笔记](https://note.hobbitqia.cc/OOP/)
-    - [Jerryhzy 的笔记](https://blog.jerryhzy.top/oop-lec1-using-object/)
-
 
 
 

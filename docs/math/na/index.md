@@ -10,12 +10,12 @@
 !!! abstract "目录"
 
     - [x] [Chap 1: Mathematical Premiminaries](1.md)
-    - [ ] [Chap 2: Solutions of Equations in One Variable](2.md)
+    - [x] [Chap 2: Solutions of Equations in One Variable](2.md)
     - [ ] [Chap 3: Interpolation and Polynomial Approximation](3.md)
     - [ ] [Chap 4: Numerical Differentiation and Integration](4.md)
     - [ ] [Chap 5: Initial-Value Problems for Ordinary Differential Equations](5.md)
-    - [ ] [Chap 6: Direct Methods for Solving Linear Systems](6.md)
-    - [ ] [Chap 7: Iterative Techniques in Matrix Algebra](7.md)
+    - [x] [Chap 6: Direct Methods for Solving Linear Systems](6.md)
+    - [x] [Chap 7: Iterative Techniques in Matrix Algebra](7.md)
     - [ ] [Chap 8: Approximation Theory](8.md)
     - [ ] [Chap 9: Approximating Eigenvalues](9.md)
 

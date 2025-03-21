@@ -18,19 +18,10 @@
 
 !!! abstract "目录"
 
-    - [x] [Lec 1: Introduction to Machine Learning](1.md)
-    - [ ] [Lec 2: Deep Learning](2.md)
-    - [ ] [Lec 3: Image as input](3.md)
-    - [ ] [Lec 4: Sequence as input](4.md)
-    - [ ] [Lec 5: Sequence to sequence](5.md)
-    - [ ] [Lec 6: Generation](6.md)
-    - [ ] [Lec 7: Recent Advance of Self-supervised Learning for NLP](7.md)
-    - [ ] [Lec 8: Self-supervised learning for Speech and Image](8.md)
-    - [ ] [Lec 9: Auto-encoder / Anomaly Detection](9.md)
-    - [ ] [Lec 10: Explainable AI](10.md)
-    - [ ] [Lec 11: Attack](11.md)
-    - [ ] [Lec 12: Adaptation](12.md)
-    - [ ] [Lec 13: Reinforcement Learning](13.md)
-    - [ ] [Lec 14: Network Compression](14.md)
-    - [ ] [Lec 15: Life-long Learning](15.md)
-    - [ ] [Lec 16: Meta Learning](16.md)
+    - [x] [Machine Learning - P1](1.md)
+    - [x] [Machine Learning - P2](2.md)
+    - [ ] [Deep Learning](3.md)
+
+    >之前先列出了课程大纲，但感觉这样不太妥当，所以就重新按照我的理解编排目录了
+
+    TBD
