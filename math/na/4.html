@@ -388,12 +388,48 @@
 </li>
 <li class="md-nav__item md-nav__item--active">
 <input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    Chap 4: Numerical Differentiation and Integration
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
 <a class="md-nav__link md-nav__link--active" href="4.html">
 <span class="md-ellipsis">
     Chap 4: Numerical Differentiation and Integration
     
   </span>
 </a>
+<nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#numerical-differentiation">
+<span class="md-ellipsis">
+      Numerical Differentiation
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#elements-of-numerical-integration">
+<span class="md-ellipsis">
+      Elements of Numerical Integration
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#gaussian-quadrature">
+<span class="md-ellipsis">
+      Gaussian Quadrature
+    </span>
+</a>
+</li>
+</ul>
+</nav>
 </li>
 <li class="md-nav__item">
 <a class="md-nav__link" href="5.html">
@@ -531,6 +567,33 @@
 <div class="md-sidebar__scrollwrap">
 <div class="md-sidebar__inner">
 <nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#numerical-differentiation">
+<span class="md-ellipsis">
+      Numerical Differentiation
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#elements-of-numerical-integration">
+<span class="md-ellipsis">
+      Elements of Numerical Integration
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#gaussian-quadrature">
+<span class="md-ellipsis">
+      Gaussian Quadrature
+    </span>
+</a>
+</li>
+</ul>
 </nav>
 </div>
 </div>
@@ -545,8 +608,282 @@
 </a>
 <h1 id="chap-4-numerical-differentiation-and-integration">Chap 4: Numerical Differentiation and Integration<a class="headerlink" href="#chap-4-numerical-differentiation-and-integration" title="Permanent link">⚓︎</a></h1>
 <div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
-<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>6<span class="heti-spacing"> </span></span>个字 </p>
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>2156<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>11<span class="heti-spacing"> </span></span>分钟</p>
 </div>
+<h2 id="numerical-differentiation">Numerical Differentiation<a class="headerlink" href="#numerical-differentiation" title="Permanent link">⚓︎</a></h2>
+<p>目标：对于给定的<span><span class="heti-spacing"> </span><span class="arithmatex">\(x_0\)</span></span>，近似计算<span><span class="heti-spacing"> </span><span class="arithmatex">\(f'(x_0)\)</span></span>（即<strong>数值微分</strong>(numerical differentiation)）</p>
+<p>微分计算公式：<span class="arithmatex">\(f'(x_0) = \lim\limits_{h \rightarrow 0} \dfrac{f(x_0 + h) - f(x_0)}{h}\)</span></p>
+<ul>
+<li>
+<p>向后：<span class="arithmatex">\(f'(x_0) \approx \dfrac{f(x_0 + h) - f(x_0)}{h}\)</span></p>
+<p></p><div style="text-align: center">
+<img src="images/C4/1.png" width="30%/"/>
+</div>
+</li>
+<li>
+<p>向前：<span class="arithmatex">\(f'(x_0) \approx \dfrac{f(x_0) - f(x_0 - h)}{h}\)</span></p>
+<p></p><div style="text-align: center">
+<img src="images/C4/2.png" width="30%/"/>
+</div>
+</li>
+</ul>
+<p>现在我们用<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f(x)\)</span><span class="heti-spacing"> </span></span>的带有插值点<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x_0, x_0 + h\)</span><span class="heti-spacing"> </span></span>的拉格朗日多项式来近似表示<span><span class="heti-spacing"> </span><span class="arithmatex">\(f(x)\)</span></span>：</p>
+<div class="arithmatex">\[
+\begin{align}
+f(x) &amp; = \dfrac{f(x_0)(x - x_0 - h)}{x_0 - x_0 - h} + \dfrac{f(x_0 + h)(x - x_0)}{x_0 + h - x_0} \notag \\
+&amp; + \dfrac{(x - x_0)(x - x_0 - h)}{2} f''(\xi_x) \notag
+\end{align}
+\]</div>
+<div class="arithmatex">\[
+\begin{align}
+f'(x) &amp; = \dfrac{f(x_0 + h) - f(x_0)}{h} + \dfrac{2(x - x_0) - h}{2} f''(\xi_x) \notag \\
+&amp; + \dfrac{(x - x_0)(x - x_0 - h)}{2} \cdot \dfrac{d}{dx} [f''(\xi_x)] \notag
+\end{align}
+\]</div>
+<p>因此<span><span class="heti-spacing"> </span><span class="arithmatex">\(f'(x_0) = \dfrac{f(x_0 + h) - f(x_0)}{h} - \dfrac{h}{2}f''(\xi)\)</span></span></p>
+<hr/>
+<p>接下来用插值点为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\{x_0, x_1, \dots, x_n\}\)</span><span class="heti-spacing"> </span></span>的拉格朗日多项式来近似表示<span><span class="heti-spacing"> </span><span class="arithmatex">\(f(x)\)</span></span></p>
+<div class="arithmatex">\[
+\begin{align}
+f(x) &amp; = \sum\limits_{k=0}^n f(x_k) L_k(x) + \dfrac{(x - x_0) \dots (x - x_n)}{(n+1)!} f^{(n+1)}(\xi_x) \notag \\
+f'(x_j) &amp; = \sum\limits_{k=0}^n f(x_k)L_k'(x_j) + \dfrac{f^{(n+1)}(\xi_j)}{(n+1)!} \prod\limits_{\substack{k = 0 \\ k \ne j}}^n (x_j - x_k) \notag
+\end{align}
+\]</div>
+<div class="admonition note">
+<p class="admonition-title">注</p>
+<ul>
+<li>一般来说，更多的评估点（即这里的插值点）会带来更大的近似精度</li>
+<li>但另一方面，随着评估点的增加，舍入误差也在变大，因此数值微分是<strong>不稳定的</strong>！</li>
+</ul>
+</div>
+<details class="example">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"/><input id="__tabbed_1_2" name="__tabbed_1" type="radio"/><div class="tabbed-labels"><label for="__tabbed_1_1">例<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span></label><label for="__tabbed_1_2">例<span><span class="heti-spacing"> </span>2</span></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"/><input id="__tabbed_2_2" name="__tabbed_2" type="radio"/><div class="tabbed-labels"><label for="__tabbed_2_1">题目</label><label for="__tabbed_2_2">解答</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>给定三个点<span><span class="heti-spacing"> </span><span class="arithmatex">\(x_0, x_0 + h, x_0 + 2h\)</span></span>，请求得关于每个点的三点公式，然后选出对于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f'(x)\)</span><span class="heti-spacing"> </span></span>而言最佳的三点公式。</p>
+</div>
+<div class="tabbed-block">
+<div class="arithmatex">\[
+\begin{align}
+f'(x_0) &amp; = \dfrac{1}{h}\Big[-\dfrac{3}{2} f(x_0) + 2f(x_0 + h) - \dfrac{1}{2}f(x_0 + 2h) \Big] + \dfrac{h^2}{3} f^{(3)}(\xi_0) \notag \\
+f'(x_0 + h) &amp; = \dfrac{1}{h} \Big[ -\dfrac{1}{2} f(x_0) + \dfrac{1}{2} f(x_0 + 2h) \Big] - \dfrac{h^2}{6} f^{(3)}(\xi_1) \notag \\
+\Rightarrow f'(x_0) &amp; = \dfrac{1}{2h} \Big[f(x_0 + h) - f(x_0 - h) \Big] - \dfrac{h^2}{6} f^{(3)} (\xi_1) \notag 
+\end{align}
+\]</div>
+<p></p><div style="text-align: center">
+<img src="images/C4/3.png" width="30%/"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tabbed-block">
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio"/><input id="__tabbed_3_2" name="__tabbed_3" type="radio"/><div class="tabbed-labels"><label for="__tabbed_3_1">题目</label><label for="__tabbed_3_2">解答</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>寻找近似计算<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f''(x_0)\)</span><span class="heti-spacing"> </span></span>的方式。</p>
+</div>
+<div class="tabbed-block">
+<p>考虑在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x_0\)</span><span class="heti-spacing"> </span></span>处的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f(x_0 + h), f(x_0 - h)\)</span><span class="heti-spacing"> </span></span>的泰勒展开式：</p>
+<div class="arithmatex">\[
+\begin{align}
+f(x_0 + h) &amp; = f(x_0) + f'(x_0) h + \dfrac{1}{2}f''(x_0)h^2 + \dfrac{1}{6} f'''(x_0) h^3 + \dfrac{1}{24} f^{(4)} (\xi_1) h^4 \notag \\
+f(x_0 - h) &amp; = f(x_0) - f'(x_0) h + \dfrac{1}{2}f''(x_0)h^2 - \dfrac{1}{6} f'''(x_0) h^3 + \dfrac{1}{24} f^{(4)} (\xi_{-1}) h^4 \notag
+\end{align}
+\]</div>
+<p>因此：<span class="arithmatex">\(f''(x_0) = \dfrac{1}{h^2} [f(x_0 - h) - 2f(x_0) + f(x_0 + h)] - \dfrac{h^2}{12} f^{(4)} (\xi)\)</span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</details>
+<h2 id="elements-of-numerical-integration">Elements of Numerical Integration<a class="headerlink" href="#elements-of-numerical-integration" title="Permanent link">⚓︎</a></h2>
+<p>目标：近似计算<span><span class="heti-spacing"> </span><span class="arithmatex">\(I = \int_a^b f(x) dx\)</span></span>（即<strong>数值求积</strong>(numerical quadratrue)）</p>
+<p>思路：使用<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f(x)\)</span><span class="heti-spacing"> </span></span>的<strong>拉格朗日插值多项式</strong>——从区间<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\([a, b]\)</span><span class="heti-spacing"> </span></span>上选择一组不同的点<span><span class="heti-spacing"> </span><span class="arithmatex">\(a \le x_0 &lt; x_1 \dots &lt; x_n \le b\)</span></span>。拉格朗日多项式为<span><span class="heti-spacing"> </span><span class="arithmatex">\(P_n(x) = \sum\limits_{k=0}^n f(x_k) L_k(x)\)</span></span>，因此：</p>
+<div class="arithmatex">\[
+\int_a^b f(x) dx \approx \sum\limits_{k=0}^n f(x_k) \int_a^b L_k(x) dx
+\]</div>
+<p>令<span><span class="heti-spacing"> </span><span class="arithmatex">\(A_k = \int_a^b L_k(x) dx = \int_a^b \prod\limits_{j \ne k} \dfrac{x - x_j}{x_k - x_j} dx\)</span></span></p>
+<p>误差<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(R[f]\)</span><span class="heti-spacing"> </span></span>为：</p>
+<div class="arithmatex">\[
+\begin{align}
+&amp; R[f] \notag \\
+= &amp; \int_a^b f(x) dx - \sum\limits_{k=0}^n A_kf(x_k) \notag \\
+= &amp; \int_a^b [f(x) - P_n(x)] dx = \int_a^b R_n(x) dx \notag \\
+= &amp; \int_a^b \dfrac{f^{(n+1)}(\xi_x)}{(n+1)!} \prod\limits_{k=0}^n(x - x_k)dx \notag
+\end{align}
+\]</div>
+<div class="admonition definition">
+<p class="admonition-title">定义</p>
+<p>求积公式的<strong>精度</strong><span>(degree of accuracy/precision)<span class="heti-spacing"> </span></span>为最大的正整数<span><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span></span>，使得公式对于每个<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x^k(k = 0, 1, \dots, n)\)</span><span class="heti-spacing"> </span></span>都是精确的。</p>
+</div>
+<details class="example">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio"/><input id="__tabbed_4_2" name="__tabbed_4" type="radio"/><div class="tabbed-labels"><label for="__tabbed_4_1">题目</label><label for="__tabbed_4_2">解答</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>考虑在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\([a, b]\)</span><span class="heti-spacing"> </span></span>上的线性插值，我们有<span><span class="heti-spacing"> </span><span class="arithmatex">\(P_1(x) = \dfrac{x - b}{a - b}f(a) + \dfrac{x - a}{b - a}f(b)\)</span></span>。可以得到：</p>
+<ul>
+<li><span class="arithmatex">\(A_1 = A_2 = \dfrac{b - a}{2}\)</span></li>
+<li><span class="arithmatex">\(\int_a^b f(x) dx \approx \dfrac{b - a}{2}[f(a) + f(b)]\)</span></li>
+</ul>
+<p>请计算上述公式的精度。</p>
+</div>
+<div class="tabbed-block">
+<p>考虑<span><span class="heti-spacing"> </span><span class="arithmatex">\(x^k(k = 0, 1, \dots)\)</span></span>：</p>
+<ul>
+<li><span class="arithmatex">\(x^0\)</span>：<span class="arithmatex">\(\int_a^b 1dx = b - a = \dfrac{b - a}{2}[1 + 1]\)</span></li>
+<li><span class="arithmatex">\(x^1\)</span>：<span class="arithmatex">\(\int_a^b xdx = \dfrac{b^2 - a^2}{2} = \dfrac{b - a}{2}[a + b]\)</span></li>
+<li><span class="arithmatex">\(x^2\)</span>：<span class="arithmatex">\(\int_a^b x^2dx = \dfrac{b^3 - a^3}{3} = \dfrac{b - a}{2}[a^2 + b^2]\)</span></li>
+</ul>
+<p></p><div style="text-align: center">
+<img src="images/C4/4.png" width="40%/"/>
+</div>
+<p>因此精度阶数<span><span class="heti-spacing"> </span>= 1</span></p>
+</div>
+</div>
+</div>
+</details>
+<hr/>
+<p>对于等间距的节点<span><span class="heti-spacing"> </span><span class="arithmatex">\(x_i = a + ih, h = \dfrac{b - a}{n}, i = 0, 1, \dots, n\)</span></span></p>
+<div class="arithmatex">\[
+\begin{align}
+A_i &amp; = \int_{x_0}^{x_n} \prod\limits_{j \ne i} \dfrac{x - x_j}{x_i - x_j} dx \notag \\
+&amp; = \int_0^n \prod\limits_{i \ne j} \dfrac{(t - j)h}{(i - j)h} \times h dt = \dfrac{(b - a)(-1)^{n-i}}{ni!(n - i)!} \int_0^n \prod\limits_{i \ne j} (t - j) dt \notag 
+\end{align}
+\]</div>
+<div class="admonition note">
+<p class="admonition-title">注</p>
+<p>科茨系数不取决于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f(x)\)</span><span class="heti-spacing"> </span></span>或<span><span class="heti-spacing"> </span><span class="arithmatex">\([a, b]\)</span></span>，而仅由<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n, i\)</span><span class="heti-spacing"> </span></span>决定。因此我们可以从一张表中找出这些系数。上述公式称为<strong>牛顿<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>科茨公式</strong>(Newton-Cotes formula)</p>
+</div>
+<ul>
+<li><span class="arithmatex">\(n = 1\)</span><ul>
+<li><span class="arithmatex">\(C_0^{(1)} = C_1^{(1)} = \dfrac{1}{2}\)</span></li>
+<li><span class="arithmatex">\(\int_a^b f(x) dx \approx \dfrac{b - a}{2}[f(a) + f(b)]\)</span>（称为<strong>梯形法则</strong>(trapezoidal rule)）</li>
+<li><span class="arithmatex">\(R[f] = \int_a^b \dfrac{f''(\xi_x)}{2!}(x-a)(x-b) dx = -\dfrac{1}{12}h^3f''(\xi)\)</span></li>
+<li><span class="arithmatex">\(\xi \in [a, b], h = \dfrac{b - a}{1}\)</span></li>
+<li>精度<span><span class="heti-spacing"> </span>= 1</span></li>
+</ul>
+</li>
+<li><span class="arithmatex">\(n = 2\)</span><ul>
+<li><span class="arithmatex">\(C_0^{(2)} = \dfrac{1}{6}, C_1^{(2)} = \dfrac{2}{3}, C_2^{(2)} = \dfrac{1}{6}\)</span></li>
+<li><span class="arithmatex">\(\int_a^b f(x) dx \approx \dfrac{b - a}{6}[f(a) + 4f(\dfrac{a+b}{2}) + f(b)]\)</span>（称为<strong>辛普森法则</strong>(Simpson's rule)）</li>
+<li><span class="arithmatex">\(R[f] = -\dfrac{1}{90} h^5 f^{(4)}(\xi)\)</span></li>
+<li><span class="arithmatex">\(\xi \in (a, b), h = \dfrac{b - a}{2}\)</span></li>
+<li>精度<span><span class="heti-spacing"> </span>= 3</span></li>
+</ul>
+</li>
+<li><span class="arithmatex">\(n = 3\)</span>：辛普森<span class="heti-skip"><span class="heti-spacing"> </span>3/8<span class="heti-spacing"> </span></span>法则，精度<span><span class="heti-spacing"> </span>= 3</span>，<span class="arithmatex">\(R[f] = -\dfrac{3}{80}h^5 f^{(5)}(\xi)\)</span></li>
+<li><span class="arithmatex">\(n = 4\)</span>：科茨法则，精度<span><span class="heti-spacing"> </span>= 5</span>，3，<span class="arithmatex">\(R[f] = -\dfrac{8}{945}h^7 f^{(6)}(\xi)\)</span></li>
+</ul>
+<div class="admonition definition">
+<p class="admonition-title">定理</p>
+<p>对于使用<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n+1\)</span><span class="heti-spacing"> </span></span>个点的牛顿<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>科茨公式，<span class="arithmatex">\(\exists \xi \in (a, b)\)</span>，使得：</p>
+<div class="arithmatex">\[
+\int_a^b f(x) dx = \sum\limits_{k=0}^n A_k f(x_k) + \dfrac{h^{n+3}f^{(n+2)}(\xi)}{(n+2)!} \int_0^n t^2(t - 1) \dots (t - n) dt
+\]</div>
+<ul>
+<li>如果<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span><span class="heti-spacing"> </span></span>为偶数，那么<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f \in C^{n+2}[a, b]\)</span><span class="heti-spacing"> </span></span>且<span><span class="heti-spacing"> </span><span class="arithmatex">\(\int_a^b f(x) dx = \sum\limits_{k=0}^n A_k f(x_k) + \dfrac{h^{n+2}f^{(n+1)}(\xi)}{(n+1)!} \int_0^n t(t - 1) \dots (t - n) dt\)</span></span></li>
+<li>如果<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span><span class="heti-spacing"> </span></span>为奇数，那么<span><span class="heti-spacing"> </span><span class="arithmatex">\(f \in C^{n+1}[a, b]\)</span></span></li>
+</ul>
+</div>
+<h2 id="gaussian-quadrature">Gaussian Quadrature<a class="headerlink" href="#gaussian-quadrature" title="Permanent link">⚓︎</a></h2>
+<p>目标：构造一个公式<span><span class="heti-spacing"> </span><span class="arithmatex">\(\int_a^b w(x) f(x) dx \approx \sum\limits_{k=0}^n A_k f(x_k)\)</span></span>，对于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n+1\)</span><span class="heti-spacing"> </span></span>个点而言精度为<span><span class="heti-spacing"> </span><span class="arithmatex">\(2n+1\)</span></span>。</p>
+<p>思路：确定<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(2n+2\)</span><span class="heti-spacing"> </span></span>个未知量<span><span class="heti-spacing"> </span><span class="arithmatex">\(x_0, \dots, x_n;\ A_0, \dots, A_n\)</span></span>，使得公式在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f(x) = 1, x, x^2, \dots, x^{2n+1}\)</span><span class="heti-spacing"> </span></span>上都是精确的。点<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x_0, \dots, x_n\)</span><span class="heti-spacing"> </span></span>被称为<strong>高斯点</strong>(Gaussian points)，这个方法被称为<strong>高斯求积</strong>(Gaussian quadrature)</p>
+<details class="exmaple">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="5:2"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio"/><input id="__tabbed_5_2" name="__tabbed_5" type="radio"/><div class="tabbed-labels"><label for="__tabbed_5_1">题目</label><label for="__tabbed_5_2">解答</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>TBD</p>
+</div>
+<div class="tabbed-block">
+<p>假设<span><span class="heti-spacing"> </span><span class="arithmatex">\(\int_0^1 \sqrt{x} f(x) dx \approx A_0 f(x_0) + A_1 f(x_1)\)</span></span>。</p>
+<p>公式必须在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f(x) = 1, x, x^2, x^3\)</span><span class="heti-spacing"> </span></span>上精确表示。计算<span><span class="heti-spacing"> </span><span class="arithmatex">\(\begin{cases}\frac{2}{3} = A_0 + A_1 \\ \frac{2}{5} = A_0 x_0 + A_1 x_1 \\ \frac{2}{7} = A_0 x_0^2 + A_1 x_1^2 \\ \frac{2}{9} = A_0x_0^3 + A_1 x_1^3\end{cases}\)</span></span>，解得：<span class="arithmatex">\(\begin{cases}x_0 \approx 0.8212 \\ x_1 \approx 0.2899 \\ A_0 \approx 0.3891 \\ A_1 \approx 0.2776\end{cases}\)</span></p>
+</div>
+</div>
+</div>
+</details>
+<div class="admonition definition">
+<p class="admonition-title">定理</p>
+<p>当且仅当<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(W(x) = \prod\limits_{k=0}^n(x - x_k)\)</span><span class="heti-spacing"> </span></span>与所有阶数不超过<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span><span class="heti-spacing"> </span></span>的多项式正交时，<span><span class="arithmatex">\(x_0, \dots, x_n\)</span><span class="heti-spacing"> </span></span>是<strong>高斯点</strong>。</p>
+<details class="proof">
+<summary>证明</summary>
+<ul>
+<li>
+<p>若<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x_0, \dots, x_n\)</span><span class="heti-spacing"> </span></span>是高斯点，则公式<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\int_a^b w(x) f(x) dx \approx \sum\limits_{k=0}^nA_kf(x_k)\)</span><span class="heti-spacing"> </span></span>的精度至少为<span><span class="heti-spacing"> </span><span class="arithmatex">\(2n+1\)</span></span>。那么对于任意多项式<span><span class="heti-spacing"> </span><span class="arithmatex">\(P_m(x)\ (m \le n)\)</span></span>，<span><span class="arithmatex">\(P_m(x) W(x)\)</span><span class="heti-spacing"> </span></span>的阶数不超过<span><span class="heti-spacing"> </span><span class="arithmatex">\(2n+1\)</span></span>。因此上述公式对于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(P_m(x) W(x)\)</span><span class="heti-spacing"> </span></span>而言是精确的，也就是说：</p>
+<div class="arithmatex">\[
+\int_a^b w(x) P_m(x) W(x) dx = \sum\limits_{k=0}^n A_k P_m(x_k) W(x_k) = 0
+\]</div>
+</li>
+<li>
+<p>要证明<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x_0, \dots, x_n\)</span><span class="heti-spacing"> </span></span>是高斯点，我们需要证明公式对任意多项式<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(P_m(x)\ (m \le 2n + 1)\)</span><span class="heti-spacing"> </span></span>是精确的。令<span><span class="heti-spacing"> </span><span class="arithmatex">\(P_m(x) = W(x) q(x) + r(x)\)</span></span>，那么<span><span class="heti-spacing"> </span>$\int_a^n w(x) P_m(x) dx = $\int_a^n w(x) W(x) q(x) dx + <span class="arithmatex">\(\int_a^n w(x) r(x) dx = \sum\limits_{k=0}^n A_k r(x_k) = \sum\limits_{k=0}^n A_k P_m(x_k)\)</span></span></p>
+</li>
+</ul>
+</details>
+</div>
+<p>正交多项式的集合<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\{\varphi_0, \varphi_1, \dots, \varphi_n, \dots\}\)</span><span class="heti-spacing"> </span></span>是线性独立的，且<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\varphi_{n+1}\)</span><span class="heti-spacing"> </span></span>和任何多项式<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(P_m(x)\ (m \le n)\)</span><span class="heti-spacing"> </span></span>正交。所以，如果我们拿<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\varphi_{n+1}\)</span><span class="heti-spacing"> </span></span>作为<span><span class="heti-spacing"> </span><span class="arithmatex">\(W(x)\)</span></span>，那么 <strong><span><span class="arithmatex">\(\varphi_{n+1}\)</span><span class="heti-spacing"> </span></span>的根</strong>就是高斯点了。</p>
+<details class="example">
+<summary>例子</summary>
+</details>
+<div class="tabbed-set tabbed-alternate" data-tabs="6:2"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio"/><input id="__tabbed_6_2" name="__tabbed_6" type="radio"/><div class="tabbed-labels"><label for="__tabbed_6_1">题目</label><label for="__tabbed_6_2">解答</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>使用高斯求积来近似计算<span><span class="heti-spacing"> </span><span class="arithmatex">\(\int_0^1 \sqrt{x} f(x) dx\)</span></span>，其中<span><span class="heti-spacing"> </span><span class="arithmatex">\(n = 1\)</span></span></p>
+</div>
+<div class="tabbed-block">
+<p>假设<span><span class="heti-spacing"> </span><span class="arithmatex">\(\int_0^1 \sqrt{x} f(x) dx \approx A_0 f(x_0) + A_1 f(x_1)\)</span></span>。</p>
+<ol>
+<li>
+<p>构造正交多项式<span><span class="heti-spacing"> </span><span class="arithmatex">\(\varphi_2\)</span></span>。令<span><span class="heti-spacing"> </span><span class="arithmatex">\(\varphi_0(x) = 1, \varphi_1(x) = x + a, \varphi_2(x) = x^2 + bx + c\)</span></span></p>
+<ul>
+<li><span class="arithmatex">\((\varphi_0, \varphi_1) = 0 \Rightarrow \int_0^1 \sqrt{x} (x + a) dx = 0 \Rightarrow a = - \dfrac{3}{5}\)</span></li>
+<li><span class="arithmatex">\((\varphi_0, \varphi_2) = 0 \Rightarrow \int_0^1 \sqrt{x} (x^2 + bx + c) dx = 0 \Rightarrow a = - \dfrac{10}{9}\)</span></li>
+<li><span class="arithmatex">\((\varphi_1, \varphi_2) = 0 \Rightarrow \int_0^1 \sqrt{x} (x - \dfrac{3}{5})(x + bx + c) dx = 0 \Rightarrow a = \dfrac{5}{21}\)</span></li>
+<li><span class="arithmatex">\(\therefore \varphi_2(x) = x^2 - \dfrac{10}{9}x + \dfrac{5}{21}\)</span></li>
+</ul>
+</li>
+<li>
+<p>找到<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\varphi_2\)</span><span class="heti-spacing"> </span></span>的两个根，作为高斯点<span><span class="heti-spacing"> </span><span class="arithmatex">\(x_0, x_1\)</span></span>：<span class="arithmatex">\(x_{0;1} = \dfrac{\frac{10}{9} \pm \sqrt{(\frac{10}{9})^2 - \frac{20}{21}}}{2}\)</span></p>
+</li>
+<li>
+<p>因为这个公式必须在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f(x) = 1, x\)</span><span class="heti-spacing"> </span></span>上是精确的，所以我们能比较容易地求解<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(A_0, A_1\)</span><span class="heti-spacing"> </span></span>的线性方程组</p>
+</li>
+</ol>
+<p>最终结果为：<span class="arithmatex">\(x_0 \approc 0.8212, x_1 \approx 0.2899, A_0 \approx 0.3891, A_1 \approx 0.2776\)</span></p>
+<p>现在使用上述结果来近似计算<span><span class="heti-spacing"> </span><span class="arithmatex">\(\int_0^1 \sqrt{x} e^x dx\)</span></span></p>
+<div class="arithmatex">\[
+$\int_0^1 \sqrt{x} f(x) dx$ \approc A_0 e^{x_0} + A_1 e^{x_1} = 0.3891 \times e^{0.8212} + 0.2776 \times e^{0.2899} \approx 1.2555
+\]</div>
+<p>而<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\int_0^1 \sqrt{x} (2x-1) dx = \dfrac{2}{15}\)</span><span class="heti-spacing"> </span></span>是精确的</p>
+</div>
+</div>
+</div>
+<p>一些特殊的正交多项式：</p>
+<ul>
+<li>
+<p><strong>勒让德多项式</strong>(Legendre polynomials)：定义在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\([-1, 1]\)</span><span class="heti-spacing"> </span></span>上且<span><span class="heti-spacing"> </span><span class="arithmatex">\(w(x) \equiv 1\)</span></span></p>
+<div class="arithmatex">\[
+P_k(x) = \dfrac{1}{2^k k!} \dfrac{d^k}{dx^k}(x^2 - 1)^k \quad \quad (P_k, P_l) = \begin{cases}0 &amp; k \ne l \\ \dfrac{2}{2k+1} &amp; k = l\end{cases}
+\]</div>
+<p><span class="arithmatex">\(P_0 = 1, P_1 = x, (k + 1)P_{k+1} = (2k + 1)xP_k - kP_{k-1}\)</span></p>
+<p>使用<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(P_{n+1}\)</span><span class="heti-spacing"> </span></span>的根的公式称为高斯<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>勒让德求积公式。</p>
+</li>
+<li>
+<p><strong>切比雪夫多项式</strong>(Chebyshev polynomials)：定义在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\([-1, 1]\)</span><span class="heti-spacing"> </span></span>上且<span><span class="heti-spacing"> </span><span class="arithmatex">\(w(x) \equiv \dfrac{1}{\sqrt{1 - x^2}}\)</span></span></p>
+<div class="arithmatex">\[
+T_k(x) = \cos (k \times \arccos x)
+\]</div>
+<p><span><span class="arithmatex">\(T_{n+1}\)</span><span class="heti-spacing"> </span></span>的根为<span><span class="heti-spacing"> </span><span class="arithmatex">\(x_k = \cos \Big(\dfrac{2k + 1}{2n + 2} \pi \Big) \quad (k = 0, \dots, n)\)</span></span></p>
+<p>公式<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\int_{-1}^1 \dfrac{1}{\sqrt{1 - x^2}} f(x) dx = \sum\limits_{k=0}^n A_k f(x_k)\)</span><span class="heti-spacing"> </span></span>称为高斯<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>切比雪夫求积公式。</p>
+</li>
+</ul>
 <aside class="md-source-file">
 <span class="md-source-file__fact">
 <span class="md-icon" title="最后更新">
