@@ -8,6 +8,10 @@
 
     在大二春夏的 OOP 课程学习中，将会对 C++ 相关的知识有一个更为系统完全的整理。
 
+!!! warning "警告"
+
+    目前的“笔记”只是一坨意义不明的草稿，所以建议看下面的参考资料。
+
 
 !!! info "课程信息"
 
@@ -24,6 +28,12 @@
     - [Classes and Objects](3.md)
     - [Functions](4.md)
     - [Composition](5.md)
+    - [Inheritance](6.md)
+    - [Polymorphism](7.md)
+    - [Copying and Moving](8.md)
+    - [Overloaded Operators](9.md)
+    - [Templates](10.md)
+    - [Exceptions](11.md)
 
     TBD
 
@@ -33,6 +43,7 @@
     - [cppreference.com](https://en.cppreference.com/w/)
     - [Jerryhzy 大佬的笔记](https://blog.jerryhzy.top/oop-lec1-using-object/)：笔记内容详细，读起来十分舒服，比干啃 PPT 好太多了！
     - [咸鱼暄前辈的笔记](https://xuan-insr.github.io/cpp/cpp_restart/)
+    - [45gfg9 前辈的笔记](https://tree.45gfg9.net/lcppthw/bootstrap/#_3)（24-25 春夏 pbfx）
 
 
 

@@ -280,7 +280,7 @@ counter: true
 
 ## 基础语法
 
-学了《数据库系统》课程后，发现 SQLite 只是 SQL 的其中一种实现，它支持大多数的 SQL 语句，因此这里就不再列出详细的语法规则。对此不太了解的读者可以阅读我的数据库笔记的 Lec 3-5（正在更新中）。
+学了《数据库系统》课程后，发现 SQLite 只是 SQL 的其中一种实现，它支持大多数的 SQL 语句，因此这里就不再列出详细的语法规则。对此不太了解的读者可以阅读我的数据库笔记的 Lec 3-5（已完更！）。
 
 - [Lec 3: Introduction to SQL](../system/db/3.md)
 - [Lec 4: Intermediate SQL](../system//db/4.md)
@@ -427,7 +427,7 @@ import sqlite3
 ```
 
 
-#### 创建数据库
+#### 创建、连接数据库
 
 首先，通过 `sqlite3` 模块的 `connect()` 函数创建一个新的 SQLite 数据库，或者打开一个已经存在的数据库。该函数会返回一个 `Connection` 对象实例，我们可以在该实例上执行各种数据库操作。
 
@@ -602,13 +602,1051 @@ conn = sqlite3.connect(':memory:')
         ```
 
 
-### Node.js
-
-
 ### Java
 
+Java 提供了一些连接 SQLite 数据库的接口，一些是 C 语言 API 的包装器(wrappers)，而另一些实现了 JDBC(Java Database Connectivity) 下的 API。下面我们主要来学习 [`SQLiteJDBC`](https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc) 包的使用，它是 SQLite 的 JDBC 驱动，包含了 Java 类和本地的 SQLite 库。
 
-### C#
+
+#### 创建、连接数据库
+
+环境：Windows 11 24H2 + IntelliJ IDEA 2024.2.1（或者更高的版本）。
+
+>这里使用 IntelliJ IDEA 主要是因为这个 IDE 对 Java 编程而言相当方便，如果用 VSCode 的话还得要手动配置，比较麻烦。
+
+
+1. 创建 Java 项目
+
+    - 打开 IntelliJ IDEA，新建项目：
+
+        <div style="text-align: center">
+            <img src="images/sqlite/19.png" width="80%" />
+        </div>
+
+    - 进入项目后的界面：
+
+        <div style="text-align: center">
+            <img src="images/sqlite/20.png" width="90%" />
+        </div>
+
+
+2. 将 `SQLiteJDBC` 加入到项目中
+
+    - 右击项目文件夹，在弹出的菜单中点击“打开模块设置”
+
+        <div style="text-align: center">
+            <img src="images/sqlite/21.png" width="90%" />
+        </div>
+
+    - 在“项目结构”界面选择“库”，然后点击加号，选中“来自 Maven...”
+
+        <div style="text-align: center">
+            <img src="images/sqlite/22.png" width="90%" />
+        </div>
+
+    - 在输入框中输入 sqlite-jdbc，找到最新版本的库，按下图所示内容选择对应选项，点击“确定”
+
+        <div style="text-align: center">
+            <img src="images/sqlite/23.png" width="90%" />
+        </div>
+
+    - 如图所示，我们成功导入了这个库，再次点击“确定”
+
+        <div style="text-align: center">
+            <img src="images/sqlite/24.png" width="90%" />
+        </div>
+
+3. 创建并运行 Java 程序
+
+    - 新建 Java 类
+
+        <div style="text-align: center">
+            <img src="images/sqlite/25.png" width="90%" />
+        </div>
+
+    - 点击 “Java 类” 后输入类的名称
+
+        <div style="text-align: center">
+            <img src="images/sqlite/26.png" width="40%" />
+        </div>
+
+    - 创建好后，在代码编辑区中输入以下代码：
+
+        ```java
+        package net.sqliteTest;
+
+        import java.sql.DriverManager;
+        import java.sql.SQLException;
+
+        public class Main {
+            public static void connect() {
+                // 连接字符串，指定 SQLite 数据库所在目录
+                var url = "jdbc:sqlite:d:/University/CS/self-learning/mySQLiteTest/chinook/chinook.db";  // 换成你自己的目录！
+
+                // 尝试建立连接
+                // 这里用到了 try-with-resources 语句（即 try 关键字和语句块之间还有括号）
+                // 这样的话程序在结束前会自动关闭连接
+                try (var conn = DriverManager.getConnection(url)) {
+                    System.out.println("Connection to SQLite has been established.");
+                } catch (SQLException e) {
+                    // 打印报错信息
+                    System.out.println(e.getMessage());
+                }
+            }
+
+            // 主方法调用 connect() 方法
+            public static void main(String[] args) {
+                connect();
+            }
+        }
+        ```
+
+        <div style="text-align: center">
+            <img src="images/sqlite/27.png" width="90%" />
+        </div>
+
+    - 运行代码：
+
+        <div style="text-align: center">
+            <img src="images/sqlite/28.png" width="90%" />
+        </div>
+
+        如果在控制台上看到 `Connection to SQLite has been established.`，说明成功建立起和数据库的连接。
+
+
+#### CRUD
+
+- 创建数据库：当连接一个不存在的数据库时，程序会为我们自动创建一个新的数据库。
+
+    ??? example "例子"
+
+        ```java
+        // 创建一个名为 my.db 的 SQLite 数据库
+        // 该数据库位于和程序相同的目录下
+        import java.sql.DriverManager;
+        import java.sql.SQLException;
+
+        public class Main {
+            public static void createDatabase() {
+                String url = "jdbc:sqlite:my.db";
+
+                try (var conn = DriverManager.getConnection(url)) {
+                    if (conn != null) {
+                        var meta = conn.getMetaData();
+                        System.out.println("The driver name is " + meta.getDriverName());
+                        System.out.println("A new database has been created.");
+                    }
+                } catch (SQLException e) {
+                    System.err.println(e.getMessage());
+                }
+            }
+            
+            public static void main(String[] args) {
+                createDatabase();
+            }
+        }
+        ```
+
+        运行上述代码后，可以看到目录中多出了 my.db 数据库文件：
+
+        <div style="text-align: center">
+            <img src="images/sqlite/29.png" width="50%" />
+        </div>
+
+
+!!! warning "注意"
+
+    之后我就省略导入语句和类的声明（反正都是一样的），只给出方法的实现。
+
+- 创建表格：
+    1. 声明一个 `CREATE TABLE` 语句的字符串
+    2. 连接数据库
+    3. 从 `Connection` 对象（就是 `getConnection()` 方法的返回值）中创建一个 `Statement` 类的实例
+    4. 通过执行 `executeUpdate()` 方法来执行 `CREATE TABLE` 语句
+
+    ??? example "例子"
+
+        ```java
+        public static void createTable() {
+            var url = "jdbc:sqlite:my.db";
+
+            // 创建表格的 SQL 语句
+            var sql = "CREATE TABLE IF NOT EXISTS warehouses ("
+                    + "	id INTEGER PRIMARY KEY,"
+                    + "	name text NOT NULL,"
+                    + "	capacity REAL"
+                    + ");";
+
+            try (
+                var conn = DriverManager.getConnection(url);
+                var stmt = conn.createStatement();
+            ) {
+                // 执行 SQL 语句
+                stmt.execute(sql);
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        ```
+
+- 插入数据
+    1. 连接数据库
+    2. 准备 `INSERT` 语句，使用 `?` 作为参数占位符
+    3. 从 `Connection` 对象中创建 `PreparedStatement` 的实例
+    4. 使用 `PreparedStatement` 对象的 set 方法，用具体值替换占位符，比如 `setInt()`、`setString()`
+    5. 调用 `PreparedStatement` 对象的 `executeUpdate()` 方法执行
+
+    ??? example "例子"
+
+        ```java
+        public static void insertData() {
+            String url = "jdbc:sqlite:my.db";
+
+            // 准备好具体参数值
+            var names = new String[] {"Raw Materials", "Semifinished Goods", "Finished Goods"};
+            var capacities = new int[] {3000,4000,5000};
+
+            // 预备语句
+            String sql = "INSERT INTO warehouses(name,capacity) VALUES(?,?)";
+
+            try (
+                var conn = DriverManager.getConnection(url);
+                var pstmt = conn.prepareStatement(sql);
+            ) {
+                for (int i = 0; i < 3; i++) {
+                    // 应用具体值
+                    pstmt.setString(1, names[i]);
+                    pstmt.setDouble(2, capacities[i]);
+                    pstmt.executeUpdate();
+                }
+
+            } catch (SQLException e) {
+                System.err.println(e.getMessage());
+            }  
+        }
+        ```
+
+        检验插入是否成功：
+
+        <div style="text-align: center">
+            <img src="images/sqlite/30.png" width="50%" />
+        </div>
+
+- 更新数据：直接参照 `INSERT` 语句的做法，只要将 `INSERT` 语句换成 `UPDATE` 语句即可
+- 查询数据：
+    - 创建 `Connection` 对象来连接 SQLite 数据库
+    - 创建来自该对象的 `Statement` 实例
+    - 调用 `Statement` 对象的 `executeQuery` 方法来创建 `ResultSet` 类的实例（即查询结果）
+    - 之后在循环中，通过 `next()` 方法来逐行遍历结果
+    - 最后可以使用 get 方法来获取具体的属性值，比如 `getInt()`、`getString()`、`getDouble()`
+
+    ??? example "例子"
+
+        === "例1"
+
+            ```java
+            public static void selectData() {
+                var url = "jdbc:sqlite:my.db";
+                var sql = "SELECT id, name, capacity FROM warehouses";
+
+                try (var conn = DriverManager.getConnection(url);
+                        var stmt = conn.createStatement();
+                        var rs = stmt.executeQuery(sql)) {
+
+                    while (rs.next()) {
+                        System.out.printf("%-5s%-25s%-10s%n",
+                                rs.getInt("id"),
+                                rs.getString("name"),
+                                rs.getDouble("capacity")
+                        );
+                    }
+                } catch (SQLException e) {
+                    System.err.println(e.getMessage());
+                }
+            }
+            ```
+
+            运行结果：
+
+            ```
+            1    Raw Materials            3000.0    
+            2    Semifinished Goods       4000.0    
+            3    Finished Goods           5000.0 
+            ```
+
+        === "例2（使用预备语句构建带参数的 SQL 查询语句）"
+
+            ```java
+            public static void selectDataWithPrams() {
+                var url = "jdbc:sqlite:my.db";
+                var sql = "SELECT id, name, capacity FROM warehouses WHERE capacity > ?";
+                var capacity = 3600;
+
+                try (var conn = DriverManager.getConnection(url);
+                        var pstmt = conn.prepareStatement(sql)) {
+
+                    pstmt.setDouble(1, capacity);
+
+                    var rs = pstmt.executeQuery();
+
+                    while (rs.next()) {
+                        System.out.printf("%-5s%-25s%-10s%n",
+                                rs.getInt("id"),
+                                rs.getString("name"),
+                                rs.getDouble("capacity")
+                        );
+                    }
+                } catch (SQLException e) {
+                    System.err.println(e.getMessage());
+                }
+            }
+            ```
+
+            运行结果：
+
+            ```
+            2    Semifinished Goods       4000.0    
+            3    Finished Goods           5000.0 
+            ```
+
+- 删除数据：类似插入数据的步骤，只是将语句换为 `DELETE` 语句
+
+    ??? example "例子"
+
+        ```java
+        public static void deleteData() {
+            var url = "jdbc:sqlite:my.db";
+            var sql = "DELETE FROM warehouses WHERE id = ?";
+            var id = 3;
+
+            try (var conn = DriverManager.getConnection(url);
+                    var pstmt = conn.prepareStatement(sql)) {
+
+                pstmt.setInt(1, id);
+
+                // execute the delete statement
+                pstmt.executeUpdate();
+
+            } catch (SQLException e) {
+                System.err.println(e.getMessage());
+            }
+        }
+        ```
+
+
+#### 事务
+
+!!! info "注"
+
+    这里假设你对“事务”这一概念有所了解，如果不清楚的话，建议看这篇[笔记](https://note.noughtq.top/system/db/4)。
+
+默认情况下，使用 JDBC 连接 SQLite 数据库时启用自动提交(auto-commit)模式，也就是说每执行一条 SQL 语句，语句都会被提交从而生效。如果想要禁用这一模式的话，需要使用 `Connection` 对象的 `setAutoCommit(false)` 方法，但此时需要手动提交和回滚，也是用 `Connection` 对象的方法 `commit()` 和 `rollback()` 分别实现。
+
+???+ example "例子"
+
+    在执行这段函数前，请先在 sqlite 中执行以下创建表格语句：
+
+    ```sql
+    CREATE TABLE materials (
+        id INTEGER PRIMARY KEY, 
+        description TEXT NOT NULL
+    );
+
+    CREATE TABLE inventory (
+        warehouse_id INTEGER,
+        material_id INTEGER,
+        qty REAL,
+        PRIMARY KEY (warehouse_id, material_id),
+        FOREIGN KEY (warehouse_id) REFERENCES warehouses (id),
+        FOREIGN KEY (material_id) REFERENCES materials (id)
+    );
+    ```
+
+    接下来创建一个简单的事务，由函数 `addInventory()` 实现：
+
+    ```java
+    public class Main {
+        public void addInventory(String material, int warehouseId, double qty) {
+            String url = "jdbc:sqlite:my.db";
+
+            // 准备设置具体值
+            int materialId = 0;
+            try (var conn = DriverManager.getConnection(url)) {
+                // 禁用自动提交模式
+                conn.setAutoCommit(false);
+
+                // 准备插入语句
+                try (
+                    var pstmt1 = conn.prepareStatement("INSERT INTO materials(description) VALUES(?)")
+                ) {
+                    pstmt1.setString(1, material);
+                    pstmt1.executeUpdate();
+                } catch (SQLException e) {
+                    conn.rollback();
+                }
+                // 获取刚刚插入的数据
+                try (
+                    var stmt = conn.createStatement()
+                ) {
+                    var generatedKeys = stmt.executeQuery("SELECT last_insert_rowid()");
+
+                    if (generatedKeys.next()) {
+                        materialId = generatedKeys.getInt(1);
+                    }
+                } catch (SQLException e) {
+                    conn.rollback();
+                }
+
+                // 另一条插入语句
+                try (var pstmt2 = conn.prepareStatement("INSERT INTO inventory(warehouse_id,material_id,qty) VALUES(?,?,?)")) {
+                    pstmt2.setInt(1, warehouseId);
+                    pstmt2.setInt(2, materialId);
+                    pstmt2.setDouble(3, qty);
+                    pstmt2.executeUpdate();
+                } catch (SQLException e) {
+                    conn.rollback();
+                }
+
+                // 提交
+                conn.commit();
+            } catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+
+        public static void main(String[] args) {
+            var app = new Main();
+            app.addInventory("HP Laptop", 3, 100);
+        }
+    }
+    ```
+
+    检验结果：
+
+    ```sql
+    sqlite> SELECT
+    ...>   name,
+    ...>   description,
+    ...>   qty
+    ...> FROM
+    ...>   materials
+    ...>   INNER JOIN inventory ON inventory.material_id = materials.id
+    ...>   INNER JOIN warehouses ON warehouses.id = inventory.warehouse_id;
+    Finished Goods|HP Laptop|100.0
+    ```
 
 
 ### Go
+
+#### 创建、连接数据库
+
+1. 先创建一个目录（文件夹），然后进入到该目录。
+2. 创建一个 Go 模块：
+
+    ```sh
+    go mod init sqlitetutorial.net/go
+    ```
+
+    执行完该命令后，可以看到目录上多了一个 go.mod 的文件
+
+3. 初始化 SQLite 驱动：
+
+    ```sh
+    go get github.com/glebarez/go-sqlite
+    ```
+
+    这个 `go-sqlite` 是 Go 本地包 `database-sql` 下的一个纯 Go 语言的驱动。
+
+4. 创建 main.go 文件，编写以下代码：
+
+    ```go title="country.go"
+    package main
+
+    // 导入标准库的包和模块
+    import (
+        "database/sql"
+        "fmt"
+        _ "github.com/glebarez/go-sqlite"
+    )
+
+    func main() {
+        // （创建和）连接到 SQLite 数据库
+        // 如果 my.db 文件不存在的话，执行以下语句就会创建该文件
+        db, err := sql.Open("sqlite", "./my.db")
+        // 如果想要连接内存中的数据库，可以讲第二个参数改为 ":memory:"
+        if err != nil {
+            fmt.Println(err)
+            return
+        }
+
+        // 关闭连接
+        defer db.Close()
+        fmt.Println("Connected to the SQLite database successfully.")
+
+        // 获取 SQLite 的版本号
+        var sqliteVersion string
+        err = db.QueryRow("select sqlite_version()").Scan(&sqliteVersion)
+        if err != nil {
+            fmt.Println(err)
+            return
+        }
+
+        fmt.Println(sqliteVersion)
+    }
+    ```
+
+5. 观察运行结果：
+
+    ```sh
+    $ go run main.go
+    Connected to the SQLite database successfully.
+    3.41.2
+    ```
+
+    查看目录：
+
+    ```sh
+    $ ls
+    go.mod  go.sum  main.go  my.db
+    ```
+
+
+#### CRUD
+
+- 创建表格：
+    1. 连接到数据库：
+
+        ```go
+        db, err := sql.Open("sqlite", "./my.db")
+        ```
+
+    2. 构造 `CREATE TABLE` 语句：
+
+        ```go
+        sql := "CREATE TABLE table...";
+        ```
+
+    3. 调用 `DB` 实例 `db` 的 `Exec()` 方法，执行 SQL 语句：
+
+        ```go
+        _, err = db.Exec(sql)
+        ```
+
+    ??? example "例子"
+
+        1. 创建 country.go 文件，专门存放创建表格相关的函数：
+
+            ```go title="country.go"
+            package main
+
+            import (
+                "database/sql"
+                _ "github.com/glebarez/go-sqlite"
+            )
+
+            func CreateTable(db *sql.DB) (sql.Result, error)  {
+                sql := `CREATE TABLE IF NOT EXISTS countries (
+                            id INTEGER PRIMARY KEY,
+                            name TEXT NOT NULL,
+                            population INTEGER NOT NULL,
+                            area INTEGER NOT NULL
+                );`
+
+                return db.Exec(sql)
+            }      
+            ```
+
+        2. 修改上面给出的 main.go 文件，使其调用 `CreateTable()` 函数：
+
+            ```go title="main.go"
+            // 其余部分不变
+            func main() {
+                // 连接数据库
+                db, err := sql.Open("sqlite", "./my.db")
+                if err != nil {
+                    fmt.Println(err)
+                    return
+                }
+
+                defer db.Close()
+                fmt.Println("Connected to the SQLite database successfully.")
+
+                // 创建表格
+                _, err = CreateTable(db)    
+                if err != nil {
+                    fmt.Println(err)
+                    return
+                }
+
+                fmt.Println("Table countries was created successfully.")
+            }
+            ```
+
+        3. 编译&运行上述程序：
+
+            ```sh
+            $ go run country.go main.go
+            Connected to the SQLite database successfully.
+            Table countries was created successfully.
+            ```
+
+        4. 查看结果：
+
+            ```sh
+            $ sqlite3 my.db
+            SQLite version 3.43.2 2023-10-10 13:08:14
+            Enter ".help" for usage hints.
+            sqlite> .tables
+            countries
+            sqlite> .schema
+            CREATE TABLE countries (
+                                    id INTEGER PRIMARY KEY,
+                                    name TEXT NOT NULL,
+                                    population INTEGER NOT NULL,
+                                    area INTEGER NOT NULL
+                );
+            sqlite> .quit
+            ```
+
+- 插入数据
+    1. 连接数据库
+    2. 构造插入语句
+
+        ```go
+        sql := "INSERT INTO table...";
+        ```
+
+        我们可以像插入语句传递数据，用 `?` 作为占位符
+    
+    3. 执行语句
+
+        ```go
+        result, err = db.Exec(sql)
+        ```
+
+        如果要传递数据，则 `Exec()` 方法需要传递更多的参数：
+
+        ```go
+        result, err = db.Exec(sql, value1, value2, ...)
+        ```
+
+        其中 `result` 是一个结构体实例，它实现了 `Result` 接口，该接口有以下两类方法：
+
+        - `LastInsertID()`：返回由 SQLite 生成的 ID
+        - `RowsAffected()`：返回受影响的行数
+
+    ??? example "例子"
+
+        1. 在 country.go 新增 `Insert()` 函数，实现插入功能：
+
+            ```go title="country.go"
+            func Insert(db *sql.DB, c *Country) (int64, error) {
+                sql := `INSERT INTO countries (name, population, area) 
+                        VALUES (?, ?, ?);`
+                result, err := db.Exec(sql, c.Name, c.Population, c.Area)
+                if err != nil {
+                    return 0, err
+                }
+                return result.LastInsertId()
+            }
+            ```
+
+        2. 修改原有的 main.go 文件，使其调用 `Insert()` 函数，并且打印被插入的数据：
+
+            ```go title="main.go"
+            func main() {
+                // 连接数据库
+                db, err := sql.Open("sqlite", "./my.db")
+                if err != nil {
+                    fmt.Println(err)
+                    return
+                }
+
+                defer db.Close()
+                fmt.Println("Connected to the SQLite database successfully.")
+
+                // 准备插入数据（结构体）
+                country := &Country{
+                    Name: "United States", 
+                    Population: 329064917, 
+                    Area: 9826675,
+                }
+
+                // 插入数据
+                countryId, err := Insert(db, country)
+                if err != nil {
+                    fmt.Println(err)
+                    return
+                }
+                
+                // 打印刚刚插入的数据
+                fmt.Printf(
+                    "The country %s was inserted with ID:%d\n",
+                    country.Name,
+                    countryId,
+                )
+            }
+            ```
+
+        3. 编译&运行上述程序：
+
+            ```sh
+            $ go run country.go main.go
+            Connected to the SQLite database successfully.
+            The country United States was inserted with ID:1
+            ```
+
+        4. 用命令行工具查看：
+
+            ```sh
+            $ sqlite3 my.db
+            SQLite version 3.43.2 2023-10-10 13:08:14
+            Enter ".help" for usage hints.
+            sqlite> .header on
+            sqlite> .mode column
+            sqlite> .nullvalue null
+            sqlite> SELECT * FROM countries;
+            id  name           population  area   
+            --  -------------  ----------  -------
+            1   United States  329064917   9826675
+            sqlite> .quit
+            ```
+
+- 更新数据：大致流程与插入数据类似，只要将 SQL 插入语句改为更新语句即可。所以就直接看下面的例子吧：
+
+    ??? example "例子"    
+
+        1. 在 country.go 新增 `Update()` 函数，实现插入功能：
+
+            ```go title="country.go"
+            func Update(db *sql.DB, id int, population int) (int64, error) {
+                sql := `UPDATE countries SET population = ? WHERE id = ?;`
+                result, err := db.Exec(sql, population, id)
+                if err != nil {
+                    return 0, err
+                }
+                return result.RowsAffected()
+            }
+            ```
+
+        2. 修改原有的 main.go 文件，使其调用 `Update()` 函数：
+
+            ```go title="main.go"
+            func main() {
+                // 连接数据库
+                db, err := sql.Open("sqlite", "./my.db")
+                if err != nil {
+                    fmt.Println(err)
+                    return
+                }
+
+                defer db.Close()
+                fmt.Println("Connected to the SQLite database successfully.")
+
+                // 更新数据
+                _, err = Update(db, 1, 346037975)
+                if err != nil {
+                    fmt.Println(err)
+                    return
+                } 
+            }
+            ```
+
+        3. 编译&运行上述程序：
+
+            ```sh
+            $ go run country.go main.go
+            Connected to the SQLite database successfully.
+            ```
+
+        4. 用命令行工具查看：
+
+            ```sh
+            $ sqlite3 my.db
+            SQLite version 3.43.2 2023-10-10 13:08:14
+            Enter ".help" for usage hints.
+            sqlite> .header on
+            sqlite> .mode column
+            sqlite> .nullvalue null
+            sqlite> SELECT * FROM countries WHERE id = 1;
+            id  name           population  area   
+            --  -------------  ----------  -------
+            1   United States  346037975   9826675
+            sqlite> .quit
+            ```
+
+            比对上一个例子看，这里的 `population` 属性值已更新。
+
+- 删除数据的流程与插入和更新同理，故不再赘述
+- 查询数据
+    - 查询单行记录
+
+        ???+ example "例子"
+
+            1. 在 country.go 新增 `FindById()` 函数，实现单行查询功能：
+
+                ```go title="country.go"
+                func FindById(db *sql.DB, id int) (*Country, error) {
+                    sql := `SELECT * FROM countries WHERE id = ?`
+                    // 执行查询语句，并返回单行记录
+                    row := db.QueryRow(sql, id)
+                    // 创建结构体实例
+                    c := &Country{}
+                    // 将查询结果放到结构体实例内
+                    err := row.Scan(&c.Id, &c.Name, &c.Population, &c.Area)
+                    if err != nil {
+                        return nil, err
+                    }
+                    return c, nil
+                }
+                ```
+
+            2. 修改原有的 main.go 文件，使其调用 `FindById()` 函数，并且打印部分查询结果：
+
+                ```go title="main.go"
+                func main() {
+                    // 连接数据库
+                    db, err := sql.Open("sqlite", "./my.db")
+                    if err != nil {
+                        fmt.Println(err)
+                        return
+                    }
+
+                    defer db.Close()
+                    fmt.Println("Connected to the SQLite database successfully.")
+
+                    // 查询单行记录
+                    country, err := FindById(db, 1)
+                    if err != nil {
+                        fmt.Println(err)
+                        return
+                    }
+
+                    fmt.Println(country.Name)
+                } 
+                ```
+
+            3. 编译&运行上述程序：
+
+                ```sh
+                $ go run country.go main.go
+                Connected to the SQLite database successfully.
+                United States
+                ```       
+
+    - 查询多行记录
+
+        ???+ example "例子"
+
+            1. 在 country.go 新增 `FindAll()` 函数，实现多行查询功能：
+
+                ```go title="country.go"
+                func FindAll(db *sql.DB) ([]Country, error) {
+                    sql := `SELECT * FROM countries ORDER BY name`
+                    
+                    // 执行查询语句，返回多行记录
+                    rows, err := db.Query(sql)
+                    if err != nil {
+                        return nil, err
+                    }
+                    // 当退出函数时，断开与行记录对象的连接
+                    defer rows.Close()
+
+                    // 创建结构体切片
+                    var countries []Country
+                    // 遍历每个行记录
+                    for rows.Next() {
+                        c := &Country{}
+                        // 将行记录存放到结构体上
+                        err := rows.Scan(&c.Id, &c.Name, &c.Population, &c.Area)
+                        if err != nil {
+                            return nil, err
+                        }
+                        // 将单个结构体附加到切片末尾
+                        countries = append(countries, *c)
+                    }
+                    return countries, nil
+                }
+                ```
+
+            2. 修改原有的 main.go 文件，使其调用 `FindAll()` 函数，并且打印所有的 `country` 属性值：
+
+                ```go title="main.go"
+                func main() {
+                    // 连接数据库
+                    db, err := sql.Open("sqlite", "./my.db")
+                    if err != nil {
+                        fmt.Println(err)
+                        return
+                    }
+
+                    defer db.Close()
+                    fmt.Println("Connected to the SQLite database successfully.")
+
+                    // 查找所有的国家
+                    countries, err := FindAll(db)
+                    if err != nil {
+                        fmt.Println(err)
+                        return
+                    }
+                    for _, c := range countries {
+                        fmt.Printf("%s\n", c.Name)
+                    }        
+                }
+                ```
+
+            3. 编译&运行上述程序：
+
+                ```sh
+                $ go run country.go main.go
+                Connected to the SQLite database successfully.
+                Bangladesh
+                Brazil
+                China
+                Ethiopia
+                India
+                Indonesia
+                Nigeria
+                Pakistan
+                Russia
+                United States
+                United States
+                ```
+
+
+#### 导入 CSV 数据
+
+直接来看下面的例子：
+
+???+ example "例子"
+
+    1. 准备一份 CSV 表格
+
+        ```csv
+        name,population,area
+        India,1450935791,2973190
+        China,1419321278,9388211
+        United States,345426571,9147420
+        Indonesia,283487931,1811570
+        Pakistan,251269164,770880
+        Nigeria,232679478,910770
+        Brazil,211998573,8358140
+        Bangladesh,173562364,130170
+        Russia,144820423,16376870
+        Ethiopia,132059767,1000000
+        ```
+
+    2. 在 country.go 新增 `ReadCSV()` 函数，实现读取 CSV 的功能：
+
+        ```go title="country.go"
+        func ReadCSV(filename string) ([]Country, error) {
+            // 打开 CSV 文件
+            file, err := os.Open(filename)
+            if err != nil {
+                return nil, err
+            }
+            defer file.Close()
+
+
+            // 读取 CSV 数据
+            reader := csv.NewReader(file)
+            records, err := reader.ReadAll()
+            if err != nil {
+                return nil, err
+            }
+
+            // 解析 CSV 数据
+            var countries []Country
+            for _, record := range records[1:] { 	// 跳过表头
+                population, err := strconv.Atoi(record[1])
+                if err != nil {
+                    return nil, err
+                }
+                area, err := strconv.Atoi(record[2])
+                if err != nil {
+                    return nil, err
+                }
+                country := Country{
+                    Name:       record[0],
+                    Population: population,
+                    Area:       area,
+                }
+                countries = append(countries, country)
+            }
+
+            return countries, nil
+        }
+        ```
+
+    3. 修改原有的 main.go 文件，使其调用 `ReadCSV()` 函数，并且将 CSV 数据插入到数据库中：
+
+        ```go title="main.go"
+        func main() {
+            // 连接数据库
+            db, err := sql.Open("sqlite", "./my.db")
+            if err != nil {
+                fmt.Println(err)
+                return
+            }
+
+            defer db.Close()
+            fmt.Println("Connected to the SQLite database successfully.")
+
+            // 准备插入数据（结构体）
+            country := &Country{
+                Name: "United States", 
+                Population: 329064917, 
+                Area: 9826675,
+            }
+
+            // 读取 CSV 文件
+            countries, err := ReadCSV("countries.csv")
+            if err != nil {
+                fmt.Println(err)
+                return
+            }
+
+            // 向数据库插入数据
+            for _, country := range countries {
+                _, err := Insert(db, &country)
+                if err != nil {
+                    fmt.Println(err)
+                    break
+                }
+            }
+        }
+        ```
+
+    4. 编译&运行上述程序：
+
+        ```sh
+        $ go run country.go main.go
+        Connected to the SQLite database successfully.
+        ```
+
+    5. 用命令行工具查看：
+
+        ```sh
+        $ sqlite3 my.db
+        SQLite version 3.43.2 2023-10-10 13:08:14
+        Enter ".help" for usage hints.
+        sqlite> .header on
+        sqlite> .mode column
+        sqlite> .nullvalue null
+        sqlite> SELECT * FROM countries;
+        id  name           population  area    
+        --  -------------  ----------  --------
+        1   United States  346037975   9826675 
+        2   India          1450935791  2973190 
+        3   China          1419321278  9388211 
+        4   United States  345426571   9147420 
+        5   Indonesia      283487931   1811570 
+        6   Pakistan       251269164   770880  
+        7   Nigeria        232679478   910770  
+        8   Brazil         211998573   8358140 
+        9   Bangladesh     173562364   130170  
+        10  Russia         144820423   16376870
+        11  Ethiopia       132059767   1000000 
+        sqlite> .quit
+        ```
+
+        可以看到，CSV 数据成功被插入到数据库内。

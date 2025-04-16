@@ -9,12 +9,11 @@
 
 !!! abstract "目录"
 
-    - [Chap 1: Fundamentals of Quantitative Design and Analysis](1.md)
-    - [Chap 2: Pipelining: Basic and Intermediate Concepts](2.md)
-    - [Chap 3: Memory Hierarchy Design](3.md)
-    - [Chap 4: Instruction-Level Parallelism and Its Exploitation](4.md)
-    - [Chap 5: Data-Level Parallelism in Vector, SIMD, and GPU Architectures](5.md)
-    - [Chap 6: Thread-Level Parallelism](6.md)
+    - [x] [Chap 1: Fundamentals of Quantitative Design and Analysis](1.md)
+    - [x] [Chap 2: Memory Hierarchy Design](2.md)
+    - [x] [Chap 3: Instruction-Level Parallelism and Its Exploitation](3.md)
+    - [ ] [Chap 4: Data-Level Parallelism in Vector, SIMD, and GPU Architectures](4.md)
+    - [ ] [Chap 5: Thread-Level Parallelism](5.md)
 
 
 !!! recommend "参考资料"
