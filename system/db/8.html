@@ -392,21 +392,6 @@
             数据库系统
           </label>
 <ul class="md-nav__list" data-md-scrollfix="">
-<li class="md-nav__item md-nav__item--active md-nav__item--nested">
-<input checked="" class="md-nav__toggle md-toggle" id="__nav_6_6_2" type="checkbox"/>
-<label class="md-nav__link" for="__nav_6_6_2" id="__nav_6_6_2_label" tabindex="0">
-<span class="md-ellipsis">
-    概念
-    
-  </span>
-<span class="md-nav__icon md-icon"></span>
-</label>
-<nav aria-expanded="true" aria-labelledby="__nav_6_6_2_label" class="md-nav" data-md-level="3">
-<label class="md-nav__title" for="__nav_6_6_2">
-<span class="md-nav__icon md-icon"></span>
-            概念
-          </label>
-<ul class="md-nav__list" data-md-scrollfix="">
 <li class="md-nav__item">
 <a class="md-nav__link" href="1.html">
 <span class="md-ellipsis">
@@ -645,18 +630,6 @@
 </ul>
 </nav>
 </li>
-<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
-<a class="md-nav__link" href="sqlite.html">
-<span class="md-ellipsis">
-    具体实现
-    
-  </span>
-<span class="md-nav__icon md-icon"></span>
-</a>
-</li>
-</ul>
-</nav>
-</li>
 </ul>
 </nav>
 </li>
@@ -842,7 +815,7 @@
 </a>
 <h1 id="lec-8-physical-storage-systems">Lec 8: Physical Storage Systems<a class="headerlink" href="#lec-8-physical-storage-systems" title="Permanent link">⚓︎</a></h1>
 <div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
-<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>5183<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>26<span class="heti-spacing"> </span></span>分钟</p>
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>5459<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>27<span class="heti-spacing"> </span></span>分钟</p>
 </div>
 <div class="admonition info">
 <p class="admonition-title">引入</p>
@@ -900,6 +873,32 @@
 <li><strong>二级存储器</strong>(secondary storage)/<strong>在线存储器</strong>(online storage)：闪存、磁盘</li>
 <li><strong>三级存储器</strong>(teriary storage)/<strong>离线存储器</strong>(offline storage)：光学存储器、磁带</li>
 </ul>
+<details class="note">
+<summary>更现代的存储层级划分（推荐阅读）</summary>
+<p></p><div style="text-align: center">
+<img src="images/lec8/6.png" width="80%/"/>
+</div>
+<ul>
+<li>易失性设备：断电后数据丢失<ul>
+<li>支持字节可寻址位置，实现快速随机访问，也就是说程序可以跳转到任何字节地址上面读取数据</li>
+<li>为了便于讨论，我们一般将其指代为“内存”</li>
+</ul>
+</li>
+<li>非易失性设备：无论有没有断电，数据都会被保留下来<ul>
+<li>它是块<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>页可寻址的。为了读取特定偏移量上的值，程序必须先将<span class="heti-skip"><span class="heti-spacing"> </span>4KB<span class="heti-spacing"> </span></span>的页加载到内存中，然后保存程序需要读取的值</li>
+<li>它在顺序访问中表现更好</li>
+<li>为了便于讨论，我们一般将其指代为“硬盘”，且不会区分<span class="heti-skip"><span class="heti-spacing"> </span>SSD<span class="heti-spacing"> </span></span>和<span><span class="heti-spacing"> </span>HDD(spinning hard drives)</span></li>
+</ul>
+</li>
+</ul>
+<p>可以看到，有一类称为持久内存的特殊存储设备，它既具备<span class="heti-skip"><span class="heti-spacing"> </span>DRAM<span class="heti-spacing"> </span></span>的速度，也有硬盘的持久性。但在课程中，我们不会考虑这种存储设备。它的典型代表是<span class="heti-skip"><span class="heti-spacing"> </span>Intel<span class="heti-spacing"> </span></span>的<span><span class="heti-spacing"> </span>Optane</span>（<del>但在<span class="heti-skip"><span class="heti-spacing"> </span>2022<span class="heti-spacing"> </span></span>年停产了</del>）</p>
+</details>
+<details class="info">
+<summary>各种存储设备的访问时间比较</summary>
+<p></p><div style="text-align: center">
+<img src="images/lec8/7.png" width="80%/"/>
+</div>
+</details>
 <h2 id="storage-interfaces">Storage Interfaces<a class="headerlink" href="#storage-interfaces" title="Permanent link">⚓︎</a></h2>
 <ul>
 <li><a href="https://en.wikipedia.org/wiki/SATA">串行<span><span class="heti-spacing"> </span>ATA</span></a><span><span class="heti-spacing"> </span>(Serial ATA, SATA)</span></li>

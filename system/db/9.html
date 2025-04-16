@@ -392,21 +392,6 @@
             数据库系统
           </label>
 <ul class="md-nav__list" data-md-scrollfix="">
-<li class="md-nav__item md-nav__item--active md-nav__item--nested">
-<input checked="" class="md-nav__toggle md-toggle" id="__nav_6_6_2" type="checkbox"/>
-<label class="md-nav__link" for="__nav_6_6_2" id="__nav_6_6_2_label" tabindex="0">
-<span class="md-ellipsis">
-    概念
-    
-  </span>
-<span class="md-nav__icon md-icon"></span>
-</label>
-<nav aria-expanded="true" aria-labelledby="__nav_6_6_2_label" class="md-nav" data-md-level="3">
-<label class="md-nav__title" for="__nav_6_6_2">
-<span class="md-nav__icon md-icon"></span>
-            概念
-          </label>
-<ul class="md-nav__list" data-md-scrollfix="">
 <li class="md-nav__item">
 <a class="md-nav__link" href="1.html">
 <span class="md-ellipsis">
@@ -501,6 +486,21 @@
 <nav aria-label="File Organization" class="md-nav">
 <ul class="md-nav__list">
 <li class="md-nav__item">
+<a class="md-nav__link" href="#pages">
+<span class="md-ellipsis">
+      Pages
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#records">
+<span class="md-ellipsis">
+      Records
+    </span>
+</a>
+<nav aria-label="Records" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
 <a class="md-nav__link" href="#fixed-length-records">
 <span class="md-ellipsis">
       Fixed-Length Records
@@ -514,12 +514,8 @@
     </span>
 </a>
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#storing-large-objects">
-<span class="md-ellipsis">
-      Storing Large Objects
-    </span>
-</a>
+</ul>
+</nav>
 </li>
 </ul>
 </nav>
@@ -670,18 +666,6 @@
 </ul>
 </nav>
 </li>
-<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
-<a class="md-nav__link" href="sqlite.html">
-<span class="md-ellipsis">
-    具体实现
-    
-  </span>
-<span class="md-nav__icon md-icon"></span>
-</a>
-</li>
-</ul>
-</nav>
-</li>
 </ul>
 </nav>
 </li>
@@ -762,6 +746,21 @@
 <nav aria-label="File Organization" class="md-nav">
 <ul class="md-nav__list">
 <li class="md-nav__item">
+<a class="md-nav__link" href="#pages">
+<span class="md-ellipsis">
+      Pages
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#records">
+<span class="md-ellipsis">
+      Records
+    </span>
+</a>
+<nav aria-label="Records" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
 <a class="md-nav__link" href="#fixed-length-records">
 <span class="md-ellipsis">
       Fixed-Length Records
@@ -775,12 +774,8 @@
     </span>
 </a>
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#storing-large-objects">
-<span class="md-ellipsis">
-      Storing Large Objects
-    </span>
-</a>
+</ul>
+</nav>
 </li>
 </ul>
 </nav>
@@ -892,15 +887,60 @@
 </a>
 <h1 id="lec-9-database-storage-structures">Lec 9: Database Storage Structures<a class="headerlink" href="#lec-9-database-storage-structures" title="Permanent link">⚓︎</a></h1>
 <div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
-<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>7292<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 640 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M392.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6m80.6 120.1c-12.5 12.5-12.5 32.8 0 45.3l89.3 89.4-89.4 89.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l112-112c12.5-12.5 12.5-32.8 0-45.3l-112-112c-12.5-12.5-32.8-12.5-45.3 0zm-306.7 0c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3l112 112c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l89.4-89.4c12.5-12.5 12.5-32.8 0-45.3"></path></svg></span> <span>10<span class="heti-spacing"> </span></span>行代码 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>37<span class="heti-spacing"> </span></span>分钟</p>
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>8304<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 640 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M392.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6m80.6 120.1c-12.5 12.5-12.5 32.8 0 45.3l89.3 89.4-89.4 89.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l112-112c12.5-12.5 12.5-32.8 0-45.3l-112-112c-12.5-12.5-32.8-12.5-45.3 0zm-306.7 0c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3l112 112c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l89.4-89.4c12.5-12.5 12.5-32.8 0-45.3"></path></svg></span> <span>10<span class="heti-spacing"> </span></span>行代码 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>42<span class="heti-spacing"> </span></span>分钟</p>
 </div>
 <p>在本章，我们着重探讨位于底层存储器的数据组织，以及数据的访问方式。</p>
+<div class="admonition abstract">
+<p class="admonition-title">面向硬盘的<span><span class="heti-spacing"> </span>DBMS</span></p>
+<p></p><div style="text-align: center">
+<img src="images/lec9/18.png" width="90%/"/>
+</div>
+<ul>
+<li>数据库存储在硬盘上，数据库文件里的数据以页的形式被组织起来，其中第一页作为目录页</li>
+<li>要想在某一数据进行操作，<span>DBMS<span class="heti-spacing"> </span></span>首先要将数据带到内存上<ul>
+<li>这一步涉及到一个叫做<strong>缓存池</strong><span>(buffer pool)<span class="heti-spacing"> </span></span>的部件，它负责管理数据在硬盘和内存之间的来回移动</li>
+<li>此外<span class="heti-skip"><span class="heti-spacing"> </span>DBMS<span class="heti-spacing"> </span></span>还有一个<strong>执行引擎</strong>(execution engine)，用于执行查询，它会向缓存池请求一个具体的页，然后缓存池会把这个页放到内存中，并向执行引擎返回这个页在内存中的指针</li>
+<li>缓存池管理器会确保执行引擎在内存执行操作时，所需要的页已经在内存中了</li>
+</ul>
+</li>
+</ul>
+</div>
+<details class="info">
+<summary>存储管理器<span><span class="heti-spacing"> </span>(storage manager)</span></summary>
+<ul>
+<li><span>OS<span class="heti-spacing"> </span></span>不知道数据库文件里的东西是什么，只有<span class="heti-skip"><span class="heti-spacing"> </span>DBMS<span class="heti-spacing"> </span></span>才能解密其中的内容，因为这些内容都是针对<span class="heti-skip"><span class="heti-spacing"> </span>DBMS<span class="heti-spacing"> </span></span>编码的</li>
+<li><span>DBMS<span class="heti-spacing"> </span></span>的存储管理器负责对数据库文件的管理。它用一组页来表示文件，并追踪页里面的读写情况和空闲空间</li>
+</ul>
+</details>
 <h2 id="file-organization">File Organization<a class="headerlink" href="#file-organization" title="Permanent link">⚓︎</a></h2>
-<p>通常，一个数据库会被映射到多个不同的<strong>文件</strong><span>(files)<span class="heti-spacing"> </span></span>上，这些文件由底层的操作系统来维护，并永久存储在硬盘上。一份文件包含了数据库的一个记录序列，而这些记录会被映射到硬盘<strong>块</strong><span>(blocks)<span class="heti-spacing"> </span></span>上，作为存储分配和数据传输的基本单位。为了便于后续讨论，我们约定：</p>
+<p>通常，一个数据库会被映射到多个不同的<strong>文件</strong><span>(files)<span class="heti-spacing"> </span></span>上，这些文件由底层的操作系统来维护，并永久存储在硬盘上。一份文件包含了数据库的一个记录序列，而这些记录会被映射到硬盘<strong>块</strong>(blocks)（或<strong>页</strong>(pages)）上，作为存储分配和数据传输的基本单位。为了便于后续讨论，我们约定：</p>
 <ul>
 <li>一个记录不得大于一个硬盘块的大小（而一个硬盘块可能包含多个记录）</li>
 <li>每个记录只能被包含在一个硬盘块上</li>
 </ul>
+<h3 id="pages">Pages<a class="headerlink" href="#pages" title="Permanent link">⚓︎</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">注意</p>
+<p>这是我额外补充的内容。</p>
+</div>
+<ul>
+<li>页里面可以包含不同类型的数据（元组、索引等等<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，但大多数系统不允许单个页里面混杂多种类型的数据。</li>
+<li>每个页都有一个唯一的标识符（称为页<span><span class="heti-spacing"> </span>ID</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。如果数据库是单个文件的话，那么页<span class="heti-skip"><span class="heti-spacing"> </span>ID<span class="heti-spacing"> </span></span>就是文件的偏移量。在每个<span class="heti-skip"><span class="heti-spacing"> </span>DBMS<span class="heti-spacing"> </span></span>实例，每个数据库或每个元组中，页<span class="heti-skip"><span class="heti-spacing"> </span>ID<span class="heti-spacing"> </span></span>是唯一的。大多数<span class="heti-skip"><span class="heti-spacing"> </span>DBMS<span class="heti-spacing"> </span></span>提供了一个间接层，将页<span class="heti-skip"><span class="heti-spacing"> </span>ID<span class="heti-spacing"> </span></span>映射到文件路径和偏移量上，由存储管理器负责这个转化。</li>
+<li>大多数<span class="heti-skip"><span class="heti-spacing"> </span>DBMS<span class="heti-spacing"> </span></span>采用固定的页大小，以避免额外的工程开销。</li>
+<li>
+<p>一般有以下三类页大小：</p>
+<ul>
+<li>硬件页：一般是<span><span class="heti-spacing"> </span>4KB</span></li>
+<li><span>OS<span class="heti-spacing"> </span></span>页：4KB</li>
+<li>数据库页：1-16KB</li>
+</ul>
+<p>只读的<span class="heti-skip"><span class="heti-spacing"> </span>DBMS<span class="heti-spacing"> </span></span>可以有更大的页大小。</p>
+</li>
+<li>
+<p>存储设备保证一次原子写<span class="heti-skip"><span class="heti-spacing"> </span>(atomic write)<span class="heti-spacing"> </span></span>的大小为硬件页的大小。</p>
+</li>
+</ul>
+<h3 id="records">Records<a class="headerlink" href="#records" title="Permanent link">⚓︎</a></h3>
 <p>在前面几章的学习中，我们知道记录的长度可以是固定的（比如 <code>INT</code>、<code>CHAR</code> 类型等<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，也可以是变化的（比如 <code>VARCHAR</code>、<code>NUMERIC</code> 类型，或者数组等<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，因而我们需要考虑这些不同情况下的文件组织方式。</p>
 <details class="example" open="open">
 <summary>例子</summary>
@@ -917,7 +957,7 @@
 <img src="images/lec9/1.png" width="60%/"/>
 </div>
 </details>
-<h3 id="fixed-length-records">Fixed-Length Records<a class="headerlink" href="#fixed-length-records" title="Permanent link">⚓︎</a></h3>
+<h4 id="fixed-length-records">Fixed-Length Records<a class="headerlink" href="#fixed-length-records" title="Permanent link">⚓︎</a></h4>
 <p>一个很简单的方法是：直接为变长类型赋予最大字节数的空间。因此每个 <code>instructor</code> 记录就要占据<span class="heti-skip"><span class="heti-spacing"> </span>53<span class="heti-spacing"> </span></span>个字节的空间。但这种方法会带来以下问题：</p>
 <ul>
 <li>除非块的大小正好是<span class="heti-skip"><span class="heti-spacing"> </span>53<span class="heti-spacing"> </span></span>的倍数（通常不太可能<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，否则有些记录可能会跨过块的边界，即某些记录会位于两个块内。访问这样的记录就需要两次读<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>写操作了。<ul>
@@ -953,7 +993,7 @@
 </ul>
 </li>
 </ul>
-<h3 id="variable-length-records">Variable-Length Records<a class="headerlink" href="#variable-length-records" title="Permanent link">⚓︎</a></h3>
+<h4 id="variable-length-records">Variable-Length Records<a class="headerlink" href="#variable-length-records" title="Permanent link">⚓︎</a></h4>
 <p>在处理变长记录时，需要解决以下问题：</p>
 <ul>
 <li>如何表示单个的记录，使得提取单个属性较为容易，即便这个属性是变长类型的</li>
@@ -965,11 +1005,14 @@
 </div>
 <p>可以看到，这个记录先存的是三个变长属性的定长信息，然后是一个定长属性值，最后是变长属性值。而在定长属性值和变长属性值之间有一组<span><span class="heti-spacing"> </span>0</span>，称为<strong>空位图</strong>(null bitmap)，用于记录属性值是否为空。在这个例子中，由于一条记录有<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>个属性，因此用<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>个<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>来分别表示每个属性值的情况。假如 <code>salary</code> 为空，那么空位图的第<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>位就会被设为<span><span class="heti-spacing"> </span>1</span>。有些情况下，空位图会被放在记录的开头位置，这样做可以节省空间（因为一旦空位图全为<span><span class="heti-spacing"> </span>1</span>，后面就不需要存数据了<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，但代价是需要先从记录中提取属性。这种方式对于具有大量字段，且大多数为空值的记录而言很有用。</p>
 <hr/>
+<blockquote>
+<p>每个页都有一个头，包含了和页的内容相关的元数据，包括：页的大小、校验和、<span>DBMS<span class="heti-spacing"> </span></span>版本等。</p>
+</blockquote>
 <p>再来看第二个问题——一般情况下，我们用<strong>槽式页结构</strong><span>(slotted-page structure)<span class="heti-spacing"> </span></span>来组织在块内的记录，如下图所示：</p>
 <div style="text-align: center">
 <img src="images/lec9/6.png" width="70%/"/>
 </div>
-<p>每个块的开头都有一个头<span><span class="heti-spacing"> </span>(header)</span>，包含以下信息：</p>
+<p>在槽式页结构中，每个块的开头都有一个头<span><span class="heti-spacing"> </span>(header)</span>，包含以下信息：</p>
 <ul>
 <li>头里面的记录数量</li>
 <li>块内空余空间<span class="heti-skip"><span class="heti-spacing"> </span>(free space)<span class="heti-spacing"> </span></span>的结束位置</li>
@@ -981,9 +1024,37 @@
 <li>当删除记录时，会释放它所占据的空间，并且对应的头数组被标记为删除状态（比如将大小设为<span><span class="heti-spacing"> </span>-1</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。另外，在这个被删除记录之前的记录都需要被移动，这样才能为空余空间腾出这个记录的同等大小的空间。移动的成本不是很大，因为块的大小被限制在一定范围内</li>
 </ul>
 <p>这种槽式页结构要求指针不得直接指向记录上，而必须指向对应头数组的元素上，该元素包含了记录的位置。这种间接的方式可以避免块内的分段现象。</p>
-<h3 id="storing-large-objects">Storing Large Objects<a class="headerlink" href="#storing-large-objects" title="Permanent link">⚓︎</a></h3>
-<p>略<span><span class="heti-spacing"> </span>...</span></p>
+<div class="admonition bug">
+<p class="admonition-title">缺陷</p>
+<ul>
+<li>页内的分段问题：删除某些记录会导致页内部空间的空缺</li>
+<li>无用的硬盘<span><span class="heti-spacing"> </span>I/O</span>：由于非易失性存储器面向块的特质，要更新记录的话就要拿取整个块</li>
+<li>随机的硬盘<span><span class="heti-spacing"> </span>I/O</span>：更新多个元组的话可能需要在不同地方之间跳转，这会让<span class="heti-skip"><span class="heti-spacing"> </span>I/O<span class="heti-spacing"> </span></span>速度非常慢</li>
+</ul>
+</div>
 <h2 id="organization-of-records-in-files">Organization of Records in Files<a class="headerlink" href="#organization-of-records-in-files" title="Permanent link">⚓︎</a></h2>
+<details class="note">
+<summary>元组的布局</summary>
+<p>元组本质上就是一个字节序列（可以不连续<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。<span>DBMS<span class="heti-spacing"> </span></span>需要将这个序列解释为属性和相应的值。</p>
+<ul>
+<li>元组头（即元组的元数据）<ul>
+<li>关于<span class="heti-skip"><span class="heti-spacing"> </span>DBMS<span class="heti-spacing"> </span></span>并发控制协议的可见信息</li>
+<li><span>NULL<span class="heti-spacing"> </span></span>值的位图</li>
+<li>这里不会存储数据库的模式</li>
+</ul>
+</li>
+<li>元组数据：关于属性的真实数据<ul>
+<li>一般按创建表时声明的顺序来存储属性</li>
+<li>大多数<span class="heti-skip"><span class="heti-spacing"> </span>DBMS<span class="heti-spacing"> </span></span>不允许一个元组超过一个页的大小</li>
+</ul>
+</li>
+<li>唯一标识符：<ul>
+<li>数据库的每个元组被赋予了一个唯一标识符，大多为 <code>page_id + (offset or slot)</code></li>
+<li>应用程序不得依赖这些<span><span class="heti-spacing"> </span>id</span></li>
+</ul>
+</li>
+</ul>
+</details>
 <p>现在我们来看一下文件内记录的组织方式：</p>
 <ul>
 <li><strong>堆</strong><span>(heap)<span class="heti-spacing"> </span></span>文件组织：任何记录可以放在文件的任何地方，无需考虑顺序。一个关系可以存放在一个或多个文件中。</li>
@@ -1012,6 +1083,24 @@
 </div>
 </details>
 <p>如果每次更新就要向硬盘写入空余空间图的话，那么成本太昂贵。所以一般会周期性地写入空余空间图，但这样做硬盘里的空余空间图可能会过时，访问这样的空余空间图就会引发错误。</p>
+<details class="note">
+<summary>页的定位方式</summary>
+<p>根据给定的 <code>page_id</code>，<span>DBMS<span class="heti-spacing"> </span></span>可以采用以下方法来定位一个页：</p>
+<ul>
+<li>
+<p><strong>链表</strong>(linked list)：头页<span class="heti-skip"><span class="heti-spacing"> </span>(header page)<span class="heti-spacing"> </span></span>包含指向空闲页和数据页的指针。如果<span class="heti-skip"><span class="heti-spacing"> </span>DBMS<span class="heti-spacing"> </span></span>需要寻找特定的页，就必须在数据页列表上进行顺序扫描，直到找到它所需的页</p>
+<p></p><div style="text-align: center">
+<img src="images/lec9/19.png" width="100%/"/>
+</div>
+</li>
+<li>
+<p><strong>页目录</strong>(page directory)：<span>DBMS<span class="heti-spacing"> </span></span>维护一个特殊的页称为页目录，以跟踪数据页的位置、每个页的空闲空间量、空闲<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>空页的列表以及页的类型。每个数据库对象在页目录上有一个对应项。</p>
+<p></p><div style="text-align: center">
+<img src="images/lec9/20.png" width="50%/"/>
+</div>
+</li>
+</ul>
+</details>
 <h3 id="sequential-file-organization">Sequential File Organization<a class="headerlink" href="#sequential-file-organization" title="Permanent link">⚓︎</a></h3>
 <p><strong>顺序文件</strong><span>(sequential file)<span class="heti-spacing"> </span></span>用于高效处理有序的记录，它基于<strong>搜索键</strong><span>(search key)<span class="heti-spacing"> </span></span>实现。这个搜索键包含了任意的属性，不必是主键或超键。为了更快地检索记录，我们用指针将这些记录连接起来。并且为了最小化块的访问次数，我们将记录按搜索键顺序进行物理存储。下图展示了包含了 <code>instrutor</code> 记录的顺序文件：</p>
 <div style="text-align: center">
