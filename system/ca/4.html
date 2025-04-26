@@ -991,30 +991,683 @@
 </a>
 <h1 id="chap-4-data-level-parallelism-in-vector-simd-and-gpu-architectures">Chap 4: Data-Level Parallelism in Vector, SIMD, and GPU Architectures<a class="headerlink" href="#chap-4-data-level-parallelism-in-vector-simd-and-gpu-architectures" title="Permanent link">⚓︎</a></h1>
 <div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
-<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>101<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>分钟</p>
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>10569<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 640 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M392.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6m80.6 120.1c-12.5 12.5-12.5 32.8 0 45.3l89.3 89.4-89.4 89.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l112-112c12.5-12.5 12.5-32.8 0-45.3l-112-112c-12.5-12.5-32.8-12.5-45.3 0zm-306.7 0c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3l112 112c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l89.4-89.4c12.5-12.5 12.5-32.8 0-45.3"></path></svg></span> <span>45<span class="heti-spacing"> </span></span>行代码 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>53<span class="heti-spacing"> </span></span>分钟</p>
 </div>
+<p>在本章中，我们将学习一些常见的<strong>数据级并行</strong><span>(data-level parallelism)<span class="heti-spacing"> </span></span>的技术。其中最知名的当数 <strong>SIMD</strong>(single instruction multiple data，单指令多数据<span><span class="heti-spacing"> </span>)</span>，它被广泛应用于面向矩阵计算的科学计算、面向媒体的图像和音频处理以及机器学习算法等领域。相比<span class="heti-skip"><span class="heti-spacing"> </span>MIMD<span class="heti-spacing"> </span></span>而言，<span>SIMD<span class="heti-spacing"> </span></span>的能效更高，因而也很适合用在个人移动设备以及服务器中；但相比而言<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>最大的优势在于程序员仍能继续按照串行方式思考代码，但同时底层能通过并行实现加速运算。</p>
+<p>本章主要介绍的内容分为三大块，它们都是<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>的变体：</p>
+<ul>
+<li><strong>向量架构</strong>(vector architecture)</li>
+<li><strong>多媒体<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>指令集扩展</strong>(multimedia SIMD instruction set extensions)</li>
+<li><strong>图形处理器</strong>(graphic processing units, GPUs)</li>
+</ul>
+<p>其中后两者和向量架构有着千丝万缕的关系，所以我们先来学习向量架构的原理和实现。</p>
 <h2 id="vector-architecture">Vector Architecture<a class="headerlink" href="#vector-architecture" title="Permanent link">⚓︎</a></h2>
+<p><strong>向量架构</strong>的大致原理可以概括为：获取分散在内存中的数据元素集，将它们放在一个较大的顺序寄存器堆内，在寄存器堆上对数据进行操作，最后将结果分散放回到内存中。</p>
+<ul>
+<li>单条指令作用在多个向量数据上，导致在独立的数据元素上有多个寄存器<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>寄存器运算</li>
+<li>作为由编译器控制的缓冲区，这些寄存器堆能够隐藏内存时延，并且能够利用好内存带宽</li>
+<li><strong>功率墙</strong><span>(power wall)<span class="heti-spacing"> </span></span>使得架构师看重那些能够以不达到无序超标量处理器那么高的成本为代价，就能获取高性能的架构，而向量架构正符合这样的要求——仅需在一个简单的标量处理器上用到<strong>向量指令</strong>(vector instructions)，就能够提升性能。</li>
+</ul>
 <h3 id="rv64v-extension">RV64V Extension<a class="headerlink" href="#rv64v-extension" title="Permanent link">⚓︎</a></h3>
+<div class="admonition info">
+<p class="admonition-title">注</p>
+<p>这里的<span class="heti-skip"><span class="heti-spacing"> </span>"RV64V"<span class="heti-spacing"> </span></span>指的是<a href="../co/2.html"><span class="heti-skip"><span class="heti-spacing"> </span>RISC-V<span class="heti-spacing"> </span></span>基本指令</a><span class="heti-skip"><span class="heti-spacing"> </span>+<span class="heti-spacing"> </span></span>向量指令扩展。</p>
+</div>
+<p>下图展示的是一个结构较为简单的向量处理器，它仅包含最基本的组件：</p>
+<div style="text-align: center">
+<img src="images/C4/1.png" width="70%"/>
+</div>
+<ul>
+<li><strong>向量寄存器</strong>(vector registers)：<ul>
+<li><span>RV64V<span class="heti-spacing"> </span></span>有<span class="heti-skip"><span class="heti-spacing"> </span>32<span class="heti-spacing"> </span></span>个向量寄存器，每个向量寄存器的大小为<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位，保存一个向量</li>
+<li>向量寄存器堆需要提供足够量的端口，以供给向量函数单元；这些端口允许不同向量寄存器的向量运算间的高度重叠</li>
+<li>至少有<span class="heti-skip"><span class="heti-spacing"> </span>16<span class="heti-spacing"> </span></span>个读端口和<span class="heti-skip"><span class="heti-spacing"> </span>8<span class="heti-spacing"> </span></span>个写端口，它们通过一堆纵横开关和函数单元的输入和输出相连</li>
+<li>提升寄存器堆带宽的一个方法是使用多个分区<span><span class="heti-spacing"> </span>(multiple banks)</span></li>
+</ul>
+</li>
+<li><strong>向量函数单元</strong>(vector functional units)：<ul>
+<li>所有单元都是完全流水线化的，并且每个时钟周期都可以开始一条新的指令</li>
+<li>控制单元用于检测冒险，包括函数单元的结构冒险和寄存器访问的数据冒险</li>
+<li>如上图所示，这里仅提供<span class="heti-skip"><span class="heti-spacing"> </span>5<span class="heti-spacing"> </span></span>个函数单元，但本节我们仅关注浮点数单元</li>
+</ul>
+</li>
+<li><strong>向量加载<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>存储单元</strong>(vector load/store unit)：<ul>
+<li>这些单元同样是完全流水线化的，这样能保证在初始时延后，每个时钟周期的带宽为一个字</li>
+<li>它们也能用于处理标量的加载和存储</li>
+</ul>
+</li>
+<li><strong>标量寄存器组</strong>(a set of scalar registers)：<ul>
+<li>它们主要提供数据和计算好的地址</li>
+<li>在<span class="heti-skip"><span class="heti-spacing"> </span>RV64G<span class="heti-spacing"> </span></span>中，有<span class="heti-skip"><span class="heti-spacing"> </span>31<span class="heti-spacing"> </span></span>个通用目的寄存器，以及<span class="heti-skip"><span class="heti-spacing"> </span>32<span class="heti-spacing"> </span></span>个浮点数寄存器</li>
+</ul>
+</li>
+</ul>
+<p>向量架构中的向量能够容纳不同大小的数据——假如某个向量寄存器有<span class="heti-skip"><span class="heti-spacing"> </span>32<span class="heti-spacing"> </span></span>个<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位的元素，那么它也能容纳<span class="heti-skip"><span class="heti-spacing"> </span>128<span class="heti-spacing"> </span></span>个<span class="heti-skip"><span class="heti-spacing"> </span>16<span class="heti-spacing"> </span></span>位的元素，或者<span class="heti-skip"><span class="heti-spacing"> </span>256<span class="heti-spacing"> </span></span>个<span class="heti-skip"><span class="heti-spacing"> </span>8<span class="heti-spacing"> </span></span>位的元素。<span>RV64V<span class="heti-spacing"> </span></span>支持的数据大小为：</p>
+<ul>
+<li>整数：<span>8, 16, 32, 64<span class="heti-spacing"> </span></span>位</li>
+<li>浮点数：<span>16, 32, 64<span class="heti-spacing"> </span></span>位</li>
+</ul>
+<details class="abstract">
+<summary><span>RV64V<span class="heti-spacing"> </span></span>向量指令</summary>
+<p></p><div style="text-align: center">
+<img src="images/C4/2.png" width="100%"/>
+</div>
+<ul>
+<li>这里假设默认所有的指令都以向量作为输入，但也存在指令将一个标量寄存器（<code>xi</code> 或 <code>fi</code>）作为操作数。</li>
+<li>因此<span class="heti-skip"><span class="heti-spacing"> </span>RV64V<span class="heti-spacing"> </span></span>用后缀区分这些情况，由汇编器根据操作数提供合适的指令后缀。<ul>
+<li><code>.vv</code> 表示操作数均为向量</li>
+<li><code>.vs</code> 表示第二个操作数为标量</li>
+<li><code>.sv</code> 表示第一个操作数为标量</li>
+</ul>
+</li>
+<li>上述指令忽略了数据类型和大小。而<span class="heti-skip"><span class="heti-spacing"> </span>RV64V<span class="heti-spacing"> </span></span>将数据类型和大小与向量寄存器关联起来，而不是让指令提供相应的信息。因此在执行向量指令前，由程序配置正在使用的向量寄存器，以指明数据类型和大小。</li>
+<li><code>vld</code> 和 <code>vst</code> 分别表示向量加载<span class="heti-skip"><span class="heti-spacing"> </span>(vector load)<span class="heti-spacing"> </span></span>和向量存储<span><span class="heti-spacing"> </span>(vector store)</span>，它们会加载或存储整个向量数据。其中第一个操作数是要被加载或存储的向量寄存器，第二个操作数是一个<span class="heti-skip"><span class="heti-spacing"> </span>RV64G<span class="heti-spacing"> </span></span>通用目的寄存器，表示向量在内存中的起始地址。</li>
+</ul>
+</details>
+<p><span>RV64V<span class="heti-spacing"> </span></span>之所以采用这样的<strong>动态寄存器类型</strong>(dynamic register typing)，是因为</p>
+<ul>
+<li>传统向量架构若要支持如此多样的数据类型组合，需要大量指令支撑，那上面的指令列表就要有数页篇幅了！</li>
+<li>能够让程序禁用那些没用到的向量寄存器，从而为向量寄存器分配到全部的向量内存，用于存储长向量<ul>
+<li>假如向量内存为<span><span class="heti-spacing"> </span>1024 B</span>，且有<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>个向量寄存器是被启用的，且数据类型为<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位浮点数，那么处理器能够为每个向量分配至多<span class="heti-skip"><span class="heti-spacing"> </span>256B<span class="heti-spacing"> </span></span>的空间（或者<span class="heti-skip"><span class="heti-spacing"> </span>32<span class="heti-spacing"> </span></span>个元素<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，这个值被称为<strong>最大向量长度</strong>(maximum vector length, mvl)，软件无法对其进行修改</li>
+<li>这样带来的问题是：更大的状态意味着更慢的上下文交换<span class="heti-skip"><span class="heti-spacing"> </span>(context switch)<span class="heti-spacing"> </span></span>时间。不过有一个不错的副作用是程序可以禁用没用到的寄存器，因此无需再上下文交换时保存和恢复这些寄存器</li>
+</ul>
+</li>
+<li>可依赖寄存器的配置来实现不同大小操作数的隐式转换，无需通过额外的指令进行显式转换</li>
+</ul>
+<p>有些向量可能很大，仅用一个向量寄存器不够，需要多个寄存器。这时会用到以下寄存器</p>
+<ul>
+<li><code>vl</code>：向量长度寄存器，用于向量长度不等于<span class="heti-skip"><span class="heti-spacing"> </span>mvl<span class="heti-spacing"> </span></span>的时候</li>
+<li><code>vctype</code>：向量类型寄存器，记录寄存器类型</li>
+<li><code>pi</code>：谓词寄存器，用于包含<span class="heti-skip"><span class="heti-spacing"> </span>IF<span class="heti-spacing"> </span></span>语句的循环</li>
+</ul>
+<p>通过这些向量指令，系统能够以多种方式执行对向量的操作，包括同时计算多个元素。这样的灵活性使得向量设计使用慢而宽的执行单元，在低功率的情况下获得更高的性能。此外，向量指令集中各元素的独立性使得功能单元的扩展无需像超标量处理器那样执行额外的高成本依赖检查。</p>
+<p>下面来比对一下相同循环下，<span>RV64G<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>RV64V<span class="heti-spacing"> </span></span>需要用到的指令：</p>
+<details class="example" open="open">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"/><input id="__tabbed_1_2" name="__tabbed_1" type="radio"/><div class="tabbed-labels"><label for="__tabbed_1_1">题目</label><label for="__tabbed_1_2">答案</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/C4/3.png" width="80%"/>
+</div>
+<blockquote>
+<p>注：这里的<span class="heti-skip"><span class="heti-spacing"> </span>DAXPY<span class="heti-spacing"> </span></span>指的是形如<span class="heti-skip"><span class="heti-spacing"> </span>Y = a * X + Y<span class="heti-spacing"> </span></span>的运算，其中<span class="heti-skip"><span class="heti-spacing"> </span>X, Y<span class="heti-spacing"> </span></span>为向量，<span>a<span class="heti-spacing"> </span></span>为标量，开头的<span class="heti-skip"><span class="heti-spacing"> </span>D<span class="heti-spacing"> </span></span>表示双精度浮点数</p>
+</blockquote>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/C4/4.png" width="70%"/>
+</div>
+<p>两段代码最主要的区别在于向量处理器大大减少了指令的带宽，仅需<span class="heti-skip"><span class="heti-spacing"> </span>8<span class="heti-spacing"> </span></span>条指令就完成了<span class="heti-skip"><span class="heti-spacing"> </span>RV64G<span class="heti-spacing"> </span></span>要用<span class="heti-skip"><span class="heti-spacing"> </span>258<span class="heti-spacing"> </span></span>条指令完成的任务。</p>
+</div>
+</div>
+</div>
+</details>
+<p>编译器产生向量指令序列时，代码会在向量模式中运行很多时间，这样的代码被认为是<strong>向量化的</strong>(vectorized)。当迭代之间没有依赖时，循环代码就可以被向量化，这称为<strong>循环携带依赖</strong>(loop-carried loop)。</p>
+<p><span>RV64G<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>RV64V<span class="heti-spacing"> </span></span>的另一个区别是流水线互锁<span class="heti-skip"><span class="heti-spacing"> </span>(interlock)<span class="heti-spacing"> </span></span>发生的频率。由于存在数据依赖，<span>RV64G<span class="heti-spacing"> </span></span>指令会有很多停顿；但在向量处理器中，每个向量指令仅需为向量的第一个元素停顿，之后的元素就会很丝滑地流过流水线，因此这样的元素依赖运算被称为<strong>链</strong>(chaining)。</p>
+<details class="example">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"/><input id="__tabbed_2_2" name="__tabbed_2" type="radio"/><div class="tabbed-labels"><label for="__tabbed_2_1">题目</label><label for="__tabbed_2_2">答案</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/C4/5.png" width="80%"/>
+</div>
+<blockquote>
+<p>省流：对于和上个例子同样的任务，分别给出<span class="heti-skip"><span class="heti-spacing"> </span>RV64V<span class="heti-spacing"> </span></span>的单精度浮点数和整数版本的指令序列</p>
+</blockquote>
+</div>
+<div class="tabbed-block">
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio"/><input id="__tabbed_3_2" name="__tabbed_3" type="radio"/><div class="tabbed-labels"><label for="__tabbed_3_1">单精度浮点数</label><label for="__tabbed_3_2">整数</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/C4/6.png" width="70%"/>
+</div>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/C4/7.png" width="70%"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</details>
 <h3 id="vector-execution-time">Vector Execution Time<a class="headerlink" href="#vector-execution-time" title="Permanent link">⚓︎</a></h3>
+<p>向量运算序列的执行时间取决于以下因素：</p>
+<ul>
+<li>操作数向量的长度</li>
+<li>运算间的结构冒险</li>
+<li>数据冒险</li>
+</ul>
+<p>如果我们能够知道向量长度和<strong>初始化速率</strong>(initiation rate)（即向量单元接收运算符并产生结果的速率）的话，我们就能计算单条向量指令的计算时间。</p>
+<p>所有现代的向量计算机都具备带有多个并行流水线（称为<strong>通道</strong>(lane)）的向量函数单元，能够在每个时钟周期中产生两个及以上的结果，但也存在一些没有完全流水线化的函数单元。为了方便讨论，</p>
+<ul>
+<li>我们的<span class="heti-skip"><span class="heti-spacing"> </span>RV64V<span class="heti-spacing"> </span></span>实现只有一个通道，其单条指令的初始化速率为每时钟周期一个元素，因此单条向量指令的执行时间（以时钟周期数为单位）近似为向量长度。</li>
+<li>
+<p><strong>指令组</strong>(convoy)：一组可以一起执行的向量指令。</p>
+<ul>
+<li>要求这些指令不能包含任何结构冒险，如果存在的话需要将它们序列化，放在不同指令组中执行。</li>
+<li>我们还假设指令组内的指令必须在其他指令开始执行前完成执行。</li>
+<li>链<span class="heti-skip"><span class="heti-spacing"> </span>(chaining)<span class="heti-spacing"> </span></span>的存在允许同一指令组中存在<span class="heti-skip"><span class="heti-spacing"> </span>RAW<span class="heti-spacing"> </span></span>依赖冒险，因为向量运算能够在源操作数变得可用时马上开始执行——链上的第一个函数单元的结果会被“前递”到第二个函数单元上。实际上，我们通过允许处理器在相同时间内读写特定向量寄存器来实现链的思想。</li>
+<li>最近的实现中用到灵活链<span><span class="heti-spacing"> </span>(flexible chaining)</span>，它允许向量指令和其他活跃的向量指令链接起来（假设没有结构冒险<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</li>
+</ul>
+</li>
+<li>
+<p><strong>时钟间隔</strong>(chime)：执行一个指令组所需的时间。</p>
+<ul>
+<li>因此<span class="heti-skip"><span class="heti-spacing"> </span>m<span class="heti-spacing"> </span></span>个指令组就要执行<span class="heti-skip"><span class="heti-spacing"> </span>m<span class="heti-spacing"> </span></span>个时钟间隔；假如向量长度为<span><span class="heti-spacing"> </span>n</span>，那么共计<span class="heti-skip"><span class="heti-spacing"> </span>m * n<span class="heti-spacing"> </span></span>个时钟周期数。</li>
+<li>因为这种计算方式忽略了一些处理器特定的开销（很多取决于向量长度<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，以及在单时钟周期内初始化多条向量指令的局限，因此这种近似的测量法在长向量上更准确</li>
+<li>此外，该方法忽略的最重要的开销是向量<strong>启动时间</strong>(start-up time)，即在流水线完全充满前的时延，取决于向量函数单元的流水线时延</li>
+</ul>
+</li>
+</ul>
+<details class="example">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio"/><input id="__tabbed_4_2" name="__tabbed_4" type="radio"/><div class="tabbed-labels"><label for="__tabbed_4_1">题目</label><label for="__tabbed_4_2">解答</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/C4/8.png" width="80%"/>
+</div>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/C4/9.png" width="90%"/>
+</div>
+<p></p><div style="text-align: center">
+<img src="images/C4/10.png" width="80%"/>
+</div>
+</div>
+</div>
+</div>
+</details>
 <h3 id="optimizations">Optimizations<a class="headerlink" href="#optimizations" title="Permanent link">⚓︎</a></h3>
+<p>下面给出一些用于提升性能或增加一些在向量架构上能够运行的程序类型的优化方法：</p>
+<ul>
+<li><strong>多通道</strong>(multiple lane)：让向量处理器能够在单个时钟周期内处理向量中的多个元素</li>
+<li><strong>向量长度寄存器</strong>(vector-length registers)：应对向量长度不等于最大向量长度的情况（大多数情况）</li>
+<li><strong>谓词寄存器</strong>(predicate registers)：高效处理条件语句，使得更多的代码能够被向量化</li>
+<li><strong>内存分区</strong>(memory banks)：为向量处理器提供足够的内存带宽</li>
+<li><strong>步幅</strong>(stride)：处理多维矩阵</li>
+<li><strong>聚集<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>分散</strong>(gather-scatter)：处理稀疏矩阵</li>
+<li><strong>程序向量架构</strong>(programming vector architecture)</li>
+</ul>
 <h4 id="multiple-lanes">Multiple Lanes<a class="headerlink" href="#multiple-lanes" title="Permanent link">⚓︎</a></h4>
+<p>向量指令集的一个关键优势是能让软件仅通过一条较短的指令（包含多个独立运算，编码长度同传统的标量指令<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，就能向硬件传递大量的并行工作。而向量指令的并行语义使得通过高度<strong>流水线化</strong><span>(pipelined)<span class="heti-spacing"> </span></span>或<strong>并行</strong><span>(parallel)<span class="heti-spacing"> </span></span>的函数单元来执行这些元素运算的实现成为可能。下图展示的是通过多个并行函数单元提升向量加法指令性能的示意图：</p>
+<div style="text-align: center">
+<img src="images/C4/11.png" width="80%"/>
+</div>
+<p><span>RV64V<span class="heti-spacing"> </span></span>指令集的一个性质是：所有的向量算术指令仅允许向量寄存器中的<span class="heti-skip"><span class="heti-spacing"> </span>N<span class="heti-spacing"> </span></span>个元素和另一个向量寄存器中的<span class="heti-skip"><span class="heti-spacing"> </span>N<span class="heti-spacing"> </span></span>个元素进行运算，从而简化了并行向量单元的设计——这些单元被结构化为多并行<strong>通道</strong>(lanes)，通道的增加能够提升向量单元的吞吐量峰值。下图展示的是<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>通道向量单元：</p>
+<div style="text-align: center">
+<img src="images/C4/12.png" width="80%"/>
+</div>
+<ul>
+<li>要发挥出多通道的优势，应用程序和架构都要支持长向量，否则执行太快导致很容易耗尽指令带宽，从而需要<span class="heti-skip"><span class="heti-spacing"> </span>ILP<span class="heti-spacing"> </span></span>来供应足够的向量指令。</li>
+<li>每个通道包含了一部分向量寄存器堆，以及来自每个向量函数单元的一个执行流水线。</li>
+<li>每个向量函数单元执行向量指令的速率为：在每个使用多流水线的通道中，每个时钟周期处理一个<strong>元素组</strong>(element group)（在流水线中一起移动的一组元素<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</li>
+<li>第一个通道保存所有向量寄存器中的第一个元素（<span>0<span class="heti-spacing"> </span></span>号<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，以此类推。这种分配使得通道中的算术流水线可以在不和其他通道发生通信的情况下完成计算，从而减少了线路以及额外的寄存器堆端口带来的成本。</li>
+<li>此外，多通道的设计可以在仅增加少量控制复杂度，且无需修改现有机器码的情况下提升向量性能；并且允许设计者们在不牺牲性能峰值的情况下权衡好晶片面积、时钟速率、电压和功率之间的关系。</li>
+</ul>
 <h4 id="vector-length-registers">Vector-Length Registers<a class="headerlink" href="#vector-length-registers" title="Permanent link">⚓︎</a></h4>
+<div class="admonition bug">
+<p class="admonition-title">问题</p>
+<p>通常向量的长度不会和最大向量长度（mvl）匹配的上，并且有时我们无法在编译时知道向量的长度。比如对于下面的代码：</p>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span>
+</span><span id="__span-0-2"><a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="w">    </span><span class="n">Y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</span></code></pre></div>
+<p>其中向量长度取决于 <code>n</code>，而 <code>n</code> 很可能是未知的，要到运行时才知道。</p>
+</div>
+<p>要解决这一问题，<span>RV64V<span class="heti-spacing"> </span></span>提供的方案是增加一个<strong>向量长度寄存器</strong> <code>vl</code>，它控制任何向量运算的长度，其值不超过<span><span class="heti-spacing"> </span>mvl</span>。这个参数意味着向量寄存器的长度在之后增长的时候无需改动指令集。</p>
+<p>但如果 <code>n</code> 在编译时未知，且它的值可能会超过<span class="heti-skip"><span class="heti-spacing"> </span>mvl<span class="heti-spacing"> </span></span>的话，那就需要用到<strong>条带挖掘</strong><span>(strip mining)<span class="heti-spacing"> </span></span>技术了，它能够生成向量运算长度不超过<span class="heti-skip"><span class="heti-spacing"> </span>mvl<span class="heti-spacing"> </span></span>的代码。</p>
+<ul>
+<li>具体来说，一个循环处理任何数量为<span class="heti-skip"><span class="heti-spacing"> </span>mvl<span class="heti-spacing"> </span></span>倍数的迭代，另一个循环处理剩余的迭代，并且数量要小于<span><span class="heti-spacing"> </span>mvl</span>。</li>
+<li><span>RISC-V<span class="heti-spacing"> </span></span>提供了更好的解决方案：<code>setvl</code> 指令将一个小于<span class="heti-skip"><span class="heti-spacing"> </span>mvl<span class="heti-spacing"> </span></span>的值和循环变量<span class="heti-skip"><span class="heti-spacing"> </span>n<span class="heti-spacing"> </span></span>写入到 <code>vl</code>（或其他寄存器）中。<ul>
+<li>如果循环迭代数量超过<span><span class="heti-spacing"> </span>n</span>，那么循环最快能一次计算<span class="heti-skip"><span class="heti-spacing"> </span>mvl<span class="heti-spacing"> </span></span>个值，因此 <code>setvl</code>将 <code>vl</code> 设置为<span><span class="heti-spacing"> </span>mvl</span>。</li>
+<li>若<span class="heti-skip"><span class="heti-spacing"> </span>n<span class="heti-spacing"> </span></span>小于<span><span class="heti-spacing"> </span>mvl</span>，则应在循环的最后这次迭代中仅对末尾的<span class="heti-skip"><span class="heti-spacing"> </span>n<span class="heti-spacing"> </span></span>个元素进行计算，故 <code>setvl</code>将 <code>vl</code> 设为<span><span class="heti-spacing"> </span>n</span>。</li>
+<li><code>setvl</code> 还会写入另一个标量寄存器，以协助后续的循环管理。</li>
+</ul>
+</li>
+</ul>
+<details class="example">
+<summary>例子：对于任意值<span><span class="heti-spacing"> </span>n</span>，计算<span class="heti-skip"><span class="heti-spacing"> </span>DAXPY<span class="heti-spacing"> </span></span>的<span class="heti-skip"><span class="heti-spacing"> </span>RV64V<span class="heti-spacing"> </span></span>代码</summary>
+<p></p><div style="text-align: center">
+<img src="images/C4/13.png" width="70%"/>
+</div>
+</details>
 <h4 id="predicate-registers">Predicate Registers<a class="headerlink" href="#predicate-registers" title="Permanent link">⚓︎</a></h4>
+<p>如果程序中有包含<span class="heti-skip"><span class="heti-spacing"> </span>IF<span class="heti-spacing"> </span></span>语句的循环的话，就不能以（上述介绍过的）向量模式运行程序，因为<span class="heti-skip"><span class="heti-spacing"> </span>IF<span class="heti-spacing"> </span></span>语句引入了控制依赖。考虑以下代码：</p>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">64</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span>
+</span><span id="__span-1-2"><a href="#__codelineno-1-2" id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+</span><span id="__span-1-3"><a href="#__codelineno-1-3" id="__codelineno-1-3" name="__codelineno-1-3"></a><span class="w">        </span><span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="n">Y</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</span></code></pre></div>
+<p>该循环就不能被向量化；但如果内层循环能够在迭代为 <code>X[i] != 0</code> 时被运行的话，那么这个减法操作就能被向量化了。</p>
+<p>我们称这种扩展能力为<strong>向量掩码控制</strong>(vector-mask control)，而编译器设计者则将其称为 <strong><span>IF-<span class="heti-spacing"> </span></span>转换</strong>(IF-conversion)。在<span class="heti-skip"><span class="heti-spacing"> </span>RV64V<span class="heti-spacing"> </span></span>中，<strong>谓词寄存器</strong>保存掩码，并且为每个在向量指令中的元素运算提供条件执行。这些寄存器使用布尔向量来控制向量指令的执行。当谓词寄存器 <code>p0</code> 被设置时，所有向量指令仅操作对应项在谓词寄存器里的值为<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>的向量元素，对应值为<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>的元素就不会发生改变。类似向量寄存器，谓词寄存器也能被启用和禁用，在启用时里面的值均被初始化为<span><span class="heti-spacing"> </span>1</span>，意味着之后的向量指令会对所有元素进行操作。</p>
+<details class="example" open="open">
+<summary>例子</summary>
+<p>对于上述代码，转换为以下<span class="heti-skip"><span class="heti-spacing"> </span>RISV-V<span class="heti-spacing"> </span></span>指令：</p>
+<p></p><div style="text-align: center">
+<img src="images/C4/14.png" width="70%"/>
+</div>
+<p></p><div style="text-align: center">
+<img src="images/C4/15.png" width="70%"/>
+</div>
+</details>
+<p>尽管引入额外的寄存器会带来额外开销，但是它能够消除分支以及关联的控制依赖，使得条件指令执行更快（即使寄存器有时会做无用功<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
 <h4 id="memory-banks">Memory Banks<a class="headerlink" href="#memory-banks" title="Permanent link">⚓︎</a></h4>
+<p>向量加载<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>存储单元的行为相比算术函数单元会复杂得多——它们的初始化速率不一定是<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>个时钟周期，因为内存分区的停顿会减少有效的吞吐量；并且启动损失会比一般的函数单元高很多。为了维持理论上的初始化速率，内存系统必须能够产出或接收大量数据，具体做法是将访问分散在多个独立的内存分区中。</p>
+<ul>
+<li>很多向量计算机支持单个时钟周期内的多次加载和存储，且内存分区周期时间通常几倍于处理器周期时间。为支持多个同步访问，内存系统需要多个分区，并能够独立控制分区地址。</li>
+<li>多数向量处理器支持不按顺序的加载或存储字数据的能力，因而需要独立分区寻址的支持，简单的内存交错无法做到这一点。</li>
+<li>多数向量计算机支持多处理器共享相同的内存系统，因此每个处理器将会产生自己单独的地址流。</li>
+</ul>
 <h4 id="stride">Stride<a class="headerlink" href="#stride" title="Permanent link">⚓︎</a></h4>
+<p>向量中相邻元素在内存中的位置不一定是按顺序的，考虑以下矩阵乘法的代码：</p>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-2-1"><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span>
+</span><span id="__span-2-2"><a href="#__codelineno-2-2" id="__codelineno-2-2" name="__codelineno-2-2"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-3"><a href="#__codelineno-2-3" id="__codelineno-2-3" name="__codelineno-2-3"></a><span class="w">        </span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
+</span><span id="__span-2-4"><a href="#__codelineno-2-4" id="__codelineno-2-4" name="__codelineno-2-4"></a><span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">k</span><span class="p">)</span><span class="w"> </span>
+</span><span id="__span-2-5"><a href="#__codelineno-2-5" id="__codelineno-2-5" name="__codelineno-2-5"></a><span class="w">            </span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">k</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">D</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">j</span><span class="p">];</span>
+</span><span id="__span-2-6"><a href="#__codelineno-2-6" id="__codelineno-2-6" name="__codelineno-2-6"></a><span class="w">    </span><span class="p">}</span>
+</span></code></pre></div>
+<p>我们能够向量化<span class="heti-skip"><span class="heti-spacing"> </span>B<span class="heti-spacing"> </span></span>的每行以及<span class="heti-skip"><span class="heti-spacing"> </span>D<span class="heti-spacing"> </span></span>的每列之间的乘法运算，并将 <code>k</code> 作为索引变量，对内层循环进行条带挖掘。然而，为数组分配内存时，数组会被线性化，这意味着同一行或同一列的元素在内存中不一定是相邻的。以上述<span class="heti-skip"><span class="heti-spacing"> </span>C<span class="heti-spacing"> </span></span>代码为例，由于<span class="heti-skip"><span class="heti-spacing"> </span>C<span class="heti-spacing"> </span></span>语言是行主序<span class="heti-skip"><span class="heti-spacing"> </span>(row-major order)<span class="heti-spacing"> </span></span>的，所以在迭代中被访问<span class="heti-skip"><span class="heti-spacing"> </span>D<span class="heti-spacing"> </span></span>的元素之间间隔了<span class="heti-skip"><span class="heti-spacing"> </span>800<span class="heti-spacing"> </span></span>个字节（每行<span class="heti-skip"><span class="heti-spacing"> </span>100<span class="heti-spacing"> </span></span>个元素<span class="heti-skip"><span class="heti-spacing"> </span>* 8<span class="heti-spacing"> </span></span>字节<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。因此，我们需要一种能够获取不在内存中相邻的向量元素的技术。</p>
+<ul>
+<li><strong>步幅</strong>(stride)：将待收集到单个向量寄存器中的元素之间的间隔距离。<ul>
+<li>上述例子中，矩阵<span class="heti-skip"><span class="heti-spacing"> </span>D<span class="heti-spacing"> </span></span>的步幅为<span class="heti-skip"><span class="heti-spacing"> </span>100<span class="heti-spacing"> </span></span>个双精度字，<span>B<span class="heti-spacing"> </span></span>的步幅为<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>个双精度字；如果是列主序的话，两者正好互换。</li>
+</ul>
+</li>
+<li>当向量被加载到向量寄存器时，这个向量看起来就像有逻辑上相邻的元素。因此向量处理器通过具备步幅能力的向量加载和存储运算，能够处理<strong>非单元步幅</strong>(nonunit stride)（步幅<span><span class="heti-spacing"> </span>&gt; 1</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，而这种能够访问非顺序内存位置并将其重塑为紧密结构的能力正是向量架构的一大优点。</li>
+<li>由于步幅可能和向量长度一样在编译时是未知的，因此我们可以将向量步幅放在一个通用目的寄存器内，然后<span class="heti-skip"><span class="heti-spacing"> </span>RV64V<span class="heti-spacing"> </span></span>指令<code>vlds</code><span class="heti-skip"><span class="heti-spacing"> </span>(load vector with stride)<span class="heti-spacing"> </span></span>将向量放在向量寄存器内；对于存储，也有对应的<code>vsts</code><span class="heti-skip"><span class="heti-spacing"> </span>(store vector with stride)<span class="heti-spacing"> </span></span>指令。</li>
+<li>
+<p>当多个访问在单个分区中发生竞争时，内存分区冲突就发生了，因此要停顿一个访问。当满足以下关系时，我们认为分区冲突发生：</p>
+<div class="arithmatex">\[
+\dfrac{\text{Numbers of banks}}{\text{Least common multiple (Stride, Number of banks)}} &lt; \text{Bank busy time}
+\]</div>
+</li>
+</ul>
 <h4 id="gather-scatter">Gather-Scatter<a class="headerlink" href="#gather-scatter" title="Permanent link">⚓︎</a></h4>
+<p>在稀疏矩阵中，向量元素通常以紧凑的形式被存储着，然后需要间接访问。假设有一个简化的稀疏结构，对应的代码如下：</p>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-3-1"><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span>
+</span><span id="__span-3-2"><a href="#__codelineno-3-2" id="__codelineno-3-2" name="__codelineno-3-2"></a><span class="w">    </span><span class="n">A</span><span class="p">[</span><span class="n">K</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">C</span><span class="p">[</span><span class="n">M</span><span class="p">[</span><span class="n">i</span><span class="p">]];</span>
+</span></code></pre></div>
+<p>这段代码实现了在数组<span class="heti-skip"><span class="heti-spacing"> </span>A<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>C<span class="heti-spacing"> </span></span>上的稀疏向量求和，用到了索引向量<span class="heti-skip"><span class="heti-spacing"> </span>K<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>M<span class="heti-spacing"> </span></span>来指定<span class="heti-skip"><span class="heti-spacing"> </span>A<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>C<span class="heti-spacing"> </span></span>中的非零元素，其中<span class="heti-skip"><span class="heti-spacing"> </span>A<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>C<span class="heti-spacing"> </span></span>必须有相同数量（n）的非零元素，<span>K<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>M<span class="heti-spacing"> </span></span>也得大小相同。</p>
+<p>支持稀疏矩阵的基本机制是使用索引向量的<strong>聚集<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>分散运算</strong>(gather-scatter operations)。该运算的目标是支持稀疏矩阵在压缩表示法和正常表示法之间的移动。</p>
+<ul>
+<li><strong>聚集</strong><span>(gather)<span class="heti-spacing"> </span></span>运算接收一个<strong>索引向量</strong>(index vector)，并通过将基地址与索引向量中给出的偏移量相加，来获取对应地址处的元素所组成的向量。结果为在一个向量寄存器中的稠密向量。</li>
+<li>在完成对稠密向量中元素的操作后，稀疏向量可以通过<strong>分散</strong><span>(scatter)<span class="heti-spacing"> </span></span>存储，以扩展形式保存这些元素，同时使用相同的索引向量。</li>
+<li>
+<p><span>RV64V<span class="heti-spacing"> </span></span>提供的对应指令为<code>vldi</code><span class="heti-skip"><span class="heti-spacing"> </span>(load vector indexed or gather)<span class="heti-spacing"> </span></span>和<code>vsti</code><span><span class="heti-spacing"> </span>(store vector indexed or scatter)</span>。下面将上述代码转换为<span class="heti-skip"><span class="heti-spacing"> </span>RISC-V<span class="heti-spacing"> </span></span>指令序列：</p>
+<p></p><div style="text-align: center">
+<img src="images/C4/16.png" width="70%"/>
+</div>
+<ul>
+<li>简单的向量编译器不会自动向量化上述源代码，因为编译器不清楚 <code>K</code> 的元素是否是唯一值（这样的话就没有依赖存在<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，所以需要程序员发出指示，告诉编译器以向量模式运行上述循环是安全的。</li>
+</ul>
+</li>
+<li>
+<p>尽管索引加载和存储能被流水线化，但它们会比没有索引的版本更慢些，因为内存分区无法在指令开始时得知，并且寄存器堆也必须提供向量单元通道之间的通信，以支持聚集和分散。</p>
+</li>
+<li>聚集和分散中的每个元素都有独立的地址，所以不能将它们按组处理，并且在内存系统中会有多处冲突。因此即使在有高速缓存的系统中，单独的访问还是会导致显著的时延。</li>
+</ul>
 <h4 id="programming-vector-architecture">Programming Vector Architecture<a class="headerlink" href="#programming-vector-architecture" title="Permanent link">⚓︎</a></h4>
+<p>向量架构的一个优势在于编译器能在编译时告诉程序员某段代码是否能够被向量化，通常会为不能向量化的代码给出提示。这能让领域专家知道如何通过修改代码，或者告诉编译器代码没有问题来提升性能。正是这种编译器和程序员之间的对话，简化了向量计算机上的编程。</p>
+<p>然而，影响程序以向量模式运行的主要因素是程序自身：循环是否有真实的数据依赖，或者它们能否被重构从而避免这种依赖。算法的选择，以及编码的方式都会影响到这个因素。</p>
 <h2 id="simd-instruction-set-extensions-for-multimedia">SIMD Instruction Set Extensions for Multimedia<a class="headerlink" href="#simd-instruction-set-extensions-for-multimedia" title="Permanent link">⚓︎</a></h2>
+<p><span>SIMD<span class="heti-spacing"> </span></span>多媒体扩展起源于一个简单的发现：许多媒体应用程序处理的数据类型宽度，比<span class="heti-skip"><span class="heti-spacing"> </span>32<span class="heti-spacing"> </span></span>位处理器原本优化的数据类型更窄。下表总结了典型的多媒体<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>指令：</p>
+<div style="text-align: center">
+<img src="images/C4/17.png" width="80%"/>
+</div>
+<p>类似向量指令，<span>SIMD<span class="heti-spacing"> </span></span>指令指明相同的对向量数据的操作；不同之处在于<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>倾向于指明更少的操作数，因而使用更小的寄存器堆。</p>
+<p>此外，<span>SIMD<span class="heti-spacing"> </span></span>扩展还忽略了以下三样东西：</p>
+<ul>
+<li>向量长度寄存器：因为多媒体<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>扩展固定了数据操作数的个数，导致产生了数以百计的指令（<span>x86<span class="heti-spacing"> </span></span>架构的<a href="https://en.wikipedia.org/wiki/MMX_(instruction_set)"><span class="heti-skip"><span class="heti-spacing"> </span>MMX<span class="heti-spacing"> </span></span></a><span class="heti-skip"><span class="heti-spacing"> </span>,<span class="heti-spacing"> </span></span><a href="https://en.wikipedia.org/wiki/Streaming_SIMD_Extensions"><span class="heti-skip"><span class="heti-spacing"> </span>SSE<span class="heti-spacing"> </span></span></a>和<a href="https://en.wikipedia.org/wiki/Advanced_Vector_Extensions"><span class="heti-skip"><span class="heti-spacing"> </span>AVX<span class="heti-spacing"> </span></span></a>扩展）</li>
+<li>步幅或聚集<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>分散数据传输指令：到目前为止，多媒体<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>还没有提供向量架构上的更精确的寻址模式，即步幅访问和聚集<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>分散访问</li>
+<li>掩码（谓词）寄存器：尽管正在改变，多媒体<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>通常不提供用于支持元素条件执行的掩码寄存器</li>
+</ul>
+<p>这些省略导致编译器难以生成<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>代码，并增加了用<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>汇编语言编写程序的难度。</p>
+<p>既然有多媒体<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>扩展有上述缺点，那么它为什么还是那么流行呢？其原因在于：</p>
+<ul>
+<li>将它们添加到标准算术单元中的初始成本很低，且易于实现</li>
+<li>与向量架构相比，它们所需的额外处理器状态极少，这对于上下文交换时间而言很关键</li>
+<li>向量架构需要很多内存带宽，而很多计算机无法满足这样的要求</li>
+<li><span>SIMD<span class="heti-spacing"> </span></span>不必处理来自虚拟内存的问题</li>
+<li>容易引入有助于新媒体标准的指令，例如执行排列的指令或消耗比向量能产生的更多或更少操作数的指令</li>
+</ul>
+<details class="example">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="5:2"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio"/><input id="__tabbed_5_2" name="__tabbed_5" type="radio"/><div class="tabbed-labels"><label for="__tabbed_5_1">题目</label><label for="__tabbed_5_2">答案</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/C4/18.png" width="80%"/>
+</div>
+<p></p><div style="text-align: center">
+<img src="images/C4/19.png" width="80%"/>
+</div>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/C4/20.png" width="80%"/>
+</div>
+</div>
+</div>
+</div>
+</details>
+<p>鉴于多媒体<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>扩展的临时性质，使用这些指令的最简单的方式是使用库函数或编写汇编语言代码。而现在的高级编译器能够自动生成<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>指令，但程序员必须确保将内存中的所有数据和<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>单元的宽度对齐，避免让编译器为可向量化的代码生成标量指令。</p>
 <h3 id="roofline-visual-performance-model">Roofline Visual Performance Model<a class="headerlink" href="#roofline-visual-performance-model" title="Permanent link">⚓︎</a></h3>
+<p>一种直观的比较<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>架构变体的潜在浮点性能的可视化方法是<strong>屋顶线模型</strong>(Roofline model)。它用二维图形表示浮点数性能、内存性能以及算术强度之间的关系。</p>
+<ul>
+<li>
+<p><strong>算术强度</strong><span>(arithmetic intensity)<span class="heti-spacing"> </span></span>是指每访问一字节内存所执行的浮点运算次数的比率，可通过计算“程序中浮点运算总次数<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>在程序执行时传输到主存中的数据字节数”得到。下图展示了不同场景下的相对算术强度：</p>
+<p></p><div style="text-align: center">
+<img src="images/C4/21.png" width="80%"/>
+</div>
+</li>
+<li>
+<p>峰值浮点性能可通过硬件规格确定</p>
+</li>
+<li>本案例研究中的许多内核无法适应芯片上的高速缓存，因此峰值内存性能由高速缓存背后的内存系统定义，可通过运行<span class="heti-skip"><span class="heti-spacing"> </span>Stream<span class="heti-spacing"> </span></span>基准测试得到<ul>
+<li>注意，我们需要峰值内存带宽对处理器而言也是有效的，而不是仅在<span class="heti-skip"><span class="heti-spacing"> </span>DRAM<span class="heti-spacing"> </span></span>的引脚上</li>
+</ul>
+</li>
+</ul>
+<p>下图展示了用屋顶线模型比对两个处理器的性能：</p>
+<div style="text-align: center">
+<img src="images/C4/22.png" width="80%"/>
+</div>
+<blockquote>
+<p>注意横轴和纵轴是按对数确定尺度的。</p>
+</blockquote>
+<p>我们可以用以下公式来表述屋顶线模型中的曲线：</p>
+<div class="arithmatex">\[
+\begin{align}
+\text{Atttainable GFLOPs/s} = &amp; \min(\text{Peak Memory BW} \notag \\
+&amp; \times \text{Arithmetic Intensity}, \text{Peak Floating} - \text{Point Perf.}) \notag
+\end{align}
+\]</div>
+<p>考虑模型中对角线和水平线的汇聚点：</p>
+<ul>
+<li>如果它在很右侧的位置上，那么只有少数具备高算术强度的内核才能达到计算机的最大性能</li>
+<li>如果它在很左侧的位置上，那么几乎所有内核都能达到最大性能</li>
+</ul>
+<p>向量处理器相比其他<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>处理器而言，同时具备较高的内存带宽，以及靠左的汇聚点。</p>
 <h2 id="graphics-processing-units">Graphics Processing Units<a class="headerlink" href="#graphics-processing-units" title="Permanent link">⚓︎</a></h2>
+<div class="admonition info">
+<p class="admonition-title">注</p>
+<ul>
+<li><strong>图形处理器</strong><span>(graphics processing units, GPUs)<span class="heti-spacing"> </span></span>的祖先是图形加速器<span><span class="heti-spacing"> </span>(graphics accelerators)</span></li>
+<li>本节我们仅讨论<span class="heti-skip"><span class="heti-spacing"> </span>GPU<span class="heti-spacing"> </span></span>在计算方面的用途</li>
+</ul>
+</div>
 <h3 id="programming-in-gpu">Programming in GPU<a class="headerlink" href="#programming-in-gpu" title="Permanent link">⚓︎</a></h3>
+<p><span>GPU<span class="heti-spacing"> </span></span>程序员的挑战不仅在于获取<span class="heti-skip"><span class="heti-spacing"> </span>GPU<span class="heti-spacing"> </span></span>的良好性能，还在于协调好在系统处理器，<span>GPU<span class="heti-spacing"> </span></span>以及在系统内存和<span class="heti-skip"><span class="heti-spacing"> </span>GPU<span class="heti-spacing"> </span></span>内存之间的数据传输这三者的调度。此外，<span>GPU<span class="heti-spacing"> </span></span>具备各种并行，包括多线程、MIMD、SIMD，甚至还有<span><span class="heti-spacing"> </span>ILP</span>。</p>
+<p>英伟达<span class="heti-skip"><span class="heti-spacing"> </span>(NVINDA)<span class="heti-spacing"> </span></span>开发了一种类<span class="heti-skip"><span class="heti-spacing"> </span>C<span class="heti-spacing"> </span></span>的语言和编程环境，通过应对上述挑战（异构计算<span class="heti-skip"><span class="heti-spacing"> </span>(heterogeneous computing)<span class="heti-spacing"> </span></span>和多面并行<span><span class="heti-spacing"> </span>(multifaceted parallelism)</span>）以提升<span class="heti-skip"><span class="heti-spacing"> </span>GPU<span class="heti-spacing"> </span></span>程序员的生产力——这个系统被称为 <a href="https://en.wikipedia.org/wiki/CUDA"><strong>CUDA</strong></a> (Compute Unified Device Architecture)。<span>CUDA<span class="heti-spacing"> </span></span>能够生成用于系统处理器的<span class="heti-skip"><span class="heti-spacing"> </span>C/C++<span class="heti-spacing"> </span></span>代码，以及用于<span><span class="heti-spacing"> </span>GPU</span>（<span>CUDA<span class="heti-spacing"> </span></span>中的<span><span class="heti-spacing"> </span>D</span>）的<span class="heti-skip"><span class="heti-spacing"> </span>C/C++<span class="heti-spacing"> </span></span>方言。</p>
+<blockquote>
+<p>注：<a href="https://en.wikipedia.org/wiki/OpenCL"><span>OpenCL<span class="heti-spacing"> </span></span></a>是一种和<span class="heti-skip"><span class="heti-spacing"> </span>CUDA<span class="heti-spacing"> </span></span>类似的语言，但是由多家公司共同开发的，具备跨平台的特点。</p>
+</blockquote>
+<ul>
+<li>英伟达将上述各类并行统一称为 <strong><span>CUDA<span class="heti-spacing"> </span></span>线程</strong>(CUDA Thread)，作为表示最底层并行的编程原语，这使得编译器和硬件能够将数以千计的<span class="heti-skip"><span class="heti-spacing"> </span>CUDA<span class="heti-spacing"> </span></span>线程放在一起，以利用<span class="heti-skip"><span class="heti-spacing"> </span>GPU<span class="heti-spacing"> </span></span>内的各种并行。因此英伟达将<span class="heti-skip"><span class="heti-spacing"> </span>CUDA<span class="heti-spacing"> </span></span>编程模型归类为单指令，多线程<span><span class="heti-spacing"> </span>(SIMT)</span>。</li>
+<li>而这些被分进一个个块内一起执行的一组线程称为<strong>线程块</strong>(Thread Block)。</li>
+<li>在这些线程块上执行运算的处理器被称为<strong>多线程<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>处理器</strong>(multithreaded SIMD Processor)。</li>
+<li>为区分来自<span class="heti-skip"><span class="heti-spacing"> </span>GPU<span class="heti-spacing"> </span></span>和系统处理器的函数，<span>CUDA<span class="heti-spacing"> </span></span>使用 <code>__device__</code> 或 <code>__global__</code> 表示前者，<code>__host__</code> 表示后者。</li>
+<li>以 <code>__device__</code> 声明的<span class="heti-skip"><span class="heti-spacing"> </span>CUDA<span class="heti-spacing"> </span></span>变量被分配到<span class="heti-skip"><span class="heti-spacing"> </span>GPU<span class="heti-spacing"> </span></span>的内存，这样的内存可被所有多线程<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>处理器访问到。</li>
+<li>运行在<span class="heti-skip"><span class="heti-spacing"> </span>GPU<span class="heti-spacing"> </span></span>上的函数 <code>name</code> 的扩展函数调用语法为：<code>name &lt;&lt;&lt;dimGrid.dimBlock&gt;&gt;&gt;( ...parameter list... )</code>，其中 <code>dimGrid</code> 和 <code>dimBlock</code> 分别指明代码（线程块）和块（线程）上的维度。</li>
+<li>除了块的标识符（<code>blockIdx</code>）和块内每个线程的标识符（<code>threadIdx</code>）外，<span>CUDA<span class="heti-spacing"> </span></span>为每个块的线程个数提供了关键字 <code>blockDim</code>。</li>
+</ul>
+<details class="example">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="6:2"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio"/><input id="__tabbed_6_2" name="__tabbed_6" type="radio"/><div class="tabbed-labels"><label for="__tabbed_6_1"><span>C<span class="heti-spacing"> </span></span>代码</label><label for="__tabbed_6_2">对应的<span class="heti-skip"><span class="heti-spacing"> </span>CUDA<span class="heti-spacing"> </span></span>版本</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-c highlight"><pre><span></span><code><span id="__span-4-1"><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="c1">// Invoke DAXPY</span>
+</span><span id="__span-4-2"><a href="#__codelineno-4-2" id="__codelineno-4-2" name="__codelineno-4-2"></a><span class="n">daxpy</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">);</span>
+</span><span id="__span-4-3"><a href="#__codelineno-4-3" id="__codelineno-4-3" name="__codelineno-4-3"></a><span class="c1">// DAXPY in C</span>
+</span><span id="__span-4-4"><a href="#__codelineno-4-4" id="__codelineno-4-4" name="__codelineno-4-4"></a><span class="kt">void</span><span class="w"> </span><span class="nf">daxpy</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="o">*</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="o">*</span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-5"><a href="#__codelineno-4-5" id="__codelineno-4-5" name="__codelineno-4-5"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span>
+</span><span id="__span-4-6"><a href="#__codelineno-4-6" id="__codelineno-4-6" name="__codelineno-4-6"></a><span class="w">        </span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</span><span id="__span-4-7"><a href="#__codelineno-4-7" id="__codelineno-4-7" name="__codelineno-4-7"></a><span class="p">}</span>
+</span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-c highlight"><pre><span></span><code><span id="__span-5-1"><a href="#__codelineno-5-1" id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="c1">// Invoke DAXPY with 256 threads per Thread Block</span>
+</span><span id="__span-5-2"><a href="#__codelineno-5-2" id="__codelineno-5-2" name="__codelineno-5-2"></a><span class="n">__host__</span>
+</span><span id="__span-5-3"><a href="#__codelineno-5-3" id="__codelineno-5-3" name="__codelineno-5-3"></a><span class="kt">int</span><span class="w"> </span><span class="n">nblocks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">255</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">256</span><span class="p">;</span>
+</span><span id="__span-5-4"><a href="#__codelineno-5-4" id="__codelineno-5-4" name="__codelineno-5-4"></a><span class="n">daxpy</span><span class="o">&lt;&lt;&lt;</span><span class="n">nblocks</span><span class="p">,</span><span class="w"> </span><span class="mi">256</span><span class="o">&gt;&gt;&gt;</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">);</span>
+</span><span id="__span-5-5"><a href="#__codelineno-5-5" id="__codelineno-5-5" name="__codelineno-5-5"></a><span class="c1">// DAXPY in CUDA</span>
+</span><span id="__span-5-6"><a href="#__codelineno-5-6" id="__codelineno-5-6" name="__codelineno-5-6"></a><span class="n">__global__</span>
+</span><span id="__span-5-7"><a href="#__codelineno-5-7" id="__codelineno-5-7" name="__codelineno-5-7"></a><span class="kt">void</span><span class="w"> </span><span class="n">daxpy</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="o">*</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="o">*</span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-5-8"><a href="#__codelineno-5-8" id="__codelineno-5-8" name="__codelineno-5-8"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">blockDim</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+</span><span id="__span-5-9"><a href="#__codelineno-5-9" id="__codelineno-5-9" name="__codelineno-5-9"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">)</span>
+</span><span id="__span-5-10"><a href="#__codelineno-5-10" id="__codelineno-5-10" name="__codelineno-5-10"></a><span class="w">        </span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</span><span id="__span-5-11"><a href="#__codelineno-5-11" id="__codelineno-5-11" name="__codelineno-5-11"></a><span class="p">}</span>
+</span></code></pre></div>
+</div>
+</div>
+</div>
+</details>
+<p>由<span class="heti-skip"><span class="heti-spacing"> </span>GPU<span class="heti-spacing"> </span></span>硬件负责处理并行执行和线程管理，而非由应用程序或操作系统。为简化硬件调度，<span>CUDA<span class="heti-spacing"> </span></span>要求线程块能够独立地并以任意顺序执行。不同的线程块之间不得直接通信，尽管它们能够通过全局内存的原子内存操作来协调。</p>
+<p>想要提升性能的程序员在用<span class="heti-skip"><span class="heti-spacing"> </span>CUDA<span class="heti-spacing"> </span></span>编写代码时会将<span class="heti-skip"><span class="heti-spacing"> </span>GPU<span class="heti-spacing"> </span></span>硬件牢记在心，尽管这会影响到生产力，但这样做对这类程序员来说是值得的。</p>
 <h3 id="nvinda-gpu-computational-structures">NVINDA GPU Computational Structures<a class="headerlink" href="#nvinda-gpu-computational-structures" title="Permanent link">⚓︎</a></h3>
+<p>有一个很麻烦的地方在于：<span>GPU<span class="heti-spacing"> </span></span>有自己的一套术语，和我们熟知的<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>术语有不少出入，并且不少词汇会给我们带来误导性的理解。为了能正确理解<span class="heti-skip"><span class="heti-spacing"> </span>GPU<span class="heti-spacing"> </span></span>的术语，下面给了一张表格，展示了本章会提到的<span class="heti-skip"><span class="heti-spacing"> </span>GPU<span class="heti-spacing"> </span></span>术语，并提供了对应的<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>术语和解释。</p>
+<details class="abstract">
+<summary>一些<span class="heti-skip"><span class="heti-spacing"> </span>GPU<span class="heti-spacing"> </span></span>术语</summary>
+<p></p><div style="text-align: center">
+<img src="images/C4/23.png" width="100%"/>
+</div>
+</details>
+<ul>
+<li>
+<p><strong>网格</strong><span>(grid)<span class="heti-spacing"> </span></span>是一种在<span class="heti-skip"><span class="heti-spacing"> </span>GPU<span class="heti-spacing"> </span></span>上，由一组线程块构成的代码（对应术语为向量化循环<span><span class="heti-spacing"> </span>(vectorized loop)</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。网格和线程块是在<span class="heti-skip"><span class="heti-spacing"> </span>GPU<span class="heti-spacing"> </span></span>上实现的编程抽象，帮助程序员组织<span class="heti-skip"><span class="heti-spacing"> </span>CUDA<span class="heti-spacing"> </span></span>代码。下图展示了网格和线程块之间的关系：</p>
+<p></p><div style="text-align: center">
+<img src="images/C4/24.png" width="60%"/>
+</div>
+</li>
+<li>
+<p>下图展示了一个简化的多线程<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>处理器框图：</p>
+<p></p><div style="text-align: center">
+<img src="images/C4/25.png" width="90%"/>
+</div>
+<p>可以看到，它和向量处理器很像，但它有多个并行的函数单元，而不是少数高度流水线化的函数单元。</p>
+</li>
+<li>
+<p><strong>线程块调度器</strong><span>(Thread Block Scheduler)<span class="heti-spacing"> </span></span>将线程块分配给多线程<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>处理器上</p>
+<ul>
+<li>为了在具有不同多线程<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>处理器数量的<span class="heti-skip"><span class="heti-spacing"> </span>GPU<span class="heti-spacing"> </span></span>模型之间提供透明的可扩展性，线程块调度器将线程块分配给多线程<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>处理器</li>
+</ul>
+</li>
+<li>综上，<span>GPU<span class="heti-spacing"> </span></span>本质上是一个由多线程<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>处理器构成的多处理器</li>
+<li>深入一层细节来看，硬件所创建、管理、调度并执行的核心对象是一条 <strong><span>SIMD<span class="heti-spacing"> </span></span>指令线程</strong>(thread of SIMD instructions)。这些指令线程有自己的<span><span class="heti-spacing"> </span>PC</span>，并在一个多线程<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>上运行（所以这些线程是相互独立的<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</li>
+<li><strong><span>SIMD<span class="heti-spacing"> </span></span>线程调度器</strong><span>(SIMD Thread Scheduler)<span class="heti-spacing"> </span></span>知道哪个<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>指令线程已经准备好运行，并将这样的线程发送给一个即将在多线程<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>处理器上运行的分派单元，不必按顺序获取线程中的下一条指令。<ul>
+<li>调度器包含了一个记分板<span><span class="heti-spacing"> </span>(scoreboard)</span>，用于追踪至多<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>个<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>指令线程，以观察哪些线程是准备好的。由于高速缓存和<span class="heti-skip"><span class="heti-spacing"> </span>TLB<span class="heti-spacing"> </span></span>的命中和失效，内存指令的时延是可变的，因此要求记分板确定这些指令何时完成。</li>
+<li>
+<p>下图展示了调度器随时间变化，以不同顺序获取<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>线程指令的过程：</p>
+<p></p><div style="text-align: center">
+<img src="images/C4/26.png" width="40%"/>
+</div>
+</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>因此<span class="heti-skip"><span class="heti-spacing"> </span>GPU<span class="heti-spacing"> </span></span>硬件有两级硬件调度器：线程块调度器和<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>线程调度器。</p>
+</blockquote>
+<ul>
+<li>
+<p>由于线程包含了多条<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>指令，<span>SIMD<span class="heti-spacing"> </span></span>处理器必须有能够执行运算的多个函数单元，我们称之为 <strong><span>SIMD<span class="heti-spacing"> </span></span>通道</strong>(SIMD Lanes)。</p>
+<ul>
+<li>通道数量可以达到线程块内的线程数</li>
+</ul>
+</li>
+<li>
+<p><span>GPU<span class="heti-spacing"> </span></span>架构师的假设是：<span>GPU<span class="heti-spacing"> </span></span>应用程序有很多<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>指令线程，而多线程既可以隐藏对<span class="heti-skip"><span class="heti-spacing"> </span>DRAM<span class="heti-spacing"> </span></span>的时延，又可以增加多线程<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>处理器的利用率。</p>
+</li>
+<li>寄存器使用和最大线程数之间需要权衡：每线程更少的寄存器意味着更多的线程，也就是说不是所有的<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>线程需要有最大寄存器数。</li>
+<li>为了能执行很多<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>指令线程，当<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>线程存在且<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>指令线程被创建或释放时，每个线程被动态分配到在每个<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>处理器上的一组物理寄存器。虽然这种可变性会带来分段<span class="heti-skip"><span class="heti-spacing"> </span>(fragementation)<span class="heti-spacing"> </span></span>问题，以及让一些寄存器变得不可用，但实际上大多数线程块对于给定的网格使用相同数量的寄存器。这种灵活性需要硬件具备路由<span><span class="heti-spacing"> </span>(routing)</span>、仲裁<span class="heti-skip"><span class="heti-spacing"> </span>(arbitration)<span class="heti-spacing"> </span></span>和分区<span class="heti-skip"><span class="heti-spacing"> </span>(banking)<span class="heti-spacing"> </span></span>的能力。</li>
+</ul>
 <h3 id="nvinda-gpu-instruction-set-architecture">NVINDA GPU Instruction Set Architecture<a class="headerlink" href="#nvinda-gpu-instruction-set-architecture" title="Permanent link">⚓︎</a></h3>
+<p>不同于其他系统处理器，英伟达编译器的指令集目标是一种对硬件指令集（对程序员而言是不可见的）的抽象——<strong>PTX</strong>(Parallel Thread Execution，并行线程执行<span class="heti-skip"><span class="heti-spacing"> </span>)<span class="heti-spacing"> </span></span>提供了用于编译器的一个稳定的指令集，且在不同代<span class="heti-skip"><span class="heti-spacing"> </span>GPU<span class="heti-spacing"> </span></span>上具备兼容性。</p>
+<ul>
+<li><span>PTX<span class="heti-spacing"> </span></span>指令描述了在单个<span class="heti-skip"><span class="heti-spacing"> </span>CUDA<span class="heti-spacing"> </span></span>线程上的运算，并且通常和硬件指令进行一对一映射；但一条<span class="heti-skip"><span class="heti-spacing"> </span>PTX<span class="heti-spacing"> </span></span>指令可扩展至多个机器指令，反之亦然。</li>
+<li><span>PTX<span class="heti-spacing"> </span></span>采用无限数量的写一次寄存器<ul>
+<li>编译器必须运行一个寄存器分配过程，将<span class="heti-skip"><span class="heti-spacing"> </span>PTX<span class="heti-spacing"> </span></span>寄存器映射到一个固定数量的，在真实设备中可用的读写硬件寄存器。</li>
+<li>优化器随后运行，以减少寄存器的使用，从而消除无效代码，将指令合并折叠，并计算分支可能分叉的位置以及分叉路径可能重新汇合的地点。</li>
+</ul>
+</li>
+<li>
+<p><span>PTX<span class="heti-spacing"> </span></span>指令格式为：<code>opcode.type d, a, b, c;</code>，其中 <code>d</code> 是目标操作数（除了在存储指令外都是寄存器<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，<code>a</code><span>,<span class="heti-spacing"> </span></span><code>b</code><span>,<span class="heti-spacing"> </span></span><code>c</code>都是源操作数（<span>32<span class="heti-spacing"> </span></span>位<span class="heti-skip"><span class="heti-spacing"> </span>/64<span class="heti-spacing"> </span></span>位寄存器或者常数值<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，而运算类型如下所示：</p>
+<p></p><div style="text-align: center">
+<img src="images/C4/27.png" width="60%"/>
+</div>
+</li>
+</ul>
+<details class="abstract">
+<summary>一些基本的<span class="heti-skip"><span class="heti-spacing"> </span>PTX<span class="heti-spacing"> </span></span>指令集</summary>
+<p></p><div style="text-align: center">
+<img src="images/C4/28.png" width="100%"/>
+</div>
+</details>
+<ul>
+<li>所有指令均可通过<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>位谓词寄存器进行条件执行，这些寄存器可通过设置谓词指令（<code>setp</code>）来设定</li>
+<li>控制流指令为：<ul>
+<li>函数：<code>call</code>, <code>return</code></li>
+<li>线程：<code>exit</code>, <code>branch</code></li>
+<li>线程块内线程的屏障同步<span><span class="heti-spacing"> </span>(barrier synchronization)</span>：<code>bar.sync</code></li>
+</ul>
+</li>
+<li>编译器或<span class="heti-skip"><span class="heti-spacing"> </span>PTX<span class="heti-spacing"> </span></span>程序员将虚拟寄存器声明为<span class="heti-skip"><span class="heti-spacing"> </span>32<span class="heti-spacing"> </span></span>位或<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位类型或无类型值，比如<code>R0</code><span class="heti-skip"><span class="heti-spacing"> </span>,<span class="heti-spacing"> </span></span><code>R1</code><span class="heti-skip"><span class="heti-spacing"> </span>, ...<span class="heti-spacing"> </span></span>是<span class="heti-skip"><span class="heti-spacing"> </span>32<span class="heti-spacing"> </span></span>位值，而<code>RD0</code><span class="heti-skip"><span class="heti-spacing"> </span>,<span class="heti-spacing"> </span></span><code>RD1</code><span class="heti-skip"><span class="heti-spacing"> </span>, ...<span class="heti-spacing"> </span></span>是<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位值。</li>
+<li><span>GPU<span class="heti-spacing"> </span></span>没有提供单独的用于顺序数据传输、步幅数据传输或聚集<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>分散数据传输的指令——所有的数据传输都是聚集<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>分散的！<ul>
+<li>为了重新获得顺序数据传输的高效性，<span>GPU<span class="heti-spacing"> </span></span>采用一种特殊的<strong>地址合并</strong><span>(Address Coalescing)<span class="heti-spacing"> </span></span>硬件，以识别出<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>指令线程内的<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>通道何时共同发出连续的地址。该硬件随后通知<strong>内存接口单元</strong><span>(Memory Interface Unit)<span class="heti-spacing"> </span></span>来发起<span class="heti-skip"><span class="heti-spacing"> </span>32<span class="heti-spacing"> </span></span>个顺序字的块传输请求。</li>
+<li>为了采用上述改进措施，<span>GPU<span class="heti-spacing"> </span></span>程序员必须确保相邻的<span class="heti-skip"><span class="heti-spacing"> </span>CUDA<span class="heti-spacing"> </span></span>线程同时访问邻近的地址，这样它们能够合并成一个或少量内存或高速缓存块。</li>
+</ul>
+</li>
+</ul>
+<details class="example">
+<summary>例子：用<span class="heti-skip"><span class="heti-spacing"> </span>PTX<span class="heti-spacing"> </span></span>指令实现<span><span class="heti-spacing"> </span>DAXPY</span></summary>
+<p></p><div style="text-align: center">
+<img src="images/C4/29.png" width="70%"/>
+</div>
+</details>
 <h3 id="conditional-branching-in-gpus">Conditional Branching in GPUs<a class="headerlink" href="#conditional-branching-in-gpus" title="Permanent link">⚓︎</a></h3>
+<details class="info">
+<summary>太复杂了，暂时藏起来🙈</summary>
+<p>在<span class="heti-skip"><span class="heti-spacing"> </span>IF<span class="heti-spacing"> </span></span>语句的处理上，<span>GPU<span class="heti-spacing"> </span></span>相比向量架构会更依赖于硬件支持——除了谓词寄存器外，还会用到内部掩码、分支同步栈以及指令标记器，来管理分支发散成多条执行通路和通路汇集的时间。</p>
+<p>在<span class="heti-skip"><span class="heti-spacing"> </span>PTX<span class="heti-spacing"> </span></span>汇编器级别中，一个<span class="heti-skip"><span class="heti-spacing"> </span>CUDA<span class="heti-spacing"> </span></span>线程的控制流由以下内容描述：<span>PTX<span class="heti-spacing"> </span></span>指令的分支、调用、返回和退出，以及每个指令的线程通道断言（由程序员使用线程通道的<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>位谓词寄存器指定<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。<span>PTX<span class="heti-spacing"> </span></span>汇编器分析<span class="heti-skip"><span class="heti-spacing"> </span>PTX<span class="heti-spacing"> </span></span>分支图，并将其优化为最快的<span class="heti-skip"><span class="heti-spacing"> </span>GPU<span class="heti-spacing"> </span></span>硬件指令序列。这些指令可以在分支上自己做决定，无需被锁住。</p>
+<p>在<span class="heti-skip"><span class="heti-spacing"> </span>GPU<span class="heti-spacing"> </span></span>硬件指令级别中，控制流包括了分支、跳转、索引跳转、调用、索引调用、返回、退出，以及管理分支同步栈的特殊指令。<span>GPU<span class="heti-spacing"> </span></span>为每个<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>线程提供一个栈，一个栈元素包含一个标识令牌<span><span class="heti-spacing"> </span>(identifier token)</span>，一个目标指令地址以及一个目标线程活跃掩码<span><span class="heti-spacing"> </span>(thread-active mask)</span>。还有一些<span class="heti-skip"><span class="heti-spacing"> </span>GPU<span class="heti-spacing"> </span></span>特殊指令，用于为<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>线程压入栈元素；还有一些特殊指令及指令标记，能够弹出栈元素或将栈回退至指定元素，并依据目标线程活跃掩码跳转至目标指令地址。<span>GPU<span class="heti-spacing"> </span></span>硬件指令还有一个每条通道独立的谓词（启用<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>禁用）功能，通过为每个通道分配<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>位谓词寄存器来实现。</p>
+</details>
 <h3 id="nvinda-gpu-memory-structures">NVINDA GPU Memory Structures<a class="headerlink" href="#nvinda-gpu-memory-structures" title="Permanent link">⚓︎</a></h3>
+<p>下图展示了英伟达<span class="heti-skip"><span class="heti-spacing"> </span>GPU<span class="heti-spacing"> </span></span>的内存结构：</p>
+<div style="text-align: center">
+<img src="images/C4/30.png" width="80%"/>
+</div>
+<ul>
+<li>在多线程<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>处理器上，每个<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>通道被给予一块不在芯片上的<span class="heti-skip"><span class="heti-spacing"> </span>DRAM<span class="heti-spacing"> </span></span>的私有区域，称为<strong>私有内存</strong>(private memory)<ul>
+<li>用于存放栈帧<span><span class="heti-spacing"> </span>(stack frame)</span>、溢出寄存器和无法被寄存器容纳的私有变量</li>
+<li><span>SIMD<span class="heti-spacing"> </span></span>通道之间不会共享私有内存</li>
+<li><span>GPU<span class="heti-spacing"> </span></span>将私有内存缓存在<span class="heti-skip"><span class="heti-spacing"> </span>L1<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>L2<span class="heti-spacing"> </span></span>高速缓存中，以辅助寄存器溢出和加速函数调用</li>
+</ul>
+</li>
+<li>而在芯片上的，位于每个多线程<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>处理器中的内存称为<strong>局部内存</strong>(local memory)<ul>
+<li>该内存具有低时延，高带宽的特征，程序员可以拿它来存储需要被同一线程或相同线程块内的不同线程复用的数据</li>
+<li>它的容量不大，一般只有<span><span class="heti-spacing"> </span>48 KB</span></li>
+<li>不会保存线程块的状态</li>
+<li>可被多线程<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>处理器的多个<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>通道共享，但无法在多个多线程<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>处理器间共享</li>
+<li>当多线程<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>处理器创建线程块时，会为这些块动态分配局部内存，并在所有线程块内的线程退出时释放内存</li>
+</ul>
+</li>
+<li>
+<p><strong><span>GPU<span class="heti-spacing"> </span></span>内存</strong>(GPU Memory)：在芯片外的，被整个<span class="heti-skip"><span class="heti-spacing"> </span>GPU<span class="heti-spacing"> </span></span>和所有线程块共享的内存</p>
+<ul>
+<li>系统处理器（称为主机）能够对<span class="heti-skip"><span class="heti-spacing"> </span>GPU<span class="heti-spacing"> </span></span>内存进行读写操作，而局部内存和私有内存对主机而言是不可用的</li>
+</ul>
+</li>
+<li>
+<p><span>GPU<span class="heti-spacing"> </span></span>不依赖于大缓存，而是采用较小的流式缓存，且因其工作集可能高达数百<span><span class="heti-spacing"> </span>MB</span>，故依赖大量并行的<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>指令线程来掩盖访问<span class="heti-skip"><span class="heti-spacing"> </span>DRAM<span class="heti-spacing"> </span></span>时的高延迟。考虑到使用多线程来隐藏<span class="heti-skip"><span class="heti-spacing"> </span>DRAM<span class="heti-spacing"> </span></span>延迟，系统处理器中原本用于大容量<span class="heti-skip"><span class="heti-spacing"> </span>L2<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>L3<span class="heti-spacing"> </span></span>高速缓存的芯片面积，被转而投入到计算资源以及大量寄存器的配置上，这些寄存器用于维持众多<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>指令线程的状态。</p>
+</li>
+<li>不过最近的<span class="heti-skip"><span class="heti-spacing"> </span>GPU<span class="heti-spacing"> </span></span>和向量处理器用高速缓存来降低时延。</li>
+<li>为提升内存带宽并降低开销，<span>PTX<span class="heti-spacing"> </span></span>数据传输指令与内存控制器合作，当地址落在相同的块上时，将来自<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>线程的单独的并行线程请求合并成单个的内存块请求。这些限制被放在<span class="heti-skip"><span class="heti-spacing"> </span>GPU<span class="heti-spacing"> </span></span>程序上。</li>
+</ul>
 <h3 id="vector-architectures-vs-gpus">Vector Architectures v.s. GPUs<a class="headerlink" href="#vector-architectures-vs-gpus" title="Permanent link">⚓︎</a></h3>
+<p>下表展示了<span class="heti-skip"><span class="heti-spacing"> </span>GPU<span class="heti-spacing"> </span></span>和向量架构中对应的术语：</p>
+<details class="abstract">
+<summary>表格</summary>
+<p></p><div style="text-align: center">
+<img src="images/C4/31.png" width="100%"/>
+</div>
+</details>
+<p>下图为<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>通道的向量处理器（左边）和<span class="heti-skip"><span class="heti-spacing"> </span>GPU<span class="heti-spacing"> </span></span>上<span class="heti-skip"><span class="heti-spacing"> </span>4 SIMD<span class="heti-spacing"> </span></span>通道的多线程<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>处理器（右边<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
+<div style="text-align: center">
+<img src="images/C4/32.png" width="90%"/>
+</div>
 <h3 id="multimedia-simd-computers-vs-gpus">Multimedia SIMD Computers v.s. GPUs<a class="headerlink" href="#multimedia-simd-computers-vs-gpus" title="Permanent link">⚓︎</a></h3>
+<p>下表比对了多媒体<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>扩展和<span class="heti-skip"><span class="heti-spacing"> </span>GPU<span class="heti-spacing"> </span></span>之间的异同：</p>
+<div style="text-align: center">
+<img src="images/C4/33.png" width="100%"/>
+</div>
 <h2 id="detecting-and-enhancing-loop-level-parallelism">Detecting and Enhancing Loop-Level Parallelism<a class="headerlink" href="#detecting-and-enhancing-loop-level-parallelism" title="Permanent link">⚓︎</a></h2>
+<p>对循环级并行的分析集中在后续迭代的数据访问是否依赖于产生于先前迭代的数据值。这样的依赖被称为<strong>循环携带依赖</strong>(loop-carried dependence)。</p>
+<p>因为寻找循环级并行包括了识别诸如循环、数组引用和归纳变量计算等结构，相比在机器码级别上，编译器能够在（或接近）源级别上很容易完成这一分析。下面来看更复杂的例子：</p>
+<details class="example">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="7:2"><input checked="checked" id="__tabbed_7_1" name="__tabbed_7" type="radio"/><input id="__tabbed_7_2" name="__tabbed_7" type="radio"/><div class="tabbed-labels"><label for="__tabbed_7_1">例<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span></label><label for="__tabbed_7_2">例<span><span class="heti-spacing"> </span>2</span></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="tabbed-set tabbed-alternate" data-tabs="8:2"><input checked="checked" id="__tabbed_8_1" name="__tabbed_8" type="radio"/><input id="__tabbed_8_2" name="__tabbed_8" type="radio"/><div class="tabbed-labels"><label for="__tabbed_8_1">题目</label><label for="__tabbed_8_2">解答</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>考虑以下循环：</p>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-6-1"><a href="#__codelineno-6-1" id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-6-2"><a href="#__codelineno-6-2" id="__codelineno-6-2" name="__codelineno-6-2"></a><span class="w">    </span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">C</span><span class="p">[</span><span class="n">i</span><span class="p">];</span><span class="w">    </span><span class="c1">// S1</span>
+</span><span id="__span-6-3"><a href="#__codelineno-6-3" id="__codelineno-6-3" name="__codelineno-6-3"></a><span class="w">    </span><span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">];</span><span class="w">  </span><span class="c1">// S2</span>
+</span><span id="__span-6-4"><a href="#__codelineno-6-4" id="__codelineno-6-4" name="__codelineno-6-4"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>假设<code>A</code><span class="heti-skip"><span class="heti-spacing"> </span>,<span class="heti-spacing"> </span></span><code>B</code><span class="heti-skip"><span class="heti-spacing"> </span>,<span class="heti-spacing"> </span></span><code>C</code>是不同且不重叠的数组，循环中语句<code>S1</code><span class="heti-skip"><span class="heti-spacing"> </span>,<span class="heti-spacing"> </span></span><code>S2</code>之间有哪些数据依赖存在呢？</p>
+</div>
+<div class="tabbed-block">
+<p>有两个不同的数据依赖：</p>
+<ul>
+<li>当前迭代下的 <code>S1</code>（<code>A[i]</code>）会用到先前迭代下的 <code>S1</code> 计算得到的值（<code>A[i+1]</code><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>；<code>S2</code> 也存在这一依赖（<code>B[i]</code> 和 <code>B[i+1]</code><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。该依赖是循环携带的，迫使循环中连续的迭代按顺序执行。</li>
+<li><code>S2</code> 使用相同迭代下 <code>S1</code> 计算得到的值 <code>A[i+1]</code>。该依赖并非循环携带的，所以如果仅存在这一依赖的话，循环中的多个迭代还是可以并行执行的（比如使用前面提到过的循环展开等方法<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="tabbed-block">
+<div class="tabbed-set tabbed-alternate" data-tabs="9:2"><input checked="checked" id="__tabbed_9_1" name="__tabbed_9" type="radio"/><input id="__tabbed_9_2" name="__tabbed_9" type="radio"/><div class="tabbed-labels"><label for="__tabbed_9_1">题目</label><label for="__tabbed_9_2">解答</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>考虑以下循环：</p>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-7-1"><a href="#__codelineno-7-1" id="__codelineno-7-1" name="__codelineno-7-1"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-7-2"><a href="#__codelineno-7-2" id="__codelineno-7-2" name="__codelineno-7-2"></a><span class="w">    </span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="p">];</span><span class="w">    </span><span class="c1">// S1</span>
+</span><span id="__span-7-3"><a href="#__codelineno-7-3" id="__codelineno-7-3" name="__codelineno-7-3"></a><span class="w">    </span><span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">C</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">D</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">];</span><span class="w">  </span><span class="c1">// S2</span>
+</span><span id="__span-7-4"><a href="#__codelineno-7-4" id="__codelineno-7-4" name="__codelineno-7-4"></a><span class="p">}</span>
+</span></code></pre></div>
+<p><code>S1</code><span>,<span class="heti-spacing"> </span></span><code>S2</code>之间的依赖是什么？循环是否能并行，如果不能的话，那么怎么才能让它并行呢？</p>
+</div>
+<div class="tabbed-block">
+<p>因为 <code>S1</code> 用到上一次迭代中 <code>S2</code> 的计算结果，所以两条语句间有循环携带依赖。尽管如此，循环还是能够并行执行的，因为这里的依赖不是循环的，即没有语句是依赖于自身的，并且 <code>S1</code> 依赖 <code>S2</code>，但 <code>S2</code> 没有依赖 <code>S1</code>。但要想并行的话，还必须在转换代码时遵循部分排序并暴露并行性。转换后的代码如下所示：</p>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-8-1"><a href="#__codelineno-8-1" id="__codelineno-8-1" name="__codelineno-8-1"></a><span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">B</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+</span><span id="__span-8-2"><a href="#__codelineno-8-2" id="__codelineno-8-2" name="__codelineno-8-2"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">99</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-8-3"><a href="#__codelineno-8-3" id="__codelineno-8-3" name="__codelineno-8-3"></a><span class="w">    </span><span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">C</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">D</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</span><span id="__span-8-4"><a href="#__codelineno-8-4" id="__codelineno-8-4" name="__codelineno-8-4"></a><span class="w">    </span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">];</span>
+</span><span id="__span-8-5"><a href="#__codelineno-8-5" id="__codelineno-8-5" name="__codelineno-8-5"></a><span class="p">}</span>
+</span><span id="__span-8-6"><a href="#__codelineno-8-6" id="__codelineno-8-6" name="__codelineno-8-6"></a><span class="n">B</span><span class="p">[</span><span class="mi">100</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">C</span><span class="p">[</span><span class="mi">99</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">D</span><span class="p">[</span><span class="mi">99</span><span class="p">];</span>
+</span></code></pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</details>
+<ul>
+<li>我们的分析需要从找到所有循环携带的依赖关系开始。这种依赖信息是<strong>不精确的</strong>(inexact)，从某种意义上说，它告诉我们这种依赖<strong>可能</strong>存在。</li>
+<li>通常，数据依赖分析仅能判断一个引用可能依赖于另一个；要确定两个引用必须指向完全相同地址，则需更复杂的分析。</li>
+<li>循环携带依赖经常构成了<strong>递推关系</strong>(recurrence)</li>
+</ul>
 <h3 id="finding-dependences">Finding Dependences<a class="headerlink" href="#finding-dependences" title="Permanent link">⚓︎</a></h3>
 <h3 id="eliminating-dependent-computations">Eliminating Dependent Computations<a class="headerlink" href="#eliminating-dependent-computations" title="Permanent link">⚓︎</a></h3>
 <h2 id="cross-cutting-issues">Cross-Cutting Issues<a class="headerlink" href="#cross-cutting-issues" title="Permanent link">⚓︎</a></h2>
@@ -1139,6 +1792,10 @@
       <a href="https://github.com/NoughtQ" rel="noopener" target="_blank">
         NoughtQ
       </a>
+<!-- <br> -->
+<div style="text-align: center;">
+<a href="https://icp.gov.moe/?keyword=20252357" target="_blank">萌ICP备20252357号</a>
+</div>
 </div>
 <div class="md-social">
 <a class="md-social__link" href="https://github.com/noughtq" rel="noopener" target="_blank" title="github.com">
