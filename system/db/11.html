@@ -11,9 +11,9 @@
 <link href="../../feed_rss_created.xml" rel="alternate" title="RSS 订阅" type="application/rss+xml"/>
 <link href="../../feed_rss_updated.xml" rel="alternate" title="已更新内容的 RSS 订阅" type="application/rss+xml"/>
 <link href="../../assets/favicon.png" rel="icon"/>
-<meta content="mkdocs-1.6.1, mkdocs-material-9.6.9" name="generator"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.6.12" name="generator"/>
 <title>Lec 11: Query Processing - NoughtQ的笔记本</title>
-<link href="../../assets/stylesheets/main.4af4bdda.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/main.2afb09e1.min.css" rel="stylesheet"/>
 <link href="../../assets/stylesheets/palette.06af60db.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=JetBrains+Mono,+LXGW+WenKai+Screen+GB+Screen:300,300i,400,400i,700,700i%7CJetBrains+Mono,+Consolas:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
@@ -131,6 +131,7 @@
 <a class="md-tabs__link" href="../../index.html">
           
   
+  
     
   
   🏫主页
@@ -140,6 +141,7 @@
 <li class="md-tabs__item">
 <a class="md-tabs__link" href="../../lang/index.html">
           
+  
   
     
   
@@ -151,6 +153,7 @@
 <a class="md-tabs__link" href="../../math/index.html">
           
   
+  
     
   
   📊数学相关
@@ -160,6 +163,7 @@
 <li class="md-tabs__item">
 <a class="md-tabs__link" href="../../algorithms/index.html">
           
+  
   
     
   
@@ -171,6 +175,7 @@
 <a class="md-tabs__link" href="../../software/index.html">
           
   
+  
     
   
   💾软件相关
@@ -180,6 +185,7 @@
 <li class="md-tabs__item md-tabs__item--active">
 <a class="md-tabs__link" href="../index.html">
           
+  
   
     
   
@@ -191,6 +197,7 @@
 <a class="md-tabs__link" href="../../web/index.html">
           
   
+  
     
   
   🌏Web相关
@@ -200,6 +207,7 @@
 <li class="md-tabs__item">
 <a class="md-tabs__link" href="../../sec/ctf-101/index.html">
           
+  
   
     
   
@@ -211,6 +219,7 @@
 <a class="md-tabs__link" href="../../ai/index.html">
           
   
+  
     
   
   🤖人工智能
@@ -220,6 +229,7 @@
 <li class="md-tabs__item">
 <a class="md-tabs__link" href="../../misc/index.html">
           
+  
   
     
   
@@ -231,6 +241,7 @@
 <a class="md-tabs__link" href="../../tools/index.html">
           
   
+  
     
   
   🛠️工具
@@ -240,6 +251,7 @@
 <li class="md-tabs__item">
 <a class="md-tabs__link" href="../../papers/index.html">
           
+  
   
     
   
@@ -1157,7 +1169,7 @@
 </a>
 <h1 id="lec-11-query-processing">Lec 11: Query Processing<a class="headerlink" href="#lec-11-query-processing" title="Permanent link">⚓︎</a></h1>
 <div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
-<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>11218<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>56<span class="heti-spacing"> </span></span>分钟</p>
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>11734<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>59<span class="heti-spacing"> </span></span>分钟</p>
 </div>
 <!-- head 元素一定要放在一级标题下面，不然标题就显示不出来了 -->
 <p></p>
@@ -1273,8 +1285,8 @@
 <h2 id="sorting">Sorting<a class="headerlink" href="#sorting" title="Permanent link">⚓︎</a></h2>
 <p>在数据库系统中，排序扮演着重要的角色，原因有：</p>
 <ul>
-<li><span>SQL<span class="heti-spacing"> </span></span>查询可以指定是否要对输出结果排序</li>
-<li>对于查询处理而言，如果输入关系是排好序的话，那么一些关系运算（包括连接运算等）就能被高效实现</li>
+<li><span>SQL<span class="heti-spacing"> </span></span>查询可以指定是否要对输出结果排序（<code>ORDER BY</code>）</li>
+<li>对于查询处理而言，如果输入关系是排好序的话，那么一些关系运算（<code>GROUP BY</code>、<code>JOIN</code>、<code>DISTINCT</code> 等）就能被高效实现</li>
 </ul>
 <p>我们可以通过构建一个基于搜索键的索引，然后根据索引读取关系实现对关系的排序。但这么做只是对关系进行<strong>逻辑</strong>层面的排序，而我们希望的是对关系进行<strong>物理</strong>层面上的排序。如果主存能够容得下所有数据的话，那我们可以直接用在算法课上学到的<a href="../../algorithms/fds/7.html">排序算法</a>（比如快排）实现排序；但如果容不下的话，则需要更高级的方法，下面我们就主要针对这种情况进行讨论。</p>
 <h3 id="external-sort-merge-algorithm">External Sort-Merge Algorithm<a class="headerlink" href="#external-sort-merge-algorithm" title="Permanent link">⚓︎</a></h3>
@@ -1299,6 +1311,14 @@
 \end{algorithmic}
 \end{algorithm}
 </pre>
+<ul>
+<li>
+<p>对于排好序的顺串，我们有<strong>早物化</strong>(early materialization)（将整个元组存储在页内）和<strong>晚物化</strong>(late materialization)（仅将记录<span class="heti-skip"><span class="heti-spacing"> </span>ID<span class="heti-spacing"> </span></span>存储在页内）两种策略</p>
+<p></p><div style="text-align: center">
+<img src="images/lec11/9.png" width="50%/"/>
+</div>
+</li>
+</ul>
 </li>
 <li>
 <p>第二阶段：<strong>合并</strong>这些顺串。我们目前先假设总顺串数<span><span class="heti-spacing"> </span><span class="arithmatex">\(N &lt; M\)</span></span>，这样我们能够为每个顺串分配一个块，并且有剩余空间用于保存输出数据块。其中涉及到的算法如下：</p>
@@ -1330,6 +1350,12 @@
 <div style="text-align: center">
 <img src="images/lec11/4.png" width="50%/"/>
 </div>
+<details class="example">
+<summary>例子：计算趟数</summary>
+<p></p><div style="text-align: center">
+<img src="images/lec11/10.png" width="70%/"/>
+</div>
+</details>
 <h3 id="cost-analysis">Cost Analysis<a class="headerlink" href="#cost-analysis" title="Permanent link">⚓︎</a></h3>
 <ul>
 <li>
@@ -1356,6 +1382,41 @@
 </ul>
 </li>
 </ul>
+<details class="info">
+<summary>补充：比较运算的优化</summary>
+<ul>
+<li><strong>编码具化</strong>(code specialization)：不提供作为指向排序算法指针的比较函数，而是创建一个针对特定键类型的硬编码排序版本</li>
+<li><strong>后缀截断</strong>(suffix truncation)：首先比较长 <code>VARCHAR</code> 键的二进制前缀，而非较慢的字符串比较；若前缀相同，则回退至较慢的比较方式</li>
+</ul>
+</details>
+<details class="info">
+<summary>使用<span class="heti-skip"><span class="heti-spacing"> </span>B+<span class="heti-spacing"> </span></span>树排序</summary>
+<p>在某些情况下，<span>DBMS<span class="heti-spacing"> </span></span>利用现有的<span class="heti-skip"><span class="heti-spacing"> </span>B+<span class="heti-spacing"> </span></span>树索引辅助排序可能比采用外部归并排序算法更为高效。部分<span class="heti-skip"><span class="heti-spacing"> </span>DBMS<span class="heti-spacing"> </span></span>支持通过前缀键扫描实现排序功能。具体可分为以下情况：</p>
+<ul>
+<li>
+<p><strong>聚集<span class="heti-skip"><span class="heti-spacing"> </span>B+<span class="heti-spacing"> </span></span>树</strong>：当索引为聚集索引时，<span>DBMS<span class="heti-spacing"> </span></span>只需遍历<span class="heti-skip"><span class="heti-spacing"> </span>B+<span class="heti-spacing"> </span></span>树即可完成排序。由于数据实际存储的顺序与索引顺序一致，<span>I/O<span class="heti-spacing"> </span></span>访问将会是顺序的。这种方式无需额外计算开销，其性能始终优于外部归并排序。</p>
+<p></p><div style="text-align: center">
+<img src="images/lec11/12.png" width="40%/"/>
+</div>
+</li>
+<li>
+<p><strong>非聚集<span class="heti-skip"><span class="heti-spacing"> </span>B+<span class="heti-spacing"> </span></span>树</strong>：若使用非聚集索引进行遍历，则通常效率更低，因为每条记录可能分散在不同数据页中，几乎每次记录访问都会触发硬盘读取操作。</p>
+<ul>
+<li>唯一的例外是<span class="heti-skip"><span class="heti-spacing"> </span>Top-N<span class="heti-spacing"> </span></span>查询（当<span class="heti-skip"><span class="heti-spacing"> </span>N<span class="heti-spacing"> </span></span>值相对于表总元组数足够小时<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，此时该方法可能有一定优势。</li>
+</ul>
+<p></p><div style="text-align: center">
+<img src="images/lec11/13.png" width="40%/"/>
+</div>
+</li>
+</ul>
+</details>
+<details class="info">
+<summary>补充：<span>Top-N<span class="heti-spacing"> </span></span>堆排序</summary>
+<p>如果查询中包含带有 <code>LIMIT</code> 的 <code>ORDER BY</code> 子句，那么为了找出前<span class="heti-skip"><span class="heti-spacing"> </span>N<span class="heti-spacing"> </span></span>个元素，<span>DBMS<span class="heti-spacing"> </span></span>只需扫描一次数据，同时维护一个包含当前所见前<span class="heti-skip"><span class="heti-spacing"> </span>N<span class="heti-spacing"> </span></span>个元素的堆（优先队列<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。堆排序的理想情况是当这前<span class="heti-skip"><span class="heti-spacing"> </span>N<span class="heti-spacing"> </span></span>个元素能被内存容纳时，<span>DBMS<span class="heti-spacing"> </span></span>就能直接在内存中对其操作了。</p>
+<p></p><div style="text-align: center">
+<img src="images/lec11/8.gif" width="40%/"/>
+</div>
+</details>
 <h2 id="join-operations">Join Operations<a class="headerlink" href="#join-operations" title="Permanent link">⚓︎</a></h2>
 <p>下面我们来认识一些用于计算关系连接的算法，并分析这些算法的成本。</p>
 <div class="admonition info">
@@ -1624,13 +1685,18 @@
 </ul>
 <h3 id="aggregation">Aggregation<a class="headerlink" href="#aggregation" title="Permanent link">⚓︎</a></h3>
 <ul>
-<li>聚合运算的实现和去重类似，同样可以使用排序或哈希，但是要基于用于分组的属性</li>
+<li>聚合运算的实现和去重类似，同样可以使用排序或哈希（相比排序更适用于无需考虑顺序的情况<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，但是要基于用于分组的属性</li>
 <li>实现聚合运算的成本和对聚合函数进行去重操作的成本一致</li>
-<li>在聚合运算分组的同时，就要为分好的每个组进行处理<ul>
+<li>
+<p>在聚合运算分组的同时，就要为分好的每个组进行处理</p>
+<ul>
 <li>对于 <code>SUM</code>、<code>MIN</code> 和 <code>MAX</code>，当同一组内发现两个元组时，当在同一分组中发现两个元组时，系统会将它们替换为一个单独的元组，该元组分别包含被聚合列的 <code>SUM</code>、<code>MIN</code> 和 <code>MAX</code></li>
 <li>对于 <code>COUNT</code> 运算，它会为每个已找到元组的组维护一个运行时的计数值</li>
 <li>对于 <code>AVG</code> 运算，则通过即时计算总和与计数值来实现，最终将总和除以计数以得出平均值</li>
 </ul>
+<p></p><div style="text-align: center">
+<img src="images/lec11/14.png" width="90%/"/>
+</div>
 </li>
 </ul>
 <p>如果内存能容纳整个结果的话，那么基于排序或哈希的实现就无需将任何元组写入硬盘。当读取这些元组时，它们可以被插入到已排序的树结构或散列索引中。当我们使用即时聚合技术时，每个分组只需存储一个元组。因此，排序树结构或哈希索引能够完全保存在内存中，此时聚合操作仅需<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(b_r\)</span><span class="heti-spacing"> </span></span>次块传输以及<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>次寻道，而非原本所需的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(3b_r\)</span><span class="heti-spacing"> </span></span>次传输，以及最坏情况下可能高达<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(2b_r\)</span><span class="heti-spacing"> </span></span>次的寻道。</p>
@@ -1649,6 +1715,9 @@
 <p>假如要应用物化方法的话，我们从这棵树最底层的运算出发进行求值，具体可用前面介绍过的算法来执行运算，然后将结果存储在临时关系里。接着就拿这个临时关系，或者（可能需要）原来存储在数据库里的关系，继续执行上一层的运算。重复这一步骤，直到完成对根节点的运算为止，此时得到整个表达式的最终结果。上述的求值过程称为<strong>物化求值</strong>(materialized evaluation)。</p>
 <p>物化求值的成本不仅包括所有运算的成本总和，还得考虑将中间结果写入硬盘所需的成本。我们假设中间结果的记录被存放在一个缓冲区内，那么当缓冲区满了的时候，就要将其写到硬盘里。写入硬盘的块数<span><span class="heti-spacing"> </span><span class="arithmatex">\(b_r \approx \dfrac{n_r}{f_r}\)</span></span>，其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n_r, f_r\)</span><span class="heti-spacing"> </span></span>分别为结果关系<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(r\)</span><span class="heti-spacing"> </span></span>中的元组数和<strong>块因数</strong>(blocking factor)（即一个块内可以存放的元组数<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。而磁盘寻道次数为<span><span class="heti-spacing"> </span><span class="arithmatex">\(\lceil \dfrac{b_r}{b_b} \rceil\)</span></span>，其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(b_b\)</span><span class="heti-spacing"> </span></span>为输出缓冲区的大小。</p>
 <p>如果能用<strong>双缓冲区</strong>(double buffering)（使用两个缓存区，一个继续执行算法的同时，另一个将数据写入到硬盘中，从而做到<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>活动和<span class="heti-skip"><span class="heti-spacing"> </span>I/O<span class="heti-spacing"> </span></span>活动的并行）的话，能够使算法更加高效地执行。而寻道次数则可通过为输出缓存区分配额外的块来降低。</p>
+<div style="text-align: center">
+<img src="images/lec11/11.png" width="80%/"/>
+</div>
 <h3 id="pipelining">Pipelining<a class="headerlink" href="#pipelining" title="Permanent link">⚓︎</a></h3>
 <p>使用流水线的求值过程称为<strong>流水线求值</strong>(pipelined evaluation)。为运算创建流水线带来的好处有：</p>
 <ul>
@@ -1848,7 +1917,7 @@
 <div class="md-dialog" data-md-component="dialog">
 <div class="md-dialog__inner md-typeset"></div>
 </div>
-<script id="__config" type="application/json">{"base": "../..", "features": ["content.action.edit", "content.action.view", "content.code.copy", "content.code.annotate", "content.footnote.tooltips", "header.autohide", "navigation.tabs", "navigation.top", "navigation.footer", "navigation.indexes", "navigation.tracking", "navigation.prune", "search.share"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
+<script id="__config" type="application/json">{"base": "../..", "features": ["content.action.edit", "content.action.view", "content.code.copy", "content.code.annotate", "content.footnote.tooltips", "header.autohide", "navigation.tabs", "navigation.top", "navigation.footer", "navigation.indexes", "navigation.tracking", "navigation.prune", "search.share"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
 <script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
 <script src="../../js/anchor.js"></script>
 <script src="../../js/katex.js"></script>
