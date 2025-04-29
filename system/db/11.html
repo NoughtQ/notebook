@@ -1169,7 +1169,7 @@
 </a>
 <h1 id="lec-11-query-processing">Lec 11: Query Processing<a class="headerlink" href="#lec-11-query-processing" title="Permanent link">⚓︎</a></h1>
 <div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
-<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>11734<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>59<span class="heti-spacing"> </span></span>分钟</p>
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>11907<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>60<span class="heti-spacing"> </span></span>分钟</p>
 </div>
 <!-- head 元素一定要放在一级标题下面，不然标题就显示不出来了 -->
 <p></p>
@@ -1451,6 +1451,12 @@
 <li>在最好情况下，内存能够同时存放两个关系，因此仅需<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(b_r + b_s\)</span><span class="heti-spacing"> </span></span>次块传输和<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>次寻道</li>
 <li>如果内存仅能保存一个完整的关系，那么最好让内层关系<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(s\)</span><span class="heti-spacing"> </span></span>放在内存中，因为这样内层关系只需读一次就行了。此时的成本和最好情况下的一致</li>
 </ul>
+<details class="example">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<img src="images/lec11/15.png" width="80%/"/>
+</div>
+</details>
 <h3 id="block-nested-loop-join">Block Nested-Loop Join<a class="headerlink" href="#block-nested-loop-join" title="Permanent link">⚓︎</a></h3>
 <p>如果缓冲区太小，无法容得下任何一个完整的关系，那我们可以通过按块读取关系，而不是按元组读取关系来节省块的访问次数。这里我们用到的是<strong>块嵌套循环连接</strong><span>(block nested-loop join)<span class="heti-spacing"> </span></span>算法，如下所示：</p>
 <pre class="pseudocode" linenumber="true">
@@ -1471,23 +1477,50 @@
 \end{algorithm}
 </pre>
 <ul>
-<li>在最坏情况下，对于外层关系的每个块，只能读取一个内层关系的块，因此需要<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(b_r \cdot b_s + b_r\)</span><span class="heti-spacing"> </span></span>次块传输，以及<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(2 \cdot b_r\)</span><span class="heti-spacing"> </span></span>次寻道。不难发现，将更小的关系作为外层关系会使运算更为高效</li>
+<li>在最坏情况下，对于外层关系的每个块，只能读取一个内层关系的块，因此需要<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(b_r \cdot b_s + b_r\)</span><span class="heti-spacing"> </span></span>次块传输，以及<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(2 \cdot b_r\)</span><span class="heti-spacing"> </span></span>次寻道。不难发现，<strong>将更小的关系作为外层关系</strong>会使运算更为高效</li>
 <li>在最好情况下，当内层关系可被内存容纳时，此时仅需<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(b_r + b_s\)</span><span class="heti-spacing"> </span></span>次块传输和<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>次寻道</li>
 </ul>
+<details class="example">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<img src="images/lec11/16.png" width="80%/"/>
+</div>
+</details>
 <hr/>
 <p>嵌套循环和块嵌套循环的性能还能通过以下方法进一步提升：</p>
 <ul>
 <li>如果自然连接或相等连接中的连接属性构成了内层关系的键，那么对于每个外层关系的元组，当发现第一个匹配的元组时，内层循环能够马上就终止</li>
-<li>在块嵌套循环中，我们用内存能够容纳（且为内层关系和输出预留足够空间）的最大的数据块。换句话说，假设有<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(M\)</span><span class="heti-spacing"> </span></span>个内存块，那么我们每次从外层关系读取<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(M - 2\)</span><span class="heti-spacing"> </span></span>个数据块。这样能够降低扫描内部关系的次数（从<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(b_r\)</span><span class="heti-spacing"> </span></span>降到<span><span class="heti-spacing"> </span><span class="arithmatex">\(\lceil \dfrac{b_r}{M-2} \rceil\)</span></span>，并且此时的成本为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\lceil \dfrac{b_r}{M-2} \rceil \cdot b_s + b_r\)</span><span class="heti-spacing"> </span></span>次块传输和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(2 \lceil \dfrac{b_r}{M-2} \rceil\)</span><span class="heti-spacing"> </span></span>寻道</li>
+<li>在块嵌套循环中，我们用内存能够容纳（且为内层关系和输出预留足够空间）的最大的数据块。换句话说，假设有<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(M\)</span><span class="heti-spacing"> </span></span>个内存块，那么我们每次从外层关系读取<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(M - 2\)</span><span class="heti-spacing"> </span></span>个数据块（对于剩下<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>个内存块，一个用于输入，一个用于输出<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。这样能够降低扫描内部关系的次数（从<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(b_r\)</span><span class="heti-spacing"> </span></span>降到<span><span class="heti-spacing"> </span><span class="arithmatex">\(\lceil \dfrac{b_r}{M-2} \rceil\)</span></span>，并且此时的成本为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\lceil \dfrac{b_r}{M-2} \rceil \cdot b_s + b_r\)</span><span class="heti-spacing"> </span></span>次块传输和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(2 \lceil \dfrac{b_r}{M-2} \rceil\)</span><span class="heti-spacing"> </span></span>寻道</li>
 <li>我们可以交替地前后扫描循环，这样可以对硬盘块进行排序，使得留在缓冲区的数据能够被再次使用，从而降低硬盘访问次数</li>
 <li>如果内层循环连接属性上的索引可用的话，那么可以用更高效的索引查找来替代文件扫描，下面就来介绍这种方法</li>
 </ul>
 <h3 id="indexed-nested-loop-join">Indexed Nested-Loop Join<a class="headerlink" href="#indexed-nested-loop-join" title="Permanent link">⚓︎</a></h3>
-<p>上述用索引查找替代文件扫描的连接方法被称为<strong>索引嵌套循环连接</strong>(indexed nested-loop join)。该方法的成本为：</p>
+<p>上述用索引查找替代文件扫描的连接方法被称为<strong>索引嵌套循环连接</strong>(indexed nested-loop join)。大致算法如下：</p>
+<pre class="pseudocode" linenumber="true">
+\begin{algorithm}
+\caption{Indexed nested-loop join}
+\begin{algorithmic}
+\FORALL{tuple $r$ in $R$}
+    \FORALL{tuple $s$ in Index($r_i = s_j$)}
+        \IF{$r$ and $s$ match}
+            \STATE add $r \cdot s$ to the result
+        \ENDIF
+    \ENDFOR
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+</pre>
+<p>该方法的成本为：</p>
 <ul>
 <li>对于外层关系<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(r\)</span><span class="heti-spacing"> </span></span>的每一个元组，都要对<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(s\)</span><span class="heti-spacing"> </span></span>的索引进行一次查找，并检索到相关的元组</li>
 <li>在最坏情况下，缓冲区的空间仅能容纳<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(r\)</span><span class="heti-spacing"> </span></span>的一个块以及索引的一个块，那么读取<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(r\)</span><span class="heti-spacing"> </span></span>需要<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(b_r\)</span><span class="heti-spacing"> </span></span>次<span class="heti-skip"><span class="heti-spacing"> </span>I/O<span class="heti-spacing"> </span></span>操作（包括一次寻道和一次块传输<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。所以此时连接的成本为<span><span class="heti-spacing"> </span><span class="arithmatex">\(b_r(t_T + t_S) + n_r \cdot c\)</span></span>，其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(c\)</span><span class="heti-spacing"> </span></span>时使用连接条件对<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(s\)</span><span class="heti-spacing"> </span></span>的单个选择所需的成本</li>
 </ul>
+<details class="example">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<img src="images/lec11/17.png" width="80%/"/>
+</div>
+</details>
 <h3 id="merge-join">Merge Join<a class="headerlink" href="#merge-join" title="Permanent link">⚓︎</a></h3>
 <h4 id="algorithm">Algorithm<a class="headerlink" href="#algorithm" title="Permanent link">⚓︎</a></h4>
 <p><strong>合并连接</strong><span>(merge-join)<span class="heti-spacing"> </span></span>的算法如下：</p>
@@ -1528,16 +1561,25 @@
 \end{algorithm}
 </pre>
 <p>其中，<span><span class="arithmatex">\(JoinAttrs\)</span><span class="heti-spacing"> </span></span>指代<span><span class="heti-spacing"> </span><span class="arithmatex">\(R \cap S\)</span></span>。</p>
-<p>下图展示的是进行合并排序的两个排好序的关系，它们的连接属性为<span><span class="heti-spacing"> </span><span class="arithmatex">\(a1\)</span></span>：</p>
-<div style="text-align: center">
-<img src="images/lec11/5.png" width="40%/"/>
+<details class="example">
+<summary>例子（动画演示）</summary>
+<p></p><div style="text-align: center">
+<img src="images/lec11/18.gif" width="90%/"/>
 </div>
+</details>
 <p>该算法要求<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(S_s\)</span><span class="heti-spacing"> </span></span>中的元组能够被主存容纳。如果<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(S_s\)</span><span class="heti-spacing"> </span></span>的大小超过可用内存的大小的话，那么可以采用块嵌套循环连接，匹配连接属性值相同的，分别来自<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(r, s\)</span><span class="heti-spacing"> </span></span>的两个块。</p>
-<p>如果输入关系<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(r, s\)</span> hi<span class="heti-spacing"> </span></span>没有基于连接属性进行排序的话，那么就需要先对它们进行排序（可采用<a href="#sorting">上一节</a>介绍的算法实现<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
+<p>如果输入关系<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(r, s\)</span><span class="heti-spacing"> </span></span>没有基于连接属性进行排序的话，那么就需要先对它们进行排序（可采用<a href="#sorting">上一节</a>介绍的算法实现<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
 <h4 id="cost-analysis_1">Cost Analysis<a class="headerlink" href="#cost-analysis_1" title="Permanent link">⚓︎</a></h4>
 <p>一旦关系是排好序的（这里指的是物理层面上的<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，那么相同连接属性值的元组的顺序是连续的，因此每个元组只需读取一次，从而每个块也只需读取一次。那么块传输数量为<span><span class="heti-spacing"> </span><span class="arithmatex">\(b_r + b_s\)</span></span>。</p>
 <p>假设为每个关系分配了<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(b_b\)</span><span class="heti-spacing"> </span></span>个缓存块，那么磁盘寻道次数为<span><span class="heti-spacing"> </span><span class="arithmatex">\(\lceil \dfrac{b_r}{b_b} \rceil + \lceil \dfrac{b_s}{b_b} \rceil\)</span></span>。由于相比块传输，寻道成本更高，因此我们应尽可能为每个关系分配多个缓存块。</p>
 <p>如果输入关系<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(r, s\)</span><span class="heti-spacing"> </span></span>还没有排好序，那我们还得考虑排序的成本。并且如果内存无法完全容纳<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(S_s\)</span><span class="heti-spacing"> </span></span>的话，还会带来额外的一点点成本。</p>
+<details class="question">
+<summary>合并连接何时有用？</summary>
+<ul>
+<li>其中一个表格已经按照连接属性排好序了</li>
+<li>要求输出必须按照连接属性排序</li>
+</ul>
+</details>
 <h4 id="hybrid-merge-join">Hybrid Merge Join<a class="headerlink" href="#hybrid-merge-join" title="Permanent link">⚓︎</a></h4>
 <p>如果连接属性上有二级索引的话，那我们可对未排好序的元组执行一种合并连接的变体。该算法通过索引对记录进行扫描，这样的检索顺序就是排好序的。但该方法有一个显著的缺陷：由于记录可能分散在各个文件块内，因此每次元组访问都会带来一次硬盘块访问，成本相当高。</p>
 <p>为避免这种成本，我们采用一种<strong>混合合并连接</strong><span>(hybrid merge-join)<span class="heti-spacing"> </span></span>的技术，将索引和合并连接结合起来。基于上述假设（并假设二级索引用到<span class="heti-skip"><span class="heti-spacing"> </span>B+<span class="heti-spacing"> </span></span>树<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，我们根据二级<span class="heti-skip"><span class="heti-spacing"> </span>B+<span class="heti-spacing"> </span></span>树索引的叶子项来合并排好序的关系，得到的结果文件包含了来自排好序的关系的元组，以及该元组在未排好序的关系中的地址。然后该结果文件会根据这些地址进行排序，这样就能以物理存储顺序高效检索对应的元组，从而完成连接操作。</p>
@@ -1550,14 +1592,14 @@
 </ul>
 <p>下图展示了在关系上的哈希划分：</p>
 <div style="text-align: center">
-<img src="images/lec11/6.png" width="40%/"/>
+<img src="images/lec11/19.png" width="80%/"/>
 </div>
 <h4 id="basics">Basics<a class="headerlink" href="#basics" title="Permanent link">⚓︎</a></h4>
 <p>哈希连接的基本思想是：假设来自<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(r\)</span><span class="heti-spacing"> </span></span>的元组和来自<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(s\)</span><span class="heti-spacing"> </span></span>的元组满足连接条件，也就是说它们有相同的连接属性值。如果这个值通过哈希函数映射到值<span><span class="heti-spacing"> </span><span class="arithmatex">\(i\)</span></span>，那么来自<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(r\)</span><span class="heti-spacing"> </span></span>的元组被归入到划分<span><span class="heti-spacing"> </span><span class="arithmatex">\(r_i\)</span></span>，来自<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(s\)</span><span class="heti-spacing"> </span></span>的元组被归入到划分<span><span class="heti-spacing"> </span><span class="arithmatex">\(s_i\)</span></span>。所以<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(r_i\)</span><span class="heti-spacing"> </span></span>中的元组仅需和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(s_i\)</span><span class="heti-spacing"> </span></span>中的元组进行比较，无需考虑其他划分下的元组。</p>
 <p>哈希连接的算法如下所示：</p>
 <pre class="pseudocode" linenumber="true">
 \begin{algorithm}
-\caption{Merge join}
+\caption{Hash join}
 \begin{algorithmic}
     \STATE
     \COMMENT{Partition $s$}
@@ -1587,8 +1629,17 @@
 \end{algorithm}
 </pre>
 <ul>
-<li>划分好关系后，就要对每个划分对<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(i\ (i = 0, \dots, n_h)\)</span><span class="heti-spacing"> </span></span>执行单独的索引嵌套循环连接。具体来说，首先要为每个<span><span class="heti-spacing"> </span><span class="arithmatex">\(s_i\)</span></span> <strong>构建</strong><span>(build)<span class="heti-spacing"> </span></span>一个哈希索引；然后从<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(r_i\)</span><span class="heti-spacing"> </span></span>中<strong>探测</strong>(probe)（即查找）对应的元组。因此关系<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(s, r\)</span><span class="heti-spacing"> </span></span>分别叫做<strong>构建输入</strong>和<strong>探测输入</strong>。</li>
-<li><span><span class="arithmatex">\(s_i\)</span><span class="heti-spacing"> </span></span>的哈希索引的构建是在内存中进行的，所以无需到硬盘中访问元组。注意用于构建哈希索引的哈希函数必须和用于划分的哈希函数不同，但也仅作用在连接属性上。在索引嵌套循环连接中，系统使用哈希索引来检索与探测输入中的记录匹配的记录。</li>
+<li>
+<p>划分好关系后，就要对每个划分对<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(i\ (i = 0, \dots, n_h)\)</span><span class="heti-spacing"> </span></span>执行单独的索引嵌套循环连接。具体来说，</p>
+<ul>
+<li>首先要为每个<span><span class="heti-spacing"> </span><span class="arithmatex">\(s_i\)</span></span> <strong>构建</strong><span>(build)<span class="heti-spacing"> </span></span>一个哈希索引：</li>
+<li>然后从<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(r_i\)</span><span class="heti-spacing"> </span></span>中<strong>探测</strong>(probe)（即查找）对应的元组：</li>
+</ul>
+<p>因此关系<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(s, r\)</span><span class="heti-spacing"> </span></span>分别叫做<strong>构建输入</strong>和<strong>探测输入</strong>。</p>
+</li>
+<li>
+<p><span><span class="arithmatex">\(s_i\)</span><span class="heti-spacing"> </span></span>的哈希索引的构建是在内存中进行的，所以无需到硬盘中访问元组。注意用于构建哈希索引的哈希函数必须和用于划分的哈希函数不同，但也仅作用在连接属性上。在索引嵌套循环连接中，系统使用哈希索引来检索与探测输入中的记录匹配的记录。</p>
+</li>
 <li>构建和探测阶段都仅需一趟即可</li>
 <li><span><span class="arithmatex">\(n_h\)</span><span class="heti-spacing"> </span></span>的大小必须足够大，使得对于每个<span><span class="heti-spacing"> </span><span class="arithmatex">\(i\)</span></span>，在构建关系的划分<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(s_i\)</span><span class="heti-spacing"> </span></span>的元组和该划分的哈希索引能够被内存容纳。但没必要让探测关系的划分被内存完全容纳。所以我们让更小的那个关系作为构建关系。</li>
 <li>如果构建关系包含<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(b_s\)</span><span class="heti-spacing"> </span></span>个块，每个划分的大小不超过<span><span class="heti-spacing"> </span><span class="arithmatex">\(M\)</span></span>，那么划分数量<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n_h\)</span><span class="heti-spacing"> </span></span>至少为<span><span class="heti-spacing"> </span><span class="arithmatex">\(\lceil \dfrac{b_s}{M} \rceil\)</span></span></li>
@@ -1596,6 +1647,10 @@
 <h4 id="recursive-partitioning">Recursive Partitioning<a class="headerlink" href="#recursive-partitioning" title="Permanent link">⚓︎</a></h4>
 <p>但如果<span class="heti-skip"><span class="heti-spacing"> </span>$n_h \ge $<span class="heti-spacing"> </span></span>块数的话，关系就无法在一趟内被划分完毕，因为没有足够多的缓存块。因而划分过程需要花多趟完成——在每一趟中，只要能为输出留够缓存的话，就划分出尽可能多的划分。从某趟中得到的每个桶会在下一趟中被单独读取和划分，以创建更小的划分。注意每一趟用到的哈希函数是不同的。系统将会重复进行划分操作，直到构建输入的每个划分都能被内存容纳得下为止。这样的划分过程称为<strong>递归划分</strong>(recursive partitioning)。</p>
 <p>当<span><span class="heti-spacing"> </span><span class="arithmatex">\(M &gt; n_h + 1\)</span></span>，即<span><span class="heti-spacing"> </span><span class="arithmatex">\(M &gt; \dfrac{b_s}{M} + 1\)</span></span>（可简化（近似）为<span><span class="heti-spacing"> </span><span class="arithmatex">\(M &gt; \sqrt{b_s}\)</span></span>）时，该关系就无需进行递归划分了。</p>
+<p>下图展示了递归划分的过程：</p>
+<div style="text-align: center">
+<img src="images/lec11/20.png" width="90%/"/>
+</div>
 <h4 id="handling-of-overflows">Handling of Overflows<a class="headerlink" href="#handling-of-overflows" title="Permanent link">⚓︎</a></h4>
 <p>在构建关系<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(s\)</span><span class="heti-spacing"> </span></span>的划分<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(i\)</span><span class="heti-spacing"> </span></span>中，如果<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(s_i\)</span><span class="heti-spacing"> </span></span>的哈希索引大小大于内存容量的话，那么就发生了<strong>哈希表溢出</strong><span>(hash-table overflow)<span class="heti-spacing"> </span></span>的问题。该问题的内在原因可能是构建关系的很多元组具有相同的连接属性值，或者哈希函数不具备很好的随机性和均匀性<span><span class="heti-spacing"> </span>(uniformity)</span>，这样就会导致一些划分包含超过均值的元组数，而另一些划分则低于均值——我们认为这样的划分是<strong>偏斜的</strong>(skew)。</p>
 <p>我们可通过增加划分数量，使得每个划分的大小小于内存容量来应对少量的偏斜问题。而那个增加的量称为<strong>任意数值</strong>(fudge factor)，通常在<span class="heti-skip"><span class="heti-spacing"> </span>20%<span class="heti-spacing"> </span></span>左右。</p>
@@ -1629,6 +1684,13 @@
 <li>对于包含合取条件的连接：<span class="arithmatex">\(r \bowtie_{\theta_1 \wedge \theta_2 \wedge \dots \wedge \theta_n} s\)</span>，我们可以先计算其中某个简单连接条件下的连接<span><span class="heti-spacing"> </span><span class="arithmatex">\(r \bowtie_{\theta_i} s\)</span></span>，然后看这个中间结果里的元组是否满足剩余的条件<span><span class="heti-spacing"> </span><span class="arithmatex">\(\theta_1 \wedge \dots \wedge \theta_{i-1} \wedge \theta_{i+1} \wedge \dots \wedge \theta_n\)</span></span></li>
 <li>对于包含析取条件的连接：<span class="arithmatex">\(r \bowtie_{\theta_1 \vee \theta_2 \vee \dots \vee \theta_n} s\)</span>，可通过计算单个连接<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(r \bowtie_{\theta_i} s\)</span><span class="heti-spacing"> </span></span>的记录的交集来完成计算：<span class="arithmatex">\((r \bowtie_{\theta_1} s) \cup (r \bowtie_{\theta_2} s) \cup \dots \cup (r \bowtie_{\theta_n} s)\)</span></li>
 </ul>
+<details class="abstract" open="open">
+<summary>总结：比较各种连接算法的成本</summary>
+<p></p><div style="text-align: center">
+<img src="images/lec11/21.png" width="80%/"/>
+</div>
+<p>其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(M, N\)</span><span class="heti-spacing"> </span></span>分别指代关系<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(R, S\)</span><span class="heti-spacing"> </span></span>的数据块个数，<span><span class="arithmatex">\(m, n\)</span><span class="heti-spacing"> </span></span>分别指代关系<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(R, S\)</span><span class="heti-spacing"> </span></span>的元组数，<span><span class="arithmatex">\(C\)</span><span class="heti-spacing"> </span></span>指代常数。这里的<span class="heti-skip"><span class="heti-spacing"> </span>I/O cost<span class="heti-spacing"> </span></span>对应的是数据传输次数</p>
+</details>
 <h2 id="other-operations">Other Operations<a class="headerlink" href="#other-operations" title="Permanent link">⚓︎</a></h2>
 <h3 id="duplicate-elimination">Duplicate Elimination<a class="headerlink" href="#duplicate-elimination" title="Permanent link">⚓︎</a></h3>
 <p>要想消除重复项，我们可以先对关系进行排序。排序之后，相同的元组就会出现在相邻的位置上，但只保留其中一份拷贝。在外部排序归并中，我们可以在创建顺串时，且在将顺串写入硬盘前发现并移除重复项，从而减少块传输次数。生下来的重复项能够在合并阶段被消除，这样最终排好序的顺串就不会包含重复项了。所以在最坏情况下消除重复项的成本和在最坏情况下对关系排序的成本一样。</p>
