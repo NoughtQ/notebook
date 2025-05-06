@@ -1169,7 +1169,7 @@
 </a>
 <h1 id="lec-11-query-processing">Lec 11: Query Processing<a class="headerlink" href="#lec-11-query-processing" title="Permanent link">⚓︎</a></h1>
 <div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
-<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>11907<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>60<span class="heti-spacing"> </span></span>分钟</p>
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>12871<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>分钟</p>
 </div>
 <!-- head 元素一定要放在一级标题下面，不然标题就显示不出来了 -->
 <p></p>
@@ -1238,6 +1238,35 @@
 <div style="text-align: center">
 <img src="images/lec11/3.png" width="70%/"/>
 </div>
+<details class="info">
+<summary>补充：各种顺序扫描优化技术</summary>
+<p>这些都是之前提到过的方法：</p>
+<ul>
+<li>压缩<span><span class="heti-spacing"> </span>(compression)</span>：能让我们在一次获取中检索更多的元组，比如<span><span class="heti-spacing"> </span>RLE</span></li>
+<li>预取<span><span class="heti-spacing"> </span>(prefetching)</span>：提前获取一些页，这样<span class="heti-skip"><span class="heti-spacing"> </span>DBMS<span class="heti-spacing"> </span></span>就无需在访问每个页时阻塞存储器<span class="heti-skip"><span class="heti-spacing"> </span>I/O<span class="heti-spacing"> </span></span>操作</li>
+<li>缓存池旁路<span><span class="heti-spacing"> </span>(buffer pool bypass)</span>：扫描操作符将它从硬盘获取的页直接存储在本地内存中，而不是缓冲池，以避免“顺序洪水”问题</li>
+<li>并行化<span><span class="heti-spacing"> </span>(parallelization)</span>：使用并行多线程<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>进程执行扫描操作</li>
+<li>晚物化<span><span class="heti-spacing"> </span>(late materialization)</span>：DSM（分解存储模型）<span>DBMS<span class="heti-spacing"> </span></span>能够延迟元组的拼接操作，直至查询计划的上层阶段。这种设计使得每个操作符仅需向下一操作符传递必要的最小信息量（例如记录<span><span class="heti-spacing"> </span>ID</span>、列中记录的偏移位置<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。该特性仅在列式存储系统中具有实际应用价值。</li>
+<li>堆聚集<span><span class="heti-spacing"> </span>(heap clustering)</span>：元组按照聚集索引指定的顺序存储在堆页面中</li>
+<li>结果缓存<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>物化视图<span><span class="heti-spacing"> </span>(result caching/materialzation view)</span>：存储频繁出现的子查询<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>查询的结果</li>
+<li>编码具化<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>编译<span><span class="heti-spacing"> </span>(code specification/compliation)</span>：提前预编译函数，以便在实际需要时更快地获取结果</li>
+</ul>
+<hr/>
+<p>再介绍两个新方法：</p>
+<ul>
+<li><strong>近似查询</strong>(approximate queries)（有损数据跳过<span><span class="heti-spacing"> </span>(lossy data skipping)</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：对整个表中的抽样子集执行查询以生成近似结果，通常用于在允许一定误差的情况下计算聚合数据，从而获得接近准确的答案。</li>
+<li>
+<ul>
+<li>各页的区域映射存储于独立的页中，且每个区域映射页通常包含多个条目，因此这种方法能够减少顺序扫描过程中需要检查的页面总数</li>
+<li>在云数据库系统中，由于网络数据传输成本较高，区域映射显得尤为重要</li>
+</ul>
+<p><strong>区域映射</strong>(zone map)（无损数据跳过<span><span class="heti-spacing"> </span>(lossless data skipping)</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：预计算页中每个元组属性的聚合值，这样<span class="heti-skip"><span class="heti-spacing"> </span>DBMS<span class="heti-spacing"> </span></span>可以通过首先检查其区域映射来决定是否需要访问某个页。</p>
+<p></p><div style="text-align: center">
+<img src="images/lec11/30.png" width="70%/"/>
+</div>
+</li>
+</ul>
+</details>
 <p>使用索引的搜索算法被称为<strong>索引扫描</strong>(index scan)，这一类算法包括：</p>
 <ul>
 <li>A2（聚集索引，键上的相等条件<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：使用索引检索满足对应相等条件的单个记录</li>
@@ -1769,19 +1798,48 @@
 <li><strong>流水线</strong>(pipelining)：同时对多个运算求值，某个运算的结果将马上传递给下一个运算，无需将结果存在临时关系里</li>
 </ul>
 <p>下面来详细介绍这两种方法。</p>
+<details class="info">
+<summary>补充：处理模型<span><span class="heti-spacing"> </span>(processing model)</span></summary>
+<p>DBMS <strong>处理模型</strong>定义了系统如何执行查询计划。它指定了查询计划评估的方向以及操作员之间传递的数据类型。不同的处理模型有不同的权衡，适用于不同的工作负载<span><span class="heti-spacing"> </span>(</span><a href="https://en.wikipedia.org/wiki/Online_transaction_processing"><span><span class="heti-spacing"> </span>OLTP</span></a><span><span class="heti-spacing"> </span>v.s.</span><a href="https://en.wikipedia.org/wiki/Online_analytical_processing"><span><span class="heti-spacing"> </span>OLAP</span></a><span><span class="heti-spacing"> </span>)</span>。</p>
+<p>每个处理模型由两种执行路径组成：</p>
+<ul>
+<li><strong>控制流</strong>(control flow)：决定了数据库管理系统如何调用操作符</li>
+<li><strong>数据流</strong>(data flow)：决定了操作符如何发送结果，可以是整个元组或列的子集</li>
+</ul>
+<p>有以下几种处理模型：</p>
+<ul>
+<li><strong>迭代器模型</strong>(iterator model)（最常见）</li>
+<li><strong>物化模型</strong>(materialization model)（少见）</li>
+<li><strong>向量化<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>批量模型</strong>(vectorized/batch model)（常见）</li>
+</ul>
+</details>
 <h3 id="materialization">Materialization<a class="headerlink" href="#materialization" title="Permanent link">⚓︎</a></h3>
 <p>最易于直观理解如何对一个表达式求值的方式是观察该表达式在<strong>运算符树</strong><span>(operator tree)<span class="heti-spacing"> </span></span>上的图画表示。比如对于表达式<span><span class="heti-spacing"> </span><span class="arithmatex">\(\Pi_{name}(\sigma_{building="Watson"}(department) \bowtie instructor)\)</span></span>，它的运算符树如下所示：</p>
 <div style="text-align: center">
 <img src="images/lec11/7.png" width="50%/"/>
 </div>
 <p>假如要应用物化方法的话，我们从这棵树最底层的运算出发进行求值，具体可用前面介绍过的算法来执行运算，然后将结果存储在临时关系里。接着就拿这个临时关系，或者（可能需要）原来存储在数据库里的关系，继续执行上一层的运算。重复这一步骤，直到完成对根节点的运算为止，此时得到整个表达式的最终结果。上述的求值过程称为<strong>物化求值</strong>(materialized evaluation)。</p>
+<details class="example">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<img src="images/lec11/26.png" width="90%/"/>
+</div>
+<p></p><div style="text-align: center">
+<img src="images/lec11/27.png" width="90%/"/>
+</div>
+</details>
 <p>物化求值的成本不仅包括所有运算的成本总和，还得考虑将中间结果写入硬盘所需的成本。我们假设中间结果的记录被存放在一个缓冲区内，那么当缓冲区满了的时候，就要将其写到硬盘里。写入硬盘的块数<span><span class="heti-spacing"> </span><span class="arithmatex">\(b_r \approx \dfrac{n_r}{f_r}\)</span></span>，其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n_r, f_r\)</span><span class="heti-spacing"> </span></span>分别为结果关系<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(r\)</span><span class="heti-spacing"> </span></span>中的元组数和<strong>块因数</strong>(blocking factor)（即一个块内可以存放的元组数<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。而磁盘寻道次数为<span><span class="heti-spacing"> </span><span class="arithmatex">\(\lceil \dfrac{b_r}{b_b} \rceil\)</span></span>，其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(b_b\)</span><span class="heti-spacing"> </span></span>为输出缓冲区的大小。</p>
 <p>如果能用<strong>双缓冲区</strong>(double buffering)（使用两个缓存区，一个继续执行算法的同时，另一个将数据写入到硬盘中，从而做到<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>活动和<span class="heti-skip"><span class="heti-spacing"> </span>I/O<span class="heti-spacing"> </span></span>活动的并行）的话，能够使算法更加高效地执行。而寻道次数则可通过为输出缓存区分配额外的块来降低。</p>
 <div style="text-align: center">
 <img src="images/lec11/11.png" width="80%/"/>
 </div>
+<p>物化求值更适合<span class="heti-skip"><span class="heti-spacing"> </span>OLTP<span class="heti-spacing"> </span></span>工作负载，因为这种查询通常一次只访问少量元组，因此检索元组所需的函数调用较少。但它不适用于具有大量中间结果的<span class="heti-skip"><span class="heti-spacing"> </span>OLAP<span class="heti-spacing"> </span></span>查询，因为<span class="heti-skip"><span class="heti-spacing"> </span>DBMS<span class="heti-spacing"> </span></span>要将中间结果（往往规模较大）溢出到硬盘中。</p>
 <h3 id="pipelining">Pipelining<a class="headerlink" href="#pipelining" title="Permanent link">⚓︎</a></h3>
-<p>使用流水线的求值过程称为<strong>流水线求值</strong>(pipelined evaluation)。为运算创建流水线带来的好处有：</p>
+<p>使用流水线的求值过程称为<strong>流水线求值</strong>(pipelined evaluation)。</p>
+<div style="text-align: center">
+<img src="images/lec11/22.png" width="40%/"/>
+</div>
+<p>为运算创建流水线带来的好处有：</p>
 <ul>
 <li>消除了从临时关系中读取和写入所需的成本，从而减少查询求值的成本</li>
 <li>如果查询求值计划中的根运算符与其输入以流水线方式结合，那么能够快速生成查询结果</li>
@@ -1790,7 +1848,7 @@
 <p>流水线的执行方式有：</p>
 <ul>
 <li>
-<p><strong>需求驱动型流水线</strong>(demand-driven pipeline)：</p>
+<p><strong>需求驱动型流水线</strong>(demand-driven pipeline)（迭代器模型<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
 <ul>
 <li>系统会反复向流水线顶端的操作请求元组</li>
 <li>每当一个操作接收到元组请求时，它会计算出下一个（或下一批）待返回的元组并将其返回</li>
@@ -1809,19 +1867,52 @@
 </ul>
 <p>它们的具体实现方式如下：</p>
 <ul>
-<li>需求驱动型流水线：<ul>
+<li>
+<p>需求驱动型流水线：</p>
+<ul>
 <li>每个操作都能以一个<strong>迭代器</strong><span>(iterator)<span class="heti-spacing"> </span></span>的形式实现，该迭代器提供以下功能：<code>open()</code>、<code>next()</code> 和 <code>close()</code></li>
 <li>在调用 <code>open()</code> 之后，每次调用 <code>next()</code> 将返回该操作的下一个输出元组。操作的实现会相应地对其输入调用 <code>open()</code> 和<code>next()</code>，以便在需要时获取其输入元组。函数 <code>close()</code> 用于告知迭代器不再需要更多元组</li>
 <li>迭代器在执行过程中保持其<strong>状态</strong><span>(state)<span class="heti-spacing"> </span></span>不变，使得连续的 <code>next()</code> 请求能够接收到连续的结果元组</li>
 </ul>
+<details class="example">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<img src="images/lec11/23.png" width="90%/"/>
+</div>
+<p></p><div style="text-align: center">
+<img src="images/lec11/24.png" width="90%/"/>
+</div>
+<p></p><div style="text-align: center">
+<img src="images/lec11/25.png" width="90%/"/>
+</div>
+</details>
+<details class="note">
+<summary>补充：向量化模型</summary>
+<p>和迭代器模型类似，但是每个操作符返回的不是一个元组，而是一批<span class="heti-skip"><span class="heti-spacing"> </span>(batch)<span class="heti-spacing"> </span></span>元组（单列或多列<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，也就是说操作符的内部循环一次处理多个元组。一批元组的大小取决于硬件或查询需求。</p>
+<details class="example">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<img src="images/lec11/28.png" width="90%/"/>
+</div>
+</details>
+<p>该方法非常适合需要扫描大量元组的<span class="heti-skip"><span class="heti-spacing"> </span>OLAP<span class="heti-spacing"> </span></span>查询，因为调用 <code>next</code> 函数的次数更少；并且它能让操作符使用向量化（SIMD）指令来处理批量元组。</p>
+</details>
 </li>
-<li>生产者驱动型流水线：<ul>
+<li>
+<p>生产者驱动型流水线：</p>
+<ul>
 <li>系统会为每对相邻的操作创建一个缓冲区，用于暂存从一个操作传递至下一个操作的元组，对应不同操作的进程或线程并发执行</li>
 <li>位于流水线底层的每个操作持续生成输出元组并将其存入输出缓冲区，直至缓冲区填满</li>
 <li>而流水线其他层级的操作则从下层获取输入元组后生成输出元组，直到其输出缓冲区满载</li>
 <li>每当操作从流水线输入中消耗一个元组时，便会将该元组从其输入缓冲区移除</li>
 <li>无论哪种情况，一旦输出缓冲区满了，该操作将暂停并等待父级操作从缓冲区内提取元组以腾出空间。此时该操作将继续生成新元组直至缓冲区再次填满。此过程循环往复，直至所有输出元组全部生成完毕</li>
 </ul>
+<details class="example">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<img src="images/lec11/28.png" width="90%/"/>
+</div>
+</details>
 </li>
 </ul>
 <div class="admonition abstract">

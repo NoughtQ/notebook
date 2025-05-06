@@ -1005,7 +1005,7 @@
 </a>
 <h1 id="lec-12-query-optimization">Lec 12: Query Optimization<a class="headerlink" href="#lec-12-query-optimization" title="Permanent link">⚓︎</a></h1>
 <div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
-<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>8018<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 640 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M392.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6m80.6 120.1c-12.5 12.5-12.5 32.8 0 45.3l89.3 89.4-89.4 89.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l112-112c12.5-12.5 12.5-32.8 0-45.3l-112-112c-12.5-12.5-32.8-12.5-45.3 0zm-306.7 0c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3l112 112c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l89.4-89.4c12.5-12.5 12.5-32.8 0-45.3"></path></svg></span> <span>7<span class="heti-spacing"> </span></span>行代码 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>40<span class="heti-spacing"> </span></span>分钟</p>
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>8454<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 640 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M392.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6m80.6 120.1c-12.5 12.5-12.5 32.8 0 45.3l89.3 89.4-89.4 89.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l112-112c12.5-12.5 12.5-32.8 0-45.3l-112-112c-12.5-12.5-32.8-12.5-45.3 0zm-306.7 0c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3l112 112c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l89.4-89.4c12.5-12.5 12.5-32.8 0-45.3"></path></svg></span> <span>7<span class="heti-spacing"> </span></span>行代码 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>42<span class="heti-spacing"> </span></span>分钟</p>
 </div>
 <!-- head 元素一定要放在一级标题下面，不然标题就显示不出来了 -->
 <p></p>
@@ -1014,8 +1014,26 @@
 <link href="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.css" rel="stylesheet"/>
 <script src="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.js">
 </script>
+<p>由于<span class="heti-skip"><span class="heti-spacing"> </span>SQL<span class="heti-spacing"> </span></span>是一种声明式语言，查询仅告知<span class="heti-skip"><span class="heti-spacing"> </span>DBMS<span class="heti-spacing"> </span></span>需要计算什么内容，而非如何进行计算。因此，<span>DBMS<span class="heti-spacing"> </span></span>必须将<span class="heti-skip"><span class="heti-spacing"> </span>SQL<span class="heti-spacing"> </span></span>语句转化为可执行的查询计划。然而，执行查询计划中每个操作符（如连接算法）存在多种实现方式，不同计划的性能表现也会有所差异。而数据库优化器<span class="heti-skip"><span class="heti-spacing"> </span>(optimizer)<span class="heti-spacing"> </span></span>的核心任务就是为每个给定查询选择最优的执行方案。</p>
+<details class="info">
+<summary>优化器在整个架构中的位置</summary>
+<p></p><div style="text-align: center">
+<img src="images/lec12/6.png" width="80%/"/>
+</div>
+</details>
+<ul>
+<li>
 <p><strong>查询优化</strong>(query optimization)：从众多能够处理给定查询的策略中，选择最有效的查询求值计划的过程（尤其体现在查询很复杂的情况下<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。这一优化是由系统负责的，它会尝试构建查询求值成本最小的查询求值计划。</p>
-<p>优化一般发生在两个方面：关系代数级别和选择查询处理的详细策略。</p>
+</li>
+<li>
+<p>查询计划可分为<strong>逻辑计划</strong><span>(logical plans)<span class="heti-spacing"> </span></span>和<strong>物理计划</strong>(physical plans)</p>
+<ul>
+<li>优化器负责将<strong>逻辑代数表达式</strong><span>(logical algebra expression)<span class="heti-spacing"> </span></span>映射至最优的等效物理代数表达式。逻辑计划大致对应于查询中的关系代数表达式。</li>
+<li><strong>物理运算符</strong>通过为查询计划中的不同操作定义具体的访问路径，从而确定执行策略。物理计划的制定可能会受到所处理数据的物理格式影响（例如排序状态、压缩方式等<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</li>
+<li>需要注意的是，并非在所有情况下都存在从逻辑计划到物理计划的一对一映射关系。</li>
+</ul>
+</li>
+</ul>
 <details class="example">
 <summary>例子</summary>
 <p>考虑以下查询（用关系代数表达式表示<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
@@ -1049,6 +1067,15 @@
 <p>上述三个步骤在查询优化器中是相互交错的。一旦得到求值计划后，其成本就可以通过关系的统计信息估计出来。</p>
 </li>
 </ul>
+<p>下面我们主要来介绍查询优化的两大策略：</p>
+<ul>
+<li><strong>静态规则</strong>(static rules)/<strong>启发式方法</strong>(heuristics)：启发式方法将查询的部分与已知模式相匹配，从而组成一个计划。<ul>
+<li>这些规则通过转换查询来消除低效的地方</li>
+<li>尽管这些规则可能需要查阅系统目录<span class="heti-skip"><span class="heti-spacing"> </span>(catelog)<span class="heti-spacing"> </span></span>以了解数据结构，但永远不需要检查数据本身</li>
+</ul>
+</li>
+<li><strong>基于成本的搜索</strong>(cost-based search)：读取数据并估计执行等效计划的成本；由成本模型选择成本最低的计划</li>
+</ul>
 <h2 id="transformation-of-relational-expressions">Transformation of Relational Expressions<a class="headerlink" href="#transformation-of-relational-expressions" title="Permanent link">⚓︎</a></h2>
 <p>在合法的数据库实例上，如果两个关系代数表达式能够产生相同的元组集（<strong>不考虑元组的顺序</strong><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，那么我们认为这两个表达式是<strong>等价的</strong>(equivalent)。</p>
 <p>而在<span class="heti-skip"><span class="heti-spacing"> </span>SQL<span class="heti-spacing"> </span></span>中，由于输入和输出实际上是元组的<strong>多重集</strong>（可以包含重复元组<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，所以对应的定义为：在合法的数据库实例上，如果两个关系代数表达式能够产生相同的元组多重集，那么它们就是<strong>等价的</strong>。</p>
@@ -1080,19 +1107,19 @@
 <li>不过这两个等价表达式结果的属性顺序不太一样。大多数情况下我们不会关心这个顺序（除了显示结果等少数情况<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。如果要确保顺序的一致性，可以用投影运算对属性进行重排。</li>
 </ul>
 </li>
-<li>关于连接运算的<strong>结合律</strong>(associative)：<ul>
+<li>
+<p>关于连接运算的<strong>结合律</strong>(associative)：</p>
+<ul>
 <li>自然连接：<span class="arithmatex">\((E_1 \bowtie E_2) \bowtie E_3 \equiv E_1 \bowtie (E_2 \bowtie E_3)\)</span></li>
 <li><span>theta<span class="heti-spacing"> </span></span>连接：<span class="arithmatex">\((E_1 \bowtie_{\theta_1} E_2) \bowtie_{\theta_2 \wedge \theta_3} E_3 \equiv E_1 \bowtie_{\theta_1 \wedge \theta_3} (E_2 \bowtie_{\theta_2} E_3)\)</span>，其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\theta_2\)</span><span class="heti-spacing"> </span></span>仅包含来自<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(E_2, E_3\)</span><span class="heti-spacing"> </span></span>的属性。<ul>
 <li>表达式中的三个条件均可为空，因此<strong>笛卡尔积</strong>也满足结合律</li>
 </ul>
 </li>
 </ul>
-</li>
-</ol>
 <blockquote>
 <p>连接运算的交换律和结合律对查询优化的连接重排相当重要！</p>
 </blockquote>
-<ol>
+</li>
 <li>
 <p>当满足以下两个条件时，选择运算可被分配到<span class="heti-skip"><span class="heti-spacing"> </span>theta<span class="heti-spacing"> </span></span>连接运算中：</p>
 <ul>
@@ -1128,27 +1155,53 @@
 <li>
 <p>外连接运算 ⟕, ⟖, ⟗ 也具备相似的等价性质</p>
 </li>
-<li>集合运算中的<strong>并</strong>和<strong>交</strong>满足<strong>交换律</strong>，但<strong>差</strong>并不满足</li>
+</ul>
+</li>
+<li>
+<p>集合运算中的<strong>并</strong>和<strong>交</strong>满足<strong>交换律</strong>，但<strong>差</strong>并不满足</p>
+<ul>
 <li><span class="arithmatex">\(E_1 \cup E_2 \equiv E_2 \cup E_1\)</span></li>
 <li><span class="arithmatex">\(E_1 \cap E_2 \equiv E_2 \cap E_1\)</span></li>
-<li>集合并和交运算也满足<strong>结合律</strong></li>
+</ul>
+</li>
+<li>
+<p>集合并和交运算也满足<strong>结合律</strong></p>
+<ul>
 <li><span class="arithmatex">\((E_1 \cup E_2) \cup E_3 \equiv E_1 \cup (E_2 \cup E_3)\)</span></li>
 <li><span class="arithmatex">\((E_1 \cap E_2) \cap E_3 \equiv E_1 \cap (E_2 \cap E_3)\)</span></li>
-<li><strong>选择</strong>运算可分配在集合并、交和差运算上</li>
+</ul>
+</li>
+<li>
+<p><strong>选择</strong>运算可分配在集合并、交和差运算上</p>
+<ul>
 <li><span class="arithmatex">\(\sigma_\theta(E_1 \cup E_2) \equiv \sigma_\theta(E_1) \cup \sigma_\theta(E_2)\)</span></li>
 <li><span class="arithmatex">\(\sigma_\theta(E_1 \cap E_2) \equiv \sigma_\theta(E_1) \cap \sigma_\theta(E_2)\)</span></li>
 <li><span class="arithmatex">\(\sigma_\theta(E_1 - E_2) \equiv \sigma_\theta(E_1) - \sigma_\theta(E_2)\)</span></li>
 <li><span class="arithmatex">\(\sigma_\theta(E_1 \cap E_2) \equiv \sigma_\theta(E_1) \cap E_2\)</span></li>
 <li><span class="arithmatex">\(\sigma_\theta(E_1 - E_2) \equiv \sigma_\theta(E_1) - E_2\)</span></li>
-<li><strong>投影</strong>运算可分配在集合并运算上：<span class="arithmatex">\(\Pi_L(E_1 \cup E_2) \equiv (\Pi_L(E_1) \cup (\Pi_L(E_2)))\)</span></li>
+</ul>
+</li>
+<li>
+<p><strong>投影</strong>运算可分配在集合并运算上：<span class="arithmatex">\(\Pi_L(E_1 \cup E_2) \equiv (\Pi_L(E_1) \cup (\Pi_L(E_2)))\)</span></p>
+</li>
 <li>当满足以下条件时，选择运算可分配在<strong>聚合</strong>运算上：令<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(G\)</span><span class="heti-spacing"> </span></span>为分组属性的集合，<span><span class="arithmatex">\(A\)</span><span class="heti-spacing"> </span></span>为聚合表达式的集合，当<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\theta\)</span><span class="heti-spacing"> </span></span>仅包含<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(G\)</span><span class="heti-spacing"> </span></span>中的属性时，该等价关系成立：<span class="arithmatex">\(\sigma_\theta(_G {\large \gamma}_A (E)) \equiv\ _G {\large \gamma}_A(\sigma_\theta(E))\)</span></li>
-<li>关于连接运算的<strong>交换律</strong>：</li>
+<li>
+<p>关于连接运算的<strong>交换律</strong>：</p>
+<ul>
 <li>全外连接满足交换律：<span class="arithmatex">\(E_1\)</span>⟗<span class="arithmatex">\(E_2 \equiv E_2\)</span>⟗<span class="arithmatex">\(E_1\)</span></li>
 <li>左外连接和右外连接不满足交换律，但两者可以互换：<span class="arithmatex">\(E_1\)</span>⟕<span class="arithmatex">\(E_2 \equiv E_2\)</span>⟖<span class="arithmatex">\(E_1\)</span></li>
-<li>当满足某些条件时，选择运算可分配在左外连接和右外连接上。具体来说，当选择条件<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\theta_1\)</span><span class="heti-spacing"> </span></span>仅包含连接运算中其中一个表达式（假设为<span><span class="heti-spacing"> </span><span class="arithmatex">\(E_1\)</span></span>）的属性时，以下等价关系成立：</li>
+</ul>
+</li>
+<li>
+<p>当满足某些条件时，选择运算可分配在左外连接和右外连接上。具体来说，当选择条件<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\theta_1\)</span><span class="heti-spacing"> </span></span>仅包含连接运算中其中一个表达式（假设为<span><span class="heti-spacing"> </span><span class="arithmatex">\(E_1\)</span></span>）的属性时，以下等价关系成立：</p>
+<ul>
 <li><span class="arithmatex">\(\sigma_{\theta_1}(E_1\)</span>⟕<span class="arithmatex">\(_\theta E_2) \equiv (\sigma_{\theta_1} (E_1))\)</span>⟕<span class="arithmatex">\(_\theta E_2\)</span></li>
 <li><span class="arithmatex">\(\sigma_{\theta_1} (E_2\)</span>⟖<span class="arithmatex">\(_\theta E_1) \equiv (E_2\)</span>⟖<span class="arithmatex">\(_\theta (\sigma_{\theta_1}(E_1))\)</span></li>
-<li>在某些条件下，外连接能被内连接替代：若<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\theta_1\)</span><span class="heti-spacing"> </span></span>在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(E_2\)</span><span class="heti-spacing"> </span></span>属性为<span class="heti-skip"><span class="heti-spacing"> </span>null<span class="heti-spacing"> </span></span>的时候，求值结果为<span class="heti-skip"><span class="heti-spacing"> </span>false<span class="heti-spacing"> </span></span>或<span><span class="heti-spacing"> </span>unknown</span>，则以下等价关系成立：</li>
+</ul>
+</li>
+<li>
+<p>在某些条件下，外连接能被内连接替代：若<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\theta_1\)</span><span class="heti-spacing"> </span></span>在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(E_2\)</span><span class="heti-spacing"> </span></span>属性为<span class="heti-skip"><span class="heti-spacing"> </span>null<span class="heti-spacing"> </span></span>的时候，求值结果为<span class="heti-skip"><span class="heti-spacing"> </span>false<span class="heti-spacing"> </span></span>或<span><span class="heti-spacing"> </span>unknown</span>，则以下等价关系成立：</p>
+<ul>
 <li><span class="arithmatex">\(\sigma_{\theta_1}(E_1\)</span>⟕<span class="arithmatex">\(_\theta E_2) \equiv \sigma_{\theta_1} (E_1 \bowtie_\theta E_2)\)</span></li>
 <li><span class="arithmatex">\(\sigma_{\theta_2}(E_1\)</span>⟖<span class="arithmatex">\(_\theta E_1) \equiv \sigma_{\theta_1} (E_2 \bowtie_\theta E_1)\)</span></li>
 </ul>
@@ -1250,9 +1303,16 @@
 <p>如果想要维护准确的统计量，那么每当关系被修改时就要更新统计量，但这样做带来的开销是巨大的。相反，大多数数据库系统会在系统负载较小的那段时间里更新统计量，所以统计量不是那么准确。然而，如果在两次统计量更新之间的关系更新次数不是很多的话，那么这个统计量就足够精确了，能为我们提供一个较好的成本估计。</p>
 <p>上述统计信息是简化过的，实际上优化器通常会维护更多的统计信息，以提升求值计划的成本估计的精度。比如大多数数据库会将每个属性值的分布存储在<strong>直方图</strong><span>(histogram)<span class="heti-spacing"> </span></span>里。直方图中，属性值被划分为多个范围，每个范围和落在该范围的属性值对应的元组关联。下图就是一个直方图的例子：</p>
 <div style="text-align: center">
-<img src="images/lec12/4.png" width="50%/"/>
+<img src="images/lec12/7.png" width="80%/"/>
 </div>
-<p>像上图所示的直方图是一种<strong>等宽直方图</strong>(equi-width histogram)，因为每个范围都是等宽的。相对的也有<strong>等深直方图</strong><span>(equi-depth histogram)<span class="heti-spacing"> </span></span>的概念：它调整了各个范围的边界，使得每个范围都有相同数量的值，因此这类直方图仅存储范围的边界分区，无需存储每个范围的值的个数（而等宽直方图需要存储总的元组数<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。综上，等深直方图相比等宽直方图能提供更好的估计，并使用更少的空间（直接存在系统目录中<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，因此更推荐使用。</p>
+<p>像上图所示的直方图是一种<strong>等宽直方图</strong>(equi-width histogram)，因为每个范围都是等宽的。相对的也有<strong>等深直方图</strong><span>(equi-depth histogram)<span class="heti-spacing"> </span></span>的概念：它调整了各个范围的边界，使得每个范围都有相同数量的值，因此这类直方图仅存储范围的边界分区，无需存储每个范围的值的个数（而等宽直方图需要存储总的元组数<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
+<div style="text-align: center">
+<img src="images/lec12/8.png" width="80%/"/>
+</div>
+<div style="text-align: center">
+<img src="images/lec12/9.png" width="80%/"/>
+</div>
+<p>综上，等深直方图相比等宽直方图能提供更好的估计，并使用更少的空间（直接存在系统目录中<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，因此更推荐使用。</p>
 <p>如果没有直方图信息的话，优化器只能假设所有值是均匀分布的，也就是说每个范围都有相同数量的值；对应的成本估计的精度可想而知。</p>
 <p>在很多数据库应用中，某些值会相比其他值会频繁出现，因此很多数据库会存储前<span class="heti-skip"><span class="heti-spacing"> </span>n<span class="heti-spacing"> </span></span>个最常用的值，以及这些值出现的次数，以达到更好的估计效果。</p>
 <h3 id="selection-size-estimation">Selection Size Estimation<a class="headerlink" href="#selection-size-estimation" title="Permanent link">⚓︎</a></h3>
