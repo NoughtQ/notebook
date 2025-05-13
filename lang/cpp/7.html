@@ -1300,6 +1300,10 @@
 <p class="admonition-title">模板的<strong>声明</strong>和<strong>定义</strong>都放在<strong>头文件</strong>里</p>
 <p>当编译器需要实例化一个模板时，它必须能够看到模板的完整定义，而不仅仅是声明。这意味着与普通函数和类（通常声明在头文件<span><span class="heti-spacing"> </span>.h/.hpp</span>，定义在源文件<span><span class="heti-spacing"> </span>.cpp</span>）不同，模板的声明和定义（包括成员函数的实现）通常都放在头文件中。</p>
 <p>这是因为：如果模板的定义放在一个<span class="heti-skip"><span class="heti-spacing"> </span>.cpp<span class="heti-spacing"> </span></span>文件中，而我们在另一个<span class="heti-skip"><span class="heti-spacing"> </span>.cpp<span class="heti-spacing"> </span></span>文件中尝试使用这个模板，编译器在第二个文件中只看到了声明，找不到定义，于是它无法完成实例化。链接器在链接各个编译单元时，会发现找不到所需的模板实例的定义，从而导致<strong>链接错误</strong>。</p>
+<p><span>&lt;!--<span class="heti-spacing"> </span></span>如果你还是想将定义放在<span class="heti-skip"><span class="heti-spacing"> </span>.cpp<span class="heti-spacing"> </span></span>文件里，那么要在对应<span class="heti-skip"><span class="heti-spacing"> </span>.h<span class="heti-spacing"> </span></span>文件末尾 <code class="language-cpp highlight"><span class="n">include</span></code> 这个<span class="heti-skip"><span class="heti-spacing"> </span>.cpp<span class="heti-spacing"> </span></span>文件；另外<span class="heti-skip"><span class="heti-spacing"> </span>.cpp<span class="heti-spacing"> </span></span>文件中的定义需要包含<strong>完整的类型名</strong>，比如模板 <code>Vector</code> 对应的类型名应形如 <code>Vector&lt;T&gt;</code>。这样也能通过编译。</p>
+<p></p><div style="text-align: center">
+<img src="images/17.png" width="90%"/>
+</div> --&gt;
 <blockquote>
 <p><span>C++<span class="heti-spacing"> </span></span>标准曾试图通过 <code class="language-cpp highlight"><span class="k">export</span></code> 关键字来支持将模板声明和定义分离到不同文件，但由于实现复杂且编译器支持不佳，该关键字的原始功能已在<span class="heti-skip"><span class="heti-spacing"> </span>C++11<span class="heti-spacing"> </span></span>中被正式移除。</p>
 </blockquote>
