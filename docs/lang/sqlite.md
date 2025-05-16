@@ -125,6 +125,10 @@ counter: true
     sqlite>
     ```
 
+=== "macOS 15.4"
+
+    和 Ubuntu 的类似，安装命令为 `brew install sqlite3`，也是相当简单的。
+
 
 此外，SQLite 还有 GUI 工具，比如：
 

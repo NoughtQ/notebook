@@ -18,10 +18,10 @@
     - [x] [Lec 8: Physical Storage Systems](8.md)
     - [x] [Lec 9: Database Storage Structures](9.md)
     - [x] [Lec 10: Indexing](10.md)
-    - [ ] [Lec 11: Query Processing](11.md)
-    - [ ] [Lec 12: Query Optimization](12.md)
-    - [ ] [Lec 13: Transactions](13.md)
-    - [ ] [Lec 14: Concurrency Control](14.md)
+    - [x] [Lec 11: Query Processing](11.md)
+    - [x] [Lec 12: Query Optimization](12.md)
+    - [x] [Lec 13: Transactions](13.md)
+    - [x] [Lec 14: Concurrency Control](14.md)
     - [ ] [Lec 15: Recovery System](15.md)
 
 !!! recommend "参考资料"

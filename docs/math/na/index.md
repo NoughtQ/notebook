@@ -6,6 +6,9 @@
     - 教师：黄劲
     - 教材：*Numeric Analysis*, 7th Edition
 
+!!! warning "注意"
+
+    虽然每章的笔记都有内容了，但本质上只是一份份基于 PPT 的草稿，还没有涉及到我的思考过程。之后我会根据一些优秀前辈的笔记、教材以及智云来修改笔记的内容（~~实则提前为期末补天打下坚实基础~~）。
 
 !!! abstract "目录"
 
@@ -13,7 +16,7 @@
     - [x] [Chap 2: Solutions of Equations in One Variable](2.md)
     - [x] [Chap 3: Interpolation and Polynomial Approximation](3.md)
     - [x] [Chap 4: Numerical Differentiation and Integration](4.md)
-    - [ ] [Chap 5: Initial-Value Problems for Ordinary Differential Equations](5.md)
+    - [x] [Chap 5: Initial-Value Problems for Ordinary Differential Equations](5.md)
     - [x] [Chap 6: Direct Methods for Solving Linear Systems](6.md)
     - [x] [Chap 7: Iterative Techniques in Matrix Algebra](7.md)
     - [x] [Chap 8: Approximation Theory](8.md)
