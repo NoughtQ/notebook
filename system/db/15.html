@@ -670,9 +670,9 @@
 </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#database-buffering">
+<a class="md-nav__link" href="#buffer-pool-management-policies">
 <span class="md-ellipsis">
-      Database Buffering
+      Buffer Pool Management Policies
     </span>
 </a>
 </li>
@@ -1013,9 +1013,9 @@
 </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#database-buffering">
+<a class="md-nav__link" href="#buffer-pool-management-policies">
 <span class="md-ellipsis">
-      Database Buffering
+      Buffer Pool Management Policies
     </span>
 </a>
 </li>
@@ -1161,9 +1161,13 @@
 </a>
 <h1 id="lec-15-recovery-system">Lec 15: Recovery System<a class="headerlink" href="#lec-15-recovery-system" title="Permanent link">⚓︎</a></h1>
 <div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
-<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>16455<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>82<span class="heti-spacing"> </span></span>分钟</p>
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>17915<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>90<span class="heti-spacing"> </span></span>分钟</p>
 </div>
-<p><strong>恢复方案<span><span class="heti-spacing"> </span>(recovery scheme)</span></strong>：用于恢复系统在故障发生前存在的一致性状态。它应当支持<strong>高度的可用性</strong>(high availability)，也就是说数据库可用的时间占比应足够大。为支持这一点，恢复方案必须有保留数据库备份拷贝（并和数据库当前内容同步）的能力。</p>
+<p><strong>恢复算法</strong><span>(recovery algorithms)<span class="heti-spacing"> </span></span>是指一些确保数据库一致性、事务原子性和持久性的技术，即使在发生故障时也能保障数据安全。当系统崩溃时，所有已提交的但尚未写入硬盘的内存数据都面临着丢失的风险，这显然和用户的预期相悖——他们认为成功提交的数据变更应当永久被保存。恢复算法的核心作用正是防止崩溃后出现信息丢失的情况。每一种恢复算法都包含以下两部分：</p>
+<ul>
+<li>在正常事务处理过程中采取的行动，确保有足够用于恢复的信息</li>
+<li>在故障后采取的行动，以恢复数据库的内容，确保数据库的一致性、原子性以及持久性</li>
+</ul>
 <h2 id="failure-classification">Failure Classification<a class="headerlink" href="#failure-classification" title="Permanent link">⚓︎</a></h2>
 <p>先来认识一些常见的故障种类：</p>
 <ul>
@@ -1174,11 +1178,6 @@
 </li>
 <li><strong>系统崩溃</strong>(system crash)：硬件<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>数据库软件<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>操作系统的问题导致易失性存储器内容的损失，并使得事务进程停止；而非易失性存储器的内容不受影响（这样的假设称为故障<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>停止假设<span><span class="heti-spacing"> </span>(fail-stop assumption)</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</li>
 <li><strong>硬盘故障</strong>(disk failure)：因磁盘头崩溃或在数据传输时的故障，硬盘块的内容丢失了；此时就要用其他硬盘或者第三方媒介的归档备份来恢复内容。</li>
-</ul>
-<p>为了决定该如何让系统从故障中恢复过来，首先要做的就是识别这些故障模式，之后根据不同情况采取合理措施。这就需要使用合适的算法（称为<strong>恢复算法</strong>(recovery algorithm)）来解决，而算法可拆分成以下两部分：</p>
-<ul>
-<li>在正常事务处理过程中采取的行动，确保有足够用于恢复的信息</li>
-<li>在故障后采取的行动，以恢复数据库的内容，确保数据库的一致性，事务的原子性，以及持久性</li>
 </ul>
 <h2 id="storage">Storage<a class="headerlink" href="#storage" title="Permanent link">⚓︎</a></h2>
 <h3 id="stable-storage-implementation">Stable-Storage Implementation<a class="headerlink" href="#stable-storage-implementation" title="Permanent link">⚓︎</a></h3>
@@ -1259,6 +1258,30 @@
 <p>每当事务执行写操作时，在修改数据库之前，必须为该写操作创建日志记录，并将其添加到日志中。一旦存在日志记录，若条件允许的话，就可以将修改输出到数据库中。此外，系统还需具备<strong>撤销</strong><span>(undo)<span class="heti-spacing"> </span></span>已输出至数据库的修改的能力，这可利用日志记录中的旧值字段实现的回滚操作来完成。</p>
 <p>由于日志对于系统和硬盘故障的恢复相当重要，它们必须被放在稳定存储器中。现在我们就假设每个日志记录在创建后，就马上被放在位于稳定存储器中的日志的末尾。之后我们将探讨何时可以安全地松弛这一要求，以减少日志记录带来的开销。</p>
 <p>因为日志包含了所有数据库活动的完整记录，所以存储在日志中的数据量可能会变得非常庞大。之后我们也会说明何时可以安全地删除（没有用的）日志信息。</p>
+<hr/>
+<p>对于不同的实现方式，日志记录的内容也会有所区分。我们对日志方案作出以下分类：</p>
+<ul>
+<li><strong>物理日志</strong>(physical logging)：记录对数据库中特定位置进行的字节级更改<ul>
+<li>例子：<code>git diff</code></li>
+</ul>
+</li>
+<li><strong>逻辑日志</strong>(logical logging)：<ul>
+<li>记录事务执行的高级操作</li>
+<li>不限于单个页</li>
+<li>每条日志记录需写入的数据量少于物理日志，因为单条记录可跨多页更新多个元组</li>
+<li>但在非确定性并发控制方案中存在并发事务时，逻辑日志难以实现故障恢复</li>
+<li>此外由于必须重新执行每个事务，恢复耗时更长</li>
+<li>例子：事务调用的 <code>UPDATE</code>、<code>DELETE</code>、<code>INSERT</code> 语句</li>
+</ul>
+</li>
+<li><strong>生理日志</strong>(physiological logging)：<ul>
+<li>这是一种混合式方法，其日志记录针对单个页，但不规定页的数据组织形式</li>
+<li>也就是说，通过页中的槽位号<span class="heti-skip"><span class="heti-spacing"> </span>(slot number)<span class="heti-spacing"> </span></span>识别元组，而不具体指明修改发生在页的哪个位置</li>
+<li>因此<span class="heti-skip"><span class="heti-spacing"> </span>DBMS<span class="heti-spacing"> </span></span>可在日志记录写入硬盘后重新组织页结构</li>
+<li>这是<span class="heti-skip"><span class="heti-spacing"> </span>DBMS<span class="heti-spacing"> </span></span>中最为常用的实现方式</li>
+</ul>
+</li>
+</ul>
 <h3 id="database-modification">Database Modification<a class="headerlink" href="#database-modification" title="Permanent link">⚓︎</a></h3>
 <p>为了理解日志记录在恢复过程中所起的作用，我们需要剖析事务修改数据项时所经历的具体步骤：</p>
 <ol>
@@ -1293,7 +1316,16 @@
 <li>同理，虽然立即修改更适合和两阶段锁机制搭配使用，但也可以用延迟变更</li>
 </ul>
 <h3 id="transaction-commit">Transaction Commit<a class="headerlink" href="#transaction-commit" title="Permanent link">⚓︎</a></h3>
-<p>当事务的<strong>提交日志记录</strong>（即该事务的最后一条日志记录）被输出到稳定存储器时，我们称该事务<strong>已提交</strong>(committed)。因此，日志中包含足够信息来确保即使系统崩溃，也能重做该事务的所有更新操作。若系统在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(&lt;T_i \text{ commit}&gt;\)</span><span class="heti-spacing"> </span></span>日志记录写入至稳定存储器前发生崩溃，则事务<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(T_i\)</span><span class="heti-spacing"> </span></span>将被回滚。由此可见，包含提交日志记录的数据块输出是导致事务成功提交的<strong>原子性</strong>操作。</p>
+<p>当事务提交时，<span>DBMS<span class="heti-spacing"> </span></span>首先将<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(&lt;T_i \text{ commit}&gt;\)</span><span class="heti-spacing"> </span></span>记录写入内存中的日志缓冲区。然后，<span>DBMS<span class="heti-spacing"> </span></span>将所有日志记录（包括事务的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(&lt;T_i \text{ commit}&gt;\)</span><span class="heti-spacing"> </span></span>记录）刷洗到硬盘中。请注意，日志的刷洗操作是顺序的、同步的硬盘写入。每个日志页可以有多个日志记录。</p>
+<details class="example">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<img src="images/lec15/13.gif" width="80%/"/>
+</div>
+</details>
+<p>当事务的<strong>提交日志记录</strong>（即该事务的最后一条日志记录）被输出到稳定存储器时，我们称该事务<strong>已提交</strong>(committed)。因此，日志中包含足够信息来确保即使系统崩溃，也能重做该事务的所有更新操作。</p>
+<p>一旦<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(&lt;T_i \text{ commit}&gt;\)</span><span class="heti-spacing"> </span></span>记录安全地存储到硬盘上，<span>DBMS<span class="heti-spacing"> </span></span>会向应用程序返回事务已提交的确认。随后某个时刻，系统将写入一条特殊的<span class="heti-skip"><span class="heti-spacing"> </span>TXN-END<span class="heti-spacing"> </span></span>日志记录，标志着该事务在系统中彻底完成，且不会再有其相关的日志记录产生。此类<span class="heti-skip"><span class="heti-spacing"> </span>TXN-END<span class="heti-spacing"> </span></span>记录仅用于内部簿记管理，无需立即刷入到硬盘中。</p>
+<p>若系统在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(&lt;T_i \text{ commit}&gt;\)</span><span class="heti-spacing"> </span></span>日志记录写入至稳定存储器前发生崩溃，则事务<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(T_i\)</span><span class="heti-spacing"> </span></span>将被回滚。由此可见，包含提交日志记录的数据块输出是导致事务成功提交的<strong>原子性</strong>操作。</p>
 <p>在大多数基于日志的恢复技术中，当事务提交时，被该事务修改的数据项所在的块不必立即输出到稳定存储设备上，而是可以稍后再进行输出。</p>
 <h3 id="using-the-log-to-redo-and-undo-transactions">Using the Log to Redo and Undo Transactions<a class="headerlink" href="#using-the-log-to-redo-and-undo-transactions" title="Permanent link">⚓︎</a></h3>
 <p>下面我们来大致了解一下如何用日志来恢复崩溃的系统和回滚事务，具体包含一下两个恢复过程：</p>
@@ -1333,8 +1365,12 @@
 </ul>
 <p>为降低此类开销，我们引入了<strong>检查点</strong><span>(checkpoints)<span class="heti-spacing"> </span></span>机制。以下描述一种简单的检查点方案：</p>
 <ul>
-<li>在检查点操作执行期间禁止任何数据更新</li>
-<li>执行检查点时将所有修改过的缓冲区块输出到硬盘中</li>
+<li>在检查点操作执行期间禁止任何数据更新<ul>
+<li>停止任何新事务的的开始</li>
+<li>等待所有活跃事务执行完毕</li>
+</ul>
+</li>
+<li>执行检查点时将所有修改过的缓冲区块（脏页）输出到硬盘中</li>
 </ul>
 <blockquote>
 <p>后面我们将讨论如何通过放宽这两项要求来改进检查点和恢复流程，从而获得更大灵活性。</p>
@@ -1343,8 +1379,18 @@
 <ol>
 <li>将当前驻留在主存中的所有日志记录输出到稳定存储器中</li>
 <li>将所有修改过的缓冲区块输出至硬盘中</li>
-<li>向稳定存储器输出一个格式为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(&lt;\text{checkpoint } L&gt;\)</span><span class="heti-spacing"> </span></span>的日志记录，其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(L\)</span><span class="heti-spacing"> </span></span>是在检查点时刻上活跃事务的列表</li>
+<li>向稳定存储器输出一个格式为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(&lt;\text{checkpoint } L&gt;\)</span><span class="heti-spacing"> </span></span>的日志记录，其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(L\)</span><span class="heti-spacing"> </span></span>是在检查点时刻上的<strong>活跃事务表</strong>(active transcation list)</li>
 </ol>
+<details class="info">
+<summary>活跃事务表</summary>
+<p>活动事务表（ATT）表示在<span class="heti-skip"><span class="heti-spacing"> </span>DBMS<span class="heti-spacing"> </span></span>中正在运行的事务的状态。在<span class="heti-skip"><span class="heti-spacing"> </span>DBMS<span class="heti-spacing"> </span></span>完成该事务的提交<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>中止过程后，事务的条目将被删除。对于每个事务条目，<span>ATT<span class="heti-spacing"> </span></span>包含以下信息：</p>
+<ul>
+<li>transactionId：唯一的事务标识符</li>
+<li>status：事务当前的“模式”（运行中<span><span class="heti-spacing"> </span>(R)</span>、提交中<span><span class="heti-spacing"> </span>(C)</span>、撤销候选<span><span class="heti-spacing"> </span>(U)</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</li>
+<li>lastLSN：事务写入的最新的<span><span class="heti-spacing"> </span>LSN</span></li>
+</ul>
+<p>注意，<span>ATT<span class="heti-spacing"> </span></span>包含除<span class="heti-skip"><span class="heti-spacing"> </span>TXN-END<span class="heti-spacing"> </span></span>日志记录外的每个事务，包括已提交或中止的事务。</p>
+</details>
 <p>日志中存在的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(&lt;\text{checkpoint } L&gt;\)</span><span class="heti-spacing"> </span></span>记录能让系统简化恢复过程：考虑一个在检查点之前完成的事务<span><span class="heti-spacing"> </span><span class="arithmatex">\(T_i\)</span></span>，对于此类事务，<span class="arithmatex">\(&lt;T_i \text{ commit}&gt;\)</span>（或<span><span class="heti-spacing"> </span><span class="arithmatex">\(&lt;T_i \text{ abort}&gt;\)</span></span>）会出现在日志的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(&lt;\text{checkpoint}&gt;\)</span><span class="heti-spacing"> </span></span>记录之前。由<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(T_i\)</span><span class="heti-spacing"> </span></span>执行的所有数据库修改必然已在检查点前写入数据库，或是作为检查点本身的一部分完成。因此，在恢复阶段无需对<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(T_i\)</span><span class="heti-spacing"> </span></span>执行重做操作。</p>
 <p>当系统发生崩溃后，系统会扫描日志以定位到最近的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(&lt;\text{checkpoint } L&gt;\)</span><span class="heti-spacing"> </span></span>记录——具体可通过从日志末尾向前搜索，直至找到首个<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(&lt;\text{checkpoint } L&gt;\)</span><span class="heti-spacing"> </span></span>记录来实现。</p>
 <p>重做与撤销操作仅需应用于集合<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(L\)</span><span class="heti-spacing"> </span></span>中的事务，以及所有在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(&lt;\text{checkpoint } L&gt;\)</span><span class="heti-spacing"> </span></span>记录写入日志后开始执行的事务。我们将该事务集合记为<span><span class="heti-spacing"> </span><span class="arithmatex">\(T\)</span></span>：</p>
@@ -1352,9 +1398,15 @@
 <li>对于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(T\)</span><span class="heti-spacing"> </span></span>中所有未在日志中出现<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(&lt;T_i \text{ commit}&gt;\)</span><span class="heti-spacing"> </span></span>或<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(&lt;T_i \text{ abort}&gt;\)</span><span class="heti-spacing"> </span></span>记录的事务<span><span class="heti-spacing"> </span><span class="arithmatex">\(T_k\)</span></span>，执行 <code>undo(T_k)</code></li>
 <li>对于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(T\)</span><span class="heti-spacing"> </span></span>中所有在日志中存在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(&lt;T_i \text{ commit}&gt;\)</span><span class="heti-spacing"> </span></span>或<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(&lt;T_i \text{ abort}&gt;\)</span><span class="heti-spacing"> </span></span>记录的事务<span><span class="heti-spacing"> </span><span class="arithmatex">\(T_k\)</span></span>，执行 <code>redo(T_k)</code></li>
 </ul>
+<details class="example">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<img src="images/lec15/11.gif" width="80%/"/>
+</div>
+</details>
 <p>注意：我们只需检查日志中自上一个检查点记录开始的部分，以找出事务集<span><span class="heti-spacing"> </span><span class="arithmatex">\(T\)</span></span>，并确定<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(T\)</span><span class="heti-spacing"> </span></span>中每个事务的日志里是否出现了提交或中止记录。</p>
 <p>考虑检查点日志记录中的事务集合<span><span class="heti-spacing"> </span><span class="arithmatex">\(L\)</span></span>。对于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(L\)</span><span class="heti-spacing"> </span></span>中的每个事务<span><span class="heti-spacing"> </span><span class="arithmatex">\(T_i\)</span></span>，若该事务未提交，则可能需要撤销该事务在检查点日志记录之前的所有相关日志记录。然而，一旦检查点完成，早于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(L\)</span><span class="heti-spacing"> </span></span>中所有<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(&lt;T_i \text{ start}&gt;\)</span><span class="heti-spacing"> </span></span>日志记录的最早时间点的所有历史日志均不再需要。当数据库系统需要回收这些记录占用的空间时，可随时清除此类日志。</p>
-<p>要求事务在检查点过程中不得对缓冲块或日志执行任何更新操作可能不太合理，因为这意味着检查点进行期间必须暂停事务处理。因此我们引入<strong>模糊检查点</strong>(fuzzy checkpoints)：即使在缓冲块正被写出的情况下，事务仍可继续执行更新操作。之后会介绍该方法的具体细节。</p>
+<p>要求事务在检查点过程中不得对缓冲块或日志执行任何更新操作可能不太合理，因为这意味着检查点进行期间必须暂停事务处理。因此我们引入<a href="#fuzzy-checkpointing"><strong>模糊检查点</strong></a>(fuzzy checkpoints)：即使在缓冲块正被写出的情况下，事务仍可继续执行更新操作。之后会介绍该方法的具体细节。</p>
 <h2 id="recovery-algorithm">Recovery Algorithm<a class="headerlink" href="#recovery-algorithm" title="Permanent link">⚓︎</a></h2>
 <p>目前，我们已经知道该如何分辨需要重做或撤销的事务，但还没有给出执行这些操作的精确算法。所以现在来介绍完整的恢复算法——该算法使用最近一次检查点和日志记录的组合，使系统崩溃中恢复过来。这里的恢复算法要求：一个由未提交事务更新的数据项，在第一个事务提交或中止之前，不能被任何其他事务修改。</p>
 <h3 id="transaction-rollback">Transaction Rollback<a class="headerlink" href="#transaction-rollback" title="Permanent link">⚓︎</a></h3>
@@ -1406,6 +1458,12 @@
 <li>尽管组提交以略微延迟更新型事务为代价降低了日志开销，但在高频率提交场景下，总体延迟反而会下降；但低频率时这种方法可能得不偿失</li>
 </ul>
 <p>除了在数据库层面进行的优化外，程序员还可以采取一些措施来提升事务提交性能。例如通过<strong>将批量插入合并为单个事务执行</strong>，性能可获得显著提升——多个插入操作对应的日志记录会被集中写入同一页面中，从而使每秒可处理的插入数量成比例增长。</p>
+<details class="example">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<img src="images/lec15/9.gif" width="80%/"/>
+</div>
+</details>
 <h2 id="buffer-management">Buffer Management<a class="headerlink" href="#buffer-management" title="Permanent link">⚓︎</a></h2>
 <h3 id="log-record-buffering">Log-Record Buffering<a class="headerlink" href="#log-record-buffering" title="Permanent link">⚓︎</a></h3>
 <p>到目前为止，我们一直假设每条日志记录在创建时都会被立即写入到稳定存储器中。这一假设给系统执行带来了很大的开销，因为稳定存储器通常以数据块为单位进行写入，而大多数情况下单条日志记录远小于一个数据块。因此每条日志记录的输出实际上会引发物理层面上更大量的写操作。</p>
@@ -1416,11 +1474,97 @@
 <li>在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(&lt;T_i \text{ commit}&gt;\)</span><span class="heti-spacing"> </span></span>日志记录被输出到稳定存储器之前，所有与事务<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(T_i\)</span><span class="heti-spacing"> </span></span>相关的日志记录必须已经输出到稳定存储器中</li>
 <li>在主存中的数据块输出到数据库之前，与该数据块中数据相关的所有日志记录必须已经输出到稳定存储器中——这一规则被称为<strong>写提前日志</strong><span>(write-ahead logging, WAL)<span class="heti-spacing"> </span></span>规则</li>
 </ul>
+<details class="example">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<img src="images/lec15/8.gif" width="80%/"/>
+</div>
+</details>
 <p>这三条规定明确了某些日志记录<strong>必须</strong>输出到稳定存储器的情形。<strong>提前</strong>输出日志记录不会引发问题。因此，系统认为有必要将日志记录输出到稳定存储器时，如果主存中有足够的日志记录来填满一个块，它就会输出整块日志记录；若不足以填满块，则将所有主存中的日志记录合并为部分填充的块并输出至稳定存储器中。</p>
 <p>将缓冲的日志写入硬盘的操作有时被称为<strong>日志强制</strong>(log force)。</p>
-<h3 id="database-buffering">Database Buffering<a class="headerlink" href="#database-buffering" title="Permanent link">⚓︎</a></h3>
-<p>有人可能会认为事务提交时，应将所有修改过的块强制写入磁盘——这种策略称为<strong>强制策略</strong>(force policy)。而另一种<strong>非强制策略</strong><span>(no-force policy)<span class="heti-spacing"> </span></span>则允许事务即使修改了某些尚未写回磁盘的块，也能提交成功。本章介绍的所有恢复算法即使在无强制策略下仍能正确运行。该策略不仅能更快提交事务，还允许多次更新累积在一个数据块后，再写入到稳定存储器中，这可大幅减少频繁更新的数据块的输出操作次数。因此大多数系统采用的标准方案正是<strong>非强制策略</strong>。</p>
-<p>同理，有人可能认为由活跃事务所修改的区块不应被写入磁盘——即<strong>非窃取策略</strong>(no-steal policy)。其替代方案<strong>窃取策略</strong><span>(steal policy)<span class="heti-spacing"> </span></span>则允许系统将已修改的数据块写入到硬盘，即便执行这些修改的事务尚未全部提交。只要遵循<strong>写提前日志</strong><span>(WAL)<span class="heti-spacing"> </span></span>规则，本章研究的所有恢复算法即使在窃取策略下仍能正确运作。此外非窃取策略无法处理执行大量更新的事务：缓冲区可能被无法驱逐到硬盘的已更新页面占满，导致事务停滞不前。因此大多数系统采用的标准方案正是<strong>窃取策略</strong>。</p>
+<h3 id="buffer-pool-management-policies">Buffer Pool Management Policies<a class="headerlink" href="#buffer-pool-management-policies" title="Permanent link">⚓︎</a></h3>
+<p><span>DBMS<span class="heti-spacing"> </span></span>需要保证：</p>
+<ul>
+<li>一旦<span class="heti-skip"><span class="heti-spacing"> </span>DBMS<span class="heti-spacing"> </span></span>提交了事务，该事务的改变一定要持久存在</li>
+<li>如果事务被中止，那么该事务的任何改变都不得存在于数据库中</li>
+</ul>
+<p>为此，<span>DBMS<span class="heti-spacing"> </span></span>会从以下两个角度考虑缓存池的管理策略：</p>
+<ul>
+<li><strong>窃取策略</strong><span>(steal policy)<span class="heti-spacing"> </span></span>规定了<span class="heti-skip"><span class="heti-spacing"> </span>DBMS<span class="heti-spacing"> </span></span>是否允许未提交的事务覆盖非易失性存储器（硬盘）中对象的最新已提交值。<ul>
+<li>分为<span class="heti-skip"><span class="heti-spacing"> </span>STEAL<span class="heti-spacing"> </span></span>和<span><span class="heti-spacing"> </span>NO-STEAL</span></li>
+</ul>
+</li>
+<li><strong>强制策略</strong><span>(force policy)<span class="heti-spacing"> </span></span>规定了<span class="heti-skip"><span class="heti-spacing"> </span>DBMS<span class="heti-spacing"> </span></span>是否要求事务在允许提交之前，必须将所有更新内容写入非易失性存储器（硬盘）中。<ul>
+<li>分为<span class="heti-skip"><span class="heti-spacing"> </span>FORCE<span class="heti-spacing"> </span></span>和<span><span class="heti-spacing"> </span>NO-FORCE</span></li>
+</ul>
+</li>
+</ul>
+<p>最简单的缓存池管理策略称为 <strong>NO-STEAL + FORCE</strong>。在该策略下，</p>
+<ul>
+<li>DBMS <strong>无需撤销</strong>已中止事务的更改，因为这些更改并未写入硬盘</li>
+<li>同时它也<strong>无需重做</strong>已提交事务的更改，因为所有变更都确保在提交时写入硬盘</li>
+</ul>
+<details class="example">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<img src="images/lec15/5.png" width="80%/"/>
+</div>
+</details>
+<p>该策略的局限在于：事务所需修改的所有数据必须能够完全被内存容纳。若无法满足此条件，则该事务将无法执行，因为<span class="heti-skip"><span class="heti-spacing"> </span>DBMS<span class="heti-spacing"> </span></span>不允许在事务提交前将脏页写入硬盘。此外，更频繁的写操作也可能加速<span class="heti-skip"><span class="heti-spacing"> </span>SSD<span class="heti-spacing"> </span></span>等存储设备的磨损。</p>
+<details class="info">
+<summary>影子页</summary>
+<p><strong>影子页</strong><span>(shadow paging)<span class="heti-spacing"> </span></span>技术是对<span class="heti-skip"><span class="heti-spacing"> </span>NO-STEAL + FORCE<span class="heti-spacing"> </span></span>方案的一种改进：<span>DBMS<span class="heti-spacing"> </span></span>在写入时复制页，因而得到两个独立的数据库版本：</p>
+<ul>
+<li>主版本<span><span class="heti-spacing"> </span>(master)</span>：仅包含来自提交事务的改变</li>
+<li>影子版本<span><span class="heti-spacing"> </span>(shadow)</span>：还包含未提交事务改变的临时数据库</li>
+</ul>
+<p>更新仅在影子副本中进行。当事务提交时，影子副本会以原子方式切换成为新的主版本。旧的主版本最终会被垃圾回收机制清理。</p>
+<p>具体实现为：</p>
+<ul>
+<li><span>DBMS<span class="heti-spacing"> </span></span>将数据库的页组织成树状结构，其中根节点为单个硬盘页</li>
+<li>该树存在两个副本：主版本与影子版本；根节点始终指向当前的主版本</li>
+<li>执行事务时，只改变影子版本的内容</li>
+<li>当一个事务准备提交时，<span>DBMS<span class="heti-spacing"> </span></span>必须应用其更新；为此只需覆写根节点，使其指向数据库的影子版本，从而实现主版本与影子版本的切换</li>
+<li>在覆写根节点之前，该事务的所有更新都不属于硬盘驻留数据库的组成部分；而一旦完成根节点覆写，该事务的全部更新便成为硬盘驻留数据库的一部分</li>
+<li>这种对根节点的覆写操作能以原子方式完成</li>
+</ul>
+<details class="example">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<img src="images/lec15/6.gif" width="80%/"/>
+</div>
+</details>
+<p>对应的恢复措施为：</p>
+<ul>
+<li>撤销：移除影子页，保留主版本和数据库根指针</li>
+<li>重做：无需重做</li>
+</ul>
+<div class="admonition bug">
+<p class="admonition-title">缺点</p>
+<ul>
+<li>复制整个页表的开销很大。<ul>
+<li>实际上，只需复制树中通向更新叶节点的路径，没有必要复制整棵树。</li>
+</ul>
+</li>
+<li>影子页的提交开销也很高：提交操作需要刷新页表、根页面及每个被修改的页面。<ul>
+<li>这种方法会导致大量随机非连续页面的写入操作，同时引发数据碎片化问题，因为潜在关联的数据可能分散在不同页面间。</li>
+<li>该机制还需垃圾回收功能：当数据更新时，指向旧页面的引用会失效，必须更新这些引用以确保没有页面指向未更新的陈旧数据</li>
+</ul>
+</li>
+<li>仅支持单次单写事务或批量事务处理。</li>
+</ul>
+</div>
+</details>
+<p>前面介绍到的<span class="heti-skip"><span class="heti-spacing"> </span>WAL<span class="heti-spacing"> </span></span>采用的缓存池策略是<span><span class="heti-spacing"> </span>STEAL + NO-FORCE</span>。</p>
+<p>下图从窃取和强制这两个维度来总结这些策略的特点：</p>
+<div style="text-align: center">
+<img src="images/lec15/7.png" width="90%/"/>
+</div>
+<div style="text-align: center">
+<img src="images/lec15/10.png" width="80%/"/>
+</div>
+<p>实际上，几乎所有的<span class="heti-skip"><span class="heti-spacing"> </span>DBMS<span class="heti-spacing"> </span></span>采用的都是<span class="heti-skip"><span class="heti-spacing"> </span>STEAL + NO-FORCE<span class="heti-spacing"> </span></span>策略。</p>
+<hr/>
 <p>当需要将块<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(B_1\)</span><span class="heti-spacing"> </span></span>输出到硬盘时，所有涉及<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(B_1\)</span><span class="heti-spacing"> </span></span>中数据的日志记录必须在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(B_1\)</span><span class="heti-spacing"> </span></span>被输出前写入稳定存储器中。关键是在块输出过程中，不能存在对该块的写操作，否则可能违反写提前日志规则。通过以下特殊锁机制可确保无进行中的写操作：</p>
 <ul>
 <li>事务执行数据项写入前，必须获取该数据项所在块的<strong>排他锁</strong>，更新完成后立即释放锁。</li>
@@ -1456,9 +1600,31 @@
 <p>虽然这两种方案都存在缺陷（除非专门设计支持数志要求的<span><span class="heti-spacing"> </span>OS</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，实际仍须择其一而行之<heti-adjacent class="heti-adjacent-half">。</heti-adjacent>（第<span class="heti-skip"><span class="heti-spacing"> </span>19<span class="heti-spacing"> </span></span>章恢复系统<span class="heti-skip"><span class="heti-spacing"> </span>930<span class="heti-spacing"> </span></span>节）</p>
 <h3 id="fuzzy-checkpointing">Fuzzy Checkpointing<a class="headerlink" href="#fuzzy-checkpointing" title="Permanent link">⚓︎</a></h3>
 <p>前面提到的检查点技术要求在进行检查点的过程中，所有对数据库的更新操作必须暂时停止。如果缓冲区中的页面数量庞大，完成一个检查点可能需要较长时间，这会导致事务处理出现不可接受的中断。</p>
+<details class="info">
+<summary>稍微更好一点的检查点方案</summary>
+<p>与之前的检查点方案类似，不同之处在于<span class="heti-skip"><span class="heti-spacing"> </span>DBMS<span class="heti-spacing"> </span></span>无需等待活跃事务执行完毕。系统需要记录的是检查点开始时的内部状态：</p>
+<ul>
+<li>暂停所有新事务的启动</li>
+<li>在创建检查点时冻结现有事务</li>
+</ul>
+<p>该过程需记录起始时刻的内部系统状态，因此要包含两个核心组件：追踪运行中事务的<strong>活跃事务表</strong>(active transaction table, ATT)，以及记录所有尚未写入硬盘的被修改页的<strong>脏页表</strong>(dirty page table, DPT)。</p>
+<p>在设立检查点时，这些表会捕获数据库的当前状态。在执行恢复操作时（例如采用<a href="#aries"><span class="heti-skip"><span class="heti-spacing"> </span>ARIES<span class="heti-spacing"> </span></span></a>协议<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，这些表格为数据库恢复到崩溃前的一致性状态起到辅助作用。</p>
+<details class="example">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<img src="images/lec15/15.png" width="40%/"/>
+</div>
+</details>
+</details>
 <p>为避免此类中断，我们可以改进原有的检查点技术：允许在写入检查点记录后、但修改过的缓冲区块尚未写入硬盘前就恢复更新操作。这样得到的检查点称为<strong>模糊检查点</strong>(fuzzy checkpoints)。</p>
 <p>由于只有在检查点记录写入后，数据页才会被输出到硬盘中，因此系统可能在所有页都写入之前就崩溃了。所以硬盘上的检查点可能是不完整的。处理不完整检查点的一种方法如下：将最后一个完成的检查点记录在日志中的位置存储在硬盘上的一个固定位置，即最后检查点。系统在写入检查点记录时不会更新此信息。相反，在写入检查点记录之前，它创建一个包含所有已修改缓存块的列表。只有当列表中的所有缓冲区块都已输出到磁盘后，才会更新最后检查点信息。</p>
 <p>即使在模糊检查点中，缓存块在输出到硬盘时也不应该被更新，尽管其他缓存块可以同时更新。必须遵循写提前日志协议，以确保与块相关的（撤销）日志记录在块输出之前位于稳定存储器中。</p>
+<details class="example">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<img src="images/lec15/16.png" width="40%/"/>
+</div>
+</details>
 <h2 id="failure-with-loss-of-non-volatile-storage">Failure with Loss of Non-Volatile Storage<a class="headerlink" href="#failure-with-loss-of-non-volatile-storage" title="Permanent link">⚓︎</a></h2>
 <p>迄今为止，我们仅讨论了故障导致易失性存储器信息丢失的情况。尽管导致非易失性存储器数据丢失的故障极为罕见，但我们仍需做好应对准备，所以本节就来探讨这个问题。</p>
 <p>一种简单的应对方案是定期将数据库全部内容<strong>转储</strong><span>(dump)<span class="heti-spacing"> </span></span>至稳定存储器。当发生导致物理数据库的数据块损毁的故障时，系统可利用最近一次的转储拷贝，将数据库恢复到之前某个一致状态。完成这个操作后，再通过日志使数据库系统达到最新的一致状态。</p>
@@ -1586,8 +1752,8 @@
 </li>
 </ol>
 <h2 id="aries">ARIES<a class="headerlink" href="#aries" title="Permanent link">⚓︎</a></h2>
-<p>在一众恢复方法中，最先进的便是 <strong>ARIES</strong>。它运用多项新技术来缩短恢复耗时，并降低检查点操作的开销。其独到之处在于能规避对已执行日志操作的冗余重做，同时精简日志记录量。这种设计虽以更高的复杂度为代价，但其带来的优势完全值得这样的投入。</p>
-<p>相较于前文所述的恢复算法，<span>ARIES<span class="heti-spacing"> </span></span>的差异体现在：</p>
+<p>在一众恢复方法中，最先进的便是 <a href="https://en.wikipedia.org/wiki/Algorithms_for_Recovery_and_Isolation_Exploiting_Semantics"><strong>ARIES</strong></a>（全称<span><span class="heti-spacing"> </span>Algorithms for Recovery and Isolation Exploiting Semantics</span>，利用语义的恢复和隔离算法<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。它运用多项新技术来缩短恢复耗时，并降低检查点操作的开销。其独到之处在于能规避对已执行日志操作的冗余重做，同时精简日志记录量。这种设计虽以更高的复杂度为代价，但其带来的优势完全值得这样的投入。</p>
+<p><span>ARIES<span class="heti-spacing"> </span></span>利用到了以下技术：</p>
 <ul>
 <li>使用<strong>日志序列号</strong><span>(log sequence number, LSN)<span class="heti-spacing"> </span></span>来标识日志记录，并将<span class="heti-skip"><span class="heti-spacing"> </span>LSN<span class="heti-spacing"> </span></span>存储在数据库页中，以确定哪些操作已应用于数据库页上。</li>
 <li>支持<strong>生理重做</strong><span>(physiological redo)<span class="heti-spacing"> </span></span>操作，这种操作在物理层面上表现为受影响页面被实际标识，但在页面内部可以具有逻辑性。</li>
@@ -1597,21 +1763,67 @@
 <p>下面将详细介绍<span class="heti-skip"><span class="heti-spacing"> </span>ARIES<span class="heti-spacing"> </span></span>的工作机制。</p>
 <h3 id="data-structures">Data Structures<a class="headerlink" href="#data-structures" title="Permanent link">⚓︎</a></h3>
 <p><span>ARIES<span class="heti-spacing"> </span></span>中的每条日志记录都有一个唯一的 <strong>LSN</strong>。这个编号看起来仅仅是一个逻辑标识符，实际上<span class="heti-skip"><span class="heti-spacing"> </span>LSN<span class="heti-spacing"> </span></span>的生成方式使其也能用于定位硬盘上的日志记录。通常，<span>ARIES<span class="heti-spacing"> </span></span>会将日志分割成多个日志文件，每个文件都有各自的文件编号。当某个日志文件增长到一定限制时，<span>ARIES<span class="heti-spacing"> </span></span>会将后续的日志记录追加至新的日志文件中；新文件的编号比前一个文件高<span><span class="heti-spacing"> </span>1</span>。因此，<span>LSN<span class="heti-spacing"> </span></span>由<strong>文件编号</strong>和该文件内的<strong>偏移量</strong>组成。</p>
-<p>每个页还维护着一个称为 <strong>PageLSN</strong> 的标识符。每当页面上发生更新操作（无论是物理还是生理操作）时，该操作会将其对应日志记录的<span class="heti-skip"><span class="heti-spacing"> </span>LSN<span class="heti-spacing"> </span></span>存储在该页面的<span class="heti-skip"><span class="heti-spacing"> </span>PageLSN<span class="heti-spacing"> </span></span>字段中。在恢复的重做阶段，任何<span class="heti-skip"><span class="heti-spacing"> </span>LSN<span class="heti-spacing"> </span></span>小于或等于页的<span class="heti-skip"><span class="heti-spacing"> </span>PageLSN<span class="heti-spacing"> </span></span>值的日志记录都不应再对该页面执行操作——因为这些操作的影响已体现在当前页上。结合稍后将介绍的、将<span class="heti-skip"><span class="heti-spacing"> </span>PageLSN<span class="heti-spacing"> </span></span>作为检查点组成部分的记录方案后，<span>ARIES<span class="heti-spacing"> </span></span>甚 至能避免读取那些已反映硬盘上所有相关操作的页数据，从而显著缩短恢复时间。</p>
-<p><span>PageLSN<span class="heti-spacing"> </span></span>对于确保在生理重做操作存在时的幂等性至关重要，因为对于已经应用过生理重做的页，再次执行该操作可能导致页的内容发生错误变更。</p>
+<p>每个页还维护着一个称为 <strong>PageLSN</strong> 的标识符：</p>
+<ul>
+<li>每当页面上发生更新操作（无论是物理还是生理操作）时，该操作会将其对应日志记录的<span class="heti-skip"><span class="heti-spacing"> </span>LSN<span class="heti-spacing"> </span></span>存储在该页面的<span class="heti-skip"><span class="heti-spacing"> </span>PageLSN<span class="heti-spacing"> </span></span>字段中</li>
+<li>在恢复的重做阶段，任何<span class="heti-skip"><span class="heti-spacing"> </span>LSN<span class="heti-spacing"> </span></span>小于或等于页的<span class="heti-skip"><span class="heti-spacing"> </span>PageLSN<span class="heti-spacing"> </span></span>值的日志记录都不应再对该页面执行操作——因为这些操作的影响已体现在当前页上</li>
+<li>结合稍后将介绍的、将<span class="heti-skip"><span class="heti-spacing"> </span>PageLSN<span class="heti-spacing"> </span></span>作为检查点组成部分的记录方案后，<span>ARIES<span class="heti-spacing"> </span></span>甚至能避免读取那些已反映硬盘上所有相关操作的页数据，从而显著缩短恢复时间</li>
+<li><span>PageLSN<span class="heti-spacing"> </span></span>对于确保在生理重做操作存在时的幂等性至关重要，因为对于已经应用过生理重做的页，再次执行该操作可能导致页的内容发生错误变更</li>
+</ul>
+<p>此外，<span>DBMS<span class="heti-spacing"> </span></span>还会记录目前已刷写到硬盘的最大的日志序列号，记作 <strong>flushedLSN</strong>。每当<span class="heti-skip"><span class="heti-spacing"> </span>DBMS<span class="heti-spacing"> </span></span>将日志缓冲区写入硬盘时，内存中的<span class="heti-skip"><span class="heti-spacing"> </span>flushedLSN<span class="heti-spacing"> </span></span>就会随之更新。</p>
 <p>当正在更新某个页时，不应将其刷新至硬盘中，因为无法基于硬盘上的页的部分更新状态重新执行生理操作。因此，<span>ARIES<span class="heti-spacing"> </span></span>采用缓存页上的锁存<span class="heti-skip"><span class="heti-spacing"> </span>(latch)<span class="heti-spacing"> </span></span>来防止正在更新的缓存页被写入硬盘中。该系统仅在更新完成且相关日志记录写入日志后，才会释放缓存页锁存。</p>
 <p>每条日志记录还包含同一事务中前一条日志记录的<span><span class="heti-spacing"> </span>LSN</span>，该值存储在 <strong>PrevLSN</strong> 字段中，这样无需读取整个日志，就可逆向获取事务的所有日志记录。</p>
 <p>在<span class="heti-skip"><span class="heti-spacing"> </span>ARIES<span class="heti-spacing"> </span></span>系统中，事务回滚期间会生成特殊的仅重做日志记录——<strong>补偿日志记录</strong>(compensation log records, CLR)，其作用等同于前面介绍的恢复方案中的仅重做日志记录。此外，<span>CLR<span class="heti-spacing"> </span></span>还承担了方案中操作中止日志记录的职能：这类记录增设了 <strong>UndoNextLSN</strong> 字段，用于在事务回滚时标记下一个待撤销操作的<span><span class="heti-spacing"> </span>LSN</span>。此字段功能等同于前面介绍的恢复方案中操作中止日志记录的操作标识符，用于跳过已回滚的日志记录。</p>
-<p><strong>DirtyPageTable</strong> 记录了数据库缓冲区中被修改过的页列表。针对每个页，表中存储<span class="heti-skip"><span class="heti-spacing"> </span>PageLSN<span class="heti-spacing"> </span></span>及 <strong>RecLSN</strong> 字段（用于识别已应用到硬盘页版本的日志记录<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。当某个页首次在缓存池中被修改并加入到<span class="heti-skip"><span class="heti-spacing"> </span>DirtyPageTable<span class="heti-spacing"> </span></span>时，<span>RecLSN<span class="heti-spacing"> </span></span>值被设为当前日志末尾；而每当页面被刷写到硬盘后，该页便从<span class="heti-skip"><span class="heti-spacing"> </span>DirtyPageTable<span class="heti-spacing"> </span></span>中移除。</p>
-<p><strong>检查点日志记录</strong><span>(checkpoint-log record)<span class="heti-spacing"> </span></span>包括了<span class="heti-skip"><span class="heti-spacing"> </span>DirtyPageTable<span class="heti-spacing"> </span></span>和活跃事务列表。对于每个事务，检查点日志记录还会标注<span><span class="heti-spacing"> </span>LastLSN</span>。硬盘上的固定位置同样会标注最近一次（完整）检查点日志记录的<span><span class="heti-spacing"> </span>LSN</span>。</p>
-<p>下图展示了<span class="heti-skip"><span class="heti-spacing"> </span>ARIES<span class="heti-spacing"> </span></span>算法中使用的部分数据结构示意图：</p>
-<div style="text-align: center">
-<img src="images/lec15/3.png" width="70%/"/>
+<details class="example">
+<summary>例子</summary>
+<p>利用<span class="heti-skip"><span class="heti-spacing"> </span>CLR<span class="heti-spacing"> </span></span>实现事务中止：</p>
+<p></p><div style="text-align: center">
+<img src="images/lec15/14.gif" width="80%/"/>
 </div>
-<ul>
-<li>图中显示的每条日志记录都以其<span class="heti-skip"><span class="heti-spacing"> </span>LSN<span class="heti-spacing"> </span></span>作为前缀；在实际实现中，这些<span class="heti-skip"><span class="heti-spacing"> </span>LSN<span class="heti-spacing"> </span></span>可能不会显式存储，而是通过日志中的位置推断得出。</li>
-<li>通过比较缓冲区内某个页的<span class="heti-skip"><span class="heti-spacing"> </span>PageLSN<span class="heti-spacing"> </span></span>与稳定存储器中对应页的<span><span class="heti-spacing"> </span>PageLSN</span>，可以观察到<span class="heti-skip"><span class="heti-spacing"> </span>DirtyPageTable<span class="heti-spacing"> </span></span>包含了所有自从稳定存储器提取后被修改过的缓存页的条目。<span>DirtyPageTable<span class="heti-spacing"> </span></span>中的<span class="heti-skip"><span class="heti-spacing"> </span>RecLSN<span class="heti-spacing"> </span></span>条目反映了该页加入脏页表时位于日志末尾的<span><span class="heti-spacing"> </span>LSN</span>，且该值会大于或等于稳定存储器中对应页面的<span><span class="heti-spacing"> </span>PageLSN</span>。</li>
-</ul>
+</details>
+<p><strong>DirtyPageTable</strong>（<strong>脏页表</strong>）记录了数据库缓冲区中被修改过的页列表。针对每个页，表中存储<span class="heti-skip"><span class="heti-spacing"> </span>PageLSN<span class="heti-spacing"> </span></span>及 <strong>RecLSN</strong> 字段（用于识别已应用到硬盘页版本的日志记录<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。当某个页首次在缓存池中被修改并加入到<span class="heti-skip"><span class="heti-spacing"> </span>DirtyPageTable<span class="heti-spacing"> </span></span>时，<span>RecLSN<span class="heti-spacing"> </span></span>值被设为当前日志末尾；而每当页面被刷写到硬盘后，该页便从<span class="heti-skip"><span class="heti-spacing"> </span>DirtyPageTable<span class="heti-spacing"> </span></span>中移除。</p>
+<p><strong>检查点日志记录</strong><span>(checkpoint-log record)<span class="heti-spacing"> </span></span>包括了<span class="heti-skip"><span class="heti-spacing"> </span>DirtyPageTable<span class="heti-spacing"> </span></span>和活跃事务列表。对于每个事务，检查点日志记录还会标注<span><span class="heti-spacing"> </span>LastLSN</span>。硬盘上的固定位置同样会标注最近一次（完整）检查点日志记录的<span><span class="heti-spacing"> </span>LSN</span>。</p>
+<p>下表列出一些常见的<span class="heti-skip"><span class="heti-spacing"> </span>LSN<span class="heti-spacing"> </span></span>以及它们各自的作用：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">名称</th>
+<th style="text-align: left;">位置</th>
+<th style="text-align: left;">定义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">flushedLSN</td>
+<td style="text-align: left;">内存</td>
+<td style="text-align: left;">硬盘日志中的最后的<span><span class="heti-spacing"> </span>LSN</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">pageLSN</td>
+<td style="text-align: left;">page_x</td>
+<td style="text-align: left;"><span>page_x<span class="heti-spacing"> </span></span>的最新更新</td>
+</tr>
+<tr>
+<td style="text-align: left;">recLSN</td>
+<td style="text-align: left;">脏页表</td>
+<td style="text-align: left;">自上一次刷洗后<span class="heti-skip"><span class="heti-spacing"> </span>page_x<span class="heti-spacing"> </span></span>中的最旧更新</td>
+</tr>
+<tr>
+<td style="text-align: left;">lastLSN</td>
+<td style="text-align: left;">活跃事务表</td>
+<td style="text-align: left;">事务<span class="heti-skip"><span class="heti-spacing"> </span>T_i<span class="heti-spacing"> </span></span>中最新的记录</td>
+</tr>
+<tr>
+<td style="text-align: left;">MasterRecord</td>
+<td style="text-align: left;">硬盘</td>
+<td style="text-align: left;">最新检查点的<span><span class="heti-spacing"> </span>LSN</span></td>
+</tr>
+</tbody>
+</table>
+<p>下图展示了这些<span class="heti-skip"><span class="heti-spacing"> </span>LSN<span class="heti-spacing"> </span></span>在<span class="heti-skip"><span class="heti-spacing"> </span>WAL<span class="heti-spacing"> </span></span>日志记录中的分布：</p>
+<div style="text-align: center">
+<img src="images/lec15/12.png" width="90%/"/>
+</div>
 <h3 id="recovery-algorithm_1">Recovery Algorithm<a class="headerlink" href="#recovery-algorithm_1" title="Permanent link">⚓︎</a></h3>
 <p>恢复算法分为三个阶段：</p>
 <ul>
@@ -1619,6 +1831,9 @@
 <li><strong>重做阶段</strong>(redo pass)：从分析确定的起始点开始，执行重做操作，重现历史记录，使数据库恢复到崩溃前的状态。</li>
 <li><strong>撤销阶段</strong>(undo pass)：回滚所有在崩溃时未完成的事务。</li>
 </ul>
+<div style="text-align: center">
+<img src="images/lec15/17.png" width="50%/"/>
+</div>
 <p>下面具体介绍每个阶段。</p>
 <h4 id="analysis-pass">Analysis Pass<a class="headerlink" href="#analysis-pass" title="Permanent link">⚓︎</a></h4>
 <ul>
@@ -1635,6 +1850,12 @@
 <li>分析阶段还会跟踪撤销列表中各事务的最后一条记录，供撤销阶段使用。</li>
 <li>当发现针对某页的更新操作日志时，分析阶段会同步更新<span><span class="heti-spacing"> </span>DirtyPageTable</span>：若该页面未在<span class="heti-skip"><span class="heti-spacing"> </span>DirtyPageTable<span class="heti-spacing"> </span></span>中登记，则将其加入，并设置该页面的<span class="heti-skip"><span class="heti-spacing"> </span>RecLSN<span class="heti-spacing"> </span></span>为当前日志记录的<span class="heti-skip"><span class="heti-spacing"> </span>LSN<span class="heti-spacing"> </span></span>值。</li>
 </ul>
+<details class="example">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<img src="images/lec15/18.gif" width="80%/"/>
+</div>
+</details>
 <h4 id="redo-pass">Redo Pass<a class="headerlink" href="#redo-pass" title="Permanent link">⚓︎</a></h4>
 <p>重做阶段通过重放所有尚未反映在硬盘页的操作来重复历史。该阶段从<span class="heti-skip"><span class="heti-spacing"> </span>RedoLSN<span class="heti-spacing"> </span></span>开始向前扫描日志，每当发现更新日志记录时，会执行以下操作：</p>
 <ul>
@@ -1650,10 +1871,23 @@
 <li>对于非<span class="heti-skip"><span class="heti-spacing"> </span>CLR<span class="heti-spacing"> </span></span>类型的其他日志记录，则通过其<span class="heti-skip"><span class="heti-spacing"> </span>PrevLSN<span class="heti-spacing"> </span></span>字段确定下一条需撤消的记录位置。</li>
 </ul>
 <p>在每次中断后继续处理时，系统会选择所有处于撤消列表内的事务中最大的“下条待处理<span><span class="heti-spacing"> </span>LSN</span>”作为下一步的操作对象。</p>
-<p>下图展示了某个采用<span class="heti-skip"><span class="heti-spacing"> </span>ARIES<span class="heti-spacing"> </span></span>恢复方案的例子：</p>
-<div style="text-align: center">
+<details class="example">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"/><input id="__tabbed_1_2" name="__tabbed_1" type="radio"/><div class="tabbed-labels"><label for="__tabbed_1_1">例<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span></label><label for="__tabbed_1_2">例<span><span class="heti-spacing"> </span>2</span></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
 <img src="images/lec15/4.png" width="70%/"/>
 </div>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec15/19.gif" width="80%/"/>
+</div>
+</div>
+</div>
+</div>
+</details>
 <h3 id="other-features">Other Features<a class="headerlink" href="#other-features" title="Permanent link">⚓︎</a></h3>
 <p><span>ARIES<span class="heti-spacing"> </span></span>还有以下特点：</p>
 <ul>
