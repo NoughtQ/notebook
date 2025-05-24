@@ -738,12 +738,146 @@
 </a>
 <h1 id="chap-3-interpolation-and-polynomial-approximation">Chap 3: Interpolation and Polynomial Approximation<a class="headerlink" href="#chap-3-interpolation-and-polynomial-approximation" title="Permanent link">⚓︎</a></h1>
 <div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
-<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>3389<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>17<span class="heti-spacing"> </span></span>分钟</p>
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>4812<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>24<span class="heti-spacing"> </span></span>分钟</p>
+</div>
+<p>如果函数<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(y = f(x)\)</span><span class="heti-spacing"> </span></span>的计算过于复杂，或者甚至是未知的，一种近似求解的办法是首先在一组点序列<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x_0, \dots, x_n\)</span><span class="heti-spacing"> </span></span>上获取一组函数值<span><span class="heti-spacing"> </span><span class="arithmatex">\(y_0 = f(x_0), \dots, y_n = f(x_n)\)</span></span>，然后根据这些值构造一个相对简单的近似函数<span><span class="heti-spacing"> </span><span class="arithmatex">\(g(x) \approx f(x)\)</span></span>。</p>
+<p>如果<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(g(x)\)</span><span class="heti-spacing"> </span></span>满足<span><span class="heti-spacing"> </span><span class="arithmatex">\(\forall\ i = 0, \dots, n, g(x_i) = f(x_i)\)</span></span>，我们称<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(g(x)\)</span><span class="heti-spacing"> </span></span>为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f(x)\)</span><span class="heti-spacing"> </span></span>的<strong>插值函数</strong>(interpolating function)。最常用的插值函数是<strong>代数多项式</strong>(algebraic polynomials)。</p>
+<div style="text-align: center">
+<img src="images/C3/4.png" width="80%/"/>
 </div>
 <h2 id="interpolation-and-the-lagrange-polynomial">Interpolation and the Lagrange Polynomial<a class="headerlink" href="#interpolation-and-the-lagrange-polynomial" title="Permanent link">⚓︎</a></h2>
+<p>目标：找到<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span><span class="heti-spacing"> </span></span>阶多项式<span><span class="heti-spacing"> </span><span class="arithmatex">\(P_n(x) = a_0 + a_1 x + \dots + a_n x^n\)</span></span>，使得<span><span class="heti-spacing"> </span><span class="arithmatex">\(\forall\ i = 0, \dots, n, P_n(x_i) = y_i\)</span></span>。</p>
+<blockquote>
+<p>注：对任何<span><span class="heti-spacing"> </span><span class="arithmatex">\(i \ne j\)</span></span>，必须满足<span><span class="heti-spacing"> </span><span class="arithmatex">\(x_i \ne x_j\)</span></span></p>
+</blockquote>
+<p>当<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n = 1\)</span><span class="heti-spacing"> </span></span>时：给定<span><span class="heti-spacing"> </span><span class="arithmatex">\(x_0, x_1; y_0, y_1\)</span></span>。找到<span><span class="heti-spacing"> </span><span class="arithmatex">\(P_1(x) = a_0 + a_1 x\)</span></span>，使得<span><span class="heti-spacing"> </span><span class="arithmatex">\(P_1(x_0) = y_0, P_1(x_1) = y_1\)</span></span>。此时<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(P_1(x)\)</span><span class="heti-spacing"> </span></span>是一个经过给定两点<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\((x_0, y_0), (x_1, y_1)\)</span><span class="heti-spacing"> </span></span>的<strong>线函数</strong>(line function)，即：</p>
+<div class="arithmatex">\[
+\begin{align}
+P_1(x) &amp; = y_0 + \dfrac{y_1 - y_0}{x_1 - x_0}(x - x_0) \notag \\
+&amp; = \underbrace{\Big(\dfrac{x - x_1}{x_0 - x_1}\Big)}_{\textcolor{red}{L_{1, 0}}(x)} y_0 + \underbrace{\Big(\dfrac{x - x_0}{x_1 - x_0}\Big)}_{\textcolor{red}{L_{1, 1}}(x)} y_0 = \sum\limits_{i=0}^1 \textcolor{red}{L_{1, i}}(x)y_i \notag
+\end{align}
+\]</div>
+<p>其中标红的项被称为<strong>拉格朗日基</strong>(Lagrange Basis)，它满足：<span class="arithmatex">\(L_{1, i}(x_j) = \delta_{ij}\)</span>（称为<span class="heti-skip"><span class="heti-spacing"> </span>Kronecker<span class="heti-spacing"> </span></span>增量）</p>
+<hr/>
+<p>当<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n \ge 1\)</span><span class="heti-spacing"> </span></span>时：我们要寻找<span><span class="heti-spacing"> </span><span class="arithmatex">\(L_{n, i}(x)\ (i = 0, \dots, n)\)</span></span>，使得<span><span class="heti-spacing"> </span><span class="arithmatex">\(L_{n, i} (x_j) = \delta_{ij}\)</span></span>。然后令<span><span class="heti-spacing"> </span><span class="arithmatex">\(P_n(x) = \sum\limits_{i=0}^n L_{n, i}(x) y_i\)</span></span>。因此<span><span class="heti-spacing"> </span><span class="arithmatex">\(P_n(x_i) = y_i\)</span></span>。</p>
+<p>每个<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(L_{n, i}\)</span><span class="heti-spacing"> </span></span>都有<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span><span class="heti-spacing"> </span></span>个根<span><span class="heti-spacing"> </span><span class="arithmatex">\(x_0 \dots \widehat{x_i} \dots x_n\)</span></span>。可以得到：</p>
+<div class="arithmatex">\[
+L_{n, j}(x) = C_i (x - x_0) \dots (\widehat{x - x_i}) \dots (x - x_n) = C_i \prod\limits_{\substack{j \ne i \\ j = 0}}^n (x - x_j)
+\]</div>
+<p>当<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(L_{n, i}(x_i) = 1\)</span><span class="heti-spacing"> </span></span>时，<span class="arithmatex">\(C_i = \prod\limits_{j \ne i} \dfrac{1}{x_i - x_j}\)</span></p>
+<div class="arithmatex">\[
+L_{n, i}(x) = \prod\limits_{\substack{j \ne i \\ j = 0}}^n \dfrac{(x - x_j)}{(x_i - x_j)} \Rightarrow P_n(x) = \sum\limits_{i=0}^n L_{n, i}(x) y_i
+\]</div>
+<p>这里的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(P_n(x)\)</span><span class="heti-spacing"> </span></span>就是<strong>第<span class="heti-skip"><span class="heti-spacing"> </span>n<span class="heti-spacing"> </span></span>拉格朗日插值多项式</strong>(n-th Lagrange interpolating polynomial)。</p>
+<div class="admonition theorem">
+<p class="admonition-title">定理</p>
+<p>如果<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x_0, x_1, \dots, x_n\)</span><span class="heti-spacing"> </span></span>是<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n + 1\)</span><span class="heti-spacing"> </span></span>个不同的数，且用函数<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f\)</span><span class="heti-spacing"> </span></span>得到这<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n + 1\)</span><span class="heti-spacing"> </span></span>数对应的函数值，那么第<span class="heti-skip"><span class="heti-spacing"> </span>n<span class="heti-spacing"> </span></span>拉格朗日插值多项式就是<strong>唯一的</strong>。</p>
+<details class="proof">
+<summary>证明</summary>
+<p>（反证法）如果不是唯一的没那么存在两个多项式<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(P_n(x)\)</span><span class="heti-spacing"> </span></span>和<span><span class="heti-spacing"> </span><span class="arithmatex">\(Q_n(x)\)</span></span>，它们都满足插值条件。这样我们可以得到一个多项式<span><span class="heti-spacing"> </span><span class="arithmatex">\(D(x) = P_n(x) - Q_n(x)\)</span></span>，它的阶数<span><span class="heti-spacing"> </span><span class="arithmatex">\(\le n\)</span></span>。但<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(D(x)\)</span><span class="heti-spacing"> </span></span>有<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n + 1\)</span><span class="heti-spacing"> </span></span>个不同的根<span><span class="heti-spacing"> </span><span class="arithmatex">\(x_0, x_1, \dots, x_n\)</span></span>，这和它的阶数条件矛盾。因此假设不成立，这样就证明了多项式的唯一性。</p>
+</details>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注</p>
+<p>插值多项式不是唯一的，除非它的阶数被约束在不超过<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span><span class="heti-spacing"> </span></span>的范围内。</p>
+<p>相应的反例就是<span><span class="heti-spacing"> </span><span class="arithmatex">\(P(x) = L_n(x) + p(x) \prod\limits_{i=0}^n (x - x_i)\)</span></span>，其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(p(x)\)</span><span class="heti-spacing"> </span></span>可以是任意阶数的多项式。</p>
+</div>
+<hr/>
+<p>下面我们来分析余项<span><span class="heti-spacing"> </span>(remainder)</span>：假如<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(a \le x_0 &lt; x_1 &lt; \dots &lt; x_n \le b\)</span><span class="heti-spacing"> </span></span>且<span><span class="heti-spacing"> </span><span class="arithmatex">\(f \in C^{n+1} [a, b]\)</span></span>。考虑截断误差<span><span class="heti-spacing"> </span><span class="arithmatex">\(R_n(x) = f(x) - P_n(x)\)</span></span></p>
+<details class="theorem">
+<summary>罗尔定理</summary>
+<p>如果<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\varphi(x)\)</span><span class="heti-spacing"> </span></span>足够平滑，且<span><span class="heti-spacing"> </span><span class="arithmatex">\(\varphi(x_0) = \varphi(x_1) = 0\)</span></span>，那么<span><span class="heti-spacing"> </span><span class="arithmatex">\(\exists \xi \in (x_0, x_1)\)</span></span>，使得<span><span class="heti-spacing"> </span><span class="arithmatex">\(\varphi'(\xi) = 0\)</span></span>。</p>
+<p>一般来说，如果<span><span class="heti-spacing"> </span><span class="arithmatex">\(\varphi(x_0) = \varphi(x_1) \varphi(x_2) = 0\)</span></span>，使得<span><span class="heti-spacing"> </span><span class="arithmatex">\(\varphi'(\xi_0) = \varphi'(\xi_1) = 0\)</span></span>，那么<span><span class="heti-spacing"> </span><span class="arithmatex">\(\exists \xi \in (\xi_0, \xi_1)\)</span></span>，使得<span><span class="heti-spacing"> </span><span class="arithmatex">\(\varphi''(\xi) = 0\)</span></span></p>
+<p>同理，<span class="arithmatex">\(\varphi(x_0) = \dots = \varphi(x_n) = 0 \Rightarrow \exists \xi \in (a, b)\)</span>，使得<span><span class="heti-spacing"> </span><span class="arithmatex">\(\xi^{(n)}(\xi) = 0\)</span></span></p>
+</details>
+<p><span><span class="arithmatex">\(R_n(x)\)</span><span class="heti-spacing"> </span></span>至少有<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n + 1\)</span><span class="heti-spacing"> </span></span>个根<span><span class="heti-spacing"> </span><span class="arithmatex">\(\Rightarrow R_n(x) = K(x) \prod\limits_{i=0}^n (x - x_i)\)</span></span> </p>
+<p>修正任何<span><span class="heti-spacing"> </span><span class="arithmatex">\(x \ne x_i\ (i = 0, \dots, n)\)</span></span>。定义为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(t \in [a, b]\)</span><span class="heti-spacing"> </span></span>定义函数<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(g\)</span><span class="heti-spacing"> </span></span>为：</p>
+<div class="arithmatex">\[
+g(t) = R_n(t) - K(x) \prod\limits_{i=0}^n (t - x_i)
+\]</div>
+<p><span><span class="arithmatex">\(g(x)\)</span><span class="heti-spacing"> </span></span>有<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n + 2\)</span><span class="heti-spacing"> </span></span>个不同的根<span><span class="heti-spacing"> </span><span class="arithmatex">\(x_0, \dots, x_n, x\ \Rightarrow g^{(n+1)}(\xi_x) = 0, \xi_x \in (a, b)\)</span></span></p>
+<div class="arithmatex">\[
+\begin{align}
+&amp; f^{(n+1)}(\xi_x) - \cancel{P_n^{(n+1)}(\xi_x)} - K(x)(n+1)! = R_n^{(n+1)}(\xi_x) - K(x)(n+1)! \notag \\
+&amp; \Rightarrow K(x) = \dfrac{f^{(n+1)}(\xi_x)}{(n+1)!} \notag
+\end{align}
+\]</div>
+<p>因此<span><span class="heti-spacing"> </span><span class="arithmatex">\(R(x) = \dfrac{f^{(n+1)}(\xi_x)}{(n+1)!} \prod\limits_{i=0}^n (x - x_i)\)</span></span></p>
+<div class="admonition note">
+<p class="admonition-title">注</p>
+<ul>
+<li>因为大多数情况下<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\xi_x\)</span><span class="heti-spacing"> </span></span>无法确定，因此我们会获取<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f^{(n+1)}\)</span><span class="heti-spacing"> </span></span>的上界。也就是说，得到一个估计值<span><span class="heti-spacing"> </span><span class="arithmatex">\(M_{n+1}\)</span></span>，满足<span><span class="heti-spacing"> </span><span class="arithmatex">\(\forall\ x \in (a, b),\ |f^{(n+1)}(x)| \le M_{n+1}\)</span></span>，并且取<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\dfrac{M_{n+1}}{(n+1)!} \prod\limits_{i=0}^n |x - x_i|\)</span><span class="heti-spacing"> </span></span>为总误差的上界。</li>
+<li>对于任意阶数<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\le n\)</span><span class="heti-spacing"> </span></span>的多项式函数<span><span class="heti-spacing"> </span><span class="arithmatex">\(f\)</span></span>，插值多项式是精确的，因为<span><span class="heti-spacing"> </span><span class="arithmatex">\(f^{(n+1)}(x) \equiv 0\)</span></span>。</li>
+</ul>
+</div>
+<details class="question" open="open">
+<summary>Quiz</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"/><input id="__tabbed_1_2" name="__tabbed_1" type="radio"/><div class="tabbed-labels"><label for="__tabbed_1_1">题目</label><label for="__tabbed_1_2">答案</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/C3/5.png" width="90%/"/>
+</div>
+</div>
+<div class="tabbed-block">
+<p>A</p>
+</div>
+</div>
+</div>
+</details>
+<details class="question" open="open">
+<summary>讨论</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"/><input id="__tabbed_2_2" name="__tabbed_2" type="radio"/><div class="tabbed-labels"><label for="__tabbed_2_1">题目</label><label for="__tabbed_2_2">解答</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>假设为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f(x) = e^x\ (x \in [0, 1])\)</span><span class="heti-spacing"> </span></span>做一个表格，表格中的每一项精确到<span class="heti-skip"><span class="heti-spacing"> </span>8<span class="heti-spacing"> </span></span>位小数，并且步幅为<span><span class="heti-spacing"> </span><span class="arithmatex">\(h\)</span></span>。对于绝对误差不超过<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(10^{-6}\)</span><span class="heti-spacing"> </span></span>的线性插值，<span><span class="arithmatex">\(h\)</span><span class="heti-spacing"> </span></span>应该是多少？</p>
+</div>
+<div class="tabbed-block">
+<div class="admonition warning">
+<p class="admonition-title">注意</p>
+<p>答案由<span class="heti-skip"><span class="heti-spacing"> </span>Gemini 2.5 Pro<span class="heti-spacing"> </span></span>生成。</p>
+</div>
+<p>我们需要确定步长<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(h\)</span><span class="heti-spacing"> </span></span>的值，使得对于函数<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f(x) = e^x\)</span><span class="heti-spacing"> </span></span>在区间<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\([0, 1]\)</span><span class="heti-spacing"> </span></span>上的线性插值，其绝对误差不超过<span><span class="heti-spacing"> </span><span class="arithmatex">\(10^{-6}\)</span></span>。表格条目的精度为小数点后<span class="heti-skip"><span class="heti-spacing"> </span>8<span class="heti-spacing"> </span></span>位。</p>
+<p><strong><span>1.<span class="heti-spacing"> </span></span>线性插值总误差</strong></p>
+<p>线性插值的总误差<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(E_{total}\)</span><span class="heti-spacing"> </span></span>由两部分组成：截断误差<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(E_{trunc}\)</span><span class="heti-spacing"> </span></span>和由于表格值舍入误差引起的插值误差<span><span class="heti-spacing"> </span><span class="arithmatex">\(E_{roundoff}\)</span></span>。</p>
+<p><span class="arithmatex">\(|E_{total}| \le |E_{trunc}| + |E_{roundoff}|\)</span></p>
+<p><strong><span>2.<span class="heti-spacing"> </span></span>截断误差</strong></p>
+<p>线性插值的截断误差公式为：</p>
+<p><span class="arithmatex">\(|E_{trunc}(x)| = \left| \frac{f''(\xi)}{2!} (x-x_i)(x-x_{i+1}) \right|\)</span></p>
+<p>其中<span><span class="heti-spacing"> </span><span class="arithmatex">\(x_i \le x \le x_{i+1}\)</span></span>，<span class="arithmatex">\(x_{i+1} - x_i = h\)</span>，且<span><span class="heti-spacing"> </span><span class="arithmatex">\(\xi \in (x_i, x_{i+1})\)</span></span>。</p>
+<p>该误差项中的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(|(x-x_i)(x-x_{i+1})|\)</span><span class="heti-spacing"> </span></span>在区间中点<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x = x_i + h/2\)</span><span class="heti-spacing"> </span></span>达到最大值<span><span class="heti-spacing"> </span><span class="arithmatex">\(h^2/4\)</span></span>。</p>
+<p>所以，<span class="arithmatex">\(|E_{trunc}| \le \frac{h^2}{8} \max_{\xi \in [0,1]} |f''(\xi)|\)</span>。</p>
+<p>对于<span><span class="heti-spacing"> </span><span class="arithmatex">\(f(x) = e^x\)</span></span>：</p>
+<p><span class="arithmatex">\(f'(x) = e^x\)</span></p>
+<p><span class="arithmatex">\(f''(x) = e^x\)</span></p>
+<p>在区间<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\([0, 1]\)</span><span class="heti-spacing"> </span></span>上，<span><span class="arithmatex">\(f''(x) = e^x\)</span><span class="heti-spacing"> </span></span>是增函数，其最大值为<span><span class="heti-spacing"> </span><span class="arithmatex">\(f''(1) = e^1 = e\)</span></span>。</p>
+<p>因此，<span class="arithmatex">\(|E_{trunc}| \le \frac{h^2 e}{8}\)</span>。</p>
+<p><strong><span>3.<span class="heti-spacing"> </span></span>舍入误差</strong></p>
+<p>表格条目的精度为小数点后<span class="heti-skip"><span class="heti-spacing"> </span>8<span class="heti-spacing"> </span></span>位，这意味着每个列表值<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f(x_i)\)</span><span class="heti-spacing"> </span></span>的误差<span><span class="heti-spacing"> </span><span class="arithmatex">\(|\epsilon_i| \le 0.5 \times 10^{-8}\)</span></span>。</p>
+<p>线性插值公式为<span><span class="heti-spacing"> </span><span class="arithmatex">\(P_1(x) = L_i(x)f(x_i) + L_{i+1}(x)f(x_{i+1})\)</span></span>，其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(L_i(x) = \frac{x_{i+1}-x}{h}\)</span><span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(L_{i+1}(x) = \frac{x-x_i}{h}\)</span><span class="heti-spacing"> </span></span>是拉格朗日基函数。</p>
+<p>由于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(L_i(x) \ge 0\)</span>, <span class="arithmatex">\(L_{i+1}(x) \ge 0\)</span><span class="heti-spacing"> </span></span>且<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(L_i(x) + L_{i+1}(x) = 1\)</span><span class="heti-spacing"> </span></span>对于<span><span class="heti-spacing"> </span><span class="arithmatex">\(x \in [x_i, x_{i+1}]\)</span></span>，
+由表格值不精确引起的插值误差 <span class="arithmatex">\(|E_{roundoff}|\)</span> 的上界为：</p>
+<p><span class="arithmatex">\(|E_{roundoff}| \le L_i(x)|\epsilon_i| + L_{i+1}(x)|\epsilon_{i+1}| \le (L_i(x) + L_{i+1}(x)) \times (0.5 \times 10^{-8}) = 1 \times 0.5 \times 10^{-8} = 0.5 \times 10^{-8}\)</span>。</p>
+<p><strong><span>4.<span class="heti-spacing"> </span></span>确定步长<span><span class="heti-spacing"> </span><span class="arithmatex">\(h\)</span></span></strong></p>
+<p>总误差必须满足：</p>
+<p><span class="arithmatex">\(\frac{h^2 e}{8} + 0.5 \times 10^{-8} \le 10^{-6}\)</span></p>
+<p><span class="arithmatex">\(\frac{h^2 e}{8} \le 10^{-6} - 0.5 \times 10^{-8}\)</span></p>
+<p><span class="arithmatex">\(\frac{h^2 e}{8} \le 10^{-6} - 0.005 \times 10^{-6}\)</span></p>
+<p><span class="arithmatex">\(\frac{h^2 e}{8} \le 0.995 \times 10^{-6}\)</span></p>
+<p><span class="arithmatex">\(h^2 \le \frac{8 \times 0.995 \times 10^{-6}}{e}\)</span></p>
+<p>使用<span><span class="heti-spacing"> </span><span class="arithmatex">\(e \approx 2.71828\)</span></span>：</p>
+<p><span class="arithmatex">\(h^2 \le \frac{7.96}{e} \times 10^{-6} \approx \frac{7.96}{2.71828} \times 10^{-6} \approx 2.92826 \times 10^{-6}\)</span></p>
+<p><span class="arithmatex">\(h \le \sqrt{2.92826 \times 10^{-6}} \approx 1.7112158 \times 10^{-3}\)</span></p>
+<p>所以，步长<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(h\)</span><span class="heti-spacing"> </span></span>应满足：</p>
+<p><span class="arithmatex">\(h \le 0.0017112\)</span></p>
+<p>为了确保线性插值的绝对误差最多为<span><span class="heti-spacing"> </span><span class="arithmatex">\(10^{-6}\)</span></span>，步长<span><span class="heti-spacing"> </span><span class="arithmatex">\(h\)</span></span> <strong>不应超过<span><span class="heti-spacing"> </span><span class="arithmatex">\(0.0017112\)</span></span></strong>。</p>
+</div>
+</div>
+</div>
+</details>
 <details class="example" open="open">
 <summary>例子</summary>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"/><input id="__tabbed_1_2" name="__tabbed_1" type="radio"/><div class="tabbed-labels"><label for="__tabbed_1_1">题目</label><label for="__tabbed_1_2">解答</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio"/><input id="__tabbed_3_2" name="__tabbed_3" type="radio"/><div class="tabbed-labels"><label for="__tabbed_3_1">题目</label><label for="__tabbed_3_2">解答</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>给定<span><span class="heti-spacing"> </span><span class="arithmatex">\(\sin \dfrac{\pi}{6} = \dfrac{1}{2}, \sin \dfrac{\pi}{4} = \dfrac{1}{\sqrt{2}}, \sin \dfrac{\pi}{3} = \dfrac{\sqrt{3}}{2}\)</span></span>。使用关于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\sin x\)</span><span class="heti-spacing"> </span></span>的线形和二次拉格朗日多项式，计算<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\sin 50 \degree\)</span><span class="heti-spacing"> </span></span>并评估误差。</p>
@@ -931,7 +1065,7 @@ P(x) = f(x_0) + f'(x_0)(x - x_0) + \dots + \dfrac{f^{(m_0)}(x_0)}{m_0!}(x - x_0)
 </div>
 <details class="example" open="open">
 <summary>例子</summary>
-<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"/><input id="__tabbed_2_2" name="__tabbed_2" type="radio"/><div class="tabbed-labels"><label for="__tabbed_2_1">题目</label><label for="__tabbed_2_2">解答</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio"/><input id="__tabbed_4_2" name="__tabbed_4" type="radio"/><div class="tabbed-labels"><label for="__tabbed_4_1">题目</label><label for="__tabbed_4_2">解答</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>假设<span><span class="heti-spacing"> </span><span class="arithmatex">\(x_0 \ne x_1 \ne x_2\)</span></span>。给定<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f(x_0), f(x_1), f(x_2)\)</span><span class="heti-spacing"> </span></span>和<span><span class="heti-spacing"> </span><span class="arithmatex">\(f'(x_1)\)</span></span>，寻找多项式<span><span class="heti-spacing"> </span><span class="arithmatex">\(P(x)\)</span></span>，满足<span><span class="heti-spacing"> </span><span class="arithmatex">\(P(x_i) = f(x_i),\ i = 0, 1, 2\)</span></span>，且<span><span class="heti-spacing"> </span><span class="arithmatex">\(P'(x_1) = f'(x_1)\)</span></span>。并分析误差。</p>
@@ -974,7 +1108,7 @@ P(x) = f(x_0) + f'(x_0)(x - x_0) + \dots + \dfrac{f^{(m_0)}(x_0)}{m_0!}(x - x_0)
 <details class="question">
 <summary>思考</summary>
 </details>
-<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio"/><input id="__tabbed_3_2" name="__tabbed_3" type="radio"/><div class="tabbed-labels"><label for="__tabbed_3_1">题目</label><label for="__tabbed_3_2">答案</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="5:2"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio"/><input id="__tabbed_5_2" name="__tabbed_5" type="radio"/><div class="tabbed-labels"><label for="__tabbed_5_1">题目</label><label for="__tabbed_5_2">答案</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>给定<span><span class="heti-spacing"> </span><span class="arithmatex">\(x_i = i + 1, i = 0, 1, 2, 3, 4, 5\)</span></span>，哪一个是<span><span class="heti-spacing"> </span><span class="arithmatex">\(\hat{h_2}(x)\)</span></span>？</p>
@@ -1000,7 +1134,7 @@ P(x) = f(x_0) + f'(x_0)(x - x_0) + \dots + \dfrac{f^{(m_0)}(x_0)}{m_0!}(x - x_0)
 </details>
 <div class="admonition info">
 <p class="admonition-title">一些尝试</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio"/><input id="__tabbed_4_2" name="__tabbed_4" type="radio"/><div class="tabbed-labels"><label for="__tabbed_4_1"><strong>按段线性插值</strong>(piecewise linear interpolation)</label><label for="__tabbed_4_2"><strong>埃尔米特按段多项式</strong>(Hermite Piecewise Polynomials)</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="6:2"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio"/><input id="__tabbed_6_2" name="__tabbed_6" type="radio"/><div class="tabbed-labels"><label for="__tabbed_6_1"><strong>按段线性插值</strong>(piecewise linear interpolation)</label><label for="__tabbed_6_2"><strong>埃尔米特按段多项式</strong>(Hermite Piecewise Polynomials)</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>思路：在每个子区间<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\([x_i, x_{i+1}]\)</span><span class="heti-spacing"> </span></span>上，通过线性多项式近似表示<span><span class="heti-spacing"> </span><span class="arithmatex">\(f(x)\)</span></span>，即：</p>
