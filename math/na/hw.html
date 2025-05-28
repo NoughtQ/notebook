@@ -714,7 +714,7 @@
 </a>
 <h1 id="homework">Homework<a class="headerlink" href="#homework" title="Permanent link">⚓︎</a></h1>
 <div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
-<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>19301<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>97<span class="heti-spacing"> </span></span>分钟</p>
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>23194<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>116<span class="heti-spacing"> </span></span>分钟</p>
 </div>
 <div class="admonition info">
 <p class="admonition-title">注</p>
@@ -2186,23 +2186,297 @@
 </details>
 </div>
 <div class="admonition question">
-<p class="admonition-title">问题（题号）</p>
-<p>这个出题者很懒，什么都没写。</p>
+<p class="admonition-title">问题（5.4.1）</p>
+<p>Use the Modified Euler method to approximate the solutions to each of the following initial-value problems, and compare the results to the actual values.</p>
+<p>a. <span class="arithmatex">\(y' = te^{3t} - 2y, \quad 0 \le t \le 1, \quad y(0) = 0, \quad \text{with } h = 0.5;\)</span> actual solution <span class="arithmatex">\(y(t) = \frac{1}{5}te^{3t} - \frac{1}{25}e^{3t} + \frac{1}{25}e^{-2t}\)</span>.</p>
 <details class="note">
 <summary>解答</summary>
-<p>注意到<span><span class="heti-spacing"> </span>...</span>，略<span><span class="heti-spacing"> </span>(doge)</span></p>
+<p>我们将使用改进欧拉法（<span>Heun<span class="heti-spacing"> </span></span>法）来求解此初值问题。改进欧拉法的公式如下：</p>
+<p><span class="arithmatex">\(w_0 = y(t_0)\)</span></p>
+<p>对于每一步<span><span class="heti-spacing"> </span><span class="arithmatex">\(i = 0, 1, \dots, N-1\)</span>:</span></p>
+<p><span class="arithmatex">\(K_1 = f(t_i, w_i)\)</span></p>
+<p><span class="arithmatex">\(K_2 = f(t_{i+1}, w_i + h K_1)\)</span></p>
+<p><span class="arithmatex">\(w_{i+1} = w_i + \frac{h}{2}(K_1 + K_2)\)</span></p>
+<p>给定的微分方程为<span><span class="heti-spacing"> </span><span class="arithmatex">\(f(t,y) = te^{3t} - 2y\)</span></span>。</p>
+<p>初始条件为<span><span class="heti-spacing"> </span><span class="arithmatex">\(t_0 = 0, w_0 = y(0) = 0\)</span></span>。</p>
+<p>步长<span><span class="heti-spacing"> </span><span class="arithmatex">\(h = 0.5\)</span></span>。我们需要计算<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(t_1 = 0.5\)</span><span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(t_2 = 1.0\)</span><span class="heti-spacing"> </span></span>处的近似值。</p>
+<p>用到的常数值（近似到<span class="heti-skip"><span class="heti-spacing"> </span>7<span class="heti-spacing"> </span></span>位小数<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
+<p><span class="arithmatex">\(e^{1.5} \approx 4.4816891\)</span></p>
+<p><span class="arithmatex">\(e^{-1} \approx 0.3678794\)</span></p>
+<p><span class="arithmatex">\(e^{3} \approx 20.0855369\)</span></p>
+<p><span class="arithmatex">\(e^{-2} \approx 0.1353353\)</span></p>
+<p><strong>步骤<span class="heti-skip"><span class="heti-spacing"> </span>1:<span class="heti-spacing"> </span></span>计算<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w_1\)</span> (<span class="heti-spacing"> </span></span>即<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(y(0.5)\)</span><span class="heti-spacing"> </span></span>的近似值<span><span class="heti-spacing"> </span>)</span></strong></p>
+<p><span class="arithmatex">\(t_0 = 0, w_0 = 0\)</span>.</p>
+<p><span class="arithmatex">\(K_1 = f(t_0, w_0) = f(0, 0) = 0 \cdot e^{3(0)} - 2(0) = 0\)</span>.</p>
+<p><span class="arithmatex">\(K_2 = f(t_0+h, w_0 + h K_1) = f(0+0.5, 0 + 0.5 \cdot 0) = f(0.5, 0)\)</span>.</p>
+<p><span class="arithmatex">\(K_2 = 0.5 \cdot e^{3(0.5)} - 2(0) = 0.5 e^{1.5} \approx 0.5 \times 4.4816891 \approx 2.24084455\)</span>.</p>
+<p><span class="arithmatex">\(w_1 = w_0 + \frac{h}{2}(K_1 + K_2) = 0 + \frac{0.5}{2}(0 + 2.24084455) = 0.25 \times 2.24084455 \approx 0.5602111\)</span>.</p>
+<p><strong>实际值<span><span class="heti-spacing"> </span><span class="arithmatex">\(y(0.5)\)</span>:</span></strong></p>
+<p><span class="arithmatex">\(y(0.5) = \frac{1}{5}(0.5)e^{3(0.5)} - \frac{1}{25}e^{3(0.5)} + \frac{1}{25}e^{-2(0.5)}\)</span></p>
+<p><span class="arithmatex">\(y(0.5) = 0.1 e^{1.5} - 0.04 e^{1.5} + 0.04 e^{-1} = 0.06 e^{1.5} + 0.04 e^{-1}\)</span>.</p>
+<p><span class="arithmatex">\(y(0.5) \approx 0.06 \times 4.4816891 + 0.04 \times 0.3678794\)</span></p>
+<p><span class="arithmatex">\(y(0.5) \approx 0.26890135 + 0.01471518 \approx 0.2836165\)</span>.</p>
+<p><strong>比较<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w_1\)</span><span class="heti-spacing"> </span></span>和<span><span class="heti-spacing"> </span><span class="arithmatex">\(y(0.5)\)</span>:</span></strong></p>
+<p>近似值<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w_1 \approx 0.56021\)</span>. (<span class="heti-spacing"> </span></span>保留<span class="heti-skip"><span class="heti-spacing"> </span>5<span class="heti-spacing"> </span></span>位小数<span><span class="heti-spacing"> </span>)</span></p>
+<p>实际值<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(y(0.5) \approx 0.28362\)</span>. (<span class="heti-spacing"> </span></span>保留<span class="heti-skip"><span class="heti-spacing"> </span>5<span class="heti-spacing"> </span></span>位小数<span><span class="heti-spacing"> </span>)</span></p>
+<p>绝对误差<span><span class="heti-spacing"> </span><span class="arithmatex">\(|w_1 - y(0.5)| \approx |0.56021 - 0.28362| = 0.27659\)</span>.</span></p>
+<p><strong>步骤<span class="heti-skip"><span class="heti-spacing"> </span>2:<span class="heti-spacing"> </span></span>计算<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w_2\)</span> (<span class="heti-spacing"> </span></span>即<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(y(1.0)\)</span><span class="heti-spacing"> </span></span>的近似值<span><span class="heti-spacing"> </span>)</span></strong></p>
+<p><span><span class="arithmatex">\(t_1 = 0.5, w_1 \approx 0.5602111\)</span> (<span class="heti-spacing"> </span></span>使用上一步更精确的结果进行计算<span><span class="heti-spacing"> </span>).</span></p>
+<p><span class="arithmatex">\(K_1 = f(t_1, w_1) = f(0.5, 0.5602111) = 0.5 e^{3(0.5)} - 2(0.5602111)\)</span>.</p>
+<p><span class="arithmatex">\(K_1 \approx 0.5 \times 4.4816891 - 1.1204222 = 2.24084455 - 1.1204222 \approx 1.12042235\)</span>.</p>
+<p><span class="arithmatex">\(K_2 = f(t_1+h, w_1 + h K_1) = f(1.0, 0.5602111 + 0.5 \times 1.12042235)\)</span>.</p>
+<p><span class="arithmatex">\(w_1 + h K_1 \approx 0.5602111 + 0.560211175 \approx 1.120422275\)</span>.</p>
+<p><span class="arithmatex">\(K_2 = f(1.0, 1.120422275) = 1.0 \cdot e^{3(1.0)} - 2(1.120422275)\)</span>.</p>
+<p><span class="arithmatex">\(K_2 \approx e^3 - 2.24084455 \approx 20.0855369 - 2.24084455 \approx 17.84469235\)</span>.</p>
+<p><span class="arithmatex">\(w_2 = w_1 + \frac{h}{2}(K_1 + K_2) \approx 0.5602111 + \frac{0.5}{2}(1.12042235 + 17.84469235)\)</span>.</p>
+<p><span class="arithmatex">\(w_2 \approx 0.5602111 + 0.25 \times 18.9651147 \approx 0.5602111 + 4.741278675 \approx 5.3014898\)</span>.</p>
+<p><strong>实际值<span><span class="heti-spacing"> </span><span class="arithmatex">\(y(1.0)\)</span>:</span></strong></p>
+<p><span class="arithmatex">\(y(1.0) = \frac{1}{5}(1.0)e^{3(1.0)} - \frac{1}{25}e^{3(1.0)} + \frac{1}{25}e^{-2(1.0)}\)</span></p>
+<p><span class="arithmatex">\(y(1.0) = 0.2 e^3 - 0.04 e^3 + 0.04 e^{-2} = 0.16 e^3 + 0.04 e^{-2}\)</span>.</p>
+<p><span class="arithmatex">\(y(1.0) \approx 0.16 \times 20.0855369 + 0.04 \times 0.1353353\)</span></p>
+<p><span class="arithmatex">\(y(1.0) \approx 3.21368590 + 0.00541341 \approx 3.2190993\)</span>.</p>
+<p><strong>比较<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w_2\)</span><span class="heti-spacing"> </span></span>和<span><span class="heti-spacing"> </span><span class="arithmatex">\(y(1.0)\)</span>:</span></strong></p>
+<p>近似值<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w_2 \approx 5.30149\)</span>. (<span class="heti-spacing"> </span></span>保留<span class="heti-skip"><span class="heti-spacing"> </span>5<span class="heti-spacing"> </span></span>位小数<span><span class="heti-spacing"> </span>)</span></p>
+<p>实际值<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(y(1.0) \approx 3.21910\)</span>. (<span class="heti-spacing"> </span></span>保留<span class="heti-skip"><span class="heti-spacing"> </span>5<span class="heti-spacing"> </span></span>位小数<span><span class="heti-spacing"> </span>)</span></p>
+<p>绝对误差<span><span class="heti-spacing"> </span><span class="arithmatex">\(|w_2 - y(1.0)| \approx |5.30149 - 3.21910| = 2.08239\)</span>.</span></p>
+<p><strong>总结<span><span class="heti-spacing"> </span>:</span></strong></p>
+<p>在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(t=0.5\)</span><span class="heti-spacing"> </span></span>时，改进欧拉法得到的近似值为<span><span class="heti-spacing"> </span><span class="arithmatex">\(w_1 \approx 0.56021\)</span></span>，实际值为<span><span class="heti-spacing"> </span><span class="arithmatex">\(y(0.5) \approx 0.28362\)</span></span>，绝对误差约为<span><span class="heti-spacing"> </span><span class="arithmatex">\(0.27659\)</span></span>。</p>
+<p>在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(t=1.0\)</span><span class="heti-spacing"> </span></span>时，改进欧拉法得到的近似值为<span><span class="heti-spacing"> </span><span class="arithmatex">\(w_2 \approx 5.30149\)</span></span>，实际值为<span><span class="heti-spacing"> </span><span class="arithmatex">\(y(1.0) \approx 3.21910\)</span></span>，绝对误差约为<span><span class="heti-spacing"> </span><span class="arithmatex">\(2.08239\)</span></span>。</p>
+<p>由于步长<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(h=0.5\)</span><span class="heti-spacing"> </span></span>相对较大，且函数<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(te^{3t}\)</span><span class="heti-spacing"> </span></span>增长迅速，导致近似误差较大。</p>
 </details>
 </div>
 <div class="admonition question">
-<p class="admonition-title">问题（题号）</p>
-<p>这个出题者很懒，什么都没写。</p>
+<p class="admonition-title">问题（5.4.10）</p>
+<ol>
+<li>Repeat Exercise 1 using the Runge-Kutta method of order four.</li>
+</ol>
+<p>Referring to Exercise 1.a:</p>
+<p>1.a. <span class="arithmatex">\(y' = te^{3t} - 2y, \quad 0 \le t \le 1, \quad y(0) = 0, \quad \text{with } h = 0.5;\)</span> actual solution <span class="arithmatex">\(y(t) = \frac{1}{5}te^{3t} - \frac{1}{25}e^{3t} + \frac{1}{25}e^{-2t}\)</span>.</p>
 <details class="note">
 <summary>解答</summary>
-<p>注意到<span><span class="heti-spacing"> </span>...</span>，略<span><span class="heti-spacing"> </span>(doge)</span></p>
+<p>我们将使用四阶龙格<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>库塔<span class="heti-skip"><span class="heti-spacing"> </span>(RK4)<span class="heti-spacing"> </span></span>方法来求解此初值问题。</p>
+<p><span>RK4<span class="heti-spacing"> </span></span>方法的公式如下：</p>
+<p><span class="arithmatex">\(w_0 = y(t_0)\)</span></p>
+<p>对于每一步<span><span class="heti-spacing"> </span><span class="arithmatex">\(i = 0, 1, \dots, N-1\)</span>:</span></p>
+<p><span class="arithmatex">\(k_1 = f(t_i, w_i)\)</span></p>
+<p><span class="arithmatex">\(k_2 = f(t_i + \frac{h}{2}, w_i + \frac{h}{2}k_1)\)</span></p>
+<p><span class="arithmatex">\(k_3 = f(t_i + \frac{h}{2}, w_i + \frac{h}{2}k_2)\)</span></p>
+<p><span class="arithmatex">\(k_4 = f(t_i + h, w_i + hk_3)\)</span></p>
+<p><span class="arithmatex">\(w_{i+1} = w_i + \frac{h}{6}(k_1 + 2k_2 + 2k_3 + k_4)\)</span></p>
+<p>给定的微分方程为<span><span class="heti-spacing"> </span><span class="arithmatex">\(f(t,y) = te^{3t} - 2y\)</span></span>。</p>
+<p>初始条件为<span><span class="heti-spacing"> </span><span class="arithmatex">\(t_0 = 0, w_0 = y(0) = 0\)</span></span>。</p>
+<p>步长<span><span class="heti-spacing"> </span><span class="arithmatex">\(h = 0.5\)</span></span>。我们需要计算<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(t_1 = 0.5\)</span><span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(t_2 = 1.0\)</span><span class="heti-spacing"> </span></span>处的近似值。</p>
+<p>用到的常数值<span class="heti-skip"><span class="heti-spacing"> </span>(<span class="heti-spacing"> </span></span>近似到相关位数<span><span class="heti-spacing"> </span>)</span>：</p>
+<p><span class="arithmatex">\(e^{0.75} \approx 2.117000\)</span></p>
+<p><span class="arithmatex">\(e^{1.5} \approx 4.481689\)</span></p>
+<p><span class="arithmatex">\(e^{2.25} \approx 9.487736\)</span></p>
+<p><span class="arithmatex">\(e^{3} \approx 20.085537\)</span></p>
+<p><span class="arithmatex">\(e^{-1} \approx 0.367879\)</span></p>
+<p><span class="arithmatex">\(e^{-2} \approx 0.135335\)</span></p>
+<p><strong>步骤<span class="heti-skip"><span class="heti-spacing"> </span>1:<span class="heti-spacing"> </span></span>计算<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w_1\)</span> (<span class="heti-spacing"> </span></span>即<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(y(0.5)\)</span><span class="heti-spacing"> </span></span>的近似值<span><span class="heti-spacing"> </span>)</span></strong></p>
+<p><span class="arithmatex">\(t_0 = 0, w_0 = 0, h = 0.5\)</span>.</p>
+<p><span class="arithmatex">\(k_1 = f(0, 0) = 0 \cdot e^0 - 2(0) = 0\)</span>.</p>
+<p><span class="arithmatex">\(k_2 = f(0 + 0.25, 0 + 0.25 \cdot 0) = f(0.25, 0) = 0.25 e^{0.75} \approx 0.25 \times 2.117000 \approx 0.529250\)</span>.</p>
+<p><span class="arithmatex">\(k_3 = f(0.25, 0 + 0.25 \cdot k_2) = f(0.25, 0.25 \times 0.529250) = f(0.25, 0.132313)\)</span>.</p>
+<p><span class="arithmatex">\(k_3 = 0.25 e^{0.75} - 2(0.132313) \approx 0.529250 - 0.264626 \approx 0.264624\)</span>.</p>
+<p><span class="arithmatex">\(k_4 = f(0 + 0.5, 0 + 0.5 \cdot k_3) = f(0.5, 0.5 \times 0.264624) = f(0.5, 0.132312)\)</span>.</p>
+<p><span class="arithmatex">\(k_4 = 0.5 e^{1.5} - 2(0.132312) \approx 0.5 \times 4.481689 - 0.264624 \approx 2.240845 - 0.264624 \approx 1.976221\)</span>.</p>
+<p><span class="arithmatex">\(w_1 = w_0 + \frac{h}{6}(k_1 + 2k_2 + 2k_3 + k_4)\)</span></p>
+<p><span class="arithmatex">\(w_1 = 0 + \frac{0.5}{6}(0 + 2(0.529250) + 2(0.264624) + 1.976221)\)</span></p>
+<p><span class="arithmatex">\(w_1 = \frac{0.5}{6}(1.058500 + 0.529248 + 1.976221) = \frac{0.5}{6}(3.563969) \approx 0.296997\)</span>.</p>
+<p><strong>实际值<span><span class="heti-spacing"> </span><span class="arithmatex">\(y(0.5)\)</span>:</span></strong></p>
+<p><span class="arithmatex">\(y(0.5) = 0.06 e^{1.5} + 0.04 e^{-1} \approx 0.06 \times 4.481689 + 0.04 \times 0.367879\)</span></p>
+<p><span class="arithmatex">\(y(0.5) \approx 0.268901 + 0.014715 \approx 0.283616\)</span>.</p>
+<p><strong>比较<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w_1\)</span><span class="heti-spacing"> </span></span>和<span><span class="heti-spacing"> </span><span class="arithmatex">\(y(0.5)\)</span>:</span></strong></p>
+<p>近似值<span><span class="heti-spacing"> </span><span class="arithmatex">\(w_1 \approx 0.296997\)</span>.</span></p>
+<p>实际值<span><span class="heti-spacing"> </span><span class="arithmatex">\(y(0.5) \approx 0.283616\)</span>.</span></p>
+<p>绝对误差<span><span class="heti-spacing"> </span><span class="arithmatex">\(|w_1 - y(0.5)| \approx |0.296997 - 0.283616| = 0.013381\)</span>.</span></p>
+<p><strong>步骤<span class="heti-skip"><span class="heti-spacing"> </span>2:<span class="heti-spacing"> </span></span>计算<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w_2\)</span> (<span class="heti-spacing"> </span></span>即<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(y(1.0)\)</span><span class="heti-spacing"> </span></span>的近似值<span><span class="heti-spacing"> </span>)</span></strong></p>
+<p><span class="arithmatex">\(t_1 = 0.5, w_1 \approx 0.296997\)</span>.</p>
+<p><span class="arithmatex">\(k_1 = f(0.5, w_1) = 0.5 e^{1.5} - 2(0.296997) \approx 2.240845 - 0.593994 \approx 1.646851\)</span>.</p>
+<p><span class="arithmatex">\(k_2 = f(0.5 + 0.25, w_1 + 0.25 k_1) = f(0.75, 0.296997 + 0.25 \times 1.646851)\)</span>.</p>
+<p><span class="arithmatex">\(w_1 + 0.25 k_1 \approx 0.296997 + 0.411713 \approx 0.708710\)</span>.</p>
+<p><span class="arithmatex">\(k_2 = 0.75 e^{2.25} - 2(0.708710) \approx 0.75 \times 9.487736 - 1.417420 \approx 7.115802 - 1.417420 \approx 5.698382\)</span>.</p>
+<p><span class="arithmatex">\(k_3 = f(0.75, w_1 + 0.25 k_2) = f(0.75, 0.296997 + 0.25 \times 5.698382)\)</span>.</p>
+<p><span class="arithmatex">\(w_1 + 0.25 k_2 \approx 0.296997 + 1.424596 \approx 1.721593\)</span>.</p>
+<p><span class="arithmatex">\(k_3 = 0.75 e^{2.25} - 2(1.721593) \approx 7.115802 - 3.443186 \approx 3.672616\)</span>.</p>
+<p><span class="arithmatex">\(k_4 = f(0.5 + 0.5, w_1 + 0.5 k_3) = f(1.0, 0.296997 + 0.5 \times 3.672616)\)</span>.</p>
+<p><span class="arithmatex">\(w_1 + 0.5 k_3 \approx 0.296997 + 1.836308 \approx 2.133305\)</span>.</p>
+<p><span class="arithmatex">\(k_4 = 1.0 e^3 - 2(2.133305) \approx 20.085537 - 4.266610 \approx 15.818927\)</span>.</p>
+<p><span class="arithmatex">\(w_2 = w_1 + \frac{h}{6}(k_1 + 2k_2 + 2k_3 + k_4)\)</span></p>
+<p><span class="arithmatex">\(w_2 \approx 0.296997 + \frac{0.5}{6}(1.646851 + 2(5.698382) + 2(3.672616) + 15.818927)\)</span></p>
+<p><span class="arithmatex">\(w_2 \approx 0.296997 + \frac{0.5}{6}(1.646851 + 11.396764 + 7.345232 + 15.818927)\)</span></p>
+<p><span class="arithmatex">\(w_2 \approx 0.296997 + \frac{0.5}{6}(36.207774) \approx 0.296997 + 3.0173145 \approx 3.314312\)</span>.</p>
+<p><strong>实际值<span><span class="heti-spacing"> </span><span class="arithmatex">\(y(1.0)\)</span>:</span></strong></p>
+<p><span class="arithmatex">\(y(1.0) = 0.16 e^3 + 0.04 e^{-2} \approx 0.16 \times 20.085537 + 0.04 \times 0.135335\)</span></p>
+<p><span class="arithmatex">\(y(1.0) \approx 3.213686 + 0.005413 \approx 3.219099\)</span>.</p>
+<p><strong>比较<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w_2\)</span><span class="heti-spacing"> </span></span>和<span><span class="heti-spacing"> </span><span class="arithmatex">\(y(1.0)\)</span>:</span></strong></p>
+<p>近似值<span><span class="heti-spacing"> </span><span class="arithmatex">\(w_2 \approx 3.314312\)</span>.</span></p>
+<p>实际值<span><span class="heti-spacing"> </span><span class="arithmatex">\(y(1.0) \approx 3.219099\)</span>.</span></p>
+<p>绝对误差<span><span class="heti-spacing"> </span><span class="arithmatex">\(|w_2 - y(1.0)| \approx |3.314312 - 3.219099| = 0.095213\)</span>.</span></p>
+<p><strong>总结<span><span class="heti-spacing"> </span>:</span></strong></p>
+<p>使用四阶龙格<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>库塔方法：</p>
+<p>在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(t=0.5\)</span><span class="heti-spacing"> </span></span>时，近似值为<span><span class="heti-spacing"> </span><span class="arithmatex">\(w_1 \approx 0.296997\)</span></span>，实际值为<span><span class="heti-spacing"> </span><span class="arithmatex">\(y(0.5) \approx 0.283616\)</span></span>，绝对误差约为<span><span class="heti-spacing"> </span><span class="arithmatex">\(0.013381\)</span></span>。</p>
+<p>在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(t=1.0\)</span><span class="heti-spacing"> </span></span>时，近似值为<span><span class="heti-spacing"> </span><span class="arithmatex">\(w_2 \approx 3.314312\)</span></span>，实际值为<span><span class="heti-spacing"> </span><span class="arithmatex">\(y(1.0) \approx 3.219099\)</span></span>，绝对误差约为<span><span class="heti-spacing"> </span><span class="arithmatex">\(0.095213\)</span></span>。</p>
+<p>与改进欧拉法相比，四阶龙格<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>库塔方法在相同步长下通常能提供更高的精度。</p>
 </details>
 </div>
 <div class="admonition question">
-<p class="admonition-title">问题（题号）</p>
+<p class="admonition-title">问题（5.4.13）</p>
+<p>Show that the Midpoint method, the Modified Euler method, and Heun's method give the same approximations to the initial-value problem</p>
+<p><span class="arithmatex">\(y' = -y + t + 1, \quad 0 \le t \le 1, \quad y(0) = 1,\)</span></p>
+<p>for any choice of <span class="arithmatex">\(h\)</span>. Why is this true?</p>
+<details class="note">
+<summary>解答</summary>
+<p>设<span><span class="heti-spacing"> </span><span class="arithmatex">\(f(t,y) = -y + t + 1\)</span></span>。初始条件为<span><span class="heti-spacing"> </span><span class="arithmatex">\(w_0 = y(0) = 1\)</span></span>。令<span><span class="heti-spacing"> </span><span class="arithmatex">\(f_i = f(t_i, w_i)\)</span></span>。</p>
+<ol>
+<li>中点法<span><span class="heti-spacing"> </span>(Midpoint Method):</span></li>
+</ol>
+<p>中点法的公式为：</p>
+<p><span class="arithmatex">\(w_{i+1} = w_i + h f(t_i + \frac{h}{2}, w_i + \frac{h}{2} f(t_i, w_i))\)</span></p>
+<p>令<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(t_{mid} = t_i + \frac{h}{2}\)</span><span class="heti-spacing"> </span></span>且<span><span class="heti-spacing"> </span><span class="arithmatex">\(y_{mid} = w_i + \frac{h}{2} f_i = w_i + \frac{h}{2}(-w_i + t_i + 1)\)</span></span>。</p>
+<p>则：</p>
+<p><span class="arithmatex">\(f(t_{mid}, y_{mid}) = -y_{mid} + t_{mid} + 1\)</span></p>
+<p><span class="arithmatex">\(= -(w_i + \frac{h}{2}(-w_i + t_i + 1)) + (t_i + \frac{h}{2}) + 1\)</span></p>
+<p><span class="arithmatex">\(= -w_i - \frac{h}{2}(-w_i + t_i + 1) + t_i + \frac{h}{2} + 1\)</span></p>
+<p><span class="arithmatex">\(= (-w_i + t_i + 1) - \frac{h}{2}(-w_i + t_i + 1) + \frac{h}{2}\)</span></p>
+<p><span class="arithmatex">\(= f_i - \frac{h}{2}f_i + \frac{h}{2}\)</span></p>
+<p>所以，对于中点法：</p>
+<p><span class="arithmatex">\(w_{i+1}^{(Midpoint)} = w_i + h \left( f_i - \frac{h}{2}f_i + \frac{h}{2} \right) = w_i + hf_i - \frac{h^2}{2}f_i + \frac{h^2}{2}\)</span></p>
+<ol>
+<li>休恩法<span><span class="heti-spacing"> </span>(Heun's Method):</span></li>
+</ol>
+<p>休恩法的公式为：</p>
+<p><span class="arithmatex">\(k_1 = f(t_i, w_i) = f_i\)</span></p>
+<p><span class="arithmatex">\(k_2 = f(t_{i+1}, w_i + h k_1) = f(t_i+h, w_i + h f_i)\)</span></p>
+<p><span class="arithmatex">\(w_{i+1} = w_i + \frac{h}{2}(k_1 + k_2)\)</span></p>
+<p>计算<span><span class="heti-spacing"> </span><span class="arithmatex">\(k_2\)</span></span>：</p>
+<p><span class="arithmatex">\(k_2 = -(w_i + h f_i) + (t_i+h) + 1\)</span></p>
+<p><span class="arithmatex">\(= -w_i - h f_i + t_i + h + 1\)</span></p>
+<p><span class="arithmatex">\(= (-w_i + t_i + 1) - h f_i + h\)</span></p>
+<p><span class="arithmatex">\(= f_i - h f_i + h\)</span></p>
+<p>所以，对于休恩法：</p>
+<p><span class="arithmatex">\(w_{i+1}^{(Heun)} = w_i + \frac{h}{2}(f_i + (f_i - h f_i + h))\)</span></p>
+<p><span class="arithmatex">\(= w_i + \frac{h}{2}(2f_i - h f_i + h)\)</span></p>
+<p><span class="arithmatex">\(= w_i + hf_i - \frac{h^2}{2}f_i + \frac{h^2}{2}\)</span></p>
+<p><strong>比较结果<span><span class="heti-spacing"> </span>:</span></strong></p>
+<p>比较<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w_{i+1}^{(Midpoint)}\)</span><span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w_{i+1}^{(Heun)}\)</span><span class="heti-spacing"> </span></span>的表达式，我们发现它们是完全相同的：</p>
+<p><span class="arithmatex">\(w_{i+1}^{(Midpoint)} = w_i + hf_i - \frac{h^2}{2}f_i + \frac{h^2}{2}\)</span></p>
+<p><span class="arithmatex">\(w_{i+1}^{(Heun)} = w_i + hf_i - \frac{h^2}{2}f_i + \frac{h^2}{2}\)</span></p>
+<p>因此，对于给定的初值问题，中点法和休恩法给出相同的近似值。</p>
+<p><strong>改进欧拉法<span><span class="heti-spacing"> </span>(Modified Euler Method):</span></strong></p>
+<p>“改进欧拉法”通常是“休恩法”的另一个名称。如果这里“改进欧拉法”指的是休恩法，那么它自然也给出相同的近似值。在某些文献中，它也可能指中点法，这种情况下结论依然成立。如果它指的是某个其他二阶龙格<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>库塔方法，如下文所述，结论对于这类线性<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f(t,y)\)</span><span class="heti-spacing"> </span></span>仍然成立。</p>
+<p><strong>原因分析<span><span class="heti-spacing"> </span>(Why is this true?):</span></strong></p>
+<p>这种一致性的原因是函数<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f(t,y) = -y + t + 1\)</span><span class="heti-spacing"> </span></span>是一个关于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(t\)</span><span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(y\)</span><span class="heti-spacing"> </span></span>的线性函数。这意味着它的二阶及更高阶偏导数均为零：</p>
+<p><span class="arithmatex">\(\frac{\partial f}{\partial t} = f_t = 1\)</span></p>
+<p><span class="arithmatex">\(\frac{\partial f}{\partial y} = f_y = -1\)</span></p>
+<p><span class="arithmatex">\(\frac{\partial^2 f}{\partial t^2} = f_{tt} = 0\)</span></p>
+<p><span class="arithmatex">\(\frac{\partial^2 f}{\partial t \partial y} = f_{ty} = 0\)</span></p>
+<p><span class="arithmatex">\(\frac{\partial^2 f}{\partial y^2} = f_{yy} = 0\)</span></p>
+<p>中点法和休恩法都是二阶龙格<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>库塔<span class="heti-skip"><span class="heti-spacing"> </span>(RK2)<span class="heti-spacing"> </span></span>方法。对于一个一般的两阶段、二阶显式龙格<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>库塔方法：</p>
+<p><span class="arithmatex">\(k_1 = f(t_i, w_i)\)</span></p>
+<p><span class="arithmatex">\(k_2 = f(t_i + c_2 h, w_i + a_{21} h k_1)\)</span></p>
+<p><span class="arithmatex">\(w_{i+1} = w_i + h(b_1 k_1 + b_2 k_2)\)</span></p>
+<p>其满足二阶条件：<span class="arithmatex">\(b_1+b_2=1\)</span>, <span class="arithmatex">\(b_2 c_2 = 1/2\)</span>, <span class="arithmatex">\(b_2 a_{21} = 1/2\)</span>。</p>
+<p>当<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f(t,y)\)</span><span class="heti-spacing"> </span></span>的二阶偏导数为零时，<span><span class="arithmatex">\(k_2\)</span><span class="heti-spacing"> </span></span>的泰勒展开式为：</p>
+<p><span class="arithmatex">\(k_2 = f(t_i, w_i) + (c_2 h) f_t(t_i, w_i) + (a_{21} h k_1) f_y(t_i, w_i) = f_i + h(c_2 f_t + a_{21} f_y f_i)\)</span></p>
+<p>于是：</p>
+<p><span class="arithmatex">\(w_{i+1} = w_i + h(b_1 f_i + b_2 [f_i + h(c_2 f_t + a_{21} f_y f_i)])\)</span></p>
+<p><span class="arithmatex">\(w_{i+1} = w_i + h(b_1+b_2)f_i + h^2 b_2(c_2 f_t + a_{21} f_y f_i)\)</span></p>
+<p>利用二阶条件，上式简化为：</p>
+<p><span class="arithmatex">\(w_{i+1} = w_i + h f_i + h^2 (\frac{1}{2} f_t + \frac{1}{2} f_y f_i) = w_i + h f_i + \frac{h^2}{2}(f_t + f_y f_i)\)</span></p>
+<p>对于<span><span class="heti-spacing"> </span><span class="arithmatex">\(f(t,y) = -y + t + 1\)</span></span>，我们有<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f_t = 1\)</span><span class="heti-spacing"> </span></span>和<span><span class="heti-spacing"> </span><span class="arithmatex">\(f_y = -1\)</span></span>。代入上式：</p>
+<p><span class="arithmatex">\(w_{i+1} = w_i + h f_i + \frac{h^2}{2}(1 - f_i)\)</span></p>
+<p>这与我们之前为中点法和休恩法推导出的表达式<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w_i + hf_i - \frac{h^2}{2}f_i + \frac{h^2}{2}\)</span><span class="heti-spacing"> </span></span>是相同的。
+由于所有满足二阶条件的这类方法（包括中点法、休恩法，以及通常意义下的改进欧拉法）在 <span class="arithmatex">\(f(t,y)\)</span> 是线性函数时都会简化成相同的迭代表达式，因此它们对这个问题给出相同的近似解，与步长 <span class="arithmatex">\(h\)</span> 的选择无关。</p>
+</details>
+</div>
+<div class="admonition question">
+<p class="admonition-title">问题（5.6.10）</p>
+<p>Derive Eq. (5.36) and its local truncation error by using an appropriate form of an interpolating polynomial.</p>
+<p>Equation (5.36) Adams-Moulton Two-Step Implicit Method:</p>
+<p><span class="arithmatex">\(w_0 = \alpha, \quad w_1 = \alpha_1,\)</span></p>
+<p><span class="arithmatex">\(w_{i+1} = w_i + \frac{h}{12}[5 f(t_{i+1}, w_{i+1}) + 8 f(t_i, w_i) - f(t_{i-1}, w_{i-1})], \quad (5.36)\)</span></p>
+<p>where <span class="arithmatex">\(i=1, 2, \dots, N-1\)</span>. The local truncation error is <span class="arithmatex">\(\tau_{i+1}(h) = -\frac{1}{24}y^{(4)}(\mu_i)h^3\)</span>, for some <span class="arithmatex">\(\mu_i \in (t_{i-1}, t_{i+1})\)</span>.</p>
+<details class="note">
+<summary>解答</summary>
+<p>我们通过积分<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(y'(t) = f(t, y(t))\)</span><span class="heti-spacing"> </span></span>从<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(t_i\)</span><span class="heti-spacing"> </span></span>到<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(t_{i+1}\)</span><span class="heti-spacing"> </span></span>来推导该方法：</p>
+<p><span class="arithmatex">\(y(t_{i+1}) - y(t_i) = \int_{t_i}^{t_{i+1}} y'(t) dt\)</span></p>
+<p>我们用一个插值多项式<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(P_2(t)\)</span><span class="heti-spacing"> </span></span>来近似<span><span class="heti-spacing"> </span><span class="arithmatex">\(y'(t)\)</span></span>，该多项式通过点<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\((t_{i-1}, y'(t_{i-1}))\)</span>, <span class="arithmatex">\((t_i, y'(t_i))\)</span><span class="heti-spacing"> </span></span>和<span><span class="heti-spacing"> </span><span class="arithmatex">\((t_{i+1}, y'(t_{i+1}))\)</span></span>。</p>
+<p><strong><span>1.<span class="heti-spacing"> </span></span>推导<span class="heti-skip"><span class="heti-spacing"> </span>Adams-Moulton<span class="heti-spacing"> </span></span>双步隐式方法公式<span><span class="heti-spacing"> </span>(Eq. 5.36)</span></strong></p>
+<p>令<span><span class="heti-spacing"> </span><span class="arithmatex">\(f_k = y'(t_k) = f(t_k, y(t_k))\)</span></span>。我们使用牛顿后向差分公式构造插值多项式<span><span class="heti-spacing"> </span><span class="arithmatex">\(P_2(t)\)</span></span>，令<span><span class="heti-spacing"> </span><span class="arithmatex">\(t = t_{i+1} + sh\)</span></span>，其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(s\)</span><span class="heti-spacing"> </span></span>是一个无量纲变量。积分区间<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\([t_i, t_{i+1}]\)</span><span class="heti-spacing"> </span></span>对应于<span><span class="heti-spacing"> </span><span class="arithmatex">\(s \in [-1, 0]\)</span></span>。</p>
+<p><span class="arithmatex">\(P_2(t) = P_2(t_{i+1}+sh) = f_{i+1} + s \nabla f_{i+1} + \frac{s(s+1)}{2} \nabla^2 f_{i+1}\)</span></p>
+<p>其中：</p>
+<p><span class="arithmatex">\(\nabla f_{i+1} = f_{i+1} - f_i\)</span></p>
+<p><span class="arithmatex">\(\nabla^2 f_{i+1} = f_{i+1} - 2f_i + f_{i-1}\)</span></p>
+<p>积分<span><span class="heti-spacing"> </span><span class="arithmatex">\(\int_{t_i}^{t_{i+1}} P_2(t) dt = h \int_{-1}^0 P_2(t_{i+1}+sh) ds\)</span>:</span></p>
+<p><span class="arithmatex">\(h \int_{-1}^0 \left[ f_{i+1} + s(f_{i+1}-f_i) + \frac{s^2+s}{2}(f_{i+1}-2f_i+f_{i-1}) \right] ds\)</span></p>
+<p><span class="arithmatex">\(= h \left[ sf_{i+1} + \frac{s^2}{2}(f_{i+1}-f_i) + \left(\frac{s^3}{6}+\frac{s^2}{4}\right)(f_{i+1}-2f_i+f_{i-1}) \right]_{-1}^0\)</span></p>
+<p>计算定积分：</p>
+<p><span class="arithmatex">\(\int_{-1}^0 1 ds = [s]_{-1}^0 = 1\)</span></p>
+<p><span class="arithmatex">\(\int_{-1}^0 s ds = [\frac{s^2}{2}]_{-1}^0 = -\frac{1}{2}\)</span></p>
+<p><span class="arithmatex">\(\int_{-1}^0 \frac{s(s+1)}{2} ds = \frac{1}{2} [\frac{s^3}{3}+\frac{s^2}{2}]_{-1}^0 = \frac{1}{2} \left( 0 - (-\frac{1}{3}+\frac{1}{2}) \right) = \frac{1}{2} (-\frac{1}{6}) = -\frac{1}{12}\)</span></p>
+<p>所以，积分为：</p>
+<p><span class="arithmatex">\(h \left[ 1 \cdot f_{i+1} - \frac{1}{2}(f_{i+1}-f_i) - \frac{1}{12}(f_{i+1}-2f_i+f_{i-1}) \right]\)</span></p>
+<p><span class="arithmatex">\(= h \left[ f_{i+1} - \frac{1}{2}f_{i+1} + \frac{1}{2}f_i - \frac{1}{12}f_{i+1} + \frac{2}{12}f_i - \frac{1}{12}f_{i-1} \right]\)</span></p>
+<p><span class="arithmatex">\(= h \left[ f_{i+1}(1-\frac{1}{2}-\frac{1}{12}) + f_i(\frac{1}{2}+\frac{2}{12}) - \frac{1}{12}f_{i-1} \right]\)</span></p>
+<p><span class="arithmatex">\(= h \left[ f_{i+1}(\frac{12-6-1}{12}) + f_i(\frac{6+2}{12}) - \frac{1}{12}f_{i-1} \right]\)</span></p>
+<p><span class="arithmatex">\(= h \left[ \frac{5}{12}f_{i+1} + \frac{8}{12}f_i - \frac{1}{12}f_{i-1} \right]\)</span></p>
+<p>因此，<span class="arithmatex">\(y(t_{i+1}) - y(t_i) \approx \frac{h}{12}[5f_{i+1} + 8f_i - f_{i-1}]\)</span>。</p>
+<p>用<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w_k\)</span><span class="heti-spacing"> </span></span>代替<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(y(t_k)\)</span><span class="heti-spacing"> </span></span>并用<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f(t_k, w_k)\)</span><span class="heti-spacing"> </span></span>代替<span><span class="heti-spacing"> </span><span class="arithmatex">\(f_k\)</span></span>，得到公式<span><span class="heti-spacing"> </span>(5.36):</span></p>
+<p><span class="arithmatex">\(w_{i+1} = w_i + \frac{h}{12}[5 f(t_{i+1}, w_{i+1}) + 8 f(t_i, w_i) - f(t_{i-1}, w_{i-1})]\)</span></p>
+<p><strong><span>2.<span class="heti-spacing"> </span></span>推导局部截断误差</strong></p>
+<p>局部截断误差<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\tau_{i+1}(h)\)</span><span class="heti-spacing"> </span></span>定义（根据所给误差形式）为：</p>
+<p><span class="arithmatex">\(\tau_{i+1}(h) = \frac{y(t_{i+1}) - y(t_i) - \frac{h}{12}[5y'(t_{i+1}) + 8y'(t_i) - y'(t_{i-1})]}{h}\)</span></p>
+<p>这等于：</p>
+<p><span class="arithmatex">\(\tau_{i+1}(h) = \frac{1}{h} \left[ \int_{t_i}^{t_{i+1}} y'(t) dt - \int_{t_i}^{t_{i+1}} P_2(t) dt \right] = \frac{1}{h} \int_{t_i}^{t_{i+1}} (y'(t) - P_2(t)) dt\)</span></p>
+<p>插值多项式<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(P_2(t)\)</span><span class="heti-spacing"> </span></span>对函数<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(y'(t)\)</span><span class="heti-spacing"> </span></span>在节点<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(t_{i-1}, t_i, t_{i+1}\)</span><span class="heti-spacing"> </span></span>处的插值误差为：</p>
+<p><span class="arithmatex">\(y'(t) - P_2(t) = \frac{(y')'''(\eta(t))}{3!} (t-t_{i-1})(t-t_i)(t-t_{i+1}) = \frac{y^{(4)}(\eta(t))}{6} (t-t_{i-1})(t-t_i)(t-t_{i+1})\)</span></p>
+<p>其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\eta(t)\)</span><span class="heti-spacing"> </span></span>位于包含<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(t, t_{i-1}, t_i, t_{i+1}\)</span><span class="heti-spacing"> </span></span>的区间内。</p>
+<p>代入<span><span class="heti-spacing"> </span><span class="arithmatex">\(t = t_{i+1} + sh\)</span></span>，<span class="arithmatex">\(dt = h ds\)</span>：</p>
+<p><span class="arithmatex">\(t-t_{i+1} = sh\)</span></p>
+<p><span class="arithmatex">\(t-t_i = (s+1)h\)</span></p>
+<p><span class="arithmatex">\(t-t_{i-1} = (s+2)h\)</span></p>
+<p>误差积分为：</p>
+<p><span class="arithmatex">\(\int_{t_i}^{t_{i+1}} \frac{y^{(4)}(\eta(t))}{6} (s+2)h (s+1)h sh dt = \frac{h^4}{6} \int_{-1}^0 y^{(4)}(\eta(sh)) s(s+1)(s+2) ds\)</span></p>
+<p>函数<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(g(s) = s(s+1)(s+2) = s^3+3s^2+2s\)</span><span class="heti-spacing"> </span></span>在区间<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(s \in [-1, 0]\)</span><span class="heti-spacing"> </span></span>上符号不变（为负或零<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。因此，可以使用积分中值定理，存在某个<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\mu_i \in (t_{i-1}, t_{i+1})\)</span><span class="heti-spacing"> </span></span>使得：</p>
+<p><span class="arithmatex">\(\int_{-1}^0 y^{(4)}(\eta(sh)) s(s+1)(s+2) ds = y^{(4)}(\mu_i) \int_{-1}^0 (s^3+3s^2+2s) ds\)</span></p>
+<p>计算积分：</p>
+<p><span class="arithmatex">\(\int_{-1}^0 (s^3+3s^2+2s) ds = \left[ \frac{s^4}{4} + s^3 + s^2 \right]_{-1}^0 = 0 - \left( \frac{1}{4} - 1 + 1 \right) = -\frac{1}{4}\)</span></p>
+<p>所以，误差积分项为<span><span class="heti-spacing"> </span><span class="arithmatex">\(y^{(4)}(\mu_i) (-\frac{1}{4})\)</span></span>。</p>
+<p>代回<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\tau_{i+1}(h)\)</span><span class="heti-spacing"> </span></span>的表达式：</p>
+<p><span class="arithmatex">\(\tau_{i+1}(h) = \frac{1}{h} \cdot \frac{h^4}{6} \cdot y^{(4)}(\mu_i) \left(-\frac{1}{4}\right) = -\frac{1}{24} y^{(4)}(\mu_i) h^3\)</span></p>
+<p>这与题目中给出的局部截断误差一致。</p>
+</details>
+</div>
+<div class="admonition question">
+<p class="admonition-title">问题（5.9.5）</p>
+<p>Change the Adams Fourth-Order Predictor-Corrector Algorithm to obtain approximate solutions to systems of first-order equations.</p>
+<p>Exercise 2: "Use the Runge-Kutta for Systems Algorithm to approximate the solutions of the following higher-order differential equations, and compare the results to the actual solutions."</p>
+<ul>
+<li>
+<p>a. <span class="arithmatex">\(y'' - 2y' + y = t e^t - t, \quad 0 \le t \le 1, \quad y(0)=0, y'(0)=0\)</span>, with <span class="arithmatex">\(h=0.1\)</span>; actual solution <span class="arithmatex">\(y(t) = \frac{1}{6}t^3 e^t - t e^t + 2e^t - t - 2\)</span>.</p>
+</li>
+<li>
+<p>b. <span class="arithmatex">\(t^2 y'' - 2ty' + 2y = t^3 \ln t, \quad 1 \le t \le 2, \quad y(1)=1, y'(1)=0\)</span>, with <span class="arithmatex">\(h=0.1\)</span>; actual solution <span class="arithmatex">\(y(t) = \frac{7}{4}t + \frac{1}{2}t^3 \ln t - \frac{3}{4}t^3\)</span>.</p>
+</li>
+<li>
+<p>c. <span class="arithmatex">\(y''' + 2y'' - y' - 2y = e^t, \quad 0 \le t \le 3, \quad y(0)=1, y'(0)=2, y''(0)=0\)</span>, with <span class="arithmatex">\(h=0.2\)</span>; actual solution <span class="arithmatex">\(y(t) = \frac{43}{36}e^t + \frac{1}{4}e^{-t} - \frac{4}{9}e^{-2t} + \frac{1}{6}te^t\)</span>.</p>
+</li>
+<li>d. <span class="arithmatex">\(t^3 y''' - t^2 y'' + 3ty' - 4y = 5t^3 \ln t + 9t^3, \quad 1 \le t \le 2, \quad y(1)=0, y'(1)=1, y''(1)=3\)</span>, with <span class="arithmatex">\(h=0.1\)</span>; actual solution <span class="arithmatex">\(y(t) = -t^2 + t \cos(\ln t) + t \sin(\ln t) + t^3 \ln t\)</span>.</li>
+</ul>
+<p>Question 5: "Repeat Exercise 2 using the algorithm developed in Exercise 3."</p>
+<p>This means we need to solve problems 2.a, 2.b, 2.c, and 2.d by first converting them into systems of first-order ODEs and then applying the Adams Fourth-Order Predictor-Corrector Algorithm for systems.</p>
+<details class="note">
+<summary>解答</summary>
+<p><span>Gemini<span class="heti-spacing"> </span></span>没能正确作答。</p>
+<p></p><div style="text-align: center">
+<img src="images/hw/14.png" width="90%/"/>
+</div>
+</details>
+</div>
+<div class="admonition question">
+<p class="admonition-title">问题（5.4.13）</p>
 <p>这个出题者很懒，什么都没写。</p>
 <details class="note">
 <summary>解答</summary>
@@ -3482,13 +3756,13 @@ a. <span class="arithmatex">\(f(x) = e^x\)</span></p>
 <span class="md-icon" title="最后更新">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"></path></svg>
 </span>
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年5月27日 20:36:27">2025年5月27日 20:36:27</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年5月28日 09:31:06">2025年5月28日 09:31:06</span>
 </span>
 <span class="md-source-file__fact">
 <span class="md-icon" title="创建日期">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"></path></svg>
 </span>
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年5月27日 20:36:27">2025年5月27日 20:36:27</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年5月28日 09:31:06">2025年5月28日 09:31:06</span>
 </span>
 </aside>
 <p style="font-size: 30px; font-weight: 600">评论区</p>
