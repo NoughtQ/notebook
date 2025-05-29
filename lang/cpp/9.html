@@ -11,9 +11,9 @@
 <link href="../../feed_rss_created.xml" rel="alternate" title="RSS 订阅" type="application/rss+xml"/>
 <link href="../../feed_rss_updated.xml" rel="alternate" title="已更新内容的 RSS 订阅" type="application/rss+xml"/>
 <link href="../../assets/favicon.png" rel="icon"/>
-<meta content="mkdocs-1.6.1, mkdocs-material-9.6.12" name="generator"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.6.14" name="generator"/>
 <title>Smart Pointers - NoughtQ的笔记本</title>
-<link href="../../assets/stylesheets/main.2afb09e1.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/main.342714a4.min.css" rel="stylesheet"/>
 <link href="../../assets/stylesheets/palette.06af60db.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=JetBrains+Mono,+LXGW+WenKai+Screen+GB+Screen:300,300i,400,400i,700,700i%7CJetBrains+Mono,+Consolas:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
@@ -439,6 +439,17 @@
       Smart Pointers in Standard Library
     </span>
 </a>
+<nav aria-label="Smart Pointers in Standard Library" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#custom-deleter">
+<span class="md-ellipsis">
+      Custom Deleter
+    </span>
+</a>
+</li>
+</ul>
+</nav>
 </li>
 </ul>
 </nav>
@@ -609,6 +620,17 @@
       Smart Pointers in Standard Library
     </span>
 </a>
+<nav aria-label="Smart Pointers in Standard Library" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#custom-deleter">
+<span class="md-ellipsis">
+      Custom Deleter
+    </span>
+</a>
+</li>
+</ul>
+</nav>
 </li>
 </ul>
 </nav>
@@ -625,15 +647,29 @@
 </a>
 <h1 id="smart-pointers">Smart Pointers<a class="headerlink" href="#smart-pointers" title="Permanent link">⚓︎</a></h1>
 <div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
-<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>1539<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 640 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M392.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6m80.6 120.1c-12.5 12.5-12.5 32.8 0 45.3l89.3 89.4-89.4 89.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l112-112c12.5-12.5 12.5-32.8 0-45.3l-112-112c-12.5-12.5-32.8-12.5-45.3 0zm-306.7 0c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3l112 112c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l89.4-89.4c12.5-12.5 12.5-32.8 0-45.3"></path></svg></span> <span>152<span class="heti-spacing"> </span></span>行代码 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>10<span class="heti-spacing"> </span></span>分钟</p>
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>2892<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 640 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M392.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6m80.6 120.1c-12.5 12.5-12.5 32.8 0 45.3l89.3 89.4-89.4 89.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l112-112c12.5-12.5 12.5-32.8 0-45.3l-112-112c-12.5-12.5-32.8-12.5-45.3 0zm-306.7 0c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3l112 112c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l89.4-89.4c12.5-12.5 12.5-32.8 0-45.3"></path></svg></span> <span>156<span class="heti-spacing"> </span></span>行代码 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>16<span class="heti-spacing"> </span></span>分钟</p>
 </div>
 <p>在<span class="heti-skip"><span class="heti-spacing"> </span>C++<span class="heti-spacing"> </span></span>编程中，管理动态分配的内存是一项关键的任务。传统的手动内存管理（使用 <code class="language-cpp highlight"><span class="k">new</span></code> 和 <code class="language-cpp highlight"><span class="k">delete</span></code>）容易出错，常常导致<strong>内存泄漏</strong>（比如忘记释放内存）或<strong>悬挂指针</strong>（比如访问已释放的内存）等问题。<strong>智能指针</strong><span>(smart pointers)<span class="heti-spacing"> </span></span>的出现就是为了以一种更安全、更自动化的方式来应对这些挑战。</p>
+<details class="info">
+<summary><span>C++<span class="heti-spacing"> </span></span>语境下的资源</summary>
+<p>在<span class="heti-skip"><span class="heti-spacing"> </span>C++<span class="heti-spacing"> </span></span>语境下<heti-adjacent class="heti-adjacent-quarter">，</heti-adjacent>“<strong>资源</strong>”<span>(resources)<span class="heti-spacing"> </span></span>一词通常指的是程序<u>在运行时需要获取、使用并在不再需要时释放</u>的<strong>系统级或外部实体</strong>。这些实体通常是有限的，并且如果不正确管理（即不释放<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，可能会导致程序崩溃、性能下降、系统不稳定或资源耗尽。常见的资源包括：</p>
+<ul>
+<li>动态分配内存<span><span class="heti-spacing"> </span>(dynamic memory)</span>：使用 <code class="language-cpp highlight"><span class="k">new</span></code> 和 <code class="language-cpp highlight"><span class="k">delete</span></code> 分配的堆内存</li>
+<li>文件句柄<span><span class="heti-spacing"> </span>(file handles)</span>：使用 <code class="language-cpp highlight"><span class="n">fopen</span></code> 和 <code class="language-cpp highlight"><span class="n">std</span><span class="o">::</span><span class="n">fstream</span></code> 打开的文件</li>
+<li>网络套接字<span><span class="heti-spacing"> </span>(network sockets)</span></li>
+<li>互斥锁<span><span class="heti-spacing"> </span>(mutexes)</span></li>
+<li>线程句柄<span><span class="heti-spacing"> </span>(thread handles)</span></li>
+<li>数据库连接<span><span class="heti-spacing"> </span>(database connections)</span></li>
+<li>图形设备上下文<span><span class="heti-spacing"> </span>(graphics device context)</span></li>
+<li>系统句柄<span><span class="heti-spacing"> </span>(system handles)</span></li>
+</ul>
+</details>
 <h2 id="raii">RAII<a class="headerlink" href="#raii" title="Permanent link">⚓︎</a></h2>
-<p><strong>RAII</strong>(resource acquisition is initialization)，即“资源获取即初始化”，是<span class="heti-skip"><span class="heti-spacing"> </span>C++<span class="heti-spacing"> </span></span>中一种强大且被广泛应用的编程技术。其核心思想是将资源的生命周期与对象的生命周期绑定：</p>
+<p><strong>RAII</strong>(resource acquisition is initialization)，即“<strong>资源获取即初始化</strong>”，是<span class="heti-skip"><span class="heti-spacing"> </span>C++<span class="heti-spacing"> </span></span>中一种强大且被广泛应用的编程技术。其核心思想是将资源的生命周期与对象的生命周期绑定：</p>
 <ul>
 <li>资源<strong>获取</strong>发生在对象的<strong>构造</strong>阶段：<ul>
 <li>当一个对象被创建时，它的构造函数负责获取所需的资源</li>
-<li>这些资源可以是动态分配的内存、文件句柄、网络连接、互斥锁等</li>
+<li>换句话说，获取资源后立刻把它放进对象内</li>
 </ul>
 </li>
 <li>资源<strong>释放</strong>在对象的<strong>析构</strong>阶段：<ul>
@@ -644,13 +680,47 @@
 </ul>
 <p><span>RAII<span class="heti-spacing"> </span></span>带来的主要好处有：</p>
 <ul>
-<li>自动化的资源管理：程序员不再需要显式地编写释放资源的代码，减少了忘记释放或错误释放的风险</li>
-<li>异常安全：即使在发生异常导致程序执行路径改变时，对象的析构函数依然会被调用，从而保证了资源的正确释放</li>
-<li>代码清晰性：资源管理的逻辑被封装在对象的构造函数和析构函数中，使得主逻辑代码更加简洁</li>
+<li>自动化的资源管理：程序员不再需要显式地编写释放资源的代码，减少了忘记释放、来不及释放（可能因为循环的 <code class="language-cpp highlight"><span class="k">continue</span></code> 和 <code class="language-cpp highlight"><span class="k">goto</span></code>，或者中途抛出异常而错过释放环节等等）或错误释放导致资源泄漏、未定义行为、程序崩溃等风险。</li>
+<li>异常安全：即使在发生异常导致程序执行路径改变时，对象的析构函数依然会被调用，从而保证了资源的正确释放。</li>
+<li>代码清晰性：资源管理的逻辑被封装在对象的构造函数和析构函数中，使得主逻辑代码更加简洁。</li>
 </ul>
-<p><strong>智能指针</strong>正是<span class="heti-skip"><span class="heti-spacing"> </span>RAII<span class="heti-spacing"> </span></span>原则在<strong>动态内存管理</strong>上的具体应用。它们是行为类似于原始指针的类对象，但能够在其生命周期结束时自动释放所指向的动态分配的内存。</p>
+<details class="note" open="open">
+<summary><span>RAII<span class="heti-spacing"> </span></span>对象的复制</summary>
+<p>由于<span class="heti-skip"><span class="heti-spacing"> </span>RAII<span class="heti-spacing"> </span></span>对象管理着资源，简单的按位复制（浅拷贝）几乎总是错误的，因为它会导致多个<span class="heti-skip"><span class="heti-spacing"> </span>RAII<span class="heti-spacing"> </span></span>对象管理同一份资源，从而引发双重释放、资源泄漏或未定义行为。</p>
+<p>因此，当设计一个<span class="heti-skip"><span class="heti-spacing"> </span>RAII<span class="heti-spacing"> </span></span>对象时，必须仔细考虑其复制（和移动）语义。主要有以下几种处理策略：</p>
+<ul>
+<li><strong>禁止复制</strong>：当资源不应该被多个所有者共享，或复制成本过高时，我们应当禁止复制<span class="heti-skip"><span class="heti-spacing"> </span>RAII<span class="heti-spacing"> </span></span>对象，具体来说就是禁用拷贝构造函数和拷贝赋值运算符（<code class="language-cpp highlight"><span class="k">private</span></code> <span>+<span class="heti-spacing"> </span></span>不实现或者 <code class="language-cpp highlight"><span class="o">=</span><span class="w"> </span><span class="k">delete</span></code>）<ul>
+<li>举例：<code class="language-cpp highlight"><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span></code></li>
+</ul>
+</li>
+<li><strong>共享所有权</strong>：允许多个<span class="heti-skip"><span class="heti-spacing"> </span>RAII<span class="heti-spacing"> </span></span>对象共同管理同一份资源，通过<strong>引用计数</strong>等机制确保资源在最后一个所有者销毁时才被释放。<ul>
+<li>举例：<code class="language-cpp highlight"><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span></code></li>
+</ul>
+</li>
+<li>复制底部资源（即<strong>深拷贝</strong><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：当资源本身可以被复制，并且复制一份独立的资源副本是合理的时候，可以采取这一策略：复制<span class="heti-skip"><span class="heti-spacing"> </span>RAII<span class="heti-spacing"> </span></span>对象时，不仅复制对象本身，还复制其所管理的资源，从而创建一份完全独立的资源副本。<ul>
+<li>举例：<code class="language-cpp highlight"><span class="n">std</span><span class="o">::</span><span class="n">string</span></code> 或 <code class="language-cpp highlight"><span class="n">std</span><span class="o">::</span><span class="n">vector</span></code> 虽然它们不直接管理系统资源，但它们管理动态内存，并且在拷贝时执行深度复制。</li>
+</ul>
+</li>
+<li><strong>转移所有权</strong>：允许<span class="heti-skip"><span class="heti-spacing"> </span>RAII<span class="heti-spacing"> </span></span>对象通过移动操作（比如使用移动构造函数和移动赋值运算符）转移其所管理的资源的所有权，而无需进行深度复制。源对象在移动后通常处于有效但未指定的状态（通常是“空”状态<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</li>
+</ul>
+</details>
+<details class="note" open="open">
+<summary><span>RAII<span class="heti-spacing"> </span></span>类应该提供访问原始资源的接口</summary>
+<p>由于一些<span class="heti-skip"><span class="heti-spacing"> </span>API<span class="heti-spacing"> </span></span>要求访问原始资源<span><span class="heti-spacing"> </span>(raw resources)</span>，所以每一个<span class="heti-skip"><span class="heti-spacing"> </span>RAII<span class="heti-spacing"> </span></span>类都应该提供一个“获取其管理的原始资源”的方法。具体有两种做法（以接下来马上要介绍的智能指针为例<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
+<ul>
+<li><strong>显式转换</strong>：智能指针都有一个 <code>get()</code> 方法，返回智能指针内部的原始指针（的拷贝）<ul>
+<li>其优势在于安全，</li>
+</ul>
+</li>
+<li><strong>隐式转换</strong>：智能指针还重载了指针解引用运算符 <code class="language-cpp highlight"><span class="k">operator</span><span class="o">-&gt;</span></code> 和 <code class="language-cpp highlight"><span class="k">operator</span><span class="o">*</span></code>，它们允许隐式转换至底部指针<ul>
+<li>其优势在于方便</li>
+</ul>
+</li>
+</ul>
+</details>
 <p>更多内容：<a href="https://en.cppreference.com/w/cpp/language/raii">RAII</a></p>
 <h2 id="smart-pointers-in-standard-library">Smart Pointers in Standard Library<a class="headerlink" href="#smart-pointers-in-standard-library" title="Permanent link">⚓︎</a></h2>
+<p><strong>智能指针</strong>正是<span class="heti-skip"><span class="heti-spacing"> </span>RAII<span class="heti-spacing"> </span></span>原则在<strong>动态内存管理</strong>上的具体应用。它们是行为类似于原始指针的类对象，但能够在其生命周期结束时自动释放所指向的动态分配的内存。</p>
 <p><span>C++<span class="heti-spacing"> </span></span>标准库提供了几种主要的智能指针类型，以满足不同的内存管理需求：</p>
 <ul>
 <li>
@@ -873,6 +943,38 @@
 <li><strong>明确所有权</strong>：智能指针的类型（如 <code class="language-cpp highlight"><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span></code> 的独占所有权和 <code class="language-cpp highlight"><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span></code> 的共享所有权）清晰地表达了代码中对动态内存所有权的设计意图</li>
 <li><strong>提高代码可读性和可维护性</strong>：将资源管理逻辑封装起来，使得代码更易于理解和维护</li>
 </ul>
+<h3 id="custom-deleter">Custom Deleter<a class="headerlink" href="#custom-deleter" title="Permanent link">⚓︎</a></h3>
+<p>前面提到的 <code class="language-cpp highlight"><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span></code> 和 <code class="language-cpp highlight"><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span></code> 都支持<strong>自定义删除器<span><span class="heti-spacing"> </span>(custom deleter)</span></strong>。它为这些智能指针提供一个可调用对象。当释放资源时，就会调用这个可调用对象来执行实际的释放操作，而不是默认的 <code class="language-cpp highlight"><span class="k">delete</span></code>。这样，我们就能管理那些不能简单地通过 <code class="language-cpp highlight"><span class="k">delete</span></code> 或 <code class="language-cpp highlight"><span class="k">delete</span><span class="p">[]</span></code> 释放的资源。</p>
+<p><span>???+ info "<span class="heti-spacing"> </span></span>注</p>
+<div class="language-text highlight"><pre><span></span><code>有许多资源不是通过 `new`/`delete` 分配的，而是通过特定的 C API 或库函数获取和释放的。例如：
+
+- `FILE*` (C 文件句柄)：通过 `fopen()` 获取，通过 `fclose()` 释放。
+- `HANDLE` (Windows API 句柄)：通过 `CreateEvent()` 等获取，通过 `CloseHandle()` 释放。
+- `sqlite3*` (SQLite 数据库连接)：通过 `sqlite3_open()` 获取，通过 `sqlite3_close()` 释放。
+- 通过 `malloc()` 分配的内存：通过 `free()` 释放。
+</code></pre></div>
+<p>在 <code class="language-cpp highlight"><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span></code> 中，自定义删除器作为构造函数的第二个参数传入：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-3-1"><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ptr</span><span class="p">(</span><span class="n">raw_pointer</span><span class="p">,</span><span class="w"> </span><span class="n">custom_deleter</span><span class="p">);</span>
+</span></code></pre></div>
+<ul>
+<li><code>raw_pointer</code> 是指向要管理的资源的原始指针。</li>
+<li><code>custom_deleter</code> 是一个可调用对象，它接受一个 <code>T*</code> 类型的参数，并执行资源的释放。</li>
+</ul>
+<p><code class="language-cpp highlight"><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span></code> 也支持自定义删除器，但它的语法略有不同，因为删除器是其模板参数的一部分。这使得 <code>unique_ptr</code> 在编译时就知道删除器的类型，从而可能实现更小的内存开销和更快的运行时性能。下面通过一个例子展示了它的用法：</p>
+<details class="example" open="open">
+<summary>例子</summary>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-4-1"><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="kt">FILE</span><span class="p">,</span><span class="w"> </span><span class="k">decltype</span><span class="p">(</span><span class="o">&amp;</span><span class="n">close_file_func</span><span class="p">)</span><span class="o">&gt;</span><span class="w"> </span><span class="n">unique_file_ptr</span><span class="p">(</span><span class="n">fopen</span><span class="p">(</span><span class="s">"test_unique.txt"</span><span class="p">,</span><span class="w"> </span><span class="s">"w"</span><span class="p">),</span><span class="w"> </span><span class="o">&amp;</span><span class="n">close_file_func</span><span class="p">);</span>
+</span><span id="__span-4-2"><a href="#__codelineno-4-2" id="__codelineno-4-2" name="__codelineno-4-2"></a><span class="c1">// 或者使用 lambda</span>
+</span><span id="__span-4-3"><a href="#__codelineno-4-3" id="__codelineno-4-3" name="__codelineno-4-3"></a><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="kt">FILE</span><span class="p">,</span><span class="w"> </span><span class="k">decltype</span><span class="p">([](</span><span class="kt">FILE</span><span class="o">*</span><span class="w"> </span><span class="n">f</span><span class="p">){</span><span class="w"> </span><span class="k">if</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="w"> </span><span class="n">fclose</span><span class="p">(</span><span class="n">f</span><span class="p">);</span><span class="w"> </span><span class="p">})</span><span class="o">&gt;</span><span class="w"> </span><span class="n">unique_file_ptr_lambda</span><span class="p">(</span><span class="n">fopen</span><span class="p">(</span><span class="s">"test_unique_lambda.txt"</span><span class="p">,</span><span class="w"> </span><span class="s">"w"</span><span class="p">),</span><span class="w"> </span><span class="p">[](</span><span class="kt">FILE</span><span class="o">*</span><span class="w"> </span><span class="n">f</span><span class="p">){</span><span class="w"> </span><span class="k">if</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="w"> </span><span class="n">fclose</span><span class="p">(</span><span class="n">f</span><span class="p">);</span><span class="w"> </span><span class="p">});</span>
+</span></code></pre></div>
+</details>
+<p>自定义删除器带来的好处是：</p>
+<ul>
+<li>通用性：允许 <code class="language-cpp highlight"><span class="n">shared_ptr</span></code> 等智能指针管理任何类型的资源，而不仅仅是 <code class="language-cpp highlight"><span class="k">new</span></code> 分配的内存。</li>
+<li><span>RAII<span class="heti-spacing"> </span></span>扩展：将<span class="heti-skip"><span class="heti-spacing"> </span>RAII<span class="heti-spacing"> </span></span>思想扩展到非内存资源，确保这些资源也能在对象生命周期结束时自动、安全地释放。</li>
+<li>异常安全：即使在资源使用过程中发生异常，自定义删除器也会被调用，防止资源泄漏。</li>
+<li>封装性：将资源的获取和释放逻辑封装在一起，提高了代码的模块化和可读性。</li>
+</ul>
 <aside class="md-source-file">
 <span class="md-source-file__fact">
 <span class="md-icon" title="最后更新">
@@ -1013,8 +1115,8 @@
 <div class="md-dialog" data-md-component="dialog">
 <div class="md-dialog__inner md-typeset"></div>
 </div>
-<script id="__config" type="application/json">{"base": "../..", "features": ["content.action.edit", "content.action.view", "content.code.copy", "content.code.annotate", "content.footnote.tooltips", "header.autohide", "navigation.tabs", "navigation.top", "navigation.footer", "navigation.indexes", "navigation.tracking", "navigation.prune", "search.share"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
-<script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
+<script id="__config" type="application/json">{"base": "../..", "features": ["content.action.edit", "content.action.view", "content.code.copy", "content.code.annotate", "content.footnote.tooltips", "header.autohide", "navigation.tabs", "navigation.top", "navigation.footer", "navigation.indexes", "navigation.tracking", "navigation.prune", "search.share"], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.13a4f30d.min.js"></script>
 <script src="../../js/anchor.js"></script>
 <script src="../../js/katex.js"></script>
 <script src="../../js/toc.js"></script>
