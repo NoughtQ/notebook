@@ -22,11 +22,12 @@
     - [x] [Lec 12: Query Optimization](12.md)
     - [x] [Lec 13: Transactions](13.md)
     - [x] [Lec 14: Concurrency Control](14.md)
-    - [ ] [Lec 15: Recovery System](15.md)
+    - [x] [Lec 15: Recovery System](15.md)
 
 !!! recommend "参考资料"
 
     - 课件 & 教材
+    - [CMU 15-445/645 Fall 2024](https://15445.courses.cs.cmu.edu/fall2024/)
     - [教材官网](https://db-book.com/)（里面有习题答案(doge)）
     - [HobbitQia 前辈的笔记](https://note.hobbitqia.cc/DB/)
-    - [CMU 15-445/645 Fall 2024](https://15445.courses.cs.cmu.edu/fall2024/)
+    
