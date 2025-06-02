@@ -841,8 +841,14 @@
 </a>
 <h1 id="lec-1-introduction">Lec 1: Introduction<a class="headerlink" href="#lec-1-introduction" title="Permanent link">⚓︎</a></h1>
 <div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
-<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>4152<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>21<span class="heti-spacing"> </span></span>分钟</p>
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>4362<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>22<span class="heti-spacing"> </span></span>分钟</p>
 </div>
+<details class="abstract" open="open">
+<summary>（并非）核心知识</summary>
+<blockquote>
+<p>感觉都是些很细碎，不太好提炼，且不太有可能成为关键考点的知识。建议过一眼熟悉一下就行。</p>
+</blockquote>
+</details>
 <p><strong>数据库</strong>(database)：一个相互关联的，用于对现实世界问题建模的有组织的数据集合。</p>
 <p><strong>数据库管理系统</strong>(database management system, DBMS)：一种允许应用存储和分析数据库信息的软件。通用的<span class="heti-skip"><span class="heti-spacing"> </span>DBMS<span class="heti-spacing"> </span></span>根据某些数据模型，支持对数据库的定义、创建、查询、更新和管理。</p>
 <blockquote>
@@ -858,12 +864,22 @@
 </ul>
 <p><strong>抽象</strong><span>(abstraction)<span class="heti-spacing"> </span></span>这一概念在数据库管理中（而且在其他领域也）非常重要，它能让我们在不了解设备或系统的底层细节的情况下，能够使用这些复杂的设备或系统。数据库系统提供了简洁、抽象的视图，使得用户和应用程序员无需注意关于数据存储和组织的底层细节。</p>
 <p>尽管用户界面隐藏了访问数据库的细节，且很多人甚至没有注意到他们在与数据库打交道，但是访问数据库这件事已经成为我们日常生活的重要部分。</p>
-<p>数据库使用的两种模式：</p>
+<p>有以下两类数据库工作负载：</p>
 <ul>
-<li>支持<strong>在线事务处理</strong>(online transaction processing)：最基本的模式，针对大量用户访问的数据库应用</li>
-<li>支持<strong>数据分析</strong>(data analytics)：从数据中得出结论，用于商业决策<ul>
-<li>需要建立预测模型<span><span class="heti-spacing"> </span>(predictive models)</span></li>
-<li>数据挖掘<span><span class="heti-spacing"> </span>(data mining)</span></li>
+<li>
+<p><strong>在线事务处理</strong>(online transaction processing)：</p>
+<ul>
+<li>其特点是快速、短时运行的运算，重复的运算，以及一次只操作单一实体的简单查询。</li>
+<li>通常处理的写操作比读操作多，并且每次只读取<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>更新少量数据。</li>
+<li>例子——网上购物：用户可以将商品添加到购物车并完成购买，但这些操作仅影响他们的账户。</li>
+</ul>
+</li>
+<li>
+<p><strong>在线分析处理</strong>(online analytics processing)：</p>
+<ul>
+<li>其特点是长时间运行、复杂的查询（通常涉及计算聚合）以及对数据库大部分内容的读取。</li>
+<li>数据库系统通常会分析和从<span class="heti-skip"><span class="heti-spacing"> </span>OLTP<span class="heti-spacing"> </span></span>端收集的现有数据中衍生出新数据。</li>
+<li>例子——个性化网上购物广告：在线购物网站会分析用户购物车和购买记录中的所有数据，然后为不同用户选择不同的广告展示。</li>
 </ul>
 </li>
 </ul>
