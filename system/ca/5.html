@@ -414,7 +414,7 @@
 <li class="md-nav__item">
 <a class="md-nav__link" href="3.html">
 <span class="md-ellipsis">
-    Chap 3: Instruction-Level Parallelism and Its Exploitation
+    Chap 3: Instruction-Level Parallelism
     
   </span>
 </a>
@@ -422,7 +422,7 @@
 <li class="md-nav__item">
 <a class="md-nav__link" href="4.html">
 <span class="md-ellipsis">
-    Chap 4: Data-Level Parallelism in Vector, SIMD, and GPU Architectures
+    Chap 4: Data-Level Parallelism
     
   </span>
 </a>
@@ -627,6 +627,13 @@
     </span>
 </a>
 </li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#barrier-synchronization">
+<span class="md-ellipsis">
+      Barrier Synchronization
+    </span>
+</a>
+</li>
 </ul>
 </nav>
 </li>
@@ -636,6 +643,24 @@
       Models of Memory Consistency
     </span>
 </a>
+<nav aria-label="Models of Memory Consistency" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#the-programmers-view">
+<span class="md-ellipsis">
+      The Programmer's View
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#relaxed-consistency-models">
+<span class="md-ellipsis">
+      Relaxed Consistency Models
+    </span>
+</a>
+</li>
+</ul>
+</nav>
 </li>
 <li class="md-nav__item">
 <a class="md-nav__link" href="#cross-cutting-issues">
@@ -643,6 +668,31 @@
       Cross-Cutting Issues
     </span>
 </a>
+<nav aria-label="Cross-Cutting Issues" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compiler-optimization-and-the-consistency-model">
+<span class="md-ellipsis">
+      Compiler Optimization and the Consistency Model
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#using-speculation-to-hide-latency-in-strict-consistency-model">
+<span class="md-ellipsis">
+      Using Speculation to Hide Latency in Strict Consistency Model
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#inclusion-and-its-implementation">
+<span class="md-ellipsis">
+      Inclusion and Its Implementation
+    </span>
+</a>
+</li>
+</ul>
+</nav>
 </li>
 <li class="md-nav__item">
 <a class="md-nav__link" href="#fallacies-and-pitfalls">
@@ -916,6 +966,13 @@
     </span>
 </a>
 </li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#barrier-synchronization">
+<span class="md-ellipsis">
+      Barrier Synchronization
+    </span>
+</a>
+</li>
 </ul>
 </nav>
 </li>
@@ -925,6 +982,24 @@
       Models of Memory Consistency
     </span>
 </a>
+<nav aria-label="Models of Memory Consistency" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#the-programmers-view">
+<span class="md-ellipsis">
+      The Programmer's View
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#relaxed-consistency-models">
+<span class="md-ellipsis">
+      Relaxed Consistency Models
+    </span>
+</a>
+</li>
+</ul>
+</nav>
 </li>
 <li class="md-nav__item">
 <a class="md-nav__link" href="#cross-cutting-issues">
@@ -932,6 +1007,31 @@
       Cross-Cutting Issues
     </span>
 </a>
+<nav aria-label="Cross-Cutting Issues" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compiler-optimization-and-the-consistency-model">
+<span class="md-ellipsis">
+      Compiler Optimization and the Consistency Model
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#using-speculation-to-hide-latency-in-strict-consistency-model">
+<span class="md-ellipsis">
+      Using Speculation to Hide Latency in Strict Consistency Model
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#inclusion-and-its-implementation">
+<span class="md-ellipsis">
+      Inclusion and Its Implementation
+    </span>
+</a>
+</li>
+</ul>
+</nav>
 </li>
 <li class="md-nav__item">
 <a class="md-nav__link" href="#fallacies-and-pitfalls">
@@ -955,22 +1055,67 @@
 </a>
 <h1 id="chap-5-thread-level-parallelism">Chap 5: Thread-Level Parallelism<a class="headerlink" href="#chap-5-thread-level-parallelism" title="Permanent link">⚓︎</a></h1>
 <div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
-<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>16412<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 640 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M392.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6m80.6 120.1c-12.5 12.5-12.5 32.8 0 45.3l89.3 89.4-89.4 89.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l112-112c12.5-12.5 12.5-32.8 0-45.3l-112-112c-12.5-12.5-32.8-12.5-45.3 0zm-306.7 0c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3l112 112c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l89.4-89.4c12.5-12.5 12.5-32.8 0-45.3"></path></svg></span> <span>18<span class="heti-spacing"> </span></span>行代码 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>82<span class="heti-spacing"> </span></span>分钟</p>
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>20735<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 640 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M392.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6m80.6 120.1c-12.5 12.5-12.5 32.8 0 45.3l89.3 89.4-89.4 89.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l112-112c12.5-12.5 12.5-32.8 0-45.3l-112-112c-12.5-12.5-32.8-12.5-45.3 0zm-306.7 0c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3l112 112c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l89.4-89.4c12.5-12.5 12.5-32.8 0-45.3"></path></svg></span> <span>50<span class="heti-spacing"> </span></span>行代码 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>104<span class="heti-spacing"> </span></span>分钟</p>
 </div>
-<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">⚓︎</a></h2>
-<p>前面提到过，由于<span class="heti-skip"><span class="heti-spacing"> </span>ILP<span class="heti-spacing"> </span></span>工艺进步的放缓，单处理器<span class="heti-skip"><span class="heti-spacing"> </span>(uniprocessor)<span class="heti-spacing"> </span></span>的发展逐渐走向尾声。因此多处理器的重要性日渐提升，这主要体现在以下几方面：</p>
+<details class="info">
+<summary>进程<span class="heti-skip"><span class="heti-spacing"> </span>vs.<span class="heti-spacing"> </span></span>线程</summary>
+<blockquote>
+<p>来自<span class="heti-skip"><span class="heti-spacing"> </span>Gemini 2.5 Flash<span class="heti-spacing"> </span></span>的回答。</p>
+</blockquote>
+<p>简单来说，线程和进程的主要区别在于：</p>
 <ul>
-<li><span>ILP<span class="heti-spacing"> </span></span>的低效——功率和硅成本的增长要高于性能的提升</li>
-<li>高端服务器在云计算和<span class="heti-skip"><span class="heti-spacing"> </span>SaaS<span class="heti-spacing"> </span></span>的重要性提升</li>
-<li>得益于互联网上的大量数据，数据密集型应用不断增长</li>
-<li>多处理器的并行能力为大数据集（数据并行<heti-adjacent class="heti-adjacent-half">）</heti-adjacent><heti-adjacent class="heti-adjacent-quarter">、</heti-adjacent>“自然世界”并行（科学和工程代码）以及在大量并行的独立请求带来很大帮助</li>
-<li>...</li>
+<li><strong>进程是独立的运行环境，拥有自己的资源（内存、文件句柄等<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</strong> 就像一个独立的应用程序。</li>
+<li><strong>线程是进程内部的执行单元，共享进程的资源。</strong> 就像一个应用程序内部的不同功能模块。</li>
 </ul>
-<p>在本章，我们主要探索的是<strong>线程级并行</strong>(thread-level parallelism, <strong>TLP</strong>)；而<span class="heti-skip"><span class="heti-spacing"> </span>TLP<span class="heti-spacing"> </span></span>利用到了 <strong>MIMD</strong>(multiple instructions, multiple data)。</p>
-<p><strong>多处理器</strong><span>(multiprocessor)<span class="heti-spacing"> </span></span>由一组紧密耦合的处理器构成，这些处理器受操作系统控制，并通过一个共享的地址空间来共享内存（不一定只有一块物理内存<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。多处理器通过以下两个不同的软件模型来利用<span><span class="heti-spacing"> </span>TLP</span>：</p>
+<p><strong>更形象的比喻：</strong></p>
 <ul>
-<li><strong>并行处理</strong>(parallel processing)：一组在单任务上协作的紧密耦合的线程的执行</li>
-<li><strong>请求级并行</strong>(request-level parallelism)：来自一名或多名用户的多个相对独立的进程的执行<ul>
+<li><strong>进程：</strong> 一家工厂。它有自己的厂房、设备、原材料仓库等。</li>
+<li><strong>线程：</strong> 工厂里的工人。他们都在同一个厂房里工作，共享工厂的设备和原材料，但每个工人负责不同的生产线或任务。</li>
+</ul>
+<p><strong>核心区别总结：</strong></p>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>进程</th>
+<th>线程</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>资源</strong></td>
+<td>独立拥有，不共享</td>
+<td>共享进程的资源</td>
+</tr>
+<tr>
+<td><strong>开销</strong></td>
+<td>创建、销毁、切换开销大</td>
+<td>创建、销毁、切换开销小</td>
+</tr>
+<tr>
+<td><strong>通信</strong></td>
+<td>需要<span><span class="heti-spacing"> </span>IPC</span>（进程间通信）机制</td>
+<td>直接共享内存，通信更方便快捷</td>
+</tr>
+<tr>
+<td><strong>独立性</strong></td>
+<td>独立性强，一个进程崩溃不影响其他进程</td>
+<td>独立性弱，一个线程崩溃可能影响整个进程</td>
+</tr>
+<tr>
+<td><strong>并发</strong></td>
+<td>进程间并发（多任务）</td>
+<td>线程内并发（同一任务的不同部分）</td>
+</tr>
+</tbody>
+</table>
+</details>
+<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">⚓︎</a></h2>
+<p>本章主要探索的是<strong>线程级并行</strong>(thread-level parallelism, <strong>TLP</strong>)。而<span class="heti-skip"><span class="heti-spacing"> </span>TLP<span class="heti-spacing"> </span></span>利用到了 <strong>MIMD</strong>(multiple instructions, multiple data)。</p>
+<p>前面提到过，由于<span class="heti-skip"><span class="heti-spacing"> </span>ILP<span class="heti-spacing"> </span></span>工艺进步的放缓，单处理器<span class="heti-skip"><span class="heti-spacing"> </span>(uniprocessor)<span class="heti-spacing"> </span></span>的发展逐渐走向尾声，因而<strong>多处理器</strong><span>(multiprocessor)<span class="heti-spacing"> </span></span>的重要性日渐提升——它由一组紧密耦合的处理器构成，这些处理器受操作系统控制，并通过一个共享的地址空间来共享内存（不一定只有一块物理内存<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。多处理器通过以下两类不同的软件模型来实现<span><span class="heti-spacing"> </span>TLP</span>：</p>
+<ul>
+<li><strong>并行处理</strong>(parallel processing)：一组在单任务上协作的紧密耦合的线程执行</li>
+<li><strong>请求级并行</strong>(request-level parallelism)：来自一名或多名用户的多个相对独立的进程执行<ul>
 <li>运行在多个处理器上的单一应用程序会利用请求级并行，例如数据库响应查询，或者通过多个独立运行的应用程序（后者通常被称为<strong>多道程序设计</strong>(multiprogramming)）</li>
 </ul>
 </li>
@@ -978,18 +1123,26 @@
 <p>多处理器既包含具有多个核心的单芯片系统，即所谓的<strong>多核</strong>(multicore)，也涵盖由多个芯片组成的计算机，其中每个芯片通常也是一个多核单元。</p>
 <p>之后我们还会探讨<strong>多线程</strong><span>(multithreading)<span class="heti-spacing"> </span></span>技术——这是一种支持在单个多发射处理器上以交错方式执行多个线程的技术。许多多核处理器同样包含对多线程的支持。</p>
 <h3 id="multiprocessor-architecture">Multiprocessor Architecture<a class="headerlink" href="#multiprocessor-architecture" title="Permanent link">⚓︎</a></h3>
-<p>要充分利用具有<span class="heti-skip"><span class="heti-spacing"> </span>n<span class="heti-spacing"> </span></span>个处理器的<span class="heti-skip"><span class="heti-spacing"> </span>MIMD<span class="heti-spacing"> </span></span>多处理器，通常需要至少<span class="heti-skip"><span class="heti-spacing"> </span>n<span class="heti-spacing"> </span></span>个线程或进程来执行；而当今大多数多核芯片都支持多线程技术，这一数量会增至<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>到<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>倍。单个进程内的独立线程通常由<strong>程序员</strong>显式指定，或由<strong>操作系统</strong>根据多个独立请求动态创建。另一种极端情况是，一个线程可能仅包含循环的数十次迭代——这是<strong>并行编译器</strong>循环中的数据并行性而自动生成的。尽管分配给线程的计算量（称为<strong>粒度大小</strong>(grain size)）对于高效利用<span class="heti-skip"><span class="heti-spacing"> </span>TLP<span class="heti-spacing"> </span></span>至关重要，但与<span class="heti-skip"><span class="heti-spacing"> </span>ILP<span class="heti-spacing"> </span></span>的本质区别在于：<span>TLP<span class="heti-spacing"> </span></span>是由<strong>软件系统</strong>或<strong>程序员</strong>在高层抽象中识别出的、由数百至数百万条可并行执行的指令构成的代码段。</p>
+<p>要充分利用具有<span class="heti-skip"><span class="heti-spacing"> </span>n<span class="heti-spacing"> </span></span>个处理器的<span class="heti-skip"><span class="heti-spacing"> </span>MIMD<span class="heti-spacing"> </span></span>多处理器，通常需要至少<span class="heti-skip"><span class="heti-spacing"> </span>n<span class="heti-spacing"> </span></span>个线程或进程来执行。单个进程内的独立线程通常由<strong>程序员</strong>显式指定，或由<strong>操作系统</strong>根据多个独立请求动态创建。另一种极端情况是，一个线程可能仅包含循环的数十次迭代——这是由<strong>并行编译器</strong>利用循环中的数据并行生成的。</p>
+<p>尽管分配给线程的计算量（称为<strong>粒度大小</strong>(grain size)）对于高效利用<span class="heti-skip"><span class="heti-spacing"> </span>TLP<span class="heti-spacing"> </span></span>至关重要，但与<span class="heti-skip"><span class="heti-spacing"> </span>ILP<span class="heti-spacing"> </span></span>的本质区别在于：<span>TLP<span class="heti-spacing"> </span></span>是由<strong>软件系统</strong>或<strong>程序员</strong>在高层抽象中识别出的、由数百至数百万条可并行执行的指令构成的代码段。</p>
 <p>线程也可为<span class="heti-skip"><span class="heti-spacing"> </span>DLP<span class="heti-spacing"> </span></span>所利用，但其开销通常高于<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>处理器或<span><span class="heti-spacing"> </span>GPU</span>。必须确保粒度足够大，才能高效利用其并行性。</p>
-<p>现有的共享内存的多处理器，根据其内存组织的不同划分为以下两大类：</p>
+<p>对于现有的共享内存多处理器，根据其内存组织的不同，可以划分为以下两大类：</p>
 <ul>
 <li>
 <p><strong>对称（共享内存）多处理器</strong>(symmetric (shared-memory) multiprocessors, <strong>SMP</strong>)（或<strong>集中式</strong>(centralized)<strong>共享内存多处理器</strong>）</p>
 <ul>
 <li>具有小到中等数量的核心，通常为<span class="heti-skip"><span class="heti-spacing"> </span>32<span class="heti-spacing"> </span></span>个或更少</li>
 <li>对于这种核心数量较少的多处理器，里面的这些处理器可以共享一个所有处理器都有平等访问权的单一集中式内存，因此称为“对称”</li>
-<li>大多数现有的多核都属于<span><span class="heti-spacing"> </span>SMP</span></li>
-<li><span>SMP<span class="heti-spacing"> </span></span>有时也被称为<strong>统一内存访问</strong><span>(uniform memory access, UMA)<span class="heti-spacing"> </span></span>多处理器，这是因为所有处理器对内存的访问延迟是均等的，即便内存被划分为多个分区亦是如此</li>
-<li>某些多核处理器对最外层高速缓存的访问是非均匀的，这种结构被称为<strong>非均匀高速缓存访问</strong>(nonuniform cache access, NUCA)，因此即便它们拥有单一主内存，也并非真正的<span><span class="heti-spacing"> </span>SMP</span></li>
+<li>现在大多数多核都属于<span><span class="heti-spacing"> </span>SMP</span></li>
+<li>
+<p><span>SMP<span class="heti-spacing"> </span></span>有时也被称为<strong>统一内存访问</strong><span>(uniform memory access, UMA)<span class="heti-spacing"> </span></span>多处理器，这是因为所有处理器对内存的访问延迟是均等的，即便内存被划分为多个分区亦是如此</p>
+<p></p><div style="text-align: center">
+<img src="images/C5/29.png" width="40%"/>
+</div>
+</li>
+<li>
+<p>某些多核处理器对最外层高速缓存的访问是非均匀的，这种结构被称为<strong>非均匀高速缓存访问</strong>(nonuniform cache access, NUCA)，因此即便它们拥有单一主内存，也并非真正的<span><span class="heti-spacing"> </span>SMP</span></p>
+</li>
 <li>
 <p>下图展示了集中式共享内存多处理器的基本结构：</p>
 <p></p><div style="text-align: center">
@@ -1014,8 +1167,13 @@
 </li>
 <li>
 <p><span>DSM<span class="heti-spacing"> </span></span>多处理器也被称为<strong>非均匀内存访问架构</strong>(nonuniform memeory access, NUMA)，因为数据访问时间取决于数据字在内存中的物理位置</p>
+<p></p><div style="text-align: center">
+<img src="images/C5/30.png" width="40%"/>
+</div>
 </li>
-<li><span>DSM<span class="heti-spacing"> </span></span>的主要缺点是处理器间的数据通信机制变得更为复杂，且需要软件层面付出更多努力才能充分利用所增加的内存带宽优势</li>
+<li>
+<p><span>DSM<span class="heti-spacing"> </span></span>的主要缺点是处理器间的数据通信机制变得更为复杂，且需要软件层面付出更多努力才能充分利用所增加的内存带宽优势</p>
+</li>
 </ul>
 </li>
 </ul>
@@ -1023,32 +1181,30 @@
 <h3 id="challenges-of-parallel-processing">Challenges of Parallel Processing<a class="headerlink" href="#challenges-of-parallel-processing" title="Permanent link">⚓︎</a></h3>
 <p>多处理器的应用范围广泛，包括：运行几乎无需通信的独立任务，或者执行需要线程间协作才能完成的并行程序。要应对这些任务带来的挑战，通常需要采取以下综合方案：</p>
 <ul>
-<li>精心选择算法并优化实现</li>
-<li>适配底层编程语言与系统</li>
-<li>协调操作系统及其支持功能</li>
-<li>调整体系结构与硬件实施方案</li>
+<li>精心选择<strong>算法</strong>并优化实现</li>
+<li>适配底层<strong>编程语言</strong>与系统</li>
+<li>协调<strong>操作系统</strong>及其支持功能</li>
+<li>调整<strong>体系结构与硬件</strong>实施方案</li>
 </ul>
 <p>尽管很多时候其中某一个环节可能会成为主要瓶颈，但当处理器规模变得很大的时候，我们需要同步优化软件和硬件的所有层面。具体来说，我们主要会遇到以下两种挑战：</p>
 <ul>
-<li>程序中有限的并行能力</li>
-<li>相对高昂的通信开销，或者说并行处理器中远程访问的高延迟问题<ul>
-<li>在现有的共享内存的多处理器中，不同核心间的数据传输可能耗费<span class="heti-skip"><span class="heti-spacing"> </span>35<span class="heti-spacing"> </span></span>至<span class="heti-skip"><span class="heti-spacing"> </span>50<span class="heti-spacing"> </span></span>个时钟周期</li>
-<li>而跨芯片的核心间通信则需<span class="heti-skip"><span class="heti-spacing"> </span>100<span class="heti-spacing"> </span></span>到<span class="heti-skip"><span class="heti-spacing"> </span>300<span class="heti-spacing"> </span></span>甚至更多时钟周期（针对大规模多处理器<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>（这些数据均来自教材）</li>
+<li>程序中有限的<strong>并行</strong>能力</li>
+<li>相对高昂的<strong>通信</strong>开销，或者说并行处理器中远程访问的高延迟问题<ul>
 <li>具体时长取决于通信机制、互连网络类型以及多处理器的规模</li>
 </ul>
 </li>
 </ul>
-<p>它们对应的具体解决方法为：</p>
+<p>它们对应的解决方案为：</p>
 <ul>
 <li>
-<p>对于应用程序并行能力不足的问题，主要需从软件层面着手：</p>
+<p>对于应用程序并行能力不足的问题，主要需从<strong>软件</strong>层面着手：</p>
 <ul>
 <li>一方面采用能提供更优并行性能的新算法</li>
-<li>另一方面依靠软件系统，最大化处理器完整配置下的有效执行时间</li>
+<li>另一方面依靠软件系统，最大化处理器在完整配置下的有效执行时间</li>
 </ul>
 </li>
 <li>
-<p>对于降低远距离延迟的影响，则需要架构师与程序员的共同努力：</p>
+<p>对于降低远距离延迟的影响，则需要<strong>架构师</strong>与<strong>程序员</strong>的共同努力：</p>
 <ul>
 <li>例如通过硬件机制（如缓存共享数据）或软件手段（如重构数据结构使访问本地化）来减少远程访问次数</li>
 <li>也可以借助<strong>多线程</strong>技术或<a href="2.html#hardware-prefetching-of-instructions-and-data"><strong>预取</strong></a>策略来尝试掩盖延迟</li>
@@ -1070,11 +1226,11 @@
 <p><strong>对称的共享内存机器</strong>通常支持对共享数据和私有数据的<strong>缓存</strong>，其中：</p>
 <ul>
 <li><strong>私有数据</strong><span>(private data)<span class="heti-spacing"> </span></span>仅被一个处理器使用<ul>
-<li>当私有数据被缓存时，其存储位置会迁移至高速缓存中，从而降低平均访问时间以及所需的内存带宽</li>
+<li>当私有数据被缓存时，其存储位置会迁移至高速缓存中，从而降低平均访问时间以及所需的内存带宽。</li>
 </ul>
 </li>
 <li><strong>共享数据</strong><span>(shared data)<span class="heti-spacing"> </span></span>则能被多个处理器共同访问<ul>
-<li>对于共享数据的缓存处理，其值可能被复制到多个高速缓存中。除了缩短访问延迟和减少内存带宽需求外，这种复制还能缓解多处理器同时读取同一共享数据项时可能产生的竞争问题</li>
+<li>对于共享数据的缓存处理，其值可能被复制到多个高速缓存中。除了缩短访问延迟和减少内存带宽需求外，这种复制还能缓解多处理器同时读取同一共享数据项时可能产生的竞争问题。</li>
 <li>然而，共享数据的缓存也带来了新的挑战——高速缓存的<strong>一致性</strong><span>(coherence)<span class="heti-spacing"> </span></span>问题，下面马上介绍！</li>
 </ul>
 </li>
@@ -1088,12 +1244,12 @@
 </ul>
 <div class="admonition warning">
 <p class="admonition-title">注意</p>
-<p>实际上，中文翻译没能很好地将<span class="heti-skip"><span class="heti-spacing"> </span>coherence<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>consistency<span class="heti-spacing"> </span></span>区分开来，所以你可能会在网上看到把<span class="heti-skip"><span class="heti-spacing"> </span>consistency<span class="heti-spacing"> </span></span>翻译成“一致性”的情况。不过在自己的笔记中，我还是选择将其翻译成“连贯性”。</p>
+<p>实际上，中文翻译没能很好地将<span class="heti-skip"><span class="heti-spacing"> </span>coherence<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>consistency<span class="heti-spacing"> </span></span>区分开来，所以你可能会在网上看到把<span class="heti-skip"><span class="heti-spacing"> </span>consistency<span class="heti-spacing"> </span></span>翻译成“一致性”的情况。不过在这份笔记中，笔者还是选择将<span class="heti-skip"><span class="heti-spacing"> </span>consistency<span class="heti-spacing"> </span></span>翻译成“连贯性”。</p>
 </div>
-<p>对一致性的严格定义为：当满足以下条件时，我们称内存系统具有一致性：</p>
+<p>对<strong>一致性</strong><span>(coherence)<span class="heti-spacing"> </span></span>的严格定义为：当满足以下条件时，我们称内存系统具有一致性：</p>
 <ul>
 <li>处理器<span class="heti-skip"><span class="heti-spacing"> </span>P<span class="heti-spacing"> </span></span>对位置<span class="heti-skip"><span class="heti-spacing"> </span>X<span class="heti-spacing"> </span></span>的写入操作后紧跟着<span class="heti-skip"><span class="heti-spacing"> </span>P<span class="heti-spacing"> </span></span>对<span class="heti-skip"><span class="heti-spacing"> </span>X<span class="heti-spacing"> </span></span>的读取操作，且在该写入与读取之间没有其他处理器对<span class="heti-skip"><span class="heti-spacing"> </span>X<span class="heti-spacing"> </span></span>进行写入时，该读取总是返回由<span class="heti-skip"><span class="heti-spacing"> </span>P<span class="heti-spacing"> </span></span>所写入的值。<ul>
-<li>该性质保留了程序顺序，而且该性质即使在单处理器中也依然成立。</li>
+<li>该性质保留了<strong>程序顺序</strong>，而且该性质即使在单处理器中也依然成立。</li>
 </ul>
 </li>
 <li>当一个处理器对位置<span class="heti-skip"><span class="heti-spacing"> </span>X<span class="heti-spacing"> </span></span>的读取操作发生在另一个处理器对<span class="heti-skip"><span class="heti-spacing"> </span>X<span class="heti-spacing"> </span></span>的写入操作之后，只要读写之间有足够的时间间隔<span class="heti-skip"><span class="heti-spacing"> </span>,<span class="heti-spacing"> </span></span>且在两次访问之间没有其他对<span class="heti-skip"><span class="heti-spacing"> </span>X<span class="heti-spacing"> </span></span>的写入发生，该读取将返回被写入的值。<ul>
@@ -1102,7 +1258,7 @@
 </li>
 <li><strong>写串行化</strong>(write serialization)：针对同一位置的写操作是<strong>可串行的</strong>(serialized)。也就是说，任何两个处理器对该位置的两次写操作，在所有处理器看来，都遵循相同的顺序。例如，若先后向某位置写入值<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>和<span><span class="heti-spacing"> </span>2</span>，所有处理器都不可能先读到<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>再读到<span><span class="heti-spacing"> </span>1</span>。</li>
 </ul>
-<p>尽管上述三个性质已足以确保一致性，但连贯性同样至关重要，比如：我们无法要求对<span class="heti-skip"><span class="heti-spacing"> </span>X<span class="heti-spacing"> </span></span>的读取操作能立即获取其他处理器对<span class="heti-skip"><span class="heti-spacing"> </span>X<span class="heti-spacing"> </span></span>所写入的（最新）值，因为此时写入的数据甚至可能尚未离开原来的处理器。连贯性是由<strong>内存连贯性模型</strong><span>(memory consistency model)<span class="heti-spacing"> </span></span>定义的，其具体内容在<a href="#models-of-memory-consistency">后面</a>会介绍。</p>
+<p>尽管上述三个性质已足以确保一致性，但连贯性同样至关重要，比如：我们无法要求对<span class="heti-skip"><span class="heti-spacing"> </span>X<span class="heti-spacing"> </span></span>的读取操作能立即获取其他处理器对<span class="heti-skip"><span class="heti-spacing"> </span>X<span class="heti-spacing"> </span></span>所写入的（最新）值，因为此时写入的数据甚至可能尚未离开原来的处理器。连贯性是由<a href="#models-of-memory-consistency"><strong>内存连贯性模型</strong></a><span>(memory consistency model)<span class="heti-spacing"> </span></span>定义的，这块内容将放在后面介绍。</p>
 <p>一致性与连贯性互为补充：</p>
 <ul>
 <li><strong>一致性</strong>规定了针对<strong>同一内存</strong>地址读写操作的行为</li>
@@ -1116,7 +1272,7 @@
 </ul>
 </li>
 </ul>
-<p>这些假设允许处理器重排读操作顺序，但强制其按照程序顺序来完成写操作。并且这些假设将一直沿用至介绍<a href="#models-of-memory-consistency">内存连贯性模型</a>时为止。</p>
+<p>这些假设允许处理器重排读操作顺序，但强制其按照程序顺序来完成写操作。并且这些假设将一直沿用至介绍“内存连贯性模型”时为止。</p>
 <h3 id="basic-schemes-for-enforcing-coherence">Basic Schemes for Enforcing Coherence<a class="headerlink" href="#basic-schemes-for-enforcing-coherence" title="Permanent link">⚓︎</a></h3>
 <p>在多处理器内运行的程序中，同一数据的多份拷贝通常会同时存在于各级高速缓存中。在一致性的多处理器中，高速缓存提供了共享数据的<strong>迁移</strong><span>(migration)<span class="heti-spacing"> </span></span>与<strong>复制</strong><span>(replication)<span class="heti-spacing"> </span></span>的双重功能。</p>
 <ul>
@@ -1126,7 +1282,7 @@
 <p>由此可见，实现高效的迁移与复制对提升共享数据访问的性能而言至关重要。因此，多处理器引入硬件级协议来维护高速缓存的一致性。这个协议被称为<strong>高速缓存一致性协议</strong>(cache coherence protocols)，其实现核心在于追踪数据块的共享状态。每个缓存块的状态通过与之关联的<strong>状态位</strong>来维护（类似于单处理器高速缓存中的有效位和脏位<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。根据具体实现技术的不同，可以将协议分为以下两类：</p>
 <ul>
 <li><strong>基于目录</strong>(directory based)：<ul>
-<li>特定物理内存块的共享状态被保存在一个称为<strong>目录</strong><span>(memory)<span class="heti-spacing"> </span></span>的位置。</li>
+<li>特定物理内存块的共享状态被保存在一个称为<strong>目录</strong><span>(directory)<span class="heti-spacing"> </span></span>的位置。</li>
 <li>存在两种截然不同的基于目录的缓存一致性方案：<ul>
 <li>在<span class="heti-skip"><span class="heti-spacing"> </span>SMP<span class="heti-spacing"> </span></span>中，可采用与内存或其他单一串行化点（如多核芯片的最外层高速缓存）关联的<strong>集中式目录</strong></li>
 <li>在<span class="heti-skip"><span class="heti-spacing"> </span>DSM<span class="heti-spacing"> </span></span>中，由于单个目录会阻碍性能，且难以满足多核架构的内存扩展需求，因此需采用<strong>分布式目录</strong>，但实现起来相对更复杂</li>
@@ -1136,8 +1292,13 @@
 </li>
 <li><strong>监听</strong>(snooping)：<ul>
 <li>每个持有物理内存块数据拷贝的高速缓存均可追踪该块的共享状态</li>
-<li>在<span class="heti-skip"><span class="heti-spacing"> </span>SMP<span class="heti-spacing"> </span></span>中，各个核的高速缓存通常通过广播介质（如核自己的高速缓存与共享高速缓存<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>内存之间的总线）实现互通，并且所有的高速缓存控制器通过持续监控或<strong>监听</strong><span>(snoop)<span class="heti-spacing"> </span></span>介质，以确认自身是否拥有在总线上，或交换访问中请求的目标数据块拷贝</li>
-<li>侦听技术同样适用于多芯片多处理器的一致性协议</li>
+<li>在<span class="heti-skip"><span class="heti-spacing"> </span>SMP<span class="heti-spacing"> </span></span>中，各个核心的高速缓存通常通过广播介质（如核心自带的高速缓存与共享高速缓存<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>内存之间的总线）实现互通，并且所有的高速缓存控制器通过持续监控或<strong>监听</strong><span>(snoop)<span class="heti-spacing"> </span></span>介质，以确认自身是否拥有在总线上，或交换访问中请求的目标数据块拷贝</li>
+<li>
+<p>侦听技术同样适用于多芯片多处理器的一致性协议</p>
+<p></p><div style="text-align: center">
+<img src="images/C5/31.png" width="70%"/>
+</div>
+</li>
 </ul>
 </li>
 </ul>
@@ -1150,7 +1311,7 @@
 <p><strong>写无效协议</strong>(write invalidate protocol)：确保处理器在写入数据项前拥有对该项的<strong>独占访问权</strong></p>
 <ul>
 <li>独占访问能保证执行写入操作时不存在任何其他可读或可写的副本：该项数据的所有其他高速缓存的拷贝均会被置为<strong>无效</strong>状态</li>
-<li>当<strong>读取</strong>操作发生时，高速缓存未命中，这迫使系统必须获取数据的新副本</li>
+<li>当<strong>读取</strong>操作发生时，高速缓存失效，这迫使系统必须获取数据的新副本</li>
 <li>对于<strong>写入</strong>操作，我们要求执行写入的处理器拥有独占访问权限，防止其他任何处理器同时进行写入<ul>
 <li>若存在两个处理器试图同时写入同一数据的情况，其中一方将获胜，导致另一方的数据拷贝失效；另一方若要完成其写入操作，就必须获取包含最新更新值的数据新拷贝</li>
 <li>由此可见，此协议确保了<strong>写串行化</strong></li>
@@ -1231,7 +1392,7 @@
 <p>当总线上出现无效请求或写失效时，所有私有高速缓存中存有该缓存块拷贝的核都会将其置为无效。对于写回式高速缓存的写失效情况，若该块仅存在于一个<strong>私有高速缓存</strong>，且处于独占状态，那么该缓存还需执行<strong>写回</strong>操作；否则可直接从共享高速缓存或主存读取数据。</p>
 <p>下图展示了采用写无效协议和写回式高速缓存的单个私有高速缓存块的有限状态转换图（左图是<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>请求，右图是总线请求<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
 <div style="text-align: center">
-<img src="images/C5/5.png" width="90%"/>
+<img src="images/C5/5.png" width="100%"/>
 </div>
 <p>将两个状态转换图合并在一起，可以得到以下状态图：</p>
 <div style="text-align: center">
@@ -1244,19 +1405,65 @@
 <li>最后，当总线出现针对独占状态块的读失效时，持有该独占拷贝的本地高速缓存会将其状态变更为共享状态。</li>
 </ul>
 <p>本协议的另一特性是：处于共享状态的内存块在外部共享高速缓存（<span>L2<span class="heti-spacing"> </span></span>或<span><span class="heti-spacing"> </span>L3</span>，若无共享高速缓存则为内存）中始终保持最新状态。这一特性显著简化了实现方案。</p>
+<details class="example">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:6"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"/><input id="__tabbed_1_2" name="__tabbed_1" type="radio"/><input id="__tabbed_1_3" name="__tabbed_1" type="radio"/><input id="__tabbed_1_4" name="__tabbed_1" type="radio"/><input id="__tabbed_1_5" name="__tabbed_1" type="radio"/><input id="__tabbed_1_6" name="__tabbed_1" type="radio"/><div class="tabbed-labels"><label for="__tabbed_1_1">初始状态</label><label for="__tabbed_1_2"><span><span class="heti-spacing"> </span>Step 1</span></label><label for="__tabbed_1_3"><span><span class="heti-spacing"> </span>Step 2</span></label><label for="__tabbed_1_4"><span><span class="heti-spacing"> </span>Step 3</span></label><label for="__tabbed_1_5"><span><span class="heti-spacing"> </span>Step 4</span></label><label for="__tabbed_1_6"><span><span class="heti-spacing"> </span>Step 5</span></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/C5/32.png" width="70%"/>
+</div>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/C5/33.png" width="70%"/>
+</div>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/C5/34.png" width="70%"/>
+</div>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/C5/35.png" width="70%"/>
+</div>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/C5/36.png" width="70%"/>
+</div>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/C5/37.png" width="70%"/>
+</div>
+</div>
+</div>
+</div>
+</details>
 <p>尽管这个简单的缓存协议能正确执行，但是它忽略了许多复杂情况。其中最重要的是该协议假设所有操作都是<strong>原子性的</strong>，即任一操作能够以不受其他操作干扰的方式完成，然而现实中并非如此。非原子性操作会引入协议<strong>死锁</strong><span>(deadlock)<span class="heti-spacing"> </span></span>的可能性，即进入无法继续执行的状态。在后面我们会讨论这些情况。</p>
 <h3 id="extensions-to-the-basic-coherence-protols">Extensions to the Basic Coherence Protols<a class="headerlink" href="#extensions-to-the-basic-coherence-protols" title="Permanent link">⚓︎</a></h3>
 <p>先前描述的一致性协议是一种简单的三状态协议，通常以其状态的首字母来指代，因此被称为 <strong>MSI</strong>（Modified（修改<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，Shared（共享<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，Invalid（无效<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>）协议。我们可以基于这一基础协议进行扩展，通过增加额外状态和事务来优化特定行为，从而（可能会）提升性能表现。其中，最常见的两种扩展是：</p>
 <ul>
-<li><strong>MESI</strong> 协议：增加了<strong>独占</strong><span>(exclusive)<span class="heti-spacing"> </span></span>状态，形成四种状态：修改<span><span class="heti-spacing"> </span>(modified)</span>、独占<span><span class="heti-spacing"> </span>(exclusive)</span>、共享<span class="heti-skip"><span class="heti-spacing"> </span>(shared)<span class="heti-spacing"> </span></span>和无效<span><span class="heti-spacing"> </span>(invalid)</span>。<ul>
+<li>
+<p><strong>MESI</strong> 协议：增加了<strong>独占</strong><span>(exclusive)<span class="heti-spacing"> </span></span>状态，形成四种状态：修改<span><span class="heti-spacing"> </span>(modified)</span>、独占<span><span class="heti-spacing"> </span>(exclusive)</span>、共享<span class="heti-skip"><span class="heti-spacing"> </span>(shared)<span class="heti-spacing"> </span></span>和无效<span><span class="heti-spacing"> </span>(invalid)</span>。</p>
+<ul>
 <li>独占状态表示缓存块仅存在于单一高速缓存中，且未被修改。</li>
 <li>若某个块处于独占状态，对其进行写入时无需产生失效信号，从而优化了同一高速缓存先读取后写入该数据块的场景。</li>
 <li>当然，当对处于独占状态的块的读失效发生时，必须将该块转为共享状态以维持一致性。</li>
 <li>添加独占状态的好处在于：当同一个核再次写入处于独占状态的数据块时，既不需要获取总线访问权，也不需生成失效信号，因为系统明确知晓该数据块仅存在于本地的这个高速缓存中；处理器只需将其状态改为已修改即可实现更新。</li>
-<li>通过将一致性状态位编码为独占状态位、并用脏位标识修改情况即可轻松实现该状态的扩展应用。</li>
+<li>
+<p>通过将一致性状态位编码为独占状态位、并用脏位标识修改情况即可轻松实现该状态的扩展应用。</p>
+<p></p><div style="text-align: center">
+<img src="images/C5/38.png" width="80%"/>
+</div>
+</li>
 </ul>
 </li>
-<li><strong>MOESI</strong>协议：在<span class="heti-skip"><span class="heti-spacing"> </span>MESI<span class="heti-spacing"> </span></span>协议的基础上增加了<strong>拥有</strong><span>(owned)<span class="heti-spacing"> </span></span>状态，用于表示相关缓存块由该高速缓存持有，且主存中的拷贝已过时。<ul>
+<li>
+<p><strong>MOESI</strong>协议：在<span class="heti-skip"><span class="heti-spacing"> </span>MESI<span class="heti-spacing"> </span></span>协议的基础上增加了<strong>拥有</strong><span>(owned)<span class="heti-spacing"> </span></span>状态，用于表示相关缓存块由该高速缓存持有，且主存中的拷贝已过时。</p>
+<ul>
 <li>在<span class="heti-skip"><span class="heti-spacing"> </span>MSI<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>MESI<span class="heti-spacing"> </span></span>协议中，当尝试共享处于修改状态的缓存块时，在原高速缓存和新的共享高速缓存中，该块的状态都会转变为共享状态，且必须将其写回主存。</li>
 <li>而在<span class="heti-skip"><span class="heti-spacing"> </span>MOESI<span class="heti-spacing"> </span></span>协议中，原高速缓存的修改状态可以直接转换为拥有状态而无需立即写入内存。其他新的共享该块的高速缓存则保持共享状态；而仅由原高速缓存持有的拥有状态表明主存拷贝已失效，且指定高速缓存是所有者。</li>
 <li>当发生失效时，所有者必须提供该数据块（因为主存未更新<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>；若被替换，则需将其写回主存。</li>
@@ -1294,6 +1501,10 @@
 <p>在多核架构中采用多总线设计时，只要确保每个内存块仅关联一条独立总线，就能通过该共享总线对同一数据块的访问请求进行串行化处理，从而消除竞争现象。这一特性与重启竞争失败方的高速缓存失效处理的能力相结合，构成了无需总线也能实现的监听式高速缓存一致性的关键要素。</p>
 <p>实际设计中可混合使用侦听协议和目录协议。</p>
 <h2 id="performance-of-symmetric-shared-memory-multiprocessors">Performance of Symmetric Shared-Memory Multiprocessors<a class="headerlink" href="#performance-of-symmetric-shared-memory-multiprocessors" title="Permanent link">⚓︎</a></h2>
+<div class="admonition warning">
+<p class="admonition-title">注意</p>
+<p>这块内容应该不考！</p>
+</div>
 <p>在使用监听一致性协议的多核处理器中，多种不同的现象共同影响着性能表现。具体而言，整体的高速缓存性能由单处理器的<strong>缓存失效流量</strong>和<strong>通信流量</strong>（导致无效化以及后续缓存失效）共同决定。改变处理器的数量、高速缓存的容量和块的大小都会影响带这两类关于失效率的要素。</p>
 <p>而之前在计组课程中，我们知道<strong>单处理器</strong>的失效率可以被分解为三个<span><span class="heti-spacing"> </span>C</span>：<strong>容量</strong>(capacity)、<strong>强制</strong><span>(compulsory)<span class="heti-spacing"> </span></span>和<strong>冲突</strong>(conflict)。它们既揭示了应用程序行为特征，也为高速缓存的设计优化提供了方向。同理，由<strong>处理器间通信</strong>引发的失效（通常称为<strong>一致性失效</strong>(coherence misses)）也可归因于两个因素：</p>
 <ul>
@@ -1313,7 +1524,7 @@
 </ul>
 <details class="example">
 <summary>例子</summary>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"/><input id="__tabbed_1_2" name="__tabbed_1" type="radio"/><div class="tabbed-labels"><label for="__tabbed_1_1">题目</label><label for="__tabbed_1_2">答案</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"/><input id="__tabbed_2_2" name="__tabbed_2" type="radio"/><div class="tabbed-labels"><label for="__tabbed_2_1">题目</label><label for="__tabbed_2_2">答案</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p></p><div style="text-align: center">
@@ -1344,11 +1555,13 @@
 <li>而强制失效、伪共享失效及真共享失效几乎不受缓存容量的影响。因此当容量较大时，<strong>真共享失效</strong>构成了高速缓存失效的主要部分；由于真共享失效数量保持不变，所以当<span class="heti-skip"><span class="heti-spacing"> </span>L3<span class="heti-spacing"> </span></span>高速缓存容量的提升超过<span class="heti-skip"><span class="heti-spacing"> </span>2MiB<span class="heti-spacing"> </span></span>后，整体失效率的降低幅度有限。</li>
 </ul>
 <p>综上，虽然增大高速缓存容量可消除大部分单处理器的失效，但是对多处理器的失效则没有太大影响。</p>
+<hr/>
 <p>接下来展示的是<strong>增加处理器数量</strong>对不同类型失效的影响：</p>
 <div style="text-align: center">
 <img src="images/C5/12.png" width="50%"/>
 </div>
 <p>不难发现，真共享失效率的上升并未因单处理器失效率下降而得到抵消，所以导致每条指令的内存访问周期整体增加。</p>
+<hr/>
 <p>最后要探讨的是<strong>增加块大小</strong>是否有助于改善此类工作负载的性能。这一做法理应能降低指令失效率和冷启动失效率，并在一定范围内减少容量<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>冲突失效率，甚至可能降低真实共享失效率。下图展示了当块大小从<span class="heti-skip"><span class="heti-spacing"> </span>32B<span class="heti-spacing"> </span></span>增至<span class="heti-skip"><span class="heti-spacing"> </span>256B<span class="heti-spacing"> </span></span>时，每千条指令的失效次数变化情况：</p>
 <div style="text-align: center">
 <img src="images/C5/13.png" width="50%"/>
@@ -1443,11 +1656,11 @@
 </ul>
 <h2 id="distributed-shared-memory-and-directory-based-coherence">Distributed Shared-Memory and Directory-Based Coherence<a class="headerlink" href="#distributed-shared-memory-and-directory-based-coherence" title="Permanent link">⚓︎</a></h2>
 <p>前面介绍的监听协议要求每次高速缓存失效时，要和其他所有的高速缓存进行通信。这种不用集中式的数据结构来追踪高速缓存状态的特性，既是监听方案的优势（实现成本低廉<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，也是它的致命弱点，因为这使得它的可扩展性<span class="heti-skip"><span class="heti-spacing"> </span>(scalability)<span class="heti-spacing"> </span></span>很差。</p>
-<p>近年来，多核处理器的发展迫使所有设计者转向<strong>分布式内存</strong>(distributed memory)，以满足各处理器对带宽的需求。这种内存组织能够提升内存带宽和互连带宽，因为它能立即将本地内存流量与远程内存流量分离，从而降低了对内存系统和互连网络的带宽需求。然而，若无法消除高速缓存失效时执行一致性协议的广播操作，那么分布式内存所带来的收益将极为有限。</p>
+<p>近年来，多核处理器的发展迫使所有设计者转向<strong>分布式内存</strong>(distributed memory)，以满足各处理器对带宽的需求。这种内存组织能够提升内存带宽和互连带宽，因为它能将本地内存流量与远程内存流量分离，从而降低了对内存系统和互连网络的带宽需求。然而，若无法消除高速缓存失效时执行一致性协议的广播操作，那么分布式内存所带来的收益将极为有限。</p>
 <p>另外，我们还提到过监听协议的替代方案——<strong>目录协议</strong>(directory protocol)。</p>
 <ul>
 <li>目录会记录每个可能被缓存的块的状态信息，包括哪些高速缓存（或高速缓存组）拥有该块的副本、数据是否是脏的（已被修改）等</li>
-<li>在共享最外层缓存（L3）的多核处理器中，实现目录机制非常简单：只需为每个<span class="heti-skip"><span class="heti-spacing"> </span>L3<span class="heti-spacing"> </span></span>高速缓存块维护一个与核心数量等长的位向量即可<ul>
+<li>在共享最外层缓存（L3）的多核处理器中，实现目录机制非常简单：只需为每个<span class="heti-skip"><span class="heti-spacing"> </span>L3<span class="heti-spacing"> </span></span>高速缓存块维护一个与核心数量等长的<strong>位向量</strong>即可<ul>
 <li>该位向量能标识出哪些私有<span class="heti-skip"><span class="heti-spacing"> </span>L2<span class="heti-spacing"> </span></span>高速缓存可能持有<span class="heti-skip"><span class="heti-spacing"> </span>L3<span class="heti-spacing"> </span></span>高速缓存中的对应块副本，这样失效请求仅需发送至这些特定的高速缓存即可</li>
 <li>当<span class="heti-skip"><span class="heti-spacing"> </span>L3<span class="heti-spacing"> </span></span>采用包容性设计时，这种机制在单个多核芯片上能完美运作</li>
 </ul>
@@ -1559,7 +1772,14 @@
 </ul>
 </li>
 </ul>
+<div class="admonition example">
+<p class="admonition-title"><span>jxh<span class="heti-spacing"> </span></span>课件有一个比较完整的例子，建议阅读和理解（<del>由于内容太多不太好搬过来</del>）</p>
+</div>
 <h2 id="synchronization">Synchronization<a class="headerlink" href="#synchronization" title="Permanent link">⚓︎</a></h2>
+<details class="question" open="open">
+<summary>为什么需要同步？</summary>
+<p>需要知道何时不同进程使用共享数据是安全的。</p>
+</details>
 <p><strong>同步</strong><span>(synchronization)<span class="heti-spacing"> </span></span>机制通常由用户级的软件例程构建，这些例程依赖于硬件提供的同步指令。对于较小规模的多处理器系统或低竞争场景，关键的硬件能力在于提供一条不可中断的指令或指令序列，该指令能够以<strong>原子方式</strong>检索并修改数值。基于这一能力，便可构建出软件同步机制。本节重点探讨<strong>加锁</strong>与<strong>解锁</strong>这两类同步操作的实现原理；通过这两个操作，既能实现互斥访问控制，也可为更复杂的同步机制奠定基础。</p>
 <h3 id="basic-hardware-primitives">Basic Hardware Primitives<a class="headerlink" href="#basic-hardware-primitives" title="Permanent link">⚓︎</a></h3>
 <p>在多处理器系统中。实现同步所需的关键能力是一组能够实现<strong>原子化</strong>读取并修改内存位置的<strong>硬件原语</strong>(hardware primitives)。若缺乏这种能力，构建基本同步原语的成本将极为高昂，且会随着处理器数量的增加而递增。实际上存在多种基础硬件原语的替代方案，它们均提供对某一位置进行原子化读写的能力。但通常而言，架构师并不期望用户直接使用这些基础硬件原语，而是希望<strong>系统程序员</strong>利用它们来构建同步库。下面让我们从其中的一个硬件原语出发，展示如何利用它来构建一些基本的同步操作。</p>
@@ -1569,7 +1789,7 @@
 <li>
 <p>处理器尝试通过执行交换指令来获取锁：</p>
 <ul>
-<li>将寄存器中存放的<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>与锁对应的内存地址内容交换。</li>
+<li>将寄存器中的<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>进行交换；寄存器的内存地址和锁对应</li>
 <li>若其他处理器已持有该锁，则交换指令返回值为<span><span class="heti-spacing"> </span>1</span>；反之返回<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>时，该内存位置的值也会被同时更新为<span><span class="heti-spacing"> </span>1</span>，从而阻止其他竞争性交换操作同样获得<span><span class="heti-spacing"> </span>0</span>。</li>
 </ul>
 </li>
@@ -1607,11 +1827,12 @@
 </ul>
 <details class="example" open="open">
 <summary>例子</summary>
-<div class="language-asm highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="nl">try:</span><span class="w"> </span><span class="nf">mov</span><span class="w"> </span><span class="no">x3</span><span class="p">,</span><span class="no">x4</span><span class="w">        </span><span class="c1">; mov exchange value</span>
-</span><span id="__span-0-2"><a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="w">    </span><span class="nf">lr</span><span class="w"> </span><span class="no">x2</span><span class="p">,</span><span class="no">x1</span><span class="w">         </span><span class="c1">; load reserved from</span>
-</span><span id="__span-0-3"><a href="#__codelineno-0-3" id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="w">    </span><span class="nf">sc</span><span class="w"> </span><span class="no">x3</span><span class="p">,</span><span class="mi">0</span><span class="p">(</span><span class="no">x1</span><span class="p">)</span><span class="w">      </span><span class="c1">; store conditional</span>
-</span><span id="__span-0-4"><a href="#__codelineno-0-4" id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="w">    </span><span class="nf">bnez</span><span class="w"> </span><span class="no">x3</span><span class="p">,</span><span class="no">try</span><span class="w">      </span><span class="c1">; branch store fails</span>
-</span><span id="__span-0-5"><a href="#__codelineno-0-5" id="__codelineno-0-5" name="__codelineno-0-5"></a><span class="w">    </span><span class="nf">mov</span><span class="w"> </span><span class="no">x4</span><span class="p">,</span><span class="no">x2</span><span class="w">        </span><span class="c1">; put load value in x4</span>
+<div class="language-asm highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="nl">try:</span><span class="w"> </span>
+</span><span id="__span-0-2"><a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="w">    </span><span class="nf">mov</span><span class="w"> </span><span class="no">x3</span><span class="p">,</span><span class="w"> </span><span class="no">x4</span><span class="w">        </span><span class="c1">; mov exchange value</span>
+</span><span id="__span-0-3"><a href="#__codelineno-0-3" id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="w">    </span><span class="nf">lr</span><span class="w"> </span><span class="no">x2</span><span class="p">,</span><span class="w"> </span><span class="no">x1</span><span class="w">         </span><span class="c1">; load reserved from</span>
+</span><span id="__span-0-4"><a href="#__codelineno-0-4" id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="w">    </span><span class="nf">sc</span><span class="w"> </span><span class="no">x3</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">(</span><span class="no">x1</span><span class="p">)</span><span class="w">      </span><span class="c1">; store conditional</span>
+</span><span id="__span-0-5"><a href="#__codelineno-0-5" id="__codelineno-0-5" name="__codelineno-0-5"></a><span class="w">    </span><span class="nf">bnez</span><span class="w"> </span><span class="no">x3</span><span class="p">,</span><span class="w"> </span><span class="no">try</span><span class="w">      </span><span class="c1">; branch store fails</span>
+</span><span id="__span-0-6"><a href="#__codelineno-0-6" id="__codelineno-0-6" name="__codelineno-0-6"></a><span class="w">    </span><span class="nf">mov</span><span class="w"> </span><span class="no">x4</span><span class="p">,</span><span class="w"> </span><span class="no">x2</span><span class="w">        </span><span class="c1">; put load value in x4</span>
 </span></code></pre></div>
 </details>
 <h3 id="implementing-locks-using-coherence">Implementing Locks Using Coherence<a class="headerlink" href="#implementing-locks-using-coherence" title="Permanent link">⚓︎</a></h3>
@@ -1667,9 +1888,245 @@
 </span><span id="__span-3-4"><a href="#__codelineno-3-4" id="__codelineno-3-4" name="__codelineno-3-4"></a><span class="w">        </span><span class="nf">sc</span><span class="w"> </span><span class="no">x2</span><span class="p">,</span><span class="mi">0</span><span class="p">(</span><span class="no">x1</span><span class="p">)</span><span class="w">         </span><span class="c1">; store</span>
 </span><span id="__span-3-5"><a href="#__codelineno-3-5" id="__codelineno-3-5" name="__codelineno-3-5"></a><span class="w">        </span><span class="nf">bnez</span><span class="w"> </span><span class="no">x2</span><span class="p">,</span><span class="no">lockit</span><span class="w">      </span><span class="c1">; branch if store fails</span>
 </span></code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">自旋锁的性能分析</p>
+<p></p><div style="text-align: center">
+<img src="images/C5/39.png" width="80%"/>
+</div>
+</div>
+<h3 id="barrier-synchronization">Barrier Synchronization<a class="headerlink" href="#barrier-synchronization" title="Permanent link">⚓︎</a></h3>
+<p><strong>屏障</strong><span>(barrier)<span class="heti-spacing"> </span></span>迫使进程等待，直到所有进程都抵达屏障后才释放这些进程，使其继续运行。其实现主要基于：</p>
+<ul>
+<li>共享计数器<span><span class="heti-spacing"> </span>(shared counter)</span></li>
+<li>自旋等待<span class="heti-skip"><span class="heti-spacing"> </span>(spin waiting)<span class="heti-spacing"> </span></span>释放信号</li>
+</ul>
+<p>下面是一段有关屏障实现的代码：</p>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-4-1"><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="p">{</span>
+</span><span id="__span-4-2"><a href="#__codelineno-4-2" id="__codelineno-4-2" name="__codelineno-4-2"></a><span class="w">    </span><span class="n">lock</span><span class="p">(</span><span class="n">counterlock</span><span class="p">);</span><span class="w">                    </span><span class="c1">// ensure update atomic</span>
+</span><span id="__span-4-3"><a href="#__codelineno-4-3" id="__codelineno-4-3" name="__codelineno-4-3"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">count</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="n">release</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">          </span><span class="c1">// first--&gt;reset release</span>
+</span><span id="__span-4-4"><a href="#__codelineno-4-4" id="__codelineno-4-4" name="__codelineno-4-4"></a><span class="w">        </span><span class="o">++</span><span class="n">count</span><span class="p">;</span><span class="w">                          </span><span class="c1">// count arrivals</span>
+</span><span id="__span-4-5"><a href="#__codelineno-4-5" id="__codelineno-4-5" name="__codelineno-4-5"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">count</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">total</span><span class="p">){</span><span class="w">                  </span><span class="c1">// all arrived</span>
+</span><span id="__span-4-6"><a href="#__codelineno-4-6" id="__codelineno-4-6" name="__codelineno-4-6"></a><span class="w">        </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">                        </span><span class="c1">// reset counter</span>
+</span><span id="__span-4-7"><a href="#__codelineno-4-7" id="__codelineno-4-7" name="__codelineno-4-7"></a><span class="w">        </span><span class="n">release</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">                      </span><span class="c1">// release processes</span>
+</span><span id="__span-4-8"><a href="#__codelineno-4-8" id="__codelineno-4-8" name="__codelineno-4-8"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-4-9"><a href="#__codelineno-4-9" id="__codelineno-4-9" name="__codelineno-4-9"></a><span class="w">    </span><span class="n">unlock</span><span class="p">(</span><span class="n">counterlock</span><span class="p">);</span><span class="w">                  </span><span class="c1">// release lock</span>
+</span><span id="__span-4-10"><a href="#__codelineno-4-10" id="__codelineno-4-10" name="__codelineno-4-10"></a><span class="w">    </span><span class="n">spin</span><span class="p">(</span><span class="n">release</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">;</span><span class="w">                  </span><span class="c1">// wait for arrivals</span>
+</span><span id="__span-4-11"><a href="#__codelineno-4-11" id="__codelineno-4-11" name="__codelineno-4-11"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>这段代码有一个问题：在屏障中，较慢的进程可能被最快的进程所困。所以有了以下改进措施：</p>
+<ul>
+<li>离开屏障后计数<ul>
+<li>用额外的共享计数器为在屏障中的进程计数</li>
+<li>禁止任何进程在所有进程离开前一个实例前重新进入屏障</li>
+<li>但这种方法会带来额外的时延，因此不建议采用</li>
+</ul>
+</li>
+<li>
+<p><strong>感知反转屏障</strong>(sense-reversing barrier)</p>
+<ul>
+<li>
+<p>实现代码如下：</p>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-5-1"><a href="#__codelineno-5-1" id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="p">{</span>
+</span><span id="__span-5-2"><a href="#__codelineno-5-2" id="__codelineno-5-2" name="__codelineno-5-2"></a><span class="w">    </span><span class="n">Lock_sense</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">!</span><span class="n">Lock_sense</span><span class="p">;</span><span class="w">             </span><span class="c1">// toggle Local_sense</span>
+</span><span id="__span-5-3"><a href="#__codelineno-5-3" id="__codelineno-5-3" name="__codelineno-5-3"></a><span class="w">    </span><span class="n">lock</span><span class="p">(</span><span class="n">counterlock</span><span class="p">);</span><span class="w">                    </span><span class="c1">// ensure update atomic</span>
+</span><span id="__span-5-4"><a href="#__codelineno-5-4" id="__codelineno-5-4" name="__codelineno-5-4"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">count</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="n">release</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">          </span><span class="c1">// first--&gt;reset release</span>
+</span><span id="__span-5-5"><a href="#__codelineno-5-5" id="__codelineno-5-5" name="__codelineno-5-5"></a><span class="w">        </span><span class="o">++</span><span class="n">count</span><span class="p">;</span><span class="w">                          </span><span class="c1">// count arrivals</span>
+</span><span id="__span-5-6"><a href="#__codelineno-5-6" id="__codelineno-5-6" name="__codelineno-5-6"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">count</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">total</span><span class="p">){</span><span class="w">                  </span><span class="c1">// all arrived</span>
+</span><span id="__span-5-7"><a href="#__codelineno-5-7" id="__codelineno-5-7" name="__codelineno-5-7"></a><span class="w">        </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">                        </span><span class="c1">// reset counter</span>
+</span><span id="__span-5-8"><a href="#__codelineno-5-8" id="__codelineno-5-8" name="__codelineno-5-8"></a><span class="w">        </span><span class="n">release</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Lock_sense</span><span class="p">;</span><span class="w">             </span><span class="c1">// release processes</span>
+</span><span id="__span-5-9"><a href="#__codelineno-5-9" id="__codelineno-5-9" name="__codelineno-5-9"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-5-10"><a href="#__codelineno-5-10" id="__codelineno-5-10" name="__codelineno-5-10"></a><span class="w">    </span><span class="n">unlock</span><span class="p">(</span><span class="n">counterlock</span><span class="p">);</span><span class="w">                  </span><span class="c1">// release lock</span>
+</span><span id="__span-5-11"><a href="#__codelineno-5-11" id="__codelineno-5-11" name="__codelineno-5-11"></a><span class="w">    </span><span class="n">spin</span><span class="p">(</span><span class="n">release</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Lock_sense</span><span class="p">)</span><span class="w"> </span><span class="p">;</span><span class="w">         </span><span class="c1">// wait for signal</span>
+</span><span id="__span-5-12"><a href="#__codelineno-5-12" id="__codelineno-5-12" name="__codelineno-5-12"></a><span class="p">}</span>
+</span></code></pre></div>
+</li>
+<li>
+<p>该方法解决了进程被困的问题，但性能还是不高</p>
+</li>
+</ul>
+</li>
+</ul>
+<details class="note" open="open">
+<summary>屏障同步的性能分析</summary>
+<p></p><div style="text-align: center">
+<img src="images/C5/40.png" width="70%"/>
+</div>
+<p></p><div style="text-align: center">
+<img src="images/C5/41.png" width="70%"/>
+</div>
+</details>
+<p>为了提升屏障性能，我们可以采取一种软件优化——组合树形屏障<span><span class="heti-spacing"> </span>(combining tree barrier)</span>：使用预先确定的<span class="heti-skip"><span class="heti-spacing"> </span>n<span class="heti-spacing"> </span></span>叉树结构，进程在子节点处同步，然后向父节点报告，直到根节点释放所有进程。这减少了单个同步点的竞争。</p>
+<div class="admonition code">
+<p class="admonition-title">代码实现</p>
+<p></p><div style="text-align: center">
+<img src="images/C5/42.png" width="80%"/>
+</div>
+</div>
 <h2 id="models-of-memory-consistency">Models of Memory Consistency<a class="headerlink" href="#models-of-memory-consistency" title="Permanent link">⚓︎</a></h2>
+<p>确定内存连贯程度这一问题相当复杂。先来看个简单的例子：</p>
+<details class="example" open="open">
+<summary>例子</summary>
+<div class="grid" markdown="">
+<div class="language-c highlight"><pre><span></span><code><span id="__span-6-1"><a href="#__codelineno-6-1" id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="nl">P1</span><span class="p">:</span><span class="w"> </span><span class="n">A</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-6-2"><a href="#__codelineno-6-2" id="__codelineno-6-2" name="__codelineno-6-2"></a><span class="w">    </span><span class="p">......</span>
+</span><span id="__span-6-3"><a href="#__codelineno-6-3" id="__codelineno-6-3" name="__codelineno-6-3"></a><span class="w">    </span><span class="n">A</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+</span><span id="__span-6-4"><a href="#__codelineno-6-4" id="__codelineno-6-4" name="__codelineno-6-4"></a><span class="nl">L1</span><span class="p">:</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">B</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">...</span>
+</span></code></pre></div>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-7-1"><a href="#__codelineno-7-1" id="__codelineno-7-1" name="__codelineno-7-1"></a><span class="nl">P2</span><span class="p">:</span><span class="w"> </span><span class="n">B</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-7-2"><a href="#__codelineno-7-2" id="__codelineno-7-2" name="__codelineno-7-2"></a><span class="w">    </span><span class="p">......</span>
+</span><span id="__span-7-3"><a href="#__codelineno-7-3" id="__codelineno-7-3" name="__codelineno-7-3"></a><span class="w">    </span><span class="n">B</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+</span><span id="__span-7-4"><a href="#__codelineno-7-4" id="__codelineno-7-4" name="__codelineno-7-4"></a><span class="nl">L2</span><span class="p">:</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">A</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">...</span>
+</span></code></pre></div>
+</div>
+<p>假设进程运行在不同的处理器上，且内存位置 <code>A</code> 和 <code>B</code> 最初都被两个处理器缓存，初始值为<span><span class="heti-spacing"> </span>0</span>。如果写操作总是立即生效，并能被其他处理器即时看到，那么两个<span class="heti-skip"><span class="heti-spacing"> </span>IF<span class="heti-spacing"> </span></span>语句（标记为 <code>L1</code> 和 <code>L2</code>）的条件不可能同时评估为真，因为执行到<span class="heti-skip"><span class="heti-spacing"> </span>IF<span class="heti-spacing"> </span></span>语句意味着<span class="heti-skip"><span class="heti-spacing"> </span>A<span class="heti-spacing"> </span></span>或<span class="heti-skip"><span class="heti-spacing"> </span>B<span class="heti-spacing"> </span></span>中至少有一个已被赋值为<span><span class="heti-spacing"> </span>1</span>。但假设写失效操作被延迟，并且允许处理器在此延迟期间继续执行。那么可能出现<span class="heti-skip"><span class="heti-spacing"> </span>P1<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>P2<span class="heti-spacing"> </span></span>在尝试读取值之前尚未分别接收到关于<span class="heti-skip"><span class="heti-spacing"> </span>B<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>A<span class="heti-spacing"> </span></span>的失效通知的情况。</p>
+<p>现在的问题是：是否应允许这种行为？若允许，应在何种条件下？</p>
+</details>
+<p>内存连贯性中最直观的模型称为<strong>顺序连贯性</strong>(sequential consistency)。它要求任何执行结果是相同的，就好像每个处理器发出的内存访问操作保持其程序顺序，且不同处理器之间的访问操作可以任意交错执行。该模型消除了前例中某些非显性执行的可能性，因为所有赋值操作必须在<span class="heti-skip"><span class="heti-spacing"> </span>IF<span class="heti-spacing"> </span></span>语句开始执行前完成。</p>
+<div style="text-align: center">
+<img src="images/C5/43.png" width="60%"/>
+</div>
+<p>实现顺序连贯性的最简单方法是要求处理器延迟任何内存访问的完成，直到由该访问引发的所有无效化操作完成为止。当然，同样有效的方法是延迟下一次内存访问，直至前一次访问完成。需谨记的是，内存连贯性涉及不同变量间的操作：必须按序执行的两个访问实际上针对的是不同的内存位置。就拿上例来说，必须将 <code>A</code> 或 <code>B</code> 的读取（<code>A == 0</code> 或 <code>B == 0</code>）延迟至前一个写入操作完成（<code>B = 1</code> 或 <code>A = 1</code><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。在顺序连贯性模型下，不能简单地将写入操作置于写缓冲区后就立即执行读取。</p>
+<p>尽管顺序一致性提供了简洁的编程范式，但它会降低可能的性能表现，尤其在处理器数量众多。互连延迟较高的多核系统中（比如下面的例子<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
+<details class="example">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio"/><input id="__tabbed_3_2" name="__tabbed_3" type="radio"/><div class="tabbed-labels"><label for="__tabbed_3_1">题目</label><label for="__tabbed_3_2">解答</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/C5/23.png" width="80%"/>
+</div>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/C5/24.png" width="80%"/>
+</div>
+</div>
+</div>
+</div>
+</details>
+<p>为了提供更好的性能，有两种解决路径：</p>
+<ul>
+<li>保留顺序连贯性，但采用延迟隐藏技术</li>
+<li>使用限制更少、允许硬件加速运行的内存连贯性模型<ul>
+<li>它可能改变程序员对多处理器的认知方式，因此在探讨这些松弛模型之前，我们需要先了解程序员的预期需求</li>
+</ul>
+</li>
+</ul>
+<h3 id="the-programmers-view">The Programmer's View<a class="headerlink" href="#the-programmers-view" title="Permanent link">⚓︎</a></h3>
+<p>尽管顺序一致性模型在性能上存在劣势，但从程序员的角度来看，它具有简洁的优势。我们希望能<span class="heti-skip"><span class="heti-spacing"> </span>*<span class="heti-spacing"> </span></span>够开发一种既易于解释，又允许高性能实现的编程模型。</p>
+<p>其中一种实现高效执行的编程模型是假设程序是<strong>同步的</strong>(synchronized)</p>
+<ul>
+<li>若对共享数据的所有访问都通过同步操作进行排序，则该程序被视为同步的。</li>
+<li>当且仅当在所有可能的执行过程中，一个处理器对变量的写操作与另一处理器对该变量的访问（读或写）之间被一对同步操作分隔——前者由写入处理器在写操作后执行，后者由第二处理器在访问前执行——该数据引用才被称为受同步操作排序。</li>
+<li>可能未经同步排序就更新变量的情况称为<strong>数据竞争</strong>(data race)，因为执行结果取决于处理器的相对速度；如同硬件设计中的竞争，其结果不可预测。这也使得同步程序获得了另一个名称：<strong>无数据竞争</strong>(data-race-free)。</li>
+</ul>
+<details class="example" open="open">
+<summary>例子</summary>
+<ul>
+<li>考虑由两个不同处理器读写更新的变量。</li>
+<li>每个处理器都会用<strong>加锁</strong>和<strong>解锁</strong>操作包裹读写过程，这既是为了确保更新操作的互斥性，也是为了保证读取数据的一致性。</li>
+<li>显然，现在每次写入操作与另一处理器的读取操作之间都通过一对<strong>同步操作</strong>隔离：一次解锁（在写入后执行）和一次加锁（在读取前执行<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</li>
+<li>如果两个处理器连续对变量进行写入而中间没有读取操作时，这些写入同样需要通过同步操作实现隔离。</li>
+</ul>
+</details>
+<p>普遍认为大多数程序都是可同步的。这是因为若访问未经同步处理，程序的运行行为将变得难以预测——执行速度的差异会决定哪个处理器能在数据竞争中胜出，从而影响程序最终结果。即便在顺序连贯性的条件下，对此类程序进行逻辑推演也极为困难。</p>
+<p>程序员可以尝试通过构建自己的同步机制来确保顺序性，但这极其复杂，容易导致程序出错，且可能在架构层面缺乏支持——意味着这些机制在未来的多处理器迭代中可能失效。因此，绝大多数程序员会选择使用经过验证、针对多处理器及同步类型优化过的<strong>同步库</strong>。</p>
+<p>另外，采用<strong>标准同步原语</strong>能确保即便底层架构实现了比顺序连贯性更宽松的存储一致性模型，经过正确同步的程序仍会表现得如同硬件实现了顺序连贯性一般。</p>
+<h3 id="relaxed-consistency-models">Relaxed Consistency Models<a class="headerlink" href="#relaxed-consistency-models" title="Permanent link">⚓︎</a></h3>
+<p><strong>松弛连贯性模型</strong>的核心思想是允许读写操作<strong>乱序</strong>完成，但通过<strong>同步</strong>操作强制排序，使得同步程序的行为如同处理器具有顺序一致性。根据所松弛的读写顺序不同，存在多种松弛模型分类。我们通过一组<span class="heti-skip"><span class="heti-spacing"> </span>X -&gt; Y<span class="heti-spacing"> </span></span>形式的规则来规定顺序关系：表示操作<span class="heti-skip"><span class="heti-spacing"> </span>X<span class="heti-spacing"> </span></span>必须在操作<span class="heti-skip"><span class="heti-spacing"> </span>Y<span class="heti-spacing"> </span></span>完成前结束。顺序连贯性要求维持所有四种可能的顺序：R -&gt; W, R -&gt; R, W -&gt; R, W -&gt; W。而松弛模型则通过松弛这四种顺序的子集来定义：</p>
+<ul>
+<li>仅松弛<span class="heti-skip"><span class="heti-spacing"> </span>W -&gt; R<span class="heti-spacing"> </span></span>排序会得到一个称为<strong>全存储顺序</strong><span>(total store ordering)<span class="heti-spacing"> </span></span>或<strong>处理器连贯性</strong><span>(processor consistency)<span class="heti-spacing"> </span></span>的模型。因为该模型保留了写操作的顺序，因此很多遵循顺序连贯性的程序会采用这一模型，无需额外的同步操作。</li>
+<li>同时松弛<span class="heti-skip"><span class="heti-spacing"> </span>W -&gt; R<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>W -&gt; W<span class="heti-spacing"> </span></span>的顺序会得到一个称为<strong>偏存储顺序</strong><span>(partial store order)<span class="heti-spacing"> </span></span>的模型。</li>
+<li>松弛全部四种顺序会得到一系列的模型，包括<strong>弱顺序</strong>(weak ordering)、<span>PowerPC<span class="heti-spacing"> </span></span>连贯性模型、<strong>释放连贯性</strong>(release consistency)、<span>RISC-V<span class="heti-spacing"> </span></span>连贯性模型<span><span class="heti-spacing"> </span>...</span></li>
+</ul>
+<p>通过松弛这些顺序约束，处理器可获得显著的性能优势，这正是<span><span class="heti-spacing"> </span>RISC-V</span>、<span>ARMv8<span class="heti-spacing"> </span></span>以及<span class="heti-skip"><span class="heti-spacing"> </span>C++/C<span class="heti-spacing"> </span></span>语言标准选择松弛连贯性作为内存模型的原因。</p>
+<p><strong>释放连贯性</strong>区分了两种同步操作：</p>
+<ul>
+<li>用于获取共享变量访问权限的<strong>获取</strong><span>(acquire)<span class="heti-spacing"> </span></span>操作（标记为<span><span class="heti-spacing"> </span><span class="arithmatex">\(S_A\)</span></span>）</li>
+<li>释放对象以允许其他处理器获得访问权限的<strong>释放</strong><span>(release)<span class="heti-spacing"> </span></span>操作（标记为<span><span class="heti-spacing"> </span><span class="arithmatex">\(S_R\)</span></span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</li>
+</ul>
+<p>在同步程序中，获取操作必须先于共享数据的使用执行，而释放操作必须位于所有共享数据更新之后、且在下一次获取操作之前完成。这一特性使我们能够适度松弛顺序要求——只要确保发生在获取之前的读写操作不必在该获取前完成，发生在释放之后的读写也无须等待该释放完成即可。</p>
+<p>下图展示了各类连贯性模型对一般访问和同步访问顺序的约束：</p>
+<div style="text-align: center">
+<img src="images/C5/25.png" width="90%"/>
+</div>
+<div style="text-align: center">
+<img src="images/C5/26.png" width="90%"/>
+</div>
+<p>释放连贯性提供了最宽松且易于验证的模型之一，它能确保同步程序观察到顺序一致的执行结果。虽然大多数同步操作要么是获取要么是释放，但某些操作兼具获取和释放功能，会导致排序效果等同于弱顺序。尽管同步操作总能保证先前的写操作已完成，但我们有时需要在不依赖特定同步操作的情况下确保写操作的完成。此时就需要使用显式指令——在<span class="heti-skip"><span class="heti-spacing"> </span>RISC-V<span class="heti-spacing"> </span></span>中称为<span><span class="heti-spacing"> </span>FENCE</span>——来确保该线程中所有先前指令均已完成执行，包括所有内存写入及相关失效操作的完成。</p>
 <h2 id="cross-cutting-issues">Cross-Cutting Issues<a class="headerlink" href="#cross-cutting-issues" title="Permanent link">⚓︎</a></h2>
+<p>由于多处理器重新定义了许多系统特性（如性能评估、内存延迟及可扩展性的重要性<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，它们引入了跨越整个技术领域的设计问题，这些问题同时影响着硬件和软件。本节将围绕<strong>内存连贯性</strong>问题给出若干示例。</p>
+<h3 id="compiler-optimization-and-the-consistency-model">Compiler Optimization and the Consistency Model<a class="headerlink" href="#compiler-optimization-and-the-consistency-model" title="Permanent link">⚓︎</a></h3>
+<p>定义内存一致性模型的另一个原因是为了明确对共享数据可执行的合法<strong>编译器</strong>优化范围。</p>
+<ul>
+<li>在<strong>显式</strong>并行程序中，除非同步点被明确定义且程序已同步，否则编译器不能交换两个不同共享数据项的读写操作，因为此类转换可能会影响程序语义。<ul>
+<li>这种限制甚至阻碍了相对简单的优化（例如共享数据的寄存器分配<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，因为该过程通常涉及读写交换。</li>
+</ul>
+</li>
+<li>而在<strong>隐式</strong>并行化程序中（比如用高性能<span><span class="heti-spacing"> </span>Fortran</span>（HPF）编写的代码<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，由于程序必须同步且同步点已知，因此不会出现此问题。</li>
+</ul>
+<p>从研究和实践视角来看，更松弛的连贯性模型能否为编译器带来显著优势仍是悬而未决的问题，其中缺乏统一模型很可能会延缓编译器的部署进程。</p>
+<h3 id="using-speculation-to-hide-latency-in-strict-consistency-model">Using Speculation to Hide Latency in Strict Consistency Model<a class="headerlink" href="#using-speculation-to-hide-latency-in-strict-consistency-model" title="Permanent link">⚓︎</a></h3>
+<p>第<span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span>章讲到过的<a href="3.html#hardware-based-speculation">推测</a>技术可用于隐藏内存时延。它同样能用来掩盖由<strong>严格连贯性模型</strong>引发的时延，从而获得近似松弛内存模型的优势。其核心思想是处理器通过<strong>动态调度</strong>重新排列内存访问顺序，允许指令<strong>乱序执行</strong>。这种乱序的内存访问可能违反顺序连贯性原则，进而影响程序执行结果。借助支持推测执行的处理器所具备的<strong>延迟提交</strong>特性可规避此问题：假设缓存一致性协议基于失效机制运作，若处理器在某个内存引用操作提交前接收到该地址的失效通知，便会触发推测恢复机制回滚计算流程，并从被失效的内存引用处重新开始执行。</p>
+<p>若处理器对内存请求的重新排序导致执行顺序可能产生与顺序连贯性下所见结果不同的情况，那么该处理器将重新执行。此方法的关键在于：处理器只需保证最终结果与所有访问按序完成时相同，通过检测可能产生差异的情况即可实现目标。该方案的优越性在于推测性重启极少被触发，仅当未同步的访问真正引发竞争时才会启动重启机制。</p>
+<p>有人主张将顺序或处理器连贯性与推测执行相结合，作为优选的连贯性模型。依据如下：</p>
+<ul>
+<li>对顺序连贯性或处理器连贯性采取激进实现方案，能获得比松弛模型更显著的优势</li>
+<li>仅需在支持推测执行的处理器上增加极低成本</li>
+<li>允许程序员基于更简单的顺序或处理器连贯性编程模型进行逻辑推理</li>
+</ul>
+<h3 id="inclusion-and-its-implementation">Inclusion and Its Implementation<a class="headerlink" href="#inclusion-and-its-implementation" title="Permanent link">⚓︎</a></h3>
+<p>所有多处理器都会用多级高速缓存层级来减少对全局互连的需求以及高速缓存失效带来的延迟。如果高速缓存具备<strong>多级包含</strong><span>(multilevel inclusion)<span class="heti-spacing"> </span></span>性质（即高速缓存层级的每一级都是远离处理器的级别的子集<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，那么我们可以使用多级结构。这样的话，当监听和处理器必须为高速缓存竞争时，可以减少一致性流量和处理器流量的竞争。许多具有多级高速缓存的处理器强制具备包含属性。这种限制也称为<strong>子集属性</strong>(subset property)，因为每个高速缓存都是其层次结构中位于其下方的高速缓存的子集。</p>
+<p>考虑一个两级示例：<span>L1<span class="heti-spacing"> </span></span>中的任何失效要么在<span class="heti-skip"><span class="heti-spacing"> </span>L2<span class="heti-spacing"> </span></span>中命中，要么在<span class="heti-skip"><span class="heti-spacing"> </span>L2<span class="heti-spacing"> </span></span>中产生失效，导致数据被带入<span class="heti-skip"><span class="heti-spacing"> </span>L1<span class="heti-spacing"> </span></span>和<span><span class="heti-spacing"> </span>L2</span>。同样，任何在<span class="heti-skip"><span class="heti-spacing"> </span>L2<span class="heti-spacing"> </span></span>中命中的无效化都必须发送到<span><span class="heti-spacing"> </span>L1</span>。问题是当<span class="heti-skip"><span class="heti-spacing"> </span>L1<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>L2<span class="heti-spacing"> </span></span>的块大小不同时会发生什么？</p>
+<p><strong>选择不同的块大小</strong>是相当合理的，因为<span class="heti-skip"><span class="heti-spacing"> </span>L2<span class="heti-spacing"> </span></span>将大得多，其时延在失效损失中的占比更大，因此使用更大的块大小——<span>L2<span class="heti-spacing"> </span></span>中的一个块代表<span class="heti-skip"><span class="heti-spacing"> </span>L1<span class="heti-spacing"> </span></span>中的多个块，<span>L2<span class="heti-spacing"> </span></span>中的失效会导致相当于多个<span class="heti-skip"><span class="heti-spacing"> </span>L1<span class="heti-spacing"> </span></span>块的数据替换。例如，如果<span class="heti-skip"><span class="heti-spacing"> </span>L2<span class="heti-spacing"> </span></span>的块大小是<span class="heti-skip"><span class="heti-spacing"> </span>L1<span class="heti-spacing"> </span></span>的<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>倍，那么<span class="heti-skip"><span class="heti-spacing"> </span>L2<span class="heti-spacing"> </span></span>中的失效将替换相当于<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>个<span class="heti-skip"><span class="heti-spacing"> </span>L1<span class="heti-spacing"> </span></span>块的数据。</p>
+<details class="example">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio"/><input id="__tabbed_4_2" name="__tabbed_4" type="radio"/><div class="tabbed-labels"><label for="__tabbed_4_1">题目</label><label for="__tabbed_4_2">解答</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/C5/27.png" width="80%"/>
+</div>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/C5/28.png" width="80%"/>
+</div>
+</div>
+</div>
+</div>
+</details>
+<p>为了在多种块大小下保持包含性，当较低层级发生替换操作时，我们必须探查层级的更高层级，以确保被替换出的数据在高层级缓存中均为失效；不同相联程度的设置会带来问题。</p>
 <h2 id="fallacies-and-pitfalls">Fallacies and Pitfalls<a class="headerlink" href="#fallacies-and-pitfalls" title="Permanent link">⚓︎</a></h2>
+<div class="admonition bug">
+<p class="admonition-title">陷阱</p>
+<ul>
+<li>使用<strong>线性加速比</strong><span>(linear speedup)<span class="heti-spacing"> </span></span>来衡量多处理器性能<ul>
+<li>理想情况下，性能提升应该与处理器数量成线性关系，但实际中，额外的处理器可能会带来额外的开销。</li>
+<li>但在实际情况中，随着处理器数量的增加，性能提升通常会受到各种因素的限制，例如通信开销、同步开销以及负载不均衡。</li>
+</ul>
+</li>
+<li>未开发或优化<strong>软件</strong>以充分利用多处理器<ul>
+<li>软件开发通常滞后于硬件的发展，许多程序未针对多处理器环境进行优化。</li>
+<li>我们在设计软件时，需要充分考虑多处理器环境的特点，避免设计上的瓶颈。</li>
+</ul>
+</li>
+<li>忽视<strong>性能</strong>成本<ul>
+<li>随着处理器数量增加，性能成本可能会显著上升，甚至导致性能下降。</li>
+<li>性能成本包括通信开销、同步开销以及资源竞争等。</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="admonition failure">
+<p class="admonition-title">谬误</p>
+<ul>
+<li>阿姆达尔定律不适用于并行计算<ul>
+<li>阿姆达尔定律指出，即使处理器数量无限增加，程序的加速比也会受到<strong>串行</strong>部分的限制。</li>
+</ul>
+</li>
+</ul>
+</div>
 <aside class="md-source-file">
 <span class="md-source-file__fact">
 <span class="md-icon" title="最后更新">
@@ -1740,7 +2197,7 @@
 </main>
 <footer class="md-footer">
 <nav aria-label="页脚" class="md-footer__inner md-grid">
-<a aria-label="上一页: Chap 4: Data-Level Parallelism in Vector, SIMD, and GPU Architectures" class="md-footer__link md-footer__link--prev" href="4.html">
+<a aria-label="上一页: Chap 4: Data-Level Parallelism" class="md-footer__link md-footer__link--prev" href="4.html">
 <div class="md-footer__button md-icon">
 <svg viewbox="0 0 320 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path></svg>
 </div>
@@ -1749,7 +2206,7 @@
                 上一页
               </span>
 <div class="md-ellipsis">
-                Chap 4: Data-Level Parallelism in Vector, SIMD, and GPU Architectures
+                Chap 4: Data-Level Parallelism
               </div>
 </div>
 </a>
