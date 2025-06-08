@@ -1,33 +1,27 @@
-// 改进后的JavaScript实现
-document.addEventListener('DOMContentLoaded', function() {
-    const sidebar = document.querySelector('.md-sidebar.md-sidebar--secondary');
-    const scrollwrap = document.querySelector('.md-sidebar.md-sidebar--secondary .md-sidebar__scrollwrap');
+document.addEventListener('DOMContentLoaded', () => {
+    // 获取 DOM 元素
+    const selfHidingArea = document.querySelectorAll('.md-sidebar.md-sidebar--secondary');
 
-    // 动态计算宽度
-    function updateWidth() {
-        const width = scrollwrap.offsetWidth;
-        scrollwrap.style.transform = `translateX(${width}px)`;
-    }
-
-    // 初始化
-    updateWidth();
-    window.addEventListener('resize', updateWidth);
-
-    // 鼠标事件处理
-    sidebar.addEventListener('mouseenter', function() {
-        scrollwrap.style.transform = 'translateX(0)';
+    // 当鼠标进入该区域时
+    selfHidingArea.addEventListener('mouseenter', () => {
+        selfHidingArea.classList.add('show');
     });
 
-    sidebar.addEventListener('mouseleave', function() {
-        updateWidth();
+    // 当鼠标离开该区域时
+    selfHidingArea.addEventListener('mouseleave', () => {
+        selfHidingArea.classList.remove('show');
     });
 
-    // 保留原有子目录功能
-    const navItems = document.querySelectorAll('.md-sidebar.md-sidebar--secondary .md-nav__item');
-    navItems.forEach(item => {
-        item.addEventListener('click', function(e) {
-            // 阻止事件冒泡，保留原有功能
-            e.stopPropagation();
-        });
+    // 获取 DOM 元素
+    const selfHidingArea2 = document.querySelectorAll('.md-sidebar.md-sidebar--secondary .md-sidebar__scrollwrap');
+
+    // 当鼠标进入该区域时
+    selfHidingArea2.addEventListener('mouseenter', () => {
+        selfHidingArea2.classList.add('show');
+    });
+
+    // 当鼠标离开该区域时
+    selfHidingArea2.addEventListener('mouseleave', () => {
+        selfHidingArea2.classList.remove('show');
     });
 });
