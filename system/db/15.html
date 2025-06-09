@@ -760,9 +760,9 @@
 </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#undo-pass-and-transaction-rollback">
+<a class="md-nav__link" href="#undo-pass">
 <span class="md-ellipsis">
-      Undo Pass and Transaction Rollback
+      Undo Pass
     </span>
 </a>
 </li>
@@ -1104,9 +1104,9 @@
 </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#undo-pass-and-transaction-rollback">
+<a class="md-nav__link" href="#undo-pass">
 <span class="md-ellipsis">
-      Undo Pass and Transaction Rollback
+      Undo Pass
     </span>
 </a>
 </li>
@@ -1163,7 +1163,7 @@
 </a>
 <h1 id="lec-15-recovery-system">Lec 15: Recovery System<a class="headerlink" href="#lec-15-recovery-system" title="Permanent link">⚓︎</a></h1>
 <div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
-<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>17750<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>89<span class="heti-spacing"> </span></span>分钟</p>
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>17884<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>89<span class="heti-spacing"> </span></span>分钟</p>
 </div>
 <details class="abstract">
 <summary>核心知识</summary>
@@ -1471,7 +1471,10 @@
 <p>而检查点的具体执行步骤如下：</p>
 <ol>
 <li>将当前驻留在主存中的所有日志记录输出到稳定存储器中</li>
-<li>将所有修改过的缓冲区块输出至磁盘中</li>
+<li>将所有修改过的缓冲区块（<strong>脏页</strong>(dirty pages)）输出至磁盘中<ul>
+<li>也就是说，即便这个事务还没有提交，在检查点之前对数据的修改也会作用在数据库上</li>
+</ul>
+</li>
 <li>向稳定存储器输出一个格式为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(&lt;\text{checkpoint } L&gt;\)</span><span class="heti-spacing"> </span></span>的日志记录，其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(L\)</span><span class="heti-spacing"> </span></span>是在检查点时刻上的<strong>活跃事务表</strong></li>
 </ol>
 <details class="info">
@@ -1669,7 +1672,7 @@
 <p>一旦释放了低级锁，就不能通过使用更新数据项的旧值来撤销操作，而必须通过执行补偿操作来撤销——这种操作称为<strong>逻辑撤销操作</strong>(logical undo operation)。在操作期间获取的低级锁足以执行随后的逻辑撤销，其原因见下一小节。</p>
 <h3 id="logical-undo-log-records">Logical Undo Log Records<a class="headerlink" href="#logical-undo-log-records" title="Permanent link">⚓︎</a></h3>
 <p>为了实现逻辑撤销操作，在执行修改索引的操作前，事务会创建一条形如<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(&lt;T_i, O_j, \text{operation-begin}&gt;\)</span><span class="heti-spacing"> </span></span>的日志记录，其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(O_j\)</span><span class="heti-spacing"> </span></span>是该操作实例的唯一标识符。系统执行操作过程中，会以常规方式为所有的更新生成更新日志记录。因此每个操作引发的更新仍按惯例记录旧值和新值信息。</p>
-<p>当操作完成时，系统将写入格式为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(&lt;T_i, O_j, \text{operation-end}, U&gt;\)</span><span class="heti-spacing"> </span></span>的操作结束日志记录，其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(U\)</span><span class="heti-spacing"> </span></span>表示撤销信息。比如：若该操作为<span class="heti-skip"><span class="heti-spacing"> </span>B+<span class="heti-spacing"> </span></span>树插入条目，则撤销信息<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(U\)</span><span class="heti-spacing"> </span></span>需指明待执行的删除动作、目标<span class="heti-skip"><span class="heti-spacing"> </span>B+<span class="heti-spacing"> </span></span>树及待删除条目。这类记录操作信息的日志方式称为<strong>逻辑日志</strong>(logical logging)；而记录旧值与新值的传统方式称为<strong>物理日志</strong>(physical logging)，对应记录即物理日志记录。</p>
+<p>当操作完成时，系统将写入格式为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(&lt;T_i, O_j, \text{operation-end}, U&gt;\)</span><span class="heti-spacing"> </span></span>的操作结束日志记录，其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(U\)</span><span class="heti-spacing"> </span></span>表示撤销信息（人话：在撤销阶段要做的补偿操作<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。比如：若该操作为<span class="heti-skip"><span class="heti-spacing"> </span>B+<span class="heti-spacing"> </span></span>树插入条目，则撤销信息<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(U\)</span><span class="heti-spacing"> </span></span>需指明待执行的删除动作、目标<span class="heti-skip"><span class="heti-spacing"> </span>B+<span class="heti-spacing"> </span></span>树及待删除条目。这类记录操作信息的日志方式称为<strong>逻辑日志</strong>(logical logging)；而记录旧值与新值的传统方式称为<strong>物理日志</strong>(physical logging)，对应记录即物理日志记录。</p>
 <p>需注意上述方案中，逻辑日志仅用于<strong>撤销</strong>而非重做；重做完全依赖物理日志实现。这是因为系统故障后的数据库状态可能仅反映部分操作的更新，此时<span class="heti-skip"><span class="heti-spacing"> </span>B+<span class="heti-spacing"> </span></span>树等数据结构处于不一致状态：既无法执行逻辑重做，也无法进行逻辑撤销。要实施逻辑重做<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>撤销，必须确保磁盘上的数据库状态满足<strong>操作一致性</strong>(operation consistent)，即不应有任何操作的局部影响。但正如后续所述，恢复方案的重做阶段通过物理重做处理，结合物理日志记录的回滚处理，能确保被逻辑回滚操作访问的数据库部分在执行前达到操作一致状态。</p>
 <p>若连续多次执行某操作与执行一次该操作的结果相同，则我们认为该操作是<strong>幂等的</strong>(idempotent)。向<span class="heti-skip"><span class="heti-spacing"> </span>B+<span class="heti-spacing"> </span></span>树插入条目这类操作可能不具备幂等性，因此恢复算法必须确保不会重复执行已完成的操作。相反地，<strong>物理日志记录</strong>具有幂等性：无论记录的更新被执行一次还是多次，对应数据项都将保持相同值。</p>
 <h3 id="transaction-rollback-with-logical-undo">Transaction Rollback with Logical Undo<a class="headerlink" href="#transaction-rollback-with-logical-undo" title="Permanent link">⚓︎</a></h3>
@@ -1785,7 +1788,7 @@
 <li>随后将<span class="heti-skip"><span class="heti-spacing"> </span>RedoLSN<span class="heti-spacing"> </span></span>设置为<span class="heti-skip"><span class="heti-spacing"> </span>DirtyPageTable<span class="heti-spacing"> </span></span>中所有页的<span class="heti-skip"><span class="heti-spacing"> </span>RecLSN<span class="heti-spacing"> </span></span>中的最小值。</li>
 <li>若不存在脏页，则将<span class="heti-skip"><span class="heti-spacing"> </span>RedoLSN<span class="heti-spacing"> </span></span>设为检查点日志记录的<span><span class="heti-spacing"> </span>LSN</span>；重做过程从<span class="heti-skip"><span class="heti-spacing"> </span>RedoLSN<span class="heti-spacing"> </span></span>开始扫描日志（早于此点的所有日志记录均已应用到磁盘上的数据库页面<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</li>
 <li>分析阶段首先将撤销列表初始化为检查点日志记录中的事务列表，同时从检查点记录中读取撤销列表内每个事务的最后一条日志记录的<span><span class="heti-spacing"> </span>LSN</span>。</li>
-<li>分析阶段持续从检查点向前扫描：<ul>
+<li>分析阶段持续从检查点正向扫描：<ul>
 <li>每当发现不属于撤销列表的事务日志记录时，就将该事务加入撤销列表；</li>
 <li>当遇到事务结束的日志记录时，则将该从事务列表中移除。</li>
 </ul>
@@ -1793,6 +1796,7 @@
 <li>最终留在撤销列表中的所有事务都必须在后续的撤销过程中回滚。</li>
 <li>分析阶段还会跟踪撤销列表中各事务的最后一条记录，供撤销阶段使用。</li>
 <li>当发现针对某页的更新操作日志时，分析阶段会同步更新<span><span class="heti-spacing"> </span>DirtyPageTable</span>：若该页面未在<span class="heti-skip"><span class="heti-spacing"> </span>DirtyPageTable<span class="heti-spacing"> </span></span>中登记，则将其加入，并设置该页面的<span class="heti-skip"><span class="heti-spacing"> </span>RecLSN<span class="heti-spacing"> </span></span>为当前日志记录的<span class="heti-skip"><span class="heti-spacing"> </span>LSN<span class="heti-spacing"> </span></span>值。</li>
+<li>该阶段<strong>不会</strong>读取内存缓冲区的内容。</li>
 </ul>
 <details class="example">
 <summary>例子</summary>
@@ -1801,13 +1805,13 @@
 </div>
 </details>
 <h4 id="redo-pass">Redo Pass<a class="headerlink" href="#redo-pass" title="Permanent link">⚓︎</a></h4>
-<p>重做阶段通过重放所有尚未反映在磁盘页的操作来重复历史。该阶段从<span class="heti-skip"><span class="heti-spacing"> </span>RedoLSN<span class="heti-spacing"> </span></span>开始向前扫描日志，每当发现更新日志记录时，会执行以下操作：</p>
+<p>重做阶段通过重放所有尚未反映在磁盘页的操作来重复历史。该阶段从<span class="heti-skip"><span class="heti-spacing"> </span>RedoLSN<span class="heti-spacing"> </span></span>开始正向扫描日志，每当发现更新日志记录时，会执行以下操作：</p>
 <ul>
 <li>若目标页不在<span class="heti-skip"><span class="heti-spacing"> </span>DirtyPageTable<span class="heti-spacing"> </span></span>中，或该更新日志记录的<span class="heti-skip"><span class="heti-spacing"> </span>LSN<span class="heti-spacing"> </span></span>小于<span class="heti-skip"><span class="heti-spacing"> </span>DirtyPageTable<span class="heti-spacing"> </span></span>中对应页面的<span class="heti-skip"><span class="heti-spacing"> </span>RecLSN<span class="heti-spacing"> </span></span>值，则跳过此日志记录；</li>
 <li>否则重做阶段会从磁盘读取该页，若其<span class="heti-skip"><span class="heti-spacing"> </span>PageLSN<span class="heti-spacing"> </span></span>小于当前日志记录的<span><span class="heti-spacing"> </span>LSN</span>，则重新执行该日志记录。</li>
 </ul>
 <p>需注意：只要任一条件不满足，就意味着该日志记录的修改效果已体现在页上；反之则说明修改效果尚未反映到页上。由于<span class="heti-skip"><span class="heti-spacing"> </span>ARIES<span class="heti-spacing"> </span></span>允许非幂等的生理日志记录存在，若某条日志记录的修改已作用于页面，就不应再次重做。当第一个条件不满足时，甚至无需从磁盘中获取页面来检查其<span class="heti-skip"><span class="heti-spacing"> </span>PageLSN<span class="heti-spacing"> </span></span>值。</p>
-<h4 id="undo-pass-and-transaction-rollback">Undo Pass and Transaction Rollback<a class="headerlink" href="#undo-pass-and-transaction-rollback" title="Permanent link">⚓︎</a></h4>
+<h4 id="undo-pass">Undo Pass<a class="headerlink" href="#undo-pass" title="Permanent link">⚓︎</a></h4>
 <p>撤销阶段相对直接：它执行一次日志的逆向扫描，对撤销列表中的所有事务进行回滚操作。此阶段仅检查撤销列表中事务的日志记录；分析阶段记录的最后一个<span class="heti-skip"><span class="heti-spacing"> </span>LSN<span class="heti-spacing"> </span></span>用于定位每个待撤销事务的最后一条日志记录。</p>
 <p>每当发现更新日志记录时，无论该记录是正常处理中的事务回滚还是重启恢复期间的撤销操作，都将依据该记录执行撤销动作。撤销阶段会生成包含所执行（必须是生理性）撤销操作的<span><span class="heti-spacing"> </span>CLR</span>，并将该<span class="heti-skip"><span class="heti-spacing"> </span>CLR<span class="heti-spacing"> </span></span>的<span class="heti-skip"><span class="heti-spacing"> </span>UndoNextLSN<span class="heti-spacing"> </span></span>值设为原更新日志记录的<span class="heti-skip"><span class="heti-spacing"> </span>PrevLSN<span class="heti-spacing"> </span></span>值。</p>
 <ul>
@@ -1815,9 +1819,10 @@
 <li>对于非<span class="heti-skip"><span class="heti-spacing"> </span>CLR<span class="heti-spacing"> </span></span>类型的其他日志记录，则通过其<span class="heti-skip"><span class="heti-spacing"> </span>PrevLSN<span class="heti-spacing"> </span></span>字段确定下一条需撤消的记录位置。</li>
 </ul>
 <p>在每次中断后继续处理时，系统会选择所有处于撤消列表内的事务中最大的“下条待处理<span><span class="heti-spacing"> </span>LSN</span>”作为下一步的操作对象。</p>
+<p>最后，被撤销的事务都要被<strong>中止</strong>，所以需要插入和中止相关的<span><span class="heti-spacing"> </span>CLR</span>。</p>
 <details class="example">
 <summary>例子</summary>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"/><input id="__tabbed_1_2" name="__tabbed_1" type="radio"/><div class="tabbed-labels"><label for="__tabbed_1_1">例<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span></label><label for="__tabbed_1_2">例<span><span class="heti-spacing"> </span>2</span></label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:4"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"/><input id="__tabbed_1_2" name="__tabbed_1" type="radio"/><input id="__tabbed_1_3" name="__tabbed_1" type="radio"/><input id="__tabbed_1_4" name="__tabbed_1" type="radio"/><div class="tabbed-labels"><label for="__tabbed_1_1">例<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span></label><label for="__tabbed_1_2">例<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span></label><label for="__tabbed_1_3">例<span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span></label><label for="__tabbed_1_4">例<span><span class="heti-spacing"> </span>4</span></label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p></p><div style="text-align: center">
@@ -1827,6 +1832,48 @@
 <div class="tabbed-block">
 <p></p><div style="text-align: center">
 <img src="images/lec15/19.gif" width="80%/"/>
+</div>
+</div>
+<div class="tabbed-block">
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"/><input id="__tabbed_2_2" name="__tabbed_2" type="radio"/><div class="tabbed-labels"><label for="__tabbed_2_1">题目</label><label for="__tabbed_2_2">解答</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec15/20.png" width="80%/"/>
+</div>
+<p></p><div style="text-align: center">
+<img src="images/lec15/21.png" width="80%/"/>
+</div>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec15/22.png" width="30%/"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tabbed-block">
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio"/><input id="__tabbed_3_2" name="__tabbed_3" type="radio"/><div class="tabbed-labels"><label for="__tabbed_3_1">题目</label><label for="__tabbed_3_2">解答</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<blockquote>
+<p>貌似是来自历年卷的题目？</p>
+</blockquote>
+<p></p><div style="text-align: center">
+<img src="images/lec15/23.png" width="80%/"/>
+</div>
+</div>
+<div class="tabbed-block">
+<p>没有标准答案，我得到的答案是：</p>
+<ol>
+<li>A</li>
+<li>D</li>
+<li>E(AB)</li>
+<li>E(BC)</li>
+</ol>
+</div>
+</div>
 </div>
 </div>
 </div>
