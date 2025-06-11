@@ -1005,7 +1005,7 @@
 </a>
 <h1 id="lec-12-query-optimization">Lec 12: Query Optimization<a class="headerlink" href="#lec-12-query-optimization" title="Permanent link">⚓︎</a></h1>
 <div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
-<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>8613<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 640 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M392.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6m80.6 120.1c-12.5 12.5-12.5 32.8 0 45.3l89.3 89.4-89.4 89.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l112-112c12.5-12.5 12.5-32.8 0-45.3l-112-112c-12.5-12.5-32.8-12.5-45.3 0zm-306.7 0c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3l112 112c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l89.4-89.4c12.5-12.5 12.5-32.8 0-45.3"></path></svg></span> <span>7<span class="heti-spacing"> </span></span>行代码 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>43<span class="heti-spacing"> </span></span>分钟</p>
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>9627<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 640 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M392.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6m80.6 120.1c-12.5 12.5-12.5 32.8 0 45.3l89.3 89.4-89.4 89.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l112-112c12.5-12.5 12.5-32.8 0-45.3l-112-112c-12.5-12.5-32.8-12.5-45.3 0zm-306.7 0c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3l112 112c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l89.4-89.4c12.5-12.5 12.5-32.8 0-45.3"></path></svg></span> <span>7<span class="heti-spacing"> </span></span>行代码 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>48<span class="heti-spacing"> </span></span>分钟</p>
 </div>
 <details class="abstract">
 <summary>核心知识</summary>
@@ -1401,6 +1401,39 @@ n_r \cdot \Big[ 1 - (1 - \dfrac{s_1}{n_r}) \cdot (1 - \dfrac{s_2}{n_r}) \cdot \d
 </li>
 </ul>
 <p>对于<span class="heti-skip"><span class="heti-spacing"> </span>theta<span class="heti-spacing"> </span></span>连接<span><span class="heti-spacing"> </span><span class="arithmatex">\(r \bowtie_\theta s\)</span></span>，我们可以先把它改写为<span><span class="heti-spacing"> </span><span class="arithmatex">\(\sigma_\theta(r \times s)\)</span></span>，然后使用估计笛卡尔积和选择运算结果大小的方法（前面都讲到过了）来计算。</p>
+<details class="example">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"/><input id="__tabbed_2_2" name="__tabbed_2" type="radio"/><div class="tabbed-labels"><label for="__tabbed_2_1">题目</label><label for="__tabbed_2_2">解答</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec12/10.png" width="80%/"/>
+</div>
+<p></p><div style="text-align: center">
+<img src="images/lec12/11.png" width="70%/"/>
+</div>
+</div>
+<div class="tabbed-block">
+<blockquote>
+<p>答案由<span class="heti-skip"><span class="heti-spacing"> </span>gpt-4o<span class="heti-spacing"> </span></span>生成。</p>
+</blockquote>
+<p>我们先按假设做如下计算：</p>
+<ol>
+<li>
+<p>满足 <code>dept_name='CS'</code> 的<span class="heti-skip"><span class="heti-spacing"> </span>instructor<span class="heti-spacing"> </span></span>行数：<span>instructor<span class="heti-spacing"> </span></span>总共有<span class="heti-skip"><span class="heti-spacing"> </span>4000<span class="heti-spacing"> </span></span>条记录，<code>dept_name</code> 有<span class="heti-skip"><span class="heti-spacing"> </span>20<span class="heti-spacing"> </span></span>个不同值，假设各院系人数均匀分布，则属于<span class="heti-skip"><span class="heti-spacing"> </span>CS<span class="heti-spacing"> </span></span>的教授约为：4000 ÷ 20 = 200（人）</p>
+</li>
+<li>
+<p>在上述<span class="heti-skip"><span class="heti-spacing"> </span>CS<span class="heti-spacing"> </span></span>教授中，又满足 <code>salary ≥ 70000</code> 的比例：<span>salary<span class="heti-spacing"> </span></span>在<span class="heti-skip"><span class="heti-spacing"> </span>[10000, 90000]<span class="heti-spacing"> </span></span>均匀分布，那么 ≥<span>70000<span class="heti-spacing"> </span></span>的区间长度是<span><span class="heti-spacing"> </span>[70000,90000]</span>，共<span><span class="heti-spacing"> </span>20000</span>；总区间长度是<span><span class="heti-spacing"> </span>80000</span>，所以比例约为：20000 ÷ 80000 = 1/4。因此<span class="heti-skip"><span class="heti-spacing"> </span>CS<span class="heti-spacing"> </span></span>院系中，工资 ≥<span>70000<span class="heti-spacing"> </span></span>的教授数约为：200 × 1/4 = 50（人）</p>
+</li>
+<li>
+<p>每个满足条件的<span class="heti-skip"><span class="heti-spacing"> </span>instructor<span class="heti-spacing"> </span></span>对应<span class="heti-skip"><span class="heti-spacing"> </span>teaches<span class="heti-spacing"> </span></span>记录数：<span>teaches<span class="heti-spacing"> </span></span>一共有<span class="heti-skip"><span class="heti-spacing"> </span>8000<span class="heti-spacing"> </span></span>条，关联<span class="heti-skip"><span class="heti-spacing"> </span>4000<span class="heti-spacing"> </span></span>个；instructor，平均每位<span class="heti-skip"><span class="heti-spacing"> </span>instructor<span class="heti-spacing"> </span></span>在<span class="heti-skip"><span class="heti-spacing"> </span>teaches<span class="heti-spacing"> </span></span>中出现：8000 ÷ 4000 = 2（条记录）</p>
+</li>
+</ol>
+<p>因此这<span class="heti-skip"><span class="heti-spacing"> </span>50<span class="heti-spacing"> </span></span>位既属于<span class="heti-skip"><span class="heti-spacing"> </span>CS<span class="heti-spacing"> </span></span>又工资 ≥<span>70000<span class="heti-spacing"> </span></span>的教授，总共会在<span class="heti-skip"><span class="heti-spacing"> </span>teaches<span class="heti-spacing"> </span></span>表里匹配到大约：50 × 2 = 100（条记录<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，对应选项为<span><span class="heti-spacing"> </span>(C)</span>。</p>
+</div>
+</div>
+</div>
+</details>
 <h3 id="size-estimation-for-other-operations">Size Estimation for Other Operations<a class="headerlink" href="#size-estimation-for-other-operations" title="Permanent link">⚓︎</a></h3>
 <ul>
 <li><strong>投影</strong>：<span><span class="arithmatex">\(\Pi_A(r)\)</span><span class="heti-spacing"> </span></span>的估计值就是<span><span class="heti-spacing"> </span><span class="arithmatex">\(V(A, r)\)</span></span></li>
@@ -1529,15 +1562,22 @@ n_r \cdot \Big[ 1 - (1 - \dfrac{s_1}{n_r}) \cdot (1 - \dfrac{s_2}{n_r}) \cdot \d
 <h3 id="heuristics-in-optimization">Heuristics in Optimization<a class="headerlink" href="#heuristics-in-optimization" title="Permanent link">⚓︎</a></h3>
 <p>基于成本的优化方法的一个缺点在于优化运算自身的成本较高。尽管可以采用更聪明的算法来降低成本，但求值计划的数量可能会变得很大，带来很多计算的成本。因此优化器会采用一种<strong>启发法</strong><span>(heuristics)<span class="heti-spacing"> </span></span>来降低优化成本。一些启发式的规则为：</p>
 <ul>
-<li>尽早执行查询运算：<ul>
+<li>尽早执行<strong>查询</strong>运算：<ul>
 <li>然而，对于表达式<span><span class="heti-spacing"> </span><span class="arithmatex">\(\sigma_\theta (r \bowtie s)\)</span></span>，如果<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(r\)</span><span class="heti-spacing"> </span></span>相比<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(s\)</span><span class="heti-spacing"> </span></span>小得多，<span><span class="arithmatex">\(s\)</span><span class="heti-spacing"> </span></span>的连接属性上有索引，但<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\theta\)</span><span class="heti-spacing"> </span></span>的属性没有索引，那么这种策略就不太好了，因为显然这种情况下，用索引会更好</li>
 </ul>
 </li>
-<li>尽早执行投影运算：<ul>
-<li>一般来说执行选择操作先于投影操作会更好，因为相比投影运算，选择运算能够减少的关系大小更多，且选择操作能够利用索引</li>
+<li>
+<p>尽早执行<strong>投影</strong>运算：</p>
+<ul>
+<li>一般来说执行选择操作先于投影操作会更好，因为相比投影运算，选择运算能够减少的关系大小更多，且选择操作能够利用索引<blockquote>
+<p>不太懂课本的这段描述，这明明说的是要早点执行选择操作嘛？</p>
+</blockquote>
+</li>
 </ul>
 </li>
-<li>基于连接顺序枚举的优化器通常使用启发式转换，来处理除连接之外的构造，并将基于成本的连接顺序选择算法应用于仅涉及连接和选择的子表达式上。</li>
+<li>
+<p>基于连接顺序枚举的优化器通常使用启发式转换，来处理除连接之外的构造，并将基于成本的连接顺序选择算法应用于仅涉及连接和选择的子表达式上。</p>
+</li>
 <li>
 <p>很多查询优化器不考虑所有的连接顺序，而是将搜索限制在特定的连接顺序上，比如<span class="heti-skip"><span class="heti-spacing"> </span>System R<span class="heti-spacing"> </span></span>优化器仅考虑连接中右操作数是初始关系<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(r_1, \dots, r_n\)</span><span class="heti-spacing"> </span></span>中其中一个的连接顺序，这种连接顺序称为<strong>左深连接顺序</strong>(left-deep join order)，这种顺序对流水线求值而言较为方便。</p>
 <ul>
@@ -1553,7 +1593,7 @@ n_r \cdot \Big[ 1 - (1 - \dfrac{s_1}{n_r}) \cdot (1 - \dfrac{s_2}{n_r}) \cdot \d
 </ul>
 </li>
 <li>
-<p><span>Oracle<span class="heti-spacing"> </span></span>的启发式方法：</p>
+<p><span>Oracle<span class="heti-spacing"> </span></span>的<strong>启发式方法</strong>：</p>
 <ul>
 <li>对于一个<span class="heti-skip"><span class="heti-spacing"> </span>n<span class="heti-spacing"> </span></span>路连接，它考虑<span class="heti-skip"><span class="heti-spacing"> </span>n<span class="heti-spacing"> </span></span>个评估计划，每个计划使用一个左深连接顺序，从<span class="heti-skip"><span class="heti-spacing"> </span>n<span class="heti-spacing"> </span></span>个关系中不同的一个开始</li>
 <li>启发式方法通过重复选择“最佳”关系，基于可用的访问路径排名来构建每<span class="heti-skip"><span class="heti-spacing"> </span>n<span class="heti-spacing"> </span></span>个评估计划的连接顺序</li>
