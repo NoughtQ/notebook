@@ -1155,7 +1155,7 @@
 </a>
 <h1 id="lec-11-query-processing">Lec 11: Query Processing<a class="headerlink" href="#lec-11-query-processing" title="Permanent link">⚓︎</a></h1>
 <div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
-<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>14956<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>75<span class="heti-spacing"> </span></span>分钟</p>
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>15005<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>75<span class="heti-spacing"> </span></span>分钟</p>
 </div>
 <details class="abstract">
 <summary>核心知识</summary>
@@ -1758,22 +1758,40 @@
 <p class="admonition-title">注</p>
 <p>这里假设没有哈希表溢出的问题出现。</p>
 </div>
-<p>假如不用递归分区的话，</p>
+<p>假如<strong>不用递归分区</strong>的话，</p>
 <ul>
-<li>对两个关系<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(r, s\)</span><span class="heti-spacing"> </span></span>的分区需要一次读和一次写操作，因此共计<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(2(b_r + b_s)\)</span><span class="heti-spacing"> </span></span>次块传输。而构建和探测阶段需要读取每个分区一次，因此需要另外<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(b_r + b_s\)</span><span class="heti-spacing"> </span></span>次块传输。而分区所占据的块数可能略多于<span><span class="heti-spacing"> </span><span class="arithmatex">\(b_r + b_s\)</span></span>，因此会出现一些内容仅部分占满的数据块。对于每个关系，访问这样的数据块至多会带来<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(2n_h\)</span><span class="heti-spacing"> </span></span>的开销。因而总的块传输为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(3(b_r + b_s) + 4n_h\)</span><span class="heti-spacing"> </span></span>次，其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(4n_h\)</span><span class="heti-spacing"> </span></span>通常比前一项小很多，可以忽略不计。</li>
-<li>假如为输入和输出缓冲区分配了<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(b_b\)</span><span class="heti-spacing"> </span></span>个块，那么分区需要<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(2(\lceil \dfrac{b_r}{b_b} \rceil + \lceil \dfrac{b_s}{b_b} \rceil)\)</span><span class="heti-spacing"> </span></span>次寻道。而在构建和探测阶段中，对于每个关系的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n_h\)</span><span class="heti-spacing"> </span></span>个分区，各仅需一次寻道。因此总计<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(2(\lceil \dfrac{b_r}{b_b} \rceil + \lceil \dfrac{b_s}{b_b} \rceil) + 2n_h\)</span><span class="heti-spacing"> </span></span>次寻道。</li>
+<li>对两个关系<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(r, s\)</span><span class="heti-spacing"> </span></span>的分区需要一次读和一次写操作，因此共计<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(2(b_r + b_s)\)</span><span class="heti-spacing"> </span></span>次块传输。而构建和探测阶段需要读取每个分区一次，因此需要另外<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(b_r + b_s\)</span><span class="heti-spacing"> </span></span>次块传输。而分区所占据的块数可能略多于<span><span class="heti-spacing"> </span><span class="arithmatex">\(b_r + b_s\)</span></span>，因此会出现一些内容仅部分占满的数据块。对于每个关系，访问这样的数据块至多会带来<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(2n_h\)</span><span class="heti-spacing"> </span></span>的开销。因而总的<strong>块传输</strong>为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(3(b_r + b_s) + 4n_h\)</span><span class="heti-spacing"> </span></span>次，其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(4n_h\)</span><span class="heti-spacing"> </span></span>通常比前一项小很多，可以忽略不计。</li>
+<li>假如为输入和输出缓冲区分配了<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(b_b\)</span><span class="heti-spacing"> </span></span>个块，那么分区需要<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(2(\lceil \dfrac{b_r}{b_b} \rceil + \lceil \dfrac{b_s}{b_b} \rceil)\)</span><span class="heti-spacing"> </span></span>次寻道。而在构建和探测阶段中，对于每个关系的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n_h\)</span><span class="heti-spacing"> </span></span>个分区，各仅需一次寻道。因此总计<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(2(\lceil \dfrac{b_r}{b_b} \rceil + \lceil \dfrac{b_s}{b_b} \rceil) + 2n_h\)</span><span class="heti-spacing"> </span></span>次<strong>寻道</strong>。</li>
 </ul>
-<p>但假如用到递归分区的话，</p>
+<p>但假如用到<strong>递归分区</strong>的话，</p>
 <ul>
 <li>每一趟分区会将分区的数量减少到原来的<span><span class="heti-spacing"> </span><span class="arithmatex">\(\lceil \dfrac{M}{b_b} - 1 \rceil\)</span></span>，且预计趟数为<span><span class="heti-spacing"> </span><span class="arithmatex">\(\lceil \log_{\lfloor \frac{M}{b_b} - 1 \rfloor}\dfrac{b_s}{M} \rceil\)</span></span></li>
-<li>在每一趟中，<span><span class="arithmatex">\(s\)</span><span class="heti-spacing"> </span></span>中的每个块都要被读和写一次，因此在分区<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(s\)</span><span class="heti-spacing"> </span></span>时的块传输次数为<span><span class="heti-spacing"> </span><span class="arithmatex">\(2b_s \lceil \log_{\lfloor \frac{M}{b_b} - 1 \rfloor}\dfrac{b_s}{M} \rceil\)</span></span>。分区<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(r\)</span><span class="heti-spacing"> </span></span>时所需的块传输次数和分区<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(s\)</span><span class="heti-spacing"> </span></span>时的基本一致，因此总的块传输次数为：<span class="arithmatex">\(2(b_r + b_s) \lceil \log_{\lfloor \frac{M}{b_b} - 1 \rfloor}\dfrac{b_s}{M} \rceil + b_r + b_s\)</span>。</li>
-<li>我们忽略在构建和探测阶段需要的少量寻道，总的寻道次数为<span><span class="heti-spacing"> </span><span class="arithmatex">\(2(\lceil \dfrac{b_r}{b_b} \rceil + \lceil \dfrac{b_s}{b_b} \rceil) \lceil \log_{\lfloor \frac{M}{b_b} - 1 \rfloor}\dfrac{b_s}{M} \rceil\)</span></span>。</li>
+<li>在每一趟中，<span><span class="arithmatex">\(s\)</span><span class="heti-spacing"> </span></span>中的每个块都要被读和写一次，因此在分区<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(s\)</span><span class="heti-spacing"> </span></span>时的块传输次数为<span><span class="heti-spacing"> </span><span class="arithmatex">\(2b_s \lceil \log_{\lfloor \frac{M}{b_b} - 1 \rfloor}\dfrac{b_s}{M} \rceil\)</span></span>。分区<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(r\)</span><span class="heti-spacing"> </span></span>时所需的块传输次数和分区<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(s\)</span><span class="heti-spacing"> </span></span>时的基本一致，因此总的<strong>块传输</strong>次数为：<span class="arithmatex">\(2(b_r + b_s) \lceil \log_{\lfloor \frac{M}{b_b} - 1 \rfloor}\dfrac{b_s}{M} \rceil + b_r + b_s\)</span>。</li>
+<li>我们忽略在构建和探测阶段需要的少量寻道，总的<strong>寻道</strong>次数为<span><span class="heti-spacing"> </span><span class="arithmatex">\(2(\lceil \dfrac{b_r}{b_b} \rceil + \lceil \dfrac{b_s}{b_b} \rceil) \lceil \log_{\lfloor \frac{M}{b_b} - 1 \rfloor}\dfrac{b_s}{M} \rceil\)</span></span>。</li>
 </ul>
 <p>如果主存容量足够大，可以放得下整个构建输入的话，那么<span><span class="heti-spacing"> </span><span class="arithmatex">\(n_h = 0\)</span></span>，无需对关系进行分区。此时仅需<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(b_r + b_s\)</span><span class="heti-spacing"> </span></span>次块传输和<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>次寻道。</p>
 <p>当外层关系较小时，索引嵌套循环连接的成本会比哈希连接更低。但如果用的是二级索引的话，那么情况就会反转。所以，要是能够在查询优化时知道外层关系的元组个数的话，就能够使用最佳的连接算法了；但有时可能只有在运行时才能确定这个量——一些系统允许在运行时动态选择算法。</p>
 <details class="example">
 <summary>例子</summary>
-<div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio"/><input id="__tabbed_4_2" name="__tabbed_4" type="radio"/><div class="tabbed-labels"><label for="__tabbed_4_1">题目</label><label for="__tabbed_4_2">解答</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio"/><input id="__tabbed_4_2" name="__tabbed_4" type="radio"/><div class="tabbed-labels"><label for="__tabbed_4_1">例<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span></label><label for="__tabbed_4_2">例<span><span class="heti-spacing"> </span>2</span></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="tabbed-set tabbed-alternate" data-tabs="5:2"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio"/><input id="__tabbed_5_2" name="__tabbed_5" type="radio"/><div class="tabbed-labels"><label for="__tabbed_5_1">题目</label><label for="__tabbed_5_2">解答</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec11/39.png" width="80%/"/>
+</div>
+</div>
+<div class="tabbed-block">
+<p>A</p>
+<p>直接套上面公式，其中<span><span class="heti-spacing"> </span><span class="arithmatex">\(b_r = 20000 / 50 = 400, b_s = 5000 / 20 = 250, b_b = 2\)</span></span>（<span><span class="arithmatex">\(n_h = 10\)</span><span class="heti-spacing"> </span></span>但由于这个量很小就不用考虑进去<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
+</div>
+</div>
+</div>
+</div>
+<div class="tabbed-block">
+<div class="tabbed-set tabbed-alternate" data-tabs="6:2"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio"/><input id="__tabbed_6_2" name="__tabbed_6" type="radio"/><div class="tabbed-labels"><label for="__tabbed_6_1">题目</label><label for="__tabbed_6_2">解答</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p></p><div style="text-align: center">
@@ -1786,6 +1804,9 @@
 </div>
 <p></p><div style="text-align: center">
 <img src="images/lec11/34.png" width="80%/"/>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
