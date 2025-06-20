@@ -2499,19 +2499,1412 @@ f(x) \approx P_1(x) = \dfrac{x - x_{i+1}}{x_i - x_{i+1}}y_i + \dfrac{x - x_i}{x_
 <li>求解<span><span class="heti-spacing"> </span><span class="arithmatex">\(M_j\)</span></span></li>
 <li>找到包含<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x\)</span><span class="heti-spacing"> </span></span>的子区间，即找到相应的<span><span class="heti-spacing"> </span><span class="arithmatex">\(j\)</span></span></li>
 <li>通过<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(S_j(x)\)</span><span class="heti-spacing"> </span></span>得到<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f(x)\)</span><span class="heti-spacing"> </span></span>的近似值</li>
-</ol></div>
+</ol>
+<h1 id="chap-8-approximation-theory">Chap 8: Approximation Theory<a class="headerlink" href="#chap-8-approximation-theory" title="Permanent link">⚓︎</a></h1>
+<p>近似理论的目标是：给定<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x_1, \dots, x_m\)</span><span class="heti-spacing"> </span></span>和<span><span class="heti-spacing"> </span><span class="arithmatex">\(y_1, \dots y_m\)</span></span>，寻找更简单的函数<span><span class="heti-spacing"> </span><span class="arithmatex">\(P(x) \approx f(x)\)</span></span>（近似表示<span><span class="heti-spacing"> </span><span class="arithmatex">\(f(x)\)</span></span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
+<p>然而，因为有时<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(m\)</span><span class="heti-spacing"> </span></span>可能会特别大，并且<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(y_i\)</span><span class="heti-spacing"> </span></span>是不准确的实验数据（即<span><span class="heti-spacing"> </span><span class="arithmatex">\(y_i \ne f(x_i)\)</span></span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，所以此时更合理的做法是去寻找最佳拟合的<span><span class="heti-spacing"> </span><span class="arithmatex">\(P(x)\)</span></span>，使得对于所有点而言，<span><span class="arithmatex">\(P(x_i) - y_i\)</span><span class="heti-spacing"> </span></span>尽可能小。下面我们就来介绍这些数学方法。</p>
+<h2 id="discrete-least-square-approximation">Discrete Least Square Approximation<a class="headerlink" href="#discrete-least-square-approximation" title="Permanent link">⚓︎</a></h2>
+<p>目标：确定一个多项式<span><span class="heti-spacing"> </span><span class="arithmatex">\(P_n(x) = a_0 + a_1 x + \dots a_n x^n\)</span></span>，用于近似表示一组数据<span><span class="heti-spacing"> </span><span class="arithmatex">\(\{(x_i, y_i)\ |\ i = 1, 2, \dots, m\}\)</span></span>，使得最小二乘误差<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(E_2 = \sum\limits_{i=1}^m [P_N(x_i) - y_i]^2\)</span><span class="heti-spacing"> </span></span>最小化，其中<span><span class="heti-spacing"> </span><span class="arithmatex">\(n \ll m\)</span></span></p>
+<p>关键：<span><span class="arithmatex">\(E_2\)</span><span class="heti-spacing"> </span></span>实际上是一个关于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(a_0, a_1, \dots, a_n\)</span><span class="heti-spacing"> </span></span>的函数，也就是说<span><span class="heti-spacing"> </span><span class="arithmatex">\(E_2(a_0, a_1, \dots, a_n) = \sum\limits_{i=1}^m [a_0 + a_1 x_i + \dots + a_n x_i^n - y_i]^2\)</span></span>。要想让<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(E_2\)</span><span class="heti-spacing"> </span></span>最小化，必要条件是<span><span class="heti-spacing"> </span><span class="arithmatex">\(\dfrac{\partial E_2}{\partial a_k} = 0, k = 0, \dots, n\)</span></span></p>
+<div class="arithmatex">\[
+\begin{align}
+0 &amp; = \dfrac{\partial E_2}{\partial a_k} = 2\sum\limits_{i=1}^m [P_N(x_i) - y_i]^2 \dfrac{\partial P_n(x_i)}{\partial a_k} = 2 \sum\limits_{i=1}^m \Big[\sum\limits_{j=0}^n a_j x_i^j - y_i \Big]x_i^k \notag \\
+&amp; = 2\Big\{\sum\limits_{j=0}^n a_j \Big(\sum\limits_{i=1}^m x_i^{j+k}\Big) - \sum\limits_{j=1}^m y_i x_i^k\Big\} \notag
+\end{align}
+\]</div>
+<p>令<span><span class="heti-spacing"> </span><span class="arithmatex">\(b_k = \sum\limits_{i=1}^m x_i^k, c_k = \sum\limits_{i=1}^m y_i x_i^k\)</span></span>，那么：</p>
+<div class="arithmatex">\[
+\begin{bmatrix}b_{0+0} &amp; \dots &amp; b_{0+n} \\ \vdots &amp; \vdots &amp; \vdots \\ b_{n+0} &amp; \dots &amp; b_{n+n}\end{bmatrix} \begin{bmatrix}a_0 \\ \vdots \\ a_n\end{bmatrix} = \begin{bmatrix}c_0 \\ \vdots \\ c_n\end{bmatrix}
+\]</div>
+<p><strong>注</strong></p>
+<ul>
+<li><span><span class="arithmatex">\(P_n(x)\)</span><span class="heti-spacing"> </span></span>的顺序由用户给出，且必须不得超过<span><span class="heti-spacing"> </span><span class="arithmatex">\(m-1\)</span></span>。若<span><span class="heti-spacing"> </span><span class="arithmatex">\(n=m-1\)</span></span>，那么<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(P_n(x)\)</span><span class="heti-spacing"> </span></span>就是<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(E_2 = 0\)</span><span class="heti-spacing"> </span></span>的拉格朗日插值多项式</li>
+<li>不强制要求<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(P_n(x)\)</span><span class="heti-spacing"> </span></span>是一个多项式</li>
+<li>如果要考虑权重<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w_i\)</span><span class="heti-spacing"> </span></span>的话，<span>LSA<span class="heti-spacing"> </span></span>的公式就变成：<span class="arithmatex">\(E_2 = \sum\limits_{i=1}^m w_i [P_N(x_i) - y_i]^2\)</span></li>
+</ul>
+<p><strong>例子</strong></p>
+<p>例<span><span class="heti-spacing"> </span>1</span></p>
+<p>题目：</p>
+<div style="text-align: center">
+<img src="images/C8/1.png" width="80%/"/>
+</div>
+<p>解答：</p>
+<p>法<span><span class="heti-spacing"> </span>1</span></p>
+<p>令<span><span class="heti-spacing"> </span><span class="arithmatex">\(y \approx P(x) = \dfrac{x}{ax + b}\)</span></span>，寻找<span><span class="heti-spacing"> </span><span class="arithmatex">\(a, b\)</span></span>，使得<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(E_2(a, b) = \sum\limits_{i=1}^m \Big(\dfrac{x_i}{ax_i + b} - y_i\Big)^2\)</span><span class="heti-spacing"> </span></span>最小化。</p>
+<p><strong>线性化</strong>(linearization)：令<span><span class="heti-spacing"> </span><span class="arithmatex">\(Y = \dfrac{1}{y}, X = \dfrac{1}{x}\)</span></span>，那么<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(Y \approx a + b X\)</span><span class="heti-spacing"> </span></span>就是一个线性问题了。</p>
+<p>将<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\((x_i, y_i)\)</span><span class="heti-spacing"> </span></span>转换为<span><span class="heti-spacing"> </span><span class="arithmatex">\((X_i, Y_i)\)</span></span>，<span><span class="arithmatex">\(a, b\)</span><span class="heti-spacing"> </span></span>就能被解出来了。</p>
+<p>法<span><span class="heti-spacing"> </span>2</span></p>
+<p>令<span><span class="heti-spacing"> </span><span class="arithmatex">\(y \approx P(x) = ae^{-\frac{b}{x}}\)</span></span>，不难发现<span><span class="heti-spacing"> </span><span class="arithmatex">\(\ln y \approx \ln a - \dfrac{b}{x}\)</span></span></p>
+<p><strong>线性化</strong>：令<span><span class="heti-spacing"> </span><span class="arithmatex">\(Y = \ln y, X = \dfrac{1}{x}, A = \ln a, B = -b\)</span></span>，得到<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(Y \approx A + BX\)</span><span class="heti-spacing"> </span></span>这样一个线性问题。</p>
+<p>将<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\((x_i, y_i)\)</span><span class="heti-spacing"> </span></span>转换为<span><span class="heti-spacing"> </span><span class="arithmatex">\((X_i, Y_i)\)</span></span>，<span><span class="arithmatex">\(a, b\)</span><span class="heti-spacing"> </span></span>就能被解出来了（<span class="arithmatex">\(a = e^A, b = -B, P(x) = ae^{-\frac{b}{x}}\)</span>）</p>
+<p>例<span><span class="heti-spacing"> </span>2</span></p>
+<p>题目：</p>
+<div style="text-align: center">
+<img src="images/C8/8.png" width="80%/"/>
+</div>
+<p>解答：</p>
+<ul>
+<li>拿那个带权重的<span class="heti-skip"><span class="heti-spacing"> </span>LSA<span class="heti-spacing"> </span></span>公式计算，得到一个关于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(a, b\)</span><span class="heti-spacing"> </span></span>的函数</li>
+<li>当所有偏导数均为<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>时，函数值最小；所以在代入具体值前，建议先化简偏导数公式，以减小计算量</li>
+<li>得到的偏导数为：<span class="arithmatex">\(\begin{cases}\dfrac{\partial S}{\partial a} = 0 \Rightarrow \sum w_i x_i y_i = 0 \\ \dfrac{\partial S}{\partial b} = 0 \Rightarrow \sum w_i x_i^3 y_i = 0\end{cases}\)</span></li>
+<li>再代入具体值，就可以得到关于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(a, b\)</span><span class="heti-spacing"> </span></span>的二元一次方程</li>
+<li>解得<span><span class="heti-spacing"> </span><span class="arithmatex">\(a = \dfrac{8}{7}, b = \dfrac{23}{49}\)</span></span></li>
+</ul>
+<h2 id="orthorgonal-polynomials-and-least-squares-approximation">Orthorgonal Polynomials and Least Squares Approximation<a class="headerlink" href="#orthorgonal-polynomials-and-least-squares-approximation" title="Permanent link">⚓︎</a></h2>
+<p>目标：</p>
+<ul>
+<li>离散版本：给定<span><span class="heti-spacing"> </span><span class="arithmatex">\(x_1, \dots, x_m;\ y_1, \dots, y_m\)</span></span>，找到更简单的函数<span><span class="heti-spacing"> </span><span class="arithmatex">\(P(x) \approx f(x)\)</span></span>，使得<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(E = \sum\limits_{i=1}^m |P(x_i) - y_i|^2\)</span><span class="heti-spacing"> </span></span>最小化。</li>
+<li>连续版本：给定在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\([a, b]\)</span><span class="heti-spacing"> </span></span>上的函数<span><span class="heti-spacing"> </span><span class="arithmatex">\(f(x)\)</span></span>，找到更简单的函数<span><span class="heti-spacing"> </span><span class="arithmatex">\(P(x) \approx f(x)\)</span></span>，使得<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(E = \int_a^b [P(x) - f(x)]^2 dx\)</span><span class="heti-spacing"> </span></span>最小化。</li>
+</ul>
+<p><strong>定义</strong> ：对于一组在区间<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\([a, b]\)</span><span class="heti-spacing"> </span></span>上的函数<span><span class="heti-spacing"> </span><span class="arithmatex">\(\{\varphi_0(x), \varphi_1(x), \dots, \varphi_n(x)\}\)</span></span>，当<span><span class="heti-spacing"> </span><span class="arithmatex">\(\forall x \in [a, b]\)</span></span>，<span><span class="arithmatex">\(a_0 \varphi_0(x) + a_1 \varphi_1(x) + \dots + a_n \varphi_n(x) = 0\)</span><span class="heti-spacing"> </span></span>时，有<span><span class="heti-spacing"> </span><span class="arithmatex">\(a_0 = a_1 \dots = a_n = 0\)</span></span>，那么称这组函数是<strong>线性独立</strong><span>(linearly independent)<span class="heti-spacing"> </span></span>的，否则称它们是<strong>线性相关</strong><span>(linearly dependent)<span class="heti-spacing"> </span></span>的。</p>
+<p><strong>定理</strong> ：如果<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\varphi_j(x)\)</span><span class="heti-spacing"> </span></span>是一个<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(j\)</span><span class="heti-spacing"> </span></span>次多项式（<span class="arithmatex">\(j = 0, \dots, n\)</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，那么<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\{\varphi_0(x), \varphi_1(x), \dots, \varphi_n(x)\}\)</span><span class="heti-spacing"> </span></span>在任意区间<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\([a, b]\)</span><span class="heti-spacing"> </span></span>上都是<strong>线性独立的</strong>(linear independent)。</p>
+<p><strong>定理</strong> ：令<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\Pi_n\)</span><span class="heti-spacing"> </span></span>为一组次数至多为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span><span class="heti-spacing"> </span></span>的多项式，如果<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\{\varphi_0(x), \varphi_1(x), \dots, \varphi_n(x)\}\)</span><span class="heti-spacing"> </span></span>是<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\Pi_n\)</span><span class="heti-spacing"> </span></span>内一组线性独立的多项式，那么<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\Pi_n\)</span><span class="heti-spacing"> </span></span>内的任意多项式均可被唯一写做<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\varphi_0(x), \varphi_1(x), \dots, \varphi_n(x)\)</span><span class="heti-spacing"> </span></span>的一个线性组合。</p>
+<p><strong>定义</strong> ：对于一般的一组线性独立的函数<span><span class="heti-spacing"> </span><span class="arithmatex">\(\{\varphi_0(x), \varphi_1(x), \dots, \varphi_n(x)\}\)</span></span>，关于它们的<strong>线性组合</strong> <span><span class="arithmatex">\(P(x) = \sum\limits_{j=0}^n a_j \varphi_j(x)\)</span><span class="heti-spacing"> </span></span>被称为<strong>广义多项式</strong>(generalized polynomial)。</p>
+<p>一些特殊的多项式：</p>
+<ul>
+<li><span><span class="arithmatex">\(\{\varphi_j(x) = \cos jx\}, \{\psi_j(x) = \sin jx\} \Rightarrow \{\varphi_j(x), \psi_j(x)\}\)</span><span class="heti-spacing"> </span></span>得到的是<strong>三角多项式</strong>(trigonometric polynomial)</li>
+<li><span><span class="arithmatex">\(\{\varphi_j(x) = e^{kjx}, k_i \ne k_j\}\)</span><span class="heti-spacing"> </span></span>得到的是<strong>指数多项式</strong>(exponential polynomial)</li>
+</ul>
+<p><strong>定义：权重函数<span><span class="heti-spacing"> </span>(weight function)</span></strong></p>
+<ul>
+<li><strong>离散</strong>版本：当对一组离散点<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\((x_i, y_i) (i = 1, \dots, n)\)</span><span class="heti-spacing"> </span></span>进行近似时，我们为每个点赋予一个误差项<span><span class="heti-spacing"> </span><span class="arithmatex">\(w_i\)</span></span>，它是一个正实数。此时我们要考虑让<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(E = \sum w_i [P(x_i) - y_i]^2\)</span><span class="heti-spacing"> </span></span>最小化。集合<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\{w_i\}\)</span><span class="heti-spacing"> </span></span>被称为<strong>权重</strong>(weight)。设置权重的目标是为这些点赋予不同的“重要程度”，以便实现更好的近似。</li>
+<li><strong>连续</strong>版本：一个在区间<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(I\)</span><span class="heti-spacing"> </span></span>上的可积分的函数<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w\)</span><span class="heti-spacing"> </span></span>被称为权重函数，它满足<span><span class="heti-spacing"> </span><span class="arithmatex">\(\forall x \in I, w(x) \ge 0\)</span></span>，但<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w(x)\)</span><span class="heti-spacing"> </span></span>不会在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(I\)</span><span class="heti-spacing"> </span></span>的任意子区间上消失。此时我们要考虑让<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(E = \int_a^b w(x) [P(x) - f(x)]^2 dx\)</span><span class="heti-spacing"> </span></span>最小化。</li>
+</ul>
+<p><strong>定义：广义的最小二乘近似<span class="heti-skip"><span class="heti-spacing"> </span>(general least square approximation)<span class="heti-spacing"> </span></span>问题</strong></p>
+<ul>
+<li><strong>离散</strong>版本：给定一组离散点<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\((x_i, y_i)\)</span><span class="heti-spacing"> </span></span>和一组对应的权重<span><span class="heti-spacing"> </span><span class="arithmatex">\(\{w_i\}\)</span></span>（<span class="arithmatex">\(i = 1, \dots, m\)</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。我们要找到一个广义多项式<span><span class="heti-spacing"> </span><span class="arithmatex">\(P(x)\)</span></span>，使得误差<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(E = \sum w_i [P(x_i) - y_i]^2\)</span><span class="heti-spacing"> </span></span>最小化。</li>
+<li><strong>连续</strong>版本：给定定义在区间<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\([a, b]\)</span><span class="heti-spacing"> </span></span>上的一个函数<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f(x)\)</span><span class="heti-spacing"> </span></span>和一个权重函数<span><span class="heti-spacing"> </span><span class="arithmatex">\(w(x)\)</span></span>。我们要找到一个广义多项式<span><span class="heti-spacing"> </span><span class="arithmatex">\(P(x)\)</span></span>，使得误差<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(E = \int_a^b w(x) [P(x) - f(x)]^2 dx\)</span><span class="heti-spacing"> </span></span>最小化。</li>
+</ul>
+<hr/>
+<p><strong>内积</strong></p>
+<p>映射<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(V \times V \rightarrow F\)</span><span class="heti-spacing"> </span></span>满足以下三个公理：</p>
+<ul>
+<li>共轭对称性：<span class="arithmatex">\((x, y) = \overline{(y, x)}\)</span></li>
+<li>线性：<span class="arithmatex">\((ax, y) = a(x, y), (x + y, z) = (x, z) + (y, z)\)</span></li>
+<li>正定性：<span class="arithmatex">\((x, x) \ge 0;\ (x, x) = 0 \Rightarrow x = 0\)</span></li>
+</ul>
+<p>内积就是<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x\)</span><span class="heti-spacing"> </span></span>的范数<span><span class="heti-spacing"> </span><span class="arithmatex">\(\|x\| = \sqrt{(x, x)}\)</span></span></p>
+<p>对于一般函数<span><span class="heti-spacing"> </span><span class="arithmatex">\((f, g)\)</span></span>：</p>
+<ul>
+<li>离散版本：<span class="arithmatex">\(\sum\limits_i f_i g_i = (f_1\ f_2\ \dots\ f_n) \begin{pmatrix}g_1 \\ g_2 \\ \vdots \\ g_n\end{pmatrix} = (f)^T(g)\)</span></li>
+<li>连续版本：<span class="arithmatex">\(\int_a^b f(x)g(x) dx\)</span></li>
+</ul>
+<p>若带有权重函数，即<span><span class="heti-spacing"> </span><span class="arithmatex">\((f, g)_w\)</span></span>：</p>
+<ul>
+<li>
+<p>离散版本：</p>
+<div class="arithmatex">\[
+\begin{align}
+\sum\limits_i f_i g_i &amp; = (f_1\ f_2\ \dots\ f_n) \begin{pmatrix}w_1 &amp; 0 &amp; \dots &amp; 0 \\ 0 &amp; w_2 &amp; \dots &amp; 0 \\ \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\ 0 &amp; 0 &amp; \dots &amp; w_n\end{pmatrix} \begin{pmatrix}g_1 \\ g_2 \\ \vdots \\ g_n\end{pmatrix} \notag \\
+&amp; = (f)^T[w](g) \notag
+\end{align}
+\]</div>
+</li>
+<li>
+<p>连续版本：<span class="arithmatex">\(\int_a^b w(x)f(x)g(x) dx\)</span></p>
+</li>
+</ul>
+<hr/>
+<p>对于<span><span class="heti-spacing"> </span><span class="arithmatex">\((f, g) = \begin{cases}\sum\limits_{i=1}^m w_i f(x_i) g(x_i) &amp; \text{discrete version} \\ \int_a^b w(x) f(x) g(x) dx &amp; \text{continuous version} \end{cases}\)</span></span>，可以证明它表示的是一个<strong>内积</strong>(inner product)，且<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\|f\| = \sqrt{(f, f)}\)</span><span class="heti-spacing"> </span></span>是一个<strong>范数</strong>。并且当<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\((f, g) = 0\)</span><span class="heti-spacing"> </span></span>时，我们称<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f, g\)</span><span class="heti-spacing"> </span></span>是<strong>正交的</strong>(orthogonal)。</p>
+<p>因此一般的最小二乘近似问题可以被转换为：</p>
+<div style="text-align: center">
+<p>寻找一个广义多项式<span><span class="heti-spacing"> </span><span class="arithmatex">\(P(x)\)</span></span>，使得<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(E = (P - y, P - y) = \| P - y \|^2\)</span><span class="heti-spacing"> </span></span>最小化。</p>
+</div>
+<p>令<span><span class="heti-spacing"> </span><span class="arithmatex">\(P(x) = a_0 \varphi_0(x) + a_1 \varphi_1(x) + \dots + a_n \varphi_n(x)\)</span></span>，然后与求解离散问题类似：<span class="arithmatex">\(\dfrac{\partial E}{\partial a_k} = 0\)</span>，即对于所有<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(a_k\)</span><span class="heti-spacing"> </span></span>偏导数为<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>时误差取最小值。将等号左侧公式化简，可以得到：<span class="arithmatex">\(\sum\limits_{j=0}^n (\varphi_k, \varphi_j) a_j = (\varphi_k, f), k = 0, \dots, n\)</span>，也就是说：</p>
+<div class="arithmatex">\[
+\begin{bmatrix}b_{ij} = (\varphi_i, \varphi_j)\end{bmatrix} \begin{bmatrix}a_0 \\ \vdots \\ a_n\end{bmatrix} = \begin{bmatrix}(\varphi_0, f) \\  \vdots \\ (\varphi_n, f)\end{bmatrix} = \varepsilon
+\]</div>
+<p><strong>例子</strong></p>
+<p>题目：使用<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(y = a_0 + a_1 x + a_2 x^2\ (w \equiv 1)\)</span><span class="heti-spacing"> </span></span>近似点集<span><span class="heti-spacing"> </span><span class="arithmatex">\(\{(1, 4), (2, 10), (3, 18), (4, 26)\}\)</span></span></p>
+<p>解答：</p>
+<p><span class="arithmatex">\(\varphi_0(x) = 1, \varphi_1(x) = x, \varphi_2(x) = x^2\)</span>，可以计算出：</p>
+<div style="text-align: center">
+<img src="images/C8/2.png" width="70%/"/>
+</div>
+<div style="text-align: center">
+<img src="images/C8/3.png" width="70%/"/>
+</div>
+<p><span class="arithmatex">\(\|B\|_{\infty} = 484, \|B^{-1}\|_{\infty} = \dfrac{63}{4} \Rightarrow K(B) = 7623\)</span></p>
+<hr/>
+<p><strong>例子</strong></p>
+<p>当使用<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\varphi_j(x) = x^j\)</span><span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w(x) \equiv 1\)</span><span class="heti-spacing"> </span></span>近似<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f(x) \in C[0, 1]\)</span><span class="heti-spacing"> </span></span>时，<span class="arithmatex">\((\varphi_i, \varphi_j) = \int_0^1 x^i x^j dx = \dfrac{1}{i + j +1}\)</span>（<a href="https://en.wikipedia.org/wiki/Hilbert_matrix"><strong>希尔伯特矩阵</strong></a>(Hilbert matrix)）</p>
+<p>改进：如果我们能找到一组一般的线性独立的函数<span><span class="heti-spacing"> </span><span class="arithmatex">\(\{\varphi_0(x), \varphi_1(x), \dots, \varphi_n(x) \}\)</span></span>，使得任何函数对<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\varphi_i(x), \varphi_j(x)\)</span><span class="heti-spacing"> </span></span>是<strong>正交的</strong>(orthogonal)，那么范数矩阵将会是个<strong>对角矩阵</strong>。此时我们有<span><span class="heti-spacing"> </span><span class="arithmatex">\(a_k = \dfrac{(\varphi_k, f)}{(\varphi_k, \varphi_k)}\)</span></span></p>
+<p>下面考虑构造<strong>正交多项式</strong>(orthogonal polynomials)。</p>
+<p><strong>定理</strong></p>
+<p>对于一组在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\([a, b]\)</span><span class="heti-spacing"> </span></span>的多项式函数<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\{\varphi_0(x), \varphi_1(x), \dots, \varphi_n(x)\}\)</span><span class="heti-spacing"> </span></span>以及一个权重函数<span><span class="heti-spacing"> </span><span class="arithmatex">\(w\)</span></span>，当满足以下条件时，我们认为这些函数是正交的：</p>
+<div class="arithmatex">\[
+\varphi_0 (x) \equiv 1, \varphi_1(x) = x - B_1, \varphi_k(x) = (x - B_k)\varphi_{k-1}(x) - C_k \varphi_{k-2}(x)
+\]</div>
+<p>其中<span><span class="heti-spacing"> </span><span class="arithmatex">\(B_k = \dfrac{(x \varphi_{k-1}, \varphi_{k-1})}{(\varphi_{k-1}, \varphi_{k-1})}, C_k = \dfrac{(x \varphi_{k-1}, \varphi_{k-2})}{( \varphi_{k-2}, \varphi_{k-2})}\)</span></span></p>
+<p><strong>注</strong></p>
+<ul>
+<li>这样构造出来的正交多项式都是<a href="https://en.wikipedia.org/wiki/Monic_polynomial"><strong>首一多项式</strong></a>(monic polynomial)（即最高次数项系数为<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>的多项式<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</li>
+<li>该定理正是源自我们在线性代数中学过的<a href="https://en.wikipedia.org/wiki/Gram%E2%80%93Schmidt_process"><strong>格拉姆<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>施密特正交化</strong></a>(Gram-Schmidt process)。</li>
+</ul>
+<p><strong>例子</strong></p>
+<p>例<span><span class="heti-spacing"> </span>1</span></p>
+<p>题目<heti-adjacent class="heti-adjacent-half">：</heti-adjacent>（和之前基本一样的）使用<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(y = c_0 + c_1 x + c_2 x^2, w \equiv 1\)</span><span class="heti-spacing"> </span></span>近似点集<span><span class="heti-spacing"> </span><span class="arithmatex">\(\{(1, 4), (2, 10), (3, 18), (4, 26)\}\)</span></span></p>
+<p>解答：</p>
+<p>首先构造正交多项式<span><span class="heti-spacing"> </span><span class="arithmatex">\(\varphi_0(x), \varphi_1(x), \varphi_2(x)\)</span></span>，令<span><span class="heti-spacing"> </span><span class="arithmatex">\(y = a_0 \varphi_0(x) + a_1 \varphi_1(x) + a_2 \varphi_2(x)\)</span></span>（<span class="arithmatex">\(a_k = \dfrac{(\varphi_k, y)}{(\varphi_k, \varphi_k)}\)</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。接下来就计算出这些值：</p>
+<div style="text-align: center">
+<img src="images/C8/4.png" width="80%/"/>
+</div>
+<p>最终解得<span><span class="heti-spacing"> </span><span class="arithmatex">\(y = \dfrac{1}{2}x^2 + \dfrac{49}{10}x - \dfrac{3}{2}\)</span></span></p>
+<p>例<span><span class="heti-spacing"> </span>2</span></p>
+<p>题目：</p>
+<div style="text-align: center">
+<img src="images/C8/7.png" width="80%/"/>
+</div>
+<p>解答：</p>
+<p>知道内积的求解公式和上述正交多项式的构造后，这题其实挺容易的。所以就直接给出答案了：</p>
+<ul>
+<li><span class="arithmatex">\(\varphi_0(x) = 1\)</span></li>
+<li><span class="arithmatex">\(\varphi_1(x) = x - 2\)</span></li>
+<li><span class="arithmatex">\(\varphi_2(x) = x^2 - 4x + \dfrac{8}{3}\)</span></li>
+</ul>
+<p><strong>算法：正交多项式近似</strong></p>
+<p>用一个有被容忍值约束的误差的多项式，近似一个给定的函数。</p>
+<ul>
+<li>输入：数据个数<span><span class="heti-spacing"> </span><span class="arithmatex">\(m\)</span></span>；<span class="arithmatex">\(x[m];\ y[m]\)</span>；权重<span><span class="heti-spacing"> </span><span class="arithmatex">\(w[m]\)</span></span>；容忍值<span><span class="heti-spacing"> </span><span class="arithmatex">\(TOL\)</span></span>；多项式最大阶数<span><span class="heti-spacing"> </span><span class="arithmatex">\(Max_n\)</span></span></li>
+<li>输出：近似多项式的系数</li>
+</ul>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-19-1"><a href="#__codelineno-19-1" id="__codelineno-19-1" name="__codelineno-19-1"></a><span class="n">Step</span><span class="w"> </span><span class="mi">1</span><span class="w">  </span><span class="n">Set</span><span class="w"> </span><span class="n">phi_0</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="err">≡</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span>
+</span><span id="__span-19-2"><a href="#__codelineno-19-2" id="__codelineno-19-2" name="__codelineno-19-2"></a><span class="w">            </span><span class="n">a_0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">iprod</span><span class="p">(</span><span class="n">phi_0</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">iprod</span><span class="p">(</span><span class="n">phi_0</span><span class="p">,</span><span class="w"> </span><span class="n">phi_0</span><span class="p">);</span><span class="w"> </span>
+</span><span id="__span-19-3"><a href="#__codelineno-19-3" id="__codelineno-19-3" name="__codelineno-19-3"></a><span class="w">            </span><span class="n">P</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a_0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">phi_0</span><span class="p">(</span><span class="n">x</span><span class="p">);</span><span class="w"> </span>
+</span><span id="__span-19-4"><a href="#__codelineno-19-4" id="__codelineno-19-4" name="__codelineno-19-4"></a><span class="w">            </span><span class="n">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">iprod</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">a_0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">iprod</span><span class="p">(</span><span class="n">phi_0</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">);</span>
+</span><span id="__span-19-5"><a href="#__codelineno-19-5" id="__codelineno-19-5" name="__codelineno-19-5"></a><span class="n">Step</span><span class="w"> </span><span class="mi">2</span><span class="w">  </span><span class="n">Set</span><span class="w"> </span><span class="n">B_1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">iprod</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">phi_0</span><span class="p">,</span><span class="w"> </span><span class="n">phi_0</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">iprod</span><span class="p">(</span><span class="n">phi_0</span><span class="p">,</span><span class="w"> </span><span class="n">phi_0</span><span class="p">);</span><span class="w"> </span>
+</span><span id="__span-19-6"><a href="#__codelineno-19-6" id="__codelineno-19-6" name="__codelineno-19-6"></a><span class="w">            </span><span class="n">phi_1</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">B_1</span><span class="p">;</span>
+</span><span id="__span-19-7"><a href="#__codelineno-19-7" id="__codelineno-19-7" name="__codelineno-19-7"></a><span class="w">            </span><span class="n">a_1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">iprod</span><span class="p">(</span><span class="n">phi_1</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">iprod</span><span class="p">(</span><span class="n">phi_1</span><span class="p">,</span><span class="w"> </span><span class="n">phi_1</span><span class="p">);</span><span class="w"> </span>
+</span><span id="__span-19-8"><a href="#__codelineno-19-8" id="__codelineno-19-8" name="__codelineno-19-8"></a><span class="w">            </span><span class="n">P</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">a_1</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">phi_1</span><span class="p">(</span><span class="n">x</span><span class="p">);</span><span class="w"> </span>
+</span><span id="__span-19-9"><a href="#__codelineno-19-9" id="__codelineno-19-9" name="__codelineno-19-9"></a><span class="w">            </span><span class="n">err</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="n">a_1</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">iprod</span><span class="p">(</span><span class="n">phi_1</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">);</span>
+</span><span id="__span-19-10"><a href="#__codelineno-19-10" id="__codelineno-19-10" name="__codelineno-19-10"></a><span class="n">Step</span><span class="w"> </span><span class="mi">3</span><span class="w">  </span><span class="n">Set</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+</span><span id="__span-19-11"><a href="#__codelineno-19-11" id="__codelineno-19-11" name="__codelineno-19-11"></a><span class="n">Step</span><span class="w"> </span><span class="mi">4</span><span class="w">  </span><span class="k">while</span><span class="w"> </span><span class="p">((</span><span class="n">k</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">Max_n</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="o">|</span><span class="n">err</span><span class="o">|</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">TOL</span><span class="p">))</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="n">steps</span><span class="w"> </span><span class="mi">5-7</span><span class="o">:</span>
+</span><span id="__span-19-12"><a href="#__codelineno-19-12" id="__codelineno-19-12" name="__codelineno-19-12"></a><span class="w">    </span><span class="n">Step</span><span class="w"> </span><span class="mi">5</span><span class="w">  </span><span class="n">k</span><span class="o">++</span><span class="p">;</span>
+</span><span id="__span-19-13"><a href="#__codelineno-19-13" id="__codelineno-19-13" name="__codelineno-19-13"></a><span class="w">    </span><span class="n">Step</span><span class="w"> </span><span class="mi">6</span><span class="w">  </span><span class="n">B_k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">iprod</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">phi_1</span><span class="p">,</span><span class="w"> </span><span class="n">phi_1</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">iprod</span><span class="p">(</span><span class="n">phi_1</span><span class="p">,</span><span class="w"> </span><span class="n">phi_1</span><span class="p">);</span><span class="w"> </span>
+</span><span id="__span-19-14"><a href="#__codelineno-19-14" id="__codelineno-19-14" name="__codelineno-19-14"></a><span class="w">            </span><span class="n">C_k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">iprod</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">phi_1</span><span class="p">,</span><span class="w"> </span><span class="n">phi_0</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">iprod</span><span class="p">(</span><span class="n">phi_0</span><span class="p">,</span><span class="w"> </span><span class="n">phi_0</span><span class="p">);</span>
+</span><span id="__span-19-15"><a href="#__codelineno-19-15" id="__codelineno-19-15" name="__codelineno-19-15"></a><span class="w">            </span><span class="n">phi_2</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">B_k</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">phi_1</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">C_k</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">phi_0</span><span class="p">(</span><span class="n">x</span><span class="p">);</span><span class="w"> </span>
+</span><span id="__span-19-16"><a href="#__codelineno-19-16" id="__codelineno-19-16" name="__codelineno-19-16"></a><span class="w">            </span><span class="n">a_k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">iprod</span><span class="p">(</span><span class="n">phi_2</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">iprod</span><span class="p">(</span><span class="n">phi_2</span><span class="p">,</span><span class="w"> </span><span class="n">phi_2</span><span class="p">);</span>
+</span><span id="__span-19-17"><a href="#__codelineno-19-17" id="__codelineno-19-17" name="__codelineno-19-17"></a><span class="w">    </span><span class="n">Step</span><span class="w"> </span><span class="mi">7</span><span class="w">  </span><span class="n">Set</span><span class="w"> </span><span class="n">phi_0</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">phi_1</span><span class="p">(</span><span class="n">x</span><span class="p">);</span><span class="w"> </span><span class="n">phi_1</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">phi_2</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+</span><span id="__span-19-18"><a href="#__codelineno-19-18" id="__codelineno-19-18" name="__codelineno-19-18"></a><span class="n">Step</span><span class="w"> </span><span class="mi">8</span><span class="w">  </span><span class="n">Output</span><span class="p">();</span><span class="w"> </span><span class="n">STOP</span><span class="p">.</span>
+</span></code></pre></div>
+<p><strong>讨论</strong></p>
+<p>问题：这里的 <code>err</code> 是否是最小二乘误差，为什么？</p>
+<p>解答：</p>
+<p>是的，并且 <code>err</code> 的推导公式如下：</p>
+<div class="arithmatex">\[
+\begin{align}
+err &amp; = \| P - y \|^2 = (P - y, P - y) = (\sum\limits_{k=0}^n a_k \varphi_k - y, \sum\limits_{i=0}^n a_i \varphi_i - y) \notag \\
+&amp; = \sum\limits_{k=0}^n a_k^2 (\varphi_k, \varphi_k) - 2 \sum\limits_{k=0}^n a_k (\varphi_k, y) + (y, y) = (y, y) - \sum\limits_{k=0}^n a_k (\varphi_k, y) \notag
+\end{align}
+\]</div>
+<h2 id="chebyshev-polynomials-and-economization-of-power-series">Chebyshev Polynomials and Economization of Power Series<a class="headerlink" href="#chebyshev-polynomials-and-economization-of-power-series" title="Permanent link">⚓︎</a></h2>
+<p>前面讲过，解决一般的最小二乘近似问题的目标是：</p>
+<div style="text-align: center">
+<p>寻找一个广义多项式<span><span class="heti-spacing"> </span><span class="arithmatex">\(P(x)\)</span></span>，使得<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(E = (P - y, P - y) = \| P - y \|^2\)</span><span class="heti-spacing"> </span></span>最小化。</p>
+</div>
+<p>再次明确：我们的目标是最小化<span><span class="heti-spacing"> </span><span class="arithmatex">\(\|P - y\|_{\infty}\)</span></span>——这是一个<strong>极小化极大问题</strong>(minimax problem)。</p>
+<h3 id="targets">Targets<a class="headerlink" href="#targets" title="Permanent link">⚓︎</a></h3>
+<p>目标<span><span class="heti-spacing"> </span>1.0</span>：找到<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span><span class="heti-spacing"> </span></span>阶多项式<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(P_n(x)\)</span><span class="heti-spacing"> </span></span>使得<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\|P_n - f\|_{\infty}\)</span><span class="heti-spacing"> </span></span>最小化。</p>
+<p><strong>定义</strong> ：如果<span><span class="heti-spacing"> </span><span class="arithmatex">\(P(x_0) - f(x_0) = \pm \|P - f\|_{\infty}\)</span></span>，那么此时<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x_0\)</span><span class="heti-spacing"> </span></span>被称为<span><span class="heti-spacing"> </span><span class="arithmatex">\((\pm)\)</span></span> <strong>偏差点</strong>(deviation point)（也就是正好在误差边界上的点<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
+<p>从任意地方构造出多项式并不容易，但我们能够检验多项式的一些特征：</p>
+<ul>
+<li>
+<p>如果<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f \in C[a, b]\)</span><span class="heti-spacing"> </span></span>且<span><span class="heti-spacing"> </span><span class="arithmatex">\(f\)</span></span> <strong>不是</strong>一个<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span><span class="heti-spacing"> </span></span>阶多项式，那么存在一个唯一的多项式<span><span class="heti-spacing"> </span><span class="arithmatex">\(P_n(x)\)</span></span>，使得<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\|P_n - f\|_{\infty}\)</span><span class="heti-spacing"> </span></span>最小化</p>
+</li>
+<li>
+<p><span><span class="arithmatex">\(P_n(x)\)</span><span class="heti-spacing"> </span></span>存在，且必须同时有正负偏差点</p>
+</li>
+<li>
+<p><strong>切比雪夫定理</strong>(Chebyshev Theorem)：<span><span class="arithmatex">\(P_n(x)\)</span><span class="heti-spacing"> </span></span>最小化<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\|P_n - f\|_{\infty}\ \Leftrightarrow P_n(x)\)</span><span class="heti-spacing"> </span></span>至少有<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n+2\)</span><span class="heti-spacing"> </span></span>个关于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f\)</span><span class="heti-spacing"> </span></span>的正负偏差点。也就是说，存在一组点<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(a \le t_1 &lt; \dots &lt; t_{n+2} \le b\)</span><span class="heti-spacing"> </span></span>使得<span><span class="heti-spacing"> </span><span class="arithmatex">\(P_n(t_k) - f(t_k) = \pm(-1)^k \|P_n - f\|_{\infty}\)</span></span>。集合<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\{t_k\}\)</span><span class="heti-spacing"> </span></span>被称为<strong>切比雪夫交替序列</strong>(Chebyshev alternating sequence)。</p>
+</li>
+</ul>
+<blockquote>
+<p><span><span class="arithmatex">\(P_n(x) - f(x)\)</span><span class="heti-spacing"> </span></span>至少有<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n+1\)</span><span class="heti-spacing"> </span></span>个根。</p>
+</blockquote>
+<div style="text-align: center">
+<img src="images/C8/5.png" width="60%/"/>
+</div>
+<hr/>
+<p>目标<span><span class="heti-spacing"> </span>2.0</span>：确定插值点<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\{x_0, \dots, x_n\}\)</span><span class="heti-spacing"> </span></span>使得<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(P_n(x)\)</span><span class="heti-spacing"> </span></span>最小化余项<span><span class="heti-spacing"> </span><span class="arithmatex">\(|P_n(x) - f(x)| = |R_n(x)| = \Big|\dfrac{f^{(n+1)}(\xi)}{(n+1)!} \prod\limits_{i=0}^n (x - x_i)\Big|\)</span></span></p>
+<p>目标<span><span class="heti-spacing"> </span>2.1</span>：找到<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\{x_1, \dots, x_n\}\)</span><span class="heti-spacing"> </span></span>使得<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\|w_n\|_{\infty}\)</span><span class="heti-spacing"> </span></span>在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\([-1, 1]\)</span><span class="heti-spacing"> </span></span>最小化，其中<span><span class="heti-spacing"> </span><span class="arithmatex">\(w_n(x) = \prod\limits_{i=1}^n (x - x_i)\)</span></span></p>
+<hr/>
+<p>注意到<span><span class="heti-spacing"> </span><span class="arithmatex">\(w_n(x) = x^n - P_{n-1}(x)\)</span></span>，问题就变成了：</p>
+<p>目标<span><span class="heti-spacing"> </span>3.0</span>：找到多项式<span><span class="heti-spacing"> </span><span class="arithmatex">\(P_{n-1}(x)\)</span></span>，使得<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\|x^n - P_{n-1}(x)\|_{\infty}\)</span><span class="heti-spacing"> </span></span>在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\([-1, 1]\)</span><span class="heti-spacing"> </span></span>上最小。</p>
+<p>根据切比雪夫定理，我们知道<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(P_{n-1}(x)\)</span><span class="heti-spacing"> </span></span>有<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n+1\)</span><span class="heti-spacing"> </span></span>个关于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x^n\)</span><span class="heti-spacing"> </span></span>的偏差点，也就是说<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w_n(x)\)</span><span class="heti-spacing"> </span></span>在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n+1\)</span><span class="heti-spacing"> </span></span>个点上交替获得最大值和最小值。</p>
+<h3 id="chebyshev-polynomials">Chebyshev Polynomials<a class="headerlink" href="#chebyshev-polynomials" title="Permanent link">⚓︎</a></h3>
+<p>考虑<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\cos (n \theta)\)</span><span class="heti-spacing"> </span></span>在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\([0, \pi]\)</span><span class="heti-spacing"> </span></span>上的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n+1\)</span><span class="heti-spacing"> </span></span>个极值。</p>
+<p>令<span><span class="heti-spacing"> </span><span class="arithmatex">\(x = \cos (\theta)\)</span></span>，那么<span><span class="heti-spacing"> </span><span class="arithmatex">\(x \in [-1, 1]\)</span></span>。我们称<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(T_n(x) = \cos (n\theta) = \cos (n \cdot \text{arc} \cos x)\)</span><span class="heti-spacing"> </span></span>为<strong>切比雪夫多项式</strong>(Chebyshev polonomial)。</p>
+<ul>
+<li><span><span class="arithmatex">\(T_n(x)\)</span><span class="heti-spacing"> </span></span>假设在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(t_k = \cos \Big(\dfrac{k}{n} \pi\Big) (k = 0, 1, \dots, n)\)</span><span class="heti-spacing"> </span></span>上，在最大值<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>和最小值<span class="heti-skip"><span class="heti-spacing"> </span>-1<span class="heti-spacing"> </span></span>之间交替变换，也就是说<span><span class="heti-spacing"> </span><span class="arithmatex">\(T_n(t_k) = (-1)^k \|T_n(x)\|_{\infty}\)</span></span></li>
+<li><span><span class="arithmatex">\(T_n(x)\)</span><span class="heti-spacing"> </span></span>有<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span><span class="heti-spacing"> </span></span>个根<span><span class="heti-spacing"> </span><span class="arithmatex">\(x_k = \cos \Big(\dfrac{2k - 1}{2n} \pi \Big)(k = 1, \dots, n)\)</span></span></li>
+<li><span><span class="arithmatex">\(T_n(x)\)</span><span class="heti-spacing"> </span></span>有递推关系式：<span class="arithmatex">\(T_0(x) = 1, T_1(x) = x, T_{n+1}(x) = 2x T_n(x) - T_{n-1}(x)\)</span></li>
+<li><span><span class="arithmatex">\(T_n(x)\)</span><span class="heti-spacing"> </span></span>是一个最高阶系数为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(2^{n-1}\)</span><span class="heti-spacing"> </span></span>的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span><span class="heti-spacing"> </span></span>阶多项式</li>
+<li><span><span class="arithmatex">\(\{T_0(x), T_1(x), \dots\}\)</span><span class="heti-spacing"> </span></span>在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\([-1, 1]\)</span><span class="heti-spacing"> </span></span>上关于权重函数<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w(x) = \dfrac{1}{\sqrt{1 - x^2}}\)</span><span class="heti-spacing"> </span></span>上正交，也就是说<span><span class="heti-spacing"> </span><span class="arithmatex">\((T_n, T_m) = \int_{-1}^1 \dfrac{T_n(x) T_m(x)}{\sqrt{1-x^2}} dx = \begin{cases}0 &amp; n \ne m \\ \pi &amp; n = m = 0 \\ \dfrac{\pi}{2} &amp; n = m \ne 0\end{cases}\)</span></span></li>
+</ul>
+<p>回到之前提到的目标：</p>
+<ul>
+<li>目标<span><span class="heti-spacing"> </span>3.0</span>：找到多项式<span><span class="heti-spacing"> </span><span class="arithmatex">\(P_{n-1}(x)\)</span></span>，使得<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\|x^n - P_{n-1}(x)\|_{\infty}\)</span><span class="heti-spacing"> </span></span>在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\([-1, 1]\)</span><span class="heti-spacing"> </span></span>上最小。</li>
+<li>此时<span><span class="heti-spacing"> </span><span class="arithmatex">\(w_n(x) = x^n - P_{n-1}(x) = \dfrac{T_n(x)}{2^{n-1}}\)</span></span></li>
+<li>目标<span><span class="heti-spacing"> </span>2.1</span>：找到<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\{x_1, \dots, x_n\}\)</span><span class="heti-spacing"> </span></span>使得<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\|w_n\|_{\infty}\)</span><span class="heti-spacing"> </span></span>在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\([-1, 1]\)</span><span class="heti-spacing"> </span></span>最小化，其中<span><span class="heti-spacing"> </span><span class="arithmatex">\(w_n(x) = \prod\limits_{i=1}^n (x - x_i)\)</span></span></li>
+<li>此时<span><span class="heti-spacing"> </span><span class="arithmatex">\(\min\limits_{w_n \in \widetilde{\Pi}_n} \|w_n\|_{\infty} = \Big\|\dfrac{1}{2^{n-1}} T_n(x)\Big\|_{\infty} = \dfrac{1}{2^{n-1}}\)</span></span>。其中：<span><span class="arithmatex">\(\widetilde{\Pi}_n\)</span><span class="heti-spacing"> </span></span>是<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span><span class="heti-spacing"> </span></span>阶的<strong>首一多项式</strong>，<span><span class="arithmatex">\(\{x_1, \dots, x_n\}\)</span><span class="heti-spacing"> </span></span>是<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(T_n(x)\)</span><span class="heti-spacing"> </span></span>的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span><span class="heti-spacing"> </span></span>个根</li>
+<li>目标<span><span class="heti-spacing"> </span>2.0</span>：确定插值点<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\{x_0, \dots, x_n\}\)</span><span class="heti-spacing"> </span></span>使得<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(P_n(x)\)</span><span class="heti-spacing"> </span></span>最小化余项<span><span class="heti-spacing"> </span><span class="arithmatex">\(|P_n(x) - f(x)| = |R_n(x)| = \Big|\dfrac{f^{(n+1)}(\xi)}{(n+1)!} \prod\limits_{i=0}^n (x - x_i)\Big|\)</span></span></li>
+<li>取<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(T_{n+1}(x)\)</span><span class="heti-spacing"> </span></span>上的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n+1\)</span><span class="heti-spacing"> </span></span>个根作为插值点<span><span class="heti-spacing"> </span><span class="arithmatex">\(\{x_0, \dots, x_n\}\)</span></span>，然后关于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f(x)\)</span><span class="heti-spacing"> </span></span>的插值多项式<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(P_n(x)\)</span><span class="heti-spacing"> </span></span>假设绝对误差的最小上界为<span><span class="heti-spacing"> </span><span class="arithmatex">\(\dfrac{M}{2^n (n+1)!}\)</span></span></li>
+</ul>
+<p><strong>例子</strong></p>
+<p>问题：找到在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\([0, 1]\)</span><span class="heti-spacing"> </span></span>上关于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f(x) = e^x\)</span><span class="heti-spacing"> </span></span>的最佳近似多项式，使得绝对误差不超过<span><span class="heti-spacing"> </span><span class="arithmatex">\(0.5 \times 10^{-4}\)</span></span>。</p>
+<p>解答：</p>
+<ol>
+<li>确定<span><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span></span>：<ul>
+<li>改写变量<span><span class="heti-spacing"> </span><span class="arithmatex">\(x = \dfrac{a+b}{2} + \dfrac{b-a}{2} t = \dfrac{1}{2}(t+1)\)</span></span></li>
+<li><span class="arithmatex">\(|R_n| \le \dfrac{e}{(n+1)!} \times \dfrac{1}{2^{2n+1}} &lt; \dfrac{1}{2} \times 10^{-4}\)</span>，解得<span><span class="heti-spacing"> </span><span class="arithmatex">\(n = 4\)</span></span></li>
+</ul>
+</li>
+<li>找到<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(T_5(t)\)</span><span class="heti-spacing"> </span></span>的根：<span class="arithmatex">\(t_0 = \cos \dfrac{\pi}{10}, \cos \dfrac{3 \pi}{10}, \cos \dfrac{5 \pi}{10}, \cos \dfrac{7 \pi}{10}, \cos \dfrac{9 \pi}{10}\)</span></li>
+<li>对变量做点改变：<ul>
+<li><span class="arithmatex">\(x_0 = \dfrac{1}{2} \Big(\cos \dfrac{\pi}{10} + 1\Big) \approx 0.98\)</span></li>
+<li><span class="arithmatex">\(x_1 = \dfrac{1}{2} \Big(\cos \dfrac{3 \pi}{10} + 1\Big) \approx 0.79\)</span></li>
+<li><span class="arithmatex">\(x_2 = \dfrac{1}{2} \Big(\cos \dfrac{5 \pi}{10} + 1\Big) \approx 0.50\)</span></li>
+<li><span class="arithmatex">\(x_3 = \dfrac{1}{2} \Big(\cos \dfrac{7 \pi}{10} + 1\Big) \approx 0.21\)</span></li>
+<li><span class="arithmatex">\(x_4 = \dfrac{1}{2} \Big(\cos \dfrac{9 \pi}{10} + 1\Big) \approx 0.02\)</span></li>
+</ul>
+</li>
+<li>用插值点<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x_0, \dots, x_4\)</span><span class="heti-spacing"> </span></span>计算<span><span class="heti-spacing"> </span><span class="arithmatex">\(L_4(x)\)</span></span></li>
+</ol>
+<h3 id="economization-of-power-series">Economization of Power Series<a class="headerlink" href="#economization-of-power-series" title="Permanent link">⚓︎</a></h3>
+<p>目标：给定<span><span class="heti-spacing"> </span><span class="arithmatex">\(P_n(x) \approx f(x)\)</span></span>，幂级数<strong>经济化</strong><span>(economization)<span class="heti-spacing"> </span></span>的目标是在确保精度损失最小的情况下，降低多项式的次数。</p>
+<p>考虑一个任意的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span><span class="heti-spacing"> </span></span>阶多项式<span><span class="heti-spacing"> </span><span class="arithmatex">\(P_n(x) = a_n x^n + a_{n-1} x^{n-1} + \dots + a_1 x + a_0\)</span></span>，对应的多项式<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(P_{n-1}(x)\)</span><span class="heti-spacing"> </span></span>通过移除<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span><span class="heti-spacing"> </span></span>阶多项式<span><span class="heti-spacing"> </span><span class="arithmatex">\(Q_n(x)\)</span></span>（<span><span class="arithmatex">\(x^n\)</span><span class="heti-spacing"> </span></span>项的系数为<span><span class="heti-spacing"> </span><span class="arithmatex">\(a_n\)</span></span>）得到。那么<span><span class="heti-spacing"> </span><span class="arithmatex">\(\max\limits_{[-1, 1]} |f(x) - P_{n-1}(x)| \le \max\limits_{[-1, 1]} |f(x) - P_n(x)| + \max\limits_{[-1, 1]} |Q_n(x)|\)</span></span>，而<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(Q_n(x)\)</span><span class="heti-spacing"> </span></span>能够反映精度的损失。</p>
+<p>为了最小化精度损失，<span><span class="arithmatex">\(Q_n(x)\)</span><span class="heti-spacing"> </span></span>必须为<span><span class="heti-spacing"> </span><span class="arithmatex">\(a_n \times \dfrac{T_n(x)}{2^{n-1}}\)</span></span></p>
+<p><strong>注</strong></p>
+<ul>
+<li>对于一般区间<span><span class="heti-spacing"> </span><span class="arithmatex">\([a, b]\)</span></span>，需要改变变量。也就是说，令<span><span class="heti-spacing"> </span><span class="arithmatex">\(x = [(b - a) t + (a + b)] / 2\)</span></span>，然后寻找对于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f(t)\)</span><span class="heti-spacing"> </span></span>在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\([-1, 1]\)</span><span class="heti-spacing"> </span></span>上的（近似）多项式<span><span class="heti-spacing"> </span><span class="arithmatex">\(P_n(t)\)</span></span>，最终得到<span><span class="heti-spacing"> </span><span class="arithmatex">\(P_n(x)\)</span></span>。</li>
+<li>另一种方法是用<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(T_0(x), \dots, T_k(x)\)</span><span class="heti-spacing"> </span></span>的线性组合来表示每一项<span><span class="heti-spacing"> </span><span class="arithmatex">\(x^k\)</span></span>。比如，<span class="arithmatex">\(x = T_1(x)\)</span>，且<span><span class="heti-spacing"> </span><span class="arithmatex">\(x^3 = [T_3(x) + 3T_1(x)] / 4\)</span></span>。然后只要从原始多项式中移除切比雪夫函数就行了。</li>
+</ul>
+<p><strong>例子</strong></p>
+<p>题目：已知<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f(x) = e^x\)</span><span class="heti-spacing"> </span></span>在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\([-1, 1]\)</span><span class="heti-spacing"> </span></span>上的<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>阶泰勒多项式为<span><span class="heti-spacing"> </span><span class="arithmatex">\(P_4 = 1 + x + \dfrac{x^2}{2} + \dfrac{x^3}{6} + \dfrac{x^4}{24}\)</span></span>。它的截断误差的上界为<span><span class="heti-spacing"> </span><span class="arithmatex">\(|R_4(x)| \le \dfrac{e}{5!} |x^5| \approx 0.023\)</span></span>。请将这个近似多项式的次数降至<span><span class="heti-spacing"> </span>2</span>。</p>
+<p>解答</p>
+<div style="text-align: center">
+<img src="images/C8/6.png" width="80%/"/>
+</div>
+<h1 id="chap-4-numerical-differentiation-and-integration">Chap 4: Numerical Differentiation and Integration<a class="headerlink" href="#chap-4-numerical-differentiation-and-integration" title="Permanent link">⚓︎</a></h1>
+<h2 id="numerical-differentiation">Numerical Differentiation<a class="headerlink" href="#numerical-differentiation" title="Permanent link">⚓︎</a></h2>
+<p>目标：对于给定的<span><span class="heti-spacing"> </span><span class="arithmatex">\(x_0\)</span></span>，近似计算<span><span class="heti-spacing"> </span><span class="arithmatex">\(f'(x_0)\)</span></span>（即<strong>数值微分</strong>(numerical differentiation)）</p>
+<p>微分计算公式：<span class="arithmatex">\(f'(x_0) = \lim\limits_{h \rightarrow 0} \dfrac{f(x_0 + h) - f(x_0)}{h}\)</span></p>
+<p><img align="right" alt="" src="images/C4/2.png" width="25%"/>
+<img align="right" alt="" src="images/C4/1.png" width="25%"/></p>
+<ul>
+<li>前向：<span class="arithmatex">\(f'(x_0) \approx \dfrac{f(x_0 + h) - f(x_0)}{h}\)</span></li>
+<li>后向：<span class="arithmatex">\(f'(x_0) \approx \dfrac{f(x_0) - f(x_0 - h)}{h}\)</span></li>
+</ul>
+<p>现在我们用<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f(x)\)</span><span class="heti-spacing"> </span></span>的带有插值点<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x_0, x_0 + h\)</span><span class="heti-spacing"> </span></span>的拉格朗日多项式来近似表示<span><span class="heti-spacing"> </span><span class="arithmatex">\(f(x)\)</span></span>：</p>
+<div class="arithmatex">\[
+\begin{align}
+f(x) &amp; = \dfrac{f(x_0)(x - x_0 - h)}{x_0 - x_0 - h} + \dfrac{f(x_0 + h)(x - x_0)}{x_0 + h - x_0} \notag \\
+&amp; + \dfrac{(x - x_0)(x - x_0 - h)}{2} f''(\xi_x) \notag \\
+f'(x) &amp; = \dfrac{f(x_0 + h) - f(x_0)}{h} + \dfrac{2(x - x_0) - h}{2} f''(\xi_x) \notag \\
+&amp; + \dfrac{(x - x_0)(x - x_0 - h)}{2} \cdot \dfrac{d}{dx} [f''(\xi_x)] \notag
+\end{align}
+\]</div>
+<p>因此<span><span class="heti-spacing"> </span><span class="arithmatex">\(f'(x_0) = \dfrac{f(x_0 + h) - f(x_0)}{h} - \dfrac{h}{2}f''(\xi)\)</span></span></p>
+<hr/>
+<p>接下来用插值点为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\{x_0, x_1, \dots, x_n\}\)</span><span class="heti-spacing"> </span></span>的拉格朗日多项式来近似表示<span><span class="heti-spacing"> </span><span class="arithmatex">\(f(x)\)</span></span></p>
+<div class="arithmatex">\[
+\begin{align}
+f(x) &amp; = \sum\limits_{k=0}^n f(x_k) L_k(x) + \dfrac{(x - x_0) \dots (x - x_n)}{(n+1)!} f^{(n+1)}(\xi_x) \notag \\
+f'(x_j) &amp; = \sum\limits_{k=0}^n f(x_k)L_k'(x_j) + \dfrac{f^{(n+1)}(\xi_j)}{(n+1)!} \prod\limits_{\substack{k = 0 \\ k \ne j}}^n (x_j - x_k) \notag
+\end{align}
+\]</div>
+<p>上述导数公式被称为近似<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f'(x_j)\)</span><span class="heti-spacing"> </span></span>的 <strong><span>n+1<span class="heti-spacing"> </span></span>点公式</strong>((n+1)-point formula)。</p>
+<p><strong>注</strong></p>
+<ul>
+<li>一般来说，更多的评估点（即这里的插值点）会带来更大的近似精度</li>
+<li>但另一方面，随着评估点的增加，舍入误差也在变大，因此数值微分是<strong>不稳定的</strong>！</li>
+</ul>
+<p><strong>例子</strong></p>
+<p>例<span><span class="heti-spacing"> </span>1</span></p>
+<p>题目：给定三个点<span><span class="heti-spacing"> </span><span class="arithmatex">\(x_0, x_0 + h, x_0 + 2h\)</span></span>，请推到关于它们的三点公式，然后选出对于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f'(x)\)</span><span class="heti-spacing"> </span></span>而言最佳的三点公式。</p>
+<p>解答：</p>
+<p>根据前面的<span class="heti-skip"><span class="heti-spacing"> </span>n+1<span class="heti-spacing"> </span></span>点公式，不难得到：</p>
+<div class="arithmatex">\[
+\begin{align}
+f'(x_j) = &amp; f(x_0) \Big[ \dfrac{2x_j - x_1 - x_2}{(x_0 - x_1)(x_0 - x_2)} \Big] + f(x_1) \Big[ \dfrac{2x_j - x_0 - x_2}{(x_1 - x_0)(x_1 - x_2)} \Big] \notag \\
+&amp; + f(x_2) \Big[ \dfrac{2x_j - x_0 - x_1}{(x_2 - x_0)(x_2 - x_1)} \Big] + \dfrac{1}{6}f^{(3)}(\xi_j) \prod_{\substack{k = 0 \\ k \ne j}}^2(x_j - x_k)\ (j = 0, 1, 2) \notag
+\end{align}
+\]</div>
+<p>将<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x_0, x_1 = x_0 + h, x_2 = x_0 + 2h\)</span><span class="heti-spacing"> </span></span>代入上述公式，得到以下公式：</p>
+<div class="arithmatex">\[
+\begin{align}
+f'(x_0) &amp; = \dfrac{1}{h}\Big[-\dfrac{3}{2} f(x_0) + 2f(x_0 + h) - \dfrac{1}{2}f(x_0 + 2h) \Big] + \dfrac{h^2}{3} f^{(3)}(\xi_0) \notag \\
+f'(x_0 + h) &amp; = \dfrac{1}{h} \Big[ -\dfrac{1}{2} f(x_0) + \dfrac{1}{2} f(x_0 + 2h) \Big] - \dfrac{h^2}{6} f^{(3)}(\xi_1) \notag \\
+f'(x_0 + 2h) &amp; = \dfrac{1}{h} \Big[ \dfrac{1}{2} f(x_0) - 2f(x_0 + h) + \dfrac{3}{2} f(x_0 + 2h) \Big] + \dfrac{h^2}{3} f^{(3)}(\xi_2) \notag
+\end{align}
+\]</div>
+<p>方便起见，对于后两个公式，我们用<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x_0\)</span><span class="heti-spacing"> </span></span>替代原来的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x_0 + h\)</span><span class="heti-spacing"> </span></span>和<span><span class="heti-spacing"> </span><span class="arithmatex">\(x_0 + 2h\)</span></span>，得到：</p>
+<div class="arithmatex">\[
+\begin{align}
+f'(x_0) &amp; = \dfrac{1}{h}\Big[-\dfrac{3}{2} f(x_0) + 2f(x_0 + h) - \dfrac{1}{2}f(x_0 + 2h) \Big] + \dfrac{h^2}{3} f^{(3)}(\xi_0) \notag \\
+f'(x_0) &amp; = \dfrac{1}{h} \Big[ -\dfrac{1}{2} f(x_0 - h) + \dfrac{1}{2} f(x_0 + h) \Big] - \dfrac{h^2}{6} f^{(3)}(\xi_1) \notag \\
+f'(x_0 + 2h) &amp; = \dfrac{1}{h} \Big[ \dfrac{1}{2} f(x_0 - 2h) - 2f(x_0 - h) + \dfrac{3}{2} f(x_0) \Big] + \dfrac{h^2}{3} f^{(3)}(\xi_2) \notag
+\end{align}
+\]</div>
+<p>观察发现第<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>个和第<span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span>个式子唯一的区别仅在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(h\)</span><span class="heti-spacing"> </span></span>和<span><span class="heti-spacing"> </span><span class="arithmatex">\(-h\)</span></span>，所以实际上只剩下<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>个式子，它们就是我们要找的三点公式：</p>
+<div class="arithmatex">\[
+\begin{align}
+f'(x_0) &amp; = \dfrac{1}{h}\Big[-\dfrac{3}{2} f(x_0) + 2f(x_0 + h) - \dfrac{1}{2}f(x_0 + 2h) \Big] + \dfrac{h^2}{3} f^{(3)}(\xi_0)\ \xi_0 \in [x_0, x_0 + 2h] \notag \\
+f'(x_0) &amp; = \dfrac{1}{h} \Big[ -\dfrac{1}{2} f(x_0 - h) + \dfrac{1}{2} f(x_0 + h) \Big] - \dfrac{h^2}{6} f^{(3)}(\xi_1)\ xi_1 \in [x_0 - h, x_0 + h] \notag
+\end{align}
+\]</div>
+<div style="text-align: center">
+<img src="images/C4/3.png" width="30%/"/>
+</div>
+<p>例<span><span class="heti-spacing"> </span>2</span></p>
+<p>题目：寻找近似计算<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f''(x_0)\)</span><span class="heti-spacing"> </span></span>的方式。</p>
+<p>解答</p>
+<p>考虑在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x_0\)</span><span class="heti-spacing"> </span></span>处的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f(x_0 + h), f(x_0 - h)\)</span><span class="heti-spacing"> </span></span>的泰勒展开式：</p>
+<div class="arithmatex">\[
+\begin{align}
+f(x_0 + h) &amp; = f(x_0) + f'(x_0) h + \dfrac{1}{2}f''(x_0)h^2 + \dfrac{1}{6} f'''(x_0) h^3 + \dfrac{1}{24} f^{(4)} (\xi_1) h^4 \notag \\
+f(x_0 - h) &amp; = f(x_0) - f'(x_0) h + \dfrac{1}{2}f''(x_0)h^2 - \dfrac{1}{6} f'''(x_0) h^3 + \dfrac{1}{24} f^{(4)} (\xi_{-1}) h^4 \notag
+\end{align}
+\]</div>
+<p>因此：<span class="arithmatex">\(f''(x_0) = \dfrac{1}{h^2} [f(x_0 - h) - 2f(x_0) + f(x_0 + h)] - \dfrac{h^2}{12} f^{(4)} (\xi)\)</span></p>
+<h2 id="elements-of-numerical-integration">Elements of Numerical Integration<a class="headerlink" href="#elements-of-numerical-integration" title="Permanent link">⚓︎</a></h2>
+<p>目标：近似计算<span><span class="heti-spacing"> </span><span class="arithmatex">\(I = \int_a^b f(x) dx\)</span></span>（即<strong>数值求积</strong>(numerical quadratrue)）</p>
+<p>思路：使用<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f(x)\)</span><span class="heti-spacing"> </span></span>的<strong>拉格朗日插值多项式</strong>——从区间<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\([a, b]\)</span><span class="heti-spacing"> </span></span>上选择一组不同的点<span><span class="heti-spacing"> </span><span class="arithmatex">\(a \le x_0 &lt; x_1 \dots &lt; x_n \le b\)</span></span>。拉格朗日多项式为<span><span class="heti-spacing"> </span><span class="arithmatex">\(P_n(x) = \sum\limits_{k=0}^n f(x_k) L_k(x)\)</span></span>，因此：</p>
+<div class="arithmatex">\[
+\int_a^b f(x) dx \approx \sum\limits_{k=0}^n f(x_k) \int_a^b L_k(x) dx
+\]</div>
+<p>令<span><span class="heti-spacing"> </span><span class="arithmatex">\(A_k = \int_a^b L_k(x) dx = \int_a^b \prod\limits_{j \ne k} \dfrac{x - x_j}{x_k - x_j} dx\)</span></span></p>
+<p>误差<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(R[f]\)</span><span class="heti-spacing"> </span></span>为：</p>
+<div class="arithmatex">\[
+\begin{align}
+&amp; R[f] \notag \\
+= &amp; \int_a^b f(x) dx - \sum\limits_{k=0}^n A_kf(x_k) \notag \\
+= &amp; \int_a^b [f(x) - P_n(x)] dx = \int_a^b R_n(x) dx \notag \\
+= &amp; \int_a^b \dfrac{f^{(n+1)}(\xi_x)}{(n+1)!} \prod\limits_{k=0}^n(x - x_k)dx \notag
+\end{align}
+\]</div>
+<p><strong>定义</strong> ：求积公式的<strong>精度</strong><span>(degree of accuracy/precision)<span class="heti-spacing"> </span></span>为最大的正整数<span><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span></span>，使得公式对于每个<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x^k(k = 0, 1, \dots, n)\)</span><span class="heti-spacing"> </span></span>都是精确的。</p>
+<p><strong>例子</strong></p>
+<p>题目</p>
+<p>考虑在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\([a, b]\)</span><span class="heti-spacing"> </span></span>上的线性插值，我们有<span><span class="heti-spacing"> </span><span class="arithmatex">\(P_1(x) = \dfrac{x - b}{a - b}f(a) + \dfrac{x - a}{b - a}f(b)\)</span></span>。可以得到：</p>
+<ul>
+<li><span class="arithmatex">\(A_1 = A_2 = \dfrac{b - a}{2}\)</span></li>
+<li><span class="arithmatex">\(\int_a^b f(x) dx \approx \dfrac{b - a}{2}[f(a) + f(b)]\)</span></li>
+</ul>
+<p>请计算上述公式的精度。</p>
+<p>解答</p>
+<p>考虑<span><span class="heti-spacing"> </span><span class="arithmatex">\(x^k(k = 0, 1, \dots)\)</span></span>：</p>
+<ul>
+<li><span class="arithmatex">\(x^0\)</span>：<span class="arithmatex">\(\int_a^b 1dx = b - a = \dfrac{b - a}{2}[1 + 1]\)</span></li>
+<li><span class="arithmatex">\(x^1\)</span>：<span class="arithmatex">\(\int_a^b xdx = \dfrac{b^2 - a^2}{2} = \dfrac{b - a}{2}[a + b]\)</span></li>
+<li><span class="arithmatex">\(x^2\)</span>：<span class="arithmatex">\(\int_a^b x^2dx = \dfrac{b^3 - a^3}{3} \ne \dfrac{b - a}{2}[a^2 + b^2]\)</span></li>
+</ul>
+<div style="text-align: center">
+<img src="images/C4/4.png" width="40%/"/>
+</div>
+<p>因此精度阶数<span><span class="heti-spacing"> </span>= 1</span></p>
+<hr/>
+<p>对于等间距的节点<span><span class="heti-spacing"> </span><span class="arithmatex">\(x_i = a + ih, h = \dfrac{b - a}{n}, i = 0, 1, \dots, n\)</span></span></p>
+<div class="arithmatex">\[
+\begin{align}
+A_i &amp; = \int_{x_0}^{x_n} \prod\limits_{j \ne i} \dfrac{x - x_j}{x_i - x_j} dx \notag \\
+&amp; = \int_0^n \prod\limits_{i \ne j} \dfrac{(t - j)h}{(i - j)h} \times h dt = \dfrac{(b - a)\textcolor{green}{(-1)^{n-i}}}{\textcolor{green}{ni!(n - i)!}} \textcolor{green}{\int_0^n \prod\limits_{i \ne j} (t - j) dt} \notag 
+\end{align}
+\]</div>
+<p>其中标绿色的部分（<span class="arithmatex">\(\dfrac{(-1)^{n-i}}{ni!(n - i)!} \int_0^n \prod\limits_{i \ne j} (t - j) dt\)</span>）被称为<strong>科茨系数</strong>(Cotes cofficient)，记作<span><span class="heti-spacing"> </span><span class="arithmatex">\(C_i^{(n)}\)</span></span></p>
+<p><strong>注</strong> ：可以看到，科茨系数不取决于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f(x)\)</span><span class="heti-spacing"> </span></span>或<span><span class="heti-spacing"> </span><span class="arithmatex">\([a, b]\)</span></span>，而仅由<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n, i\)</span><span class="heti-spacing"> </span></span>决定。因此我们可以从一张表中找出这些系数。上述公式称为<strong>牛顿<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>科茨公式</strong>(Newton-Cotes formula)</p>
+<ul>
+<li><span class="arithmatex">\(n = 1\)</span></li>
+<li><span class="arithmatex">\(C_0^{(1)} = C_1^{(1)} = \dfrac{1}{2}\)</span></li>
+<li><span class="arithmatex">\(\int_a^b f(x) dx \approx \dfrac{b - a}{2}[f(a) + f(b)]\)</span>（称为<strong>梯形法则</strong>(trapezoidal rule)）</li>
+<li><span class="arithmatex">\(R[f] = \int_a^b \dfrac{f''(\xi_x)}{2!}(x-a)(x-b) dx = -\dfrac{1}{12}h^3f''(\xi)\)</span></li>
+<li><span class="arithmatex">\(\xi \in [a, b], h = \dfrac{b - a}{1}\)</span></li>
+<li>精度<span><span class="heti-spacing"> </span>= 1</span></li>
+<li><span class="arithmatex">\(n = 2\)</span></li>
+<li><span class="arithmatex">\(C_0^{(2)} = \dfrac{1}{6}, C_1^{(2)} = \dfrac{2}{3}, C_2^{(2)} = \dfrac{1}{6}\)</span></li>
+<li><span class="arithmatex">\(\int_a^b f(x) dx \approx \dfrac{b - a}{6}[f(a) + 4f(\dfrac{a+b}{2}) + f(b)]\)</span>（称为<strong>辛普森法则</strong>(Simpson's rule)）</li>
+<li><span class="arithmatex">\(R[f] = -\dfrac{1}{90} h^5 f^{(4)}(\xi)\)</span></li>
+<li><span class="arithmatex">\(\xi \in (a, b), h = \dfrac{b - a}{2}\)</span></li>
+<li>精度<span><span class="heti-spacing"> </span>= 3</span></li>
+<li><span class="arithmatex">\(n = 3\)</span>：<strong>辛普森<span class="heti-skip"><span class="heti-spacing"> </span>3/8<span class="heti-spacing"> </span></span>法则</strong>，精度<span><span class="heti-spacing"> </span>= 3</span>，<span class="arithmatex">\(R[f] = -\dfrac{3}{80}h^5 f^{(5)}(\xi)\)</span></li>
+<li><span class="arithmatex">\(n = 4\)</span>：<strong>科茨法则</strong>(Cotes' Rule)，精度<span><span class="heti-spacing"> </span>= 5</span>，3，<span class="arithmatex">\(R[f] = -\dfrac{8}{945}h^7 f^{(6)}(\xi)\)</span></li>
+</ul>
+<p><strong>定理</strong></p>
+<p>对于使用<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n+1\)</span><span class="heti-spacing"> </span></span>个点的牛顿<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>科茨公式，<span class="arithmatex">\(\exists \xi \in (a, b)\)</span>，使得：</p>
+<div class="arithmatex">\[
+\int_a^b f(x) dx = \sum\limits_{k=0}^n A_k f(x_k) + \dfrac{h^{n+3}f^{(n+2)}(\xi)}{(n+2)!} \int_0^n t^2(t - 1) \dots (t - n) dt
+\]</div>
+<ul>
+<li>如果<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span><span class="heti-spacing"> </span></span>为<strong>偶数</strong>，那么<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f \in C^{n+2}[a, b]\)</span><span class="heti-spacing"> </span></span>且<span><span class="heti-spacing"> </span><span class="arithmatex">\(\int_a^b f(x) dx = \sum\limits_{k=0}^n A_k f(x_k) + \dfrac{h^{n+2}f^{(n+1)}(\xi)}{(n+1)!} \int_0^n t(t - 1) \dots (t - n) dt\)</span></span></li>
+<li>如果<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span><span class="heti-spacing"> </span></span>为<strong>奇数</strong>，那么<span><span class="heti-spacing"> </span><span class="arithmatex">\(f \in C^{n+1}[a, b]\)</span></span></li>
+</ul>
+<h2 id="compotsite-numerical-integration">Compotsite Numerical Integration<a class="headerlink" href="#compotsite-numerical-integration" title="Permanent link">⚓︎</a></h2>
+<p>由于高阶多项式容易发生振荡，所以我们用<strong>分段</strong><span>(piecewise)<span class="heti-spacing"> </span></span>插值的方式来近似<span><span class="heti-spacing"> </span><span class="arithmatex">\(f(x)\)</span></span>。这里用到了低阶的牛顿<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>科茨公式。</p>
+<h3 id="composite-trapezoidal-rule">Composite Trapezoidal Rule<a class="headerlink" href="#composite-trapezoidal-rule" title="Permanent link">⚓︎</a></h3>
+<p><strong>复合梯形法则</strong><span>(composite trapezoidal rule)<span class="heti-spacing"> </span></span>涉及到的变量有：<span class="arithmatex">\(h = \dfrac{b-a}{n}, x_k = a + kh\ (k=0, \dots, n)\)</span>。</p>
+<p>我们将梯形公式作用在每个区间<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\([x_{k-1}, x_k]\)</span><span class="heti-spacing"> </span></span>上，即：</p>
+<div class="arithmatex">\[
+\int_{x_{k-1}}^{x_k} f(x)dx \approx \dfrac{x_k - x_{k-1}}{2} [f(x_{k-1}) + f(x_k)], k = 1, \dots, n \Rightarrow \\
+\int_a^b f(x)dx \approx \sum\limits_{k=1}^n \dfrac{h}{2}[f(x_{k-1}) + f(x_k)] = \dfrac{h}{2}\Big[f(a) + 2\sum\limits_{k=1}^{n-1} f(x_k) + f(b) \Big] = \textcolor{cornflowerblue}{T_n} \\
+\begin{align}
+R[f] &amp; = \sum\limits_{k=1}^n \Big[-\dfrac{h^3}{12} f''(\xi_k)\Big] = -\dfrac{h^2}{12}(b-a) \dfrac{\sum\limits_{k=1}^n f''(\xi_k)}{n} \notag \\
+&amp; = -\dfrac{h^2}{12}(b-a) f''(\xi), \xi \in (a, b) \notag
+\end{align}
+\]</div>
+<blockquote>
+<p><span><span class="arithmatex">\(R[f]\)</span><span class="heti-spacing"> </span></span>的公式涉及到<strong>中值定理</strong>(MVT)。</p>
+</blockquote>
+<h3 id="composite-simpsons-rule">Composite Simpson's Rule<a class="headerlink" href="#composite-simpsons-rule" title="Permanent link">⚓︎</a></h3>
+<p><strong>复合辛普森法则</strong><span>(composite Simpson rule)<span class="heti-spacing"> </span></span>涉及到的变量和复合梯形公式一致：<span class="arithmatex">\(h = \dfrac{b-a}{n}, x_k = a + kh\ (k=0, \dots, n)\)</span>。</p>
+<p>我们将辛普森公式作用在每个区间<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\([x_{k-1}, x_k]\)</span><span class="heti-spacing"> </span></span>上，即：</p>
+<div class="arithmatex">\[
+\int_{x_{k-1}}^{x_k} f(x)dx \approx \dfrac{h}{6} [f(x_{k}) + 4 f(x_{k+\frac{1}{2}}) + f(x_{k+1})], k = 1, \dots, n \Rightarrow \\
+\int_a^b f(x)dx \approx \dfrac{h}{6}\Big[f(x_a) + 4\sum\limits_{k=0}^{n-1}f(x_{k+\frac{1}{2}}) + 2\sum\limits_{k=0}^{n-2}f(x_{k+1}) + f(x_b)\Big] = \textcolor{cornflowerblue}{S_n} \\
+R[f] = -\dfrac{b-a}{180} \Big(\dfrac{h}{2}\Big)^4 f^{(4)}(\xi)
+\]</div>
+<p><strong>注</strong></p>
+<p>为了简化记号，我们令<span><span class="heti-spacing"> </span><span class="arithmatex">\(n' = 2n\)</span></span>，那么<span><span class="heti-spacing"> </span><span class="arithmatex">\(h' = \dfrac{b-a}{n'} = \dfrac{h}{2}, x_k = a+kh'\)</span></span>，所以：</p>
+<div class="arithmatex">\[
+S_n = \dfrac{h'}{3}[f(a) + 4 \sum\limits_{odd\ k} f(x_k) + 2 \sum\limits_{even\ k} f(x_k) + f(b)]
+\]</div>
+<hr/>
+<p>上述的复合方法都是<strong>稳定的</strong>。来看下面这个例子：</p>
+<p><strong>例子</strong></p>
+<p>考虑在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\([a, b]\)</span><span class="heti-spacing"> </span></span>上有<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span><span class="heti-spacing"> </span></span>个子区间的辛普森法则。假设<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f(x_i)\)</span><span class="heti-spacing"> </span></span>由<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f^*(x_i)\)</span><span class="heti-spacing"> </span></span>近似，满足<span><span class="heti-spacing"> </span><span class="arithmatex">\(f(x_i) = f^*(x_i) + \varepsilon_i\ (i = 0, \dots, n)\)</span></span>，那么累积误差为：</p>
+<div class="arithmatex">\[
+e(h) = \Big|\dfrac{h}{3}[\varepsilon_0 + 4 \sum\limits_{odd\ k} \varepsilon_k + 2 \sum\limits_{even\ k} \varepsilon_k + \varepsilon_n]\Big|
+\]</div>
+<p>若<span><span class="heti-spacing"> </span><span class="arithmatex">\(|\varepsilon_i| &lt; \varepsilon\ (i = 0, \dots, n)\)</span></span>，那么：</p>
+<div class="arithmatex">\[
+e(h) &lt; \dfrac{h}{3} [\varepsilon + 4(n/2)\varepsilon + 2(n/2-1)\varepsilon + \varepsilon] = nh\varepsilon = (b-a)\varepsilon
+\]</div>
+<p>可以看到，当我们修正分区，以确保准确性时，增加的计算量<strong>不会</strong>带来更多的舍入误差。</p>
+<p><strong>讨论</strong></p>
+<p>题目：使用<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n=8\)</span><span class="heti-spacing"> </span></span>梯形法则和辛普森法则来近似<span><span class="heti-spacing"> </span><span class="arithmatex">\(\pi = \int_0^1 \dfrac{4}{1+x^2} dx\)</span></span>。</p>
+<p>答案</p>
+<div class="arithmatex">\[
+\begin{align}
+T_8 &amp; = \dfrac{1}{16}\Big[f(0) + 2\sum\limits_{k=1}^7f(x_k) + f(1)\Big] \quad \text{where } x_k = \dfrac{k}{8} \notag \\
+&amp; = \textcolor{green}{3.1}\textcolor{red}{383988494} \notag
+\end{align}
+\]</div>
+<div class="arithmatex">\[
+\begin{align}
+S_4 &amp; = \dfrac{1}{24}\Big[f(0) + 4\sum\limits_{odd}f(x_k)+ 2\sum\limits_{even}f(x_k) + f(1)\Big] \quad \text{where } x_k = \dfrac{k}{8} \notag \\
+&amp; = \textcolor{green}{3.141592}\textcolor{red}{502} \notag
+\end{align}
+\]</div>
+<p>在编程的时候，我们通常会将一个子区间划分为两个均等宽度的更小的子区间。也就是说，令<span><span class="heti-spacing"> </span><span class="arithmatex">\(n = 2^k\ (k = 0, 1, \dots)\)</span></span></p>
+<p>当<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(k=9\)</span><span class="heti-spacing"> </span></span>时，<span class="arithmatex">\(T_{512} = \textcolor{green}{3.141592}\textcolor{red}{02}\)</span></p>
+<p><span class="arithmatex">\(\dfrac{4}{3}T_8 - \dfrac{1}{3}T_4 = \textcolor{green}{3.141592}\textcolor{red}{502} = S_4\)</span></p>
+<h2 id="romberg-integration">Romberg Integration<a class="headerlink" href="#romberg-integration" title="Permanent link">⚓︎</a></h2>
+<p>回顾一下梯形法则的误差公式：<span class="arithmatex">\(R_n[f] = -\dfrac{h^2}{12}(b-a)f''(\xi)\)</span>。当我们将每个子区间的长度缩减至原来的一半时，</p>
+<div class="arithmatex">\[
+R_{2n}[f] = -\Big(\dfrac{h}{2}\Big)^2 \dfrac{1}{12}(b-a)f''(\xi') \approx \dfrac{1}{4}R_n[f]
+\]</div>
+<p>从而得到：<span class="arithmatex">\(\dfrac{I - T_{2n}}{I - T_n} \approx \dfrac{1}{4}\)</span>，解得<span><span class="heti-spacing"> </span><span class="arithmatex">\(I \approx \dfrac{4T_{2n} - T_n}{4 - 1} = \dfrac{4}{3}T_{2n} - \dfrac{1}{3}T_n = S_n\)</span></span></p>
+<p>一般情况下：</p>
+<ul>
+<li><span class="arithmatex">\(\dfrac{4T_{2n} - T_n}{4 - 1} = S_n\)</span></li>
+<li><span class="arithmatex">\(\dfrac{4^2S_{2n} - S_n}{4^2 - 1} = C_n\)</span></li>
+<li><span class="arithmatex">\(\dfrac{4^3C_{2n} - C_n}{4^3 - 1} = R_n\)</span> -&gt; <strong><span>Romberg<span class="heti-spacing"> </span></span>序列</strong>(Romberg sequence)</li>
+</ul>
+<p><strong><span>Romberg<span class="heti-spacing"> </span></span>法</strong>如下所示：</p>
+<div style="text-align: center">
+<img src="images/C4/5.png" width="80%/"/>
+</div>
+<p>可以看到，<span>Romberg<span class="heti-spacing"> </span></span>法通过不断将积分区间对分（涉及到接下来介绍的<a href="#richardsons-extrapolation"><span class="heti-skip"><span class="heti-spacing"> </span>Richardson<span class="heti-spacing"> </span></span>外推法</a><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，在这些子区间上作用<a href="#composite-trapezoidal-rule">（复合）梯形法则</a>，从而提高积分精度。</p>
+<p>其递推公式为：</p>
+<div class="arithmatex">\[
+R_{k, j} = R_{k, j-1} + \dfrac{1}{4^{j-1} - 1}(R_{k, j-1} - R_{k-1, j-1}) \quad k = j, j+1, \dots
+\]</div>
+<p>对应的表格为：</p>
+<div class="arithmatex">\[
+\begin{matrix}
+h &amp; R_{1, 1} \\
+\frac{h}{2} &amp; R_{2, 1} &amp; R_{2, 2} \\
+\frac{h}{4} &amp; R_{3, 1} &amp; R_{3, 2} &amp; R_{3, 3} \\
+\vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \ddots \\
+\frac{h}{2^{n-1}} &amp; R_{n, 1} &amp; R_{n, 2} &amp; R_{n, 3} &amp; \dots &amp; R_{n, n}
+\end{matrix}
+\]</div>
+<p><strong>算法：Romberg</strong></p>
+<p>近似积分<span><span class="heti-spacing"> </span><span class="arithmatex">\(I = \int_a^b f(x) dx\)</span></span>，选择整数<span><span class="heti-spacing"> </span><span class="arithmatex">\(n &gt; 0\)</span></span></p>
+<ul>
+<li>输入：端点<span><span class="heti-spacing"> </span><span class="arithmatex">\(a, b\)</span></span>；整数<span><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span></span></li>
+<li>输出：数组<span><span class="heti-spacing"> </span><span class="arithmatex">\(R\)</span></span>（按行计算<span><span class="heti-spacing"> </span><span class="arithmatex">\(R\)</span></span>；只保留<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>行（节省空间<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>）</li>
+</ul>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-20-1"><a href="#__codelineno-20-1" id="__codelineno-20-1" name="__codelineno-20-1"></a><span class="n">Step</span><span class="w"> </span><span class="mi">1</span><span class="w">  </span><span class="n">Set</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">a</span><span class="p">;</span>
+</span><span id="__span-20-2"><a href="#__codelineno-20-2" id="__codelineno-20-2" name="__codelineno-20-2"></a><span class="w">            </span><span class="n">R</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">f</span><span class="p">(</span><span class="n">b</span><span class="p">));</span>
+</span><span id="__span-20-3"><a href="#__codelineno-20-3" id="__codelineno-20-3" name="__codelineno-20-3"></a><span class="n">Step</span><span class="w"> </span><span class="mi">2</span><span class="w">  </span><span class="n">Output</span><span class="p">(</span><span class="n">R</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]);</span>
+</span><span id="__span-20-4"><a href="#__codelineno-20-4" id="__codelineno-20-4" name="__codelineno-20-4"></a><span class="n">Step</span><span class="w"> </span><span class="mi">3</span><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="p">...,</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="n">steps</span><span class="w"> </span><span class="mi">4-8</span><span class="o">:</span>
+</span><span id="__span-20-5"><a href="#__codelineno-20-5" id="__codelineno-20-5" name="__codelineno-20-5"></a><span class="w">    </span><span class="c1">// approximation from Trapezoidal method</span>
+</span><span id="__span-20-6"><a href="#__codelineno-20-6" id="__codelineno-20-6" name="__codelineno-20-6"></a><span class="w">    </span><span class="n">Step</span><span class="w"> </span><span class="mi">4</span><span class="w">  </span><span class="n">Set</span><span class="w"> </span><span class="n">R</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">[</span><span class="n">R</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">sum</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="mi">-2</span><span class="p">),</span><span class="w"> </span><span class="n">f</span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">k</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">0.5</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">h</span><span class="p">))];</span>
+</span><span id="__span-20-7"><a href="#__codelineno-20-7" id="__codelineno-20-7" name="__codelineno-20-7"></a><span class="w">    </span><span class="n">Step</span><span class="w"> </span><span class="mi">5</span><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="p">...,</span><span class="w"> </span><span class="n">i</span><span class="o">:</span>
+</span><span id="__span-20-8"><a href="#__codelineno-20-8" id="__codelineno-20-8" name="__codelineno-20-8"></a><span class="w">                </span><span class="c1">// extrapolation</span>
+</span><span id="__span-20-9"><a href="#__codelineno-20-9" id="__codelineno-20-9" name="__codelineno-20-9"></a><span class="w">                </span><span class="n">set</span><span class="w"> </span><span class="n">R</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">R</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="n">j</span><span class="mi">-1</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">R</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="n">j</span><span class="mi">-1</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">R</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="mi">-1</span><span class="p">])</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="n">pow</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="mi">-1</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+</span><span id="__span-20-10"><a href="#__codelineno-20-10" id="__codelineno-20-10" name="__codelineno-20-10"></a><span class="w">    </span><span class="n">Step</span><span class="w"> </span><span class="mi">6</span><span class="w">  </span><span class="n">Output</span><span class="p">(</span><span class="n">R</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="p">...,</span><span class="w"> </span><span class="n">i</span><span class="p">);</span>
+</span><span id="__span-20-11"><a href="#__codelineno-20-11" id="__codelineno-20-11" name="__codelineno-20-11"></a><span class="w">    </span><span class="n">Step</span><span class="w"> </span><span class="mi">7</span><span class="w">  </span><span class="n">Set</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+</span><span id="__span-20-12"><a href="#__codelineno-20-12" id="__codelineno-20-12" name="__codelineno-20-12"></a><span class="w">    </span><span class="n">Step</span><span class="w"> </span><span class="mi">8</span><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="p">...,</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="n">set</span><span class="w"> </span><span class="n">R</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">R</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="n">j</span><span class="p">];</span><span class="w">    </span><span class="c1">// update row 1 of R</span>
+</span><span id="__span-20-13"><a href="#__codelineno-20-13" id="__codelineno-20-13" name="__codelineno-20-13"></a><span class="n">Step</span><span class="w"> </span><span class="mi">9</span><span class="w">  </span><span class="n">STOP</span><span class="p">.</span>
+</span></code></pre></div>
+<h2 id="richardsons-extrapolation">Richardson's Extrapolation<a class="headerlink" href="#richardsons-extrapolation" title="Permanent link">⚓︎</a></h2>
+<p><strong><span>Richardson<span class="heti-spacing"> </span></span>外推法</strong><span>(Richardson's extrapolation)<span class="heti-spacing"> </span></span>实现的目标是：使用低阶公式获取高精度的结果。</p>
+<p>它的核心思想是：利用同一数值方法在不同步长下计算出的结果，通过线性组合来消除或减小近似解中的主要误差项，从而得到一个更高精度的估计值。</p>
+<blockquote>
+<p>这和求解一元方程的<a href="2.html#aitkens--method"><span class="heti-skip"><span class="heti-spacing"> </span>Aitken's <span class="arithmatex">\(\Delta^2\)</span><span class="heti-spacing"> </span></span>法</a>在思想上有共通之处。</p>
+</blockquote>
+<p>假设对于某些<span><span class="heti-spacing"> </span><span class="arithmatex">\(h \ne 0\)</span></span>，我们有公式<span><span class="heti-spacing"> </span><span class="arithmatex">\(T_0(h)\)</span></span>，用于近似未知量<span><span class="heti-spacing"> </span><span class="arithmatex">\(I\)</span></span>，并且其<strong>截断误差</strong>的形式为：</p>
+<div class="arithmatex">\[
+T_0(h) - I = \alpha_1 h + \alpha_2 h^2 + \alpha_3 h^3 + \dots
+\]</div>
+<p>用<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(h\)</span><span class="heti-spacing"> </span></span>一半的值替代自身，我们有：</p>
+<div class="arithmatex">\[
+T_0(h/2) - I = \alpha_1 (h/2) + \alpha_2 (h/2)^2 + \alpha_3 (h/2)^3 + \dots
+\]</div>
+<p>结合上述两个公式，我们就可以将精度从<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(O(h)\)</span><span class="heti-spacing"> </span></span>提升至<span><span class="heti-spacing"> </span><span class="arithmatex">\(O(h^2)\)</span></span>：</p>
+<div class="arithmatex">\[
+\dfrac{2T_0(\frac{h}{2}) - T_0(h)}{2 - 1} - I = -\dfrac{1}{2}\alpha_2 h^2 - \dfrac{3}{4} \alpha_3 h^3 - \dots
+\]</div>
+<p>令<span><span class="heti-spacing"> </span><span class="arithmatex">\(T_1 = \dfrac{2T_0(\frac{h}{2}) - T_0(h)}{2 - 1} = I + \beta_1 h^2 + \beta_2 h^3 + \dots\)</span></span>。类似地，我们可以将精度提升至<span><span class="heti-spacing"> </span><span class="arithmatex">\(O(h^3)\)</span></span>：</p>
+<div class="arithmatex">\[
+T_2 = \dfrac{2^2T_1(\frac{h}{2}) - T_1(h)}{2^2 - 1} = I + \gamma_1 h^3 + \gamma_2 h^4 + \dots
+\]</div>
+<p>以此类推，我们可以将精度可以提升到<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(m+1\)</span><span class="heti-spacing"> </span></span>阶：</p>
+<div class="arithmatex">\[
+T_m = \dfrac{2^mT_{m-1}(\frac{h}{2}) - T_{m-1}(h)}{2^m - 1} = I + \delta_1 h^{m+1} + \delta_2 h^{m+2} + \dots
+\]</div>
+<p><strong>例子</strong></p>
+<p>题目</p>
+<div style="text-align: center">
+<img src="images/C4/7.png" width="80%/"/>
+</div>
+<p>解答</p>
+<p>由<span class="heti-skip"><span class="heti-spacing"> </span>Gemini 2.5 pro<span class="heti-spacing"> </span></span>作答，且通过笔者验证。</p>
+<ol>
+<li>
+<p>建立误差方程：</p>
+<p>令<span><span class="heti-spacing"> </span><span class="arithmatex">\(N(A) = \frac{f(x_0+A)-2f(x_0)+f(x_0-A)}{A^2}\)</span></span>。我们可以将真实值表示为：</p>
+<div class="arithmatex">\[f''(x_0) = N(A) + K_1A^2 + K_2A^4 + \dots\]</div>
+<p>其中<span><span class="heti-spacing"> </span><span class="arithmatex">\(K_1 = -\frac{f^{(4)}(x_0)}{12}\)</span></span>。</p>
+</li>
+<li>
+<p>使用两种步长：</p>
+<p>我们使用步长<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(A\)</span><span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(A/2\)</span><span class="heti-spacing"> </span></span>来计算近似值：</p>
+<ul>
+<li><strong>步长<span><span class="heti-spacing"> </span>A</span></strong>: <span class="arithmatex">\(f''(x_0) = N(A) + K_1A^2 + K_2A^4 + \dots\)</span>（式<span><span class="heti-spacing"> </span>1</span>）</li>
+<li><strong>步长<span><span class="heti-spacing"> </span>A/2</span></strong>: <span class="arithmatex">\(f''(x_0) = N(A/2) + K_1(A/2)^2 + K_2(A/2)^4 + \dots = N(A/2) + \frac{K_1}{4}A^2 + \frac{K_2}{16}A^4 + \dots\)</span>（式<span><span class="heti-spacing"> </span>2</span>）</li>
+</ul>
+</li>
+<li>
+<p>消除<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(O(A^2)\)</span><span class="heti-spacing"> </span></span>误差项：</p>
+<p>为了消除<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(K_1A^2\)</span><span class="heti-spacing"> </span></span>项，我们将（式<span><span class="heti-spacing"> </span>2</span>）乘以<span><span class="heti-spacing"> </span>4</span>，然后减去（式<span><span class="heti-spacing"> </span>1</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
+<ul>
+<li><span class="arithmatex">\(4f''(x_0) = 4N(A/2) + K_1A^2 + \frac{K_2}{4}A^4 + \dots\)</span></li>
+<li><span class="arithmatex">\(f''(x_0) = N(A) + K_1A^2 + K_2A^4 + \dots\)</span></li>
+</ul>
+<p>两式相减得到：</p>
+<p><span class="arithmatex">\(3f''(x_0) = 4N(A/2) - N(A) - \frac{3K_2}{4}A^4 + \dots\)</span></p>
+</li>
+<li>
+<p>导出新公式：</p>
+<p>整理上式，我们得到一个新的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f''(x_0)\)</span><span class="heti-spacing"> </span></span>的近似公式，其误差项为<span><span class="heti-spacing"> </span><span class="arithmatex">\(O(A^4)\)</span></span>：</p>
+<div class="arithmatex">\[f''(x_0) \approx \frac{4N(A/2) - N(A)}{3}\]</div>
+<p>这个公式的误差为<span><span class="heti-spacing"> </span><span class="arithmatex">\(O(A^4)\)</span></span>，比原来的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(O(A^2)\)</span><span class="heti-spacing"> </span></span>精度更高。</p>
+</li>
+</ol>
+<h2 id="adapative-quadrature-methods">Adapative Quadrature Methods<a class="headerlink" href="#adapative-quadrature-methods" title="Permanent link">⚓︎</a></h2>
+<p>目标：预测函数变化量，根据变化的需求调整步幅。</p>
+<p>前面介绍的复合积分方法的缺点是：对所有区间递归划分子区间，这样计算量太大，而且还有产生了许多不必要的计算，这很浪费。因此，我们采用一种仅对具有<strong>较大误差</strong><span>(large error)<span class="heti-spacing"> </span></span>的区间进行划分的方法，避免额外的计算。我们称这样的方法为<strong>自适应求积方法</strong>(adapative quadrature mehtods)。</p>
+<p>那么什么算“较大误差”呢？一种简单的确定策略是使用<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\int_a^b f(x) dx\)</span><span class="heti-spacing"> </span></span>的总误差<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\varepsilon\)</span><span class="heti-spacing"> </span></span>来确定边界：在长度为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(h\)</span><span class="heti-spacing"> </span></span>的区间中，误差应该要小于<span><span class="heti-spacing"> </span><span class="arithmatex">\(h \dfrac{\varepsilon}{b - a}\)</span></span>。当误差超过这个值时，我们就认为是较大误差，需要继续划分该区间。</p>
+<p>接下来的问题就是如何估计一个区间的误差。这里我们暂时仅考虑辛普森法则下的误差估计——即如何估计：</p>
+<div class="arithmatex">\[
+\varepsilon(f, a, b) \approx \int_a^b f(x)dx - S(a, b) = \dfrac{h^5}{90} f^{(4)}(\xi)
+\]</div>
+<p>其中<span><span class="heti-spacing"> </span><span class="arithmatex">\(h = \dfrac{b-a}{2}, \xi \in [a, b]\)</span></span>。</p>
+<p>这个问题的答案在例<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>中给出。</p>
+<p><strong>例子</strong></p>
+<p>考虑基于复合辛普森法则的自适应方法：</p>
+<div class="arithmatex">\[
+\int_a^b f(x)dx = S(a, b) - \dfrac{h^5}{90}f^{(4)}(\xi)
+\]</div>
+<p>其中<span><span class="heti-spacing"> </span><span class="arithmatex">\(S(a, b) = \dfrac{h}{3}[f(a) + 4f(a + h) + f(b)], h = \dfrac{b-a}{2}\)</span></span>。令：</p>
+<div class="arithmatex">\[
+\begin{align}
+S\Big(a, \dfrac{a+b}{2}\Big) = \dfrac{h}{6}[f(a) + 4f(a + h/2) + f(a + h)] \notag \\
+S\Big(\dfrac{a+b}{2}, b\Big) = \dfrac{h}{6}[f(a + h) + 4f(a + 3h/2) + f(b)] \notag
+\end{align}
+\]</div>
+<p>那么：</p>
+<div class="arithmatex">\[
+\int_a^b f(x) dx = S\Big(a, \dfrac{a+b}{2}\Big) + S\Big(\dfrac{a+b}{2}, b\Big) - \dfrac{1}{16} \times \dfrac{h^5}{90}f^{(4)}(\eta) \\
+\begin{align}
+&amp;\ \Big| \int_a^b f(x) dx - S\Big(a, \dfrac{a+b}{2}\Big) - S\Big(\dfrac{a+b}{2}, b\Big) \Big| \notag \\
+\approx &amp;\ \dfrac{1}{15} \Big|S(a, b) - S\Big(a, \dfrac{a+b}{2}\Big) - S\Big(\dfrac{a+b}{2}, b\Big) \Big| \notag \\
+&lt; &amp;\ \varepsilon \notag
+\end{align}
+\]</div>
+<p>可以看到，相比一般的辛普森法则，结合自适应方法后误差只有原来的<span><span class="heti-spacing"> </span><span class="arithmatex">\(\dfrac{1}{15}\)</span></span> 🎉</p>
+<h2 id="gaussian-quadrature">Gaussian Quadrature<a class="headerlink" href="#gaussian-quadrature" title="Permanent link">⚓︎</a></h2>
+<p>目标：构造一个公式<span><span class="heti-spacing"> </span><span class="arithmatex">\(\int_a^b w(x) f(x) dx \approx \sum\limits_{k=0}^n A_k f(x_k)\)</span></span>，对于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n+1\)</span><span class="heti-spacing"> </span></span>个点而言精度为<span><span class="heti-spacing"> </span><span class="arithmatex">\(2n+1\)</span></span>。</p>
+<p>思路：确定<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(2n+2\)</span><span class="heti-spacing"> </span></span>个未知量<span><span class="heti-spacing"> </span><span class="arithmatex">\(x_0, \dots, x_n;\ A_0, \dots, A_n\)</span></span>，使得公式在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f(x) = 1, x, x^2, \dots, x^{2n+1}\)</span><span class="heti-spacing"> </span></span>上都是精确的。点<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x_0, \dots, x_n\)</span><span class="heti-spacing"> </span></span>被称为<strong>高斯点</strong>(Gaussian points)，这个方法被称为<strong>高斯求积</strong>(Gaussian quadrature)</p>
+<p><strong>讨论</strong></p>
+<p>题目：使用<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n = 1\)</span><span class="heti-spacing"> </span></span>的高斯求积近似表示<span><span class="heti-spacing"> </span><span class="arithmatex">\(\int_0^1 \sqrt{x} f(x) dx\)</span></span>。</p>
+<p>解答</p>
+<p>假设<span><span class="heti-spacing"> </span><span class="arithmatex">\(\int_0^1 \sqrt{x} f(x) dx \approx A_0 f(x_0) + A_1 f(x_1)\)</span></span>。</p>
+<p>公式必须在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f(x) = 1, x, x^2, x^3\)</span><span class="heti-spacing"> </span></span>上精确表示。计算<span><span class="heti-spacing"> </span><span class="arithmatex">\(\begin{cases}\frac{2}{3} = A_0 + A_1 \\ \frac{2}{5} = A_0 x_0 + A_1 x_1 \\ \frac{2}{7} = A_0 x_0^2 + A_1 x_1^2 \\ \frac{2}{9} = A_0x_0^3 + A_1 x_1^3\end{cases}\)</span></span>，解得：<span class="arithmatex">\(\begin{cases}x_0 \approx 0.8212 \\ x_1 \approx 0.2899 \\ A_0 \approx 0.3891 \\ A_1 \approx 0.2776\end{cases}\)</span></p>
+<p><strong>定理</strong> ：当且仅当<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(W(x) = \prod\limits_{k=0}^n(x - x_k)\)</span><span class="heti-spacing"> </span></span>与所有阶数不超过<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span><span class="heti-spacing"> </span></span>的多项式正交时，<span><span class="arithmatex">\(x_0, \dots, x_n\)</span><span class="heti-spacing"> </span></span>是<strong>高斯点</strong>。</p>
+<p>正交多项式的集合<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\{\varphi_0, \varphi_1, \dots, \varphi_n, \dots\}\)</span><span class="heti-spacing"> </span></span>是线性独立的，且<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\varphi_{n+1}\)</span><span class="heti-spacing"> </span></span>和任何多项式<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(P_m(x)\ (m \le n)\)</span><span class="heti-spacing"> </span></span>正交。所以，如果我们拿<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\varphi_{n+1}\)</span><span class="heti-spacing"> </span></span>作为<span><span class="heti-spacing"> </span><span class="arithmatex">\(W(x)\)</span></span>，那么 <strong><span><span class="arithmatex">\(\varphi_{n+1}\)</span><span class="heti-spacing"> </span></span>的根</strong>就是高斯点了。</p>
+<p><strong>例子</strong></p>
+<p>题目：使用高斯求积来近似计算<span><span class="heti-spacing"> </span><span class="arithmatex">\(\int_0^1 \sqrt{x} f(x) dx\)</span></span>，其中<span><span class="heti-spacing"> </span><span class="arithmatex">\(n = 1\)</span></span></p>
+<p>解答</p>
+<p>假设<span><span class="heti-spacing"> </span><span class="arithmatex">\(\int_0^1 \sqrt{x} f(x) dx \approx A_0 f(x_0) + A_1 f(x_1)\)</span></span>。</p>
+<ol>
+<li>
+<p>构造正交多项式<span><span class="heti-spacing"> </span><span class="arithmatex">\(\varphi_2\)</span></span>。令<span><span class="heti-spacing"> </span><span class="arithmatex">\(\varphi_0(x) = 1, \varphi_1(x) = x + a, \varphi_2(x) = x^2 + bx + c\)</span></span></p>
+<ul>
+<li><span class="arithmatex">\((\varphi_0, \varphi_1) = 0 \Rightarrow \int_0^1 \sqrt{x} (x + a) dx = 0 \Rightarrow a = - \dfrac{3}{5}\)</span></li>
+<li><span class="arithmatex">\((\varphi_0, \varphi_2) = 0 \Rightarrow \int_0^1 \sqrt{x} (x^2 + bx + c) dx = 0 \Rightarrow a = - \dfrac{10}{9}\)</span></li>
+<li><span class="arithmatex">\((\varphi_1, \varphi_2) = 0 \Rightarrow \int_0^1 \sqrt{x} (x - \dfrac{3}{5})(x + bx + c) dx = 0 \Rightarrow a = \dfrac{5}{21}\)</span></li>
+<li><span class="arithmatex">\(\therefore \varphi_2(x) = x^2 - \dfrac{10}{9}x + \dfrac{5}{21}\)</span></li>
+</ul>
+</li>
+<li>
+<p>找到<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\varphi_2\)</span><span class="heti-spacing"> </span></span>的两个根，作为高斯点<span><span class="heti-spacing"> </span><span class="arithmatex">\(x_0, x_1\)</span></span>：<span class="arithmatex">\(x_{0;1} = \dfrac{\frac{10}{9} \pm \sqrt{(\frac{10}{9})^2 - \frac{20}{21}}}{2}\)</span></p>
+</li>
+<li>
+<p>因为这个公式必须在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f(x) = 1, x\)</span><span class="heti-spacing"> </span></span>上是精确的，所以我们能比较容易地求解<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(A_0, A_1\)</span><span class="heti-spacing"> </span></span>的线性方程组（待定系数）</p>
+</li>
+</ol>
+<p>最终结果为：<span class="arithmatex">\(x_0 \approx 0.8212, x_1 \approx 0.2899, A_0 \approx 0.3891, A_1 \approx 0.2776\)</span></p>
+<p>现在使用上述结果来近似计算<span><span class="heti-spacing"> </span><span class="arithmatex">\(\int_0^1 \sqrt{x} e^x dx\)</span></span></p>
+<div class="arithmatex">\[
+\int_0^1 \sqrt{x} e^x dx \approx A_0 e^{x_0} + A_1 e^{x_1} = 0.3891 \times e^{0.8212} + 0.2776 \times e^{0.2899} \approx 1.2555
+\]</div>
+<p>而<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\int_0^1 \sqrt{x} (2x-1) dx = \dfrac{2}{15}\)</span><span class="heti-spacing"> </span></span>是精确的。</p>
+<p>一些特殊的正交多项式：</p>
+<ul>
+<li><strong>勒让德多项式</strong>(Legendre polynomials)：定义在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\([-1, 1]\)</span><span class="heti-spacing"> </span></span>上且<span><span class="heti-spacing"> </span><span class="arithmatex">\(w(x) \equiv 1\)</span></span></li>
+</ul>
+<p>$$
+  P_k(x) = \dfrac{1}{2^k k!} \dfrac{d<sup>k}{dx</sup>k}(x^2 - 1)^k \quad \quad (P_k, P_l) = \begin{cases}0 &amp; k \ne l \ \dfrac{2}{2k+1} &amp; k = l\end{cases}
+  $$</p>
+<p><span class="arithmatex">\(P_0 = 1, P_1 = x, (k + 1)P_{k+1} = (2k + 1)xP_k - kP_{k-1}\)</span></p>
+<p>使用<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(P_{n+1}\)</span><span class="heti-spacing"> </span></span>的根的公式称为<strong>高斯<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>勒让德求积公式</strong>。</p>
+<ul>
+<li><strong>切比雪夫多项式</strong>(Chebyshev polynomials)：定义在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\([-1, 1]\)</span><span class="heti-spacing"> </span></span>上且<span><span class="heti-spacing"> </span><span class="arithmatex">\(w(x) = \dfrac{1}{\sqrt{1 - x^2}}\)</span></span></li>
+</ul>
+<p>$$
+  T_k(x) = \cos (k \times \arccos x)
+  $$</p>
+<p><span><span class="arithmatex">\(T_{n+1}\)</span><span class="heti-spacing"> </span></span>的根为<span><span class="heti-spacing"> </span><span class="arithmatex">\(x_k = \cos \Big(\dfrac{2k + 1}{2n + 2} \pi \Big) \quad (k = 0, \dots, n)\)</span></span></p>
+<p>公式<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\int_{-1}^1 \dfrac{1}{\sqrt{1 - x^2}} f(x) dx = \sum\limits_{k=0}^n A_k f(x_k)\)</span><span class="heti-spacing"> </span></span>称为<strong>高斯<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>切比雪夫求积公式</strong>。</p>
+<ul>
+<li>注意到积分端点<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\pm 1\)</span><span class="heti-spacing"> </span></span>是积分上的<strong>奇点</strong>(singular points)，此时在等间距的点上使用牛顿<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>科茨公式会出现问题；而高斯积分能够避免这个问题。</li>
+</ul>
+<h1 id="chap-5-initial-value-problems-for-ordinary-differential-equations">Chap 5: Initial-Value Problems for Ordinary Differential Equations<a class="headerlink" href="#chap-5-initial-value-problems-for-ordinary-differential-equations" title="Permanent link">⚓︎</a></h1>
+<h2 id="the-elementary-theory-of-initial-value-problems">The Elementary Theory of Initial-Value Problems<a class="headerlink" href="#the-elementary-theory-of-initial-value-problems" title="Permanent link">⚓︎</a></h2>
+<p><span>1<span class="heti-spacing"> </span></span>阶<a href="https://en.wikipedia.org/wiki/Ordinary_differential_equation"><strong>常微分方程</strong></a><span>(ordinary differential equations, ODE)<span class="heti-spacing"> </span></span>的<a href="https://en.wikipedia.org/wiki/Initial_value_problem"><strong>初值问题</strong></a>(initial-value problems, IVP)：</p>
+<div class="arithmatex">\[
+\begin{cases}
+\dfrac{dy}{dt} = f(t, y), t \in [a, b] \\
+y(a) = \alpha
+\end{cases}
+\]</div>
+<blockquote>
+<p>第一个方程表达的意思的是（未知）函数<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(y\)</span><span class="heti-spacing"> </span></span>随自变量<span><span class="heti-spacing"> </span><span class="arithmatex">\(t\)</span></span>（往往是时间）的变化率是一个关于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(t, y\)</span><span class="heti-spacing"> </span></span>的（已知）函数；第二个方程就是初始条件。</p>
+</blockquote>
+<p>目标：在一组网格点<span class="heti-skip"><span class="heti-spacing"> </span>(mesh points) <span class="arithmatex">\(a = t_0 &lt; t_1 &lt; \dots &lt; t_n = b\)</span><span class="heti-spacing"> </span></span>上（通常是等间距的）计算<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(y(t)\)</span><span class="heti-spacing"> </span></span>的近似值。也就是说，计算<span><span class="heti-spacing"> </span><span class="arithmatex">\(w_i \approx y(t_i) = y_i\ (i = 1, \dots, n)\)</span></span>。</p>
+<p><strong>定义</strong> ：</p>
+<p>对于函数<span><span class="heti-spacing"> </span><span class="arithmatex">\(f(t, y)\)</span></span>，若存在常数<span><span class="heti-spacing"> </span><span class="arithmatex">\(L &gt; 0\)</span></span>，满足：</p>
+<div class="arithmatex">\[
+|f(t, y_1) - f(t, y_2)| \le L|y_1 - y_2|
+\]</div>
+<p>我们称该函数满足在变量<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(y \in D \subset R^2\)</span><span class="heti-spacing"> </span></span>上的 <strong><span>Lipschitz<span class="heti-spacing"> </span></span>条件</strong>。</p>
+<p><strong>定理</strong> ：</p>
+<p>假设<span><span class="heti-spacing"> </span><span class="arithmatex">\(D = \{(t, y)\ |\ a \le t \le b, -\infty &lt; y &lt; \infty\}\)</span></span>，且<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f(t, y)\)</span><span class="heti-spacing"> </span></span>在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(D\)</span><span class="heti-spacing"> </span></span>上连续。若<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f\)</span><span class="heti-spacing"> </span></span>满足在变量<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(y \in D\)</span><span class="heti-spacing"> </span></span>上的<span class="heti-skip"><span class="heti-spacing"> </span>Lipschitz<span class="heti-spacing"> </span></span>条件，那么初值问题</p>
+<div class="arithmatex">\[
+y'(t) = f(t, y), a \le t \le b, y(a) = \alpha
+\]</div>
+<p>有<strong>唯一解</strong> <span class="arithmatex">\(y(t)\)</span>（<span class="arithmatex">\(a \le t \le b\)</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
+<p><strong>定义</strong> ：</p>
+<p>若初值问题</p>
+<div class="arithmatex">\[
+y'(t) = f(t, y), a \le t \le b, y(a) = \alpha
+\]</div>
+<p>满足以下条件，我们称之为<strong>适定性问题</strong>(well-posed problem)：</p>
+<ul>
+<li>问题存在唯一解<span><span class="heti-spacing"> </span><span class="arithmatex">\(y(t)\)</span></span></li>
+<li>
+<p><span class="arithmatex">\(\forall \varepsilon &gt; 0\)</span>，存在正常数<span><span class="heti-spacing"> </span><span class="arithmatex">\(k(\varepsilon)\)</span></span>，使得当<span><span class="heti-spacing"> </span><span class="arithmatex">\(|\varepsilon_0| &lt; \varepsilon\)</span></span>，并且<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\delta(t)\)</span><span class="heti-spacing"> </span></span>在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\([a, b]\)</span><span class="heti-spacing"> </span></span>上连续且<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(|\delta(t)| &lt; \varepsilon\)</span><span class="heti-spacing"> </span></span>时，对于</p>
+<div class="arithmatex">\[
+z'(t) = f(t, z) + \delta(t), a \le t \le b, z(a) = \alpha + \varepsilon_0
+\]</div>
+<p>（上述式子称为<strong>扰动问题</strong>(perturbed problem)<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，存在唯一解<span><span class="heti-spacing"> </span><span class="arithmatex">\(z(t)\)</span></span>，满足<span><span class="heti-spacing"> </span><span class="arithmatex">\(|z(t) - y(t)| &lt; k(\varepsilon) \cdot  \varepsilon\ (a \le t \le b)\)</span></span></p>
+</li>
+</ul>
+<p><strong>定理</strong> ：</p>
+<p>假设<span><span class="heti-spacing"> </span><span class="arithmatex">\(D = \{(t, y)\ |\ a \le t \le b, -\infty &lt; y &lt; \infty\}\)</span></span>，且<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f(t, y)\)</span><span class="heti-spacing"> </span></span>在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(D\)</span><span class="heti-spacing"> </span></span>上连续。若<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f\)</span><span class="heti-spacing"> </span></span>满足在变量<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(y \in D\)</span><span class="heti-spacing"> </span></span>上的<span class="heti-skip"><span class="heti-spacing"> </span>Lipschitz<span class="heti-spacing"> </span></span>条件，那么初值问题</p>
+<div class="arithmatex">\[
+y'(t) = f(t, y), a \le t \le b, y(a) = \alpha
+\]</div>
+<p>具有<strong>适定性</strong>(well-posed)。</p>
+<h2 id="eulers-method">Euler's Method<a class="headerlink" href="#eulers-method" title="Permanent link">⚓︎</a></h2>
+<p><img align="right" alt="" src="images/C5/9.png" width="30%"/></p>
+<blockquote>
+<p>继续往下阅读前，不妨回顾一下前面提出的<a href="#the-elementary-theory-of-initial-value-problems">目标</a>。</p>
+</blockquote>
+<p><span class="arithmatex">\(y'(t_0) \approx \dfrac{y(t_0 + h) - y(t_0)}{h}\ \Rightarrow\ y(t_1) \approx y(t_0) + hy'(t_0) = \alpha + hf(t_0, \alpha)\)</span></p>
+<p>其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(h\)</span><span class="heti-spacing"> </span></span>为步长。</p>
+<p><strong>欧拉法</strong><span>(Euler's method)<span class="heti-spacing"> </span></span>的核心是<u>用切线近似曲线</u>，它通过<strong>差分方程</strong><span>(difference equations)<span class="heti-spacing"> </span></span>来计算近似值：<span class="arithmatex">\(\begin{cases}w_0 = \alpha \\ w_{i+1} = w_i + hf(t_i, w_i)\end{cases}\ (i = 0, \dots, n - 1)\)</span></p>
+<p><strong>定理</strong> ：</p>
+<p>假设<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f\)</span><span class="heti-spacing"> </span></span>在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(D = \{(t, y)\ |\ a \le t \le b, -\infty &lt; y &lt; \infty \}\)</span><span class="heti-spacing"> </span></span>上是连续的，且满足<span class="heti-skip"><span class="heti-spacing"> </span>Lipschitz<span class="heti-spacing"> </span></span>条件（对应常数<span><span class="heti-spacing"> </span><span class="arithmatex">\(L\)</span></span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>；且存在常数<span><span class="heti-spacing"> </span><span class="arithmatex">\(M, \forall\ a \le t \le b\)</span></span>，满足<span><span class="heti-spacing"> </span><span class="arithmatex">\(|y''(t)| \le M\)</span></span>。</p>
+<p>令<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(y(t)\)</span><span class="heti-spacing"> </span></span>为初值问题<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(y'(t) = f(t, y), a \le t \le b, y(a) = \alpha\)</span><span class="heti-spacing"> </span></span>的唯一解，且<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w_0, w_1, \dots, w_n\)</span><span class="heti-spacing"> </span></span>为通过欧拉法（对于某些正整数<span><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span></span>）得到的近似值，那么：</p>
+<div class="arithmatex">\[
+|y_i - w_i| \le \dfrac{hM}{2L}[e^{L(t_i - a)} - 1] \quad (i = 0, 1, \dots, n)
+\]</div>
+<p><strong>注</strong> ：</p>
+<p><span><span class="arithmatex">\(y''(t)\)</span><span class="heti-spacing"> </span></span>可在不知道<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(y(t)\)</span><span class="heti-spacing"> </span></span>的情况下被计算出来：</p>
+<div class="arithmatex">\[
+y''(t) = \dfrac{d}{dt}y'(t) = \dfrac{d}{dt}f(t, y(t)) = \dfrac{\partial}{\partial t}f(t, y(t)) + \dfrac{\partial}{\partial y}f(t, y(t)) \cdot f(t, y(t))
+\]</div>
+<hr/>
+<p>代入舍入误差后，差分方程为：<span class="arithmatex">\(\begin{cases}w_0 = \alpha \textcolor{red}{+ \delta_0} \\ w_{i+1} = w_i + hf(t_i, w_i) \textcolor{red}{+ \delta_{i+1}}\end{cases}(i = 0, \dots, n - 1)\)</span></p>
+<p><strong>定理</strong> ：</p>
+<p>令<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(y(t)\)</span><span class="heti-spacing"> </span></span>为初值问题<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(y'(t) = f(t, y), a \le t \le b, y(a) = \alpha\)</span><span class="heti-spacing"> </span></span>的唯一解，且<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w_0, w_1, \dots, w_n\)</span><span class="heti-spacing"> </span></span>为使用上述差分方程得到的近似值。若<span><span class="heti-spacing"> </span><span class="arithmatex">\(|\delta_i| &lt; \delta\ (i = 0, \dots, n)\)</span></span>，那么<span><span class="heti-spacing"> </span><span class="arithmatex">\(\forall\ i\)</span></span></p>
+<div class="arithmatex">\[
+|y_i - w_i| \le \dfrac{1}{L} \Big(\dfrac{hM}{2} + \dfrac{\delta}{h}\Big)[e^{L(t_i - a)} - 1] + |\delta_0|e^{L(t_i - a)}
+\]</div>
+<blockquote>
+<p>其中<span><span class="heti-spacing"> </span><span class="arithmatex">\(h \ge \sqrt{2 \delta / M}\)</span></span></p>
+</blockquote>
+<h2 id="high-order-taylor-methods">High Order Taylor Methods<a class="headerlink" href="#high-order-taylor-methods" title="Permanent link">⚓︎</a></h2>
+<p><strong>定义</strong> ：</p>
+<p>差分法<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\begin{cases}w_0 = \alpha \\ w_{i+1} = w_i + h\varphi(t_i, w_i)\end{cases} (i = 0, \dots, n - 1)\)</span><span class="heti-spacing"> </span></span>的<strong>局部截断误差</strong><span>(local truncation error)<span class="heti-spacing"> </span></span>为：</p>
+<div class="arithmatex">\[
+\tau_{i+1}(h) = \dfrac{y_{i+1} - (y_i + h\varphi(t_i, y_i))}{h} = \dfrac{y_{i+1} - y_i}{h} - \varphi(t_i, y_i) \quad (i = 0, \dots, n - 1)
+\]</div>
+<p><strong>注</strong> ：局部截断误差就是<span><span class="heti-spacing"> </span><span class="arithmatex">\(\dfrac{y_{i+1} - w_{i+1}}{h}\)</span></span>（基于假设<span><span class="heti-spacing"> </span><span class="arithmatex">\(w_i = y_i\)</span></span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
+<p>欧拉法的局部截断误差：</p>
+<div class="arithmatex">\[
+\begin{align}
+\tau_{i+1} &amp; = \dfrac{y_{i+1} - w_{i+1}}{h} = \dfrac{[y_i + hy'(t_i) + \frac{h^2}{2}y''(\xi_i)] - [y_i + hf(t_i, y_i)]}{h} \notag \\
+&amp; = \dfrac{h}{2} y''(\xi_i) = O(h) \notag
+\end{align}
+\]</div>
+<p><strong>注</strong> ：</p>
+<div class="arithmatex">\[
+\begin{align}
+y_{i+1} &amp; = y(t_{i+1}) = y(t_i + h) = y(t_i) + y'(t_i)h + y''(\xi_i) \dfrac{h^2}{2} \notag \\
+&amp; = y_i + hy'(t_i) + \frac{h^2}{2}y''(\xi_i) \notag
+\end{align}
+\]</div>
+<blockquote>
+<p>我一开始没看出这一点（<del>还是太菜了</del>）</p>
+</blockquote>
+<p>所以欧拉法本质上是<strong>泰勒展开式的<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>阶形式</strong>，换句话说我们可通过<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n = 1\)</span><span class="heti-spacing"> </span></span>时泰勒展开式得到的欧拉法近似表示<span><span class="heti-spacing"> </span><span class="arithmatex">\(y(t)\)</span></span>。</p>
+<hr/>
+<p>高阶泰勒法公式为：</p>
+<div class="arithmatex">\[
+y_{i+1} = y_i + hf(t_i, y_i) + \dfrac{h^2}{2} f'(t_i, y_i) + \dots + \dfrac{h^n}{n!}f^{(n-1)}(t_i, y_i) + \dfrac{h^{(n+1)}}{(n+1)!}f^{(n)}(\xi_i, y(\xi_i))
+\]</div>
+<p>对于阶数为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span><span class="heti-spacing"> </span></span>的泰勒法，其对应的差分方程为：</p>
+<div class="arithmatex">\[
+\begin{cases}w_0 = \alpha \\ w_{i+1} = w_i + hT^{(n)}(t_i, w_i)\end{cases} (i = 0, \dots, n - 1)
+\]</div>
+<p>其中<span><span class="heti-spacing"> </span><span class="arithmatex">\(T^{(n)}(t_i, w_i) = f(t_i, w_i) + \dfrac{h}{2}f'(t_i, w_i) + \dots + \dfrac{h^{n-1}}{n!} f^{(n-1)}(t_i, w_i)\)</span></span></p>
+<p>若<span><span class="heti-spacing"> </span><span class="arithmatex">\(y \in C^{n+1}[a, b]\)</span></span>，那么局部截断误差是<span><span class="heti-spacing"> </span><span class="arithmatex">\(O(h^n)\)</span></span>。</p>
+<p><strong>讨论</strong></p>
+<p>题目：应用<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n = 10\)</span><span class="heti-spacing"> </span></span>的<span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span>阶泰勒法，解决初值问题<span><span class="heti-spacing"> </span><span class="arithmatex">\(y' = y - t^2 + 1, 0 \le t \le 2, y(0) = 0.5\)</span></span>。</p>
+<blockquote>
+<p>这里的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span><span class="heti-spacing"> </span></span>是区间分段数，不是题目前面讲的阶数。</p>
+</blockquote>
+<p>解答：</p>
+<p>找到<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f\)</span><span class="heti-spacing"> </span></span>的前两个导数：</p>
+<ul>
+<li><span class="arithmatex">\(f(t, y(t)) = y(t) - t^2 + 1\)</span></li>
+<li><span class="arithmatex">\(f'(t, y(t)) = y'(t) - 2t = y(t) - t^2 + 1 - 2t\)</span></li>
+<li><span class="arithmatex">\(f''(t, y(t)) = y'(t) - 2t - 2 = y(t) - t^2 - 2t - 1\)</span></li>
+</ul>
+<p>得到：</p>
+<div class="arithmatex">\[
+\begin{align}
+T^{(3)}(t_i, w_i) &amp; = f(t_i, w_i) + \dfrac{h}{2} f'(t_i, w_i) + \dfrac{h^2}{6}f''(t_i, w_i) \notag \\
+&amp; = \Big(1 + \dfrac{h}{2} + \dfrac{h^2}{6} \Big)(w_i - t_i^2 + 1) - \Big(1 + \dfrac{h}{3}\Big)ht_i - \dfrac{h^2}{3} \notag
+\end{align}
+\]</div>
+<p>通过<span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span>阶泰勒法，得到差分方程：<span class="arithmatex">\(\begin{cases}w_0 = 0.5 \\ w_{i+1} = w_i + h\Big[\Big(1 + \dfrac{h}{2} + \dfrac{h^2}{6}\Big)(w_i - t_i^2 + 1) - \Big(1 + \dfrac{h}{3}ht_i - \dfrac{h^2}{3}\Big)\Big]\end{cases}\)</span></p>
+<p>因为<span><span class="heti-spacing"> </span><span class="arithmatex">\(n = 10\)</span></span>，那么<span><span class="heti-spacing"> </span><span class="arithmatex">\(h = 0.2, t_i = 0.2i, w_{i+1} = 1.22133w_i - 0.00855i^2 - 0.00853i + 0.21867\)</span></span>。</p>
+<h3 id="other-eulers-methods">Other Euler's Methods<a class="headerlink" href="#other-eulers-methods" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li>
+<p><strong>隐式欧拉法</strong>(implicit Euler's method)</p>
+</li>
+<li>
+<p><span class="arithmatex">\(y'(t_0) \approx \dfrac{y(t_0) - y(t_0 - h)}{h}\ \Rightarrow\ \textcolor{red}{y(t_1)} \approx y(t_0) + hy'(t_1) + \alpha + hf(t_1, \textcolor{red}{y(t_1)})\)</span></p>
+<p><img align="right" alt="" src="images/C5/11.png" width="30%"/></p>
+</li>
+<li>
+<p>差分方程为<span><span class="heti-spacing"> </span><span class="arithmatex">\(\begin{cases}w_0 = \alpha \\ \textcolor{red}{w_{i+1}} = w_i + hf(t_{i+1}, \textcolor{red}{w_{i+1}})\end{cases} (i = 0, \dots, n - 1)\)</span></span></p>
+<ul>
+<li>之所以称为“隐式”，是因为差分方程左右两边都有<span><span class="heti-spacing"> </span><span class="arithmatex">\(w_{i+1}\)</span></span>，这意味着我们需要通过解方程得到<span><span class="heti-spacing"> </span><span class="arithmatex">\(w_{i+1}\)</span></span>，而无法像一般的欧拉法（相对地，我们将其称为<strong>显式欧拉法</strong>）那样直接计算得到<span><span class="heti-spacing"> </span><span class="arithmatex">\(w_{i+1}\)</span></span></li>
+</ul>
+</li>
+<li>
+<p>通常以迭代形式求解<span><span class="heti-spacing"> </span><span class="arithmatex">\(w_{i+1}\)</span></span>，其初始值通过显式法给出</p>
+</li>
+<li>
+<p>隐式欧拉法的局部截断误差为<span><span class="heti-spacing"> </span><span class="arithmatex">\(\tau_{i+1} = \dfrac{y_{i+1} - w_{i+1}}{h} = -\dfrac{h}{2}y''(\xi_i) = O(h)\)</span></span></p>
+</li>
+<li>
+<p>相比显式法，该方法更为<strong>稳定</strong>，因为计算<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w_{i+1}\)</span><span class="heti-spacing"> </span></span>时用到了未来的信息<span><span class="heti-spacing"> </span><span class="arithmatex">\(t_{i+1}, w_{i+1}\)</span></span>，从而能更准确地预测未来趋势，对解的约束也就越强；而显式法只用了当前的信息<span><span class="heti-spacing"> </span><span class="arithmatex">\(t_{i}, w_{i}\)</span></span>，其预测结果自然会有更大的偏差</p>
+</li>
+<li>
+<p><strong>梯形法</strong>(trapezoidal method)</p>
+</li>
+<li>
+<p>差分方程为<span><span class="heti-spacing"> </span><span class="arithmatex">\(\begin{cases}w_0 = \alpha \\ \textcolor{red}{w_{i+1}} = w_i + \dfrac{h}{2}[f(t_i, w_i) + f(t_{i+1}, \textcolor{red}{w_{i+1}})]\end{cases} (i = 0, \dots, n - 1)\)</span></span></p>
+</li>
+<li>
+<p>注：局部截断误差为<span><span class="heti-spacing"> </span><span class="arithmatex">\(O(h^2)\)</span></span>；但必须以迭代方式求解隐式方程</p>
+</li>
+<li>
+<p><strong>两步法</strong>(double-step method)</p>
+</li>
+<li>
+<p><span class="arithmatex">\(y'(t_0) = \dfrac{1}{2h}[y(t_0 + h) - y(t_0 - h)] - \dfrac{h^2}{6}y^{(3)}(\xi_1)\ \Rightarrow\ y(t_2) \approx y(t_0) + 2hf(t_1, y(t_1))\)</span></p>
+</li>
+<li>差分方程为<span><span class="heti-spacing"> </span><span class="arithmatex">\(\begin{cases}w_0 = \alpha \\ w_{i+1} = w_{i-1} + 2hf(t_i, w_i)\end{cases} (i = 1, \dots, n - 1)\)</span></span></li>
+<li>该方法要求知道两个初始点，故得其名；而先前讨论的方法都是<strong>单步法</strong>(single-step methods)<ul>
+<li>也就是说，两步法除了要知道<span><span class="heti-spacing"> </span><span class="arithmatex">\(w_0\)</span></span>（即原来的初值）外，还要知道<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w_1\)</span><span class="heti-spacing"> </span></span>的值，因此需要先用单步法得到<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w_1\)</span><span class="heti-spacing"> </span></span>后再用多步法</li>
+</ul>
+</li>
+<li>若假设<span><span class="heti-spacing"> </span><span class="arithmatex">\(w_{i-1} = y_{i-1}, w_i = y_i\)</span></span>，那么局部截断误差为<span><span class="heti-spacing"> </span><span class="arithmatex">\(O(h^2)\)</span></span></li>
+<li>由于两步法用到了更多点的信息，因此能得到更精确的近似结果</li>
+</ul>
+<p><strong>比较上述各法的优劣</strong> ：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">方法</th>
+<th style="text-align: center;">👍</th>
+<th style="text-align: center;">👎</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">显式欧拉法</td>
+<td style="text-align: center;">简单</td>
+<td style="text-align: center;">低阶精度</td>
+</tr>
+<tr>
+<td style="text-align: center;">隐式欧拉法</td>
+<td style="text-align: center;">稳定</td>
+<td style="text-align: center;">低阶精度、耗时（计算量大）</td>
+</tr>
+<tr>
+<td style="text-align: center;">梯形法</td>
+<td style="text-align: center;">更精确</td>
+<td style="text-align: center;">耗时</td>
+</tr>
+<tr>
+<td style="text-align: center;">两步法</td>
+<td style="text-align: center;">更精确、显式</td>
+<td style="text-align: center;">要求一个额外的初始点</td>
+</tr>
+</tbody>
+</table>
+<h2 id="runge-kutta-methods">Runge-Kutta Methods<a class="headerlink" href="#runge-kutta-methods" title="Permanent link">⚓︎</a></h2>
+<p><strong><span>Runge-Kutta<span class="heti-spacing"> </span></span>法</strong>是一种具有高阶局部截断误差的单步方法，无需计算<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f\)</span><span class="heti-spacing"> </span></span>的导数。</p>
+<p>思路：在单步法中，某个线段从<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\((t_i, w_i)\)</span><span class="heti-spacing"> </span></span>出发，以某个斜率延伸至下一个点<span><span class="heti-spacing"> </span><span class="arithmatex">\((t_{i+1}, w_{i+1})\)</span></span>。我们可以通过<strong>找到更好的斜率</strong>来改善结果。</p>
+<p>观察以下修改过的欧拉法（即改进欧拉法，下面会介绍的<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
+<div class="arithmatex">\[
+\begin{cases}
+w_{i+1} = w_i + h\Big[ \dfrac{1}{2} K_1 + \dfrac{1}{2} K_2 \Big] \\
+K_1 = f(t_i, w_i) \\
+K_2 = f(t_i + h, w_i + hK_1)
+\end{cases}
+\]</div>
+<ul>
+<li>斜率是否必须是<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(K_1, K_2\)</span><span class="heti-spacing"> </span></span>的平均值？</li>
+<li>步幅是否必须为<span><span class="heti-spacing"> </span><span class="arithmatex">\(h\)</span></span>？</li>
+</ul>
+<p>我们将其进一步泛化（从一般的平均值<span class="heti-skip"><span class="heti-spacing"> </span>-&gt;<span class="heti-spacing"> </span></span>加权平均值<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
+<div class="arithmatex">\[
+\begin{cases}
+w_{i+1} &amp; = w_i + h[\textcolor{red}{\lambda_1} K_1 + \textcolor{red}{\lambda_2} K_2 ] \\
+K_1 &amp; = f(t_i, w_i) \\
+K_2 &amp; = f(t_i + \textcolor{red}{p}h, w_i + \textcolor{red}{p}hK_1)
+\end{cases}
+\]</div>
+<p>我们要找到<span><span class="heti-spacing"> </span><span class="arithmatex">\(\lambda_1, \lambda_2, p\)</span></span>，使得该方法的局部阶段误差的阶数为<span><span class="heti-spacing"> </span>2</span>。</p>
+<ol>
+<li>写出<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(K_2\)</span><span class="heti-spacing"> </span></span>在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\((t_i, y_i)\)</span><span class="heti-spacing"> </span></span>上的泰勒展开式：</li>
+</ol>
+<p>$$
+   \begin{align}
+   K_2 &amp; = f(t_1 + ph, y_i + phK_1) \notag \
+   &amp; = f(t_i, y_i) + phf_t(t_i, y_i) + phK_1f_y(t_i, y_i) + O(h^2) \notag \
+   &amp; = y'(t_i) + phy''(t_i) + O(h^2) \notag 
+   \end{align}
+   $$</p>
+<p><strong>注</strong> ：</p>
+<p>$$
+   \begin{align}
+   y''(t) &amp; = \dfrac{d}{dt}f(t, y) \notag \
+   &amp; = f_t(t, y) + f_y(t, y) \dfrac{dy}{dt} \notag \
+   &amp; = f_t(t, y) + f_y(t, y)f(t, y) \notag
+   \end{align}
+   $$</p>
+<ol>
+<li>将<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(K_2\)</span><span class="heti-spacing"> </span></span>代入到第一个式子中：</li>
+</ol>
+<p>$$
+   \begin{align}
+   w_{i+1} &amp; = y_i + h{\lambda_1 y'(t_i) + \lambda_2[y'(t_i) + phy''(t_i) + O(h^2)]} \notag \
+   &amp; = y_i + (\lambda_1 + \lambda_2) hy'(t_i) + \lambda_2 ph^2 y''(t_i) + O(h^3) \notag
+   \end{align}
+   $$</p>
+<ol>
+<li>找到<span><span class="heti-spacing"> </span><span class="arithmatex">\(\lambda_1, \lambda_2, p\)</span></span>，使得<span><span class="heti-spacing"> </span><span class="arithmatex">\(\tau_{i+1} = (y_{i+1} - w_{i+1}) / h = O(h^2)\)</span></span></li>
+</ol>
+<div class="arithmatex">\[
+\begin{cases}
+w_{i+1} &amp; = y_i + (\lambda_1 + \lambda_2) hy'(t_i) + \lambda_2 ph^2 y''(t_i) + O(h^3) \\
+y_{i+1} &amp; = y_i + hy'(t_i) + \dfrac{h^2}{2} y''(t_i) + O(h^3) 
+\end{cases}
+\]</div>
+<p>比对上面两个方程，可以得到：<span class="arithmatex">\(\lambda_1 + \lambda_2 = 1, \lambda_2 p = \dfrac{1}{2}\)</span>（<span>3<span class="heti-spacing"> </span></span>个未知数，<span>2<span class="heti-spacing"> </span></span>个方程）</p>
+<p>所以有无穷多个解。而由这两个方程得到的一系列方法被称为 <strong><span>2<span class="heti-spacing"> </span></span>阶龙格<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>库塔法</strong>(Runge-Kutta method of order 2)。</p>
+<p><strong>注</strong> ：本节开始提到的改进欧拉法就是龙格<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>库塔法的一种特殊情况（<span class="arithmatex">\(p = 1, \lambda_1 = \lambda_2 = \dfrac{1}{2}\)</span>）</p>
+<p><strong><span>2<span class="heti-spacing"> </span></span>阶龙格<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>库塔法的多种形式</strong> ：</p>
+<ul>
+<li>
+<p><strong>中点法</strong>(midpoint method)：将从二阶泰勒法中的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(T^{(2)}(t, y)\)</span><span class="heti-spacing"> </span></span>用<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f(t + h / 2, y + (h / 2)f(t, y))\)</span><span class="heti-spacing"> </span></span>替换得到的差分方程法。</p>
+<div class="arithmatex">\[
+\begin{cases}
+w_0 = \alpha \\
+w_{i+1} = w_i + hf(t_i + \dfrac{h}{2}, w_i + \dfrac{h}{2}f(t_i, w_i))
+\end{cases}
+\quad (i = 0, \dots, N - 1)
+\]</div>
+</li>
+<li>
+<p><strong>改进欧拉法</strong>(modified Euler method)：</p>
+<div class="arithmatex">\[
+\begin{cases}
+w_0 = \alpha \\
+w_{i+1} = w_i + \dfrac{h}{2}[f(t_i, w_i) + f(t_{i+1}, w_i + hf(t_i, w_i))]
+\end{cases}
+\quad (i = 0, \dots, N - 1)
+\]</div>
+</li>
+<li>
+<p><strong><span>Heun<span class="heti-spacing"> </span></span>法</strong>：</p>
+<div class="arithmatex">\[
+\begin{cases}
+w_0 = \alpha \\
+w_{i+1} = w_i + \dfrac{h}{4}[f(t_i, w_i) + 3f(t_i + \dfrac{2}{3}h, w_i + \dfrac{2}{3}hf(t_i, w_i))]
+\end{cases}
+\quad (i = 0, \dots, N - 1)
+\]</div>
+</li>
+</ul>
+<hr/>
+<p>计算更高精度：</p>
+<div class="arithmatex">\[
+\begin{cases}
+w_{i+1} = y_i + h[\textcolor{red}{\lambda_1} K_1 + \textcolor{red}{\lambda_2} K_2 + \dots + \textcolor{red}{\lambda_m} K_m] \\
+K_1 = f(t_i, w_i) \\
+K_2 = f(t_i + \textcolor{red}{\alpha_2} h, w_i + \textcolor{red}{\beta_{21}} hK_1) \\
+K_3 = f(t_i + \textcolor{red}{\alpha_3} h, w_i + \textcolor{red}{\beta_{31}} hK_1 + \textcolor{red}{\beta_{32}} hK_2) \\
+\dots \\
+K_m = f(t_i + \textcolor{red}{\alpha_m} h, w_i + \textcolor{red}{\beta_{m1}} hK_1 + \textcolor{red}{\beta_{m2}} hK_2 + \dots + \textcolor{red}{\beta_{m, m-1}} hK_{m-1}) \\
+\end{cases}
+\]</div>
+<p>最流行的是经典 <strong><span>4<span class="heti-spacing"> </span></span>阶龙格<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>库塔法</strong>：</p>
+<div class="arithmatex">\[
+\begin{cases}
+w_{i+1} = w_i + \dfrac{h}{6}(K_1 + 2K_2 + 2K_3 + K_4) \\
+K_1 = f(t_i, w_i) \\
+K_2 = f(t_i + \dfrac{h}{2}, w_i + \dfrac{h}{2} K_1) \\
+K_3 = f(t_i + \dfrac{h}{2}, w_i + \dfrac{h}{2} K_2) \\
+K_4 = f(t_i + h, w_i + hK_3)
+\end{cases}
+\]</div>
+<p><strong>注</strong> ：</p>
+<ul>
+<li>
+<p>在使用龙格<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>库塔法时，主要的计算量在于求解<span><span class="heti-spacing"> </span><span class="arithmatex">\(f\)</span></span>。<span>Butcher<span class="heti-spacing"> </span></span>已经帮我们建立好了每步求值次数与局部截断误差阶数之间的关系：</p>
+<p></p><div style="text-align: center">
+<img src="images/C5/12.png" width="70%/"/>
+</div>
+</li>
+<li>
+<p>因为龙格<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>库塔法是基于泰勒展开式的，所以<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(y\)</span><span class="heti-spacing"> </span></span>不得不足够平滑，以获取在高阶方法下的更高的精度。通常低阶方法相比高阶方法会采用更小的步幅。</p>
+</li>
+</ul>
+<h2 id="multistep-methods">Multistep Methods<a class="headerlink" href="#multistep-methods" title="Permanent link">⚓︎</a></h2>
+<p>思路：使用<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(y, y'\)</span><span class="heti-spacing"> </span></span>在多个网格点<span class="heti-skip"><span class="heti-spacing"> </span>(mesh points)<span class="heti-spacing"> </span></span>上的线性组合，以得到更好的近似值<span><span class="heti-spacing"> </span><span class="arithmatex">\(y(t_{i+1})\)</span></span>。</p>
+<p><strong>多步法</strong><span>(multistep method)<span class="heti-spacing"> </span></span>的一般形式如下：</p>
+<div class="arithmatex">\[
+w_{i+1} = \textcolor{red}{a_{m-1}} w_i + \textcolor{red}{a_{m-2}} w_{i-1} + \dots + \textcolor{red}{a_0} w_{i+1-m} + h[\textcolor{red}{b_m} f_{i+1} + \textcolor{red}{b_{m-1}} f_i + \dots + \textcolor{red}{b_0} f_{i+1-m}]
+\]</div>
+<ul>
+<li>在隐式法中，<span class="arithmatex">\(b_m \ne 0\)</span></li>
+<li>在显式法中，<span class="arithmatex">\(b_m = 0\)</span></li>
+</ul>
+<p>具体方法：从积分中获取。在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\([t_i, t_{i+1}]\)</span><span class="heti-spacing"> </span></span>上对<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(y'(t) = f(t, y)\)</span><span class="heti-spacing"> </span></span>进行积分，得到：</p>
+<div class="arithmatex">\[
+y(t_{i+1}) - y(t_i) = \int_{t_i}^{t_{i+1}} f(t, y(t)) dt
+\]</div>
+<p>关键是<strong>近似计算积分</strong>。不同的近似方法会得到不同的差分方程。</p>
+<h3 id="adams-bashforth-explicit-m-step-technique">Adams-Bashforth Explicit <span class="arithmatex">\(m\)</span>-step Technique<a class="headerlink" href="#adams-bashforth-explicit-m-step-technique" title="Permanent link">⚓︎</a></h3>
+<p>使用<strong>牛顿后向差分</strong>公式，在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\((t_i, f_i), (t_{i-1}, f_{i-1}), \dots, (t_{i+1-m}, f_{i+1-m})\)</span><span class="heti-spacing"> </span></span>上对<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f\)</span><span class="heti-spacing"> </span></span>进行插值，并得到<span><span class="heti-spacing"> </span><span class="arithmatex">\(P_{m-1}(t)\)</span></span>。或者令<span><span class="heti-spacing"> </span><span class="arithmatex">\(t = t_i + sh, s \in [0, 1]\)</span></span>，我们有：</p>
+<div class="arithmatex">\[
+\int_{t_i}^{t_{i+1}} f(t, y(t)) dt = h \int_0^1 P_{m-1}(t_i + sh) ds + h \int_0^1 \underbrace{R_{m-1}}_{\substack{\text{local} \\ \text{truncation} \\ \text{error}}}(t_i + sh) ds
+\]</div>
+<p>最后得到显式公式：<span class="arithmatex">\(w_{i+1} = w_i + h\int_0^1 P_{m-1}(t_i + sh)ds\)</span></p>
+<p><strong>定义</strong> ：</p>
+<p>多步法的局部截断误差为：</p>
+<div class="arithmatex">\[
+\tau_{i+1}(h) = \dfrac{y_{i+1} - (a_{m-1}y_i + \dots + a_0 y_{i+1-m})}{h} - [b_m f_{i+1} + \dots + b_0 f_{i+1-m}]
+\]</div>
+<p>其中<span><span class="heti-spacing"> </span><span class="arithmatex">\(i = m-1, m, \dots, n - 1\)</span></span></p>
+<p><strong>例子</strong></p>
+<p>题目：请求出<span class="heti-skip"><span class="heti-spacing"> </span>Adams-Bashforth 2<span class="heti-spacing"> </span></span>步显式法。</p>
+<p>解答：</p>
+<p>使用牛顿后向差分公式，在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\((t_i, f_i), (t_{i-1}, f_{i-1})\)</span><span class="heti-spacing"> </span></span>上对<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f\)</span><span class="heti-spacing"> </span></span>插值：</p>
+<div class="arithmatex">\[
+P_1(t_i + sh) = f_i + s \nabla f_i = f_i + s(f_i - f_{i-1})
+\]</div>
+<p>得到<span><span class="heti-spacing"> </span><span class="arithmatex">\(w_{i+1} = w_i + h \int_0^1 [f_i + s(f_i - f_{i-1})] ds = w_i + \dfrac{h}{2} (3f_i - f_{i-1})\)</span></span></p>
+<p>局部截断误差为：</p>
+<div class="arithmatex">\[
+\begin{align}
+\tau_{i+1} &amp; = \dfrac{y(t_{i+1}) - w_{i+1}}{h} = \int_0^1 R_1 (t_i + sh) ds \notag \\
+&amp; = \int_0^1 \dfrac{d^2 f(\xi_i, t(\xi_i))}{dt^2} \dfrac{1}{2!} sh(s+1)h ds = \dfrac{5}{12} h^2 y'''(\widetilde{\xi_i}) \notag
+\end{align}
+\]</div>
+<p><strong>注</strong> ：</p>
+<p>一般来说，对于<span><span class="heti-spacing"> </span><span class="arithmatex">\(\tau = A_mh^my^{(m+1)}(\xi_i)\)</span></span>，<span><span class="arithmatex">\(A_m\)</span><span class="heti-spacing"> </span></span>和系数<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f_i, f_{i-1}, f_{i+1-m}\)</span><span class="heti-spacing"> </span></span>能从表格中找到。</p>
+<div style="text-align: center">
+<img src="images/C5/1.png" width="80%/"/>
+</div>
+<p><span>Adams-Bashforth 4<span class="heti-spacing"> </span></span>步显式法：<span class="arithmatex">\(w_{i+1} = w_i + \dfrac{5}{24} (55f_i - 59 f_{i-1} + 37 f_{i-2} - 9f_{i-3})\)</span></p>
+<h3 id="adams-moulton-implicit-m-step-technique">Adams-Moulton Implicit <span class="arithmatex">\(m\)</span>-step Technique<a class="headerlink" href="#adams-moulton-implicit-m-step-technique" title="Permanent link">⚓︎</a></h3>
+<p>使用牛顿前向差分公式，在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\((t_{i+1}, \textcolor{red}{f_{i+1}}), (t_i, f_i), \dots, (t_{i+1-m}, f_{i+1-m})\)</span><span class="heti-spacing"> </span></span>上对<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f\)</span><span class="heti-spacing"> </span></span>进行插值，并得到<span><span class="heti-spacing"> </span><span class="arithmatex">\(P_m(t)\)</span></span>。类似的，我们可以得到一组<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\tau_{i+1} = B_m h^{m+1} y^{(m+2)} (\xi_i)\)</span><span class="heti-spacing"> </span></span>的隐式公式。</p>
+<div style="text-align: center">
+<img src="images/C5/2.png" width="80%/"/>
+</div>
+<p><span>Adams-Moulton 3<span class="heti-spacing"> </span></span>步隐式法：<span class="arithmatex">\(w_{i+1} = w_i + \dfrac{h}{24} (9 f_{i+1} + 19 f_i - 5 f_{i-1} + f_{i-2})\)</span></p>
+<h3 id="adams-predictor-corrector-system">Adams Predictor-Corrector System<a class="headerlink" href="#adams-predictor-corrector-system" title="Permanent link">⚓︎</a></h3>
+<ol>
+<li>用 <strong><span>Runge-Kutta<span class="heti-spacing"> </span></span>法</strong>计算前<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(m\)</span><span class="heti-spacing"> </span></span>个初始值（为多步法（<span><span class="arithmatex">\(m\)</span><span class="heti-spacing"> </span></span>步）的启动做准备）</li>
+<li>用 <strong><span>Adams-Bashforth<span class="heti-spacing"> </span></span>显式法</strong>进行预测（效率高）</li>
+<li>用 <strong><span>Adams-Moulton<span class="heti-spacing"> </span></span>隐式法</strong>进行校正（提高精度，更稳定）</li>
+</ol>
+<p><strong>注</strong> ：</p>
+<ul>
+<li>对于上述步骤用到的三个公式，它们的局部截断误差必须有<strong>相同的阶数</strong>。</li>
+<li>最受欢迎的系统是将<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>阶<span class="heti-skip"><span class="heti-spacing"> </span>Adams-Bashforth<span class="heti-spacing"> </span></span>法作为预测器，将<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>次迭代下的<span class="heti-skip"><span class="heti-spacing"> </span>Adams-Moulton<span class="heti-spacing"> </span></span>法作为校正器，而起始值通过<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>阶<span class="heti-skip"><span class="heti-spacing"> </span>Runge-Kutta<span class="heti-spacing"> </span></span>法获得。</li>
+</ul>
+<h3 id="derive-from-taylor-expansion">Derive from Taylor Expansion<a class="headerlink" href="#derive-from-taylor-expansion" title="Permanent link">⚓︎</a></h3>
+<blockquote>
+<p>回顾<a href="#multistep-methods">多步法的一般形式</a>。</p>
+</blockquote>
+<p>思路：扩展在关于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(t_i\)</span><span class="heti-spacing"> </span></span>的泰勒级数里的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(y_{i-1}, \dots, y_{i+1-m}\)</span><span class="heti-spacing"> </span></span>和<span><span class="heti-spacing"> </span><span class="arithmatex">\(f_{i+1}, f_{i-1}, \dots, f_{i+1-m}\)</span></span>，并让<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(h^k\)</span><span class="heti-spacing"> </span></span>的系数相等，以获得<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(a_0, \dots, a_{m-1}\)</span><span class="heti-spacing"> </span></span>和<span><span class="heti-spacing"> </span><span class="arithmatex">\(b_0, \dots, b_m\)</span></span>。</p>
+<p><strong>例子</strong></p>
+<p>例<span><span class="heti-spacing"> </span>1</span></p>
+<p>题目：请求出形如以下形式的<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>阶公式：</p>
+<div class="arithmatex">\[
+w_{i+1} = \textcolor{red}{a_2}w_i + \textcolor{red}{a_1}w_{i-1} + \textcolor{red}{a_0}w_{i-2} + h[\textcolor{red}{b_3}f_i + \textcolor{red}{b_2}f_{i-1} + \textcolor{red}{b_1}f_{i-2} + \textcolor{red}{b_0}f_{i-3}]
+\]</div>
+<p>解答：</p>
+<p>在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(t_i\)</span><span class="heti-spacing"> </span></span>处扩展<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(y_{i-1}, y_{i-2}, f_{i-1}, f_{i-2}, f_{i-3}\)</span><span class="heti-spacing"> </span></span>和<span><span class="heti-spacing"> </span><span class="arithmatex">\(y(t_{i+1})\)</span></span></p>
+<p>假设<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w_i = y_i\)</span><span class="heti-spacing"> </span></span>的情况下，<span class="arithmatex">\(\tau_{i+1} = \dfrac{y_{i+1} - w_{i+1}}{h} = O(h^4)\)</span></p>
+<div class="arithmatex">\[
+\begin{align}
+y_{i-1} = &amp; y_i - hy_i' + \dfrac{1}{2} h^2 y_i'' - \dfrac{1}{6}h^3 y_i''' + \dfrac{1}{24}h^4 y_i^{(4)} + O(h^5) \notag \\
+y_{i-2} = &amp; y_i - 2hy_i' + 2 h^2 y_i'' - \dfrac{4}{3}h^3 y_i''' + \dfrac{2}{3}h^4 y_i^{(4)} + O(h^5) \notag \\
+f_{i-1} = &amp; y_i' - hy_i'' + \dfrac{1}{2}h^2 y_i''' - \dfrac{1}{6}h^3y_i^{(4)} + O(h^4) \notag \\
+f_{i-2} = &amp; y_i' - 2hy_i'' + 2h^2 y_i''' - \dfrac{4}{3}h^3y_i^{(4)} + O(h^4) \notag \\
+f_{i-3} = &amp; y_i' - 3hy_i'' + \dfrac{9}{2}h^2 y_i''' - \dfrac{9}{2}h^3y_i^{(4)} + O(h^4) \notag \\
+\end{align}
+\]</div>
+<div class="arithmatex">\[
+y(t_{i+1}) = y_i + hy_i' + \dfrac{1}{2}h^2y_i'' + \dfrac{1}{6}h^3 y_i''' + \dfrac{1}{24}h^4 y_i^{(4)} + O(h^5)
+\]</div>
+<p>有<span class="heti-skip"><span class="heti-spacing"> </span>5<span class="heti-spacing"> </span></span>个方程，<span>7<span class="heti-spacing"> </span></span>个未知量。</p>
+<ul>
+<li>令<span><span class="heti-spacing"> </span><span class="arithmatex">\(a_0 = a_1 = 0\)</span> -&gt;</span> <strong><span>Adams-Bashforth<span class="heti-spacing"> </span></span>显式法</strong></li>
+<li>用<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f_{i+1}\)</span><span class="heti-spacing"> </span></span>替换<span><span class="heti-spacing"> </span><span class="arithmatex">\(f_{i-1}\)</span></span>，并令<span><span class="heti-spacing"> </span><span class="arithmatex">\(a_0 = a_1 = 0\)</span> -&gt;</span> <strong><span>Adams-Moulton<span class="heti-spacing"> </span></span>隐式法</strong></li>
+<li>
+<p>用<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w_{i-3}\)</span><span class="heti-spacing"> </span></span>替换<span><span class="heti-spacing"> </span><span class="arithmatex">\(f_{i-3}\)</span></span>，我们能得到另一组阶数为<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>的方法，包括了显式 <strong><span>Milne<span class="heti-spacing"> </span></span>法</strong>：</p>
+<div class="arithmatex">\[
+w_{i+1} = w_{i-3} + \dfrac{4h}{3}(2f_i - f_{i-1} + 2f_{i-2})
+\]</div>
+<p>其截断误差为<span><span class="heti-spacing"> </span><span class="arithmatex">\(\dfrac{14}{45}h^4y^{(5)}(\xi_i), \xi_i \in (t_{i-3}, t_{i+1})\)</span></span></p>
+</li>
+<li>
+<p>令<span><span class="heti-spacing"> </span><span class="arithmatex">\(a_0 = 0, a_1 = 1\)</span> -&gt;</span> <strong><span>Simpson<span class="heti-spacing"> </span></span>隐式法</strong></p>
+<div class="arithmatex">\[
+w_{i+1} = w_{i-1} + \dfrac{h}{3}(f_{i+1} + 4f_i + f_{i-1})
+\]</div>
+<p>其截断误差为<span><span class="heti-spacing"> </span><span class="arithmatex">\(-\dfrac{h^4}{90}y^{(5)}(\xi_i), \xi_i \in (t_{i-1}, t_{i+1})\)</span></span></p>
+</li>
+</ul>
+<hr/>
+<p>例<span><span class="heti-spacing"> </span>2</span></p>
+<p>题目：</p>
+<div style="text-align: center">
+<img src="images/C5/13.png" width="80%/"/>
+</div>
+<p>解答：</p>
+<blockquote>
+<p>解析过程来自<span><span class="heti-spacing"> </span>Gemini 2.5 pro</span>，并且也通过了笔者的验证。</p>
+</blockquote>
+<p>为了找到使局部截断误差最小的系数，我们的策略是，假设近似解<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w_i\)</span><span class="heti-spacing"> </span></span>等于真实解<span><span class="heti-spacing"> </span><span class="arithmatex">\(y(t_i)\)</span></span>，然后将公式中的每一项围绕点<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(t_i\)</span><span class="heti-spacing"> </span></span>进行泰勒展开。通过匹配展开后<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(h\)</span><span class="heti-spacing"> </span></span>的同次幂的系数，我们使这个公式对于尽可能高阶的多项式都是精确的，从而达到最小化截断误差的目的。</p>
+<p>我们把公式中的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(y_{i+1}\)</span>, <span class="arithmatex">\(y_{i-1}\)</span><span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(y'_{i+1}\)</span> (<span class="heti-spacing"> </span></span>即<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f_{i+1}\)</span>)<span class="heti-spacing"> </span></span>围绕<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(t_i\)</span><span class="heti-spacing"> </span></span>展开。设步长为<span><span class="heti-spacing"> </span><span class="arithmatex">\(h\)</span></span>。</p>
+<ul>
+<li><span class="arithmatex">\(y_{i+1} = y(t_i + h) = y_i + h y'_i + \frac{h^2}{2} y''_i + \frac{h^3}{6} y'''_i + O(h^4)\)</span></li>
+<li><span class="arithmatex">\(y_{i-1} = y(t_i - h) = y_i - h y'_i + \frac{h^2}{2} y''_i - \frac{h^3}{6} y'''_i + O(h^4)\)</span></li>
+<li><span class="arithmatex">\(y'_{i+1} = y'(t_i + h) = y'_i + h y''_i + \frac{h^2}{2} y'''_i + O(h^3)\)</span></li>
+</ul>
+<p>将上述展开式代入原公式中：</p>
+<p><span class="arithmatex">\(y_i + h y'_i + \frac{h^2}{2} y''_i + ... = a_0 y_i + a_1(y_i - h y'_i + \frac{h^2}{2} y''_i - ...) + \beta h(y'_i + h y''_i + ...)\)</span></p>
+<p>现在，我们按<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(y\)</span><span class="heti-spacing"> </span></span>在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(t_i\)</span><span class="heti-spacing"> </span></span>点的各阶导数（<span class="arithmatex">\(y_i, y'_i, y''_i\)</span>）来合并与整理等式右边的项：</p>
+<p><span class="arithmatex">\(y_i + h y'_i + \frac{h^2}{2} y''_i + ... = (a_0+a_1)y_i + h(-a_1+\beta)y'_i + h^2(\frac{a_1}{2}+\beta)y''_i + ...\)</span></p>
+<p>为了让等式两边尽可能相等，我们令等式两边<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(h\)</span><span class="heti-spacing"> </span></span>的低次幂项的系数相等。这会给我们一个关于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(a_0, a_1, \beta\)</span><span class="heti-spacing"> </span></span>的线性方程组。</p>
+<ul>
+<li>
+<p>匹配<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(y_i\)</span><span class="heti-spacing"> </span></span>的系数<span class="heti-skip"><span class="heti-spacing"> </span>(<span class="heti-spacing"> </span></span>即<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(h^0\)</span><span class="heti-spacing"> </span></span>项<span><span class="heti-spacing"> </span>)</span>：<span class="arithmatex">\(1 = a_0 + a_1\)</span>（方程<span><span class="heti-spacing"> </span>1</span>）</p>
+</li>
+<li>
+<p>匹配<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(y'_i\)</span><span class="heti-spacing"> </span></span>的系数<span class="heti-skip"><span class="heti-spacing"> </span>(<span class="heti-spacing"> </span></span>即<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(h^1\)</span><span class="heti-spacing"> </span></span>项<span><span class="heti-spacing"> </span>)</span>：<span class="arithmatex">\(h(1 \cdot y'_i) = h(-a_1 + \beta)y'_i \implies 1 = -a_1 + \beta\)</span>（方程<span><span class="heti-spacing"> </span>2</span>）</p>
+</li>
+<li>
+<p>匹配<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(y''_i\)</span><span class="heti-spacing"> </span></span>的系数<span class="heti-skip"><span class="heti-spacing"> </span>(<span class="heti-spacing"> </span></span>即<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(h^2\)</span><span class="heti-spacing"> </span></span>项<span><span class="heti-spacing"> </span>)</span>：<span class="arithmatex">\(h^2(\frac{1}{2} \cdot y''_i) = h^2(\frac{a_1}{2} + \beta)y''_i \implies \frac{1}{2} = \frac{a_1}{2} + \beta\)</span>（方程<span><span class="heti-spacing"> </span>3</span>）</p>
+</li>
+</ul>
+<p>解上述三元一次方程，最终得到：</p>
+<ul>
+<li><span class="arithmatex">\(a_0 = \frac{4}{3}\)</span></li>
+<li><span class="arithmatex">\(a_1 = -\frac{1}{3}\)</span></li>
+<li><span class="arithmatex">\(\beta = \frac{2}{3}\)</span></li>
+</ul>
+<h2 id="higher-order-equations-and-systems-of-differential-equations">Higher-Order Equations and Systems of Differential Equations<a class="headerlink" href="#higher-order-equations-and-systems-of-differential-equations" title="Permanent link">⚓︎</a></h2>
+<h3 id="m-th-order-system-of-1st-order-ivp">m-th Order System of 1st-Order IVP<a class="headerlink" href="#m-th-order-system-of-1st-order-ivp" title="Permanent link">⚓︎</a></h3>
+<div class="arithmatex">\[
+\begin{cases}
+u_1'(t) = f_1(t, u_1(t), \dots, u_m(t)) \\
+\dots \\
+u_m'(t) = f_m(t, u_1(t), \dots, u_m(t))
+\end{cases}
+\]</div>
+<p>初始条件为：<span class="arithmatex">\(u_1(a) = \alpha_1, u_2(a) = \alpha_2, \dots, u_m(a) = \alpha_m\)</span></p>
+<p>令<span><span class="heti-spacing"> </span><span class="arithmatex">\(\boldsymbol{y} = \begin{bmatrix}u_1 \\ \vdots \\ u_m\end{bmatrix}, \boldsymbol{f} = \begin{bmatrix}f_1 \\ \vdots \\ f_m\end{bmatrix}, \boldsymbol{\alpha} = \begin{bmatrix}\alpha_1 \\ \vdots \\ \alpha_m\end{bmatrix}\)</span></span>，可以得到：<span class="arithmatex">\(\begin{cases}\boldsymbol{y}'(t) = \boldsymbol{f}(t, \boldsymbol{y}) \\ \boldsymbol{y}(a) = \boldsymbol{\alpha}\end{cases}\)</span></p>
+<h3 id="higher-order-differential-equation">Higher-Order Differential Equation<a class="headerlink" href="#higher-order-differential-equation" title="Permanent link">⚓︎</a></h3>
+<div class="arithmatex">\[
+\begin{cases}
+y^{(m)}(t) = f(t, y, y', \dots, y^{(m-1)}), a \le t \le b \\
+y(a) = \alpha_1, y'(a) = \alpha_2, \dots, y^{(m-1)}(a) = \alpha_m
+\end{cases}
+\]</div>
+<p>思路：将高阶的微分方程归约到一个<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>阶的微分方程组。</p>
+<p>令<span><span class="heti-spacing"> </span><span class="arithmatex">\(u_1(t) = y(t), u_2(t) = y'(t), \dots, u_m(t) = y^{(m-1)}(t)\)</span></span>，得到：</p>
+<div class="arithmatex">\[
+\begin{cases}
+u_1' = y' = u_2 \\
+u_2' = y'' = u_3 \\
+\vdots \\
+u_{m-1}' = y^{(m-1)} = u_m \\
+u_m' = y^{(m)} = f(x, u_1, \dots, u_m)
+\end{cases}
+\]</div>
+<p>初始条件为<span><span class="heti-spacing"> </span><span class="arithmatex">\(u_1(a) = \alpha_1, u_2(a) = \alpha_2, \dots, u_m(a) = \alpha_m\)</span></span>。</p>
+<p><strong>例子</strong></p>
+<p>题目：</p>
+<p>使用欧拉法求解以下<span><span class="heti-spacing"> </span>IVP</span>（<span class="arithmatex">\(h = 0.1\)</span>）</p>
+<div class="arithmatex">\[
+\begin{align}
+&amp; y'' - 2y' + y = te^t - 1.5t + 1 \quad \text{for } 0 \le t \le 0.2 \notag \\
+&amp; y(0) = 0, y'(0) = -0.5 \notag
+\end{align}
+\]</div>
+<p>解答：</p>
+<p>令<span><span class="heti-spacing"> </span><span class="arithmatex">\(u_1(t) = y(t), u_2(t) = y'(t)\)</span></span>，得到：</p>
+<div class="arithmatex">\[
+\begin{cases}
+u_1'(t) = u_2(t) \\
+u_2'(t) = te^t - 1.5t + 1 - u_1(t) + 2u_2(t)
+\end{cases}
+\]</div>
+<p>初始条件为<span><span class="heti-spacing"> </span><span class="arithmatex">\(u_1(0) = 0, u_2(0) = -0.5\)</span></span></p>
+<p>根据</p>
+<div class="arithmatex">\[
+\begin{align}
+w_{i+1} &amp; = w_1 + h\Big[\dfrac{1}{2}K_1 + \dfrac{1}{2}K_2\Big] \notag \\
+K_1 &amp; = f(t_i, w_i) \notag \\
+K_2 &amp; = f(t_i + h, w_i + hK_1) \notag
+\end{align}
+\]</div>
+<p>，计算：</p>
+<div style="text-align: center">
+<img src="images/C5/3.png" width="90%/"/>
+</div>
+<p>精确解为：<span class="arithmatex">\(y(t) = \dfrac{t^3 e^t}{6} - te^t + 2e^t - 1.5t - 2\)</span></p>
+<h2 id="stability">Stability<a class="headerlink" href="#stability" title="Permanent link">⚓︎</a></h2>
+<p><strong>定义</strong></p>
+<ul>
+<li>
+<p>当局部截断误差为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\tau_i(h)\)</span><span class="heti-spacing"> </span></span>的单微分方程法满足下面的条件时，我们认为它和近似得到的微分方程是<strong>一致的</strong>(consistent)：</p>
+<div class="arithmatex">\[
+\lim\limits_{h \rightarrow 0} \max\limits_{1 \le i \le n} |\tau_i(h)| = 0
+\]</div>
+<p>对于多步法，还要求对于<span><span class="heti-spacing"> </span><span class="arithmatex">\(i = 1, 2, \dots, m-1\)</span></span>，有<span><span class="heti-spacing"> </span><span class="arithmatex">\(\lim\limits_{h \rightarrow 0}|w_i - y_i| = 0\)</span></span></p>
+</li>
+<li>
+<p>当满足下面的条件时，我们认为一步微分方程法关于近似得到的微分方程<strong>收敛</strong>(convergent)：</p>
+<div class="arithmatex">\[
+\lim\limits_{h \rightarrow 0} \max\limits_{1 \le i \le n} |w_i - y_i| = 0
+\]</div>
+<p>多步法和上面的一样。</p>
+</li>
+<li>
+<p>若在初始条件中的小改变或小扰动产生对应较小的近似值变化，那么称该方法是<strong>稳定的</strong>(stable)。</p>
+</li>
+</ul>
+<p><strong>讨论</strong></p>
+<p>题目：使用显式欧拉法、隐式欧拉法，以及改进欧拉法解决以下初值问题：<span class="arithmatex">\(y'(t) = -30y(t), y(0) = 1\)</span>，区间为<span><span class="heti-spacing"> </span><span class="arithmatex">\([0, 0.5], h = 0.1\)</span></span>。</p>
+<p>解答：</p>
+<div style="text-align: center">
+<img src="images/C5/10.png" width="80%/"/>
+</div>
+<p><strong>定义</strong> ：</p>
+<p>将某个方法用在一个简单的<strong>测试方程</strong><span>(test equation)<span class="heti-spacing"> </span></span>上：<span class="arithmatex">\(y' = \lambda y, y(0) = \alpha\)</span>，其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\lambda\)</span><span class="heti-spacing"> </span></span>是复数且<span><span class="heti-spacing"> </span><span class="arithmatex">\(\text{Re}(\lambda) &lt; 0\)</span></span>。假设舍入误差仅在初始点被引入。如果这个初始误差在特定步幅<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(h\)</span><span class="heti-spacing"> </span></span>上被缩小的话，那么该方法关于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(H = \lambda h\)</span><span class="heti-spacing"> </span></span>是<strong>绝对稳定的</strong>(absolutely stable)。所有<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(H\)</span><span class="heti-spacing"> </span></span>构成的集合称为<strong>绝对稳定性区域</strong>(the region of absolute stability)。</p>
+<p>当<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(A\)</span><span class="heti-spacing"> </span></span>的绝对稳定性区域大于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(B\)</span><span class="heti-spacing"> </span></span>时，称法<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(A\)</span><span class="heti-spacing"> </span></span>比法<span><span class="heti-spacing"> </span><span class="arithmatex">\(B\)</span></span> <strong>更稳定</strong>。</p>
+<p><strong>例子</strong></p>
+<div style="text-align: center">
+<img src="images/C5/4.png" width="70%/"/>
+</div>
+<p><strong>例子</strong></p>
+<p>例<span><span class="heti-spacing"> </span>1</span>：</p>
+<p>考虑显式欧拉法<span><span class="heti-spacing"> </span><span class="arithmatex">\(w_{i+1} = w_i + hf_i\)</span></span></p>
+<p><img align="right" alt="" src="images/C5/5.png" width="30%"/></p>
+<div class="arithmatex">\[
+w_{i+1} = w_i + h\lambda w_i = \alpha(1 + H)^{i+1}
+\]</div>
+<blockquote>
+<p>这里令<span><span class="heti-spacing"> </span><span class="arithmatex">\(H = h \lambda\)</span></span></p>
+</blockquote>
+<div class="arithmatex">\[
+\alpha^* = \alpha + \varepsilon \Rightarrow w_{i+1}^* = \alpha^* (1 + H)^{i+1} \Rightarrow \varepsilon_{i+1} = w_{i+1}^* - w_{i+1} = (1 + H)^{i + 1}\varepsilon
+\]</div>
+<p>因此要想保证误差减小，必须满足<span><span class="heti-spacing"> </span><span class="arithmatex">\(|1 + H| &lt; 1\)</span></span>，对应的稳定性区域（绿色部分）如右图所示。</p>
+<hr/>
+<p>例<span><span class="heti-spacing"> </span>2</span>：</p>
+<p>考虑隐式欧拉法<span><span class="heti-spacing"> </span><span class="arithmatex">\(w_{i+1} = w_i + hf_{i+1}\)</span></span></p>
+<p><img align="right" alt="" src="images/C5/6.png" width="30%"/></p>
+<div class="arithmatex">\[
+w_{i+1} = \Big(\dfrac{1}{1 - H}\Big)w_i \Rightarrow \varepsilon_{i+1} = \Big(\dfrac{1}{1 - H}\Big)^{i+1} \varepsilon
+\]</div>
+<p>因此要想保证误差减小，必须满足<span><span class="heti-spacing"> </span><span class="arithmatex">\(|1 - H| &gt; 1\)</span></span>，对应的稳定性区域（绿色部分）如右图所示。</p>
+<p><strong>注</strong> ：它是<strong>无条件稳定的</strong>(unconditionally stable)，因为稳定性区域包含了整个左半平面，即<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\text{Re}(\lambda) &lt; 0\)</span><span class="heti-spacing"> </span></span>的情况。</p>
+<hr/>
+<p>例<span><span class="heti-spacing"> </span>3</span></p>
+<p>考虑<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>阶<span class="heti-skip"><span class="heti-spacing"> </span>Runge-Kutta<span class="heti-spacing"> </span></span>隐式法：</p>
+<div class="arithmatex">\[
+\begin{cases}
+w_{i+1} = w_i + hK_1 \\
+K_1 = f(t_i + \dfrac{h}{2}, w_i + \dfrac{h}{2}K_1)
+\end{cases}
+\]</div>
+<p><img align="right" alt="" src="images/C5/7.png" width="20%"/></p>
+<p>可以得到<span><span class="heti-spacing"> </span><span class="arithmatex">\(K_1 = \dfrac{\lambda w_i}{1 - \frac{\lambda h}{2}} \Rightarrow w_{i+1} = \Big(\dfrac{2+H}{2-H}\Big)w_i \Rightarrow \Big|\dfrac{2+H}{2-H}\Big| &lt; 1\)</span></span></p>
+<p><strong>注</strong> ：它是<strong>无条件稳定的</strong>(unconditionally stable)。</p>
+<p><strong>补充：<span>1-4<span class="heti-spacing"> </span></span>阶的<span class="heti-skip"><span class="heti-spacing"> </span>Runge-Kutta<span class="heti-spacing"> </span></span>显式法</strong></p>
+<p><img align="right" alt="" src="images/C5/8.png" width="30%"/></p>
+<div class="arithmatex">\[
+\begin{cases}
+w_{i+1} &amp; = w_i + \dfrac{h}{6} (K_1 + 2K_2 + 2K_3 + 2K_4) \\
+K_1 &amp; = f(t_i, w_i) \\
+K_2 &amp; = f(t_i + \dfrac{h}{2}, w_i + \dfrac{h}{2} K_1) \\
+K_3 &amp; = f(t_i + \dfrac{h}{2}, w_i + \dfrac{h}{2} K_2) \\
+K_4 &amp; = f(t_i + h, w_i + \dfrac{h}{2} K_3) \\
+\end{cases}
+\]</div>
+<div class="arithmatex">\[
+\begin{align}
+K_1 &amp; = \lambda w_i \notag \\
+K_2 &amp; = \lambda w_i (1 + \dfrac{H}{2}) \notag \\
+K_3 &amp; = \lambda w_i (1 + \dfrac{H}{2} + \dfrac{H^2}{4}) \notag \\
+K_4 &amp; = \lambda w_i (1 + H + \dfrac{H^2}{2} + \dfrac{H^3}{4}) \notag \\
+w_{i+1} &amp; = w_i \Big(1 + H + \dfrac{H^2}{2} + \dfrac{H^3}{6} + \dfrac{H^4}{24}\Big) \notag
+\end{align}
+\]</div>
+<hr/>
+<p>例<span><span class="heti-spacing"> </span>4</span></p>
+<p>题目：</p>
+<p>考虑以下<span class="heti-skip"><span class="heti-spacing"> </span>IVP<span class="heti-spacing"> </span></span>组（刚性组<span><span class="heti-spacing"> </span>(stiff system)</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
+<div class="arithmatex">\[
+\begin{cases}
+u_1' &amp; = 9u_1 + 24u_2 + 5 \cos t - \dfrac{1}{3} \sin t, \quad u_1(0) = \dfrac{4}{3} \\
+u_2' &amp; = -24u_1 - 51u_2 - 9 \cos t + \dfrac{1}{3} \sin t, \quad u_1(0) = \dfrac{2}{3}
+\end{cases}
+\]</div>
+<p>如何选择步幅<span><span class="heti-spacing"> </span><span class="arithmatex">\(h\)</span></span>，以保证应用欧拉显式法之后的稳定性？</p>
+<p>解答：</p>
+<p>唯一解为：<span class="arithmatex">\(\begin{cases}u_1(t) = 2e^{-3t} - e^{-39t} + \dfrac{1}{3} \cos t \\ u_2(t) = -e^{-3t} + 2e^{-39t} - \dfrac{1}{3} \cos t\end{cases}\)</span>。</p>
+<p>矩阵<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\begin{bmatrix}9 &amp; 24 \\ -24 &amp; 51\end{bmatrix}\)</span><span class="heti-spacing"> </span></span>的特征值为<span><span class="heti-spacing"> </span><span class="arithmatex">\(\lambda_1 = -3, \lambda_2 = -39\)</span></span></p>
+<p><span class="arithmatex">\(-2 &lt; \lambda h &lt; 0 \Rightarrow h &lt; \dfrac{2}{39} \approx 0.051\)</span></p>
+<hr/>
+<p>例<span><span class="heti-spacing"> </span>5</span></p>
+<p>题目：</p>
+<div style="text-align: center">
+<img src="images/C5/14.png" width="80%/"/>
+</div>
+<div class="language-text highlight"><pre><span></span><code>
+</code></pre></div>
+<p>解答：</p>
+<p>以下解答来自<span><span class="heti-spacing"> </span>Gemini 2.5 pro</span>，且经过笔者验证。</p>
+<ol>
+<li>
+<p>二阶龙格<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>库塔隐式法</p>
+<p>公式为<span><span class="heti-spacing"> </span><span class="arithmatex">\(w_{i+1}=w_{i}+hK_{1}\)</span></span>，其中<span><span class="heti-spacing"> </span><span class="arithmatex">\(K_{1}=f(t_{i}+\frac{h}{2},w_{i}+\frac{h}{2}K_{1})\)</span></span>。</p>
+<p>将<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f(t,y) = \lambda y\)</span><span class="heti-spacing"> </span></span>代入<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(K_1\)</span><span class="heti-spacing"> </span></span>的方程：</p>
+<p><span class="arithmatex">\(K_1 = \lambda(w_i + \frac{h}{2}K_1) \implies K_1(1-\frac{h\lambda}{2})=\lambda w_i \implies K_1 = \frac{\lambda w_i}{1-\frac{h\lambda}{2}}\)</span></p>
+<p>将其代入主公式：</p>
+<p><span class="arithmatex">\(w_{i+1} = w_i + h(\frac{\lambda w_i}{1-\frac{h\lambda}{2}}) = w_i(1+\frac{h\lambda}{1-\frac{h\lambda}{2}}) = w_i(\frac{1-\frac{h\lambda}{2}+h\lambda}{1-\frac{h\lambda}{2}}) = w_i(\frac{1+\frac{h\lambda}{2}}{1-\frac{h\lambda}{2}})\)</span></p>
+<p>令<span><span class="heti-spacing"> </span><span class="arithmatex">\(z=h\lambda\)</span></span>，增长因子为<span><span class="heti-spacing"> </span><span class="arithmatex">\(Q(z) = \frac{1+z/2}{1-z/2}\)</span></span>。绝对稳定区域要求<span><span class="heti-spacing"> </span><span class="arithmatex">\(|Q(z)| \le 1\)</span></span>。</p>
+<p><span class="arithmatex">\(|\frac{1+z/2}{1-z/2}| \le 1 \implies |1+z/2| \le |1-z/2|\)</span></p>
+<p>设<span><span class="heti-spacing"> </span><span class="arithmatex">\(z = x+iy\)</span></span>，则<span><span class="heti-spacing"> </span><span class="arithmatex">\(|1+\frac{x}{2}+i\frac{y}{2}| \le |1-\frac{x}{2}-i\frac{y}{2}|\)</span></span>。</p>
+<p>两边平方得到<span><span class="heti-spacing"> </span><span class="arithmatex">\((1+\frac{x}{2})^2+(\frac{y}{2})^2 \le (1-\frac{x}{2})^2+(-\frac{y}{2})^2\)</span></span>，化简得<span><span class="heti-spacing"> </span><span class="arithmatex">\(1+x \le 1-x \implies 2x \le 0 \implies x \le 0\)</span></span>。</p>
+<p>这意味着<span><span class="heti-spacing"> </span><span class="arithmatex">\(Re(z) = Re(h\lambda) \le 0\)</span></span>。该方法的绝对稳定区域是<strong>整个复平面的左半平面</strong>。</p>
+</li>
+<li>
+<p>亚当斯<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>莫尔顿一阶隐式法（即梯形法）</p>
+<p>公式为<span><span class="heti-spacing"> </span><span class="arithmatex">\(w_{i+1}=w_{i}+\frac{h}{2}(f_{i+1}+f_{i})\)</span></span>。</p>
+<p>将<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f_i = \lambda w_i\)</span><span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f_{i+1} = \lambda w_{i+1}\)</span><span class="heti-spacing"> </span></span>代入：</p>
+<p><span class="arithmatex">\(w_{i+1} = w_i + \frac{h}{2}(\lambda w_{i+1} + \lambda w_i)\)</span></p>
+<p><span class="arithmatex">\(w_{i+1}(1-\frac{h\lambda}{2}) = w_i(1+\frac{h\lambda}{2})\)</span></p>
+<p><span class="arithmatex">\(w_{i+1} = w_i(\frac{1+\frac{h\lambda}{2}}{1-\frac{h\lambda}{2}})\)</span></p>
+<p>这得到了与第一种方法<strong>完全相同的增长因子</strong>。因此，它的绝对稳定区域同样是<strong>整个复平面的左半平面</strong>。</p>
+</li>
+</ol>
+<p>综上，两种方法的绝对稳定区域是<strong>相同的</strong>。</p></div>
 <aside class="md-source-file">
 <span class="md-source-file__fact">
 <span class="md-icon" title="最后更新">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"></path></svg>
 </span>
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年6月19日 22:11:41">2025年6月19日 22:11:41</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年6月20日 17:05:05">2025年6月20日 17:05:05</span>
 </span>
 <span class="md-source-file__fact">
 <span class="md-icon" title="创建日期">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"></path></svg>
 </span>
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年6月19日 22:11:41">2025年6月19日 22:11:41</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年6月20日 17:05:05">2025年6月20日 17:05:05</span>
 </span>
 </aside>
 <p style="font-size: 30px; font-weight: 600">评论区</p>
