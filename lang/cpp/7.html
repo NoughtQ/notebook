@@ -906,17 +906,21 @@
 </ul>
 </li>
 <li>
-<p><code>T</code> 或 <code>Item</code> 在模板定义中就代表了一个待定的类型，在实例化时会被替换为像 <code class="language-cpp highlight"><span class="kt">int</span></code>、<code class="language-cpp highlight"><span class="n">std</span><span class="o">::</span><span class="n">string</span></code> 或我们自定义的类这样的具体类型。</p>
-<ul>
-<li><strong>非类型参数</strong>(non-type parameters)：</li>
+<p><code>T</code> 在模板定义中就代表了一个待定的类型，在实例化时会被替换为像 <code class="language-cpp highlight"><span class="kt">int</span></code>、<code class="language-cpp highlight"><span class="n">std</span><span class="o">::</span><span class="n">string</span></code> 或我们自定义的类这样的具体类型。</p>
+</li>
 </ul>
 </li>
+<li>
+<p><strong>非类型参数</strong>(non-type parameters)：</p>
+<ul>
 <li>除了类型，模板还可以接受<strong>编译时常量值</strong>作为参数，这些值必须在编译期就能确定。</li>
 <li>它们可以是整型常量、枚举值、指向对象的指针或引用等。</li>
-<li>例如，<code class="language-cpp highlight"><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">T</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">BufferSize</span><span class="o">&gt;</span></code> 定义了一个模板，它接受一个类型 <code>T</code> 和一个整数常量 <code>BufferSize</code>。这使得我们可以在编译时决定数组大小或缓冲区容量，例如 <code class="language-cpp highlight"><span class="n">Array</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="o">&gt;</span></code>。<ul>
-<li><strong>模板模板参数</strong>(template template parameters)：</li>
+<li>例如，<code class="language-cpp highlight"><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">T</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">BufferSize</span><span class="o">&gt;</span></code> 定义了一个模板，它接受一个类型 <code>T</code> 和一个整数常量 <code>BufferSize</code>。这使得我们可以在编译时决定数组大小或缓冲区容量，例如 <code class="language-cpp highlight"><span class="n">Array</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="o">&gt;</span></code>。</li>
 </ul>
 </li>
+<li>
+<p><strong>模板模板参数</strong>(template template parameters)：</p>
+<ul>
 <li>这是一种更高级的参数类型，它允许我们将一个<strong>模板</strong>本身作为参数传递给另一个模板。</li>
 <li>当我们希望创建一个泛型组件，其内部结构或策略也由另一个泛型组件（模板）来决定时，这就非常有用。例如，一个泛型容器可以接受另一个模板（如 <code class="language-cpp highlight"><span class="n">std</span><span class="o">::</span><span class="n">vector</span></code> 或 <code class="language-cpp highlight"><span class="n">std</span><span class="o">::</span><span class="n">list</span></code> 的模板形式）作为参数，来决定其内部如何存储元素。</li>
 </ul>
@@ -1074,8 +1078,7 @@
 <li>定义位置：由于实例化时需要完整的函数定义，所以类模板的成员函数定义通常也放在<strong>头文件</strong>中，与类模板的声明一起。如果将定义放在<span class="heti-skip"><span class="heti-spacing"> </span>.cpp<span class="heti-spacing"> </span></span>文件中，会导致链接问题（除非使用显式实例化，但这不常见且限制了通用性<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</li>
 </ul>
 <hr/>
-<p>此外，还有一种意义更明确的<strong>成员函数模板</strong>(member function templates)。它提供了一种泛型操作，让函数接受所有兼容类型，
-避免了函数重载（而且有时候我们无法确定要重载多少函数）。</p>
+<p>此外，还有一种意义更明确的<strong>成员函数模板</strong>(member function templates)。它提供了一种泛型操作，让函数接受所有兼容类型，避免了函数重载（而且有时候我们无法确定要重载多少函数<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
 <details class="example">
 <summary>例子</summary>
 <div class="language-cpp highlight"><pre><span></span><code><span id="__span-5-1"><a href="#__codelineno-5-1" id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
@@ -1119,7 +1122,7 @@
 </details>
 <p>成员函数模板还能用于泛化拷贝构造和赋值操作，但此时也要保留一份正常的拷贝构造函数和拷贝赋值运算符的定义。</p>
 <details class="example">
-<summary>例子（以 <code class="language-cpp highlight"><span class="n">std</span><span class="o">::</span><span class="n">share_ptr</span></code> 的实现为例）</summary>
+<summary>例子（以 <code class="language-cpp highlight"><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span></code> 的实现为例）</summary>
 <div class="language-cpp highlight"><pre><span></span><code><span id="__span-6-1"><a href="#__codelineno-6-1" id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
 </span><span id="__span-6-2"><a href="#__codelineno-6-2" id="__codelineno-6-2" name="__codelineno-6-2"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;memory&gt;</span><span class="c1"> // For std::shared_ptr</span>
 </span><span id="__span-6-3"><a href="#__codelineno-6-3" id="__codelineno-6-3" name="__codelineno-6-3"></a>
@@ -1553,7 +1556,7 @@
 </ul>
 </li>
 <li>
-<p><strong>非模板类继承自类模板的特定实例</strong>：当我们需要一个特定类型的、基于某个泛型框架的类时，可以这样做；这相当于用一个具体的类型“固化”了泛型基类</p>
+<p><strong>非模板类继承自类模板的特定实例（特化）</strong>：当我们需要一个特定类型的、基于某个泛型框架的类时，可以这样做；这相当于用一个具体的类型“固化”了泛型基类</p>
 <details class="example">
 <summary>例子</summary>
 <div class="language-cpp highlight"><pre><span></span><code><span id="__span-17-1"><a href="#__codelineno-17-1" id="__codelineno-17-1" name="__codelineno-17-1"></a><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>

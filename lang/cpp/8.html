@@ -755,8 +755,8 @@
 </li>
 </ul>
 <details class="note" open="open">
-<summary>嵌套 <code>try-catch</code> 块的行为</summary>
-<p>对于嵌套的 <code>try-catch</code> 块，会从最内层的 <code class="language-cpp highlight"><span class="k">try</span></code> 块开始，然后向外层逐级查找。</p>
+<summary>嵌套<span class="heti-skip"><span class="heti-spacing"> </span>try-catch<span class="heti-spacing"> </span></span>块的行为</summary>
+<p>对于嵌套的<span class="heti-skip"><span class="heti-spacing"> </span>try-catch<span class="heti-spacing"> </span></span>块，会从最内层的 <code class="language-cpp highlight"><span class="k">try</span></code> 块开始，然后向外层逐级查找。</p>
 <ol>
 <li>
 <p>内部 <code class="language-cpp highlight"><span class="k">try</span></code> 块优先捕获：如果一个异常在最内部的 <code class="language-cpp highlight"><span class="k">try</span></code> 块中被抛出，运行时首先会检查与这个内部 <code class="language-cpp highlight"><span class="k">try</span></code> 块关联的 <code class="language-cpp highlight"><span class="k">catch</span></code> 块。</p>
@@ -765,21 +765,21 @@
 <p>匹配 <code class="language-cpp highlight"><span class="k">catch</span></code> 块处理：</p>
 <ul>
 <li>如果内部 <code class="language-cpp highlight"><span class="k">try</span></code> 块的 <code class="language-cpp highlight"><span class="k">catch</span></code> 列表中有一个 <code class="language-cpp highlight"><span class="k">catch</span></code> 块能够匹配（即异常类型兼容）被抛出的异常，那么该 <code class="language-cpp highlight"><span class="k">catch</span></code> 块将被执行。</li>
-<li>一旦一个 <code class="language-cpp highlight"><span class="k">catch</span></code> 块成功捕获并处理了异常，异常就被认为已经处理完毕。程序将从该 <code class="language-cpp highlight"><span class="k">catch</span></code> 块的末尾继续执行，跳过所有剩余的 <code>try-catch</code> 结构，除非 <code class="language-cpp highlight"><span class="k">catch</span></code> 块内部又重新抛出了异常。</li>
+<li>一旦一个 <code class="language-cpp highlight"><span class="k">catch</span></code> 块成功捕获并处理了异常，异常就被认为已经处理完毕。程序将从该 <code class="language-cpp highlight"><span class="k">catch</span></code> 块的末尾继续执行，跳过所有剩余的<span class="heti-skip"><span class="heti-spacing"> </span>try-catch<span class="heti-spacing"> </span></span>结构，除非 <code class="language-cpp highlight"><span class="k">catch</span></code> 块内部又重新抛出了异常。</li>
 </ul>
 </li>
 <li>
 <p>向上层 <code class="language-cpp highlight"><span class="k">try</span></code> 块传播：</p>
 <ul>
-<li>如果内部 <code class="language-cpp highlight"><span class="k">try</span></code> 块的 <code class="language-cpp highlight"><span class="k">catch</span></code> 列表中没有能够匹配被抛出异常的 <code class="language-cpp highlight"><span class="k">catch</span></code> 块，那么该异常将<strong>传播<span><span class="heti-spacing"> </span>(propagate)</span></strong>到其直接外部的 <code class="language-cpp highlight"><span class="k">try</span></code> 块。</li>
-<li>外部 <code class="language-cpp highlight"><span class="k">try</span></code> 块的 <code class="language-cpp highlight"><span class="k">catch</span></code> 列表现在会被检查，以寻找匹配的 <code class="language-cpp highlight"><span class="k">catch</span></code> 块。这个过程会持续进行，直到找到一个匹配的 <code class="language-cpp highlight"><span class="k">catch</span></code> 块，或者直到异常传播到程序的顶级（即没有更多的 <code>try-catch</code> 块可以捕获它<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，此时程序通常会终止（如果未被捕获<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</li>
+<li>如果内部 <code class="language-cpp highlight"><span class="k">try</span></code> 块的 <code class="language-cpp highlight"><span class="k">catch</span></code> 列表中没有能够匹配被抛出异常的 <code class="language-cpp highlight"><span class="k">catch</span></code> 块，那么该异常将<strong>传播</strong><span>(propagate)<span class="heti-spacing"> </span></span>到其直接外部的 <code class="language-cpp highlight"><span class="k">try</span></code> 块。</li>
+<li>外部 <code class="language-cpp highlight"><span class="k">try</span></code> 块的 <code class="language-cpp highlight"><span class="k">catch</span></code> 列表现在会被检查，以寻找匹配的 <code class="language-cpp highlight"><span class="k">catch</span></code> 块。这个过程会持续进行，直到找到一个匹配的 <code class="language-cpp highlight"><span class="k">catch</span></code> 块，或者直到异常传播到程序的顶级（即没有更多的<span class="heti-skip"><span class="heti-spacing"> </span>try-catch<span class="heti-spacing"> </span></span>块可以捕获它<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，此时程序通常会终止（如果未被捕获<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</li>
 </ul>
 </li>
 <li>
 <p><code>catch</code> 块内部抛出异常：</p>
 <ul>
 <li>一个 <code class="language-cpp highlight"><span class="k">catch</span></code> 块本身也可以抛出新的异常，或者重新抛出它刚刚捕获的异常（使用 <code class="language-cpp highlight"><span class="k">throw</span><span class="p">;</span></code><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</li>
-<li>如果一个 <code class="language-cpp highlight"><span class="k">catch</span></code> 块抛出了异常，这个新异常或重新抛出的异常将由其外部的 <code>try-catch</code> 块来捕获和处理。这提供了一种机制，允许内部处理部分异常，同时将更高级别的错误条件传递给外部处理程序。</li>
+<li>如果一个 <code class="language-cpp highlight"><span class="k">catch</span></code> 块抛出了异常，这个新异常或重新抛出的异常将由其外部的<span class="heti-skip"><span class="heti-spacing"> </span>try-catch<span class="heti-spacing"> </span></span>块来捕获和处理。这提供了一种机制，允许内部处理部分异常，同时将更高级别的错误条件传递给外部处理程序。</li>
 </ul>
 </li>
 </ol>
