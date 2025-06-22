@@ -24,10 +24,20 @@
     - [x] [Lec 14: Concurrency Control](14.md)
     - [x] [Lec 15: Recovery System](15.md)
 
+    <div class="card file-block" markdown="1">
+    <div class="file-icon"><img src="/assets/pdf.svg" style="height: 3em;"></div>
+    <div class="file-body">
+    <div class="file-title">A4 Cheatsheet</div>
+    <div class="file-meta">5.8 MB / 2 P / 2025-06-14</div>
+    </div>
+    <a class="down-button" target="_blank" href="https://courses.noughtq.top/DB-D2CX/DB_A4_NoughtQ.pdf" markdown="1">:fontawesome-solid-download: 下载</a>
+    </div>
+
 !!! recommend "参考资料"
 
     - 课件 & 教材
     - [CMU 15-445/645 Fall 2024](https://15445.courses.cs.cmu.edu/fall2024/)
     - [教材官网](https://db-book.com/)（里面有习题答案(doge)）
     - [HobbitQia 前辈的笔记](https://note.hobbitqia.cc/DB/)
+    - 小角龙前辈的笔记：[pdf版](https://github.com/Zhang-Each/CourseNoteOfZJUSE/blob/master/DBS%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F%E5%A4%8D%E4%B9%A0%E6%95%B4%E7%90%86.pdf)，[在线版](https://zhang-each.github.io/My-CS-Notebook/DB/db/)
     

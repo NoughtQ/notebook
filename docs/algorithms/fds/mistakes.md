@@ -67,9 +67,11 @@ Answer: **T**
 
 !!! note "分析"
 
-    我不理解为什么？我想，万一每棵树的内部节点的孩子个数不定的话，怎么用一维数组(array)来存放这棵树呢？
+    - 任何树都可以用 FirstChild-NextSibling 表示法来表示
+    - 而用 FirstChild-NextSibling 表示法得到的树顺时针旋转 45° 就是一棵二叉树了
+    - 二叉树就可以用一维数组来表示
 
-    现在只能死记了...
+    >感谢 [@xk0576](https://github.com/xk0576) 同学的分享！
 
 ---
 Question 5:
@@ -264,7 +266,7 @@ Question 4:
 <img src="Images/mistakes/Quicker_20240625_211205.png" width="90%" style="margin: 0 auto;">
 </div>
 
-Answer: **D**(ChatGPT回答)
+Answer: **C**
 
 !!! note "分析"
 

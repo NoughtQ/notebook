@@ -54,9 +54,10 @@ ZJU 本科 23 级 CSer
 
 <div id="recommend" markdown="1" class="card" style="width: 27em; border-color: transparent; display: none; font-size: 80%">
 <div style="padding-left: 1em;" markdown="1">
-- 🧮[高级数据结构与算法分析](algorithms/ads/index.md)
-- 💻[计算机组成](system/co/index.md)
-- 💾[图像信息处理](software/dip/index.md)
+- 🔡[面向对象程序设计（C++）](lang/cpp/index.md)
+- 📊[数值分析](math/na/index.md)
+- 💻[计算机体系结构](system/ca/index.md)
+- 💻[数据库系统](system/db/index.md)
 </div>
 </div>
 </div>
