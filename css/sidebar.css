@@ -1,12 +1,16 @@
-.md-sidebar.md-sidebar--secondary, .md-sidebar.md-sidebar--secondary md-sidebar__scrollwrap {
+.md-sidebar__inner {
     opacity: 0;
-    visibility: hidden;
-    transform: scale(0.9); /* 初始时稍微缩小，增加动画效果 */
-    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+    /* 稍微向外移动或缩小，使其在隐藏时更不显眼 */
+    transform: scale(0.9) translateY(-10px);
+    /* 添加过渡动画 */
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+    /* 默认禁用鼠标事件，防止内容隐藏时意外触发点击等 */
+    pointer-events: none;
 }
 
-.md-sidebar.md-sidebar--secondary.show, .md-sidebar.md-sidebar--secondary md-sidebar__scrollwrap.show {
+/* 当鼠标悬停在 .md-sidebar__scrollwrap 区域时，显示内容 */
+.md-sidebar__scrollwrap:hover .md-sidebar__inner {
     opacity: 1;
-    visibility: visible;
-    transform: scale(1);
+    transform: scale(1) translateY(0);
+    pointer-events: auto; /* 鼠标悬停时启用鼠标事件 */
 }
