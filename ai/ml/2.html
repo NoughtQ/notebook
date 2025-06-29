@@ -820,7 +820,7 @@
 </a>
 <div><h1 id="machine-learning---p2">Machine Learning - P2<a class="headerlink" href="#machine-learning---p2" title="Permanent link">⚓︎</a></h1>
 <div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
-<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>9756<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>49<span class="heti-spacing"> </span></span>分钟</p>
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>11193<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>56<span class="heti-spacing"> </span></span>分钟</p>
 </div>
 <h2 id="more-insight-into-optimization">More Insight into Optimization<a class="headerlink" href="#more-insight-into-optimization" title="Permanent link">⚓︎</a></h2>
 <h3 id="backpropogation">Backpropogation<a class="headerlink" href="#backpropogation" title="Permanent link">⚓︎</a></h3>
@@ -1056,6 +1056,79 @@ L(\bm{\theta}) = L(\bm{\theta}') + \dfrac{1}{2} (\bm{\theta} - \bm{\theta}')^T H
 <p>在之后的讨论中，我们默认采用离线算法。</p>
 </details>
 <h3 id="batch-normalization">Batch Normalization<a class="headerlink" href="#batch-normalization" title="Permanent link">⚓︎</a></h3>
+<p>由于误差曲面过于崎岖对训练带来不小的障碍，因此我们希望改善误差曲面的状况，而本节介绍的<strong>批量归一化</strong><span>(batch normalization)<span class="heti-spacing"> </span></span>正是其中一种解决方案。在正式介绍前，我们先来看这样一个误差曲面：</p>
+<div style="text-align: center">
+<img src="images/lec2/89.png" width="60%/"/>
+</div>
+<p>可以看到，沿着参数<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w_1\)</span><span class="heti-spacing"> </span></span>变化的误差曲面较为平缓，而沿着参数<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w_2\)</span><span class="heti-spacing"> </span></span>变化的误差曲面就比较陡峭。</p>
+<p>一种可能的解释是：</p>
+<ul>
+<li>
+<p>假如对<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w_1\)</span><span class="heti-spacing"> </span></span>做一个微小扰动<span><span class="heti-spacing"> </span><span class="arithmatex">\(\Delta w_1\)</span></span>，如果对应的输入值<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x_1\)</span><span class="heti-spacing"> </span></span>很小的话，那么该扰动对误差的影响<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\Delta L\)</span><span class="heti-spacing"> </span></span>也不会很大。</p>
+<p></p><div style="text-align: center">
+<img src="images/lec2/90.png" width="60%/"/>
+</div>
+</li>
+<li>
+<p>假如对<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w_2\)</span><span class="heti-spacing"> </span></span>做一个微小扰动<span><span class="heti-spacing"> </span><span class="arithmatex">\(\Delta w_2\)</span></span>，如果对应的输入值<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x_2\)</span><span class="heti-spacing"> </span></span>较大的话，那么该扰动对误差的影响<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\Delta L\)</span><span class="heti-spacing"> </span></span>就相对较大。</p>
+<p></p><div style="text-align: center">
+<img src="images/lec2/91.png" width="60%/"/>
+</div>
+</li>
+</ul>
+<p>现在，我们的目标是让误差曲面无论沿<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w_1\)</span><span class="heti-spacing"> </span></span>变化还是沿<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w_2\)</span><span class="heti-spacing"> </span></span>变化，变化率的差别应尽可能接近，也就是让误差曲面变成这样：</p>
+<div style="text-align: center">
+<img src="images/lec2/92.png" width="40%/"/>
+</div>
+<hr/>
+<p>再来看<strong>特征归一化</strong><span>(feature normalization)<span class="heti-spacing"> </span></span>的操作。下图给出了<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(R\)</span><span class="heti-spacing"> </span></span>个输入向量，每个输入向量<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x^r\)</span><span class="heti-spacing"> </span></span>的每个元素对应一个维度（用绿色方框框出<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。对于每个维度<span><span class="heti-spacing"> </span><span class="arithmatex">\(i\)</span></span>，记均值为<span><span class="heti-spacing"> </span><span class="arithmatex">\(m_i\)</span></span>，标准差为<span><span class="heti-spacing"> </span><span class="arithmatex">\(\sigma_i\)</span></span>。</p>
+<div style="text-align: center">
+<img src="images/lec2/93.png" width="70%/"/>
+</div>
+<p>那么第<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(r\)</span><span class="heti-spacing"> </span></span>个向量在第<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(i\)</span><span class="heti-spacing"> </span></span>个维度上的归一化结果<span><span class="heti-spacing"> </span><span class="arithmatex">\(\widetilde{\bm{x}}_i^r \leftarrow \dfrac{\bm{x}_i^r - m_i}{\sigma_i}\)</span></span>。而归一化操作能确保所有维度的均值为<span><span class="heti-spacing"> </span>0</span>，标准差为<span><span class="heti-spacing"> </span>1</span>。</p>
+<p>一般来说，特征归一化能让梯度下降收敛得更快。</p>
+<p>接下来考虑特征归一化在深度学习中的应用：</p>
+<div style="text-align: center">
+<img src="images/lec2/94.png" width="80%/"/>
+</div>
+<p>我们将特征归一化后的输入向量丢到隐藏层中继续计算，中间会得到与参数矩阵相乘后的向量<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\bm{z}\)</span><span class="heti-spacing"> </span></span>和输出向量（或者是下一层的输入向量）<span class="arithmatex">\(\bm{a}\)</span>。显然，在进行下一层的计算前也要进行归一化处理，那么到底是归一化<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\bm{z}\)</span><span class="heti-spacing"> </span></span>还是归一化<span><span class="heti-spacing"> </span><span class="arithmatex">\(\bm{a}\)</span></span>。从实践上来看，两者效果差不多，而且当激活函数是<span class="heti-skip"><span class="heti-spacing"> </span>sigmoid<span class="heti-spacing"> </span></span>的时候对<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\bm{z}\)</span><span class="heti-spacing"> </span></span>做归一化可能更好，所以后面我们就认准对<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\bm{z}\)</span><span class="heti-spacing"> </span></span>做归一化。计算过程如下：</p>
+<div style="text-align: center">
+<img src="images/lec2/95.png" width="60%/"/>
+</div>
+<p>上述操作有个问题：如果这个网络接收的输入量很大很大（这里只画出了<span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span>个<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，那么<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\mu\)</span><span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\sigma\)</span><span class="heti-spacing"> </span></span>的计算量也会很大。更麻烦的是，如果其中一个输入量发生了小小的改动<span><span class="heti-spacing"> </span><span class="arithmatex">\(\Delta\)</span></span>，那就会影响到<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\mu, \sigma\)</span><span class="heti-spacing"> </span></span>的计算，从而影响到所有输入量对应的输出量的计算（“牵一发而动全身”<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
+<div style="text-align: center">
+<img src="images/lec2/96.png" width="80%/"/>
+</div>
+<p>在硬件资源有限的情况下，这种计算量肯定是吃不消的。所以实际上我们不会一次性去看整个网络的输入，而是一批批地看（每批包含的输入个数不能太少，也不能太多<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，这种方法就是<strong>批量归一化</strong>。</p>
+<hr/>
+<p>前面说过，归一化能保证结果均值为<span><span class="heti-spacing"> </span>0</span>，标准差为<span><span class="heti-spacing"> </span>1</span>。但有时我们不太希望有这样的限制（也许这种限制会带来负面影响<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，所以在归一化后可通过参数<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\beta, \gamma\)</span><span class="heti-spacing"> </span></span>来修正结果（这<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>个参数是通过训练得到的<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。计算公式为：<span class="arithmatex">\(\widehat{z}^i = \gamma \odot \widetilde{z}^i + \beta\)</span>。</p>
+<div style="text-align: center">
+<img src="images/lec2/97.png" width="80%/"/>
+</div>
+<hr/>
+<p>然而，在测试阶段的时候，我们无法保证测试数据都是一批批过来的（<del>总不至于要等达到一定数量后再开始计算吧</del><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。此时我们需要改变计算的策略：</p>
+<div style="text-align: center">
+<img src="images/lec2/98.png" width="80%/"/>
+</div>
+<p>这里的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\overline{\mu}, \overline{\sigma}\)</span><span class="heti-spacing"> </span></span>是在训练过程中从每批的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\mu, \sigma\)</span><span class="heti-spacing"> </span></span>中得到的<strong>移动平均量</strong>(moving average)。以<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\mu\)</span><span class="heti-spacing"> </span></span>为例，假如我们得到了每批对应的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\mu\)</span><span class="heti-spacing"> </span></span>为<span><span class="heti-spacing"> </span><span class="arithmatex">\(\mu^1, \mu^2, \dots, \mu^t\)</span></span>，那么<span><span class="heti-spacing"> </span><span class="arithmatex">\(\overline{\mu} \leftarrow p \overline{\mu} + (1 - p) \mu^t\)</span></span>。</p>
+<hr/>
+<p>下图展现了各种方法在不同数据量的训练效果（纵轴表示准确率）</p>
+<div style="text-align: center">
+<img src="images/lec2/99.png" width="70%/"/>
+</div>
+<p>其中黑色曲线表示的是一般方法，红色曲线标识最基本的批量归一化。不难发现批量归一化相比一般方法能以更少数据达到相同的准确率，即收敛速度更快。而且如果<a href="#learning-rate-scheduling">学习速率</a>更快的话，收敛得还要快。但并不是学习速率越大越好（可以看到<span class="heti-skip"><span class="heti-spacing"> </span>BN-x30<span class="heti-spacing"> </span></span>不如<span><span class="heti-spacing"> </span>BN-x5</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
+<p>那么为什么批量归一化能够取得这样好的效果呢？有人提出了一种称为<strong>内部协变量偏移</strong><span>(internal covariate shift)<span class="heti-spacing"> </span></span>的观点。来看这张图：</p>
+<div style="text-align: center">
+<img src="images/lec2/101.png" width="70%/"/>
+</div>
+<p>假如某一层的参数矩阵从<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(A\)</span><span class="heti-spacing"> </span></span>变成了<span><span class="heti-spacing"> </span><span class="arithmatex">\(A'\)</span></span>，这样我们得到了更好的输出<span><span class="heti-spacing"> </span><span class="arithmatex">\(a'\)</span></span>，但是这种改变会影响到后面隐藏层的计算——原来下一层的参数矩阵<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(B\)</span><span class="heti-spacing"> </span></span>更适合算<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(a\)</span><span class="heti-spacing"> </span></span>而不是<span><span class="heti-spacing"> </span><span class="arithmatex">\(a'\)</span></span>，所以问题变得更复杂了。而批量归一化能够保证<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(a\)</span><span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(a'\)</span><span class="heti-spacing"> </span></span>有着相似的统计学信息，因此能尽量减小上述问题的影响。</p>
+<p>然而，一篇名为 <em>How Does Batch Normalization Help Optimization?</em> 的<span class="heti-skip"><span class="heti-spacing"> </span>paper<span class="heti-spacing"> </span></span>通过实验反驳上述观点。它说明了内部协变量偏移不一定是训练时的问题（就算<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(a, a'\)</span><span class="heti-spacing"> </span></span>相差很大也不会对训练效果有太大影响<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，而且批量归一化不一定能够解决这个问题。此外，这篇<span class="heti-skip"><span class="heti-spacing"> </span>paper<span class="heti-spacing"> </span></span>还从实验和理论上都说明了批量归一化能够改变误差曲面的样貌。另外这篇<span class="heti-skip"><span class="heti-spacing"> </span>paper<span class="heti-spacing"> </span></span>认为批量归一化的积极影响是一种“偶然的发现”(serendipitous)。</p>
+<details class="abstract">
+<summary>更多的归一化方法</summary>
+<p></p><div style="text-align: center">
+<img src="images/lec2/100.png" width="40%/"/>
+</div>
+</details>
 <h3 id="momentum">Momentum<a class="headerlink" href="#momentum" title="Permanent link">⚓︎</a></h3>
 <p>在梯度下降法中，当梯度接近于<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>的时候，就会停在这些点上了。但是在物理世界中，即使某段路相当平坦（鞍点<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，甚至是一个小坑（局部最小点<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，由于物体具有惯性，因此还会继续移动，不会马上停下来。这给我们改进梯度下降法提供了一个不错的想法——引入<strong>动量</strong><span>(momentum)<span class="heti-spacing"> </span></span>的概念，让之前的移动过程影响当下的移动过程，有助于摆脱局部最小的困境。</p>
 <details class="tip">
