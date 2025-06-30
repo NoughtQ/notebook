@@ -933,7 +933,7 @@
 </a>
 <div><h1 id="lec-5-多臂老虎机算法基础与应用"><span>Lec 5:<span class="heti-spacing"> </span></span>多臂老虎机算法基础与应用<a class="headerlink" href="#lec-5-%E5%A4%9A%E8%87%82%E8%80%81%E8%99%8E%E6%9C%BA%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80%E4%B8%8E%E5%BA%94%E7%94%A8" title="Permanent link">⚓︎</a></h1>
 <div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
-<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>5867<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>29<span class="heti-spacing"> </span></span>分钟</p>
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>7578<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>38<span class="heti-spacing"> </span></span>分钟</p>
 </div>
 <!-- head 元素一定要放在一级标题下面，不然标题就显示不出来了 -->
 <p></p>
@@ -1437,12 +1437,175 @@ R_T = T \times \varepsilon + \log_{1 - \varepsilon} \dfrac{1}{n} \times 1 = T \v
 <p>接下来证明定理。</p>
 <details class="proof" open="open">
 <summary>分析</summary>
+<p>关键：将期望代价与权重的下降关联起来。第<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(t\)</span><span class="heti-spacing"> </span></span>轮的期望代价为：</p>
+<div class="arithmatex">\[
+\overline{C_t} = \sum\limits_{i=1}^n p_t(i)c_t(i) = \dfrac{\sum_{i=1}^n w_t(i) c_t(i)}{W_t}
+\]</div>
+<p>事实上这正比于总权重的下降，即<span><span class="heti-spacing"> </span><span class="arithmatex">\(\sum_{i=1}^n \varepsilon w_t(i) c_t(i) = \varepsilon W_t \overline{C_t}\)</span></span>。因此下面的证明思想分析的是总权重下降的速度。</p>
+<div class="admonition theorem">
+<p class="admonition-title">引理</p>
+<p><span class="arithmatex">\(W_{t+1} \le W_t \cdot e^{-\varepsilon \overline{C_t}}\)</span>，其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(W_t = \sum_{i=1}^n w_t(i)\)</span><span class="heti-spacing"> </span></span>是第<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(t\)</span><span class="heti-spacing"> </span></span>轮的总权重，<span><span class="arithmatex">\(\overline{C_t}\)</span><span class="heti-spacing"> </span></span>是第<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(t\)</span><span class="heti-spacing"> </span></span>轮的期望代价。</p>
+</div>
+<p>直接根据权重更新法则即可证明：</p>
+<div class="arithmatex">\[
+\begin{align}
+W_{t+1} &amp; = \sum\limits_{i=1}^n w_{t+1}(i) = \sum\limits_{i=1}^n w_t(i) \cdot (1 - \varepsilon c_t(i)) \notag \\
+&amp; = W_t - \varepsilon \sum\limits_{i=1}^n w_t(i)c_t(i) = W_t - \varespilon W_t \overline{C_t} \le W_t \cdot e^{-\varepsilon \overline{C_t}} \notag
+\end{align}
+\]</div>
+<p>不断应用上述引理，可以得到如下推论：</p>
+<div class="admonition note">
+<p class="admonition-title">推论</p>
+<div class="arithmatex">\[
+W_{t+1} \le ne^{-\varepsilon \sum_{t=1}^T \overline{C_t}}
+\]</div>
+</div>
+<div class="admonition theorem">
+<p class="admonition-title">引理</p>
+<p>对于任意的行动<span><span class="heti-spacing"> </span><span class="arithmatex">\(i\)</span></span>，都有<span><span class="heti-spacing"> </span><span class="arithmatex">\(W_{t+1} \ge e^{-T \varepsilon^2} \cdot e^{-\varepsilon \sum_{t=1}^T c_t(i)}\)</span></span>。</p>
+</div>
+<p>这一步的放缩比较激进，但非常有效：</p>
+<div class="arithmatex">\[
+\begin{align}
+W_{t+1} &amp; \ge w_{t+1}(i) = w_1(i) \cdot \prod\limits_{t=1}^T(1 - \varepsilonc_t(i)) \notag \\
+&amp; \ge \prod\limits_{t=1}^T e^{-\varepsilon c_t(i) - \varepsilon^2c_t^2(i)} \ge e^{-T\varepsilon^2} \cdot e^{-\varepsilon \sum_{t=1}^T c_t(i)} \notag
+\end{align}
+\]</div>
+<p>其中第二个不等号使用<span><span class="heti-spacing"> </span><span class="arithmatex">\(1 - \delta \ge e^{-\delta - \delta^2}\)</span></span>，第三个不等号直接将<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(c_t^2(i)\)</span><span class="heti-spacing"> </span></span>项放大成<span><span class="heti-spacing"> </span>1</span>。</p>
+<hr/>
+<p>回顾上述给出的结论：</p>
+<ul>
+<li><span class="arithmatex">\(W_{t+1} \le ne^{-\varepsilon \sum_{t=1}^T \overline{C_t}}\)</span></li>
+<li>对于任意的行动<span><span class="heti-spacing"> </span><span class="arithmatex">\(i\)</span></span>，都有<span><span class="heti-spacing"> </span><span class="arithmatex">\(W_{t+1} \ge e^{-T \varepsilon^2} \cdot e^{-\varepsilon \sum_{t=1}^T c_t(i)}\)</span></span></li>
+</ul>
+<p>综合有<span><span class="heti-spacing"> </span><span class="arithmatex">\(e^{-T \varepsilon^2} \cdot e^{-\epsilon \sum_{t=1}^T c_t(i)} \le ne^{-\varepsilon \sum_{t=1}^T \overline{C_t}}\)</span></span>，这等价于：</p>
+<div class="arithmatex">\[
+-T\varepsilon^2 - \varepsilon \sum\limits_{t=1}^T c_t(i) \le \ln n - \varepsilon \sum\limits_{t=1}^T \overline{C_t}
+\]</div>
+<p>重新整理有：</p>
+<div class="arithmatex">\[
+\sum\limits_{t=1}^T \overline{C_t} - \sum\limits_{t=1}^T c_t(i) \le \dfrac{\ln n}{\varepsilon} + T \varepsilon
+\]</div>
+<p>取<span><span class="heti-spacing"> </span><span class="arithmatex">\(\varepsilon = \sqrt{\dfrac{\ln n}{T}}\)</span></span>，有<span><span class="heti-spacing"> </span><span class="arithmatex">\(\sum\limits_{t=1}^T \overline{C_t} - \min\limits_i \sum\limits_{t=1}^T c_t(i) \le 2 \sqrt{T \ln n}\)</span></span>，即遗憾至多为<span><span class="heti-spacing"> </span><span class="arithmatex">\(O(\sqrt{T \ln n})\)</span></span>。</p>
 </details>
+<div class="admonition note">
+<p class="admonition-title">注</p>
+</div>
+<ul>
+<li>注意<span class="heti-skip"><span class="heti-spacing"> </span>MWU<span class="heti-spacing"> </span></span>算法对于任意的代价序列都是无憾的，这就是对抗性的意义，上述证明也不依赖于任何对代价序列的假设；</li>
+<li>如果使用<span><span class="heti-spacing"> </span><span class="arithmatex">\(w_{t+1}(i) = w_t(i) \cdot e^{-\varepsilon c_t(i)}\)</span></span>，因为<span><span class="heti-spacing"> </span><span class="arithmatex">\(e^{-\varepsilon} \approx 1 - \varepsilon\)</span></span>，因此也是可以进行类似的分析的<ul>
+<li>这样得到的算法称为<a href="https://en.wikipedia.org/wiki/Multiplicative_weight_update_method#Hedge_algorithm"><span class="heti-skip"><span class="heti-spacing"> </span>Hedge<span class="heti-spacing"> </span></span>算法</a></li>
+</ul>
+</li>
+<li>如果从全反馈更换为老虎机反馈，算法思路不变，得到的是<a href="https://en.wikipedia.org/wiki/Multi-armed_bandit#Exp3"><span class="heti-skip"><span class="heti-spacing"> </span>Exp3<span class="heti-spacing"> </span></span>算法</a></li>
+</ul>
 <h2 id="多臂老虎机的应用">多臂老虎机的应用<a class="headerlink" href="#%E5%A4%9A%E8%87%82%E8%80%81%E8%99%8E%E6%9C%BA%E7%9A%84%E5%BA%94%E7%94%A8" title="Permanent link">⚓︎</a></h2>
 <h3 id="基本思想">基本思想<a class="headerlink" href="#%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li>面对具有不确定性的问题的“万金油”方法</li>
+<li>在数据市场相关文献中的应用<ul>
+<li>在线定价问题：数据卖家不确定数据对于买家的价值，可以使用随机多臂老虎机建模解决</li>
+<li>数据获取问题：数据买家不确定数据市场上哪些数据对于自己的训练任务而言最有效，可以使用随机或对抗性多臂老虎机建模解决</li>
+</ul>
+</li>
+</ul>
 <h3 id="动态定价问题">动态定价问题<a class="headerlink" href="#%E5%8A%A8%E6%80%81%E5%AE%9A%E4%BB%B7%E9%97%AE%E9%A2%98" title="Permanent link">⚓︎</a></h3>
+<p>下面给出在线定价最经典文献的一个简化场景，解决方法与上述随机和对抗性多臂老虎机算法都不同</p>
+<p>• <em>The Value of Knowing a Demand Curve</em><span>, R. Kleinberg and T. Leighton, FOCS 2003, FOCS 2023<span class="heti-spacing"> </span></span>时间检验奖</p>
+<div class="admonition example">
+<p class="admonition-title">例子</p>
+<p>假设你要出售一份数据，你知道会有<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(N\)</span><span class="heti-spacing"> </span></span>个人来购买你的数据，并且每个人对数据的估值<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(v\)</span><span class="heti-spacing"> </span></span>都完全一致，都在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\([0, 1]\)</span><span class="heti-spacing"> </span></span>中。买家是逐个到达的，你需要提供一个价格<span><span class="heti-spacing"> </span><span class="arithmatex">\(p\)</span></span>，如果<span><span class="heti-spacing"> </span><span class="arithmatex">\(v \ge p\)</span></span>，买家就会购买你的数据，否则买家会离开。你的目标是尽快地学习到<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(v\)</span><span class="heti-spacing"> </span></span>的值，误差范围是<span><span class="heti-spacing"> </span><span class="arithmatex">\(\varepsilon = \dfrac{1}{N}\)</span></span></p>
+</div>
+<p>显然，最简单的想法就是通过二分搜索迅速达到这一精度：最多需要<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\log N\)</span><span class="heti-spacing"> </span></span>次的搜索来实现这一精度。</p>
 <h3 id="二分搜索">二分搜索<a class="headerlink" href="#%E4%BA%8C%E5%88%86%E6%90%9C%E7%B4%A2" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li>如果的确遇到了最坏的情况，<span><span class="arithmatex">\(\log N\)</span><span class="heti-spacing"> </span></span>次搜索之后，可以设置到价格<span><span class="heti-spacing"> </span><span class="arithmatex">\(p \ge \tilde{v} - \dfrac{1}{N}\)</span></span>，其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\tilde{v}\)</span><span class="heti-spacing"> </span></span>是我们第<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(log N\)</span><span class="heti-spacing"> </span></span>轮学习到的值</li>
+<li>在这种情况下，<span><span class="arithmatex">\(N\)</span><span class="heti-spacing"> </span></span>轮之后的总收益是</li>
+</ul>
+<div class="arithmatex">\[
+\underbrace{0}_{\text{前} \log N \text{轮}} + \underbrace{(N - \log N)(v - \dfrac{2}{N})}_{\text{后} N - \log N \text{轮}} \approx vN - v \log N - 2
+\]</div>
+<ul>
+<li>则二分搜索的遗憾为<span><span class="heti-spacing"> </span><span class="arithmatex">\(R \approx vN - (vN - v \log N - 2) = v \log N + 2\)</span></span></li>
+<li>这是最小的可能遗憾吗？</li>
+</ul>
+<div class="admonition theorem">
+<p class="admonition-title">定理</p>
+<p>存在一个算法，使得其遗憾至多为<span><span class="heti-spacing"> </span><span class="arithmatex">\(1 + 2 \log \log N\)</span></span>。</p>
+</div>
+<ul>
+<li>尽管二分搜索是在没有任何先验信息的情况下能搜索到<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(N\)</span><span class="heti-spacing"> </span></span>的最快算法，但当猜测的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(p_i &gt; v\)</span><span class="heti-spacing"> </span></span>时，卖家一分钱也赚不到</li>
+<li>也就是说，二分搜索在向上探索的时候可能过于激进，因此改进的算法需要在探索时更加保守！</li>
+</ul>
 <h3 id="改进算法">改进算法<a class="headerlink" href="#%E6%94%B9%E8%BF%9B%E7%AE%97%E6%B3%95" title="Permanent link">⚓︎</a></h3>
+<ol>
+<li>在第<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(i\)</span><span class="heti-spacing"> </span></span>阶段，我们保持一个探索区间<span><span class="heti-spacing"> </span><span class="arithmatex">\([a_i, b_i]\)</span></span>，其中<span><span class="heti-spacing"> </span><span class="arithmatex">\(a_1 = 0, b_1 = 1\)</span></span>，并设置<span><span class="heti-spacing"> </span><span class="arithmatex">\(\Delta_1 = \dfrac{1}{2}\)</span></span></li>
+<li>
+<p>为第<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(i\)</span><span class="heti-spacing"> </span></span>个买家<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(i\)</span><span class="heti-spacing"> </span></span>提供价格<span><span class="heti-spacing"> </span><span class="arithmatex">\(p_i = a_i + \Delta_i\)</span></span></p>
+<p></p><div style="text-align: center">
+<img src="images/lec5/4.png" width="60%"/>
+</div>
+</li>
+<li>
+<p>如果<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(i\)</span><span class="heti-spacing"> </span></span>接受价格<span><span class="heti-spacing"> </span><span class="arithmatex">\(p_i\)</span></span>，则<span><span class="heti-spacing"> </span><span class="arithmatex">\(a_{i+1} = p_i, b_{i+1} = b_i, \Delta_{i+1} = \Delta_i\)</span></span></p>
+<p></p><div style="text-align: center">
+<img src="images/lec5/5.png" width="60%"/>
+</div>
+</li>
+<li>
+<p>如果<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(i\)</span><span class="heti-spacing"> </span></span>拒绝价格<span><span class="heti-spacing"> </span><span class="arithmatex">\(p_i\)</span></span>，则<span><span class="heti-spacing"> </span><span class="arithmatex">\(a_{i+1} = a_i, b_{i+1} = p_i, \Delta_{i+1} = (\Delta_i)^2\)</span></span></p>
+<p></p><div style="text-align: center">
+<img src="images/lec5/6.png" width="60%"/>
+</div>
+</li>
+<li>
+<p>当<span><span class="heti-spacing"> </span><span class="arithmatex">\(b_i - a_i \le \dfrac{1}{N}\)</span></span>，此后价格均取<span><span class="heti-spacing"> </span><span class="arithmatex">\(a_i\)</span></span>，不再改变。</p>
+</li>
+</ol>
+<div class="admonition theorem">
+<p class="admonition-title">定理</p>
+<p>改进算法的遗憾至多为<span><span class="heti-spacing"> </span><span class="arithmatex">\(1 + 2 \log \log N\)</span></span>。</p>
+</div>
+<p>首先需要分析区间长度<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(b_i - a_i\)</span><span class="heti-spacing"> </span></span>的特点，有如下结论：</p>
+<div class="admonition theorem">
+<p class="admonition-title">引理</p>
+<p><span class="arithmatex">\(\Delta_i = 2^{-2^{j-1}}\)</span>，并且当<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\Delta_{i+1} = (\Delta_i)^2\)</span><span class="heti-spacing"> </span></span>时，<span class="arithmatex">\(b_{i+1} - a_{i+1} = \Delta_i = \sqrt{\Delta_{i+1}}\)</span>。</p>
+</div>
+<p>第一个结论根据数学归纳法可以证明：</p>
+<ul>
+<li>当<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(i = 1\)</span><span class="heti-spacing"> </span></span>时，<span class="arithmatex">\(\Delta_1 = \dfrac{1}{2} = 2^{-2^0}\)</span></li>
+<li>
+<p>假设对于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(i = k\)</span><span class="heti-spacing"> </span></span>成立，即<span><span class="heti-spacing"> </span><span class="arithmatex">\(\Delta_k = 2^{-2^{j-1}}\)</span></span>，则：</p>
+<div class="arithmatex">\[
+\Delta_{k+1} = (\Delta_k)^2 = 2^{-2^{j-1} - 2^{j-1}} = 2^{-2^j}
+\]</div>
+</li>
+</ul>
+<p>第二个结论，当<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\Delta_{i+1} = (\Delta_i)^2\)</span><span class="heti-spacing"> </span></span>时，根据算法可以直接得到。</p>
+<ul>
+<li>在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(b_i - a_i \le \dfrac{1}{N}\)</span><span class="heti-spacing"> </span></span>后，总的遗憾最多为<span><span class="heti-spacing"> </span>1</span></li>
+<li>因此重点在于分析达到这一步之前的遗憾</li>
+<li>在达到这一步之前<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\Delta\)</span><span class="heti-spacing"> </span></span>更新了多少次？<ul>
+<li><span class="arithmatex">\(\log \log N\)</span>：令<span><span class="heti-spacing"> </span><span class="arithmatex">\(2^{-2^i} = \dfrac{1}{N}\)</span></span>，则<span><span class="heti-spacing"> </span><span class="arithmatex">\(i = \log \log N\)</span></span></li>
+<li>接下来就要证明每个<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\Delta i\)</span><span class="heti-spacing"> </span></span>内产生的遗憾是有限的</li>
+</ul>
+</li>
+</ul>
+<div class="admonition theorem">
+<p class="admonition-title">引理</p>
+<p>任意的步长<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\Delta i\)</span><span class="heti-spacing"> </span></span>内的遗憾至多为<span><span class="heti-spacing"> </span>2</span>。</p>
+</div>
+<ul>
+<li>如果在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\Delta i\)</span><span class="heti-spacing"> </span></span>下直接被拒绝，遗憾至多为<span><span class="heti-spacing"> </span>1</span></li>
+<li>如果发生出售，则最多出售<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\dfrac{\sqrt{\Delta_i}}{\Delta_i}\)</span><span class="heti-spacing"> </span></span>次，因为<span><span class="heti-spacing"> </span><span class="arithmatex">\(\Delta_{i-1} = \sqrt{\Delta_i}\)</span></span>，如果超出这个次数，那么<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\Delta_{i-1}\)</span><span class="heti-spacing"> </span></span>在前面的步骤不会更新</li>
+<li>
+<p>因此出售过程中的遗憾最多为</p>
+<div class="arithmatex">\[
+\dfrac{\sqrt{\Delta_i}}{\Delta_i} \times \sqrt{\Delta_i} = 1
+\]</div>
+</li>
+</ul>
+<p>综合上述两个引理可以得到改进算法的遗憾为<span><span class="heti-spacing"> </span><span class="arithmatex">\(1 + 2 \log \log N\)</span></span>。</p>
 <script>
     pseudocode.renderClass("pseudocode", { lineNumber: true });
 </script></div>
@@ -1451,13 +1614,13 @@ R_T = T \times \varepsilon + \log_{1 - \varepsilon} \dfrac{1}{n} \times 1 = T \v
 <span class="md-icon" title="最后更新">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"></path></svg>
 </span>
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年6月29日 21:38:39">2025年6月29日 21:38:39</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年6月30日 14:11:41">2025年6月30日 14:11:41</span>
 </span>
 <span class="md-source-file__fact">
 <span class="md-icon" title="创建日期">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"></path></svg>
 </span>
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年6月29日 21:38:39">2025年6月29日 21:38:39</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年6月30日 14:11:41">2025年6月30日 14:11:41</span>
 </span>
 </aside>
 <p style="font-size: 30px; font-weight: 600">评论区</p>
