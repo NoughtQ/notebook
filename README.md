@@ -23,6 +23,16 @@
 - [x] （本来应该在寒假完成的；仅针对桌面端）自动隐藏两侧边栏，实现更加沉浸的阅读体验
 
 
+## Local Build
+
+TBD
+
+
+## Contribution Tutorial
+
+TBD
+
+
 ## Support the Author 
 
 如果大家觉得这份笔记对自己有所帮助的话，不妨点个 Star 支持一下作者吧，或者请作者喝杯咖啡😄

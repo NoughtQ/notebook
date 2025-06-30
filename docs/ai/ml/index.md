@@ -20,7 +20,7 @@
 
     - [x] [Machine Learning - P1](1.md)
     - [x] [Machine Learning - P2](2.md)
-    - [ ] [Deep Learning](3.md)
+    - [x] [Deep Learning](3.md)
 
     >之前先列出了课程大纲，但感觉这样不太妥当，所以就重新按照我的理解编排目录了
 
