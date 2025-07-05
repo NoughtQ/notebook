@@ -600,6 +600,13 @@
 </a>
 </li>
 <li class="md-nav__item">
+<a class="md-nav__link" href="#changing-the-order-of-matrix-multiplication">
+<span class="md-ellipsis">
+      Changing the Order of Matrix Multiplication
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="#synthesizer">
 <span class="md-ellipsis">
       Synthesizer
@@ -841,6 +848,13 @@
 </a>
 </li>
 <li class="md-nav__item">
+<a class="md-nav__link" href="#changing-the-order-of-matrix-multiplication">
+<span class="md-ellipsis">
+      Changing the Order of Matrix Multiplication
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="#synthesizer">
 <span class="md-ellipsis">
       Synthesizer
@@ -872,7 +886,7 @@
 </a>
 <div><h1 id="self-attention">Self-Attention<a class="headerlink" href="#self-attention" title="Permanent link">⚓︎</a></h1>
 <div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
-<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>3704<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>19<span class="heti-spacing"> </span></span>分钟</p>
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>6118<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>31<span class="heti-spacing"> </span></span>分钟</p>
 </div>
 <p>之前我们介绍的模型，都只是将一个向量作为输入（比如<span class="heti-skip"><span class="heti-spacing"> </span>COVID-19<span class="heti-spacing"> </span></span>感染人数预测、图像处理等问题<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，输出的是一个标量（回归问题）或类（分类问题<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。而现在我们将要讨论这样的一个模型：将<strong>一组</strong>向量（向量序列）作为输入，输出的是多个标量或类；而且输入向量的个数是可变的。</p>
 <div style="text-align: center">
@@ -1187,15 +1201,248 @@
 <h2 id="variants">Variants<a class="headerlink" href="#variants" title="Permanent link">⚓︎</a></h2>
 <p>前面介绍的都是一般的自注意机制技术，实际上后人们在此基础上设计出各种“魔改版本”，想要在确保不影响表现的同时提升效率。下面我们就来认识这些各式各样的自注意机制变体吧！</p>
 <h3 id="skipping-some-calculations-with-human-knowledge">Skipping Some Calculations with Human Knowledge<a class="headerlink" href="#skipping-some-calculations-with-human-knowledge" title="Permanent link">⚓︎</a></h3>
+<p>先来回顾一般的自注意机制：假如序列长度为<span><span class="heti-spacing"> </span><span class="arithmatex">\(N\)</span></span>，那么中间产生的查询和键的数量也是<span><span class="heti-spacing"> </span><span class="arithmatex">\(N\)</span></span>，而查询序列和键序列相乘得到的注意矩阵的规模就是<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(N \times N\)</span><span class="heti-spacing"> </span></span>的了。</p>
+<div style="text-align: center">
+<img src="images/lec4/1.png" width="50%/"/>
+</div>
+<p>另外，我们还有以下发现：</p>
+<ul>
+<li>自注意机制只是整个网络中的一个模块</li>
+<li>当<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(N\)</span><span class="heti-spacing"> </span></span>很大时，自注意机制决定了整个的计算量</li>
+<li>上一点通常体现在图像处理等任务中<ul>
+<li>比如有一张<span class="heti-skip"><span class="heti-spacing"> </span>256x256<span class="heti-spacing"> </span></span>的图片，那么<span><span class="heti-spacing"> </span><span class="arithmatex">\(N = 256 \times 256\)</span></span>，注意矩阵就有<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(256^4\)</span><span class="heti-spacing"> </span></span>个元素，足以体现计算量之大</li>
+</ul>
+</li>
+</ul>
+<p>第一种提升计算效率（或减小计算量）的思路是利用我们人类已有的知识来避免不必要的计算。下面给出一些具体的方法。</p>
 <h4 id="local-attentiontruncated-attention">Local Attention/Truncated Attention<a class="headerlink" href="#local-attentiontruncated-attention" title="Permanent link">⚓︎</a></h4>
+<div style="text-align: center">
+<img src="images/lec4/2.png" width="70%/"/>
+</div>
+<ul>
+<li>注意矩阵中灰色方块对应的元素直接置<span><span class="heti-spacing"> </span>0</span>，不去计算；蓝色方块对应的元素需要计算注意权重</li>
+<li>该方法的思路是：输入向量只看相邻的<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>个向量，其他向量就不去管它</li>
+<li>思路上和<a href="3.html#cnn"><span class="heti-skip"><span class="heti-spacing"> </span>CNN<span class="heti-spacing"> </span></span></a>类似</li>
+<li>该方法能够加快计算速度，但不一定能给出非常好的结果</li>
+</ul>
 <h4 id="stride-attention">Stride Attention<a class="headerlink" href="#stride-attention" title="Permanent link">⚓︎</a></h4>
+<div style="text-align: center">
+<img src="images/lec4/3.png" width="70%/"/>
+</div>
+<ul>
+<li>类似前一种方法，但是看的是跳过几个向量后的向量</li>
+<li>跳过的步幅可以根据任务需求自行调整</li>
+</ul>
 <h4 id="global-attention">Global Attention<a class="headerlink" href="#global-attention" title="Permanent link">⚓︎</a></h4>
+<p><strong>全局注意</strong><span>(global attention)<span class="heti-spacing"> </span></span>的思路是：</p>
+<ul>
+<li>
+<p>在序列中设置一类带有特殊记号的向量</p>
+<ul>
+<li>
+<p>可以给原向量做特殊标记（上图<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，也可以插入带有这种特殊记号的新向量（下图）</p>
+<p></p><div style="text-align: center">
+<img src="images/lec4/4.png" width="40%/"/>
+</div>
+</li>
+</ul>
+</li>
+<li>
+<p>这些特殊向量会考虑序列中所有的向量，因而掌握了全局信息</p>
+</li>
+<li>其他向量也会考虑所有的特殊向量，从而得知全局信息</li>
+<li>一般向量就不会考虑其他一般向量</li>
+</ul>
+<details class="example" open="open">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<img src="images/lec4/5.png" width="40%/"/>
+</div>
+<p>不难看出，序列中的前两个向量带有特殊记号。</p>
+</details>
+<hr/>
+<p>上述这些方法并不互相排斥，实际上可以一起使用（<del>小孩子才做选择，我全都要！</del><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，比如：</p>
+<div style="text-align: center">
+<img src="images/lec4/6.png" width="70%/"/>
+</div>
 <h3 id="focusing-on-critical-parts">Focusing on Critical Parts<a class="headerlink" href="#focusing-on-critical-parts" title="Permanent link">⚓︎</a></h3>
+<p>上面通过人类知识简化计算的思路不一定给出最好的结果，所以我们来看另一种思路：对于一个已有的注意矩阵，每个元素的值有大有小。我们决定：</p>
+<ul>
+<li>对于较小的值，直接设为<span><span class="heti-spacing"> </span>0</span>，因为它们的影响不大，可以忽略</li>
+<li>所以计算时只关心较大的值</li>
+</ul>
+<div style="text-align: center">
+<img src="images/lec4/7.png" width="60%/"/>
+</div>
+<p>那么，接下来的问题就是：如何快速评估较小注意权重的占比呢？下面介绍一些相应的技术。</p>
 <h4 id="clustering">Clustering<a class="headerlink" href="#clustering" title="Permanent link">⚓︎</a></h4>
+<details class="info" open="open">
+<summary>注</summary>
+<p><a href="https://openreview.net/forum?id=rkgNKkHtvB"><span>Reformer<span class="heti-spacing"> </span></span></a>和<a href="https://arxiv.org/abs/2003.05997"><span class="heti-skip"><span class="heti-spacing"> </span>Routing Transformer<span class="heti-spacing"> </span></span></a>用到了这类技术。</p>
+</details>
+<p><strong>聚集</strong><span>(clustering)<span class="heti-spacing"> </span></span>技术的步骤如下：</p>
+<ol>
+<li>
+<p>基于查询和键的相似性分成多个集群<span><span class="heti-spacing"> </span>(cluster)</span></p>
+<ul>
+<li>该步一般采用近似方法来做，计算量不会很大</li>
+<li>下面的例子就是将查询和键划分成<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>个集群</li>
+</ul>
+<p></p><div style="text-align: center">
+<img src="images/lec4/8.png" width="70%/"/>
+</div>
+</li>
+<li>
+<p>在注意矩阵中，我们只计算那些位于同一集群中的查询和键的乘积，不同集群的就不去计算，直接置<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>就好了</p>
+<p></p><div style="text-align: center">
+<img src="images/lec4/9.png" width="70%/"/>
+</div>
+</li>
+</ol>
 <h3 id="learnable-patterns-sinkhorn-sorting-network">Learnable Patterns: Sinkhorn Sorting Network<a class="headerlink" href="#learnable-patterns-sinkhorn-sorting-network" title="Permanent link">⚓︎</a></h3>
+<p>到目前为止，所有的技术都是基于人类知识来实现的，但实际上还可以通过机器学习，让模型自己决定哪些注意权重需要计算，哪些可以忽略。有一种叫做 <strong><span>Sinkhorn<span class="heti-spacing"> </span></span>排序网络</strong><span>(Sinkhorn sorting network)<span class="heti-spacing"> </span></span>的技术便能做到这一点。</p>
+<div style="text-align: center">
+<img src="images/lec4/10.png" width="70%/"/>
+</div>
+<p>大致思路如下：</p>
+<ul>
+<li>输入序列的每个向量会经过一个神经网络，得到一组规模和注意矩阵一致的向量，这组向量会转化成要求的注意矩阵</li>
+<li>然而注意矩阵的注意权重只有<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>和<span><span class="heti-spacing"> </span>1</span>（离散的<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，而刚刚得到的那组向量是连续的，因此需要做进一步的处理</li>
+<li>这个处理过程正是原论文探讨的重点，这里不会细讲，感兴趣的读者可以网上搜索阅读</li>
+<li>由于通过神经网络得到的向量组是可微分的，因此可以通过训练提高精度</li>
+<li>实际上在原论文中，多个输入向量会共用一个经过神经网络得到的向量，从而减小计算量<ul>
+<li>但这样得到的向量组规模就比注意矩阵小了，因此在转化时还要“放大”这个向量组，使得规模匹配的上</li>
+</ul>
+</li>
+</ul>
 <h3 id="reducing-number-of-keys">Reducing Number of Keys<a class="headerlink" href="#reducing-number-of-keys" title="Permanent link">⚓︎</a></h3>
+<p>现在来思考一下：我们是否真的需要一个完整的注意矩阵吗？<a href="https://arxiv.org/abs/2006.04768"><span>Linformer<span class="heti-spacing"> </span></span></a>这篇论文探讨了这个问题，发现注意矩阵的<strong>秩</strong><span>(rank)<span class="heti-spacing"> </span></span>并不大，也就是说不少列是相互依赖的，是冗余的，那么我们可以尝试将这些多余的列删掉，从而减小计算量。</p>
+<div style="text-align: center">
+<img src="images/lec4/11.png" width="60%/"/>
+</div>
+<p>注意矩阵的列对应的是<strong>键</strong>，所以我们从原来<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(N\)</span><span class="heti-spacing"> </span></span>个键中挑出一些具有代表性的键出来，共计<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(K\)</span><span class="heti-spacing"> </span></span>个。相应地，<strong>值</strong>的数量也要从<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(N\)</span><span class="heti-spacing"> </span></span>降至<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(K\)</span><span class="heti-spacing"> </span></span>个。</p>
+<div style="text-align: center">
+<img src="images/lec4/12.png" width="70%/"/>
+</div>
+<details class="question" open="open">
+<summary>思考</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="" id="__tabbed_2_1" name="__tabbed_2" type="radio"/><input id="__tabbed_2_2" name="__tabbed_2" type="radio"/><div class="tabbed-labels"><label for="__tabbed_2_1">问题</label><label for="__tabbed_2_2">解答</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>能否减小查询的数量？</p>
+</div>
+<div class="tabbed-block">
+<p>视情况而定。首先要注意的一点是：查询的数量决定了输出的数量。</p>
+<ul>
+<li>有些任务（比如分类）可能只需要一个输出，这时可以尝试减小查询数量</li>
+<li>但有的任务要求每个输入都要有对应的输出，那么不应该改变输出长度，此时就不得减小查询数量</li>
+</ul>
+</div>
+</div>
+</div>
+</details>
+<p>那么具体该如何减小键的数量呢？下面给出一些方法：</p>
+<ul>
+<li><strong>压缩注意</strong>(compressed attention)：<ul>
+<li>采用 <strong>CNN</strong>，对整个序列扫描一遍，从而找出代表性的限量，缩短了序列长度</li>
+</ul>
+</li>
+<li><strong>Linformer</strong>：<ul>
+<li>将<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(N \times N\)</span><span class="heti-spacing"> </span></span>的注意矩阵和一个<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(N \times K\)</span><span class="heti-spacing"> </span></span>的矩阵相乘，从而得到让键的数量降至<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(K\)</span><span class="heti-spacing"> </span></span>个</li>
+<li>实际上实现了<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(N\)</span><span class="heti-spacing"> </span></span>个向量的<strong>线性组合</strong>(linear combination)</li>
+</ul>
+</li>
+</ul>
+<div style="text-align: center">
+<img src="images/lec4/13.png" width="70%/"/>
+</div>
+<h3 id="changing-the-order-of-matrix-multiplication">Changing the Order of Matrix Multiplication<a class="headerlink" href="#changing-the-order-of-matrix-multiplication" title="Permanent link">⚓︎</a></h3>
+<p>回顾一下：从数学层面上看，自注意机制本质上就是在做下面这样的矩阵乘法。</p>
+<div style="text-align: center">
+<img src="images/lec4/14.png" width="70%/"/>
+</div>
+<p>将最后一个矩阵乘法展开，我们发现实际上做的是一个三矩阵的乘法：</p>
+<div style="text-align: center">
+<img src="images/lec4/15.png" width="60%/"/>
+</div>
+<p>在<a href="../../algorithms/ads/8.html#ordering-matrix-multiplications"><span class="heti-skip"><span class="heti-spacing"> </span>ADS<span class="heti-spacing"> </span></span></a>中，我们讨论过：选择适当的矩阵乘法顺序有时可以显著降低计算量（甚至能减小好几个量级<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。所以这里我们尝试采用不同的乘法顺序来降低计算量。下面比较两种乘法顺序的计算量：</p>
+<div style="text-align: center">
+<img src="images/lec4/16.png" width="70%/"/>
+</div>
+<p>上图是原来的矩阵乘法，时间复杂度是<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(O(N^2)\)</span><span class="heti-spacing"> </span></span>的；下图就是改变顺序后的乘法，可以看到时间复杂度降至<span><span class="heti-spacing"> </span><span class="arithmatex">\(O(N)\)</span></span>。显然我们会采用下面这种乘法顺序，那么具体该怎么做呢？我们就从其中某个输出向量<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\bm{b}^1\)</span><span class="heti-spacing"> </span></span>来分析——其计算公式为（用到了<a href="2.html#softmax"><span><span class="heti-spacing"> </span>softmax</span></a><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
+<div class="arithmatex">\[
+\bm{b}^{\textcolor{green}{1}} = \sum\limits_{\textcolor{red}{i}=1}^N a_{\textcolor{green}{1}, \textcolor{red}{i}=1}' \bm{v}^{\textcolor{red}{i}} = \sum\limits_{\textcolor{red}{i}=1}^N \dfrac{\exp(\bm{q}^{\textcolor{green}{1}} \cdot \bm{k}^{\textcolor{red}{i}})}{\sum_{\textcolor{cornflowerblue}{j}=1}^N \exp(\bm{q}^{\textcolor{green}{1}} \cdot \bm{k}^{\textcolor{cornflowerblue}{j}})} \bm{v}^{\textcolor{red}{i}}
+\]</div>
+<div style="text-align: center">
+<img src="images/lec4/17.png" width="70%/"/>
+</div>
+<p>继续展开这个计算公式：</p>
+<div class="arithmatex">\[
+\begin{align}
+\bm{b}^{\textcolor{green}{1}} = \sum\limits_{\textcolor{red}{i}=1}^N a_{\textcolor{green}{1}, \textcolor{red}{i}=1}' \bm{v}^{\textcolor{red}{i}} &amp; = \sum\limits_{\textcolor{red}{i}=1}^N \dfrac{\exp(\bm{q}^{\textcolor{green}{1}} \cdot \bm{k}^{\textcolor{red}{i}})}{\sum_{\textcolor{cornflowerblue}{j}=1}^N \exp(\bm{q}^{\textcolor{green}{1}} \cdot \bm{k}^{\textcolor{cornflowerblue}{j}})} \bm{v}^{\textcolor{red}{i}} \notag \\
+&amp; = \sum\limits_{\textcolor{red}{i}=1}^N \dfrac{\varphi(\bm{q}^{\textcolor{green}{1}}) \cdot \varphi(\bm{k}^{\textcolor{red}{i}})}{\sum_{\textcolor{cornflowerblue}{j}=1}^N \varphi(\bm{q}^{\textcolor{green}{1}}) \cdot \varphi(\bm{k}^{\textcolor{cornflowerblue}{j}})} \bm{v}^{\textcolor{red}{i}} \notag \\
+&amp; = \dfrac{\sum\limits_{\textcolor{red}{i}=1}^N [\varphi(\bm{q}^{\textcolor{green}{1}}) \cdot \varphi(\bm{k}^{\textcolor{red}{i}})] \bm{v}^{\textcolor{red}{i}}}{\sum_{\textcolor{cornflowerblue}{j}=1}^N \varphi(\bm{q}^{\textcolor{green}{1}}) \cdot \varphi(\bm{k}^{\textcolor{cornflowerblue}{j}})} \notag
+\end{align}
+\]</div>
+<ul>
+<li>
+<p>第一行到第二行，我们用了这样的公式：
+    $$
+    \exp(\bm{q} \cdot \bm{k}) \approx \varphi(\bm{q}) \cdot \varphi(\bm{k})
+    $$</p>
+<p>其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\varphi()\)</span><span class="heti-spacing"> </span></span>是一个接收向量，输出也是向量的转换函数（暂时不用管具体是什么）</p>
+</li>
+<li>
+<p>对于最后一行公式中的分母部分，还可以进一步转化为：
+    $$
+    \varphi(\bm{q}^{\textcolor{green}{1}}) \cdot \sum_{\textcolor{cornflowerblue}{j}=1}^N \varphi(\bm{k}^{\textcolor{cornflowerblue}{j}})
+    $$</p>
+<p>这实际上是一个向量乘法：</p>
+<p></p><div style="text-align: center">
+<img src="images/lec4/18.png" width="30%/"/>
+</div>
+<p>黄色部分就是<span><span class="heti-spacing"> </span><span class="arithmatex">\(\sum_{\textcolor{cornflowerblue}{j}=1}^N \varphi(\bm{k}^{\textcolor{cornflowerblue}{j}})\)</span></span>，而红色则对应<span><span class="heti-spacing"> </span><span class="arithmatex">\(\varphi(\bm{q}^{\textcolor{green}{1}})\)</span></span></p>
+</li>
+<li>
+<p>再来看分子部分（下图蓝框框出来的公式<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，我们可以像这样展开
+    &gt;字太多了，不想打 <span class="arithmatex">\(\LaTeX\)</span> 公式了，所以就直接贴个截图...</p>
+<p></p><div style="text-align: center">
+<img src="images/lec4/19.png" width="80%/"/>
+</div>
+<p>用矩阵表示最后一行的式子（注意查询向量是<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(M\)</span><span class="heti-spacing"> </span></span>维的<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
+<p></p><div style="text-align: center">
+<img src="images/lec4/20.png" width="80%/"/>
+</div>
+</li>
+<li>
+<p>同时考虑分子分母，现在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\bm{b}^1\)</span><span class="heti-spacing"> </span></span>的计算变成了多个向量的乘除法了</p>
+<p></p><div style="text-align: center">
+<img src="images/lec4/21.png" width="70%/"/>
+</div>
+</li>
+</ul>
+<p>上面这种处理的好处是：图中灰色方框和黄色方框对应的部分仅需计算一次，之后计算输出向量时就可以复用这些结果，从而减小计算量。</p>
+<div style="text-align: center">
+<img src="images/lec4/22.png" width="60%/"/>
+</div>
+<p>其中灰色方框内的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(M\)</span><span class="heti-spacing"> </span></span>个向量（蓝色方块）称为<strong>模板</strong>(template)。</p>
+<div style="text-align: center">
+<img src="images/lec4/23.png" width="70%/"/>
+</div>
+<p>关于函数<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\varphi()\)</span><span class="heti-spacing"> </span></span>的具体实现，可以参考以下几篇<span><span class="heti-spacing"> </span>paper</span>：</p>
+<div style="text-align: center">
+<img src="images/lec4/24.png" width="60%/"/>
+</div>
 <h3 id="synthesizer">Synthesizer<a class="headerlink" href="#synthesizer" title="Permanent link">⚓︎</a></h3>
-<h3 id="attention-free-techniques">Attention-free Techniques<a class="headerlink" href="#attention-free-techniques" title="Permanent link">⚓︎</a></h3></div>
+<p>我们还可以再脑洞大开一点——计算自注意的时候一定要先算出查询和键吗？一种称为<strong>合成器</strong><span>(synthesizer)<span class="heti-spacing"> </span></span>的技术就跳过这个步骤——它的注意权重作为网络参数，是从模型中学出来的（和<a href="#learnable-patterns-sinkhorn-sorting-network"><span class="heti-skip"><span class="heti-spacing"> </span>Sinkhorn<span class="heti-spacing"> </span></span>排序网络</a>很像<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
+<div style="text-align: center">
+<img src="images/lec4/25.png" width="70%/"/>
+</div>
+<h3 id="attention-free-techniques">Attention-free Techniques<a class="headerlink" href="#attention-free-techniques" title="Permanent link">⚓︎</a></h3>
+<p>更进一步思考——处理序列的模型非要用到自注意机制吗？下面是一些尝试丢掉自注意机制的方案：</p>
+<div style="text-align: center">
+<img src="images/lec4/26.png" width="70%/"/>
+</div></div>
 <aside class="md-source-file">
 <span class="md-source-file__fact">
 <span class="md-icon" title="最后更新">
