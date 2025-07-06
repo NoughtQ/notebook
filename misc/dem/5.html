@@ -933,7 +933,7 @@
 </a>
 <div><h1 id="lec-5-多臂老虎机算法基础与应用"><span>Lec 5:<span class="heti-spacing"> </span></span>多臂老虎机算法基础与应用<a class="headerlink" href="#lec-5-%E5%A4%9A%E8%87%82%E8%80%81%E8%99%8E%E6%9C%BA%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80%E4%B8%8E%E5%BA%94%E7%94%A8" title="Permanent link">⚓︎</a></h1>
 <div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
-<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>7579<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>38<span class="heti-spacing"> </span></span>分钟</p>
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>7717<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>39<span class="heti-spacing"> </span></span>分钟</p>
 </div>
 <!-- head 元素一定要放在一级标题下面，不然标题就显示不出来了 -->
 <p></p>
@@ -942,6 +942,10 @@
 <link href="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.css" rel="stylesheet"/>
 <script src="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.js">
 </script>
+<div class="admonition warning">
+<p class="admonition-title">注</p>
+<p>本章涉及到很多概率论相关的知识，若有遗忘可以参考<a href="../../math/pro-sta/index.html">笔者的笔记</a>复习。</p>
+</div>
 <h2 id="随机多臂老虎机">随机多臂老虎机<a class="headerlink" href="#%E9%9A%8F%E6%9C%BA%E5%A4%9A%E8%87%82%E8%80%81%E8%99%8E%E6%9C%BA" title="Permanent link">⚓︎</a></h2>
 <h3 id="引入">引入<a class="headerlink" href="#%E5%BC%95%E5%85%A5" title="Permanent link">⚓︎</a></h3>
 <p>一般的机器学习任务有：</p>
@@ -960,6 +964,7 @@
 <li><strong>强化学习</strong>(reinforcement learning)</li>
 <li><strong>多臂老虎机</strong>：无状态转移的强化学习</li>
 </ul>
+<hr/>
 <p>一个赌鬼要玩多臂老虎机，摆在他面前有<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(K\)</span><span class="heti-spacing"> </span></span>个<strong>臂</strong><span>(arms)<span class="heti-spacing"> </span></span>或<strong>动作选择</strong>(actions)，每一轮游戏中，他要选择拉动一个臂并会获得一个随机<strong>奖励</strong>(reward)（这一随机奖励来源于一个赌场设定好的分布，但赌鬼一开始不知道这一分布<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。如果总共玩<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(T\)</span><span class="heti-spacing"> </span></span>轮，他该如何最大化奖励？</p>
 <div style="text-align: center">
 <img src="images/lec5/2.png" width="60%"/>
@@ -1007,7 +1012,7 @@
 </ul>
 <p>根据奖励类型分类：</p>
 <ul>
-<li>随机奖励<span class="heti-skip"><span class="heti-spacing"> </span>/IID<span class="heti-spacing"> </span></span>奖励：玩家或者的奖励随机取自一个未知概率分布</li>
+<li>随机奖励<span><span class="heti-spacing"> </span>/IID</span>（独立同分布）奖励：玩家获得的奖励随机取自一个未知概率分布</li>
 <li>对抗性奖励：奖励可以任意，能由一个“对手”有针对性的选择</li>
 <li>...</li>
 </ul>
@@ -1016,7 +1021,7 @@
 <ol>
 <li>玩家选择一个臂<span><span class="heti-spacing"> </span><span class="arithmatex">\(a_t \in A = \{a_1, \dots, a_K\}\)</span></span></li>
 <li>玩家获得该臂对应的随机奖励<span><span class="heti-spacing"> </span><span class="arithmatex">\(r_t \sim R(a_t)\ (r_t \in [0, 1])\)</span></span></li>
-<li>玩家依据过往轮次的奖励情况调整选择策略，实现奖励最大</li>
+<li>玩家依据过往轮次的奖励情况调整选择策略，实现奖励最大化</li>
 </ol>
 <div class="admonition note">
 <p class="admonition-title">说明</p>
@@ -1050,7 +1055,7 @@
 </div>
 <p>该不等式属于<strong>集中不等式</strong>(concentration inequalities)，直观上来说<span><span class="heti-spacing"> </span><span class="arithmatex">\(\mathbb{P}(|\mu - \overline{X_n}| \le \text{small}) \ge 1 - \text{small}\)</span></span>，即<strong>样本均值与实际均值的差距很小的概率是很大的</strong>，并且随机变量个数越多（<span><span class="arithmatex">\(N\)</span><span class="heti-spacing"> </span></span>越大）差距大的概率越小。</p>
 <p>与多臂老虎机问题的关联：将<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(X_1, \dots, X_n\)</span><span class="heti-spacing"> </span></span>视为选择一个臂<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span><span class="heti-spacing"> </span></span>次得到的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span><span class="heti-spacing"> </span></span>个奖励，这一不等式表明，当<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span><span class="heti-spacing"> </span></span>很大时，采样出的奖励均值和臂的真实均值是非常接近的。</p>
-<p>称<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\([\mu - \varepsilon, \mu + \epsilon]\)</span><span class="heti-spacing"> </span></span>是<strong>置信区间</strong>(confidence interval)，<span><span class="arithmatex">\(\varepsilon\)</span><span class="heti-spacing"> </span></span>是置信半径<span><span class="heti-spacing"> </span>(confidence radius)</span>。</p>
+<p>称<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\([\mu - \varepsilon, \mu + \epsilon]\)</span><span class="heti-spacing"> </span></span>是<strong>置信区间</strong>(confidence interval)，<span><span class="arithmatex">\(\varepsilon\)</span><span class="heti-spacing"> </span></span>是<strong>置信半径</strong>(confidence radius)。</p>
 <p>若令<span><span class="heti-spacing"> </span><span class="arithmatex">\(\varepsilon = \sqrt{\dfrac{\alpha \log T}{n}}\)</span></span>，则有</p>
 <div class="arithmatex">\[
 \mathbb{P}(|\mu - \overline{X_n}| \ge \varepsilon) = \mathbb{P}\Big(|\mu - \overline{X_n}| \ge \sqrt{\dfrac{\alpha \log T}{n}} \Big) \le 2T^{-2\alpha}, \forall\ \alpha &gt; 0
@@ -1062,7 +1067,7 @@
 \begin{algorithm}
 \caption{贪心算法}
 \begin{algorithmic}
-\STATE 探索阶段：将每个臂各尝试 $N$ 次
+\STATE 探索阶段：将每个臂各尝试 $N$ 次（共计 $KN$ 次）
 \STATE 利用阶段：
 \FOR{$t &gt; KN$}
     \STATE 选择平均奖励最高的臂 $\hat{a} = \arg \max_a Q_t(a)$
@@ -1075,13 +1080,22 @@
 <div class="arithmatex">\[
 Q_{t+1}(\hat{a}) = Q_t(\hat{a}) + \dfrac{r_t - Q_t(\hat{a})}{N_{t+1}(\hat{a})}
 \]</div>
-<p>则是在更新<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\hat{a}\)</span><span class="heti-spacing"> </span></span>的平均奖励。第<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(t\)</span><span class="heti-spacing"> </span></span>论未被选中的臂对应的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(N\)</span><span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(Q\)</span><span class="heti-spacing"> </span></span>值不变。</p>
+<p>则是在更新<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\hat{a}\)</span><span class="heti-spacing"> </span></span>的平均奖励。第<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(t\)</span><span class="heti-spacing"> </span></span>轮未被选中的臂对应的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(N\)</span><span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(Q\)</span><span class="heti-spacing"> </span></span>值不变。</p>
+<details class="info">
+<summary>补充说明</summary>
+<p>上面关于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(Q_{t+1}(\hat{a})\)</span><span class="heti-spacing"> </span></span>的式子可能不太直观。不过如果等号两边同乘以<span><span class="heti-spacing"> </span><span class="arithmatex">\(N_{t+1}(\hat{a})\)</span></span>，可以得到：</p>
+<div class="arithmatex">\[
+Q_{t+1}(\hat{a}) \cdot N_{t+1}(\hat{a}) = Q_t(\hat{a}) \cdot N_{t+1}(\hat{a}) + r_t - Q_t(\hat{a}) \\
+Q_{t+1}(\hat{a}) \cdot N_{t+1}(\hat{a}) = Q_t(\hat{a}) \cdot N_{t}(\hat{a}) + r_t
+\]</div>
+<p>这样是不是就很直观了？</p>
+</details>
 <h4 id="分析">分析<a class="headerlink" href="#%E5%88%86%E6%9E%90" title="Permanent link">⚓︎</a></h4>
 <div class="admonition theorem">
 <p class="admonition-title">定理</p>
 <p>贪心算法的遗憾界为<span><span class="heti-spacing"> </span><span class="arithmatex">\(O(T^{\frac{2}{3}}(K \log T)^{\frac{1}{3}})\)</span></span>。</p>
 </div>
-<p>首先考虑<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(K = 2\)</span><span class="heti-spacing"> </span></span>的情况，即只有两个臂。遗憾产生当且进档选择了次优臂<span><span class="heti-spacing"> </span><span class="arithmatex">\(a \ne a^*\)</span></span>。显然，探索阶段的遗憾为：</p>
+<p>首先考虑<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(K = 2\)</span><span class="heti-spacing"> </span></span>的情况，即只有两个臂。遗憾产生当且进当选择了次优臂<span><span class="heti-spacing"> </span><span class="arithmatex">\(a \ne a^*\)</span></span>。显然，探索阶段的遗憾为：</p>
 <div class="arithmatex">\[
 R(\text{exploration}) \le N
 \]</div>
@@ -1107,15 +1121,15 @@ R(\text{exploration}) \le N
 <div class="arithmatex">\[
 \mu(a) + \text{rad} \ge Q(a) &gt; Q(a^*) \ge \mu(a^*) - \text{rad}
 \]</div>
-<p>其中首尾两个<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\ge\)</span><span class="heti-spacing"> </span></span>来自<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(E\)</span><span class="heti-spacing"> </span></span>的定义，中间的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(&gt;\)</span><span class="heti-spacing"> </span></span>来源于此时产生了遗憾，即最好的臂的采样期望比次优的臂小。整理得<span><span class="heti-spacing"> </span><span class="arithmatex">\(\mu(a^*) - \mu(a) \le 2 \text{rad}\)</span></span>。那么</p>
+<p>其中首尾两个<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\ge\)</span><span class="heti-spacing"> </span></span>来自<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(E\)</span><span class="heti-spacing"> </span></span>的定义，中间的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(&gt;\)</span><span class="heti-spacing"> </span></span>来源于此时产生了遗憾，即最好的臂的采样期望比次优的臂小。整理得<span><span class="heti-spacing"> </span><span class="arithmatex">\(\mu(a^*) - \mu(a) \le 2\ \text{rad}\)</span></span>。那么</p>
 <div class="arithmatex">\[
 \begin{align}
 &amp; \mathbb{E}[R(\text{exploitation})] \notag \\
 \le &amp; \mathbb{E}[R(\text{exploitation})\ |\ E] + T \times O(\dfrac{1}{T^4}) \notag \\
-\le &amp; (T - 2N) \cdot 2 \text{rad} + O(\dfrac{1}{T^3}) \notag
+\le &amp; (T - 2N) \cdot 2\ \text{rad} + O(\dfrac{1}{T^3}) \notag
 \end{align}
 \]</div>
-<p>综合探索和利用的遗憾可得<span><span class="heti-spacing"> </span><span class="arithmatex">\(\mathbb{E}[R(T)] \le N + 2 \text{rad} T + O(\dfrac{1}{T^3})\)</span></span>。若令<span><span class="heti-spacing"> </span><span class="arithmatex">\(N = T^{\frac{2}{3}} (\log T)^{\frac{1}{3}}\)</span></span>，则有<span><span class="heti-spacing"> </span><span class="arithmatex">\(\mathbb{E}[R(T)] \le O(T^{\frac{2}{3}}(\log T)^{\frac{1}{3}})\)</span></span>。</p>
+<p>综合探索和利用的遗憾可得<span><span class="heti-spacing"> </span><span class="arithmatex">\(\mathbb{E}[R(T)] \le N + 2\ \text{rad} T + O(\dfrac{1}{T^3})\)</span></span>。若令<span><span class="heti-spacing"> </span><span class="arithmatex">\(N = T^{\frac{2}{3}} (\log T)^{\frac{1}{3}}\)</span></span>，则有<span><span class="heti-spacing"> </span><span class="arithmatex">\(\mathbb{E}[R(T)] \le O(T^{\frac{2}{3}}(\log T)^{\frac{1}{3}})\)</span></span>。</p>
 <hr/>
 <p>下面考虑<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(K &gt; 2\)</span><span class="heti-spacing"> </span></span>的情况：</p>
 <ul>
@@ -1131,12 +1145,12 @@ R(\text{exploration}) \le N(K - 1)
 \begin{align}
 &amp; \mathbb{E}[R(\text{exploitation})] \notag \\
 \le &amp; \mathbb{E}[R(\text{exploitation})\ |\ E] \times \mathbb{P}(E) + \mathbb{E}[R(\text{exploitation})\ |\ \overline{E}] \times \mathbb{P}(\overline{E}) \notag \\
-\le &amp; (T - KN) \cdot 2 \text{rad} + O(\dfrac{1}{T^3}) \notag
+\le &amp; (T - KN) \cdot 2\ \text{rad} + O(\dfrac{1}{T^3}) \notag
 \end{align}
 \]</div>
 </li>
 </ul>
-<p>综合探索和利用的遗憾可得<span><span class="heti-spacing"> </span><span class="arithmatex">\(\mathbb{E}[R(T)] \le KN + 2 \text{rad} T + O(\dfrac{1}{T^3})\)</span></span>。若令<span><span class="heti-spacing"> </span><span class="arithmatex">\(N = (\dfrac{T}{K})^{\frac{2}{3}} (\log T)^{\frac{1}{3}}\)</span></span>，则有<span><span class="heti-spacing"> </span><span class="arithmatex">\(\mathbb{E}[R(T)] \le O(T^{\frac{2}{3}}(K \log T)^{\frac{1}{3}})\)</span></span>。</p>
+<p>综合探索和利用的遗憾可得<span><span class="heti-spacing"> </span><span class="arithmatex">\(\mathbb{E}[R(T)] \le KN + 2\ \text{rad} T + O(\dfrac{1}{T^3})\)</span></span>。若令<span><span class="heti-spacing"> </span><span class="arithmatex">\(N = (\dfrac{T}{K})^{\frac{2}{3}} (\log T)^{\frac{1}{3}}\)</span></span>，则有<span><span class="heti-spacing"> </span><span class="arithmatex">\(\mathbb{E}[R(T)] \le O(T^{\frac{2}{3}}(K \log T)^{\frac{1}{3}})\)</span></span>。</p>
 <h3 id="varepsilon-贪心算法"><span><span class="arithmatex">\(\varepsilon\)</span>-<span class="heti-spacing"> </span></span>贪心算法<a class="headerlink" href="#varepsilon-%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95" title="Permanent link">⚓︎</a></h3>
 <p>回想上面的贪心算法存在两个问题：</p>
 <ul>
@@ -1169,10 +1183,19 @@ R(\text{exploration}) \le N(K - 1)
 <p class="admonition-title">定理</p>
 <p>令<span><span class="heti-spacing"> </span><span class="arithmatex">\(\varepsilon_t = t^{-\frac{1}{3}}(K \log t)^{\frac{1}{3}}\)</span></span>，<span><span class="arithmatex">\(\varepsilon\)</span>-<span class="heti-spacing"> </span></span>贪心算法的遗憾界为<span><span class="heti-spacing"> </span><span class="arithmatex">\(O(T^{\frac{2}{3}}(K \log T)^{\frac{1}{3}})\)</span></span>。</p>
 </div>
+<details class="proof">
+<summary>证明</summary>
+<p></p><div style="text-align: center">
+<img src="images/lec5/7.png" width="90%"/>
+</div>
+<p></p><div style="text-align: center">
+<img src="images/lec5/8.png" width="90%"/>
+</div>
+</details>
 <p>该算法的优势是简单易实现，并且可以通过调整<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\varepsilon\)</span><span class="heti-spacing"> </span></span>灵活控制探索与利用。</p>
 <h3 id="上置信界算法">上置信界算法<a class="headerlink" href="#%E4%B8%8A%E7%BD%AE%E4%BF%A1%E7%95%8C%E7%AE%97%E6%B3%95" title="Permanent link">⚓︎</a></h3>
 <p><span><span class="arithmatex">\(\varepsilon\)</span>-<span class="heti-spacing"> </span></span>贪心策略存在一个问题：虽然每个动作都有被选择的概率，但是这种选择太过于随机，导致最优臂被访问的概率较低，这并不能有助于智能体很大概率的发现最优选择，<strong>上置信界算法</strong>(upper confidence bound，<span>UCB)<span class="heti-spacing"> </span></span>很好地改进了这一点。</p>
-<p><span>UCB<span class="heti-spacing"> </span></span>算法是多臂赌博机问题中一种经典的基于置信区间的探索<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>利用策略。其核心思想是为每个臂的奖励估计构建一个置信区间上界，选择上界最大的臂，从而在探索和利用之间自动平衡。</p>
+<p><span>UCB<span class="heti-spacing"> </span></span>算法是多臂老虎机问题中一种经典的基于置信区间的探索<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>利用策略。其核心思想是为每个臂的奖励估计构建一个置信区间上界，选择上界最大的臂，从而在探索和利用之间自动平衡。</p>
 <pre class="pseudocode" linenumber="true">
 \begin{algorithm}
 \caption{上置信界算法}
@@ -1191,7 +1214,7 @@ R(\text{exploration}) \le N(K - 1)
 </pre>
 <p>简而言之，<span>UCB<span class="heti-spacing"> </span></span>的算法流程是：首先将每一个候选臂都选择一遍，作为初始化；然后在后续的时间步中，选择奖励均值估计量的上置信界最大的臂，其中均值估计量的上置信界定义为：</p>
 <div class="arithmatex">\[
-Q_t(a) = \sqrt{\dfrac{2 \ln t}{N_t(a)}}
+Q_t(a) + \sqrt{\dfrac{2 \ln t}{N_t(a)}}
 \]</div>
 <p>最后更新被选中的臂的相关参数。其中上置信界的直观理解是：</p>
 <ul>
@@ -1226,7 +1249,7 @@ Q_t(a) = \sqrt{\dfrac{2 \ln t}{N_t(a)}}
 \STATE 对于每个候选臂 $k = 1, 2, \dots, K$，令 $S_1(a_k) = 0, F_1(a_k) = 0$
 \FOR{$t = 1, \dots, T$}
     \FOR{$k = 1, \dots, K$}
-        \STATE 从 $Beta(S_T(a_k) + 1, F_t(a_k) + 1)$ 分布中采样 $\theta_t(a_k)$
+        \STATE 从 $Beta(S_t(a_k) + 1, F_t(a_k) + 1)$ 分布中采样 $\theta_t(a_k)$
     \ENDFOR
     \STATE 选择 $a_t = \arg \max_a \theta_t(a)$，并观察奖励 $r_t$
     \IF{$r_t = 1$}
@@ -1288,7 +1311,7 @@ Q_t(a) = \sqrt{\dfrac{2 \ln t}{N_t(a)}}
 <ol>
 <li>玩家选择一个行动集合<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\([n] = \{1, \dots, n\}\)</span><span class="heti-spacing"> </span></span>上的概率分布<span><span class="heti-spacing"> </span><span class="arithmatex">\(p_t\)</span></span></li>
 <li><strong>对手在已知<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(p_t\)</span><span class="heti-spacing"> </span></span>的情况下选择一个代价向量<span><span class="heti-spacing"> </span><span class="arithmatex">\(c_t \in [0, 1]^n\)</span></span></strong>，即为每一个行动选择一个代价</li>
-<li>玩家选择一个行动<span><span class="heti-spacing"> </span><span class="arithmatex">\(i_t \sim p_t\)</span></span>，并且观察到代价<span><span class="heti-spacing"> </span><span class="arithmatex">\(c_t(t_i)\)</span></span></li>
+<li>玩家选择一个行动<span><span class="heti-spacing"> </span><span class="arithmatex">\(i_t \sim p_t\)</span></span>，并且观察到代价<span><span class="heti-spacing"> </span><span class="arithmatex">\(c_t(i_t)\)</span></span></li>
 <li>玩家学到整个<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(c_t\)</span><span class="heti-spacing"> </span></span>以调整未来的策略</li>
 </ol>
 <div class="admonition note">
@@ -1296,11 +1319,11 @@ Q_t(a) = \sqrt{\dfrac{2 \ln t}{N_t(a)}}
 <ul>
 <li>玩家的目标：选取一个策略序列<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(p_1, p_2, \dots, p_T\)</span><span class="heti-spacing"> </span></span>使得总代价最小（和此前的奖励最大相对<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，即最小化期望代价<span><span class="heti-spacing"> </span><span class="arithmatex">\(\mathbb{E}_{i_t \sim p_t}[\sum\limits_{t=1}^Tc_t(i_t)]\)</span></span></li>
 <li>对手不一定非要存在，其实<strong>只是一个最差结果分析</strong></li>
-<li>此处玩家不仅能学到选择的行动的代价，事实上可以学到所有行动的代价，因此是<strong>全反馈</strong>的情况，与此前情况不同</li>
+<li>此处玩家不仅能学到选择的行动代价，事实上可以学到所有行动代价，因此是<strong>全反馈</strong>的情况，与此前情况不同</li>
 </ul>
 </div>
 <h3 id="遗憾的定义">遗憾的定义<a class="headerlink" href="#%E9%81%97%E6%86%BE%E7%9A%84%E5%AE%9A%E4%B9%89" title="Permanent link">⚓︎</a></h3>
-<p>接下来希望找到一个好的’‘在线学习算法，想法仍然是定义遗憾，但此时遗憾的定义因为对手不是随机抽取的成本，因此需要调整。</p>
+<p>接下来希望找到一个“好的”在线学习算法，想法仍然是定义遗憾，但此时遗憾的定义因为对手不是随机抽取的成本，因此需要调整。</p>
 <p>第一种遗憾定义的想法是，与所有轮次结束后（每一轮的成本都已知）的事后最优作差，然而下面的例子表明这一定义是不合理的：</p>
 <details class="example" open="open">
 <summary>例子</summary>
@@ -1317,8 +1340,8 @@ R_T = \mathbb{E}_{i_t \sim p_t} \Big[\sum\limits_{t=1}^T c_t (t_i) \Big] - \min\
 <p>即遗憾被定义成了<strong>和每轮都选择同一行动的最优的固定行动的代价之差</strong>，这样的定义相对而言更加合理：</p>
 <ul>
 <li>在前面的例子中，固定策略序列（全选<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>或<span><span class="heti-spacing"> </span>1</span>）的遗憾不再是简单的<span><span class="heti-spacing"> </span>0</span>；</li>
-<li>平均遗憾：<span class="arithmatex">\(\dfrac{\overline{R_T}}{R}\)</span>，若<span><span class="heti-spacing"> </span><span class="arithmatex">\(T \rightarrow \infty, \dfrac{\overline{R_T}}{R} \rightarrow 0\)</span></span>，则称算法是<strong>无憾</strong><span>(no-regret)<span class="heti-spacing"> </span></span>的；等价的即<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(R_T\)</span><span class="heti-spacing"> </span></span>关于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(R\)</span><span class="heti-spacing"> </span></span>是次线性的
-• 这一定义的合理性在于，有自然的算法实现无憾，但无憾的实现也不是平凡的</li>
+<li>平均遗憾：<span class="arithmatex">\(\dfrac{\overline{R_T}}{R}\)</span>，若<span><span class="heti-spacing"> </span><span class="arithmatex">\(T \rightarrow \infty, \dfrac{\overline{R_T}}{R} \rightarrow 0\)</span></span>，则称算法是<strong>无憾</strong><span>(no-regret)<span class="heti-spacing"> </span></span>的；等价的即<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(R_T\)</span><span class="heti-spacing"> </span></span>关于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(R\)</span><span class="heti-spacing"> </span></span>是次线性的</li>
+<li>这一定义的合理性在于，有自然的算法实现无憾，但无憾的实现也不是平凡的</li>
 </ul>
 <h3 id="跟风算法">跟风算法<a class="headerlink" href="#%E8%B7%9F%E9%A3%8E%E7%AE%97%E6%B3%95" title="Permanent link">⚓︎</a></h3>
 <p>接下来的目标就是设计一个无憾的在线学习算法。首先介绍一个最简单的在线学习算法：<strong>跟风算法</strong>(Follow-The-Leader, FTL)</p>
@@ -1370,8 +1393,8 @@ R_T = \mathbb{E}_{i_t \sim p_t} \Big[\sum\limits_{t=1}^T c_t (t_i) \Big] - \min\
 <p>事实上，任意的确定性算法都会有线性级别的遗憾：<span class="arithmatex">\(\dfrac{n-1}{n}T\)</span>，其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span><span class="heti-spacing"> </span></span>是可能行动的个数：</p>
 <ul>
 <li>对手是知道我们的算法的，因此如果采用确定性算法，对手可以直接推断出我们每一步的选择，从而设置我们选择的行为有代价<span><span class="heti-spacing"> </span>1</span>，其余行为代价为<span><span class="heti-spacing"> </span>0</span></li>
-<li>这样玩家的总代价为<span><span class="heti-spacing"> </span><span class="arithmatex">\(T\)</span></span>，而最优固定行动算法的总代价最高为<span><span class="heti-spacing"> </span><span class="arithmatex">\(\dfrac{T}{n}\)</span></span> （因为有<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span><span class="heti-spacing"> </span></span>种可能的行动）
-• 如果采用随机策略，则对手只能推断出我们的概率分布 <span class="arithmatex">\(p_t\)</span>，而不能推断出我们的具体行动 <span class="arithmatex">\(i_t \sim p_t\)</span>，因此对手无法完美利用我们的算法</li>
+<li>这样玩家的总代价为<span><span class="heti-spacing"> </span><span class="arithmatex">\(T\)</span></span>，而最优固定行动算法的总代价最高为<span><span class="heti-spacing"> </span><span class="arithmatex">\(\dfrac{T}{n}\)</span></span> （因为有<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span><span class="heti-spacing"> </span></span>种可能的行动）</li>
+<li>如果采用随机策略，则对手只能推断出我们的概率分布<span><span class="heti-spacing"> </span><span class="arithmatex">\(p_t\)</span></span>，而不能推断出我们的具体行动<span><span class="heti-spacing"> </span><span class="arithmatex">\(i_t \sim p_t\)</span></span>，因此对手无法完美利用我们的算法</li>
 </ul>
 <p>因此需要引入随机化来避免对手的推断，下面从一个简单的例子入手，引出无憾算法：乘性权重算法。</p>
 <h3 id="mwu-算法"><span>MWU<span class="heti-spacing"> </span></span>算法<a class="headerlink" href="#mwu-%E7%AE%97%E6%B3%95" title="Permanent link">⚓︎</a></h3>
@@ -1490,7 +1513,6 @@ W_{t+1} &amp; \ge w_{t+1}(i) = w_1(i) \cdot \prod\limits_{t=1}^T(1 - \varepsilon
 </details>
 <div class="admonition note">
 <p class="admonition-title">注</p>
-</div>
 <ul>
 <li>注意<span class="heti-skip"><span class="heti-spacing"> </span>MWU<span class="heti-spacing"> </span></span>算法对于任意的代价序列都是无憾的，这就是对抗性的意义，上述证明也不依赖于任何对代价序列的假设；</li>
 <li>如果使用<span><span class="heti-spacing"> </span><span class="arithmatex">\(w_{t+1}(i) = w_t(i) \cdot e^{-\varepsilon c_t(i)}\)</span></span>，因为<span><span class="heti-spacing"> </span><span class="arithmatex">\(e^{-\varepsilon} \approx 1 - \varepsilon\)</span></span>，因此也是可以进行类似的分析的<ul>
@@ -1499,6 +1521,7 @@ W_{t+1} &amp; \ge w_{t+1}(i) = w_1(i) \cdot \prod\limits_{t=1}^T(1 - \varepsilon
 </li>
 <li>如果从全反馈更换为老虎机反馈，算法思路不变，得到的是<a href="https://en.wikipedia.org/wiki/Multi-armed_bandit#Exp3"><span class="heti-skip"><span class="heti-spacing"> </span>Exp3<span class="heti-spacing"> </span></span>算法</a></li>
 </ul>
+</div>
 <h2 id="多臂老虎机的应用">多臂老虎机的应用<a class="headerlink" href="#%E5%A4%9A%E8%87%82%E8%80%81%E8%99%8E%E6%9C%BA%E7%9A%84%E5%BA%94%E7%94%A8" title="Permanent link">⚓︎</a></h2>
 <h3 id="基本思想">基本思想<a class="headerlink" href="#%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3" title="Permanent link">⚓︎</a></h3>
 <ul>
@@ -1519,7 +1542,7 @@ W_{t+1} &amp; \ge w_{t+1}(i) = w_1(i) \cdot \prod\limits_{t=1}^T(1 - \varepsilon
 <p>显然，最简单的想法就是通过二分搜索迅速达到这一精度：最多需要<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\log N\)</span><span class="heti-spacing"> </span></span>次的搜索来实现这一精度。</p>
 <h3 id="二分搜索">二分搜索<a class="headerlink" href="#%E4%BA%8C%E5%88%86%E6%90%9C%E7%B4%A2" title="Permanent link">⚓︎</a></h3>
 <ul>
-<li>如果的确遇到了最坏的情况，<span><span class="arithmatex">\(\log N\)</span><span class="heti-spacing"> </span></span>次搜索之后，可以设置到价格<span><span class="heti-spacing"> </span><span class="arithmatex">\(p \ge \tilde{v} - \dfrac{1}{N}\)</span></span>，其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\tilde{v}\)</span><span class="heti-spacing"> </span></span>是我们第<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(log N\)</span><span class="heti-spacing"> </span></span>轮学习到的值</li>
+<li>如果的确遇到了最坏的情况，<span><span class="arithmatex">\(\log N\)</span><span class="heti-spacing"> </span></span>次搜索之后，可以设置到价格<span><span class="heti-spacing"> </span><span class="arithmatex">\(p \ge \tilde{v} - \dfrac{1}{N}\)</span></span>，其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\tilde{v}\)</span><span class="heti-spacing"> </span></span>是我们第<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\log N\)</span><span class="heti-spacing"> </span></span>轮学习到的值</li>
 <li>在这种情况下，<span><span class="arithmatex">\(N\)</span><span class="heti-spacing"> </span></span>轮之后的总收益是</li>
 </ul>
 <div class="arithmatex">\[
