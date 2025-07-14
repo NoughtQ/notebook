@@ -746,7 +746,7 @@
 </a>
 <div><h1 id="generative-adversarial-network">Generative Adversarial Network<a class="headerlink" href="#generative-adversarial-network" title="Permanent link">⚓︎</a></h1>
 <div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
-<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>4359<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>22<span class="heti-spacing"> </span></span>分钟</p>
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>5757<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>29<span class="heti-spacing"> </span></span>分钟</p>
 </div>
 <h2 id="basic-idea">Basic Idea<a class="headerlink" href="#basic-idea" title="Permanent link">⚓︎</a></h2>
 <p>本讲将会介绍一种用于<strong>生成</strong><span>(generation)<span class="heti-spacing"> </span></span>任务的网络。相比一般的网络，它的一大特殊之处在于：网络除了接收常规输入<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x\)</span><span class="heti-spacing"> </span></span>外，还会将一个简单的分布（即可以用分布函数<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>概率密度函数表示出来的分布）<span><span class="arithmatex">\(z\)</span><span class="heti-spacing"> </span></span>作为输入，因而得到的输出是一个更为复杂的分布<span><span class="heti-spacing"> </span><span class="arithmatex">\(y\)</span></span>，如下所示：</p>
@@ -1184,13 +1184,148 @@ V(D, G) = E_{y \sim P_{data}}[\log D(y)] + E_{y \sim P_G}[\log (1 - D(y))]
 </div>
 </li>
 </ul>
-<p>前面介绍的多样性评估和质量评估看似有些矛盾。所以曾经有一种常用的标准是<strong>起始分数</strong>(Inception Score, IS)——当质量越高，多样性越大时，<span>IS<span class="heti-spacing"> </span></span>越大。但这个标准比较傻，比如对于不同的人像，人类能够识别到不同的发色、眼睛等，但对于采用<span class="heti-skip"><span class="heti-spacing"> </span>IS<span class="heti-spacing"> </span></span>的模型而言都是人脸，所以它认为多样性不是很大。</p>
-<p>另一种标准是<strong>弗雷歇起始距离</strong>(Fréchet Inception Distance, FID)，它的计算</p>
+<p>前面介绍的多样性评估和质量评估看似有些矛盾。所以曾经有一种常用的标准是<strong>起始分数</strong>(Inception Score, <strong>IS</strong>)——当质量越高，多样性越大时，<span>IS<span class="heti-spacing"> </span></span>越大。但这个标准比较傻，比如对于不同的人像，人类能够识别到不同的发色、眼睛等，但对于采用<span class="heti-skip"><span class="heti-spacing"> </span>IS<span class="heti-spacing"> </span></span>的模型而言都是人脸，所以它认为多样性不是很大。</p>
+<p>另一种标准是<strong>弗雷歇起始距离</strong>(Fréchet Inception Distance, <strong>FID</strong>)，它的计算方法是：</p>
+<ul>
+<li>获取（计算起始分数的）网络中倒数第二层的输出（原来最后的输出是经过<span class="heti-skip"><span class="heti-spacing"> </span>softmax<span class="heti-spacing"> </span></span>后的结果，只保留了一个结论<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，这还是一个能够代表图像的向量</li>
+<li>为方便期间，下图用蓝色的点来表示这样的向量，而黄色的点对应真实图像的向量</li>
+<li>我们假定这些向量的分布就是正态分布，这两个分布的间距就是<span><span class="heti-spacing"> </span>FID</span></li>
+<li><span>FID<span class="heti-spacing"> </span></span>越小，代表两组图像越接近，那么生成图像质量也就越高</li>
+<li>这个方法存在一些问题<ul>
+<li>假定是正态分布，但实际上并不一定成立</li>
+<li>要准确得到分布，需要采样大量数据</li>
+</ul>
+</li>
+</ul>
 <div style="text-align: center">
 <img src="images/lec6/56.png" width="70%/"/>
 </div>
+<details class="example">
+<summary><span>FID<span class="heti-spacing"> </span></span>的应用</summary>
+<p></p><div style="text-align: center">
+<img src="images/lec6/57.png" width="70%/"/>
+</div>
+</details>
+<hr/>
+<p>即便是<span><span class="heti-spacing"> </span>FID</span>，也没法解决这样的问题：生成的图片<span class="heti-skip"><span class="heti-spacing"> </span>FID<span class="heti-spacing"> </span></span>很小，但是缺乏“创新”，比如仅仅生成和真实图像一模一样的图像，或者只是简单地对原图像做了翻转工作，这显然不是我们想要的效果。</p>
+<div style="text-align: center">
+<img src="images/lec6/58.png" width="50%/"/>
+</div>
+<details class="abstract">
+<summary>一篇关于各种<span class="heti-skip"><span class="heti-spacing"> </span>GAN<span class="heti-spacing"> </span></span>评估方法的评价的论文</summary>
+<p></p><div style="text-align: center">
+<img src="images/lec6/59.png" width="70%/"/>
+</div>
+</details>
 <h2 id="conditional-generation">Conditional Generation<a class="headerlink" href="#conditional-generation" title="Permanent link">⚓︎</a></h2>
-<h2 id="learning-from-unpaired-data">Learning from Unpaired Data<a class="headerlink" href="#learning-from-unpaired-data" title="Permanent link">⚓︎</a></h2></div>
+<p>从结构上来看，<strong>条件生成</strong><span>(conditional generation)<span class="heti-spacing"> </span></span>就是在无条件生成的基础上加了个固定的输入<span><span class="heti-spacing"> </span><span class="arithmatex">\(x\)</span></span>。</p>
+<div style="text-align: center">
+<img src="images/lec6/60.png" width="50%/"/>
+</div>
+<p>条件生成的一大应用是<strong>文生图</strong>(text-to-image)。文生图是一个<a href="7.html"><strong>自监督学习</strong></a>（下一讲就会介绍）的问题，需要一些标注好的数据<span><span class="heti-spacing"> </span>(labelled data)</span>，在这个任务中就是一些对图像特征有一定描述的图像（对应输入<span><span class="heti-spacing"> </span><span class="arithmatex">\(z\)</span></span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。而固定输入<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x\)</span><span class="heti-spacing"> </span></span>就是一段文本，表述用户希望生成什么样的图像。</p>
+<div style="text-align: center">
+<img src="images/lec6/61.png" width="70%/"/>
+</div>
+<p>下面来看<span class="heti-skip"><span class="heti-spacing"> </span>GAN<span class="heti-spacing"> </span></span>的具体模块：</p>
+<ul>
+<li>
+<p>生成器：就多了个输入<span><span class="heti-spacing"> </span><span class="arithmatex">\(x\)</span></span></p>
+<p></p><div style="text-align: center">
+<img src="images/lec6/62.png" width="60%/"/>
+</div>
+</li>
+<li>
+<p>判别器</p>
+<ul>
+<li>如果保留原来的判别器结构，那么虽然仍然可以生成高质量的图像，但是图像内容和文本描述<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x\)</span><span class="heti-spacing"> </span></span>不一定能匹配上，因为判别器可没有考虑到<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x\)</span><span class="heti-spacing"> </span></span>的存在</li>
+<li>所以判别器也要将<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x\)</span><span class="heti-spacing"> </span></span>作为输入，输出不仅能够反映<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(y\)</span><span class="heti-spacing"> </span></span>的质量，还能体现出<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x\)</span><span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(y\)</span><span class="heti-spacing"> </span></span>的匹配程度（比如只有质量高<span class="heti-skip"><span class="heti-spacing"> </span>+<span class="heti-spacing"> </span></span>完全匹配才给<span><span class="heti-spacing"> </span>1</span>，只要少一样就给<span><span class="heti-spacing"> </span>0</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，从而起到训练效果</li>
+</ul>
+<p></p><div style="text-align: center">
+<img src="images/lec6/63.png" width="70%/"/>
+</div>
+</li>
+</ul>
+<details class="example" open="open">
+<summary>各种应用</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:3"><input checked="" id="__tabbed_4_1" name="__tabbed_4" type="radio"/><input id="__tabbed_4_2" name="__tabbed_4" type="radio"/><input id="__tabbed_4_3" name="__tabbed_4" type="radio"/><div class="tabbed-labels"><label for="__tabbed_4_1">图像翻译（图生图）</label><label for="__tabbed_4_2">音生图</label><label for="__tabbed_4_3">让蒙娜丽莎“说话”</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>这个任务要求模型能根据用户输入的简笔画，生成真实世界中对应的图像。</p>
+<p></p><div style="text-align: center">
+<img src="images/lec6/64.png" width="70%/"/>
+</div>
+<p>但是只用<span class="heti-skip"><span class="heti-spacing"> </span>GAN<span class="heti-spacing"> </span></span>的话，可能会画出不存在的物体，因为<span class="heti-skip"><span class="heti-spacing"> </span>GAN<span class="heti-spacing"> </span></span>的创造力可能有些过头了。这个时候可以结合自监督学习的方法得到更好的效果。</p>
+<p></p><div style="text-align: center">
+<img src="images/lec6/65.png" width="70%/"/>
+</div>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec6/66.png" width="70%/"/>
+</div>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec6/67.gif" width="70%/"/>
+</div>
+</div>
+</div>
+</div>
+</details>
+<h2 id="learning-from-unpaired-data">Learning from Unpaired Data<a class="headerlink" href="#learning-from-unpaired-data" title="Permanent link">⚓︎</a></h2>
+<p>最后来谈谈如何将<span class="heti-skip"><span class="heti-spacing"> </span>GAN<span class="heti-spacing"> </span></span>用在<strong>无监督学习</strong><span>(unsupervised learning)<span class="heti-spacing"> </span></span>上。前面讲的基本都是自监督学习，需要成对的数据（一个输入<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x\)</span><span class="heti-spacing"> </span></span>匹配一个输出<span><span class="heti-spacing"> </span><span class="arithmatex">\(y\)</span></span>）才能训练起来。但有时我们会遇到<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x\)</span><span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(y\)</span><span class="heti-spacing"> </span></span>没有匹配<span class="heti-skip"><span class="heti-spacing"> </span>(unpaired)<span class="heti-spacing"> </span></span>的情况，像这样的数据被认为是未标注的<span><span class="heti-spacing"> </span>(unlabelled)</span>。</p>
+<div style="text-align: center">
+<img src="images/lec6/68.png" width="50%/"/>
+</div>
+<p>尽管作业中给出了<span class="heti-skip"><span class="heti-spacing"> </span>pseudo labeling<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>back translation<span class="heti-spacing"> </span></span>这样的解决方案，但是它们还是需要一定量的成对数据，因此我们需要考虑完全使用不成对数据的方法。先来看图像风格转换<span class="heti-skip"><span class="heti-spacing"> </span>(image style transfer)<span class="heti-spacing"> </span></span>这一任务，它的要求是将真人图像（<span><span class="arithmatex">\(x\)</span><span class="heti-spacing"> </span></span>域）转换为二次元风格的图像（<span><span class="arithmatex">\(y\)</span><span class="heti-spacing"> </span></span>域<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，而这两个域内的数据是不成对的。</p>
+<div style="text-align: center">
+<img src="images/lec6/69.png" width="70%/"/>
+</div>
+<p>要想从这样的数据中训练出模型，用到的技术是<strong>无监督条件生成</strong>(unsupervised conditional generation)。</p>
+<p>如果用的是原来的网络架构，示意图如下所示：</p>
+<div style="text-align: center">
+<img src="images/lec6/70.png" width="70%/"/>
+</div>
+<p>要考虑生成器和判别器的话，内部大概长这样：</p>
+<div style="text-align: center">
+<img src="images/lec6/71.png" width="70%/"/>
+</div>
+<p>乍看之下好像没毛病，但仔细思考一下不难发现这样的问题：生成器要想“骗过”判别器，只要能够生成高质量的二次元图像就行了，无需考虑输入图像到底是什么，反正判别器不会看这个东西，因此整个<span class="heti-skip"><span class="heti-spacing"> </span>GAN<span class="heti-spacing"> </span></span>可能会生成和输入图像没有任何关系的二次元图像。</p>
+<div style="text-align: center">
+<img src="images/lec6/72.png" width="70%/"/>
+</div>
+<p>为了避免这一情况出现，除了原有的从<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x\)</span><span class="heti-spacing"> </span></span>到<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(y\)</span><span class="heti-spacing"> </span></span>的生成器（记作<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(G_{x \rightarrow y}\)</span><span class="heti-spacing"> </span></span>外，还需新增一个生成器<span><span class="heti-spacing"> </span><span class="arithmatex">\(G_{y \rightarrow x}\)</span></span>，将<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(G_{x \rightarrow y}\)</span><span class="heti-spacing"> </span></span>生成的二次元图像<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(y\)</span><span class="heti-spacing"> </span></span>重新转换为真人图像，然后比较这个生成出来的真人图像和原来的真人图像间的差异（两张图像对应两个向量，向量之间的距离越小表明二者越接近<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。这样就能确保生成的二次元图像不会和真人图像相差甚远，否则二次元图像转换为真人图像这步就要出岔子了。</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="5:2"><input checked="" id="__tabbed_5_1" name="__tabbed_5" type="radio"/><input id="__tabbed_5_2" name="__tabbed_5" type="radio"/><div class="tabbed-labels"><label for="__tabbed_5_1">错误示范</label><label for="__tabbed_5_2">正确示范</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec6/73.png" width="70%/"/>
+</div>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec6/74.png" width="70%/"/>
+</div>
+</div>
+</div>
+</div>
+<div class="admonition info">
+<p class="admonition-title">注</p>
+<p>尽管模型有可能会学到一些奇怪的转换（比如将图像翻转，或者将眼镜转化为脸上的痣<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，但实践上很少会遇到这样的情况，所以不必过于担心。</p>
+</div>
+<p>另外，我们还会对二次元图像做类似的转换，即让二次元图像先过一遍生成器<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(G_{y \rightarrow x}\)</span><span class="heti-spacing"> </span></span>得到真人图像，再将这个真人图像过一遍生成器<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(G_{x \rightarrow y}\)</span><span class="heti-spacing"> </span></span>得到二次元图像，然后比较两个二次元图像的接近程度。这两个转换和在一起构成的<span class="heti-skip"><span class="heti-spacing"> </span>GAN<span class="heti-spacing"> </span></span>叫做<strong>Cycle GAN</strong>。</p>
+<div style="text-align: center">
+<img src="images/lec6/75.png" width="70%/"/>
+</div>
+<details class="example">
+<summary>其他类似的技术</summary>
+<p></p><div style="text-align: center">
+<img src="images/lec6/76.png" width="70%/"/>
+</div>
+<p></p><div style="text-align: center">
+<img src="images/lec6/77.png" width="70%/"/>
+</div>
+</details></div>
 <aside class="md-source-file">
 <span class="md-source-file__fact">
 <span class="md-icon" title="最后更新">
