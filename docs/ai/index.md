@@ -6,8 +6,8 @@
 
 ## Table of Contents
 
-- [UCB CS188](cs188/index.md)（AI入门课程，被我鸽掉了hh）
-- [李宏毅机器学习 2022 spring](ml/index.md)
+- [李宏毅机器学习](ml/index.md)
+- [计算机视觉导论](cv/index.md)
 
 TBD
 
