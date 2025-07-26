@@ -575,8 +575,116 @@
 </a>
 <div><h1 id="adaptation">Adaptation<a class="headerlink" href="#adaptation" title="Permanent link">⚓︎</a></h1>
 <div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
-<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>个字 </p>
-</div></div>
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>1173<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>6<span class="heti-spacing"> </span></span>分钟</p>
+</div>
+<p>在之前的学习中，我们已经接触过大量的<span class="heti-skip"><span class="heti-spacing"> </span>ML<span class="heti-spacing"> </span></span>技术，所以训练一个一般的分类器对我们来说是小菜一碟的。然而，当测试数据和训练数据的分布不太一样时（比如在手写数字识别任务中，训练数据是黑底白字，而测试数据是彩色背景和数字<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，分类器的表现就不太理想了。</p>
+<div style="text-align: center">
+<img src="images/lec10/1.png" width="60%/"/>
+</div>
+<p>上述这种现象被称为<strong>域偏移</strong>(domain shift)。在谈论域偏移的时候，我们一般将训练数据记作<strong>源域</strong>(source domain)，将测试数据记作<strong>目标域</strong>(target domain)。除了上述域偏移的情况外，还有以下例子：</p>
+<div style="text-align: center">
+<img src="images/lec10/2.png" width="60%/"/>
+</div>
+<p>解决域偏移的方法叫做<strong>域适应</strong>(domain adaptation)（类似<a href="https://youtu.be/qD6iD4TFsdQ"><strong>转移学习</strong></a>(transfer learning)<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。通常认为源域中的数据是标注好的，因而根据目标域的了解对域适应方法做出分类（从右往左分析<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
+<div style="text-align: center">
+<img src="images/lec10/3.png" width="60%/"/>
+</div>
+<ul>
+<li>知道少量标注数据<ul>
+<li>思路：用源数据训练模型，然后根据目标数据进行微调</li>
+<li>挑战：由于目标数据个数有限，因此小心过拟合的情况</li>
+</ul>
+</li>
+<li>
+<p>知道大量未标注数据</p>
+<ul>
+<li>
+<p>基本思路（<strong>域对抗训练</strong>(domain adversarial training)<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
+<ul>
+<li>让源数据和目标数据分别经过一个<strong>特征提取器</strong>(feature extractor)（一种网络<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，分别得到各自的特征向量</li>
+<li>尽管源数据和目标数据的分布不同，但它们的特征向量应当具有相同的分布</li>
+<li>对于手写数字识别任务而言，这意味着特征提取器能够忽略图像颜色的差异</li>
+</ul>
+<p></p><div style="text-align: center">
+<img src="images/lec10/4.png" width="60%/"/>
+</div>
+<ul>
+<li>接着将特征向量丢给<strong>标签预测器</strong>(label predictor)，输出一个关于类的分布</li>
+<li>我们可以从一个一般的分类器入手，将它一分为二，得到特征提取器和标签预测器；至于从哪一层“切开”，这就取决于我们的选择（超参数）</li>
+<li>对于有标注的源数据，我们希望它经过分类器得到的输出和标签尽可能一致；但是对于没有标注的目标数据，我们没有一个标准答案，因此采取的做法是比较目标数据特征向量和源数据特征向量，让前者尽可能接近后者</li>
+</ul>
+<p></p><div style="text-align: center">
+<img src="images/lec10/5.png" width="70%/"/>
+</div>
+<ul>
+<li>要实现上一条的要求，需要有一个<strong>域分类器</strong>(domain classifier)，为特征向量分类，看它到底是属于源域还是目标域的；对应地，特征提取器的目标就变成了如何“骗过”域分类器</li>
+<li>是不是很有一种熟悉的感觉？又一个和<span class="heti-skip"><span class="heti-spacing"> </span>GAN<span class="heti-spacing"> </span></span>很像的训练过程——特征提取器对应生成器，域分类器对应判别器</li>
+</ul>
+<p></p><div style="text-align: center">
+<img src="images/lec10/6.png" width="70%/"/>
+</div>
+<ul>
+<li>既然要骗过域分类器，一种无脑的做法就是让特征提取器一直输出零向量，但这样做还会影响到标签预测器的处理，因此是不可行的</li>
+<li>
+<p>特征提取器、标签预测器和域分类器的参数分别记作<span><span class="heti-spacing"> </span><span class="arithmatex">\(\theta_f, \theta_p, \theta_d\)</span></span>，标签预测器和域分类器的损失（交叉熵）分别记作<span><span class="heti-spacing"> </span><span class="arithmatex">\(L, L_d\)</span></span>，那么训练的目标分别为：</p>
+<ul>
+<li>标签预测器：<span class="arithmatex">\(\theta_p^* = \min\limits_{\theta_p} L\)</span></li>
+<li>域分类器：<span class="arithmatex">\(\theta_d^* = \min\limits_{\theta_d} L_d\)</span></li>
+<li>特征提取器：<span class="arithmatex">\(\theta_f^* = \min\limits_{\theta_p} L - L_d\)</span><ul>
+<li>但这并不是最好的做法，原因留给读者思考</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>域对抗训练的效果如下（表格第二行<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
+<p></p><div style="text-align: center">
+<img src="images/lec10/7.png" width="80%/"/>
+</div>
+</li>
+<li>
+<p>这种训练方法的局限在于，尽管我们认为源数据和目标数据的分布应当越接近越好（对齐<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，但这不一定代表训练效果一定是好的</p>
+<p></p><div style="text-align: center">
+<img src="images/lec10/8.png" width="70%/"/>
+</div>
+<p>虽然上面两张图中目标数据和源数据的分布都挺接近的，但是我们认为第二张图才是我们想要的结果，因为它反映了目标数据遵循源数据的分类（介于边界两边）</p>
+</li>
+<li>
+<p>为了达到第二张图的效果，需要考虑决策边界，下面提供了一些解决方案：</p>
+<p></p><div style="text-align: center">
+<img src="images/lec10/9.png" width="70%/"/>
+</div>
+<ul>
+<li><a href="https://arxiv.org/abs/1802.08735">用于教师指导下的决策边界迭代精炼训练<span><span class="heti-spacing"> </span>(DIRT-T)</span></a></li>
+<li><a href="https://arxiv.org/abs/1712.02560">最大分类器差异</a></li>
+</ul>
+</li>
+<li>
+<p>有时，源域和目标域之间可能存在包含关系或交集关系，那么也就存在部分目标数据可能无法归类到源数据的情况，反之亦然，此时强行让两者分布相近不太现实，因而有了<a href="https://openaccess.thecvf.com/content_CVPR_2019/html/You_Universal_Domain_Adaptation_CVPR_2019_paper.html"><strong>通用域适应</strong></a><span>(universal domain adaptation)<span class="heti-spacing"> </span></span>的方法。</p>
+<p></p><div style="text-align: center">
+<img src="images/lec10/10.png" width="60%/"/>
+</div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>知道少量未标注数据</p>
+<ul>
+<li>技术：<a href="https://arxiv.org/abs/1909.13231">测试时间训练</a><span><span class="heti-spacing"> </span>(testing time training, TTT)</span></li>
+</ul>
+</li>
+<li>啥都不知道<ul>
+<li>
+<p>技术：<strong>域泛化</strong>(domain generation)</p>
+<p></p><div style="text-align: center">
+<img src="images/lec10/11.png" width="80%/"/>
+</div>
+</li>
+</ul>
+</li>
+</ul></div>
 <aside class="md-source-file">
 <span class="md-source-file__fact">
 <span class="md-icon" title="最后更新">
