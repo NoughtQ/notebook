@@ -579,7 +579,7 @@
 </a>
 <div><h1 id="prompt-engineering">Prompt Engineering<a class="headerlink" href="#prompt-engineering" title="Permanent link">⚓︎</a></h1>
 <div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
-<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>1253<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>6<span class="heti-spacing"> </span></span>分钟</p>
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>3462<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>17<span class="heti-spacing"> </span></span>分钟</p>
 </div>
 <p>本讲的重点不是针对特定任务的<strong>提示词</strong>(prompt)。现在给语言模型的提示词不需要遵循特定格式，因为按照今天语言模型的能力，我们只需要把任务描述清楚，模型就能搞清楚我们的意图了。所以我们可以把大语言模型想成一个在线的新人助理，这里的“人”体现在它拥有一般人的基本知识和理解能力，而这里的“新”指的是它不了解专属于你的事情。</p>
 <p>而<strong>提示工程</strong><span>(prompt engineering)<span class="heti-spacing"> </span></span>就是一种在不训练模型的情况下提升语言模型的方法。下面将从五个角度来介绍这一方法：</p>
@@ -594,7 +594,7 @@
 <p>有以下可让模型表现更好的神奇咒语：</p>
 <ul>
 <li>
-<p>叫模型思考——<strong>思考链</strong>(chain of thought, CoT)</p>
+<p>叫模型思考——<strong>链式思考</strong>(chain of thought, CoT)</p>
 <p></p><div style="text-align: center">
 <img src="images/lec2/2.png" width="60%/"/>
 </div>
@@ -784,7 +784,7 @@
 </li>
 </ul>
 <details class="question">
-<summary>Quiz</summary>
+<summary>Quiz 1</summary>
 <div class="tabbed-set tabbed-alternate" data-tabs="5:2"><input checked="" id="__tabbed_5_1" name="__tabbed_5" type="radio"/><input id="__tabbed_5_2" name="__tabbed_5" type="radio"/><div class="tabbed-labels"><label for="__tabbed_5_1">题目</label><label for="__tabbed_5_2">答案</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -800,20 +800,331 @@
 </div>
 </details>
 <h2 id="dividing-multiple-steps">Dividing Multiple Steps<a class="headerlink" href="#dividing-multiple-steps" title="Permanent link">⚓︎</a></h2>
+<p>第三种方法是拆解任务，具体包括：</p>
+<ul>
+<li>
+<p>复杂的任务拆解成多个步骤</p>
+<p></p><div style="text-align: center">
+<img src="images/lec2/29.png" width="60%/"/>
+</div>
+<details class="example">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="6:2"><input checked="" id="__tabbed_6_1" name="__tabbed_6" type="radio"/><input id="__tabbed_6_2" name="__tabbed_6" type="radio"/><div class="tabbed-labels"><label for="__tabbed_6_1">例<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span></label><label for="__tabbed_6_2">例<span><span class="heti-spacing"> </span>2</span></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec2/30.png" width="60%/"/>
+</div>
+<p>如果要让<span class="heti-skip"><span class="heti-spacing"> </span>ChatGPT<span class="heti-spacing"> </span></span>直接写一份长篇报告，<span>ChatGPT<span class="heti-spacing"> </span></span>很可能写到后面就忘了前面。所以可预先为报告建立一个大纲，然后让<span class="heti-skip"><span class="heti-spacing"> </span>ChatGPT<span class="heti-spacing"> </span></span>分别完成报告的每个小部分，最后拼接起来形成一份完整的报告。如果后面部分与前面部分有关联的话，可以将前面部分总结成摘要（可以让<span class="heti-skip"><span class="heti-spacing"> </span>ChatGPT<span class="heti-spacing"> </span></span>总结）再一同喂给<span><span class="heti-spacing"> </span>ChatGPT</span>。</p>
+</div>
+<div class="tabbed-block">
+<p>在<span class="heti-skip"><span class="heti-spacing"> </span>ChatGPT<span class="heti-spacing"> </span></span>还未出现的时候，就有相关的研究，比如 <a href="https://arxiv.org/abs/2210.06774"><em>Recursive Reprompting and Revision (Re3)</em></a>，它就用和前一个例子类似的方法让模型写一个长篇小说。</p>
+</div>
+</div>
+</div>
+</details>
+<ul>
+<li>
+<p>之前让模型思考（CoT）或解释的技巧有用的原因正是模型自动将任务划分为多个步骤。比如遇到较复杂的数学问题时，模型不会直接给出答案，而是先一步步地考虑解题步骤，这个过程中模型会将已经得到的步骤作为输入（相当于做文字接龙<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，最后再得到答案。</p>
+<p></p><div style="text-align: center">
+<img src="images/lec2/31.png" width="70%/"/>
+</div>
+<ul>
+<li>另外，现在的模型足够强大，已经学会遇到复杂问题就开始认真思考的能力，所以在提示词中提示模型要<span class="heti-skip"><span class="heti-spacing"> </span>"think step by step"<span class="heti-spacing"> </span></span>的方法有些过时了（就算要手动提醒模型的话也只需要点击相应选项就行了）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>模型检查自己的答案</p>
+<ul>
+<li>就好像考试中写完考卷后，再检查一次可以检查出错误来</li>
+<li>有很多问题是解出答案比较难，但验证答案是否正确是比较容易的。例如对于鸡兔同笼的问题，乍一看没法立马检查出答案，但验证答案的正确性是比较容易的，只要看看头数和脚数是否符合题目要求即可</li>
+<li>拟人的说法：语言模型可以自我反省</li>
+</ul>
+<p></p><div style="text-align: center">
+<img src="images/lec2/32.png" width="60%/"/>
+</div>
+<details class="example">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="7:2"><input checked="" id="__tabbed_7_1" name="__tabbed_7" type="radio"/><input id="__tabbed_7_2" name="__tabbed_7" type="radio"/><div class="tabbed-labels"><label for="__tabbed_7_1">例<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span></label><label for="__tabbed_7_2">例<span><span class="heti-spacing"> </span>2</span></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>还是接着前面那个不存在的台大玫瑰花节。</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="8:2"><input checked="" id="__tabbed_8_1" name="__tabbed_8" type="radio"/><input id="__tabbed_8_2" name="__tabbed_8" type="radio"/><div class="tabbed-labels"><label for="__tabbed_8_1">GPT-4</label><label for="__tabbed_8_2">GPT-3.5</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec2/33.png" width="60%/"/>
+</div>
+<p></p><div style="text-align: center">
+<img src="images/lec2/34.png" width="60%/"/>
+</div>
+<p></p><div style="text-align: center">
+<img src="images/lec2/35.png" width="60%/"/>
+</div>
+<p><span>GPT-4<span class="heti-spacing"> </span></span>真的能发现自己的错误并纠正。</p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec2/36.png" width="60%/"/>
+</div>
+<p></p><div style="text-align: center">
+<img src="images/lec2/37.png" width="60%/"/>
+</div>
+<p>但<span class="heti-skip"><span class="heti-spacing"> </span>GPT-3.5<span class="heti-spacing"> </span></span>就不具备这种能力（给了一句口是心非的道歉，主打一个“积极认错，死不悔改”<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
+</div>
+</div>
+</div>
+</div>
+<div class="tabbed-block">
+<p><span>Anthropic<span class="heti-spacing"> </span></span>发表过一篇题为 <a href="https://arxiv.org/abs/2212.08073"><em>Constitutional AI: Harmlessness from AI Feedback</em></a> 的论文，里面正是通过模型检查自己答案的做法，阻止模型输出对人类有害的内容。</p>
+<p></p><div style="text-align: center">
+<img src="images/lec2/38.png" width="70%/"/>
+</div>
+</div>
+</div>
+</div>
+</details>
+</li>
+</ul>
+<details class="question">
+<summary>Quiz 2</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="9:2"><input checked="" id="__tabbed_9_1" name="__tabbed_9" type="radio"/><input id="__tabbed_9_2" name="__tabbed_9" type="radio"/><div class="tabbed-labels"><label for="__tabbed_9_1">题目</label><label for="__tabbed_9_2">答案</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec2/39.png" width="70%/"/>
+</div>
+<p>请选<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>或<span><span class="heti-spacing"> </span>2</span></p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec2/40.png" width="70%/"/>
+</div>
+</div>
+</div>
+</div>
+</details>
+<ul>
+<li>
+<p>同一个问题每次答案都不同：其实前面都解释过，这是因为语言模型输出的是一个分布，接着从分布中随机采样，因而有多种输出可能</p>
+<p></p><div style="text-align: center">
+<img src="images/lec2/41.png" width="70%/"/>
+</div>
+<ul>
+<li>
+<p>因此有一种叫做<a href="https://arxiv.org/abs/2203.11171"><strong>自一致性</strong></a><span>(self-consistency)<span class="heti-spacing"> </span></span>的技术：让模型多次回答同一个问题，由于每次得到的结果不一定相同，所以取出现次数最多的答案作为最终结果</p>
+<p></p><div style="text-align: center">
+<img src="images/lec2/42.png" width="70%/"/>
+</div>
+</li>
+</ul>
+</li>
+</ul>
+<p>上述三种技巧可以联合起来，打出一套“组合拳”。比如（<del>自从链式思考出现后，<span>xx of Thoughts<span class="heti-spacing"> </span></span>的文章接踵而至</del><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
+<ul>
+<li>
+<p><a href="https://arxiv.org/abs/2305.10601">树式思考</a><span><span class="heti-spacing"> </span>(Tree of Thoughts, ToT)</span></p>
+<p></p><div style="text-align: center">
+<img src="images/lec2/43.png" width="70%/"/>
+</div>
+</li>
+<li>
+<p><a href="https://arxiv.org/abs/2308.10379">算法思考</a><span><span class="heti-spacing"> </span>(Algorithm of Thoughts)</span></p>
+<p></p><div style="text-align: center">
+<img src="images/lec2/44.png" width="40%/"/>
+</div>
+</li>
+<li>
+<p><a href="https://arxiv.org/abs/2308.09687">图式思考</a><span><span class="heti-spacing"> </span>(Graph of Thoughts)</span></p>
+<p></p><div style="text-align: center">
+<img src="images/lec2/45.png" width="40%/"/>
+</div>
+</li>
+</ul>
 <h2 id="using-tools">Using Tools<a class="headerlink" href="#using-tools" title="Permanent link">⚓︎</a></h2>
-<h2 id="collaborating-with-other-models">Collaborating with Other Models<a class="headerlink" href="#collaborating-with-other-models" title="Permanent link">⚓︎</a></h2></div>
+<p>语言模型也有不擅长做的事，比如直接做大数字的四则运算往往会算错（但离正确答案比较接近<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。就像没有尖牙利爪的人类依靠工具成为世界上最厉害的生物，语言模型也可以用工具来提升自己的能力。下面将介绍其中一些工具：</p>
+<ul>
+<li>
+<p>搜索引擎</p>
+<ul>
+<li>
+<p>有不少人会误把<span class="heti-skip"><span class="heti-spacing"> </span>ChatGPT<span class="heti-spacing"> </span></span>直接当成搜索引擎使用，实际上是不对的，比如直接问它最新事件它就会胡言乱语（因为最新事件并不在它的知识库内，但它又不得不完成文字接龙的任务）</p>
+<p></p><div style="text-align: center">
+<img src="images/lec2/46.png" width="70%/"/>
+</div>
+</li>
+<li>
+<p>遇到这种情况，我们应该让模型去利用搜索引擎，从网络或数据库中寻找额外数据，作为其回答的依据，这样它就能正确解读最新事件了。像这种技术被称为<strong>检索增强生成</strong>(retrieval augmented generation, RAG)</p>
+<p></p><div style="text-align: center">
+<img src="images/lec2/47.png" width="70%/"/>
+</div>
+</li>
+<li>
+<p>下图就是<span class="heti-skip"><span class="heti-spacing"> </span>GPT-4<span class="heti-spacing"> </span></span>使用搜索引擎后得到的正确结果</p>
+<p></p><div style="text-align: center">
+<img src="images/lec2/48.png" width="70%/"/>
+</div>
+</li>
+</ul>
+</li>
+<li>
+<p>写程序</p>
+<ul>
+<li>对于复杂的数学问题，模型可通过编写并运行程序的方式解答，减少出错概率</li>
+</ul>
+<details class="example">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="10:2"><input checked="" id="__tabbed_10_1" name="__tabbed_10" type="radio"/><input id="__tabbed_10_2" name="__tabbed_10" type="radio"/><div class="tabbed-labels"><label for="__tabbed_10_1">例<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span></label><label for="__tabbed_10_2">例<span><span class="heti-spacing"> </span>2</span></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec2/49.png" width="70%/"/>
+</div>
+<p></p><div style="text-align: center">
+<img src="images/lec2/50.png" width="70%/"/>
+</div>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<img src="images/lec2/52.png" width="70%/"/>
+</div>
+<p>点开<span class="heti-skip"><span class="heti-spacing"> </span>"Finished analyzing"<span class="heti-spacing"> </span></span>后会看到这样一段程序：</p>
+<p></p><div style="text-align: center">
+<img src="images/lec2/53.png" width="70%/"/>
+</div>
+</div>
+</div>
+</div>
+</details>
+<ul>
+<li>
+<p><a href="https://arxiv.org/abs/2211.12588">程序思考</a><span><span class="heti-spacing"> </span>(Program of Thoughts, PoT)</span></p>
+<p></p><div style="text-align: center">
+<img src="images/lec2/51.png" width="80%/"/>
+</div>
+</li>
+</ul>
+</li>
+<li>
+<p>文生图（比如<span><span class="heti-spacing"> </span>DALL-E</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>（课件上以龙年贺卡绘制为例，但都是一些反面教材<span><span class="heti-spacing"> </span>...</span>）</p>
+<ul>
+<li>
+<p>作图失误（比如龙口喷出仙女棒似的焰火，龙头上多了根呆毛等等）</p>
+<p></p><div style="text-align: center">
+<img src="images/lec2/54.png" width="80%/"/>
+</div>
+</li>
+<li>
+<p>鬼画符（<del>让模型生成象形文字简直就是灾难</del>）</p>
+<p></p><div style="text-align: center">
+<img src="images/lec2/55.png" width="30%/"/>
+</div>
+</li>
+<li>
+<p>有些模型可能对“画”这个字过于敏感，一看到“画”就要调用画图的模型<span><span class="heti-spacing"> </span>...</span></p>
+<p></p><div style="text-align: center">
+<img src="images/lec2/57.png" width="60%/"/>
+</div>
+</li>
+</ul>
+</li>
+<li>
+<p>基于<span class="heti-skip"><span class="heti-spacing"> </span>GPT<span class="heti-spacing"> </span></span>开发的小应用（以前叫做<span><span class="heti-spacing"> </span>ChatGPT Plugins</span>）</p>
+<p></p><div style="text-align: center">
+<img src="images/lec2/56.png" width="60%/"/>
+</div>
+</li>
+</ul>
+<h2 id="collaborating-with-other-models">Collaborating with Other Models<a class="headerlink" href="#collaborating-with-other-models" title="Permanent link">⚓︎</a></h2>
+<p>模型合作就是让合适的模型做合适的事情。虽然现在的大语言模型都是“通才”，但不同的模型还是有不同擅长的任务，比如<span class="heti-skip"><span class="heti-spacing"> </span>Claude<span class="heti-spacing"> </span></span>更适合写代码，<span>o3<span class="heti-spacing"> </span></span>更适合解数学题等等；并且不同模型的使用成本也是不同的。所以我们可以另外再找一个（可以是语言）模型，让它根据任务内容来挑选合适的模型，这样可以避免杀鸡用牛刀的问题。</p>
+<div style="text-align: center">
+<img src="images/lec2/58.png" width="60%/"/>
+</div>
+<p>有些平台可能真的就是这么做的，所以展示在平台上为你服务的并不一定是同一个模型。</p>
+<p>上述技术的一种实现叫做<a href="https://arxiv.org/abs/2305.05176"><span><span class="heti-spacing"> </span>FrugalGPT</span></a>，具体介绍可参见李宏毅老师的<a href="https://youtu.be/vxxPtDCb9Go?si=WO4eqPTHDyS1pal3">视频</a>。</p>
+<hr/>
+<p>第二种合作方式是让模型彼此讨论。相比单个模型的自我反省，多模型的讨论可能会取得更加不错的表现。</p>
+<div style="text-align: center">
+<img src="images/lec2/59.png" width="60%/"/>
+</div>
+<p><a href="https://arxiv.org/abs/2305.19118">实验结果</a>如下。可以看到让模型之间互相讨论可以让模型的反省持续时间更长；而自我反省的模型可能很快就会结束思考，因为“当局者迷”——自己觉得自己的答案挺不错的。</p>
+<div style="text-align: center">
+<img src="images/lec2/60.png" width="40%/"/>
+</div>
+<p><a href="https://arxiv.org/abs/2305.14325">另一个实验结果</a>如下，它反映了参与讨论的模型树和讨论次数对准确率的正面影响：</p>
+<div style="text-align: center">
+<img src="images/lec2/61.png" width="80%/"/>
+</div>
+<p>另外，不同任务最适合的讨论方式是不一样的。有一个叫做<a href="https://arxiv.org/abs/2312.01823"><span class="heti-skip"><span class="heti-spacing"> </span>Exchange-of-Thought<span class="heti-spacing"> </span></span></a>的研究讨论了这个问题。</p>
+<div style="text-align: center">
+<img src="images/lec2/62.png" width="70%/"/>
+</div>
+<hr/>
+<p>接下来要考虑的问题是：模型的讨论要如何停下来？为此我们再设立一个裁判模型，当参与讨论的模型的意见达成一致时，讨论停止，否则继续。</p>
+<div style="text-align: center">
+<img src="images/lec2/63.png" width="50%/"/>
+</div>
+<p>但讨论到底会不会因此停下来呢，要是大家意见始终不一致该怎么办？其实不用担心这个问题，反倒是要担心模型可能会讨论不起来的风险，因为模型多少会有些“阿谀奉承”的感觉，会认为用户说什么都是有道理的。所以有研究探讨该如何用提示词刺激模型继续讨论下去，下面是其中的一些成果：</p>
+<ul>
+<li>
+<p><a href="https://arxiv.org/abs/2305.19118">研究<span><span class="heti-spacing"> </span>1</span></a>：红框标出的提示词太过生硬，反而达不到预期效果；蓝框标出的提示词相对比较委婉，因而能取得良好的激励作用</p>
+<p></p><div style="text-align: center">
+<img src="images/lec2/64.png" width="70%/"/>
+</div>
+</li>
+<li>
+<p><a href="https://arxiv.org/abs/2305.14325">研究<span><span class="heti-spacing"> </span>2</span></a>：<span>"additional advice"<span class="heti-spacing"> </span></span>和前面蓝框标出的提示词有异曲同工之妙</p>
+<p></p><div style="text-align: center">
+<img src="images/lec2/65.png" width="70%/"/>
+</div>
+</li>
+</ul>
+<hr/>
+<p>正如人类社会（乃至自然界）中的团队需要有不同的角色才能发挥最大的威力，我们也可以让不同的模型扮演不同的角色，分工完成一项艰巨的任务。而统筹规划这些模型的我们就像一个项目经理——借助<span class="heti-skip"><span class="heti-spacing"> </span>AI<span class="heti-spacing"> </span></span>的力量，我们可以做到“把一个人活成一个团队”。具体内容请参见这篇<a href="https://arxiv.org/abs/2303.17760">论文</a>。</p>
+<div style="text-align: center">
+<img src="images/lec2/66.png" width="60%/"/>
+</div>
+<p>我们还可以优化这个<span class="heti-skip"><span class="heti-spacing"> </span>AI<span class="heti-spacing"> </span></span>团队——一篇名为<a href="https://arxiv.org/abs/2310.02170"><span class="heti-skip"><span class="heti-spacing"> </span>Dynamic LLM Agent Network<span class="heti-spacing"> </span></span></a>讨论了这个话题，它的大致思路就是让参与工作中的模型对其他模型的表现进行打分（考绩<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，然后将分数低的模型“炒掉”。</p>
+<div style="text-align: center">
+<img src="images/lec2/67.png" width="70%/"/>
+</div>
+<p>但这个学术研究仅测试在比较简单的任务上。至于这个方法在真实复杂的任务上是否灵验，那还是一个未知数。</p>
+<p>其他相关研究：</p>
+<ul>
+<li>
+<p><a href="https://arxiv.org/abs/2308.00352">MetaGPT</a></p>
+<p></p><div style="text-align: center">
+<img src="images/lec2/68.png" width="60%/"/>
+</div>
+</li>
+<li>
+<p><a href="https://github.com/OpenBMB/ChatDev">ChatDev</a></p>
+<p></p><div style="text-align: center">
+<img src="images/lec2/69.png" width="40%/"/>
+</div>
+</li>
+<li>
+<p>由<span class="heti-skip"><span class="heti-spacing"> </span>AI<span class="heti-spacing"> </span></span>组成的社群</p>
+<p></p><div style="text-align: center">
+<img src="images/lec2/70.png" width="70%/"/>
+</div>
+</li>
+</ul>
+<p>上述技术带给我们的启示是：未来也许不需要打造全能的模型（就像没有全能的人类存在<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，语言模型可以专业分工，不同团队可以专注于打造专业领域的语言模型。</p></div>
 <aside class="md-source-file">
 <span class="md-source-file__fact">
 <span class="md-icon" title="最后更新">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"></path></svg>
 </span>
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年8月4日 20:45:32">2025年8月4日 20:45:32</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年8月5日 18:19:18">2025年8月5日 18:19:18</span>
 </span>
 <span class="md-source-file__fact">
 <span class="md-icon" title="创建日期">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"></path></svg>
 </span>
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年8月4日 20:45:32">2025年8月4日 20:45:32</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年8月5日 18:19:18">2025年8月5日 18:19:18</span>
 </span>
 </aside>
 <p style="font-size: 30px; font-weight: 600">评论区</p>
