@@ -13,10 +13,6 @@
     + 正文部分有些罗里吧嗦，所以我把核心的知识点放在每章的最前面，方便大家甄别有价值的信息
     + 有部分内容读起来很不通顺，这很有可能是我没有完全理解该知识点的缘故。若出现这种情况，请点击“推荐阅读”处的链接
 
-!!! note "经验分享"
-
-    [我的博客帖子 - 数字逻辑设计](https://blog.noughtq.top/posts/41bc90c8.html#post-comment)
-
 !!! success "推荐阅读"
 
     + [修佬的笔记](https://note.isshikih.top/cour_note/D2QD_DigitalDesign/)
