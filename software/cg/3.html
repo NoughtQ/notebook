@@ -7,7 +7,7 @@
 <meta content="NoughtQ" name="author"/>
 <link href="https://notebook.noughtq.top/software/cg/3.html" rel="canonical"/>
 <link href="2.html" rel="prev"/>
-<link href="../../system/index.html" rel="next"/>
+<link href="4.html" rel="next"/>
 <link href="../../feed_rss_created.xml" rel="alternate" title="RSS 订阅" type="application/rss+xml"/>
 <link href="../../feed_rss_updated.xml" rel="alternate" title="已更新内容的 RSS 订阅" type="application/rss+xml"/>
 <link href="../../assets/favicon.png" rel="icon"/>
@@ -581,6 +581,14 @@
 </ul>
 </nav>
 </li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="4.html">
+<span class="md-ellipsis">
+    Rasterization
+    
+  </span>
+</a>
+</li>
 </ul>
 </nav>
 </li>
@@ -850,7 +858,7 @@
 </a>
 <div><h1 id="transformation">Transformation<a class="headerlink" href="#transformation" title="Permanent link">⚓︎</a></h1>
 <div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
-<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>3865<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>19<span class="heti-spacing"> </span></span>分钟</p>
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>3991<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>20<span class="heti-spacing"> </span></span>分钟</p>
 </div>
 <h2 id="why-study-transformation">Why Study Transformation?<a class="headerlink" href="#why-study-transformation" title="Permanent link">⚓︎</a></h2>
 <p>变换在<span class="heti-skip"><span class="heti-spacing"> </span>CG<span class="heti-spacing"> </span></span>中有着丰富的应用：</p>
@@ -1282,7 +1290,7 @@ M_{ortho} = \begin{bmatrix}\frac{2}{r - l} &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; \f
 </ul>
 <p>透视投影的过程分为：</p>
 <ul>
-<li>先将图形（棱锥体<span><span class="heti-spacing"> </span>(frustum)</span>）“挤压<span><span class="heti-spacing"> </span>(squish)</span>”成一个长方体（n -&gt; n, f -&gt; f<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>（<span class="arithmatex">\(M_{persp \rightarrow ortho}\)</span>）<ul>
+<li>先将<strong>视锥</strong>(frustum)“挤压<span><span class="heti-spacing"> </span>(squish)</span>”成一个长方体（n -&gt; n, f -&gt; f<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>（<span class="arithmatex">\(M_{persp \rightarrow ortho}\)</span>）<ul>
 <li>近平面不变，远平面向内挤压，但中点不动</li>
 </ul>
 </li>
@@ -1327,19 +1335,46 @@ M_{persp \rightarrow ortho}^{(4 \times 4)} \begin{pmatrix}x \\ y \\ z \\ 1\end{p
 \begin{pmatrix}0 \\ 0 \\ f \\ 1\end{pmatrix} \Rightarrow \begin{pmatrix}0 \\ 0 \\ f \\ 1\end{pmatrix} == \begin{pmatrix}0 \\ 0 \\ f^2 \\ f\end{pmatrix}
 \]</div>
 <p>从而<span><span class="heti-spacing"> </span><span class="arithmatex">\(Af + B = f^2 \quad (2)\)</span></span>。将<span class="heti-skip"><span class="heti-spacing"> </span>(1)(2)<span class="heti-spacing"> </span></span>联立，解得<span><span class="heti-spacing"> </span><span class="arithmatex">\(\begin{cases}A = n + f \\ B = -nf\end{cases}\)</span></span>。</p>
-<p>现在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(M_{persp \rightarrow ortho}\)</span><span class="heti-spacing"> </span></span>内的所有元素均是已知的了。接下来就可以继续做正交投影了。</p></div>
+<p>现在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(M_{persp \rightarrow ortho}\)</span><span class="heti-spacing"> </span></span>内的所有元素均是已知的了。接下来就可以继续做正交投影了。</p>
+<hr/>
+<p>现在回过头来看另一种常见的定义视锥的方式——除了用<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(l, r, b, t, n, f\)</span><span class="heti-spacing"> </span></span>这六个值表示外，还有：</p>
+<ul>
+<li>垂直<strong>可视角度</strong>(vertical field-of-view, fovY)<ul>
+<li>摄影的广角就是<span class="heti-skip"><span class="heti-spacing"> </span>fovY<span class="heti-spacing"> </span></span>较大</li>
+</ul>
+</li>
+<li><strong>宽高比</strong>(aspect ratio)</li>
+</ul>
+<div style="text-align: center">
+<img src="images/lec3/31.png" width="40%"/>
+</div>
+<details class="info" open="open">
+<summary>注</summary>
+<ul>
+<li>这里假设是对称的，即<span><span class="heti-spacing"> </span><span class="arithmatex">\(l = -r, b = -t\)</span></span></li>
+<li>知道这两者就可以推出水平可视角度（用于游戏）</li>
+</ul>
+</details>
+<p>将<span class="heti-skip"><span class="heti-spacing"> </span>fovY<span class="heti-spacing"> </span></span>和宽高比转换至<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(l, r, b, t\)</span><span class="heti-spacing"> </span></span>是很轻松的事：</p>
+<div style="text-align: center">
+<img src="images/lec3/32.png" width="50%"/>
+</div>
+<ul>
+<li><span class="arithmatex">\(\tan \dfrac{\text{fovY}}{2} = \dfrac{t}{|n|}\)</span></li>
+<li><span class="arithmatex">\(\text{aspect} = \dfrac{r}{t}\)</span></li>
+</ul></div>
 <aside class="md-source-file">
 <span class="md-source-file__fact">
 <span class="md-icon" title="最后更新">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"></path></svg>
 </span>
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年9月4日 16:31:49">2025年9月4日 16:31:49</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年9月5日 17:33:00">2025年9月5日 17:33:00</span>
 </span>
 <span class="md-source-file__fact">
 <span class="md-icon" title="创建日期">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"></path></svg>
 </span>
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年9月4日 16:31:49">2025年9月4日 16:31:49</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年9月5日 17:33:00">2025年9月5日 17:33:00</span>
 </span>
 </aside>
 <p style="font-size: 30px; font-weight: 600">评论区</p>
@@ -1411,13 +1446,13 @@ M_{persp \rightarrow ortho}^{(4 \times 4)} \begin{pmatrix}x \\ y \\ z \\ 1\end{p
               </div>
 </div>
 </a>
-<a aria-label="下一页: 系统相关" class="md-footer__link md-footer__link--next" href="../../system/index.html">
+<a aria-label="下一页: Rasterization" class="md-footer__link md-footer__link--next" href="4.html">
 <div class="md-footer__title">
 <span class="md-footer__direction">
                 下一页
               </span>
 <div class="md-ellipsis">
-                系统相关
+                Rasterization
               </div>
 </div>
 <div class="md-footer__button md-icon">
