@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html class="no-js" lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="NoughtQ的笔记本，主要记录一些 CS 相关的笔记" name="description"/>
+<meta content="NoughtQ" name="author"/>
+<link href="https://notebook.noughtq.top/papers/dv/matplotagent.html" rel="canonical"/>
+<link href="viseval.html" rel="prev"/>
+<link href="../../feed_rss_created.xml" rel="alternate" title="RSS 订阅" type="application/rss+xml"/>
+<link href="../../feed_rss_updated.xml" rel="alternate" title="已更新内容的 RSS 订阅" type="application/rss+xml"/>
+<link href="../../assets/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.6.18" name="generator"/>
+<title>MatPlotAgent - NoughtQ的笔记本</title>
+<link href="../../assets/stylesheets/main.7e37652d.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/palette.06af60db.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=JetBrains+Mono,+LXGW+WenKai+Screen+GB+Screen:300,300i,400,400i,700,700i%7CJetBrains+Mono,+Consolas:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"JetBrains Mono, LXGW WenKai Screen GB Screen";--md-code-font:"JetBrains Mono, Consolas"}</style>
+<link href="../../css/heti.css" rel="stylesheet"/>
+<link href="../../css/toc_extra.css" rel="stylesheet"/>
+<link href="../../css/timeline.css" rel="stylesheet"/>
+<link href="../../css/card.css" rel="stylesheet"/>
+<link href="../../css/custom.css" rel="stylesheet"/>
+<link href="../../css/extra_changelog.css" rel="stylesheet"/>
+<link href="../../css/header.css" rel="stylesheet"/>
+<link href="../../css/sidebar.css" rel="stylesheet"/>
+<link href="https://unpkg.com/katex@0/dist/katex.min.css" rel="stylesheet"/>
+<link href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css" rel="stylesheet"/>
+<link href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;display=swap" rel="stylesheet"/>
+<script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-43NH8CVRCJ"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-43NH8CVRCJ",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-43NH8CVRCJ",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+<script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+</head>
+<body data-md-color-accent="indigo" data-md-color-primary="indigo" data-md-color-scheme="slate" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#matplotagent">
+          跳转至
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header" data-md-component="header">
+<nav aria-label="页眉" class="md-header__inner md-grid">
+<a aria-label="NoughtQ的笔记本" class="md-header__button md-logo" data-md-component="logo" href="../.." title="NoughtQ的笔记本">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.05 9H7.06V6h1.99V4.03H7.06v-1c0-1.11.89-1.99 1.99-1.99h5.98V8l2.47-1.5L20 8V1.04h1c1.05 0 2 .96 2 1.99V17c0 1.03-.95 2-2 2H9.05c-1.05 0-1.99-.95-1.99-2v-1h1.99v-2H7.06v-3h1.99zM1 18h2v-3H1v-2h2v-3H1V8h2V5h2v3H3v2h2v3H3v2h2v3H3v2h2v1h16v2H5a2 2 0 0 1-2-2v-1H1z"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            NoughtQ的笔记本
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              MatPlotAgent
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="Dark Mode" class="md-option" data-md-color-accent="indigo" data-md-color-media="(prefer-color-scheme: dark)" data-md-color-primary="indigo" data-md-color-scheme="slate" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="Dark Mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"></path></svg>
+</label>
+<input aria-label="Light Mode" class="md-option" data-md-color-accent="indigo" data-md-color-media="(prefer-color-scheme: light)" data-md-color-primary="indigo" data-md-color-scheme="default" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="Light Mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="搜索" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="搜索" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 256 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" fill="currentColor"></path></svg>
+</label>
+<nav aria-label="查找" class="md-search__options">
+<a aria-label="分享" class="md-search__icon md-icon" data-clipboard="" data-clipboard-text="" data-md-component="search-share" href="javascript:void(0)" tabindex="-1" title="分享">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"></path></svg>
+</a>
+<button aria-label="清空当前内容" class="md-search__icon md-icon" tabindex="-1" title="清空当前内容" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header__source">
+<a class="md-source" data-md-component="source" href="https://github.com/noughtq/notebook" title="前往仓库">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4" fill="currentColor"></path></svg>
+</div>
+<div class="md-source__repository">
+    NoughtQ/Notebook
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<nav aria-label="标签" class="md-tabs" data-md-component="tabs">
+<div class="md-grid">
+<ul class="md-tabs__list">
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../index.html">
+          
+  
+  
+    
+  
+  🏫主页
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../lang/index.html">
+          
+  
+  
+    
+  
+  🔡语言
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../math/index.html">
+          
+  
+  
+    
+  
+  📊数学相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../algorithms/index.html">
+          
+  
+  
+    
+  
+  🧮算法相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../software/index.html">
+          
+  
+  
+    
+  
+  💾软件相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../system/index.html">
+          
+  
+  
+    
+  
+  💻系统相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../web/index.html">
+          
+  
+  
+    
+  
+  🌏Web相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../sec/ctf-101/index.html">
+          
+  
+  
+    
+  
+  🛡️信息安全
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../ai/index.html">
+          
+  
+  
+    
+  
+  🤖人工智能
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../misc/index.html">
+          
+  
+  
+    
+  
+  🗃️杂项
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../tools/index.html">
+          
+  
+  
+    
+  
+  🛠️工具
+
+        </a>
+</li>
+<li class="md-tabs__item md-tabs__item--active">
+<a class="md-tabs__link" href="../index.html">
+          
+  
+  
+    
+  
+  📑论文阅读
+
+        </a>
+</li>
+</ul>
+</div>
+</nav>
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="导航栏" class="md-nav md-nav--primary md-nav--lifted" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="NoughtQ的笔记本" class="md-nav__button md-logo" data-md-component="logo" href="../.." title="NoughtQ的笔记本">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.05 9H7.06V6h1.99V4.03H7.06v-1c0-1.11.89-1.99 1.99-1.99h5.98V8l2.47-1.5L20 8V1.04h1c1.05 0 2 .96 2 1.99V17c0 1.03-.95 2-2 2H9.05c-1.05 0-1.99-.95-1.99-2v-1h1.99v-2H7.06v-3h1.99zM1 18h2v-3H1v-2h2v-3H1V8h2V5h2v3H3v2h2v3H3v2h2v3H3v2h2v1h16v2H5a2 2 0 0 1-2-2v-1H1z"></path></svg>
+</a>
+    NoughtQ的笔记本
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-component="source" href="https://github.com/noughtq/notebook" title="前往仓库">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4" fill="currentColor"></path></svg>
+</div>
+<div class="md-source__repository">
+    NoughtQ/Notebook
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../index.html">
+<span class="md-ellipsis">
+    🏫主页
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../lang/index.html">
+<span class="md-ellipsis">
+    🔡语言
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../math/index.html">
+<span class="md-ellipsis">
+    📊数学相关
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../algorithms/index.html">
+<span class="md-ellipsis">
+    🧮算法相关
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../software/index.html">
+<span class="md-ellipsis">
+    💾软件相关
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../system/index.html">
+<span class="md-ellipsis">
+    💻系统相关
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../web/index.html">
+<span class="md-ellipsis">
+    🌏Web相关
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../sec/ctf-101/index.html">
+<span class="md-ellipsis">
+    🛡️信息安全
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ai/index.html">
+<span class="md-ellipsis">
+    🤖人工智能
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../misc/index.html">
+<span class="md-ellipsis">
+    🗃️杂项
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../tools/index.html">
+<span class="md-ellipsis">
+    🛠️工具
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_12" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../index.html">
+<span class="md-ellipsis">
+    📑论文阅读
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="true" aria-labelledby="__nav_12_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_12">
+<span class="md-nav__icon md-icon"></span>
+            📑论文阅读
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_12_2" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="index.html">
+<span class="md-ellipsis">
+    数据可视化
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_12_2" id="__nav_12_2_label" tabindex="0">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="true" aria-labelledby="__nav_12_2_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_12_2">
+<span class="md-nav__icon md-icon"></span>
+            数据可视化
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="nl4dv.html">
+<span class="md-ellipsis">
+    NL4DV
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="viseval.html">
+<span class="md-ellipsis">
+    VisEval
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    MatPlotAgent
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="matplotagent.html">
+<span class="md-ellipsis">
+    MatPlotAgent
+    
+  </span>
+</a>
+<nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#matplotbench">
+<span class="md-ellipsis">
+      MatPlotBench
+    </span>
+</a>
+<nav aria-label="MatPlotBench" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#data-collection">
+<span class="md-ellipsis">
+      Data Collection
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#automatic-quantitative-evaluation">
+<span class="md-ellipsis">
+      Automatic Quantitative Evaluation
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#matplotagent_1">
+<span class="md-ellipsis">
+      MatPlotAgent
+    </span>
+</a>
+<nav aria-label="MatPlotAgent" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#query-expansion">
+<span class="md-ellipsis">
+      Query Expansion
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#code-agent">
+<span class="md-ellipsis">
+      Code Agent
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#visual-agent">
+<span class="md-ellipsis">
+      Visual Agent
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#experiments">
+<span class="md-ellipsis">
+      Experiments
+    </span>
+</a>
+<nav aria-label="Experiments" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#main-results">
+<span class="md-ellipsis">
+      Main Results
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#ablation-study">
+<span class="md-ellipsis">
+      Ablation Study
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#generalizability-studies">
+<span class="md-ellipsis">
+      Generalizability Studies
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#case-studies">
+<span class="md-ellipsis">
+      Case Studies
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#conclusion-and-limitations">
+<span class="md-ellipsis">
+      Conclusion and Limitations
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#matplotbench">
+<span class="md-ellipsis">
+      MatPlotBench
+    </span>
+</a>
+<nav aria-label="MatPlotBench" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#data-collection">
+<span class="md-ellipsis">
+      Data Collection
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#automatic-quantitative-evaluation">
+<span class="md-ellipsis">
+      Automatic Quantitative Evaluation
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#matplotagent_1">
+<span class="md-ellipsis">
+      MatPlotAgent
+    </span>
+</a>
+<nav aria-label="MatPlotAgent" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#query-expansion">
+<span class="md-ellipsis">
+      Query Expansion
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#code-agent">
+<span class="md-ellipsis">
+      Code Agent
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#visual-agent">
+<span class="md-ellipsis">
+      Visual Agent
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#experiments">
+<span class="md-ellipsis">
+      Experiments
+    </span>
+</a>
+<nav aria-label="Experiments" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#main-results">
+<span class="md-ellipsis">
+      Main Results
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#ablation-study">
+<span class="md-ellipsis">
+      Ablation Study
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#generalizability-studies">
+<span class="md-ellipsis">
+      Generalizability Studies
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#case-studies">
+<span class="md-ellipsis">
+      Case Studies
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#conclusion-and-limitations">
+<span class="md-ellipsis">
+      Conclusion and Limitations
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<article class="md-content__inner md-typeset">
+<a class="md-content__button md-icon" href="https://github.com/noughtq/notebook/edit/master/docs/papers/dv/matplotagent.md" rel="edit" title="编辑此页">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"></path></svg>
+</a>
+<a class="md-content__button md-icon" href="https://github.com/noughtq/notebook/raw/master/docs/papers/dv/matplotagent.md" title="查看本页的源代码">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"></path></svg>
+</a>
+<div><h1 id="matplotagent">MatPlotAgent<a class="headerlink" href="#matplotagent" title="Permanent link">⚓︎</a></h1>
+<div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>3747<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>19<span class="heti-spacing"> </span></span>分钟</p>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">概述</p>
+<p></p><div style="text-align: center">
+<img src="images/matplotagent/1.png" width="100%"/>
+</div>
+<p>MatPlotAgent：一个面向科学数据可视化的智能体框架</p>
+<ul>
+<li><a href="https://arxiv.org/abs/2402.11453">论文</a></li>
+<li><a href="https://github.com/thunlp/MatPlotAgent#-matplotbench"><span>GitHub<span class="heti-spacing"> </span></span>仓库</a></li>
+</ul>
+</div>
+<details class="info">
+<summary>引言<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>背景（由<span class="heti-skip"><span class="heti-spacing"> </span>Gemini 2.5 Pro<span class="heti-spacing"> </span></span>总结）</summary>
+<p>科学数据可视化是研究交流的基石，它能够将复杂的信息转化为直观的图形，帮助研究人员识别隐含的模式。然而，这一过程传统上依赖于研究者手动编写代码，不仅耗时耗力，而且对技术能力有较高要求，构成了巨大的认知负荷。大型语言模型（LLM）的出现为自动化这一任务带来了曙光。尽管如此，将<span class="heti-skip"><span class="heti-spacing"> </span>LLM<span class="heti-spacing"> </span></span>应用于科学数据可视化领域仍处于探索初期，面临着独特的挑战。这项任务不仅需要精确的代码生成能力，还需要对数据和视觉元素的深刻理解，这使其与通用的代码生成或艺术性的图像合成任务有着本质区别。</p>
+<p>一篇名为《MatPlotAgent: Method and Evaluation for LLM-Based Agentic Scientific Data Visualization》的研究论文旨在系统性地解决这一领域的空白。该研究通过双管齐下的方式推进了该领域的发展：首先，构建了一个名为<span class="heti-skip"><span class="heti-spacing"> </span>MatPlotBench<span class="heti-spacing"> </span></span>的高质量基准测试集，为科学数据可视化任务的标准化评估奠定了基础；其次，提出了一个名为<span class="heti-skip"><span class="heti-spacing"> </span>MatPlotAgent<span class="heti-spacing"> </span></span>的创新性智能体框架，旨在通过模拟人类专家的工作流程来显著增强<span class="heti-skip"><span class="heti-spacing"> </span>LLM<span class="heti-spacing"> </span></span>在该特定领域的能力<span><span class="heti-spacing"> </span>1</span>。本报告将对该论文的核心贡献、方法论、实验结果及其深远影响进行详尽的分析。</p>
+</details>
+<h2 id="matplotbench">MatPlotBench<a class="headerlink" href="#matplotbench" title="Permanent link">⚓︎</a></h2>
+<h3 id="data-collection">Data Collection<a class="headerlink" href="#data-collection" title="Permanent link">⚓︎</a></h3>
+<p><span>MatPlotBench<span class="heti-spacing"> </span></span>的构建过程遵循了三项核心原则，以确保其高质量和全面性：</p>
+<ul>
+<li>覆盖<strong>多样化的图表类型</strong>，涵盖常用图表和稀有但实用的图表</li>
+<li>包含<strong>具有代表性的实例</strong>，反映不同数据复杂度的真实场景</li>
+<li>平衡<strong>简单与困难的问题</strong>，以全面评估模型的能力</li>
+</ul>
+<p>其具体构建流程是一个多阶段、人工深度参与的流程：</p>
+<ul>
+<li>
+<p>来源选择：从权威的在线数据可视化社区精心挑选原始案例。其中，</p>
+<ul>
+<li><span>75<span class="heti-spacing"> </span></span>个案例来自<a href="https://matplotlib.org/3.1.1/gallery/index.html"><span><span class="heti-spacing"> </span>Matplotlib Gallery</span></a>，覆盖了条形图、折线图、<span>3D<span class="heti-spacing"> </span></span>图、子图等多种<strong>基础类型</strong>；</li>
+<li>另外<span class="heti-skip"><span class="heti-spacing"> </span>25<span class="heti-spacing"> </span></span>个案例来自<a href="https://www.originlab.com/www/products/graphgallery.aspx"><span><span class="heti-spacing"> </span>OriginLab GraphGallery</span></a>，侧重于桑基图、旭日图、弦图等在<strong>美学</strong>上更具吸引力或<strong>结构上更复杂</strong>的图表。</li>
+</ul>
+</li>
+<li>
+<p>初步查询生成：利用<span class="heti-skip"><span class="heti-spacing"> </span>LLM<span class="heti-spacing"> </span></span>生成初步的<strong>自然语言查询</strong>。对于<span class="heti-skip"><span class="heti-spacing"> </span>Matplotlib<span class="heti-spacing"> </span></span>案例，使用<span class="heti-skip"><span class="heti-spacing"> </span>GPT-4<span class="heti-spacing"> </span></span>将原始代码转换为查询；对于仅有图像的<span class="heti-skip"><span class="heti-spacing"> </span>OriginLab<span class="heti-spacing"> </span></span>案例，则使用多模态模型<span class="heti-skip"><span class="heti-spacing"> </span>GPT-4V<span class="heti-spacing"> </span></span>将图像转换为查询。</p>
+</li>
+<li>数据替换与清洗：<ul>
+<li>为防止强大的模型（如<span><span class="heti-spacing"> </span>GPT-4</span>）通过记忆来“作弊”，研究人员系统性地替换了<span class="heti-skip"><span class="heti-spacing"> </span>Matplotlib<span class="heti-spacing"> </span></span>案例中的原始数据点，同时保持图表类型等核心要求不变。</li>
+<li><span>OriginLab<span class="heti-spacing"> </span></span>案例因其数据本身足够复杂，未观察到记忆现象，故保留原始数据。</li>
+</ul>
+</li>
+<li>人工优化与验证：<ul>
+<li>由具备至少三年编程和自然语言处理经验的专家对初步查询进行优化，修正错误、消除歧义并补充缺失信息。</li>
+<li>随后，由三位独立的<span class="heti-skip"><span class="heti-spacing"> </span>NLP<span class="heti-spacing"> </span></span>研究人员进行最终验证，确保用户查询、原始数据和标准答案图表之间高度对齐。</li>
+<li>这一严谨的流程最终产出了<span class="heti-skip"><span class="heti-spacing"> </span>100<span class="heti-spacing"> </span></span>个高质量的测试<strong>三元组（查询、数据、标准答案图表）</strong>。</li>
+</ul>
+</li>
+</ul>
+<h3 id="automatic-quantitative-evaluation">Automatic Quantitative Evaluation<a class="headerlink" href="#automatic-quantitative-evaluation" title="Permanent link">⚓︎</a></h3>
+<p>为了降低评估成本，论文提出了一种基于前沿（<del>当然现在算不上什么前沿了，这个领域的进步太快了</del>）<strong>多模态模型<span class="heti-skip"><span class="heti-spacing"> </span>GPT-4V<span class="heti-spacing"> </span></span>的自动化评估机制</strong>。该机制通过精心设计的提示词，引导<span class="heti-skip"><span class="heti-spacing"> </span>GPT-4V<span class="heti-spacing"> </span></span>将模型生成的图表与标准答案图表进行比较，并基于图表的正确性和相似度给出一个<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>到<span class="heti-skip"><span class="heti-spacing"> </span>100<span class="heti-spacing"> </span></span>分的分数。</p>
+<p>该自动化评估方法的可靠性得到了严格的统计验证。研究人员计算了自动评分与人类专家评分之间的皮尔逊相关系数。结果显示，无论是对于<span class="heti-skip"><span class="heti-spacing"> </span>GPT-4<span class="heti-spacing"> </span></span>生成的图表还是<span class="heti-skip"><span class="heti-spacing"> </span>GPT-3.5<span class="heti-spacing"> </span></span>生成的图表，<u>自动评分与人类评分都表现出极强的正相关性</u>。这证明了使用<span class="heti-skip"><span class="heti-spacing"> </span>GPT-4V<span class="heti-spacing"> </span></span>作为人类判断的可靠代理是可行的，极大地降低了后续研究的门槛，使研究者不必再依赖昂贵且耗时的人工评估。</p>
+<h2 id="matplotagent_1">MatPlotAgent<a class="headerlink" href="#matplotagent_1" title="Permanent link">⚓︎</a></h2>
+<p><span>MatPlotAgent<span class="heti-spacing"> </span></span>是一个<strong>模型无关</strong><span>(model-agnostic)<span class="heti-spacing"> </span></span><sup id="fnref:1"><a class="footnote-ref" href="#fn:1"><span>1<span class="heti-spacing"> </span></span></a></sup>的<span class="heti-skip"><span class="heti-spacing"> </span>LLM<span class="heti-spacing"> </span></span>智能体框架，由三个核心模块组成：</p>
+<ul>
+<li>查询理解模块</li>
+<li>带有迭代调试的代码生成模块</li>
+<li>用于纠错的视觉反馈机制</li>
+</ul>
+<p>这种模块化的设计将“从文本生成图表”这个宏大而模糊的任务，分解为三个界限清晰且易于管理的子问题：规划<span><span class="heti-spacing"> </span>(planning)</span>、执行<span class="heti-skip"><span class="heti-spacing"> </span>(execution)<span class="heti-spacing"> </span></span>和修正<span><span class="heti-spacing"> </span>(refinement)</span>，从而精确地模拟了人类专家在面对复杂问题时所采用的结构化解决策略。</p>
+<div style="text-align: center">
+<img src="images/matplotagent/2.png" width="100%"/>
+</div>
+<h3 id="query-expansion">Query Expansion<a class="headerlink" href="#query-expansion" title="Permanent link">⚓︎</a></h3>
+<p>查询接收模块接收用户提出的<strong>高层次、有时甚至有些模糊的查询</strong>，然后利用代码<span class="heti-skip"><span class="heti-spacing"> </span>LLM<span class="heti-spacing"> </span></span>将其扩展为<strong>一系列明确详尽、按部就班的指令</strong>，供后续的代码智能体使用。这些指令非常具体，包括<u>需要导入哪些库、调用哪些函数、如何设置函数参数以及如何进行数据预处理等步骤</u>。</p>
+<p>该模块的作用是<strong>极大地降低代码生成模块的认知负荷</strong>。通过预先制定一份<strong>详细的行动计划，它将一个复杂问题分解为多个简单的子任务</strong>，从而显著提高了后续代码生成环节的准确性和完整性。它成功地将一个抽象的目标转换成了一个具体的、可执行的算法。</p>
+<h3 id="code-agent">Code Agent<a class="headerlink" href="#code-agent" title="Permanent link">⚓︎</a></h3>
+<p>“代码智能体”是<span class="heti-skip"><span class="heti-spacing"> </span>MatPlotAgent<span class="heti-spacing"> </span></span>的核心执行单元，负责根据规划模块提供的详细指令编写<span class="heti-skip"><span class="heti-spacing"> </span>Python<span class="heti-spacing"> </span></span>代码。为了提高代码的鲁棒性，该模块集成了一个“<strong>自调试</strong>(self-debugging)”机制。当初始生成的代码在执行时遇到错误，智能体会分析<span class="heti-skip"><span class="heti-spacing"> </span>Python<span class="heti-spacing"> </span></span>解释器返回的错误信息，并迭代地尝试修复代码中的<span><span class="heti-spacing"> </span>bug</span>。为了防止无限循环，最大调试次数有上限。自调试循环是现代代码智能体的一个标准配置，在这里的作用主要是处理语法和运行时层面的错误，确保智能体至少能够成功生成一张图表。</p>
+<h3 id="visual-agent">Visual Agent<a class="headerlink" href="#visual-agent" title="Permanent link">⚓︎</a></h3>
+<p>这是该论文在架构上最主要的创新。被称为“视觉智能体”的模块由一个<strong>多模态<span><span class="heti-spacing"> </span>LLM</span></strong>（如<span class="heti-skip"><span class="heti-spacing"> </span>GPT-4V<span class="heti-spacing"> </span></span>或<span><span class="heti-spacing"> </span>Gemini Pro Vision</span>）驱动。它负责检查代码智能体成功生成的图表（即视觉输出<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，并将其与用户的原始查询进行比对，以识别在<strong>视觉元素、数据表达、美学风格</strong>等方面存在的偏差。</p>
+<p>一旦发现不一致之处，视觉智能体便会<strong>生成自然语言形式的“视觉反馈”</strong>，例如“为了更好的可见性，请将点的大小放大<span class="heti-skip"><span class="heti-spacing"> </span>100<span class="heti-spacing"> </span></span>倍”或“图中的文字重叠了，需要调整布局”。这些反馈随后被传递回代码智能体，触发新一轮的代码优化。这个过程形成了一个闭环，直到图表满足用户要求或达到最大迭代次数。</p>
+<p>这个视觉反馈循环是<span class="heti-skip"><span class="heti-spacing"> </span>MatPlotAgent<span class="heti-spacing"> </span></span>与传统代码生成系统的根本区别。它解决的是一类完全不同的错误：不是那些导致代码无法运行的错误，而是那些代码运行正常但产生了错误视觉结果的错误。这种设计将评估范式从语法正确性（代码能否执行<heti-adjacent class="heti-adjacent-half">？</heti-adjacent>）提升到了<strong>语义和视觉正确性</strong>（图表是否准确、清晰地传达了所要求的信息<heti-adjacent class="heti-adjacent-half">？</heti-adjacent><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
+<h2 id="experiments">Experiments<a class="headerlink" href="#experiments" title="Permanent link">⚓︎</a></h2>
+<h3 id="main-results">Main Results<a class="headerlink" href="#main-results" title="Permanent link">⚓︎</a></h3>
+<p>实验结果明确显示，<span>MatPlotAgent<span class="heti-spacing"> </span></span>的性能远超传统的提示方法。</p>
+<div style="text-align: center">
+<img src="images/matplotagent/3.png" width="80%"/>
+</div>
+<p>如表<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>所示，在一系列涵盖<span class="heti-skip"><span class="heti-spacing"> </span>7<span class="heti-spacing"> </span></span>个不同代码<span class="heti-skip"><span class="heti-spacing"> </span>LLM<span class="heti-spacing"> </span></span>的测试中，<span>MatPlotAgent<span class="heti-spacing"> </span></span>框架的表现一致且显著地优于<strong>直接解码</strong><span>(direct decoding)<span class="heti-spacing"> </span></span><sup id="fnref:2"><a class="footnote-ref" href="#fn:2"><span>2<span class="heti-spacing"> </span></span></a></sup>和<strong>零样本思维链</strong><span>(zero-shot CoT)<span class="heti-spacing"> </span></span><sup id="fnref:3"><a class="footnote-ref" href="#fn:3"><span>3<span class="heti-spacing"> </span></span></a></sup>这两种基线方法。</p>
+<ul>
+<li>对于当时最先进的<span class="heti-skip"><span class="heti-spacing"> </span>GPT-4<span class="heti-spacing"> </span></span>模型，<span>MatPlotAgent<span class="heti-spacing"> </span></span>使其得分从<span class="heti-skip"><span class="heti-spacing"> </span>48.86<span class="heti-spacing"> </span></span>跃升至<span><span class="heti-spacing"> </span>61.16</span>，实现了<span class="heti-skip"><span class="heti-spacing"> </span>12.30<span class="heti-spacing"> </span></span>分的巨大提升。</li>
+<li>对于开源模型<span><span class="heti-spacing"> </span>Magicoder-S-DS-6.7B</span>，性能增益更为惊人，从<span class="heti-skip"><span class="heti-spacing"> </span>38.49<span class="heti-spacing"> </span></span>提升至<span><span class="heti-spacing"> </span>51.70</span>（<span>+13.21<span class="heti-spacing"> </span></span>分<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，其最终得分甚至超过了<span class="heti-skip"><span class="heti-spacing"> </span>GPT-4<span class="heti-spacing"> </span></span>在直接解码设置下的表现。</li>
+</ul>
+<p>一个特别值得注意的发现是，零样本思维链方法对于大多数模型不仅没有帮助，反而导致了性能下降。这有力地表明，对于科学数据可视化这类需要精确执行和视觉对齐的复杂任务，非结构化的、单一的“思考”过程是不足够的，甚至可能引入干扰。相比之下，<span>MatPlotAgent<span class="heti-spacing"> </span></span>提供的结构化、多步骤的智能体框架被证明是更有效的解决方案。</p>
+<p>此外，规模较小的<span class="heti-skip"><span class="heti-spacing"> </span>Magicoder<span class="heti-spacing"> </span></span>模型在搭载了<span class="heti-skip"><span class="heti-spacing"> </span>MatPlotAgent<span class="heti-spacing"> </span></span>后能够超越规模远大于它的<span><span class="heti-spacing"> </span>GPT-4</span>（在直接解码下<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，这强烈说明一个优越的框架对性能的贡献可能比单纯增大基础模型更为重要。</p>
+<h3 id="ablation-study">Ablation Study<a class="headerlink" href="#ablation-study" title="Permanent link">⚓︎</a></h3>
+<p>为了验证视觉反馈机制的核心价值，研究进行了一项消融研究<span><span class="heti-spacing"> </span>(ablation study)</span><sup id="fnref:4"><a class="footnote-ref" href="#fn:4"><span><span class="heti-spacing"> </span>4</span></a></sup>，即在<span class="heti-skip"><span class="heti-spacing"> </span>MatPlotAgent<span class="heti-spacing"> </span></span>框架中<strong>禁用视觉智能体模块</strong>，并观察其性能变化。</p>
+<div style="text-align: center">
+<img src="images/matplotagent/4.png" width="40%"/>
+</div>
+<p>这些数据定量地证明了视觉反馈循环并非一个锦上添花的功能，而是整个框架成功的核心驱动力。它证实了研究的核心假设：在该领域中，一大部分错误是视觉上或语义上的，而非代码语法上的，这类错误只有通过一个能够“看见”并理解视觉输出的模块才能被发现和纠正。论文中提供的定性案例（图<span><span class="heti-spacing"> </span>4</span>）也直观地展示了这一点，例如，没有视觉反馈的智能体生成的图表文字混乱，而启用反馈后这一问题得到了修复。</p>
+<div style="text-align: center">
+<img src="images/matplotagent/5.png" width="80%"/>
+</div>
+<h3 id="generalizability-studies">Generalizability Studies<a class="headerlink" href="#generalizability-studies" title="Permanent link">⚓︎</a></h3>
+<p>为了证明<span class="heti-skip"><span class="heti-spacing"> </span>MatPlotAgent<span class="heti-spacing"> </span></span>框架的普适性，研究还进行了两组额外的实验。</p>
+<p>首先，为了测试视觉智能体对具体多模态模型的依赖性，实验将视觉智能体从<span class="heti-skip"><span class="heti-spacing"> </span>GPT-4V<span class="heti-spacing"> </span></span>替换为<span class="heti-skip"><span class="heti-spacing"> </span>Google<span class="heti-spacing"> </span></span>的<span><span class="heti-spacing"> </span>Gemini Pro Vision</span>。</p>
+<div style="text-align: center">
+<img src="images/matplotagent/6.png" width="40%"/>
+</div>
+<p>如表<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>所示，即使更换了视觉智能体的“大脑”，<span>MatPlotAgent<span class="heti-spacing"> </span></span>依然能为<span class="heti-skip"><span class="heti-spacing"> </span>GPT-4<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>GPT-3.5<span class="heti-spacing"> </span></span>带来显著的性能提升（分别为<span class="heti-skip"><span class="heti-spacing"> </span>+7.87<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>+5.45<span class="heti-spacing"> </span></span>分<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。这证明了框架的成功并非依赖于某一个特定的专有模型，其架构原则是稳健的。</p>
+<hr/>
+<p>其次，为了验证框架在不同基准测试上的表现，研究人员在一个公开的第三方基准——<span>Qwen-Agent Code Interpreter benchmark<span class="heti-spacing"> </span></span>的视觉化子集上进行了测试。</p>
+<div style="text-align: center">
+<img src="images/matplotagent/7.png" width="70%"/>
+</div>
+<p>如表<span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span>所示，<span>MatPlotAgent<span class="heti-spacing"> </span></span>同样提升了<span class="heti-skip"><span class="heti-spacing"> </span>GPT-4<span class="heti-spacing"> </span></span>在该基准上的性能，尤其是在高难度子集上，得分从<span class="heti-skip"><span class="heti-spacing"> </span>66.7<span class="heti-spacing"> </span></span>提升至<span><span class="heti-spacing"> </span>72.6</span>。这一结果表明， <span>MatPlotAgent<span class="heti-spacing"> </span></span>的优势可以泛化到非自建的、独立的测试环境中，有力地反驳了其设计可能对其自建基准存在“过拟合”的潜在质疑。</p>
+<h3 id="case-studies">Case Studies<a class="headerlink" href="#case-studies" title="Permanent link">⚓︎</a></h3>
+<p>下图所示的案例研究揭示了当前技术在实际应用中的性能上限和关键的失败模式。</p>
+<div style="text-align: center">
+<img src="images/matplotagent/8.png" width="70%"/>
+</div>
+<p>研究展示了三个难度递增的案例，清晰地描绘了当前<span class="heti-skip"><span class="heti-spacing"> </span>LLM<span class="heti-spacing"> </span></span>能力的范围。</p>
+<ol>
+<li>简单案例：一个相对简单的图表任务，<span>GPT-4<span class="heti-spacing"> </span></span>在<span class="heti-skip"><span class="heti-spacing"> </span>MatPlotAgent<span class="heti-spacing"> </span></span>的辅助下能够正确地生成。这表明对于基础的可视化需求，最先进的<span class="heti-skip"><span class="heti-spacing"> </span>LLM<span class="heti-spacing"> </span></span>结合智能体框架已经具备了可靠的自动化能力。</li>
+<li>挑战性案例：一个更复杂的图表，<span>GPT-4<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>Magicoder<span class="heti-spacing"> </span></span>虽然都能生成一个“草稿”，但两者都“遗漏了一些元素”。这揭示出，随着任务组合复杂性的增加，即使有智能体框架的辅助，模型也开始难以捕捉所有细节或完全遵循用户的指令。元素的遗漏是一种典型的失败模式，暗示了<span class="heti-skip"><span class="heti-spacing"> </span>LLM<span class="heti-spacing"> </span></span>在工作记忆或注意力机制上可能存在局限。</li>
+<li>最困难案例：一个高度复杂的图表被证明是当前技术无法逾越的障碍<heti-adjacent class="heti-adjacent-quarter">，</heti-adjacent>“三个模型中没有一个能产生正确的结果”。这是一个极其重要的发现，它表明某些可视化任务的复杂性仍然超出了当前最先进的<span><span class="heti-spacing"> </span>LLM</span>（如<span><span class="heti-spacing"> </span>GPT-4</span>）与<span class="heti-skip"><span class="heti-spacing"> </span>MatPlotAgent<span class="heti-spacing"> </span></span>组合的能力范围。</li>
+</ol>
+<p>这种失败很可能不仅仅是“编码难度”的问题，而更深层次地反映了<strong>智能体在将抽象的语义概念（来自用户查询和视觉反馈）映射到具体的句法实现（代码）时遇到了障碍。从语义反馈到句法修正的这个翻译过程是一个主要的瓶颈。智能体可能知道哪里错了，但不知道如何用代码去修复它</strong>。</p>
+<h2 id="conclusion-and-limitations">Conclusion and Limitations<a class="headerlink" href="#conclusion-and-limitations" title="Permanent link">⚓︎</a></h2>
+<p>总而言之，该研究通过其双重贡献，为自动化科学数据可视化领域迈出了坚实的一步。</p>
+<ul>
+<li><span>MatPlotBench<span class="heti-spacing"> </span></span>为整个研究社区提供了一个急需的、稳健的标准化评估工具。</li>
+<li>而<span class="heti-skip"><span class="heti-spacing"> </span>MatPlotAgent<span class="heti-spacing"> </span></span>则提供了一个有效且可泛化的智能体框架，实验证明它能显著提升各种<span class="heti-skip"><span class="heti-spacing"> </span>LLM<span class="heti-spacing"> </span></span>的可视化能力。其中，作为核心创新的视觉反馈循环，是该论文最具影响力的概念性贡献，它为解决具有非文本输出的复杂任务提供了一个新的、有效的范式。</li>
+</ul>
+<p>同时，该研究也坦诚地指出了其局限性。</p>
+<ul>
+<li><span>MatPlotBench<span class="heti-spacing"> </span></span>虽然旨在覆盖通用的科学可视化需求，但<strong>不同学科（如生物信息学、天体物理学）可能有其高度专业化的可视化规范，这是当前基准未能完全涵盖的</strong>。未来的工作可以在此基础上构建特定领域的基准和评估方法。</li>
+<li>此外，案例研究揭示的失败模式表明，要攻克最复杂的可视化挑战，将需要<span class="heti-skip"><span class="heti-spacing"> </span>LLM<span class="heti-spacing"> </span></span>在组合逻辑、层级规划以及从语义目标到句法代码的无缝转换等核心推理能力上取得根本性的突破。</li>
+</ul>
+<div class="footnote">
+<hr/>
+<ol>
+<li id="fn:1">
+<p>可以简单理解为：工作原理不受限于任何具体的模型。 <a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">↩</a></p>
+</li>
+<li id="fn:2">
+<p>解释：<span>LLM<span class="heti-spacing"> </span></span>生成每个新词时，模型只会选择当前步骤中概率最高的那个词。 <a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">↩</a></p>
+</li>
+<li id="fn:3">
+<p>解释：在没有提供任何示例的情况下，通过简单的提示指令引导模型生成一系列中间推理步骤，从而提高模型在复杂任务上的表现。 <a class="footnote-backref" href="#fnref:3" title="Jump back to footnote 3 in the text">↩</a></p>
+</li>
+<li id="fn:4">
+<p>解释：通过系统性地移除或“关闭”模型或系统中的某个组成部分，来评估该部分对整体性能的贡献。 <a class="footnote-backref" href="#fnref:4" title="Jump back to footnote 4 in the text">↩</a></p>
+</li>
+</ol>
+</div></div>
+<aside class="md-source-file">
+<span class="md-source-file__fact">
+<span class="md-icon" title="最后更新">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"></path></svg>
+</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年9月7日 18:54:08">2025年9月7日 18:54:08</span>
+</span>
+<span class="md-source-file__fact">
+<span class="md-icon" title="创建日期">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"></path></svg>
+</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年9月7日 18:54:08">2025年9月7日 18:54:08</span>
+</span>
+</aside>
+<p style="font-size: 30px; font-weight: 600">评论区</p>
+<div>
+    如果大家有什么问题或想法，欢迎在下方留言~
+  </div>
+<!-- Insert generated snippet here -->
+<script async="" crossorigin="anonymous" data-category="Announcements" data-category-id="DIC_kwDOMAb9Zs4CfmpP" data-emit-metadata="0" data-input-position="bottom" data-lang="zh-CN" data-mapping="pathname" data-reactions-enabled="1" data-repo="noughtq/notebook" data-repo-id="R_kgDOMAb9Zg" data-strict="0" data-theme="preferred_color_scheme" src="https://giscus.app/client.js">
+</script>
+<!-- Synchronize Giscus theme with palette -->
+<script>
+    var giscus = document.querySelector("script[src*=giscus]")
+
+    // Set palette on initial load
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object") {
+      var theme = palette.color.scheme === "slate"
+        ? "transparent_dark"
+        : "light"
+
+      // Instruct Giscus to set theme
+      giscus.setAttribute("data-theme", theme) 
+    }
+
+    // Register event handlers after documented loaded
+    document.addEventListener("DOMContentLoaded", function() {
+      var ref = document.querySelector("[data-md-component=palette]")
+      ref.addEventListener("change", function() {
+        var palette = __md_get("__palette")
+        if (palette && typeof palette.color === "object") {
+          var theme = palette.color.scheme === "slate"
+            ? "dark"
+            : "light"
+
+          // Instruct Giscus to change theme
+          var frame = document.querySelector(".giscus-frame")
+          frame.contentWindow.postMessage(
+            { giscus: { setConfig: { theme } } },
+            "https://giscus.app"
+          )
+        }
+      })
+    })
+  </script>
+<!-- 标题计数器 -->
+<link href="/css/counter.css" rel="stylesheet"/>
+<!-- 主页个性化 -->
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+<button class="md-top md-icon" data-md-component="top" hidden="" type="button">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  回到页面顶部
+</button>
+</main>
+<footer class="md-footer">
+<nav aria-label="页脚" class="md-footer__inner md-grid">
+<a aria-label="上一页: VisEval" class="md-footer__link md-footer__link--prev" href="viseval.html">
+<div class="md-footer__button md-icon">
+<svg viewbox="0 0 256 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" fill="currentColor"></path></svg>
+</div>
+<div class="md-footer__title">
+<span class="md-footer__direction">
+                上一页
+              </span>
+<div class="md-ellipsis">
+                VisEval
+              </div>
+</div>
+</a>
+</nav>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright" style="margin-left: 33.5%">
+<div class="md-copyright__highlight" style="text-align: center">
+        Copyright © 2024-2025 <a href="https://github.com/NoughtQ">NoughtQ</a>
+</div>
+    
+    
+      Powered by
+      <a href="https://www.mkdocs.org/" rel="noopener" target="_blank">
+        MkDocs
+      </a>
+      with theme
+      <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+        Material
+      </a>
+      modified by
+      <a href="https://github.com/NoughtQ" rel="noopener" target="_blank">
+        NoughtQ
+      </a>
+<!-- <br> -->
+<div style="text-align: center;">
+<a href="https://icp.gov.moe/?keyword=20252357" target="_blank">萌ICP备20252357号</a>
+</div>
+</div>
+<div class="md-social">
+<a class="md-social__link" href="https://noughtq.top" rel="noopener" target="_blank" title="noughtq.top">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M277.8 8.6c-12.3-11.4-31.3-11.4-43.5 0l-224 208c-9.6 9-12.8 22.9-8 35.1S18.8 272 32 272h16v176c0 35.3 28.7 64 64 64h288c35.3 0 64-28.7 64-64V272h16c13.2 0 25-8.1 29.8-20.3s1.6-26.2-8-35.1zM240 320h32c26.5 0 48 21.5 48 48v96H192v-96c0-26.5 21.5-48 48-48" fill="currentColor"></path></svg>
+</a>
+<a class="md-social__link" href="https://blog.noughtq.top" rel="noopener" target="_blank" title="blog.noughtq.top">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M224 24c0-13.3 10.7-24 24-24 145.8 0 264 118.2 264 264 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-119.3-96.7-216-216-216-13.3 0-24-10.7-24-24M80 96c26.5 0 48 21.5 48 48v224c0 26.5 21.5 48 48 48s48-21.5 48-48-21.5-48-48-48c-8.8 0-16-7.2-16-16v-64c0-8.8 7.2-16 16-16 79.5 0 144 64.5 144 144s-64.5 144-144 144S32 447.5 32 368V144c0-26.5 21.5-48 48-48m168 0c92.8 0 168 75.2 168 168 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-66.3-53.7-120-120-120-13.3 0-24-10.7-24-24s10.7-24 24-24" fill="currentColor"></path></svg>
+</a>
+<a class="md-social__link" href="https://github.com/noughtq" rel="noopener" target="_blank" title="github.com">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2" fill="currentColor"></path></svg>
+</a>
+<a class="md-social__link" href="mailto:noughtq666@gmail.com" rel="noopener" target="_blank" title="">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m20 8-8 5-8-5V6l8 5 8-5m0-2H4c-1.11 0-2 .89-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2"></path></svg>
+</a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"base": "../..", "features": ["content.action.edit", "content.action.view", "content.code.copy", "content.code.annotate", "content.footnote.tooltips", "navigation.tabs", "navigation.top", "navigation.footer", "navigation.indexes", "navigation.tracking", "navigation.prune", "search.share"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.92b07e13.min.js"></script>
+<script src="../../js/anchor.js"></script>
+<script src="../../js/katex.js"></script>
+<script src="../../js/toc.js"></script>
+<script src="../../js/typed.js"></script>
+<script src="../../js/custom.js"></script>
+<script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+<script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+</body>
+</html>
