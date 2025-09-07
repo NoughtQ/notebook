@@ -7,7 +7,7 @@
 <meta content="NoughtQ" name="author"/>
 <link href="https://notebook.noughtq.top/software/cg/4.html" rel="canonical"/>
 <link href="3.html" rel="prev"/>
-<link href="../../system/index.html" rel="next"/>
+<link href="5.html" rel="next"/>
 <link href="../../feed_rss_created.xml" rel="alternate" title="RSS 订阅" type="application/rss+xml"/>
 <link href="../../feed_rss_updated.xml" rel="alternate" title="已更新内容的 RSS 订阅" type="application/rss+xml"/>
 <link href="../../assets/favicon.png" rel="icon"/>
@@ -533,14 +533,40 @@
 </nav>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#visualability--occlusion">
+<a class="md-nav__link" href="#visibility--occlusion">
 <span class="md-ellipsis">
-      Visualability / Occlusion
+      Visibility / Occlusion
+    </span>
+</a>
+<nav aria-label="Visibility / Occlusion" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#painters-algorithm">
+<span class="md-ellipsis">
+      Painter's Algorithm
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#z-buffer">
+<span class="md-ellipsis">
+      Z-Buffer
     </span>
 </a>
 </li>
 </ul>
 </nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="5.html">
+<span class="md-ellipsis">
+    Shading
+    
+  </span>
+</a>
 </li>
 </ul>
 </nav>
@@ -743,11 +769,29 @@
 </nav>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#visualability--occlusion">
+<a class="md-nav__link" href="#visibility--occlusion">
 <span class="md-ellipsis">
-      Visualability / Occlusion
+      Visibility / Occlusion
     </span>
 </a>
+<nav aria-label="Visibility / Occlusion" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#painters-algorithm">
+<span class="md-ellipsis">
+      Painter's Algorithm
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#z-buffer">
+<span class="md-ellipsis">
+      Z-Buffer
+    </span>
+</a>
+</li>
+</ul>
+</nav>
 </li>
 </ul>
 </nav>
@@ -764,7 +808,7 @@
 </a>
 <div><h1 id="rasterization">Rasterization<a class="headerlink" href="#rasterization" title="Permanent link">⚓︎</a></h1>
 <div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
-<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>3759<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 576 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M360.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6m64.6 136.1c-12.5 12.5-12.5 32.8 0 45.3l73.4 73.4-73.4 73.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l96-96c12.5-12.5 12.5-32.8 0-45.3l-96-96c-12.5-12.5-32.8-12.5-45.3 0zm-274.7 0c-12.5-12.5-32.8-12.5-45.3 0l-96 96c-12.5 12.5-12.5 32.8 0 45.3l96 96c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l73.3-73.4c12.5-12.5 12.5-32.8 0-45.3z" fill="currentColor"></path></svg></span> <span>5<span class="heti-spacing"> </span></span>行代码 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>19<span class="heti-spacing"> </span></span>分钟</p>
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>4470<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 576 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M360.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6m64.6 136.1c-12.5 12.5-12.5 32.8 0 45.3l73.4 73.4-73.4 73.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l96-96c12.5-12.5 12.5-32.8 0-45.3l-96-96c-12.5-12.5-32.8-12.5-45.3 0zm-274.7 0c-12.5-12.5-32.8-12.5-45.3 0l-96 96c-12.5 12.5-12.5 32.8 0 45.3l96 96c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l73.3-73.4c12.5-12.5 12.5-32.8 0-45.3z" fill="currentColor"></path></svg></span> <span>14<span class="heti-spacing"> </span></span>行代码 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>23<span class="heti-spacing"> </span></span>分钟</p>
 </div>
 <h2 id="viewport-transformation">Viewport Transformation<a class="headerlink" href="#viewport-transformation" title="Permanent link">⚓︎</a></h2>
 <p>标题中的<span class="heti-skip"><span class="heti-spacing"> </span>MVP<span class="heti-spacing"> </span></span>分别指代了上一讲的三个变换：</p>
@@ -1277,19 +1321,93 @@ M_{viewport} = \begin{pmatrix}\frac{\text{width}}{2} &amp; 0 &amp; 0 &amp; \frac
 <li><strong>TAA</strong>（时间反走样<span><span class="heti-spacing"> </span>(temporal antialiasing)</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：复用上一帧的感知结果，将上一帧的像素值应用在当前帧上</li>
 </ul>
 <p>还有一个经常和反走样放在一起，和反走样不太一样但概念十分相似的东西，叫做<strong>超分辨率</strong>(super resolution)，它要做的是将低分辨率的图变成高分辨率，这中间也存在采样率不足的问题。一种常见的解决方案是 <strong>DLSS</strong>（深度学习超采样<span><span class="heti-spacing"> </span>(deep learning super sampling)</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，顾名思义就是通过深度学习的方式，让机器从低分辨率的图片中预测高分辨率图片的细节。</p>
-<h2 id="visualability--occlusion">Visualability / Occlusion<a class="headerlink" href="#visualability--occlusion" title="Permanent link">⚓︎</a></h2></div>
+<h2 id="visibility--occlusion">Visibility / Occlusion<a class="headerlink" href="#visibility--occlusion" title="Permanent link">⚓︎</a></h2>
+<p>通过前面的学习，我们知道如何将一个三角形画在屏幕上。现在考虑多个三角形，它们相对相机的距离不同，那么怎么把它们画在屏幕上，并且做到近的三角形遮挡远的三角形。</p>
+<h3 id="painters-algorithm">Painter's Algorithm<a class="headerlink" href="#painters-algorithm" title="Permanent link">⚓︎</a></h3>
+<p>第一种算法的灵感来自绘制油画的画家。他们一般会先画远处的风景，再画近处的物体，这些物体会覆盖远景。所以这个算法叫做<strong>画家算法</strong>(painter's algorithm)：从后往前绘制图形，近的图形会<strong>覆写</strong><span>(overwrite)<span class="heti-spacing"> </span></span>帧缓冲区原有的内容。</p>
+<div style="text-align: center">
+<img src="images/lec4/65.png" width="50%"/>
+</div>
+<p>不过这个简单的算法存在以下问题：</p>
+<ul>
+<li>需要先对三角形按深度排序（若有<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span><span class="heti-spacing"> </span></span>个三角形，复杂度为<span><span class="heti-spacing"> </span><span class="arithmatex">\(O(n \log n)\)</span></span>）</li>
+<li>
+<p>存在无法通过深度排序的三角形，如下图所示的三个互相重叠的三角形</p>
+<p></p><div style="text-align: center">
+<img src="images/lec4/66.png" width="30%"/>
+</div>
+</li>
+</ul>
+<h3 id="z-buffer">Z-Buffer<a class="headerlink" href="#z-buffer" title="Permanent link">⚓︎</a></h3>
+<p>所以接下来介绍<span class="heti-skip"><span class="heti-spacing"> </span>CG<span class="heti-spacing"> </span></span>中常用的一种算法，叫做<strong>深度缓存</strong>(deep buffer / z-buffer)。它的思想是：</p>
+<ul>
+<li><strong>对于每个像素</strong>，存储当前最小的深度（<span>z<span class="heti-spacing"> </span></span>坐标值）</li>
+<li>需要用一个额外的缓冲区存储深度值<ul>
+<li>原有的帧缓存存储像素的颜色值</li>
+<li>深度缓存存储像素的深度值</li>
+</ul>
+</li>
+</ul>
+<div class="admonition info">
+<p class="admonition-title">注</p>
+<p>为简洁起见，我们假设 <strong><span>z<span class="heti-spacing"> </span></span>值始终为正</strong>，且<span class="heti-skip"><span class="heti-spacing"> </span>z<span class="heti-spacing"> </span></span>越小表示离相机越近，越大表示离相机越远。</p>
+</div>
+<details class="example" open="open">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<img src="images/lec4/67.png" width="50%"/>
+</div>
+<p>右图表示深度缓存中每个像素的深度值，可以看到越近的地方颜色越黑，表示值越小。</p>
+</details>
+<p>下面给出深度缓存算法的伪代码：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-2-1"><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="n">Initialize</span><span class="w"> </span><span class="n">depth</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">infinity</span>
+</span><span id="__span-2-2"><a href="#__codelineno-2-2" id="__codelineno-2-2" name="__codelineno-2-2"></a><span class="c1">// During rasterization:</span>
+</span><span id="__span-2-3"><a href="#__codelineno-2-3" id="__codelineno-2-3" name="__codelineno-2-3"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">each</span><span class="w"> </span><span class="n">triangle</span><span class="w"> </span><span class="n">T</span><span class="p">)</span>
+</span><span id="__span-2-4"><a href="#__codelineno-2-4" id="__codelineno-2-4" name="__codelineno-2-4"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">each</span><span class="w"> </span><span class="n">sample</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">z</span><span class="p">)</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">T</span><span class="p">)</span>
+</span><span id="__span-2-5"><a href="#__codelineno-2-5" id="__codelineno-2-5" name="__codelineno-2-5"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">z</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">zbuffer</span><span class="p">[</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">])</span><span class="w">              </span><span class="c1">// closest sample so far</span>
+</span><span id="__span-2-6"><a href="#__codelineno-2-6" id="__codelineno-2-6" name="__codelineno-2-6"></a><span class="w">            </span><span class="n">framebuffer</span><span class="p">[</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rgb</span><span class="p">;</span><span class="w">        </span><span class="c1">// update color</span>
+</span><span id="__span-2-7"><a href="#__codelineno-2-7" id="__codelineno-2-7" name="__codelineno-2-7"></a><span class="w">            </span><span class="n">zbuffer</span><span class="p">[</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">z</span><span class="p">;</span><span class="w">              </span><span class="c1">// update depth</span>
+</span><span id="__span-2-8"><a href="#__codelineno-2-8" id="__codelineno-2-8" name="__codelineno-2-8"></a><span class="w">        </span><span class="k">else</span>
+</span><span id="__span-2-9"><a href="#__codelineno-2-9" id="__codelineno-2-9" name="__codelineno-2-9"></a><span class="w">            </span><span class="p">;</span><span class="w">                </span><span class="c1">// do nothing, this sample is occlusded</span>
+</span></code></pre></div>
+<details class="example" open="open">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<img src="images/lec4/68.png" width="50%"/>
+</div>
+<ul>
+<li>原图（左上角）每个像素的深度值假设是无穷大的</li>
+<li>红色三角形的每个像素的深度值均为<span><span class="heti-spacing"> </span>5</span>，都比初始图像小，因此能够完全覆盖原图（右上角）</li>
+<li>现在又引入一个蓝色三角形，它的部分像素深度值比<span class="heti-skip"><span class="heti-spacing"> </span>5<span class="heti-spacing"> </span></span>大（远<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，部分比<span class="heti-skip"><span class="heti-spacing"> </span>5<span class="heti-spacing"> </span></span>小（近<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，这些深度值小的像素点就能覆盖原来红色三角形所在的像素，剩下的会被红色三角形遮挡</li>
+</ul>
+</details>
+<p>深度缓存算法的复杂度：</p>
+<ul>
+<li>若有<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span><span class="heti-spacing"> </span></span>个三角形，复杂度为<span><span class="heti-spacing"> </span><span class="arithmatex">\(O(n)\)</span></span>（假设每个三角形覆盖常数个像素）</li>
+<li>之所以是线性时间，是因为深度缓存只记录当前像素点最小的深度值，不需要为所有的深度值做排序</li>
+<li>即便三角形的绘制顺序不同，也不影响使用该算法得到的最终结果</li>
+<li>因此它是<span class="heti-skip"><span class="heti-spacing"> </span>CG<span class="heti-spacing"> </span></span>中最重要的可见性<span class="heti-skip"><span class="heti-spacing"> </span>(visibility)<span class="heti-spacing"> </span></span>算法之一，几乎在所有的<span class="heti-skip"><span class="heti-spacing"> </span>GPU<span class="heti-spacing"> </span></span>上都得到实现</li>
+<li>可结合<span class="heti-skip"><span class="heti-spacing"> </span>MSAA<span class="heti-spacing"> </span></span>使用（见作业<span><span class="heti-spacing"> </span>2</span>）</li>
+<li>缺点：处理不了透明物体</li>
+</ul>
+<details class="abstract">
+<summary>总结前两讲学过的内容</summary>
+<p></p><div style="text-align: center">
+<img src="images/lec4/69.png" width="50%"/>
+</div>
+</details></div>
 <aside class="md-source-file">
 <span class="md-source-file__fact">
 <span class="md-icon" title="最后更新">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"></path></svg>
 </span>
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年9月7日 11:48:29">2025年9月7日 11:48:29</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年9月7日 16:11:06">2025年9月7日 16:11:06</span>
 </span>
 <span class="md-source-file__fact">
 <span class="md-icon" title="创建日期">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"></path></svg>
 </span>
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年9月7日 11:48:29">2025年9月7日 11:48:29</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年9月7日 16:11:06">2025年9月7日 16:11:06</span>
 </span>
 </aside>
 <p style="font-size: 30px; font-weight: 600">评论区</p>
@@ -1361,13 +1479,13 @@ M_{viewport} = \begin{pmatrix}\frac{\text{width}}{2} &amp; 0 &amp; 0 &amp; \frac
               </div>
 </div>
 </a>
-<a aria-label="下一页: 系统相关" class="md-footer__link md-footer__link--next" href="../../system/index.html">
+<a aria-label="下一页: Shading" class="md-footer__link md-footer__link--next" href="5.html">
 <div class="md-footer__title">
 <span class="md-footer__direction">
                 下一页
               </span>
 <div class="md-ellipsis">
-                系统相关
+                Shading
               </div>
 </div>
 <div class="md-footer__button md-icon">
