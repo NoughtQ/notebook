@@ -11,4 +11,5 @@
     - index: dv/
     - NL4DV: dv/nl4dv/
     - VisEval: dv/viseval
+    - MatPlotAgent: dv/matplotagent
 {{ END_TOC }}

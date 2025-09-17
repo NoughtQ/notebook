@@ -4,3 +4,4 @@
 
 - [NL4DV](nl4dv.md)
 - [VisEval](viseval.md)
+- [MatPlotAgent](matplotagent.md)
