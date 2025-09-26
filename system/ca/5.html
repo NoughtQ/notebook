@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html class="no-js" lang="zh">
-<head>
+<html class="no-js" lang="zh"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
 <meta content="NoughtQ的笔记本，主要记录一些 CS 相关的笔记" name="description"/>
@@ -33,7 +32,17 @@
 <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
 <script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-43NH8CVRCJ"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-43NH8CVRCJ",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-43NH8CVRCJ",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
 <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
-</head>
+<link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
 <body data-md-color-accent="indigo" data-md-color-primary="indigo" data-md-color-scheme="slate" dir="ltr">
 <input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
 <input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
@@ -1073,7 +1082,7 @@
 <a class="md-content__button md-icon" href="https://github.com/noughtq/notebook/raw/master/docs/system/ca/5.md" title="查看本页的源代码">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"></path></svg>
 </a>
-<div><h1 id="chap-5-thread-level-parallelism">Chap 5: Thread-Level Parallelism<a class="headerlink" href="#chap-5-thread-level-parallelism" title="Permanent link">⚓︎</a></h1>
+<h1 id="chap-5-thread-level-parallelism">Chap 5: Thread-Level Parallelism<a class="headerlink" href="#chap-5-thread-level-parallelism" title="Permanent link">⚓︎</a></h1>
 <div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
 <p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>20897<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 576 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M360.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6m64.6 136.1c-12.5 12.5-12.5 32.8 0 45.3l73.4 73.4-73.4 73.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l96-96c12.5-12.5 12.5-32.8 0-45.3l-96-96c-12.5-12.5-32.8-12.5-45.3 0zm-274.7 0c-12.5-12.5-32.8-12.5-45.3 0l-96 96c-12.5 12.5-12.5 32.8 0 45.3l96 96c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l73.3-73.4c12.5-12.5 12.5-32.8 0-45.3z" fill="currentColor"></path></svg></span> <span>50<span class="heti-spacing"> </span></span>行代码 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>105<span class="heti-spacing"> </span></span>分钟</p>
 </div>
@@ -1184,8 +1193,8 @@
 <li>
 <p><span>SMP<span class="heti-spacing"> </span></span>有时也被称为<strong>统一内存访问</strong><span>(uniform memory access, UMA)<span class="heti-spacing"> </span></span>多处理器</p>
 <p></p><div style="text-align: center">
-<img src="images/C5/48.png" width="60%"/>
-</div>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/48.png"><img src="images/C5/48.png" width="60%"/></a>
+</div><p></p>
 <ul>
 <li>所有处理器统一共享物理内存</li>
 <li>所有处理器访问任何内存字的时间相等</li>
@@ -1193,8 +1202,8 @@
 <li>
 <p>下图展示了基于总线的<span class="heti-skip"><span class="heti-spacing"> </span>UMA<span class="heti-spacing"> </span></span>多处理系统</p>
 <p></p><div style="text-align: center">
-<img src="images/C5/49.png" width="70%"/>
-</div>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/49.png"><img src="images/C5/49.png" width="70%"/></a>
+</div><p></p>
 </li>
 </ul>
 </li>
@@ -1204,14 +1213,14 @@
 <li>
 <p>下图展示了集中式共享内存多处理器的基本结构：</p>
 <p></p><div style="text-align: center">
-<img src="images/C5/1.png" width="70%"/>
-</div>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/1.png"><img src="images/C5/1.png" width="70%"/></a>
+</div><p></p>
 </li>
 <li>
 <p>下面是基于共享内存的多处理系统的示意图：</p>
 <p></p><div style="text-align: center">
-<img src="images/C5/46.png" width="80%"/>
-</div>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/46.png"><img src="images/C5/46.png" width="80%"/></a>
+</div><p></p>
 </li>
 </ul>
 </li>
@@ -1226,14 +1235,14 @@
 <li>
 <p>下图展示了分布式共享内存多处理器的基本结构：</p>
 <p></p><div style="text-align: center">
-<img src="images/C5/2.png" width="80%"/>
-</div>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/2.png"><img src="images/C5/2.png" width="80%"/></a>
+</div><p></p>
 </li>
 <li>
 <p><span>DSM<span class="heti-spacing"> </span></span>多处理器也被称为<strong>非均匀内存访问架构</strong>(nonuniform memeory access, NUMA)，因为数据访问时间取决于数据字在内存中的物理位置</p>
 <p></p><div style="text-align: center">
-<img src="images/C5/50.png" width="60%"/>
-</div>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/50.png"><img src="images/C5/50.png" width="60%"/></a>
+</div><p></p>
 <ul>
 <li>所有<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>共享统一的地址空间</li>
 <li>使用加载和存储指令访问远程内存</li>
@@ -1245,14 +1254,14 @@
 <li>
 <p>NC-MUMA：无高速缓存，因而无法隐藏访问远程内存的时间</p>
 <p></p><div style="text-align: center">
-<img src="images/C5/51.png" width="60%"/>
-</div>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/51.png"><img src="images/C5/51.png" width="60%"/></a>
+</div><p></p>
 </li>
 <li>
 <p>CC-MUMA：有一致的高速缓存</p>
 <p></p><div style="text-align: center">
-<img src="images/C5/52.png" width="60%"/>
-</div>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/52.png"><img src="images/C5/52.png" width="60%"/></a>
+</div><p></p>
 </li>
 </ul>
 </li>
@@ -1264,8 +1273,8 @@
 <li>
 <p>下面是基于信息传递的多处理系统的示意图：</p>
 <p></p><div style="text-align: center">
-<img src="images/C5/47.png" width="80%"/>
-</div>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/47.png"><img src="images/C5/47.png" width="80%"/></a>
+</div><p></p>
 </li>
 </ul>
 </li>
@@ -1279,8 +1288,8 @@
 <li>使用分布式高速缓存目录，用于远程内存访问。使用<span class="heti-skip"><span class="heti-spacing"> </span>COMA<span class="heti-spacing"> </span></span>时，一开始可被分配任意的数据，因为这个数据最终会在运行时被移动到正确的位置上。</li>
 </ul>
 <p></p><div style="text-align: center">
-<img src="images/C5/53.png" width="70%"/>
-</div>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/53.png"><img src="images/C5/53.png" width="70%"/></a>
+</div><p></p>
 </details>
 <h3 id="challenges-of-parallel-processing">Challenges of Parallel Processing<a class="headerlink" href="#challenges-of-parallel-processing" title="Permanent link">⚓︎</a></h3>
 <p>多处理器的应用范围广泛，包括：</p>
@@ -1408,8 +1417,8 @@
 <li>
 <p>侦听技术同样适用于多芯片多处理器的一致性协议</p>
 <p></p><div style="text-align: center">
-<img src="images/C5/31.png" width="70%"/>
-</div>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/31.png"><img src="images/C5/31.png" width="70%"/></a>
+</div><p></p>
 </li>
 </ul>
 </li>
@@ -1431,8 +1440,8 @@
 <details class="example">
 <summary>例子</summary>
 <p></p><div style="text-align: center">
-<img src="images/C5/3.png" width="80%"/>
-</div>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/3.png"><img src="images/C5/3.png" width="80%"/></a>
+</div><p></p>
 </details>
 </li>
 <li>
@@ -1451,8 +1460,8 @@
 <details class="abstract" open="open">
 <summary>总结：监听高速缓存执行读<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>写操作的各种情况</summary>
 <p></p><div style="text-align: center">
-<img src="images/C5/54.png" width="70%"/>
-</div>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/54.png"><img src="images/C5/54.png" width="70%"/></a>
+</div><p></p>
 </details>
 </li>
 <li>
@@ -1497,16 +1506,16 @@
 </ul>
 <p>下表展示了由核产生的请求（上半部分）以及来自总线的请求（下半部分）与高速缓存一致性的关系：</p>
 <div style="text-align: center">
-<img src="images/C5/4.png" width="90%"/>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/4.png"><img src="images/C5/4.png" width="90%"/></a>
 </div>
 <p>当总线上出现无效请求或写无效时，所有私有高速缓存中存有该缓存块拷贝的核都会将其置为无效。对于写回式高速缓存的写无效情况，若该块仅存在于一个<strong>私有高速缓存</strong>，且处于独占状态，那么该缓存还需执行<strong>写回</strong>操作；否则可直接从共享高速缓存或主存读取数据。</p>
 <p>下图展示了采用写无效协议和写回式高速缓存的单个私有高速缓存块的有限状态转换图（左图是<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>请求，右图是总线请求<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
 <div style="text-align: center">
-<img src="images/C5/5.png" width="100%"/>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/5.png"><img src="images/C5/5.png" width="100%"/></a>
 </div>
 <p>将两个状态转换图合并在一起，可以得到以下状态图：</p>
 <div style="text-align: center">
-<img src="images/C5/6.png" width="60%"/>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/6.png"><img src="images/C5/6.png" width="60%"/></a>
 </div>
 <ul>
 <li>任何有效的高速缓存块要么处于一个或多个私有高速缓存的共享状态，要么严格位于单一高速缓存的独占状态。</li>
@@ -1521,41 +1530,41 @@
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p></p><div style="text-align: center">
-<img src="images/C5/60.png" width="80%"/>
-</div>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/60.png"><img src="images/C5/60.png" width="80%"/></a>
+</div><p></p>
 </div>
 <div class="tabbed-block">
 <div class="tabbed-set tabbed-alternate" data-tabs="2:6"><input checked="" id="__tabbed_2_1" name="__tabbed_2" type="radio"/><input id="__tabbed_2_2" name="__tabbed_2" type="radio"/><input id="__tabbed_2_3" name="__tabbed_2" type="radio"/><input id="__tabbed_2_4" name="__tabbed_2" type="radio"/><input id="__tabbed_2_5" name="__tabbed_2" type="radio"/><input id="__tabbed_2_6" name="__tabbed_2" type="radio"/><div class="tabbed-labels"><label for="__tabbed_2_1">初始状态</label><label for="__tabbed_2_2"><span><span class="heti-spacing"> </span>Step 1</span></label><label for="__tabbed_2_3"><span><span class="heti-spacing"> </span>Step 2</span></label><label for="__tabbed_2_4"><span><span class="heti-spacing"> </span>Step 3</span></label><label for="__tabbed_2_5"><span><span class="heti-spacing"> </span>Step 4</span></label><label for="__tabbed_2_6"><span><span class="heti-spacing"> </span>Step 5</span></label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p></p><div style="text-align: center">
-<img src="images/C5/32.png" width="70%"/>
-</div>
-</div>
-<div class="tabbed-block">
-<p></p><div style="text-align: center">
-<img src="images/C5/33.png" width="70%"/>
-</div>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/32.png"><img src="images/C5/32.png" width="70%"/></a>
+</div><p></p>
 </div>
 <div class="tabbed-block">
 <p></p><div style="text-align: center">
-<img src="images/C5/34.png" width="70%"/>
-</div>
-</div>
-<div class="tabbed-block">
-<p></p><div style="text-align: center">
-<img src="images/C5/35.png" width="70%"/>
-</div>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/33.png"><img src="images/C5/33.png" width="70%"/></a>
+</div><p></p>
 </div>
 <div class="tabbed-block">
 <p></p><div style="text-align: center">
-<img src="images/C5/36.png" width="70%"/>
-</div>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/34.png"><img src="images/C5/34.png" width="70%"/></a>
+</div><p></p>
 </div>
 <div class="tabbed-block">
 <p></p><div style="text-align: center">
-<img src="images/C5/37.png" width="70%"/>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/35.png"><img src="images/C5/35.png" width="70%"/></a>
+</div><p></p>
 </div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/36.png"><img src="images/C5/36.png" width="70%"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/37.png"><img src="images/C5/37.png" width="70%"/></a>
+</div><p></p>
 </div>
 </div>
 </div>
@@ -1565,23 +1574,23 @@
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p></p><div style="text-align: center">
-<img src="images/C5/55.png" width="90%"/>
-</div>
-</div>
-<div class="tabbed-block">
-<p></p><div style="text-align: center">
-<img src="images/C5/56.png" width="90%"/>
-</div>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/55.png"><img src="images/C5/55.png" width="90%"/></a>
+</div><p></p>
 </div>
 <div class="tabbed-block">
 <p></p><div style="text-align: center">
-<img src="images/C5/57.png" width="90%"/>
-</div>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/56.png"><img src="images/C5/56.png" width="90%"/></a>
+</div><p></p>
 </div>
 <div class="tabbed-block">
 <p></p><div style="text-align: center">
-<img src="images/C5/58.png" width="90%"/>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/57.png"><img src="images/C5/57.png" width="90%"/></a>
+</div><p></p>
 </div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/58.png"><img src="images/C5/58.png" width="90%"/></a>
+</div><p></p>
 <p>这张图没时间改了，各位要仔细判断。</p>
 </div>
 </div>
@@ -1605,16 +1614,16 @@
 <li>
 <p>下面是<span class="heti-skip"><span class="heti-spacing"> </span>MESI<span class="heti-spacing"> </span></span>协议的状态图（<span>jxh<span class="heti-spacing"> </span></span>版本<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
 <p></p><div style="text-align: center">
-<img src="images/C5/38.png" width="80%"/>
-</div>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/38.png"><img src="images/C5/38.png" width="80%"/></a>
+</div><p></p>
 <details class="note">
 <summary>状态图（<span>cr<span class="heti-spacing"> </span></span>版本）</summary>
 <blockquote>
 <p>两张图不太一样，目前还没仔细研究过。</p>
 </blockquote>
 <p></p><div style="text-align: center">
-<img src="images/C5/59.png" width="80%"/>
-</div>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/59.png"><img src="images/C5/59.png" width="80%"/></a>
+</div><p></p>
 </details>
 </li>
 </ul>
@@ -1646,7 +1655,7 @@
 </ul>
 <p>下图展示的就是一个采用分布式高速缓存系统的多核处理器：</p>
 <div style="text-align: center">
-<img src="images/C5/7.png" width="70%"/>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/7.png"><img src="images/C5/7.png" width="70%"/></a>
 </div>
 <h3 id="implementing-snooping-cache-coherence">Implementing Snooping Cache Coherence<a class="headerlink" href="#implementing-snooping-cache-coherence" title="Permanent link">⚓︎</a></h3>
 <p>在单总线的多核处理器中，通过以下方式可使这些步骤具备实质原子性：</p>
@@ -1686,13 +1695,13 @@
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p></p><div style="text-align: center">
-<img src="images/C5/8.png" width="80%"/>
-</div>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/8.png"><img src="images/C5/8.png" width="80%"/></a>
+</div><p></p>
 </div>
 <div class="tabbed-block">
 <p></p><div style="text-align: center">
-<img src="images/C5/9.png" width="80%"/>
-</div>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/9.png"><img src="images/C5/9.png" width="80%"/></a>
+</div><p></p>
 </div>
 </div>
 </div>
@@ -1702,11 +1711,11 @@
 <p>在研究的商业应用中，<span>OLTP<span class="heti-spacing"> </span></span>应用对内存系统的压力最大，即使在评估时使用更大的<span class="heti-skip"><span class="heti-spacing"> </span>L3<span class="heti-spacing"> </span></span>高速缓存，也表现出很大的挑战。</p>
 <p>首先来探究 <strong><span>L3<span class="heti-spacing"> </span></span>高速缓存容量</strong>变化的影响：每个处理器的<span class="heti-skip"><span class="heti-spacing"> </span>L3<span class="heti-spacing"> </span></span>高速缓存容量从<span class="heti-skip"><span class="heti-spacing"> </span>1MiB<span class="heti-spacing"> </span></span>到<span class="heti-skip"><span class="heti-spacing"> </span>8MiB<span class="heti-spacing"> </span></span>不等。下图展示了采用两路组相联高速缓存时增大容量的收益效果：</p>
 <div style="text-align: center">
-<img src="images/C5/10.png" width="50%"/>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/10.png"><img src="images/C5/10.png" width="50%"/></a>
 </div>
 <p>可以看到，随着容量增加，失效率降低，因而程序执行时间也不断减小。值得注意的是，性能提升几乎全部集中在<span class="heti-skip"><span class="heti-spacing"> </span>1MiB -&gt; 2MiB<span class="heti-spacing"> </span></span>的阶段，继续扩容下去的话却收效甚微。为了搞清楚背后的原因，我们需要明确哪些因素会影响<span class="heti-skip"><span class="heti-spacing"> </span>L3<span class="heti-spacing"> </span></span>高速缓存的失效率，以及这些因素如何随着<span class="heti-skip"><span class="heti-spacing"> </span>L3<span class="heti-spacing"> </span></span>高速缓存的增大而变化。下图呈现了来自五个来源的每条指令所贡献的内存访问周期数：</p>
 <div style="text-align: center">
-<img src="images/C5/11.png" width="50%"/>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/11.png"><img src="images/C5/11.png" width="50%"/></a>
 </div>
 <ul>
 <li>在<span class="heti-skip"><span class="heti-spacing"> </span>1MiB<span class="heti-spacing"> </span></span>的<span class="heti-skip"><span class="heti-spacing"> </span>L3<span class="heti-spacing"> </span></span>高速缓存下，影响内存访问周期的两大主要因素是指令失效和容量<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>冲突失效；而当缓存容量增大时，这两个因素的影响会变得微不足道</li>
@@ -1716,13 +1725,13 @@
 <hr/>
 <p>接下来展示的是<strong>增加处理器数量</strong>对不同类型失效的影响：</p>
 <div style="text-align: center">
-<img src="images/C5/12.png" width="50%"/>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/12.png"><img src="images/C5/12.png" width="50%"/></a>
 </div>
 <p>不难发现，真共享失效率的上升并未因单处理器失效率下降而得到抵消，所以导致每条指令的内存访问周期整体增加。</p>
 <hr/>
 <p>最后要探讨的是<strong>增加块大小</strong>是否有助于改善此类工作负载的性能。这一做法理应能降低指令失效率和冷启动失效率，并在一定范围内减少容量<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>冲突失效率，甚至可能降低真实共享失效率。下图展示了当块大小从<span class="heti-skip"><span class="heti-spacing"> </span>32B<span class="heti-spacing"> </span></span>增至<span class="heti-skip"><span class="heti-spacing"> </span>256B<span class="heti-spacing"> </span></span>时，每千条指令的失效次数变化情况：</p>
 <div style="text-align: center">
-<img src="images/C5/13.png" width="50%"/>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/13.png"><img src="images/C5/13.png" width="50%"/></a>
 </div>
 <ul>
 <li>真共享失效率降低至原来的<span class="heti-skip"><span class="heti-spacing"> </span>1/2<span class="heti-spacing"> </span></span>以下，表明真共享失效能够利用局部性原则得到缓解</li>
@@ -1736,8 +1745,8 @@
 <li>
 <p>根据这些数据，要使更大块大小的<span class="heti-skip"><span class="heti-spacing"> </span>L3<span class="heti-spacing"> </span></span>的性能与<span class="heti-skip"><span class="heti-spacing"> </span>32B<span class="heti-spacing"> </span></span>大小的块相当，其失效损失可表示为<span class="heti-skip"><span class="heti-spacing"> </span>32B<span class="heti-spacing"> </span></span>块大小失效值的倍数</p>
 <p></p><div style="text-align: center">
-<img src="images/C5/14.png" width="50%"/>
-</div>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/14.png"><img src="images/C5/14.png" width="50%"/></a>
+</div><p></p>
 </li>
 </ul>
 </li>
@@ -1759,7 +1768,7 @@
 </ul>
 <p>下表展示了八个处理器在上述参数配置下的执行时间分布情况。</p>
 <div style="text-align: center">
-<img src="images/C5/15.png" width="70%"/>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/15.png"><img src="images/C5/15.png" width="70%"/></a>
 </div>
 <p>执行时间被分解为以下部分：</p>
 <ul>
@@ -1776,7 +1785,7 @@
 </ul>
 <p>下面两张图分别展示了内核与用户的数据失效率随数据高速缓存容量及块大小的变化关系：</p>
 <div style="text-align: center">
-<img src="images/C5/16.png" width="80%"/>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/16.png"><img src="images/C5/16.png" width="80%"/></a>
 </div>
 <ul>
 <li>可以看到，增大数据高速缓存容量对用户失效率的影响显著高于对内核失效率的影响</li>
@@ -1786,7 +1795,7 @@
 </ul>
 <p>为了理解内核进程与用户进程表现差异的原因，我们需要进一步分析内核失效的行为特征。下图展示了内核失效率随高速缓存容量和块大小增加的变化情况：</p>
 <div style="text-align: center">
-<img src="images/C5/17.png" width="70%"/>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/17.png"><img src="images/C5/17.png" width="70%"/></a>
 </div>
 <ul>
 <li>
@@ -1836,8 +1845,8 @@
 <li>
 <p>下图展示了添加目录至每个<strong>节点</strong>（单个多核处理器，或在内部实现一致性的小型处理器集合）后，分布式内存多处理器结构的示意图：</p>
 <p></p><div style="text-align: center">
-<img src="images/C5/18.png" width="80%"/>
-</div>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/18.png"><img src="images/C5/18.png" width="80%"/></a>
+</div><p></p>
 </li>
 <li>
 <p>最简单的目录实现方式是：为每个内存块在目录中关联一个条目。</p>
@@ -1862,7 +1871,7 @@
 <p>而数据项的<strong>无效化</strong>处理及<strong>独占副本的定位</strong>操作则存在显著区别：这两种操作都需要请求节点与目录之间、目录与一个或多个远程节点之间进行通信；而在监听协议中，这两个步骤是通过向所有节点广播一起完成的。</p>
 <p>下图展示了节点间传递的各类消息：</p>
 <div style="text-align: center">
-<img src="images/C5/19.png" width="90%"/>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/19.png"><img src="images/C5/19.png" width="90%"/></a>
 </div>
 <ul>
 <li><strong>本地节点</strong><span>(local node)<span class="heti-spacing"> </span></span>是发起请求的节点，<strong>家节点</strong><span>(home node)<span class="heti-spacing"> </span></span>则是存储着目标地址对应内存位置及目录条目的节点。</li>
@@ -1876,7 +1885,7 @@
 <h3 id="an-example-directory-protocol">An Example Directory Protocol<a class="headerlink" href="#an-example-directory-protocol" title="Permanent link">⚓︎</a></h3>
 <p>下图展示了在基于目录的系统中，单个高速缓存块的状态转换图：</p>
 <div style="text-align: center">
-<img src="images/C5/20.png" width="70%"/>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/20.png"><img src="images/C5/20.png" width="70%"/></a>
 </div>
 <ul>
 <li>这张状态转换图操作与监听方案基本一致：状态和触发条件近乎相同。</li>
@@ -1888,7 +1897,7 @@
 <p>为了追踪持有高速缓存块副本的节点集合，我们使用名为<strong>共享者</strong><span>(Sharers)<span class="heti-spacing"> </span></span>的位向量来实现这一功能。目录请求需要更新共享者，并通过读取该集合执行无效化操作。</p>
 <p>下图展示了目录节点在接收消息后采取的操作（状态图结构和上图一致<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
 <div style="text-align: center">
-<img src="images/C5/21.png" width="70%"/>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/21.png"><img src="images/C5/21.png" width="70%"/></a>
 </div>
 <p>该目录会处理三种不同类型的请求：<strong>读失效</strong>(read miss)、<strong>写无效</strong><span>(write miss)<span class="heti-spacing"> </span></span>以及<strong>数据写回</strong>(data write-back)。</p>
 <p>为了理解这些目录操作的机制，下面我们逐步分析各状态下收到的请求及执行的操作。</p>
@@ -1939,13 +1948,13 @@
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p></p><div style="text-align: center">
-<img src="images/C5/44.png" width="80%"/>
-</div>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/44.png"><img src="images/C5/44.png" width="80%"/></a>
+</div><p></p>
 </div>
 <div class="tabbed-block">
 <p></p><div style="text-align: center">
-<img src="images/C5/45.png" width="70%"/>
-</div>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/45.png"><img src="images/C5/45.png" width="70%"/></a>
+</div><p></p>
 </div>
 </div>
 </div>
@@ -2050,7 +2059,7 @@
 </ul>
 <p>下表展示了多个进程通过原子交换指令争着为变量加锁时，处理器与总线<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>目录的交互过程：</p>
 <div style="text-align: center">
-<img src="images/C5/22.png" width="90%"/>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/22.png"><img src="images/C5/22.png" width="90%"/></a>
 </div>
 <ul>
 <li>当持有锁的处理器向锁写入<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>时，所有其他高速缓存中的副本都会无效化，必须重新获取新值以更新本地副本。</li>
@@ -2066,8 +2075,8 @@
 <div class="admonition note">
 <p class="admonition-title">自旋锁的性能分析</p>
 <p></p><div style="text-align: center">
-<img src="images/C5/39.png" width="80%"/>
-</div>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/39.png"><img src="images/C5/39.png" width="80%"/></a>
+</div><p></p>
 </div>
 <h3 id="barrier-synchronization">Barrier Synchronization<a class="headerlink" href="#barrier-synchronization" title="Permanent link">⚓︎</a></h3>
 <p><strong>屏障</strong><span>(barrier)<span class="heti-spacing"> </span></span>迫使进程等待，直到所有进程都抵达屏障后才释放这些进程，使其继续运行。其实现主要基于：</p>
@@ -2124,18 +2133,18 @@
 <details class="note" open="open">
 <summary>屏障同步的性能分析</summary>
 <p></p><div style="text-align: center">
-<img src="images/C5/40.png" width="70%"/>
-</div>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/40.png"><img src="images/C5/40.png" width="70%"/></a>
+</div><p></p>
 <p></p><div style="text-align: center">
-<img src="images/C5/41.png" width="70%"/>
-</div>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/41.png"><img src="images/C5/41.png" width="70%"/></a>
+</div><p></p>
 </details>
 <p>为了提升屏障性能，我们可以采取一种软件优化——组合树形屏障<span><span class="heti-spacing"> </span>(combining tree barrier)</span>：使用预先确定的<span class="heti-skip"><span class="heti-spacing"> </span>n<span class="heti-spacing"> </span></span>叉树结构，进程在子节点处同步，然后向父节点报告，直到根节点释放所有进程。这减少了单个同步点的竞争。</p>
 <div class="admonition code">
 <p class="admonition-title">代码实现</p>
 <p></p><div style="text-align: center">
-<img src="images/C5/42.png" width="80%"/>
-</div>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/42.png"><img src="images/C5/42.png" width="80%"/></a>
+</div><p></p>
 </div>
 <h2 id="models-of-memory-consistency">Models of Memory Consistency<a class="headerlink" href="#models-of-memory-consistency" title="Permanent link">⚓︎</a></h2>
 <p>确定内存连贯程度这一问题相当复杂。先来看个简单的例子：</p>
@@ -2158,7 +2167,7 @@
 </details>
 <p>内存连贯性中最直观的模型称为<strong>顺序连贯性</strong>(sequential consistency)。它要求任何执行结果是相同的，就好像每个处理器发出的内存访问操作保持其程序顺序，且不同处理器之间的访问操作可以任意交错执行。该模型消除了前例中某些非显性执行的可能性，因为所有赋值操作必须在<span class="heti-skip"><span class="heti-spacing"> </span>IF<span class="heti-spacing"> </span></span>语句开始执行前完成。</p>
 <div style="text-align: center">
-<img src="images/C5/43.png" width="60%"/>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/43.png"><img src="images/C5/43.png" width="60%"/></a>
 </div>
 <p>实现顺序连贯性的最简单方法是要求处理器延迟任何内存访问的完成，直到由该访问引发的所有无效化操作完成为止。当然，同样有效的方法是延迟下一次内存访问，直至前一次访问完成。需谨记的是，内存连贯性涉及不同变量间的操作：必须按序执行的两个访问实际上针对的是不同的内存位置。就拿上例来说，必须将 <code>A</code> 或 <code>B</code> 的读取（<code>A == 0</code> 或 <code>B == 0</code>）延迟至前一个写入操作完成（<code>B = 1</code> 或 <code>A = 1</code><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。在顺序连贯性模型下，不能简单地将写入操作置于写缓冲区后就立即执行读取。</p>
 <p>尽管顺序一致性提供了简洁的编程范式，但它会降低可能的性能表现，尤其在处理器数量众多。互连延迟较高的多核系统中（比如下面的例子<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
@@ -2168,13 +2177,13 @@
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p></p><div style="text-align: center">
-<img src="images/C5/23.png" width="80%"/>
-</div>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/23.png"><img src="images/C5/23.png" width="80%"/></a>
+</div><p></p>
 </div>
 <div class="tabbed-block">
 <p></p><div style="text-align: center">
-<img src="images/C5/24.png" width="80%"/>
-</div>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/24.png"><img src="images/C5/24.png" width="80%"/></a>
+</div><p></p>
 </div>
 </div>
 </div>
@@ -2223,10 +2232,10 @@
 <p>在同步程序中，获取操作必须先于共享数据的使用执行，而释放操作必须位于所有共享数据更新之后、且在下一次获取操作之前完成。这一特性使我们能够适度松弛顺序要求——只要确保发生在获取之前的读写操作不必在该获取前完成，发生在释放之后的读写也无须等待该释放完成即可。</p>
 <p>下图展示了各类连贯性模型对一般访问和同步访问顺序的约束：</p>
 <div style="text-align: center">
-<img src="images/C5/25.png" width="90%"/>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/25.png"><img src="images/C5/25.png" width="90%"/></a>
 </div>
 <div style="text-align: center">
-<img src="images/C5/26.png" width="90%"/>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/26.png"><img src="images/C5/26.png" width="90%"/></a>
 </div>
 <p>释放连贯性提供了最宽松且易于验证的模型之一，它能确保同步程序观察到顺序一致的执行结果。虽然大多数同步操作要么是获取要么是释放，但某些操作兼具获取和释放功能，会导致排序效果等同于弱顺序。尽管同步操作总能保证先前的写操作已完成，但我们有时需要在不依赖特定同步操作的情况下确保写操作的完成。此时就需要使用显式指令——在<span class="heti-skip"><span class="heti-spacing"> </span>RISC-V<span class="heti-spacing"> </span></span>中称为<span><span class="heti-spacing"> </span>FENCE</span>——来确保该线程中所有先前指令均已完成执行，包括所有内存写入及相关失效操作的完成。</p>
 <h2 id="cross-cutting-issues">Cross-Cutting Issues<a class="headerlink" href="#cross-cutting-issues" title="Permanent link">⚓︎</a></h2>
@@ -2260,13 +2269,13 @@
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p></p><div style="text-align: center">
-<img src="images/C5/27.png" width="80%"/>
-</div>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/27.png"><img src="images/C5/27.png" width="80%"/></a>
+</div><p></p>
 </div>
 <div class="tabbed-block">
 <p></p><div style="text-align: center">
-<img src="images/C5/28.png" width="80%"/>
-</div>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/28.png"><img src="images/C5/28.png" width="80%"/></a>
+</div><p></p>
 </div>
 </div>
 </div>
@@ -2301,7 +2310,7 @@
 </ul>
 </li>
 </ul>
-</div></div>
+</div>
 <aside class="md-source-file">
 <span class="md-source-file__fact">
 <span class="md-icon" title="最后更新">
@@ -2454,5 +2463,6 @@
 <script src="../../js/custom.js"></script>
 <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
 <script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
-</body>
-</html>
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>
