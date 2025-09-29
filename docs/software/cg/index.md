@@ -16,4 +16,4 @@
     - [x] [Rasterization](4.md)
     - [x] [Shading](5.md)
     - [x] [Geometry](6.md)
-    - [ ] [Ray Tracing](7.md)
+    - [x] [Ray Tracing](7.md)

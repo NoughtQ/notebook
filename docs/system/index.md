@@ -11,3 +11,5 @@
 - [计算机组成(CO)](co/index.md)
 - [计算机体系结构(CA)](ca/index.md)
 - [数据库系统(DB)](db/index.md)
+- [操作系统(OS)](os/index.md)
+- [汇编与接口(AAI)](aai/index.md)
