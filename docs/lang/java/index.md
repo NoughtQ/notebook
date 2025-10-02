@@ -11,16 +11,4 @@
 
     - [x] [Introduction](1.md)
     - [x] [Basic Java](2.md)
-<!-- - [ ] [](3.md)
-- [ ] [](4.md)
-- [ ] [](5.md)
-- [ ] [](6.md)
-- [ ] [](7.md)
-- [ ] [](8.md)
-- [ ] [](9.md)
-- [ ] [](10.md)
-- [ ] [](11.md)
-- [ ] [](12.md)
-- [ ] [](13.md)
-- [ ] [](14.md)
-- [ ] [](15.md) -->
+    - [x] [Inheritance and Polymorphism](3.md)
