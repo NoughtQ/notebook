@@ -1266,15 +1266,15 @@ $$
 L = \dfrac{1}{N} \sum\limits_i L_i(f(x_i, W), y_i)
 $$</p>
 <h3 id="softmax-classifier">Softmax Classifier<a class="headerlink" href="#softmax-classifier" title="Permanent link">⚓︎</a></h3>
-<p>第一种常用的线性分类器是 <strong><span>softmax<span class="heti-spacing"> </span></span>分类器</strong>（又称<strong>多项逻辑回归</strong>(multinomial logistic regression)<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，它的大致思想是将分类器给出的分数解释为<strong>概率</strong>。令<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(s = f(x_i; W)\)</span><span class="heti-spacing"> </span></span>表示原来分类器为图像<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x_i\)</span><span class="heti-spacing"> </span></span>打的分数，那么图像<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x_i\)</span><span class="heti-spacing"> </span></span>被归类为标签<span><span class="heti-spacing"> </span><span class="arithmatex">\(k\)</span></span>（注意标签被映射为整数）的概率是：
+<p>第一种常用的线性分类器是 <strong><span>Softmax<span class="heti-spacing"> </span></span>分类器</strong>（又称<strong>多项逻辑回归</strong>(multinomial logistic regression)<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，它的大致思想是将分类器给出的分数解释为<strong>概率</strong>。令<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(s = f(x_i; W)\)</span><span class="heti-spacing"> </span></span>表示原来分类器为图像<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x_i\)</span><span class="heti-spacing"> </span></span>打的分数，那么图像<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x_i\)</span><span class="heti-spacing"> </span></span>被归类为标签<span><span class="heti-spacing"> </span><span class="arithmatex">\(k\)</span></span>（注意标签被映射为整数）的概率是：
 $$
 P(Y = k|X = x_i) = \dfrac{e^{s_k}}{\sum\limits_j e^{s_j}}
 $$</p>
-<p>上述函数就是 <strong><span>softmax<span class="heti-spacing"> </span></span>函数</strong>。它实现了将原本未归一化的<span class="heti-skip"><span class="heti-spacing"> </span>(unnormalized)<span class="heti-spacing"> </span></span>分数（或者说对数概率<span class="heti-skip"><span class="heti-spacing"> </span>(log-probability)/<span class="heti-spacing"> </span></span>逻辑值<span><span class="heti-spacing"> </span>(logit)</span>）转化为<strong>归一化的</strong><span>(normalized)<span class="heti-spacing"> </span></span>概率。之所以叫“归一化”，是因为对于一张图像，它对所有类别的概率之和为<span><span class="heti-spacing"> </span>1</span>。</p>
+<p>上述函数就是 <strong><span>Softmax<span class="heti-spacing"> </span></span>函数</strong>。它实现了将原本未归一化的<span class="heti-skip"><span class="heti-spacing"> </span>(unnormalized)<span class="heti-spacing"> </span></span>分数（或者说对数概率<span class="heti-skip"><span class="heti-spacing"> </span>(log-probability)/<span class="heti-spacing"> </span></span>逻辑值<span><span class="heti-spacing"> </span>(logit)</span>）转化为<strong>归一化的</strong><span>(normalized)<span class="heti-spacing"> </span></span>概率。之所以叫“归一化”，是因为对于一张图像，它对所有类别的概率之和为<span><span class="heti-spacing"> </span>1</span>。</p>
 <div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec9/37.png"><img src="images/lec9/37.png" width="50%"/></a>
 </div>
-<p>损失函数就是<span class="heti-skip"><span class="heti-spacing"> </span>softmax<span class="heti-spacing"> </span></span>函数经过对数运算后的相反数，即<span><span class="heti-spacing"> </span><span class="arithmatex">\(L_i = - \log P(Y = y_i | X = x_i)\)</span></span>（这实际上在计算<strong>交叉熵</strong>(cross-entropy)<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。之后的优化过程就是一个<strong>最大似然估计</strong>(maximum likelihood estimation)，即选择能够使观测数据（在线性分类器中就是图像应该对应的类别）出现概率最大化的一组权重。</p>
+<p>损失函数就是<span class="heti-skip"><span class="heti-spacing"> </span>Softmax<span class="heti-spacing"> </span></span>函数经过对数运算后的相反数，即<span><span class="heti-spacing"> </span><span class="arithmatex">\(L_i = - \log P(Y = y_i | X = x_i)\)</span></span>（这实际上在计算<strong>交叉熵</strong>(cross-entropy)<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。之后的优化过程就是一个<strong>最大似然估计</strong>(maximum likelihood estimation)，即选择能够使观测数据（在线性分类器中就是图像应该对应的类别）出现概率最大化的一组权重。</p>
 <p>除了可以用交叉熵计算损失，另一种等价的计算手段是 <strong><span>KL<span class="heti-spacing"> </span></span>散度</strong>(Kullback–Leibler divergence)，计算公式如下：
 $$
 D_{KL}(P | Q) = \sum\limits_y P(y) \log \dfrac{P(y)}{Q(y)}
@@ -1291,7 +1291,7 @@ $$</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="7:2"><input checked="" id="__tabbed_7_1" name="__tabbed_7" type="radio"/><input id="__tabbed_7_2" name="__tabbed_7" type="radio"/><div class="tabbed-labels"><label for="__tabbed_7_1">题目</label><label for="__tabbed_7_2">解答</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<p>最小<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>最大的可能的<span class="heti-skip"><span class="heti-spacing"> </span>softmax<span class="heti-spacing"> </span></span>损失<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(L_i\)</span><span class="heti-spacing"> </span></span>是什么？</p>
+<p>最小<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>最大的可能的<span class="heti-skip"><span class="heti-spacing"> </span>Softmax<span class="heti-spacing"> </span></span>损失<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(L_i\)</span><span class="heti-spacing"> </span></span>是什么？</p>
 </div>
 <div class="tabbed-block">
 <ul>
@@ -1306,7 +1306,7 @@ $$</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="8:2"><input checked="" id="__tabbed_8_1" name="__tabbed_8" type="radio"/><input id="__tabbed_8_2" name="__tabbed_8" type="radio"/><div class="tabbed-labels"><label for="__tabbed_8_1">题目</label><label for="__tabbed_8_2">解答</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<p>在初始化阶段，所有的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(s_j\)</span><span class="heti-spacing"> </span></span>都近似相等。假设有<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(C\)</span><span class="heti-spacing"> </span></span>个类别，此时的<span class="heti-skip"><span class="heti-spacing"> </span>softmax<span class="heti-spacing"> </span></span>损失<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(L_i\)</span><span class="heti-spacing"> </span></span>是什么？</p>
+<p>在初始化阶段，所有的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(s_j\)</span><span class="heti-spacing"> </span></span>都近似相等。假设有<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(C\)</span><span class="heti-spacing"> </span></span>个类别，此时的<span class="heti-skip"><span class="heti-spacing"> </span>Softmax<span class="heti-spacing"> </span></span>损失<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(L_i\)</span><span class="heti-spacing"> </span></span>是什么？</p>
 </div>
 <div class="tabbed-block">
 <div class="arithmatex">\[
@@ -1432,16 +1432,16 @@ L_i = -\log(\dfrac{1}{C}) = \log(C)
 </span><span id="__span-4-6"><a href="#__codelineno-4-6" id="__codelineno-4-6" name="__codelineno-4-6"></a>    <span class="k">return</span> <span class="n">loss_i</span>
 </span></code></pre></div>
 <details class="note" open="open">
-<summary>比较<span class="heti-skip"><span class="heti-spacing"> </span>softmax<span class="heti-spacing"> </span></span>和<span><span class="heti-spacing"> </span>SVM</span></summary>
+<summary>比较<span class="heti-skip"><span class="heti-spacing"> </span>Softmax<span class="heti-spacing"> </span></span>和<span><span class="heti-spacing"> </span>SVM</span></summary>
 <p></p><div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec9/41.png"><img src="images/lec9/41.png" width="60%"/></a>
 </div><p></p>
 <p>在两种情况下，我们都计算相同的得分向量<span><span class="heti-spacing"> </span>f</span>，而差异在于对<span class="heti-skip"><span class="heti-spacing"> </span>f<span class="heti-spacing"> </span></span>中得分的解释：</p>
 <ul>
 <li><span>SVM<span class="heti-spacing"> </span></span>将这些得分解释为类别得分，其损失函数鼓励正确类别（蓝色类别<span><span class="heti-spacing"> </span>2</span>）的得分比其他类别得分高出一个间隔</li>
-<li><span>softmax<span class="heti-spacing"> </span></span>分类器则将得分解释为每个类别的（未归一化）对数概率，然后鼓励正确类别的（归一化）对数概率较高（等效地，其负值较低）</li>
+<li><span>Softmax<span class="heti-spacing"> </span></span>分类器则将得分解释为每个类别的（未归一化）对数概率，然后鼓励正确类别的（归一化）对数概率较高（等效地，其负值较低）</li>
 </ul>
-<p>此示例中，<span>SVM<span class="heti-spacing"> </span></span>的最终损失为<span><span class="heti-spacing"> </span>1.58</span>，<span>softmax<span class="heti-spacing"> </span></span>分类器的最终损失为<span><span class="heti-spacing"> </span>1.04</span>，但请注意，这些数字不可比较；它们仅在相同分类器和相同数据计算出的损失中才有意义。</p>
+<p>此示例中，<span>SVM<span class="heti-spacing"> </span></span>的最终损失为<span><span class="heti-spacing"> </span>1.58</span>，<span>Softmax<span class="heti-spacing"> </span></span>分类器的最终损失为<span><span class="heti-spacing"> </span>1.04</span>，但请注意，这些数字不可比较；它们仅在相同分类器和相同数据计算出的损失中才有意义。</p>
 <details class="question">
 <summary>思考</summary>
 <p></p><div style="text-align: center">
@@ -1453,7 +1453,7 @@ L_i = -\log(\dfrac{1}{C}) = \log(C)
 <div class="tabbed-set tabbed-alternate" data-tabs="17:2"><input checked="" id="__tabbed_17_1" name="__tabbed_17" type="radio"/><input id="__tabbed_17_2" name="__tabbed_17" type="radio"/><div class="tabbed-labels"><label for="__tabbed_17_1">题目</label><label for="__tabbed_17_2">解答</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<p><span>softmax<span class="heti-spacing"> </span></span>损失和<span class="heti-skip"><span class="heti-spacing"> </span>SVM<span class="heti-spacing"> </span></span>损失分别是多少呢？</p>
+<p><span>Softmax<span class="heti-spacing"> </span></span>损失和<span class="heti-skip"><span class="heti-spacing"> </span>SVM<span class="heti-spacing"> </span></span>损失分别是多少呢？</p>
 </div>
 <div class="tabbed-block">
 <p>笔者偷懒了，让<span class="heti-skip"><span class="heti-spacing"> </span>Gemini<span class="heti-spacing"> </span></span>写了个<span class="heti-skip"><span class="heti-spacing"> </span>Python<span class="heti-spacing"> </span></span>程序，计算结果如下：</p>
@@ -1471,7 +1471,7 @@ L_i = -\log(\dfrac{1}{C}) = \log(C)
 <div class="tabbed-set tabbed-alternate" data-tabs="18:2"><input checked="" id="__tabbed_18_1" name="__tabbed_18" type="radio"/><input id="__tabbed_18_2" name="__tabbed_18" type="radio"/><div class="tabbed-labels"><label for="__tabbed_18_1">题目</label><label for="__tabbed_18_2">解答</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<p>将分数列表中的第一列的<span class="heti-skip"><span class="heti-spacing"> </span>10<span class="heti-spacing"> </span></span>全部改成<span><span class="heti-spacing"> </span>20</span>，对应的<span class="heti-skip"><span class="heti-spacing"> </span>softmax<span class="heti-spacing"> </span></span>损失和<span class="heti-skip"><span class="heti-spacing"> </span>SVM<span class="heti-spacing"> </span></span>损失又分别是多少呢？</p>
+<p>将分数列表中的第一列的<span class="heti-skip"><span class="heti-spacing"> </span>10<span class="heti-spacing"> </span></span>全部改成<span><span class="heti-spacing"> </span>20</span>，对应的<span class="heti-skip"><span class="heti-spacing"> </span>Softmax<span class="heti-spacing"> </span></span>损失和<span class="heti-skip"><span class="heti-spacing"> </span>SVM<span class="heti-spacing"> </span></span>损失又分别是多少呢？</p>
 </div>
 <div class="tabbed-block">
 <p>同样用<span class="heti-skip"><span class="heti-spacing"> </span>Python<span class="heti-spacing"> </span></span>程序计算，得到结果为：</p>
@@ -1488,7 +1488,7 @@ L_i = -\log(\dfrac{1}{C}) = \log(C)
 </div>
 </div>
 </details>
-<p>在实践中，<span>SVM<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>softmax<span class="heti-spacing"> </span></span>之间的性能差异通常非常小。与<span class="heti-skip"><span class="heti-spacing"> </span>softmax<span class="heti-spacing"> </span></span>分类器相比，<span>SVM<span class="heti-spacing"> </span></span>是一个更局部的目标，这既可算作一个缺点，也会被看成是优点。而<span class="heti-skip"><span class="heti-spacing"> </span>softmax<span class="heti-spacing"> </span></span>分类器对其产生的分数永远不会完全满意：正确类别总是可能具有更高的概率，错误类别总是具有更低的概率，而损失总是可以得到改善。然而，<span>SVM<span class="heti-spacing"> </span></span>一旦满足边界条件就会感到满意，并且不会在这一点之外微观管理确切的分数。</p>
+<p>在实践中，<span>SVM<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>Softmax<span class="heti-spacing"> </span></span>之间的性能差异通常非常小。与<span class="heti-skip"><span class="heti-spacing"> </span>Softmax<span class="heti-spacing"> </span></span>分类器相比，<span>SVM<span class="heti-spacing"> </span></span>是一个更局部的目标，这既可算作一个缺点，也会被看成是优点。而<span class="heti-skip"><span class="heti-spacing"> </span>Softmax<span class="heti-spacing"> </span></span>分类器对其产生的分数永远不会完全满意：正确类别总是可能具有更高的概率，错误类别总是具有更低的概率，而损失总是可以得到改善。然而，<span>SVM<span class="heti-spacing"> </span></span>一旦满足边界条件就会感到满意，并且不会在这一点之外微观管理确切的分数。</p>
 </details>
 <aside class="md-source-file">
 <span class="md-source-file__fact">
