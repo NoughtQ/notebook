@@ -1,0 +1,1851 @@
+<!DOCTYPE html>
+<html class="no-js" lang="zh"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="NoughtQ的笔记本，主要记录一些 CS 相关的笔记" name="description"/>
+<meta content="NoughtQ" name="author"/>
+<link href="https://notebook.noughtq.top/misc/qc/2.html" rel="canonical"/>
+<link href="1.html" rel="prev"/>
+<link href="../psychology/intro/index.html" rel="next"/>
+<link href="../../feed_rss_created.xml" rel="alternate" title="RSS 订阅" type="application/rss+xml"/>
+<link href="../../feed_rss_updated.xml" rel="alternate" title="已更新内容的 RSS 订阅" type="application/rss+xml"/>
+<link href="../../assets/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.6.18" name="generator"/>
+<title>量子态与量子门 - NoughtQ的笔记本</title>
+<link href="../../assets/stylesheets/main.7e37652d.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/palette.06af60db.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=JetBrains+Mono,+LXGW+WenKai+Screen+GB+Screen:300,300i,400,400i,700,700i%7CJetBrains+Mono,+Consolas:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"JetBrains Mono, LXGW WenKai Screen GB Screen";--md-code-font:"JetBrains Mono, Consolas"}</style>
+<link href="../../css/heti.css" rel="stylesheet"/>
+<link href="../../css/toc_extra.css" rel="stylesheet"/>
+<link href="../../css/timeline.css" rel="stylesheet"/>
+<link href="../../css/card.css" rel="stylesheet"/>
+<link href="../../css/custom.css" rel="stylesheet"/>
+<link href="../../css/extra_changelog.css" rel="stylesheet"/>
+<link href="../../css/header.css" rel="stylesheet"/>
+<link href="../../css/sidebar.css" rel="stylesheet"/>
+<link href="https://unpkg.com/katex@0/dist/katex.min.css" rel="stylesheet"/>
+<link href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css" rel="stylesheet"/>
+<link href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;display=swap" rel="stylesheet"/>
+<script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-43NH8CVRCJ"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-43NH8CVRCJ",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-43NH8CVRCJ",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+<script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+<link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+<body data-md-color-accent="indigo" data-md-color-primary="indigo" data-md-color-scheme="slate" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#量子态与量子门">
+          跳转至
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header" data-md-component="header">
+<nav aria-label="页眉" class="md-header__inner md-grid">
+<a aria-label="NoughtQ的笔记本" class="md-header__button md-logo" data-md-component="logo" href="../.." title="NoughtQ的笔记本">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.05 9H7.06V6h1.99V4.03H7.06v-1c0-1.11.89-1.99 1.99-1.99h5.98V8l2.47-1.5L20 8V1.04h1c1.05 0 2 .96 2 1.99V17c0 1.03-.95 2-2 2H9.05c-1.05 0-1.99-.95-1.99-2v-1h1.99v-2H7.06v-3h1.99zM1 18h2v-3H1v-2h2v-3H1V8h2V5h2v3H3v2h2v3H3v2h2v3H3v2h2v1h16v2H5a2 2 0 0 1-2-2v-1H1z"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            NoughtQ的笔记本
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              量子态与量子门
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="Dark Mode" class="md-option" data-md-color-accent="indigo" data-md-color-media="(prefer-color-scheme: dark)" data-md-color-primary="indigo" data-md-color-scheme="slate" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="Dark Mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"></path></svg>
+</label>
+<input aria-label="Light Mode" class="md-option" data-md-color-accent="indigo" data-md-color-media="(prefer-color-scheme: light)" data-md-color-primary="indigo" data-md-color-scheme="default" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="Light Mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="搜索" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="搜索" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 256 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" fill="currentColor"></path></svg>
+</label>
+<nav aria-label="查找" class="md-search__options">
+<a aria-label="分享" class="md-search__icon md-icon" data-clipboard="" data-clipboard-text="" data-md-component="search-share" href="javascript:void(0)" tabindex="-1" title="分享">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"></path></svg>
+</a>
+<button aria-label="清空当前内容" class="md-search__icon md-icon" tabindex="-1" title="清空当前内容" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header__source">
+<a class="md-source" data-md-component="source" href="https://github.com/noughtq/notebook" title="前往仓库">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4" fill="currentColor"></path></svg>
+</div>
+<div class="md-source__repository">
+    NoughtQ/Notebook
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<nav aria-label="标签" class="md-tabs" data-md-component="tabs">
+<div class="md-grid">
+<ul class="md-tabs__list">
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../index.html">
+          
+  
+  
+    
+  
+  🏫主页
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../lang/index.html">
+          
+  
+  
+    
+  
+  🔡编程语言
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../math/index.html">
+          
+  
+  
+    
+  
+  📊数学相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../algorithms/index.html">
+          
+  
+  
+    
+  
+  🧮算法相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../software/index.html">
+          
+  
+  
+    
+  
+  💾软件相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../system/index.html">
+          
+  
+  
+    
+  
+  💻系统相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../web/index.html">
+          
+  
+  
+    
+  
+  🌏Web相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../sec/ctf-101/index.html">
+          
+  
+  
+    
+  
+  🛡️信息安全
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../ai/index.html">
+          
+  
+  
+    
+  
+  🤖人工智能
+
+        </a>
+</li>
+<li class="md-tabs__item md-tabs__item--active">
+<a class="md-tabs__link" href="../index.html">
+          
+  
+  
+    
+  
+  🗃️杂项
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../tools/index.html">
+          
+  
+  
+    
+  
+  🛠️工具
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../papers/index.html">
+          
+  
+  
+    
+  
+  📑论文阅读
+
+        </a>
+</li>
+</ul>
+</div>
+</nav>
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="导航栏" class="md-nav md-nav--primary md-nav--lifted" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="NoughtQ的笔记本" class="md-nav__button md-logo" data-md-component="logo" href="../.." title="NoughtQ的笔记本">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.05 9H7.06V6h1.99V4.03H7.06v-1c0-1.11.89-1.99 1.99-1.99h5.98V8l2.47-1.5L20 8V1.04h1c1.05 0 2 .96 2 1.99V17c0 1.03-.95 2-2 2H9.05c-1.05 0-1.99-.95-1.99-2v-1h1.99v-2H7.06v-3h1.99zM1 18h2v-3H1v-2h2v-3H1V8h2V5h2v3H3v2h2v3H3v2h2v3H3v2h2v1h16v2H5a2 2 0 0 1-2-2v-1H1z"></path></svg>
+</a>
+    NoughtQ的笔记本
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-component="source" href="https://github.com/noughtq/notebook" title="前往仓库">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4" fill="currentColor"></path></svg>
+</div>
+<div class="md-source__repository">
+    NoughtQ/Notebook
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../index.html">
+<span class="md-ellipsis">
+    🏫主页
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../lang/index.html">
+<span class="md-ellipsis">
+    🔡编程语言
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../math/index.html">
+<span class="md-ellipsis">
+    📊数学相关
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../algorithms/index.html">
+<span class="md-ellipsis">
+    🧮算法相关
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../software/index.html">
+<span class="md-ellipsis">
+    💾软件相关
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../system/index.html">
+<span class="md-ellipsis">
+    💻系统相关
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../web/index.html">
+<span class="md-ellipsis">
+    🌏Web相关
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../sec/ctf-101/index.html">
+<span class="md-ellipsis">
+    🛡️信息安全
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ai/index.html">
+<span class="md-ellipsis">
+    🤖人工智能
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_10" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../index.html">
+<span class="md-ellipsis">
+    🗃️杂项
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="true" aria-labelledby="__nav_10_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_10">
+<span class="md-nav__icon md-icon"></span>
+            🗃️杂项
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_10_2" type="checkbox"/>
+<label class="md-nav__link" for="__nav_10_2" id="__nav_10_2_label" tabindex="0">
+<span class="md-ellipsis">
+    CS 相关
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_10_2_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_10_2">
+<span class="md-nav__icon md-icon"></span>
+            CS 相关
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../dem/index.html">
+<span class="md-ellipsis">
+    数据要素市场
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_10_2_2" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="index.html">
+<span class="md-ellipsis">
+    量子计算理论基础与软件系统
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_10_2_2" id="__nav_10_2_2_label" tabindex="0">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="true" aria-labelledby="__nav_10_2_2_label" class="md-nav" data-md-level="3">
+<label class="md-nav__title" for="__nav_10_2_2">
+<span class="md-nav__icon md-icon"></span>
+            量子计算理论基础与软件系统
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="1.html">
+<span class="md-ellipsis">
+    计算机体系结构简史与先进计算介绍
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    量子态与量子门
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="2.html">
+<span class="md-ellipsis">
+    量子态与量子门
+    
+  </span>
+</a>
+<nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#量子计算发展简史">
+<span class="md-ellipsis">
+      量子计算发展简史
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#单量子比特">
+<span class="md-ellipsis">
+      单量子比特
+    </span>
+</a>
+<nav aria-label="单量子比特" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#量子比特的物理实现">
+<span class="md-ellipsis">
+      量子比特的物理实现
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#divincenzo-判据">
+<span class="md-ellipsis">
+      DiVincenzo 判据
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#超导量子比特测控">
+<span class="md-ellipsis">
+      超导量子比特测控
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#超导量子芯片">
+<span class="md-ellipsis">
+      超导量子芯片
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#量子态基本概念">
+<span class="md-ellipsis">
+      量子态基本概念
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#量子比特">
+<span class="md-ellipsis">
+      量子比特
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#量子态矢内积">
+<span class="md-ellipsis">
+      量子态矢内积
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#量子态的坍缩">
+<span class="md-ellipsis">
+      量子态的坍缩
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#不可克隆原理">
+<span class="md-ellipsis">
+      不可克隆原理
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#量子比特的几何表示">
+<span class="md-ellipsis">
+      量子比特的几何表示
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#量子信息的无限与有限">
+<span class="md-ellipsis">
+      量子信息的无限与有限
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#多量子比特">
+<span class="md-ellipsis">
+      多量子比特
+    </span>
+</a>
+<nav aria-label="多量子比特" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#张量积">
+<span class="md-ellipsis">
+      张量积
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#贝尔态">
+<span class="md-ellipsis">
+      贝尔态
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#单量子门">
+<span class="md-ellipsis">
+      单量子门
+    </span>
+</a>
+<nav aria-label="单量子门" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#hadamard-门">
+<span class="md-ellipsis">
+      Hadamard 门
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#泡利矩阵和泡利门">
+<span class="md-ellipsis">
+      泡利矩阵和泡利门
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#量子门与矩阵乘法">
+<span class="md-ellipsis">
+      量子门与矩阵乘法
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#厄米矩阵和酉矩阵">
+<span class="md-ellipsis">
+      厄米矩阵和酉矩阵
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#相位旋转门">
+<span class="md-ellipsis">
+      相位旋转门
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#参数旋转门">
+<span class="md-ellipsis">
+      参数旋转门
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#单量子比特操作分解">
+<span class="md-ellipsis">
+      单量子比特操作分解
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#多量子门">
+<span class="md-ellipsis">
+      多量子门
+    </span>
+</a>
+<nav aria-label="多量子门" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#纠缠判定">
+<span class="md-ellipsis">
+      纠缠判定
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#复合系统">
+<span class="md-ellipsis">
+      复合系统
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cnot-门">
+<span class="md-ellipsis">
+      CNOT 门
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#量子隐形传态">
+<span class="md-ellipsis">
+      量子隐形传态
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#swap-门和-cswap-门">
+<span class="md-ellipsis">
+      SWAP 门和 CSWAP 门
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#toffoli-门">
+<span class="md-ellipsis">
+      Toffoli 门
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#量子计算的并行性">
+<span class="md-ellipsis">
+      量子计算的并行性
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#deutsch-算法">
+<span class="md-ellipsis">
+      Deutsch 算法
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#oracle">
+<span class="md-ellipsis">
+      Oracle
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../psychology/intro/index.html">
+<span class="md-ellipsis">
+    心理学相关
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../physics/index.html">
+<span class="md-ellipsis">
+    大学物理（乙）
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../entrepreneurship.html">
+<span class="md-ellipsis">
+    创业启程
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../tools/index.html">
+<span class="md-ellipsis">
+    🛠️工具
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../papers/index.html">
+<span class="md-ellipsis">
+    📑论文阅读
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#量子计算发展简史">
+<span class="md-ellipsis">
+      量子计算发展简史
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#单量子比特">
+<span class="md-ellipsis">
+      单量子比特
+    </span>
+</a>
+<nav aria-label="单量子比特" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#量子比特的物理实现">
+<span class="md-ellipsis">
+      量子比特的物理实现
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#divincenzo-判据">
+<span class="md-ellipsis">
+      DiVincenzo 判据
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#超导量子比特测控">
+<span class="md-ellipsis">
+      超导量子比特测控
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#超导量子芯片">
+<span class="md-ellipsis">
+      超导量子芯片
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#量子态基本概念">
+<span class="md-ellipsis">
+      量子态基本概念
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#量子比特">
+<span class="md-ellipsis">
+      量子比特
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#量子态矢内积">
+<span class="md-ellipsis">
+      量子态矢内积
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#量子态的坍缩">
+<span class="md-ellipsis">
+      量子态的坍缩
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#不可克隆原理">
+<span class="md-ellipsis">
+      不可克隆原理
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#量子比特的几何表示">
+<span class="md-ellipsis">
+      量子比特的几何表示
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#量子信息的无限与有限">
+<span class="md-ellipsis">
+      量子信息的无限与有限
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#多量子比特">
+<span class="md-ellipsis">
+      多量子比特
+    </span>
+</a>
+<nav aria-label="多量子比特" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#张量积">
+<span class="md-ellipsis">
+      张量积
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#贝尔态">
+<span class="md-ellipsis">
+      贝尔态
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#单量子门">
+<span class="md-ellipsis">
+      单量子门
+    </span>
+</a>
+<nav aria-label="单量子门" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#hadamard-门">
+<span class="md-ellipsis">
+      Hadamard 门
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#泡利矩阵和泡利门">
+<span class="md-ellipsis">
+      泡利矩阵和泡利门
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#量子门与矩阵乘法">
+<span class="md-ellipsis">
+      量子门与矩阵乘法
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#厄米矩阵和酉矩阵">
+<span class="md-ellipsis">
+      厄米矩阵和酉矩阵
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#相位旋转门">
+<span class="md-ellipsis">
+      相位旋转门
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#参数旋转门">
+<span class="md-ellipsis">
+      参数旋转门
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#单量子比特操作分解">
+<span class="md-ellipsis">
+      单量子比特操作分解
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#多量子门">
+<span class="md-ellipsis">
+      多量子门
+    </span>
+</a>
+<nav aria-label="多量子门" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#纠缠判定">
+<span class="md-ellipsis">
+      纠缠判定
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#复合系统">
+<span class="md-ellipsis">
+      复合系统
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cnot-门">
+<span class="md-ellipsis">
+      CNOT 门
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#量子隐形传态">
+<span class="md-ellipsis">
+      量子隐形传态
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#swap-门和-cswap-门">
+<span class="md-ellipsis">
+      SWAP 门和 CSWAP 门
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#toffoli-门">
+<span class="md-ellipsis">
+      Toffoli 门
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#量子计算的并行性">
+<span class="md-ellipsis">
+      量子计算的并行性
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#deutsch-算法">
+<span class="md-ellipsis">
+      Deutsch 算法
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#oracle">
+<span class="md-ellipsis">
+      Oracle
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<article class="md-content__inner md-typeset">
+<a class="md-content__button md-icon" href="https://github.com/noughtq/notebook/edit/master/docs/misc/qc/2.md" rel="edit" title="编辑此页">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"></path></svg>
+</a>
+<a class="md-content__button md-icon" href="https://github.com/noughtq/notebook/raw/master/docs/misc/qc/2.md" title="查看本页的源代码">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"></path></svg>
+</a>
+<h1 id="量子态与量子门">量子态与量子门<a class="headerlink" href="#%E9%87%8F%E5%AD%90%E6%80%81%E4%B8%8E%E9%87%8F%E5%AD%90%E9%97%A8" title="Permanent link">⚓︎</a></h1>
+<div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>9613<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>48<span class="heti-spacing"> </span></span>分钟</p>
+</div>
+<h2 id="量子计算发展简史">量子计算发展简史<a class="headerlink" href="#%E9%87%8F%E5%AD%90%E8%AE%A1%E7%AE%97%E5%8F%91%E5%B1%95%E7%AE%80%E5%8F%B2" title="Permanent link">⚓︎</a></h2>
+<p>IBM Roadmap：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec2/1.png"><img src="images/lec2/1.png" width="60%"/></a>
+</div>
+<details class="abstract" open="open">
+<summary>量子术语与线代术语对照</summary>
+<ul>
+<li><strong>态矢量</strong>(state vactor)：向量</li>
+<li><strong>本征态</strong>(eigenstate)：特征向量</li>
+<li><strong>本征值</strong>(eigenvalue)：特征值</li>
+<li><strong>右矢</strong>(ket) <span class="arithmatex">\(|a\rangle\)</span>：列向量</li>
+<li><strong>左矢</strong>(bra) <span class="arithmatex">\(\langle a|\)</span>：行向量</li>
+<li><span class="arithmatex">\(\langle \bm{a} | \bm{b} \rangle\)</span>：<span><span class="arithmatex">\(\bm{a}, \bm{b}\)</span><span class="heti-spacing"> </span></span>向量的<strong>内积</strong></li>
+<li>
+<p><span class="arithmatex">\(|\bm{a} \rangle \langle \bm{b}|\)</span>：<span><span class="arithmatex">\(\bm{a}, \bm{b}\)</span><span class="heti-spacing"> </span></span>的<strong>外积</strong>构成的投影矩阵</p>
+<details class="example">
+<summary>例子</summary>
+<p>向量<span><span class="heti-spacing"> </span><span class="arithmatex">\(\bm{a} = [1, 2]^T, \bm{b} = [3, 4]^T\)</span></span>，则：</p>
+<ul>
+<li>内积（标量<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：<span class="arithmatex">\(1 \times 3 + 2 \times 4 = 11\)</span></li>
+<li>外积（矩阵<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：<span class="arithmatex">\(\begin{bmatrix}1\times3&amp;1\times4\\2\times3&amp;2\times4\end{bmatrix}\)</span></li>
+</ul>
+</details>
+</li>
+<li>
+<p><strong>基态</strong>(ground state)：最小本征态<span><span class="heti-spacing"> </span>(eigenstate with lowest eigenvalue)</span></p>
+</li>
+<li><strong>算符</strong>(operator)：矩阵</li>
+<li><strong>线性算符</strong>(linear operator)：线性变换<span><span class="heti-spacing"> </span>(linear transformation)</span></li>
+<li>
+<p><strong>幺正（酉）算符</strong>(unitary operator)：正交矩阵<span><span class="heti-spacing"> </span>(orthogonal matrix)</span></p>
+<ul>
+<li>正交矩阵是<strong>实数</strong>矩阵中的概念，当矩阵满足<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(AA^T = I\)</span><span class="heti-spacing"> </span></span>时，矩阵<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(A\)</span><span class="heti-spacing"> </span></span>是正交矩阵</li>
+<li>幺正矩阵是<strong>复数</strong>矩阵中的概念，当矩阵满足<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(UU^{\dagger} = I\)</span><span class="heti-spacing"> </span></span>时，矩阵<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(U\)</span><span class="heti-spacing"> </span></span>是幺正的，其中<span><span class="heti-spacing"> </span><span class="arithmatex">\(\dagger\)</span></span>（dagger）符号指的是<strong>共轭转置运算</strong></li>
+<li>幺正矩阵在量子力学和量子计算中至关重要，因为它的性质保证了量子态<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(|\varphi \rangle\)</span><span class="heti-spacing"> </span></span>经过幺正算子后仍然是一个有效的量子态<span><span class="heti-spacing"> </span><span class="arithmatex">\(|\varphi \rangle\)</span></span></li>
+</ul>
+</li>
+<li>
+<p><strong>厄米矩阵</strong>(Hermitian matrix)：自伴矩阵<span><span class="heti-spacing"> </span>(self-adjoint matrix)</span></p>
+<ul>
+<li>厄米矩阵是复数矩阵中的概念，当矩阵满足<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(H = H^{\dagger}\)</span><span class="heti-spacing"> </span></span>时，则<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(H\)</span><span class="heti-spacing"> </span></span>为厄米的</li>
+</ul>
+</li>
+<li>
+<p><strong>线性叠加原理</strong>(principle of superposition)：线性组合性质</p>
+</li>
+<li><strong>投影算符</strong>(projection operator)：投影矩阵</li>
+</ul>
+</details>
+<details class="abstract" open="open">
+<summary>经典<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>量子对比</summary>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec2/2.png"><img src="images/lec2/2.png" width="60%"/></a>
+</div><p></p>
+</details>
+<h2 id="单量子比特">单量子比特<a class="headerlink" href="#%E5%8D%95%E9%87%8F%E5%AD%90%E6%AF%94%E7%89%B9" title="Permanent link">⚓︎</a></h2>
+<h3 id="量子比特的物理实现">量子比特的物理实现<a class="headerlink" href="#%E9%87%8F%E5%AD%90%E6%AF%94%E7%89%B9%E7%9A%84%E7%89%A9%E7%90%86%E5%AE%9E%E7%8E%B0" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li><strong>信息</strong>是与<strong>物理</strong>过程和物理系统紧密相关的概念，信息的本质是由物理系统中的状态、变化和相互作用所确定的</li>
+<li><strong>电子自旋叠加</strong>、<strong>能量态叠加</strong>等物理过程的抽象就是量子比特的叠加特性</li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec2/3.png"><img src="images/lec2/3.png" width="60%"/></a>
+</div>
+<h3 id="divincenzo-判据"><span>DiVincenzo<span class="heti-spacing"> </span></span>判据<a class="headerlink" href="#divincenzo-%E5%88%A4%E6%8D%AE" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li>具有可操控的量子比特，并具有可扩充性（可调控的二能级系统）</li>
+<li>能够将量子比特的状态初始化为简单基准状态（设置<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(|0\rangle\)</span><span class="heti-spacing"> </span></span>态或<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(|1\rangle\)</span><span class="heti-spacing"> </span></span>态）</li>
+<li>具有长相关退相干时间（确保充足的时间有效完成计算任务）</li>
+<li>具有一组“通用”量子门（确保能够满足所有的计算任务需求）</li>
+<li>能够测量特定量子比特（完成量子信息到经典信息的转换）</li>
+</ul>
+<h3 id="超导量子比特测控">超导量子比特测控<a class="headerlink" href="#%E8%B6%85%E5%AF%BC%E9%87%8F%E5%AD%90%E6%AF%94%E7%89%B9%E6%B5%8B%E6%8E%A7" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li>下图展示了超导体系下单个量子比特测控的完整结构</li>
+<li>右侧为具有分立能级的量子比特具体结构，左侧展示了量子比特的操纵和读取结构</li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec2/4.png"><img src="images/lec2/4.png" width="60%"/></a>
+</div>
+<h3 id="超导量子芯片">超导量子芯片<a class="headerlink" href="#%E8%B6%85%E5%AF%BC%E9%87%8F%E5%AD%90%E8%8A%AF%E7%89%87" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li><strong>超导量子芯片</strong>通过封装工艺集成了多个量子比特，这些量子比特通过耦合器连接，并实现相互作用</li>
+<li>由于封装工艺限制，量子比特和耦合器排布在同一平面内，每个量子比特只能与相邻比特产生作用</li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec2/5.png"><img src="images/lec2/5.png" width="50%"/></a>
+</div>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec2/6.png"><img align="right" alt="" src="images/lec2/6.png" width="20%"/></a></p>
+<ul>
+<li>对于超导量子芯片，我们可以抽象出如下结构：<ul>
+<li>提供了一定数量的可操作量子比特</li>
+<li>每个量子比特可以施加基础单量子比特门</li>
+<li>通过耦合器连接的量子比特间可以施加特定双量子比特门</li>
+<li>每个量子比特可以施加量子测量</li>
+</ul>
+</li>
+<li>超导体系是目前主流的量子计算物理体系之一，能够很好地符合基于门电路的量子计算范式。</li>
+<li>此外，能够实现量子计算的物理体系还包括光量子、离子阱、中性原子等，这些体系均能够满足基本的<span class="heti-skip"><span class="heti-spacing"> </span>DiVincenzo<span class="heti-spacing"> </span></span>判据，但各有优缺，在部署量子算法的过程中也存在着不同的限制。</li>
+</ul>
+<h3 id="量子态基本概念">量子态基本概念<a class="headerlink" href="#%E9%87%8F%E5%AD%90%E6%80%81%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li><strong>量子叠加态</strong>：<ul>
+<li>量子比特<span class="heti-skip"><span class="heti-spacing"> </span>(qubits)<span class="heti-spacing"> </span></span>可以同时代表<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>的多种可能性组合，而这种同时处于多种状态的特性称之为<strong>叠加</strong>(superposition)</li>
+<li>研究人员使用精密激光或微波束操纵让量子比特以使它们能处于叠加态</li>
+</ul>
+</li>
+<li><strong>量子纠缠态</strong>：<ul>
+<li>研究人员可以制备“纠缠”的量子比特对，即是说一对量子比特对的两个量子比特存在于单个量子状态</li>
+<li>当研究人员以可预测的方式改变其中一个量子比特的状态时，另一个量子比特的状态将瞬间改变</li>
+</ul>
+</li>
+<li><strong>薛定谔的猫</strong>：<ul>
+<li>将一只猫放在一个密闭的盒子里，盒子里有一个放射性原子，一个盖革计数器和一个致命装置；如果盖革计数器检测到原子衰变，则装置会释放毒气，导致猫死亡；如果没有衰变，猫则存活</li>
+<li>根据量子力学理论，由于放射性原子处于衰变和没有衰变两种状态的叠加，猫就理应处于死猫和活猫的叠加状态。这只既死又活的猫就是所谓的薛定谔猫</li>
+<li>但是经典世界不可能存在既死又活的猫，必须在打开容器后才知道结果</li>
+</ul>
+</li>
+<li><strong>量子纠缠</strong>：<ul>
+<li>把左脚鞋和右脚鞋分别放在两个盒子中；盒子在没有被打开之前，里面的鞋处在了左和右的叠加态中，既是左脚鞋又是右脚鞋，打开鞋盒后既有可能看到左脚鞋，又有可能看到右脚鞋，这是不确定的状态</li>
+<li>但是有一点是可以确定的，只要其中的一个鞋盒被打开了，另外一个鞋盒中的鞋子也就等于确定了左右；这表现了量子纠缠现象，是量子叠加的必然结果</li>
+</ul>
+</li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec2/7.png"><img src="images/lec2/7.png" width="60%"/></a>
+</div>
+<h3 id="量子比特">量子比特<a class="headerlink" href="#%E9%87%8F%E5%AD%90%E6%AF%94%E7%89%B9" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li>正如经典比特存在两个可能的状态<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>和<span><span class="heti-spacing"> </span>1</span>，<strong>量子比特</strong>的两个可能的状态为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(|0\rangle\)</span><span class="heti-spacing"> </span></span>态和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(|1\rangle\)</span><span class="heti-spacing"> </span></span>态</li>
+<li>式中的 “<span class="arithmatex">\(|\rangle\)</span>” 符号被称为 <strong><span>Dirac<span class="heti-spacing"> </span></span>记号</strong>，是量子力学中状态的标准符号</li>
+<li>
+<p>经典比特和量子比特之间的区别在于量子比特可以处于除<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(|0\rangle\)</span><span class="heti-spacing"> </span></span>态或<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(|1\rangle\)</span><span class="heti-spacing"> </span></span>态以外的状态，是状态的<strong>线性组合</strong>，这被称为<strong>叠加态</strong>，例如：</p>
+<div class="arithmatex">\[
+|\psi\rangle=\alpha|0\rangle+\beta|1\rangle
+\]</div>
+<p>其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\alpha\)</span><span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\beta\)</span><span class="heti-spacing"> </span></span>是复数，因此量子比特的状态是<strong>二维复向量空间中的向量</strong></p>
+<ul>
+<li>其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(|0\rangle\)</span><span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(|1\rangle\)</span><span class="heti-spacing"> </span></span>是该叠加态的<strong>基矢态</strong>，是构成该向量空间的一组正交基</li>
+<li>量子态可以用任意两个正交基的线性组合来表示</li>
+</ul>
+</li>
+<li>
+<p>除了<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(|0\rangle\)</span><span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(|1\rangle\)</span><span class="heti-spacing"> </span></span>可以作为量子态的基矢态，<strong>任意两个单位正交基都可以作为量子态的基矢态</strong></p>
+<ul>
+<li>
+<p>例如，另一组常用的单位正交基定义为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(|+\rangle\)</span><span class="heti-spacing"> </span></span>态和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(|-\rangle\)</span><span class="heti-spacing"> </span></span>态：</p>
+<div class="arithmatex">\[
+\begin{aligned}|+\rangle&amp;=\frac{1}{\sqrt2}(|0\rangle+|1\rangle)\\|-\rangle&amp;=\frac{1}{\sqrt2}(|0\rangle-|1\rangle)\end{aligned}
+\]</div>
+<p>则任意量子态也可以表示为这组基的线性组合：
+$$
+\psi=\alpha|+\rangle+\beta|-\rangle
+$$</p>
+</li>
+</ul>
+<details class="proof">
+<summary>证明<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(|+\rangle\)</span><span class="heti-spacing"> </span></span>态和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(|-\rangle\)</span><span class="heti-spacing"> </span></span>态是正交的</summary>
+<div class="arithmatex">\[
+\begin{aligned}\langle+|-\rangle&amp;=\left(\frac{\langle0|+\langle1|}{\sqrt{2}}\right)\left(\frac{|0\rangle-|1\rangle}{\sqrt{2}}\right)\\&amp;=\frac{1}{2}(\langle0|0\rangle-\langle0|1\rangle+\langle1|0\rangle-\langle1|1\rangle)\\&amp;=\frac{1}{2}(1-0+0-1)=0\end{aligned}
+\]</div>
+</details>
+</li>
+<li>
+<p>量子比特的向量表示：</p>
+<ul>
+<li>
+<p><span><span class="arithmatex">\(|0\rangle\)</span><span class="heti-spacing"> </span></span>态和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(|1\rangle\)</span><span class="heti-spacing"> </span></span>态作为一组单位正交基，可以表示为向量形式：</p>
+<div class="arithmatex">\[
+|0\rangle=\begin{bmatrix}1\\0\end{bmatrix},\quad|1\rangle=\begin{bmatrix}0\\1\end{bmatrix}
+\]</div>
+</li>
+<li>
+<p>利用这个定义，<span><span class="arithmatex">\(|+\rangle\)</span><span class="heti-spacing"> </span></span>态和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(|-\rangle\)</span><span class="heti-spacing"> </span></span>态也可以表示为向量形式：</p>
+<div class="arithmatex">\[
+|+\rangle=\frac{1}{\sqrt{2}}\begin{bmatrix}1\\1\end{bmatrix},\quad|-\rangle=\frac{1}{\sqrt{2}}\begin{bmatrix}1\\-1\end{bmatrix}
+\]</div>
+</li>
+<li>
+<p><span><span class="arithmatex">\(|\psi\rangle=\alpha|0\rangle+\beta|1\rangle\)</span><span class="heti-spacing"> </span></span>可以表示任一量子态，其向量形式表示为：</p>
+<div class="arithmatex">\[
+|\psi\rangle=\begin{bmatrix}\alpha\\\beta\end{bmatrix}
+\]</div>
+</li>
+<li>
+<p>在该式中，<span><span class="arithmatex">\(\alpha\)</span><span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\beta\)</span><span class="heti-spacing"> </span></span>被称为<strong>复系数</strong>（有时被称为振幅<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，它们描述了<strong>量子比特的叠加状态</strong></p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="量子态矢内积">量子态矢内积<a class="headerlink" href="#%E9%87%8F%E5%AD%90%E6%80%81%E7%9F%A2%E5%86%85%E7%A7%AF" title="Permanent link">⚓︎</a></h3>
+<p>用<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(| \varphi \rangle\)</span><span class="heti-spacing"> </span></span>表示一个列向量的表示法又称为 <strong><span>bra-ket<span class="heti-spacing"> </span></span>表示法</strong>（<span>bra<span class="heti-spacing"> </span></span>为列向量，<span>ket<span class="heti-spacing"> </span></span>为行向量<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，与之对应的<span class="heti-skip"><span class="heti-spacing"> </span>ket<span class="heti-spacing"> </span></span>为<span><span class="heti-spacing"> </span><span class="arithmatex">\(\langle \varphi |\)</span></span>，且<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\langle \varphi |\)</span><span class="heti-spacing"> </span></span>为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(| \varphi \rangle\)</span><span class="heti-spacing"> </span></span>的<strong>共轭转置</strong>，即：<span class="arithmatex">\(\langle\psi|=\begin{bmatrix}\alpha^*&amp;\beta^*\end{bmatrix}\)</span>，其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\alpha^*, \beta^*\)</span><span class="heti-spacing"> </span></span>为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\alpha, beta\)</span><span class="heti-spacing"> </span></span>的共轭复数。</p>
+<p>两个向量的内积是一个标量，定义为<span class="heti-skip"><span class="heti-spacing"> </span>ket<span class="heti-spacing"> </span></span>向量和<span class="heti-skip"><span class="heti-spacing"> </span>bra<span class="heti-spacing"> </span></span>向量的矩阵乘积，对于<span><span class="heti-spacing"> </span><span class="arithmatex">\(| \varphi \rangle\)</span></span>，有：</p>
+<div class="arithmatex">\[
+\langle\psi||\psi\rangle=\langle\psi|\psi\rangle{=}\alpha^*\alpha+\beta^*\beta=1
+\]</div>
+<p>内积的更一般定义为：</p>
+<div class="arithmatex">\[
+\langle a|=[a_0^*,\quad a_1^*,\quad\ldots\quad a_n^*],\quad|b\rangle=\begin{bmatrix}b_0\\b_1\\\vdots\\b_n\end{bmatrix},\quad\langle a\mid b\rangle=a_0^*b_0+a_1^*b_1\ldots a_n^*b_n
+\]</div>
+<p>如果两个向量的内积为<span><span class="heti-spacing"> </span>0</span>，则称两个向量<strong>正交</strong>。与实数域向量中“模长”的概念一致，我们通过向量与自身的内积的开方，来定义向量的<strong>欧几里得范数</strong>：
+$$
+||v\rangle|\equiv\sqrt{\langle v|v\rangle}
+$$</p>
+<h3 id="量子态的坍缩">量子态的坍缩<a class="headerlink" href="#%E9%87%8F%E5%AD%90%E6%80%81%E7%9A%84%E5%9D%8D%E7%BC%A9" title="Permanent link">⚓︎</a></h3>
+<p>对于处在态<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(|\psi\rangle=\alpha|0\rangle+\beta|1\rangle\)</span><span class="heti-spacing"> </span></span>的量子比特<span class="heti-skip"><span class="heti-spacing"> </span>,<span class="heti-spacing"> </span></span>它处在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(|0\rangle\)</span><span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(|1\rangle\)</span><span class="heti-spacing"> </span></span>之间的连续状态中，但是我们无法通过检查量子比特来确定它的量子态，也就是<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\alpha\)</span><span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\beta\)</span><span class="heti-spacing"> </span></span>的值；相反，量子力学规定我们只能获得有关量子态的有限信息，当我们<strong>测量量子态时</strong>，会发生<strong>量子态的坍缩</strong>（又称为<strong>量子态的投影</strong><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，我们将以<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(|\alpha|^2\)</span><span class="heti-spacing"> </span></span>的概率得到<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>态，以<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(|\beta|^2\)</span><span class="heti-spacing"> </span></span>的概率得到<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>态，显然有：
+$$
+|\alpha|^2 + |\beta|^2 = 1
+$$</p>
+<p>这被称为<strong>归一化条件</strong>。因此，通常量子比特的状态时二维复向量空间中的单位向量，其向量表示必须满足以下性质：</p>
+<ul>
+<li>向量的<strong>各分量为复数</strong></li>
+<li>向量的<strong>欧几里得范数为<span><span class="heti-spacing"> </span>1</span></strong></li>
+</ul>
+<details class="question" open="open">
+<summary>思考</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="" id="__tabbed_1_1" name="__tabbed_1" type="radio"/><input id="__tabbed_1_2" name="__tabbed_1" type="radio"/><div class="tabbed-labels"><label for="__tabbed_1_1">问题</label><label for="__tabbed_1_2">解答</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p><span><span class="arithmatex">\(|q\rangle=\frac{1}{\sqrt{2}}|0\rangle+\frac{i}{\sqrt{2}}|1\rangle\)</span><span class="heti-spacing"> </span></span>是正确的量子态向量表示吗？</p>
+</div>
+<div class="tabbed-block">
+<ul>
+<li>显然<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\dfrac{1}{\sqrt{2}}, \dfrac{i}{\sqrt{2}}\)</span><span class="heti-spacing"> </span></span>是复数</li>
+<li>
+<p>欧几里得范数：</p>
+<div class="arithmatex">\[
+\mid\frac{1}{\sqrt{2}}\mid^2+\mid\frac{i}{\sqrt{2}}\mid^2=\frac{1}{2}+\frac{1}{2}=1
+\]</div>
+</li>
+</ul>
+<p>因此是正确的量子态向量表示。</p>
+</div>
+</div>
+</div>
+</details>
+<h3 id="不可克隆原理">不可克隆原理<a class="headerlink" href="#%E4%B8%8D%E5%8F%AF%E5%85%8B%E9%9A%86%E5%8E%9F%E7%90%86" title="Permanent link">⚓︎</a></h3>
+<p>一种自然的想法是，是否可以在量子态崩塌之前先制作一个量子态的“副本”，这样就可以对同一个量子态进行重复测量？可惜的是，量子系统严格遵守不可克隆原理。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec2/8.png"><img src="images/lec2/8.png" width="60%"/></a>
+</div>
+<p><strong>量子不可克隆原理</strong><span>(quantum no-cloning theorem)<span class="heti-spacing"> </span></span>是量子信息理论中的一个重要原理，它阐明了在<strong>一般情况下不能创建一个完美的克隆（拷贝）任意未知的量子态</strong>。用数学语言可表示为：不存在一个线性算符（量子操作）<span class="arithmatex">\(U\)</span>，可以将量子态<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(| \varphi \rangle\)</span><span class="heti-spacing"> </span></span>映射到相应的复制态<span><span class="heti-spacing"> </span><span class="arithmatex">\(| \varphi \rangle | \varphi \rangle\)</span></span>。</p>
+<h3 id="量子比特的几何表示">量子比特的几何表示<a class="headerlink" href="#%E9%87%8F%E5%AD%90%E6%AF%94%E7%89%B9%E7%9A%84%E5%87%A0%E4%BD%95%E8%A1%A8%E7%A4%BA" title="Permanent link">⚓︎</a></h3>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec2/9.png"><img align="right" alt="" src="images/lec2/9.png" width="20%"/></a></p>
+<p>考虑到<strong>归一化条件</strong>，可以进一步改写<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(r_i\)</span><span class="heti-spacing"> </span></span>得到：
+$$
+\begin{aligned}|\psi\rangle=\cos(\frac{\theta}{2})|0\rangle+e^{i\varphi}\sin(\frac{\theta}{2})|1\rangle\end{aligned}
+$$</p>
+<p><span><span class="arithmatex">\(\theta\)</span><span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\varphi\)</span><span class="heti-spacing"> </span></span>可以视为球坐标下的分量，且量子态的欧几里得范数为<span><span class="heti-spacing"> </span>1</span>，因此一个量子比特的量子态可以可视化为 <strong><span>Bloch<span class="heti-spacing"> </span></span>球</strong>上的一个点。</p>
+<p>注意，<span>Bloch<span class="heti-spacing"> </span></span>球只能可视化<strong>单个量子比特</strong>的状态！</p>
+<p>一些特殊情况：</p>
+<ul>
+<li><span class="arithmatex">\(\theta = 0\)</span>：<span class="arithmatex">\(|\psi\rangle=1\cdot|\mathbf{0}\rangle+e^{j\varphi}\cdot0\cdot|\mathbf{1}\rangle=|\mathbf{0}\rangle\)</span></li>
+<li><span class="arithmatex">\(\theta = \pi\)</span>：<span class="arithmatex">\(|\psi\rangle=0\cdot|\mathbf{0}\rangle+e^{j\varphi}\cdot1\cdot|\mathbf{1}\rangle=e^{j\varphi}\cdot|\mathbf{1}\rangle=|\mathbf{1}\rangle\)</span></li>
+<li><span class="arithmatex">\(\theta = \dfrac{\pi}{2}, \varphi = 0\)</span>：<span class="arithmatex">\(|\psi\rangle=\frac{1}{\sqrt{2}}\cdot|\mathbf{0}\rangle+\frac{e^{j0}}{\sqrt{2}}\cdot|\mathbf{1}\rangle=\frac{|\mathbf{0}\rangle+|\mathbf{1}\rangle}{\sqrt{2}}\)</span></li>
+<li><span class="arithmatex">\(\theta = \dfrac{\pi}{2}, \varphi = \pi\)</span>：<span class="arithmatex">\(|\psi\rangle=\frac{1}{\sqrt{2}}\cdot|\mathbf{0}\rangle+\frac{e^{j\pi}}{\sqrt{2}}\cdot|\mathbf{1}\rangle=\frac{|\mathbf{0}\rangle-|\mathbf{1}\rangle}{\sqrt{2}}\)</span></li>
+</ul>
+<h3 id="量子信息的无限与有限">量子信息的无限与有限<a class="headerlink" href="#%E9%87%8F%E5%AD%90%E4%BF%A1%E6%81%AF%E7%9A%84%E6%97%A0%E9%99%90%E4%B8%8E%E6%9C%89%E9%99%90" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li>对于一个经典比特，它的状态只能是非<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>即<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>的两个“点”；而对于一个量子比特，它的状态可能是<span class="heti-skip"><span class="heti-spacing"> </span>Bloch<span class="heti-spacing"> </span></span>球上的任意一点，由此可见一个量子比特就可以包含大量信息。如果量子态的复系数是连续取值的，那么理论上可以将复系数的取值无限拓展，一个量子比特的信息容量足以存储下一本书！</li>
+<li>然而，量子力学的基本假设限定了量子比特被测量后便会坍缩，因此<strong>单次测量只能获取一比特的信息</strong>，只有在测量了无数多个“完全相同”的量子比特后，才能确定<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\alpha\)</span><span class="heti-spacing"> </span></span>和<span><span class="heti-spacing"> </span><span class="arithmatex">\(\beta\)</span></span>。</li>
+<li>从某种意义上说，在一个量子比特的状态里，大自然隐藏了大量的“隐含信息”，这些信息会随着量子比特数的增长而<strong>指数增长</strong>。</li>
+</ul>
+<h2 id="多量子比特">多量子比特<a class="headerlink" href="#%E5%A4%9A%E9%87%8F%E5%AD%90%E6%AF%94%E7%89%B9" title="Permanent link">⚓︎</a></h2>
+<p>假设有两个量子比特，类似于两个经典比特有四种可能的状态，双量子比特的系统也有四个基本状态，依次为<span><span class="heti-spacing"> </span><span class="arithmatex">\(| 00 \rangle, | 01 \rangle, | 10 \rangle, | 11 \rangle\)</span></span>。一对量子比特可能是这四个基本态的其中一个，也可能是四个基本态的<strong>叠加</strong>，即：
+$$
+|\psi\rangle=\alpha_{00}|00\rangle+\alpha_{01}|01\rangle+\alpha_{10}|10\rangle+\alpha_{11}|11\rangle
+$$</p>
+<p>如果<strong>测量</strong>这个量子系统，那么将有<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(|\alpha_x|^2\)</span><span class="heti-spacing"> </span></span>的概率结果为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(| \alpha_x \rangle\)</span><span class="heti-spacing"> </span></span>态。由<strong>归一化条件</strong>可知：</p>
+<div class="arithmatex">\[
+\sum_{x\in\{0,1\}^2}|\alpha_x|^2=1
+\]</div>
+<p>如果测量其中低位量子比特，那么将有<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(|\alpha_{00}|^2 + |\alpha_{01}|^2\)</span><span class="heti-spacing"> </span></span>的概率得到<span><span class="heti-spacing"> </span>0</span>，经过测量之后状态坍缩为：</p>
+<div class="arithmatex">\[
+|\psi^{\prime}\rangle=\frac{\alpha_{00}|00\rangle+\alpha_{01}|01\rangle}{\sqrt{|\alpha_{00}|^2+|\alpha_{01}|^2}}
+\]</div>
+<p>注意，测量后的态被因子<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\sqrt{|\alpha_{00}|^2 + |\alpha_{01}|^2}\)</span><span class="heti-spacing"> </span></span>正规化后仍然满足归一化条件。</p>
+<p>判断是否纠缠：</p>
+<ul>
+<li><span class="arithmatex">\(|\varphi\rangle=\alpha_{00}|00\rangle+\alpha_{11}|11\rangle\)</span>：<strong>纠缠态</strong>，第一个比特测得为<span><span class="heti-spacing"> </span>0</span>，那么第二个比特一定为<span><span class="heti-spacing"> </span>0</span>；第一个比特测得为<span><span class="heti-spacing"> </span>1</span>，那么第二个比特一定为<span><span class="heti-spacing"> </span>1</span></li>
+<li><span class="arithmatex">\(|\varphi\rangle=\alpha\left|00\right\rangle+\alpha\left|01\right\rangle=\alpha\left|0\right\rangle\left(\left|0\right\rangle+\left|1\right\rangle\right)\)</span>：<strong>非纠缠态</strong>，第二个比特的状态与第一个比特无关</li>
+</ul>
+<h3 id="张量积">张量积<a class="headerlink" href="#%E5%BC%A0%E9%87%8F%E7%A7%AF" title="Permanent link">⚓︎</a></h3>
+<p>在线性代数和量子力学中，<strong>张量积</strong>(tensor product)（又称为<strong>克罗内克积</strong>(kronoker product)）是一种用于组合向量空间的运算。它<strong>将两个向量空间的向量合并成一个更大的向量空间</strong>。</p>
+<p>给定两个向量空间<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(V\)</span><span class="heti-spacing"> </span></span>和<span><span class="heti-spacing"> </span><span class="arithmatex">\(W\)</span></span>，它们的张量积可以表示为<span><span class="heti-spacing"> </span><span class="arithmatex">\(V \otimes W\)</span></span>。张量积的结果是一个<strong>新的向量空间</strong>，其维度等于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(V\)</span><span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(W\)</span><span class="heti-spacing"> </span></span>的维度的乘积。例如，一个简单的行向量和矩阵的张量积示例为：</p>
+<div class="arithmatex">\[
+\mathbf{v}\otimes\mathbf{M}=\begin{bmatrix}1&amp;2\end{bmatrix}\otimes\begin{bmatrix}1&amp;2\\3&amp;4\end{bmatrix}=\left[1\cdot\begin{bmatrix}1&amp;2\\3&amp;4\end{bmatrix}\quad2\cdot\begin{bmatrix}1&amp;2\\3&amp;4\end{bmatrix}\right]=\begin{bmatrix}1&amp;2&amp;2&amp;4\\3&amp;4&amp;6&amp;8\end{bmatrix}
+\]</div>
+<p><strong>张量积可以获得多个量子态的复合量子态</strong>，这给多量子比特的量子态提供了一种数学表示方法。</p>
+<p>在量子力学中，量子的状态由<strong>希尔伯特空间</strong><span>(Hilbert spaces)<span class="heti-spacing"> </span></span>中的单位向量来描述。本质上复合系统中量子态的演化也是矩阵的乘法，与单个子系统相比，只是多了张量积的运算。</p>
+<p>若有两个量子比特分别处于如下的态：
+$$
+|\psi\rangle=\alpha|0\rangle+\beta|1\rangle\quad,\quad|\phi\rangle=\gamma|0\rangle+\delta|1\rangle
+$$</p>
+<p>则两个量子比特的张量积为：</p>
+<div class="arithmatex">\[
+\begin{aligned}|\psi\rangle\otimes|\phi\rangle&amp;=\alpha\gamma|0\rangle\otimes|0\rangle+\alpha\delta|0\rangle\otimes|1\rangle+\beta\gamma|1\rangle\otimes|0\rangle+\beta\delta|1\rangle\otimes|1\rangle\\&amp;=\alpha\gamma|00\rangle+\alpha\delta|01\rangle+\beta\gamma|10\rangle+\beta\delta|11\rangle\end{aligned}
+\]</div>
+<p>若使用量子态的向量表示，则该过程表示为：
+$$
+|\psi\rangle=\begin{bmatrix}\alpha\ \beta\end{bmatrix},\quad|\phi\rangle=\begin{bmatrix}\gamma\ \delta\end{bmatrix},\quad|\psi\rangle\otimes|\phi\rangle=|\psi\phi\rangle=\begin{bmatrix}\alpha\times\begin{bmatrix}\gamma\ \delta\end{bmatrix}\\\beta\times\begin{bmatrix}\gamma\ \delta\end{bmatrix}\end{bmatrix}=\begin{bmatrix}\alpha\gamma\ \alpha\delta\ \beta\gamma\ \beta\delta\end{bmatrix}
+$$</p>
+<details class="example">
+<summary>例子：单位向量</summary>
+<div class="arithmatex">\[
+\begin{aligned}&amp;|00\rangle=|0,0\rangle=|0\rangle\otimes|0\rangle=\begin{bmatrix}1\\0\end{bmatrix}\otimes\begin{bmatrix}1\\0\end{bmatrix}=\begin{bmatrix}1\begin{bmatrix}1\\0\end{bmatrix}\\0\begin{bmatrix}1\\0\end{bmatrix}\end{bmatrix}=\begin{bmatrix}1\\0\\0\\0\end{bmatrix}\\
+&amp;|01\rangle=|0,1\rangle=|0\rangle\otimes|1\rangle=\begin{bmatrix}1\\0\end{bmatrix}\otimes\begin{bmatrix}0\\1\end{bmatrix}=\begin{bmatrix}1\begin{bmatrix}0\\1\end{bmatrix}\\0\begin{bmatrix}0\\1\end{bmatrix}\end{bmatrix}=\begin{bmatrix}0\\1\\0\\0\end{bmatrix}\\
+&amp;|10\rangle=|1,0\rangle=|1\rangle\otimes|0\rangle=\begin{bmatrix}0\\1\end{bmatrix}\otimes\begin{bmatrix}1\\0\end{bmatrix}=\begin{bmatrix}0\begin{bmatrix}1\\0\end{bmatrix}\\1\begin{bmatrix}1\\0\end{bmatrix}\end{bmatrix}=\begin{bmatrix}0\\0\\1\\0\end{bmatrix}
+\\&amp;|11\rangle=|1,1\rangle=|1\rangle\otimes|1\rangle=\begin{bmatrix}0\\1\end{bmatrix}\otimes\begin{bmatrix}0\\1\end{bmatrix}=\begin{bmatrix}0\begin{bmatrix}0\\1\end{bmatrix}\\1\begin{bmatrix}0\\1\end{bmatrix}\end{bmatrix}=\begin{bmatrix}0\\0\\0\\1\end{bmatrix}\end{aligned}
+\]</div>
+</details>
+<details class="example" open="open">
+<summary>量子优势案例</summary>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec2/10.png"><img src="images/lec2/10.png" width="60%"/></a>
+</div><p></p>
+</details>
+<h3 id="贝尔态">贝尔态<a class="headerlink" href="#%E8%B4%9D%E5%B0%94%E6%80%81" title="Permanent link">⚓︎</a></h3>
+<p><strong>贝尔态</strong>是双量子比特系统中重要的纠缠态，它们的定义如下：</p>
+<div class="arithmatex">\[
+\begin{aligned}
+\left|\phi^{+}\right\rangle=\frac{1}{\sqrt{2}}|00\rangle+\frac{1}{\sqrt{2}}|11\rangle&amp;,\quad\left|\phi^{-}\right\rangle=\frac{1}{\sqrt{2}}|00\rangle-\frac{1}{\sqrt{2}}11\rangle \\
+\left|\psi^{+}\right\rangle=\frac{1}{\sqrt{2}}|01\rangle+\frac{1}{\sqrt{2}}|10\rangle&amp;,\quad\left|\psi^{-}\right\rangle=\frac{1}{\sqrt{2}}|01\rangle-\frac{1}{\sqrt{2}}|10\rangle
+\end{aligned}
+\]</div>
+<p>这四个贝尔状态都表示两个量子比特之间的纠缠，它们构成的集合：<span><span class="arithmatex">\(\{\begin{aligned}\left|\phi^+\right\rangle,\left|\phi^-\right\rangle,\left|\psi^+\right\rangle,\left|\psi^+\right\rangle\end{aligned}\}\)</span><span class="heti-spacing"> </span></span>被称为<strong>贝尔基</strong>；任何两个量子比特的量子态向量，都可以表示为<strong>四个贝尔态的线性组合</strong>。例如：</p>
+<div class="arithmatex">\[
+|00\rangle=\frac{1}{\sqrt{2}}\left|\phi^+\right\rangle+\frac{1}{\sqrt{2}}\left|\phi^-\right\rangle
+\]</div>
+<p>贝尔态应用：</p>
+<p>量子纠缠是量子力学最神秘迷人的特性，一个纠缠的量子系统不能简单地分解为各个子量子系统的独立态。它具有如下性质：</p>
+<ul>
+<li>纠缠态<strong>不能被单独的量子系统的态所描述</strong>，而需要考虑整个系统的态</li>
+<li>测量一个纠缠态中的一个量子，可能会<strong>瞬间</strong>影响到另一个纠缠态中的量子（例如坍缩<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，即使它们之间的距离很远</li>
+</ul>
+<p>纠缠可以用于实现量子隐形传态、量子纠错码、量子远程纠缠和量子密钥分发等量子通信协议；在量子计算中也扮演着关键的角色，用于实现量子比特之间的并行计算和量子门操作，提供了超级密集的计算能力，能够解决一些经典计算难题。</p>
+<h2 id="单量子门">单量子门<a class="headerlink" href="#%E5%8D%95%E9%87%8F%E5%AD%90%E9%97%A8" title="Permanent link">⚓︎</a></h2>
+<details class="example" open="open">
+<summary>引入：量子非门</summary>
+<p>在经典计算机中，<strong><span>X<span class="heti-spacing"> </span></span>门</strong>（又称为 <strong><span>NOT<span class="heti-spacing"> </span></span>门</strong>）用于电平信号的翻转，即将<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>态和<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>态交换。在量子电路中，是否能够定义类似的量子非门？</p>
+<p>答案是肯定的，但与经典非门不同的是，量子非门不仅可以实现<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(|0\rangle \rightarrow |1\rangle\)</span><span class="heti-spacing"> </span></span>的转变，它的作用还是<strong>线性</strong>的，即可以把状态：
+$$
+|\psi\rangle=\alpha|0\rangle+\beta|1\rangle
+$$</p>
+<p>经过<span class="heti-skip"><span class="heti-spacing"> </span>X<span class="heti-spacing"> </span></span>门后，互换两个复系数，即：
+$$
+X |\psi\rangle=\beta|0\rangle+\alpha|1\rangle
+$$</p>
+<p>易知<span class="heti-skip"><span class="heti-spacing"> </span>X<span class="heti-spacing"> </span></span>门是一个<span class="heti-skip"><span class="heti-spacing"> </span>2×2<span class="heti-spacing"> </span></span>矩阵，其矩阵表示为：</p>
+<div class="arithmatex">\[
+X = \begin{bmatrix}0 &amp; 1 \\ 1 &amp; 0\end{bmatrix}
+\]</div>
+<p>因此，单量子比特的量子门可以由<span class="heti-skip"><span class="heti-spacing"> </span>2×2<span class="heti-spacing"> </span></span>的矩阵给出，其矩阵分量决定了量子门的行为。</p>
+</details>
+<h3 id="hadamard-门"><span>Hadamard<span class="heti-spacing"> </span></span>门<a class="headerlink" href="#hadamard-%E9%97%A8" title="Permanent link">⚓︎</a></h3>
+<p><strong><span>Hadamard<span class="heti-spacing"> </span></span>门</strong>（<strong><span>H<span class="heti-spacing"> </span></span>门</strong>）是一个基础的量子门，它可以让<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(|0\rangle\)</span><span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(|1\angle\)</span><span class="heti-spacing"> </span></span>转变为叠加态，它的矩阵表示为：</p>
+<div class="arithmatex">\[
+\left.H=\frac{1}{\sqrt{2}}\left[\begin{array}{cc}1&amp;1\\1&amp;-1\end{array}\right.\right]
+\]</div>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec2/11.png"><img align="right" alt="" src="images/lec2/11.png" width="20%"/></a></p>
+<p>当<span class="heti-skip"><span class="heti-spacing"> </span>H<span class="heti-spacing"> </span></span>门作用在<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>态或者<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>态上时，可以产生叠加态：
+$$
+H|0\rangle=\frac{1}{\sqrt{2}}(|0\rangle+|1\rangle)=|+\rangle,\quad H|1\rangle=\frac{1}{\sqrt{2}}(|0\rangle-|1\rangle)=|-\rangle
+$$</p>
+<p>在后续的学习中读者将了解到，</p>
+<ul>
+<li><span>H<span class="heti-spacing"> </span></span>门对<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(|0\rangle\)</span><span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(|1\rangle\)</span><span class="heti-spacing"> </span></span>的转化实际上是<strong>将量子态从<span class="heti-skip"><span class="heti-spacing"> </span>z<span class="heti-spacing"> </span></span>基到<span class="heti-skip"><span class="heti-spacing"> </span>x<span class="heti-spacing"> </span></span>基的转变</strong>；<span>H<span class="heti-spacing"> </span></span>门的操作使得量子态在<span class="heti-skip"><span class="heti-spacing"> </span>Bloch<span class="heti-spacing"> </span></span>球上先绕<span class="heti-skip"><span class="heti-spacing"> </span>z<span class="heti-spacing"> </span></span>轴转<span class="heti-skip"><span class="heti-spacing"> </span>180<span class="heti-spacing"> </span></span>度再绕<span class="heti-skip"><span class="heti-spacing"> </span>y<span class="heti-spacing"> </span></span>轴转<span class="heti-skip"><span class="heti-spacing"> </span>90<span class="heti-spacing"> </span></span>度（等于先绕<span class="heti-skip"><span class="heti-spacing"> </span>y<span class="heti-spacing"> </span></span>轴转<span class="heti-skip"><span class="heti-spacing"> </span>90<span class="heti-spacing"> </span></span>度再绕<span class="heti-skip"><span class="heti-spacing"> </span>x<span class="heti-spacing"> </span></span>轴转<span class="heti-skip"><span class="heti-spacing"> </span>180<span class="heti-spacing"> </span></span>度）</li>
+<li>另一种理解<span class="heti-skip"><span class="heti-spacing"> </span>H<span class="heti-spacing"> </span></span>门的方法是，<span>H<span class="heti-spacing"> </span></span>门可以让量子态围绕着<span class="heti-skip"><span class="heti-spacing"> </span>x-z<span class="heti-spacing"> </span></span>轴中界线旋转<span><span class="heti-spacing"> </span>180°</span></li>
+</ul>
+<h3 id="泡利矩阵和泡利门">泡利矩阵和泡利门<a class="headerlink" href="#%E6%B3%A1%E5%88%A9%E7%9F%A9%E9%98%B5%E5%92%8C%E6%B3%A1%E5%88%A9%E9%97%A8" title="Permanent link">⚓︎</a></h3>
+<p>前文所述的量子<span class="heti-skip"><span class="heti-spacing"> </span>X<span class="heti-spacing"> </span></span>门的矩阵表示被称为 <strong><span>Pauli-X<span class="heti-spacing"> </span></span>矩阵</strong>。<span>Pauli<span class="heti-spacing"> </span></span>矩阵的完整集合为：</p>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec2/12.png"><img align="right" alt="" src="images/lec2/12.png" width="20%"/></a></p>
+<div class="arithmatex">\[
+\sigma_x=\begin{bmatrix}0&amp;1\\1&amp;0\end{bmatrix},\quad\sigma_y=\begin{bmatrix}0&amp;-i\\i&amp;0\end{bmatrix},\quad\sigma_z=\begin{bmatrix}1&amp;0\\0&amp;-1\end{bmatrix}
+\]</div>
+<p>与<span><span class="heti-spacing"> </span>Pauli-Y</span>、<span>Z<span class="heti-spacing"> </span></span>矩阵对应的量子门称为 <strong><span>Y<span class="heti-spacing"> </span></span>门</strong>和 <strong><span>Z<span class="heti-spacing"> </span></span>门</strong>。</p>
+<p>量子<span class="heti-skip"><span class="heti-spacing"> </span>X<span class="heti-spacing"> </span></span>门可以实现<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(|0\rangle \rightarrow |1\rangle\)</span><span class="heti-spacing"> </span></span>的转变，反之亦然，如果观察实现<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(|0\rangle\)</span><span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(|1\rangle\)</span><span class="heti-spacing"> </span></span>在<span class="heti-skip"><span class="heti-spacing"> </span>Bloch<span class="heti-spacing"> </span></span>球上的位置，你会发现<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(|0\rangle\)</span><span class="heti-spacing"> </span></span>到<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(|1\rangle\)</span><span class="heti-spacing"> </span></span>恰好需要绕<span class="heti-skip"><span class="heti-spacing"> </span>x<span class="heti-spacing"> </span></span>轴旋转<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\pi\)</span><span class="heti-spacing"> </span></span>的角度。类似的，<span>Y<span class="heti-spacing"> </span></span>门和<span class="heti-skip"><span class="heti-spacing"> </span>Z<span class="heti-spacing"> </span></span>门对一个量子态的作用为让其绕着<span class="heti-skip"><span class="heti-spacing"> </span>y<span class="heti-spacing"> </span></span>轴和<span class="heti-skip"><span class="heti-spacing"> </span>z<span class="heti-spacing"> </span></span>轴旋转<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\pi\)</span><span class="heti-spacing"> </span></span>的角度。</p>
+<details class="question" open="open">
+<summary>思考</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="" id="__tabbed_2_1" name="__tabbed_2" type="radio"/><input id="__tabbed_2_2" name="__tabbed_2" type="radio"/><div class="tabbed-labels"><label for="__tabbed_2_1">问题</label><label for="__tabbed_2_2">解答</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>Y、<span>Z<span class="heti-spacing"> </span></span>门作用在<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>态和<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>态上的向量形式是什么？</p>
+</div>
+<div class="tabbed-block">
+<ul>
+<li><span class="arithmatex">\(Y|0\rangle=\begin{bmatrix}0&amp;-i\\i&amp;0\end{bmatrix}\begin{bmatrix}1\\0\end{bmatrix}\begin{bmatrix}0\\i\end{bmatrix}=i|1\rangle\)</span></li>
+<li><span class="arithmatex">\(Y|1\rangle=\begin{bmatrix}0&amp;-i\\i&amp;0\end{bmatrix}\begin{bmatrix}0\\1\end{bmatrix}\begin{bmatrix}-i\\0\end{bmatrix}=-i|0\rangle\)</span></li>
+<li><span class="arithmatex">\(Z|0\rangle=\begin{bmatrix}1&amp;0\\0&amp;-1\end{bmatrix}\begin{bmatrix}1\\0\end{bmatrix}\begin{bmatrix}1\\0\end{bmatrix}=|0\rangle\)</span></li>
+<li><span class="arithmatex">\(Z|1\rangle=\begin{bmatrix}1&amp;0\\0&amp;-1\end{bmatrix}\begin{bmatrix}0\\1\end{bmatrix}\begin{bmatrix}0\\-1\end{bmatrix}=-|1\rangle\)</span></li>
+</ul>
+</div>
+</div>
+</div>
+</details>
+<h3 id="量子门与矩阵乘法">量子门与矩阵乘法<a class="headerlink" href="#%E9%87%8F%E5%AD%90%E9%97%A8%E4%B8%8E%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95" title="Permanent link">⚓︎</a></h3>
+<p>量子计算本质是酉矩阵计算！</p>
+<p>酉矩阵乘法：<span class="arithmatex">\(V' = U V\)</span>（输出态<span class="heti-skip"><span class="heti-spacing"> </span>=<span class="heti-spacing"> </span></span>演化矩阵<span class="heti-skip"><span class="heti-spacing"> </span>·<span class="heti-spacing"> </span></span>输入态）</p>
+<ul>
+<li>可逆：<span class="arithmatex">\(V = U^{-1} V'\)</span></li>
+<li>正则：<span class="arithmatex">\(\|U\| = 1\)</span></li>
+</ul>
+<p>量子门<span class="heti-skip"><span class="heti-spacing"> </span>=<span class="heti-spacing"> </span></span>小的矩阵模板（控制电子轨道变化的电磁波）</p>
+<p>量子门的例子：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec2/13.png"><img src="images/lec2/13.png" width="40%"/></a>
+</div>
+<h3 id="厄米矩阵和酉矩阵">厄米矩阵和酉矩阵<a class="headerlink" href="#%E5%8E%84%E7%B1%B3%E7%9F%A9%E9%98%B5%E5%92%8C%E9%85%89%E7%9F%A9%E9%98%B5" title="Permanent link">⚓︎</a></h3>
+<p>用作表示量子门的矩阵是否存在限制？任意一个<span class="heti-skip"><span class="heti-spacing"> </span>2×2<span class="heti-spacing"> </span></span>的矩阵都可以表示一个量子门吗？显然不是的。只有<strong>酉矩阵</strong>才能用作表示一个量子门！</p>
+<p><strong>厄米矩阵</strong><span>(Hermitian matrix)<span class="heti-spacing"> </span></span>和<strong>酉矩阵</strong><span>(unitary matrix)<span class="heti-spacing"> </span></span>是量子力学和量子计算中重要的两类矩阵，它们的定义为：</p>
+<ul>
+<li>厄米矩阵：一个矩阵是厄米矩阵，如果它等于其自身的共轭转置，即：<span class="arithmatex">\(A = A^{\dagger}\)</span><ul>
+<li>厄米矩阵的性质保证了其本征值（特征值）是实数，且它的本征向量是正交的，在后续的章节中你将学习到，这确保了<strong>量子系统的物理量是可观测的</strong>。</li>
+</ul>
+</li>
+<li>酉矩阵：一个矩阵是酉矩阵，如果其逆等于其共轭转置。即：<span class="arithmatex">\(UU^{\dagger} = U^{\dagger}U = I\)</span><ul>
+<li>酉矩阵的性质保证了作用在量子态上得到的结果<strong>仍然满足归一化条件</strong>，即仍然是合法的量子态；此外，酉矩阵保持内积不变，即它保持态矢量之间的正交性质。</li>
+</ul>
+</li>
+</ul>
+<h3 id="相位旋转门">相位旋转门<a class="headerlink" href="#%E7%9B%B8%E4%BD%8D%E6%97%8B%E8%BD%AC%E9%97%A8" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li><strong>相位旋转门</strong>作用于量子比特的态矢量时，会引入一个特定的相位因子，改变量子态的相对相位；具体而言，相位的旋转是通过调整量子比特的状态矢量与<strong>某个特定基态</strong>的<strong>相对相位</strong>来实现的</li>
+<li>相位旋转门可以改变量子态的相对相位，但<strong>不改变其概率分布</strong>。它在量子算法中有广泛的应用，如量子相位估计、量子傅里叶变换等</li>
+<li>
+<p>需要注意的是，相位旋转门与其他门操作不同，它<strong>不涉及量子比特的旋转操作，而是旋转相位</strong>。这使得相位旋转门具有独特的功能和作用。常见的相位旋转门有<span class="heti-skip"><span class="heti-spacing"> </span>P<span class="heti-spacing"> </span></span>门、<span>T<span class="heti-spacing"> </span></span>门、<span>S<span class="heti-spacing"> </span></span>门</p>
+<ul>
+<li><strong><span>P<span class="heti-spacing"> </span></span>门</strong>将量子比特的相位进行旋转，带有一个输入参数用于确定具体相位</li>
+<li><strong><span>S<span class="heti-spacing"> </span></span>门</strong>是<span class="heti-skip"><span class="heti-spacing"> </span>P<span class="heti-spacing"> </span></span>门的特例，其中相位参数<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\varphi\)</span><span class="heti-spacing"> </span></span>等于<span><span class="heti-spacing"> </span><span class="arithmatex">\(\frac{\pi}{2}\)</span></span> </li>
+<li><strong><span>T<span class="heti-spacing"> </span></span>门</strong>是另一个相位旋转门，它将量子比特的相位旋转<span><span class="heti-spacing"> </span><span class="arithmatex">\(\frac{\pi}{4}\)</span></span></li>
+</ul>
+<div class="arithmatex">\[
+P=\begin{bmatrix}1&amp;0\\0&amp;e^{i\phi}\end{bmatrix},\quad S=\begin{bmatrix}1&amp;0\\0&amp;i\end{bmatrix},\quad T=\begin{bmatrix}1&amp;0\\0&amp;e^{i\frac{\pi}{4}}\end{bmatrix}
+\]</div>
+</li>
+</ul>
+<h3 id="参数旋转门">参数旋转门<a class="headerlink" href="#%E5%8F%82%E6%95%B0%E6%97%8B%E8%BD%AC%E9%97%A8" title="Permanent link">⚓︎</a></h3>
+<p><strong>参数旋转门</strong>是量子计算中的一种基本门，它允许根据给定参数执行量子态的旋转操作。在单量子比特系统中，最常见的参数旋转门是绕<span class="heti-skip"><span class="heti-spacing"> </span>X<span class="heti-spacing"> </span></span>轴、<span>Y<span class="heti-spacing"> </span></span>轴和<span class="heti-skip"><span class="heti-spacing"> </span>Z<span class="heti-spacing"> </span></span>轴的旋转门，分别记为<span><span class="heti-spacing"> </span><span class="arithmatex">\(R_X(\theta), R_Y(\theta), R_Z(\theta)\)</span></span>，其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\theta\)</span><span class="heti-spacing"> </span></span>是旋转角度，对应矩阵表示如下：</p>
+<div class="arithmatex">\[
+R_X(\theta)=\begin{bmatrix}\cos\frac{\theta}{2}&amp;-i\sin\frac{\theta}{2}\\-i\sin\frac{\theta}{2}&amp;\cos\frac{\theta}{2}\end{bmatrix},R_Y(\theta)=\begin{bmatrix}\cos\frac{\theta}{2}&amp;-\sin\frac{\theta}{2}\\\theta&amp;\theta\\\sin\frac{\theta}{2}&amp;\cos\frac{\theta}{2}\end{bmatrix},R_Z(\theta)=\begin{bmatrix}e^{-i\theta/2}&amp;0\\0&amp;e^{i\theta/2}\end{bmatrix}
+\]</div>
+<p>容易验证<span><span class="heti-spacing"> </span><span class="arithmatex">\(H=iR_Y\left(\frac{\pi}{2}\right)R_Z(\pi)=iR_X(\pi)R_Y\left(\frac{\pi}{2}\right)\)</span></span>，与<span class="heti-skip"><span class="heti-spacing"> </span>Bloch<span class="heti-spacing"> </span></span>球上的物理图像相符，即<span class="heti-skip"><span class="heti-spacing"> </span>Hadamard<span class="heti-spacing"> </span></span>门可以
+看作是量子态先绕 Z 轴旋转 <span class="arithmatex">\(\pi\)</span>，再绕 Y 轴旋转 <span class="arithmatex">\(\frac{\pi}{2}\)</span>（等于先绕 Y 轴旋转 <span class="arithmatex">\(\frac{\pi}{2}\)</span>，再绕 X 轴旋转 <span class="arithmatex">\(\pi\)</span>）。</p>
+<p>参数旋转门在量子电路设计、量子机器学习（例如量子神经网络、变分量子算法）中广泛使用，因为它们通过可调参数来实现灵活的操作。</p>
+<h3 id="单量子比特操作分解">单量子比特操作分解<a class="headerlink" href="#%E5%8D%95%E9%87%8F%E5%AD%90%E6%AF%94%E7%89%B9%E6%93%8D%E4%BD%9C%E5%88%86%E8%A7%A3" title="Permanent link">⚓︎</a></h3>
+<p>一个单量子比特操作，对应一个<span class="heti-skip"><span class="heti-spacing"> </span>2×2<span class="heti-spacing"> </span></span>的酉矩阵。由于这样的酉矩阵有无穷多个，因此理论上有无穷多个单比特门。那么，为了实现任意一种单比特门，我们需要制造出这么多的门吗？</p>
+<p>事实上，对任意一个<span class="heti-skip"><span class="heti-spacing"> </span>2×2<span class="heti-spacing"> </span></span>的酉矩阵，都有如下的分解：</p>
+<div class="arithmatex">\[
+U=\mathrm{e}^{\mathrm{i}\alpha}\begin{bmatrix}\mathrm{e}^{-\mathrm{i}\beta/2}&amp;0\\0&amp;\mathrm{e}^{\mathrm{i}\beta/2}\end{bmatrix}\begin{bmatrix}\cos\frac{\gamma}{2}&amp;-\sin\frac{\gamma}{2}\\\sin\frac{\gamma}{2}&amp;\cos\frac{\gamma}{2}\end{bmatrix}\begin{bmatrix}\mathrm{e}^{-\mathrm{i}\delta/2}&amp;0\\0&amp;\mathrm{e}^{\mathrm{i}\delta/2}\end{bmatrix}
+\]</div>
+<p>其中，中间的矩阵就是线性代数中的旋转矩阵（绕<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(y\)</span><span class="heti-spacing"> </span></span>轴<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，而其前后的两个矩阵可以理解为在特定平面内的旋转（绕<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(z\)</span><span class="heti-spacing"> </span></span>轴<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。这个分解可以对任意单比特操作进行精确描述。</p>
+<details class="example" open="open">
+<summary>例子</summary>
+<p>对矩阵<span><span class="heti-spacing"> </span><span class="arithmatex">\(U_1=\begin{bmatrix}0.707&amp;-0.707i\\0.707i&amp;0.707\end{bmatrix}\)</span></span>，可以这样分解：
+$$
+U_1=Rz(-\frac{\pi}{4})\cdot X\cdot Rz(-\frac{\pi}{2})
+$$</p>
+<p>使用<span class="heti-skip"><span class="heti-spacing"> </span>Qiskit<span class="heti-spacing"> </span></span>实现其电路为：</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec2/14.png"><img src="images/lec2/14.png" width="40%"/></a>
+</div><p></p>
+</details>
+<h2 id="多量子门">多量子门<a class="headerlink" href="#%E5%A4%9A%E9%87%8F%E5%AD%90%E9%97%A8" title="Permanent link">⚓︎</a></h2>
+<h3 id="纠缠判定">纠缠判定<a class="headerlink" href="#%E7%BA%A0%E7%BC%A0%E5%88%A4%E5%AE%9A" title="Permanent link">⚓︎</a></h3>
+<p>如果一个多量子比特系统可以分解为多个单量子比特的张量积，那么这个系统被称作<strong>无关的、可分的</strong>；反之，该系统是<strong>不可分的、纠缠的</strong>。例如，</p>
+<ul>
+<li>
+<p>如果一个双量子比特系统的量子态为：</p>
+<div class="arithmatex">\[
+\frac{1}{2}|00\rangle+\frac{i}{2}|01\rangle-\frac{1}{2}|10\rangle-\frac{i}{2}|11\rangle
+\]</div>
+<p>它实际上可以分解为两个单量子比特的张量积：</p>
+<div class="arithmatex">\[
+\frac{1}{2}|00\rangle+\frac{i}{2}|01\rangle-\frac{1}{2}|10\rangle-\frac{i}{2}|11\rangle=\left(\frac{1}{\sqrt2}|0\rangle-\frac{1}{\sqrt2}|1\rangle\right)\otimes\left(\frac{1}{\sqrt2}|0\rangle+\frac{i}{\sqrt2}|1\rangle\right)
+\]</div>
+<p>这意味着这个双量子比特系统仅仅是两个量子比特简单合成的！</p>
+</li>
+<li>
+<p>反之，如果一个双量子比特系统的量子态为<span><span class="heti-spacing"> </span><span class="arithmatex">\(\frac{1}{\sqrt{2}}|00\rangle+\frac{1}{\sqrt{2}}|11\rangle\)</span></span>，可以证明，这个双量子比特系统无法分解成两个单量子比特的张量积，即不可分的、纠缠的。</p>
+</li>
+</ul>
+<h3 id="复合系统">复合系统<a class="headerlink" href="#%E5%A4%8D%E5%90%88%E7%B3%BB%E7%BB%9F" title="Permanent link">⚓︎</a></h3>
+<p>对于包含多个量子比特的复合系统，我们规定态矢量中的每个量子比特按从左到右的顺序依次编号，记为<span><span class="heti-spacing"> </span><span class="arithmatex">\(q_0, q_1, \dots\)</span></span>，并在量子电路图中从上至下依次绘制每个量子比特。</p>
+<p>下图展示了双量子比特构成的复合系统，初态为<span><span class="heti-spacing"> </span><span class="arithmatex">\(|00\rangle\)</span></span> ， <span><span class="arithmatex">\(q_0\)</span><span class="heti-spacing"> </span></span>经过<span class="heti-skip"><span class="heti-spacing"> </span>X<span class="heti-spacing"> </span></span>门状态变为<span><span class="heti-spacing"> </span><span class="arithmatex">\(|1\rangle\)</span></span> ， <span><span class="arithmatex">\(q_1\)</span><span class="heti-spacing"> </span></span>经过<span class="heti-skip"><span class="heti-spacing"> </span>Z<span class="heti-spacing"> </span></span>门状
+态变为 <span class="arithmatex">\(|0\rangle\)</span>。</p>
+<div class="arithmatex">\[
+\begin{aligned}q_0:|0\rangle&amp; \ —\boxed{X}— \ |1\rangle\\\\q_1:|0\rangle&amp; \ —\boxed{Z}— \ |0\rangle\end{aligned}
+\]</div>
+<p>若将两个单量子门视作一个整体，可以通过张量积的形式构成一个双量子门。</p>
+<div class="arithmatex">\[
+\begin{aligned}&amp; X\otimes Z=\begin{bmatrix}0&amp;1\\1&amp;0\end{bmatrix}\otimes\begin{bmatrix}1&amp;0\\0&amp;-1\end{bmatrix}=\begin{bmatrix}0\cdot1&amp;0\cdot0&amp;1\cdot1&amp;1\cdot0\\0\cdot0&amp;0\cdot-1&amp;1\cdot0&amp;1\cdot-1\\1\cdot1&amp;1\cdot0&amp;0\cdot1&amp;0\cdot0\\1\cdot0&amp;1\cdot-1&amp;0\cdot0&amp;0\cdot-1\end{bmatrix}=\begin{bmatrix}0&amp;0&amp;1&amp;0\\0&amp;0&amp;0&amp;-1\\1&amp;0&amp;0&amp;0\\0&amp;-1&amp;0&amp;0\end{bmatrix}\\
+&amp; X\otimes Z|00\rangle=\begin{bmatrix}0&amp;0&amp;1&amp;0\\0&amp;0&amp;0&amp;-1\\1&amp;0&amp;0&amp;0\\0&amp;-1&amp;0&amp;0\end{bmatrix}\begin{bmatrix}1\\0\\0\\0\end{bmatrix}=\begin{bmatrix}0\\0\\1\\0\end{bmatrix}=|10\rangle\end{aligned}
+\]</div>
+<h3 id="cnot-门"><span>CNOT<span class="heti-spacing"> </span></span>门<a class="headerlink" href="#cnot-%E9%97%A8" title="Permanent link">⚓︎</a></h3>
+<details class="info" open="open">
+<summary>引入</summary>
+<p>在经典逻辑电路中，<strong>异或门</strong>（XOR）是一种广泛应用的逻辑门，它是很多逻辑计算的基础，例如可用于构建半加器和全加器。</p>
+<p>异或门的真值表如下所示，一种理解异或门的思路是“<strong>受控非门</strong>”：输入<span class="heti-skip"><span class="heti-spacing"> </span>A<span class="heti-spacing"> </span></span>是一种“<strong>控制端</strong>”</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec2/15.png"><img src="images/lec2/15.png" width="50%"/></a>
+</div><p></p>
+<ul>
+<li>当<span class="heti-skip"><span class="heti-spacing"> </span>A<span class="heti-spacing"> </span></span>为<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>的时候，<span>XOR<span class="heti-spacing"> </span></span>对<span class="heti-skip"><span class="heti-spacing"> </span>B<span class="heti-spacing"> </span></span>施加非门</li>
+<li>而当<span class="heti-skip"><span class="heti-spacing"> </span>A<span class="heti-spacing"> </span></span>为<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>的时候，则不施加非门</li>
+</ul>
+<p>那么，在量子电路中，是否存在类似的“受控”门呢？答案是肯定的，一种最基础的受控门被称为 <strong><span>CNOT<span class="heti-spacing"> </span></span>门</strong>(controlled-NOT gate)。</p>
+</details>
+<p><strong><span>CNOT<span class="heti-spacing"> </span></span>门</strong>是一种受控门，其中一个量子比特（称为控制比特）的状态决定了另一个量子比特（称为目标比特）是否进行翻转操作：</p>
+<ul>
+<li>当控制比特为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(|1\rangle\)</span><span class="heti-spacing"> </span></span>时，翻转目标比特的状态</li>
+<li>当控制比特为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(|0\rangle\)</span><span class="heti-spacing"> </span></span>时，保持目标比特的状态不变。其矩阵表示形式为：</li>
+</ul>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec2/16.png"><img align="right" alt="" src="images/lec2/16.png" width="20%"/></a></p>
+<div class="arithmatex">\[
+CNOT=\begin{bmatrix}1&amp;0&amp;0&amp;0\\0&amp;1&amp;0&amp;0\\0&amp;0&amp;0&amp;1\\0&amp;0&amp;1&amp;0\end{bmatrix}
+\]</div>
+<p><span>Qiskit<span class="heti-spacing"> </span></span>中的<span class="heti-skip"><span class="heti-spacing"> </span>CNOT<span class="heti-spacing"> </span></span>门如右图所示。</p>
+<p>若量子态为非叠加态，类比经典比特的真值表，有：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec2/17.png"><img src="images/lec2/17.png" width="30%"/></a>
+</div>
+<p>若以<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(q_0\)</span><span class="heti-spacing"> </span></span>为<span class="heti-skip"><span class="heti-spacing"> </span>CNOT<span class="heti-spacing"> </span></span>门的控制比特，<span><span class="arithmatex">\(q_1\)</span><span class="heti-spacing"> </span></span>为受控比特，则会将<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(|10\rangle\)</span><span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(|11\rangle\)</span><span class="heti-spacing"> </span></span>的振幅替换，如下所示：</p>
+<div class="arithmatex">\[
+|a\rangle=\begin{bmatrix}a_{00}\\a_{01}\\a_{10}\\a_{11}\end{bmatrix}\quad\mathrm{CNOT}|a\rangle=\begin{bmatrix}a_{00}\\a_{01}\\a_{11}\\a_{10}\end{bmatrix}
+\]</div>
+<p><span>CNOT<span class="heti-spacing"> </span></span>门的一大作用是用于<strong>制备纠缠态</strong>。以量子态<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(|q_0 q_1\rangle = |00\rangle\)</span><span class="heti-spacing"> </span></span>为例，首先<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(q_1\)</span><span class="heti-spacing"> </span></span>通过一个<span class="heti-skip"><span class="heti-spacing"> </span>H<span class="heti-spacing"> </span></span>门：再将<span class="heti-skip"><span class="heti-spacing"> </span>CNOT<span class="heti-spacing"> </span></span>门作用在两个量子比特上，则有：</p>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec2/18.png"><img align="right" alt="" src="images/lec2/18.png" width="20%"/></a></p>
+<div class="arithmatex">\[
+\begin{aligned}|q_0\rangle\otimes|q_1\rangle&amp;\xrightarrow{\text{H gate on }q_0}\frac{1}{\sqrt{2}}(|0\rangle+|1\rangle)\otimes|0\rangle=\frac{1}{\sqrt{2}}(|00\rangle+|10\rangle)\\&amp;\xrightarrow{\mathrm{CNOT~gate}}\frac{1}{\sqrt{2}}(|00\rangle+|11\rangle)\end{aligned}
+\]</div>
+<p>右图为制备两比特贝尔态的量子电路。</p>
+<h3 id="量子隐形传态">量子隐形传态<a class="headerlink" href="#%E9%87%8F%E5%AD%90%E9%9A%90%E5%BD%A2%E4%BC%A0%E6%80%81" title="Permanent link">⚓︎</a></h3>
+<p>假设<span class="heti-skip"><span class="heti-spacing"> </span>Alice<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>Bob<span class="heti-spacing"> </span></span>是一对老朋友，他们上一次见面的时候各自拿走了一对处于贝尔态的纠缠<span class="heti-skip"><span class="heti-spacing"> </span>qubits<span class="heti-spacing"> </span></span>中的一个，也就是说：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec2/19.png"><img src="images/lec2/19.png" width="40%"/></a>
+</div>
+<p>现在他们相隔千里，<span>Alice<span class="heti-spacing"> </span></span>手上有另一个处于量子态<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(|\psi \rangle = \alpha |0\rangle + \beta |1\rangle\)</span><span class="heti-spacing"> </span></span>的<span class="heti-skip"><span class="heti-spacing"> </span>qubit<span class="heti-spacing"> </span></span>想要发送给<span><span class="heti-spacing"> </span>Bob</span>，但是<span class="heti-skip"><span class="heti-spacing"> </span>Alice<span class="heti-spacing"> </span></span>却陷入如下的困境：</p>
+<ul>
+<li>假如<span class="heti-skip"><span class="heti-spacing"> </span>Alice<span class="heti-spacing"> </span></span>不知道<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(|\psi \rangle\)</span><span class="heti-spacing"> </span></span>是一个怎样的量子态，她手上只有一份<span><span class="heti-spacing"> </span>qubit</span>，由于量子不可克隆原理及量子态坍缩，她无法测得两个参数<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\alpha, \beta\)</span><span class="heti-spacing"> </span></span>的确切取值</li>
+<li>就算<span class="heti-skip"><span class="heti-spacing"> </span>Alice<span class="heti-spacing"> </span></span>知道<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\alpha, \beta\)</span><span class="heti-spacing"> </span></span>的取值，它们也有可能是无穷位的实数</li>
+</ul>
+<p><strong>量子隐形传态</strong>为<span class="heti-skip"><span class="heti-spacing"> </span>Alice<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>Bob<span class="heti-spacing"> </span></span>的量子态传输提供了可能，事实上，<span>Alice<span class="heti-spacing"> </span></span>只需要用经典信道向<span class="heti-skip"><span class="heti-spacing"> </span>Bob<span class="heti-spacing"> </span></span>传输两个<span class="heti-skip"><span class="heti-spacing"> </span>bit<span class="heti-spacing"> </span></span>的经典信息。<span>Alice<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>Bob<span class="heti-spacing"> </span></span>端的操作电路如下图所示。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec2/20.png"><img src="images/lec2/20.png" width="60%"/></a>
+</div>
+<p>首先，Alice、<span>Bob<span class="heti-spacing"> </span></span>持有的三个<span class="heti-skip"><span class="heti-spacing"> </span>qubit<span class="heti-spacing"> </span></span>构成的初始整体量子态可表示为：
+$$
+|\psi_0\rangle=\frac{1}{\sqrt{2}}\left[\alpha|0\rangle(|00\rangle+|11\rangle)+\beta|1\rangle(|00\rangle+|11\rangle)\right]
+$$</p>
+<p>然后，<span>Alice<span class="heti-spacing"> </span></span>首先将他要发送的<span class="heti-skip"><span class="heti-spacing"> </span>qubit<span class="heti-spacing"> </span></span>以及她持有的纠缠<span class="heti-skip"><span class="heti-spacing"> </span>qubit<span class="heti-spacing"> </span></span>经过一个<span class="heti-skip"><span class="heti-spacing"> </span>CNOT<span class="heti-spacing"> </span></span>门，那么整体的量子态变为：
+$$
+\begin{aligned}|\psi_1\rangle=\frac{1}{\sqrt{2}}\left[\alpha|0\rangle(|00\rangle+|11\rangle)+\beta|1\rangle(|10\rangle+|01\rangle)\right]\end{aligned}
+$$</p>
+<p>紧接着，<span>Alice<span class="heti-spacing"> </span></span>又将<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(|\psi\rangle\)</span><span class="heti-spacing"> </span></span>对应的<span class="heti-skip"><span class="heti-spacing"> </span>qubit<span class="heti-spacing"> </span></span>经过一个<span class="heti-skip"><span class="heti-spacing"> </span>H<span class="heti-spacing"> </span></span>门，则现在系统整体的量子态变为：
+$$
+|\psi_2\rangle=\frac{1}{2}\left[\alpha(|0\rangle+|1\rangle)(|00\rangle+|11\rangle)+\beta(|0\rangle-|1\rangle)(|10\rangle+|01\rangle)\right]
+$$</p>
+<p>重新组织各个项，将其改写为<span class="heti-skip"><span class="heti-spacing"> </span>Alice<span class="heti-spacing"> </span></span>持有的<span class="heti-skip"><span class="heti-spacing"> </span>qubits<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>Bob<span class="heti-spacing"> </span></span>的一个<span class="heti-skip"><span class="heti-spacing"> </span>qubit<span class="heti-spacing"> </span></span>的张量积形式：</p>
+<div class="arithmatex">\[
+\begin{aligned}|\psi_{2}\rangle&amp;=\frac{1}{2}\left[\left|00\right\rangle\left(\alpha|0\right\rangle+\beta|1\rangle\right)+\left|01\right\rangle\left(\alpha|1\rangle+\beta|0\rangle\right)\\&amp;+|10\rangle\left(\alpha|0\rangle-\beta|1\rangle\right)+|11\rangle\left(\alpha|1\rangle-\beta|0\rangle\right)]\end{aligned}
+\]</div>
+<p>在该式中，第一项中<span class="heti-skip"><span class="heti-spacing"> </span>Alice<span class="heti-spacing"> </span></span>处在<span><span class="heti-spacing"> </span><span class="arithmatex">\(|00\rangle\)</span></span>，而<span class="heti-skip"><span class="heti-spacing"> </span>Bob<span class="heti-spacing"> </span></span>持有的<span class="heti-skip"><span class="heti-spacing"> </span>qubit<span class="heti-spacing"> </span></span>已经转变为<span><span class="heti-spacing"> </span><span class="arithmatex">\(\alpha |0\rangle + \beta |1\rangle\)</span></span> ——这刚好是<span class="heti-skip"><span class="heti-spacing"> </span>Alice<span class="heti-spacing"> </span></span>想要传送给<span class="heti-skip"><span class="heti-spacing"> </span>Bob<span class="heti-spacing"> </span></span>的态<span><span class="heti-spacing"> </span><span class="arithmatex">\(|\psi\rangle\)</span></span>。并且由该式可以知道，若<span class="heti-skip"><span class="heti-spacing"> </span>Alice<span class="heti-spacing"> </span></span>对手上持有的<span class="heti-skip"><span class="heti-spacing"> </span>qubits<span class="heti-spacing"> </span></span>进行测量，则测量结果与<span class="heti-skip"><span class="heti-spacing"> </span>Bob<span class="heti-spacing"> </span></span>端的<span class="heti-skip"><span class="heti-spacing"> </span>qubit<span class="heti-spacing"> </span></span>的态的对应关系为：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec2/21.png"><img src="images/lec2/21.png" width="40%"/></a>
+</div>
+<p>现在，<span>Alice<span class="heti-spacing"> </span></span>可以测量持有的<span><span class="heti-spacing"> </span>qubits</span>，并将结果通过经典信道发送给<span><span class="heti-spacing"> </span>Bob</span>，这只需要两个经典<span class="heti-skip"><span class="heti-spacing"> </span>bit<span class="heti-spacing"> </span></span>的数据；反过来，<span>Bob<span class="heti-spacing"> </span></span>可根据接收到的经典数据对持有的<span class="heti-skip"><span class="heti-spacing"> </span>qubit<span class="heti-spacing"> </span></span>进行操作，进而恢复<span><span class="heti-spacing"> </span><span class="arithmatex">\(|\psi\rangle\)</span></span>。</p>
+<p>如果<span class="heti-skip"><span class="heti-spacing"> </span>Alice<span class="heti-spacing"> </span></span>测量结果为 <strong>00</strong>，<span>Bob<span class="heti-spacing"> </span></span>不需要做任何事；如果结果为 <strong>01</strong>，那么<span class="heti-skip"><span class="heti-spacing"> </span>Bob<span class="heti-spacing"> </span></span>需要使用<span class="heti-skip"><span class="heti-spacing"> </span>X<span class="heti-spacing"> </span></span>门来修正量子态；如果结果为 <strong>10</strong>，那么<span class="heti-skip"><span class="heti-spacing"> </span>Bob<span class="heti-spacing"> </span></span>需要使用<span class="heti-skip"><span class="heti-spacing"> </span>Z<span class="heti-spacing"> </span></span>门来修正量子态；如果结果为 <strong>11</strong>，那么<span class="heti-skip"><span class="heti-spacing"> </span>Bob<span class="heti-spacing"> </span></span>需要先使用<span class="heti-skip"><span class="heti-spacing"> </span>X<span class="heti-spacing"> </span></span>门，再作用<span class="heti-skip"><span class="heti-spacing"> </span>Z<span class="heti-spacing"> </span></span>门来修正量子态。</p>
+<details class="question" open="open">
+<summary>信息是否能超距传输？</summary>
+<p>一个自然的疑问是，加入<span class="heti-skip"><span class="heti-spacing"> </span>Alice<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>Bob<span class="heti-spacing"> </span></span>相距很远很远，那么这种信息的传递速度岂不是可以超越光速？实际上，虽然<span class="heti-skip"><span class="heti-spacing"> </span>Alice<span class="heti-spacing"> </span></span>对<span class="heti-skip"><span class="heti-spacing"> </span>qubits<span class="heti-spacing"> </span></span>测量后系统量子态的坍缩是瞬时的，但是如果<span class="heti-skip"><span class="heti-spacing"> </span>Alice<span class="heti-spacing"> </span></span>想要向<span class="heti-skip"><span class="heti-spacing"> </span>Bob<span class="heti-spacing"> </span></span>传递量子态，她仍然需要使用经典信道传输测量结果，因此量子隐形传态也不能突破光速的限制。</p>
+<p>其次，在超距传输中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(|\psi\rangle\)</span><span class="heti-spacing"> </span></span>被拷贝了吗？<span>Bob<span class="heti-spacing"> </span></span>确实可以通过修正得到<span><span class="heti-spacing"> </span><span class="arithmatex">\(|\psi\rangle\)</span></span>，但是此时<span class="heti-skip"><span class="heti-spacing"> </span>Alice<span class="heti-spacing"> </span></span>端的指定<span class="heti-skip"><span class="heti-spacing"> </span>qubit<span class="heti-spacing"> </span></span>已经坍缩。因此，量子隐形传态实际上实现了<span class="heti-skip"><span class="heti-spacing"> </span>Alice<span class="heti-spacing"> </span></span>到<span class="heti-skip"><span class="heti-spacing"> </span>Bob<span class="heti-spacing"> </span></span>的一个量子比特的传输，但不等同于量子拷贝。</p>
+</details>
+<h3 id="swap-门和-cswap-门"><span>SWAP<span class="heti-spacing"> </span></span>门和<span class="heti-skip"><span class="heti-spacing"> </span>CSWAP<span class="heti-spacing"> </span></span>门<a class="headerlink" href="#swap-%E9%97%A8%E5%92%8C-cswap-%E9%97%A8" title="Permanent link">⚓︎</a></h3>
+<p><strong><span>SWAP<span class="heti-spacing"> </span></span>门</strong>是一个非常简单但重要的两量子比特门，它用于交换两个量子比特的状态。<span>SWAP<span class="heti-spacing"> </span></span>门的操作非常直观：它将两个量子比特的状态互换，将第一个量子比特的状态赋予第二个量子比特，并将第二个量子比特的状态赋予第一个量子比特。<span>SWAP<span class="heti-spacing"> </span></span>门的矩阵形式及<span class="heti-skip"><span class="heti-spacing"> </span>Qiskit<span class="heti-spacing"> </span></span>可视化如下：</p>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec2/22.png"><img align="right" alt="" src="images/lec2/22.png" width="20%"/></a></p>
+<div class="arithmatex">\[
+\mathrm{SWAP}=\begin{pmatrix}1&amp;0&amp;0&amp;0\\0&amp;0&amp;1&amp;0\\0&amp;1&amp;0&amp;0\\0&amp;0&amp;0&amp;1\end{pmatrix}
+\]</div>
+<p><span>SWAP<span class="heti-spacing"> </span></span>门可以用来生成和操作纠缠态。<strong>通过交换两个量子比特的状态，可以创建新的纠缠态</strong>。可以给<span class="heti-skip"><span class="heti-spacing"> </span>SWAP<span class="heti-spacing"> </span></span>门添加控制端，使之成为<span><span class="heti-spacing"> </span>CSWAP</span>，即受控的<span class="heti-skip"><span class="heti-spacing"> </span>SWAP<span class="heti-spacing"> </span></span>门，又被成为<span class="heti-skip"><span class="heti-spacing"> </span>Fredkin<span class="heti-spacing"> </span></span>门。</p>
+<p>由于现阶段量子计算机中量子比特的<strong>连接性</strong>问题，两个逻辑上可以进行多比特门操作的量子比特，<strong>在硬件上可能并不相邻</strong>，这就需要<span class="heti-skip"><span class="heti-spacing"> </span>SWAP<span class="heti-spacing"> </span></span>操作将物理比特的量子比特“交换”后再进行多比特门操作。<span>SWAP<span class="heti-spacing"> </span></span>操作也因此成为量子线路编译及优化中常用的技术。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec2/23.png"><img src="images/lec2/23.png" width="40%"/></a>
+</div>
+<h3 id="toffoli-门"><span>Toffoli<span class="heti-spacing"> </span></span>门<a class="headerlink" href="#toffoli-%E9%97%A8" title="Permanent link">⚓︎</a></h3>
+<p><strong><span>Toffoli<span class="heti-spacing"> </span></span>门</strong>（有时也称为<span class="heti-skip"><span class="heti-spacing"> </span>CCNOT<span class="heti-spacing"> </span></span>门或者<span class="heti-skip"><span class="heti-spacing"> </span>CCX<span class="heti-spacing"> </span></span>门）是一个三量子比特门，它在经典计算中执行了一个非常重要的逻辑操作，即布尔逻辑中的<span class="heti-skip"><span class="heti-spacing"> </span>AND<span class="heti-spacing"> </span></span>门。具体来说，<span>Toffoli<span class="heti-spacing"> </span></span>门的操作如下：</p>
+<ul>
+<li>如果前两个量子比特（通常称为<strong>控制比特</strong>）都处于状态<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(|1\rangle\)</span><span class="heti-spacing"> </span></span>时，它会对第三个量子比特（通常称为<strong>目标比特</strong>）执行一个非门操作</li>
+<li>如果其中任何一个或两个控制比特处于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(|0\rangle\)</span><span class="heti-spacing"> </span></span>状态，它不会执行非门操作，目标比特保持不变</li>
+</ul>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec2/24.png"><img align="right" alt="" src="images/lec2/24.png" width="30%"/></a></p>
+<div class="arithmatex">\[
+\mathrm{Toffoli}=\begin{pmatrix}1&amp;0&amp;0&amp;0&amp;0&amp;0&amp;0&amp;0\\0&amp;1&amp;0&amp;0&amp;0&amp;0&amp;0&amp;0\\0&amp;0&amp;1&amp;0&amp;0&amp;0&amp;0&amp;0\\0&amp;0&amp;0&amp;1&amp;0&amp;0&amp;0&amp;0\\0&amp;0&amp;0&amp;0&amp;1&amp;0&amp;0&amp;0\\0&amp;0&amp;0&amp;0&amp;0&amp;1&amp;0&amp;0\\0&amp;0&amp;0&amp;0&amp;0&amp;0&amp;0&amp;1\\0&amp;0&amp;0&amp;0&amp;0&amp;0&amp;1&amp;0\end{pmatrix}
+\]</div>
+<p><span>Toffoli<span class="heti-spacing"> </span></span>门的广义形式： 除了标准的<span class="heti-skip"><span class="heti-spacing"> </span>CCNOT<span class="heti-spacing"> </span></span>门，还有更通用的多量子比特门，例如<span><span class="heti-spacing"> </span>CCCNOT</span>、<span>CCCCNOT<span class="heti-spacing"> </span></span>等，具体取决于控制比特的数量。</p>
+<h3 id="量子计算的并行性">量子计算的并行性<a class="headerlink" href="#%E9%87%8F%E5%AD%90%E8%AE%A1%E7%AE%97%E7%9A%84%E5%B9%B6%E8%A1%8C%E6%80%A7" title="Permanent link">⚓︎</a></h3>
+<p><strong>量子并行性</strong>是量子计算的一个基本特征，它使得量子计算机可以同时计算<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f(x)\)</span><span class="heti-spacing"> </span></span>在多个<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x\)</span><span class="heti-spacing"> </span></span>取值下的函数值。假如存在一个量子电路，可以实现<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(|x, y\rangle \rightarrow |x, y \oplus f(x) \rangle\)</span><span class="heti-spacing"> </span></span>的映射，其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\oplus\)</span><span class="heti-spacing"> </span></span>符号表示模<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>加运算。如果输入的<span><span class="heti-spacing"> </span><span class="arithmatex">\(y = 0\)</span></span>， 那么第二个输出等于<span><span class="heti-spacing"> </span><span class="arithmatex">\(f(x)\)</span></span> 。现在，让我们考虑输入<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x\)</span><span class="heti-spacing"> </span></span>处于叠加态中，如下所示：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec2/25.png"><img src="images/lec2/25.png" width="40%"/></a>
+</div>
+<p>经过该电路之后，系统的量子态转化为：
+$$
+\frac{\mid0,f(0)\rangle+\mid1,f(1)\rangle}{\sqrt{2}}
+$$</p>
+<p>值得注意的是，这个结果中既包含了<span><span class="heti-spacing"> </span><span class="arithmatex">\(f(0)\)</span></span>，也包含了<span><span class="heti-spacing"> </span><span class="arithmatex">\(f(1)\)</span></span>，该电路似乎对<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x\)</span><span class="heti-spacing"> </span></span>的两个取值同时计算了函数<span><span class="heti-spacing"> </span><span class="arithmatex">\(f\)</span></span>。在经典计算中，需要使用多个电路模块才能实现这样的并行计算，但是在量子计算中利用叠加态，可以在一个电路中同时计算多个函数值。</p>
+<details class="question" open="open">
+<summary>思考</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="" id="__tabbed_3_1" name="__tabbed_3" type="radio"/><input id="__tabbed_3_2" name="__tabbed_3" type="radio"/><div class="tabbed-labels"><label for="__tabbed_3_1">问题</label><label for="__tabbed_3_2">解答</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>在上述情况中，函数<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f\)</span><span class="heti-spacing"> </span></span>的输入<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x\)</span><span class="heti-spacing"> </span></span>由一个<span class="heti-skip"><span class="heti-spacing"> </span>qubit<span class="heti-spacing"> </span></span>来编码，只有<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>或者<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>两种状态；假如函数稍微复杂一些，输入<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x\)</span><span class="heti-spacing"> </span></span>由两个<span class="heti-skip"><span class="heti-spacing"> </span>qubit<span class="heti-spacing"> </span></span>来编码，并有四种可能取值：<span class="arithmatex">\(|00\rangle, |01\rangle, |10\rangle, |11\rangle\)</span>，应该怎样实现并行计算？</p>
+</div>
+<div class="tabbed-block">
+<p>我们可以分别施加<span class="heti-skip"><span class="heti-spacing"> </span>H<span class="heti-spacing"> </span></span>门在两个<span class="heti-skip"><span class="heti-spacing"> </span>qubits<span class="heti-spacing"> </span></span>的初态<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>上，得到：
+$$
+x=(\frac{|0\rangle+|1\rangle}{\sqrt{2}})(\frac{|0\rangle+|1\rangle}{\sqrt{2}})=\frac{|00\rangle+|01\rangle+|10\rangle+|11\rangle}{2}
+$$</p>
+<p>再将<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x\)</span><span class="heti-spacing"> </span></span>应用前文提到的量子电路，则该电路可以同时计算<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x\)</span><span class="heti-spacing"> </span></span>的<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>种取值对应的函数值。若将其推广到具有<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(N = 2n\)</span><span class="heti-spacing"> </span></span>种输入的函数，则需要<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span><span class="heti-spacing"> </span></span>个<span class="heti-skip"><span class="heti-spacing"> </span>H<span class="heti-spacing"> </span></span>门分别作用在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span><span class="heti-spacing"> </span></span>个初态量子比特上，得到所有可能取值的平衡叠加：</p>
+<div class="arithmatex">\[
+\begin{aligned}\frac{1}{\sqrt{2^n}}\sum_x|x\rangle\end{aligned}
+\]</div>
+<p>应用前文提到的量子电路，最终产生具有并行计算效果的输出：</p>
+<div class="arithmatex">\[
+\frac{1}{\sqrt{2^n}}\sum_x\mid x\rangle\mid f(x)\rangle
+\]</div>
+</div>
+</div>
+</div>
+</details>
+<h3 id="deutsch-算法"><span>Deutsch<span class="heti-spacing"> </span></span>算法<a class="headerlink" href="#deutsch-%E7%AE%97%E6%B3%95" title="Permanent link">⚓︎</a></h3>
+<h3 id="oracle">Oracle<a class="headerlink" href="#oracle" title="Permanent link">⚓︎</a></h3>
+<aside class="md-source-file">
+<span class="md-source-file__fact">
+<span class="md-icon" title="最后更新">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"></path></svg>
+</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年10月19日 20:05:27">2025年10月19日 20:05:27</span>
+</span>
+<span class="md-source-file__fact">
+<span class="md-icon" title="创建日期">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"></path></svg>
+</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年10月19日 20:05:27">2025年10月19日 20:05:27</span>
+</span>
+</aside>
+<p style="font-size: 30px; font-weight: 600">评论区</p>
+<div>
+    如果大家有什么问题或想法，欢迎在下方留言~
+  </div>
+<!-- Insert generated snippet here -->
+<script async="" crossorigin="anonymous" data-category="Announcements" data-category-id="DIC_kwDOMAb9Zs4CfmpP" data-emit-metadata="0" data-input-position="bottom" data-lang="zh-CN" data-mapping="pathname" data-reactions-enabled="1" data-repo="noughtq/notebook" data-repo-id="R_kgDOMAb9Zg" data-strict="0" data-theme="preferred_color_scheme" src="https://giscus.app/client.js">
+</script>
+<!-- Synchronize Giscus theme with palette -->
+<script>
+    var giscus = document.querySelector("script[src*=giscus]")
+
+    // Set palette on initial load
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object") {
+      var theme = palette.color.scheme === "slate"
+        ? "transparent_dark"
+        : "light"
+
+      // Instruct Giscus to set theme
+      giscus.setAttribute("data-theme", theme) 
+    }
+
+    // Register event handlers after documented loaded
+    document.addEventListener("DOMContentLoaded", function() {
+      var ref = document.querySelector("[data-md-component=palette]")
+      ref.addEventListener("change", function() {
+        var palette = __md_get("__palette")
+        if (palette && typeof palette.color === "object") {
+          var theme = palette.color.scheme === "slate"
+            ? "dark"
+            : "light"
+
+          // Instruct Giscus to change theme
+          var frame = document.querySelector(".giscus-frame")
+          frame.contentWindow.postMessage(
+            { giscus: { setConfig: { theme } } },
+            "https://giscus.app"
+          )
+        }
+      })
+    })
+  </script>
+<!-- 标题计数器 -->
+<link href="/css/counter.css" rel="stylesheet"/>
+<!-- 主页个性化 -->
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+<button class="md-top md-icon" data-md-component="top" hidden="" type="button">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  回到页面顶部
+</button>
+</main>
+<footer class="md-footer">
+<nav aria-label="页脚" class="md-footer__inner md-grid">
+<a aria-label="上一页: 计算机体系结构简史与先进计算介绍" class="md-footer__link md-footer__link--prev" href="1.html">
+<div class="md-footer__button md-icon">
+<svg viewbox="0 0 256 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" fill="currentColor"></path></svg>
+</div>
+<div class="md-footer__title">
+<span class="md-footer__direction">
+                上一页
+              </span>
+<div class="md-ellipsis">
+                计算机体系结构简史与先进计算介绍
+              </div>
+</div>
+</a>
+<a aria-label="下一页: 心理学导论" class="md-footer__link md-footer__link--next" href="../psychology/intro/index.html">
+<div class="md-footer__title">
+<span class="md-footer__direction">
+                下一页
+              </span>
+<div class="md-ellipsis">
+                心理学导论
+              </div>
+</div>
+<div class="md-footer__button md-icon">
+<svg viewbox="0 0 256 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M247.1 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L179.2 256 41.9 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z" fill="currentColor"></path></svg>
+</div>
+</a>
+</nav>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright" style="margin-left: 33.5%">
+<div class="md-copyright__highlight" style="text-align: center">
+        Copyright © 2024-2025 <a href="https://github.com/NoughtQ">NoughtQ</a>
+</div>
+    
+    
+      Powered by
+      <a href="https://www.mkdocs.org/" rel="noopener" target="_blank">
+        MkDocs
+      </a>
+      with theme
+      <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+        Material
+      </a>
+      modified by
+      <a href="https://github.com/NoughtQ" rel="noopener" target="_blank">
+        NoughtQ
+      </a>
+<!-- <br> -->
+<div style="text-align: center;">
+<a href="https://icp.gov.moe/?keyword=20252357" target="_blank">萌ICP备20252357号</a>
+</div>
+</div>
+<div class="md-social">
+<a class="md-social__link" href="https://noughtq.top" rel="noopener" target="_blank" title="noughtq.top">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M277.8 8.6c-12.3-11.4-31.3-11.4-43.5 0l-224 208c-9.6 9-12.8 22.9-8 35.1S18.8 272 32 272h16v176c0 35.3 28.7 64 64 64h288c35.3 0 64-28.7 64-64V272h16c13.2 0 25-8.1 29.8-20.3s1.6-26.2-8-35.1zM240 320h32c26.5 0 48 21.5 48 48v96H192v-96c0-26.5 21.5-48 48-48" fill="currentColor"></path></svg>
+</a>
+<a class="md-social__link" href="https://blog.noughtq.top" rel="noopener" target="_blank" title="blog.noughtq.top">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M224 24c0-13.3 10.7-24 24-24 145.8 0 264 118.2 264 264 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-119.3-96.7-216-216-216-13.3 0-24-10.7-24-24M80 96c26.5 0 48 21.5 48 48v224c0 26.5 21.5 48 48 48s48-21.5 48-48-21.5-48-48-48c-8.8 0-16-7.2-16-16v-64c0-8.8 7.2-16 16-16 79.5 0 144 64.5 144 144s-64.5 144-144 144S32 447.5 32 368V144c0-26.5 21.5-48 48-48m168 0c92.8 0 168 75.2 168 168 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-66.3-53.7-120-120-120-13.3 0-24-10.7-24-24s10.7-24 24-24" fill="currentColor"></path></svg>
+</a>
+<a class="md-social__link" href="https://github.com/noughtq" rel="noopener" target="_blank" title="github.com">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2" fill="currentColor"></path></svg>
+</a>
+<a class="md-social__link" href="mailto:noughtq666@gmail.com" rel="noopener" target="_blank" title="">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m20 8-8 5-8-5V6l8 5 8-5m0-2H4c-1.11 0-2 .89-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2"></path></svg>
+</a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"base": "../..", "features": ["content.action.edit", "content.action.view", "content.code.copy", "content.code.annotate", "content.footnote.tooltips", "navigation.tabs", "navigation.top", "navigation.footer", "navigation.indexes", "navigation.tracking", "navigation.prune", "search.share"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.92b07e13.min.js"></script>
+<script src="../../js/anchor.js"></script>
+<script src="../../js/katex.js"></script>
+<script src="../../js/toc.js"></script>
+<script src="../../js/typed.js"></script>
+<script src="../../js/custom.js"></script>
+<script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+<script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>
