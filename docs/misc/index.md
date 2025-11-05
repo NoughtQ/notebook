@@ -9,6 +9,7 @@
 {{ BEGIN_TOC }}
 - CS 相关:
     - 数据要素市场: dem
+    - 量子计算理论基础与软件系统: qc
 - 心理学相关:
     - 心理学导论: psychology/intro
     - 社会心理学: psychology/social

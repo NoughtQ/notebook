@@ -286,20 +286,9 @@
 !!! abstract "目录"
 
     - [x] [Introduction to the Microprocessor and Computer](1.md)
-    - [ ] [The Microprocessor and its Architecture](2.md)
-<!-- - [ ] [](.md)
-- [ ] [](.md)
-- [ ] [](.md)
-- [ ] [](.md)
-- [ ] [](.md)
-- [ ] [](.md)
-- [ ] [](.md)
-- [ ] [](.md)
-- [ ] [](.md)
-- [ ] [](.md)
-- [ ] [](.md)
-- [ ] [](.md)
-- [ ] [](.md) -->
+    - [x] [The Microprocessor and its Architecture](2.md)
+    - [x] [Addressing Modes](3.md)
+    - [ ] [Data Movement Instructions](4.md)
 
 !!! recommend "推荐阅读"
 

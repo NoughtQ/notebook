@@ -15,12 +15,12 @@
 !!! abstract "目录"
 
     - [x] [Sets, Relations, and Language](1.md)
-    - [ ] [Regular Language and Finite Automata](2.md)
-    - [ ] [Context-free Languages and Pushdown Automata](3.md)
+    - [x] [Finite Automata](2.md)
+    - [ ] [Context-Free Languages](3.md)
     - [ ] [Turing Machine](4.md)
     - [ ] [Undecidability](5.md)
 
 !!! recommend "推荐阅读"
 
-    - 课件
     - [xg 的笔记](https://note.tonycrane.cc/cs/tcs/toc/)
+    - [咸鱼暄前辈的笔记](https://xuan-insr.github.io/other_courses/theory_of_computation)

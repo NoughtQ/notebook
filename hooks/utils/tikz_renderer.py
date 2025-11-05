@@ -101,54 +101,118 @@ class TikZAutomataRenderer:
             self.contents.encode() + (self.options.encode() if self.options else b"")
         ).hexdigest()
 
-        if cachefile:
-            try:
+        orig_cwd = os.getcwd()
+        changed_dir = False
+
+        try:
+            if cachefile:
+                os.makedirs("cache", exist_ok=True)
                 os.chdir("cache")
-            except OSError:
-                log.error("[tikzautomata] cache directory not found!")
+                changed_dir = True
 
-        if cachefile and os.path.exists(f"{filename}.svg"):
-            log.debug("[tikzautomata] load from existing file...")
+            if cachefile and os.path.exists(f"{filename}.svg"):
+                log.debug("[tikzautomata] load from existing file...")
+                with open(f"{filename}.svg", "r", encoding="utf-8") as f:
+                    return f.read()
+
+            writer = TeXWriter()
+            writer.config.preamble = r"""
+    \documentclass[dvisvgm]{standalone}
+    \usepackage{tikz}
+
+    \usetikzlibrary {arrows.meta,automata,positioning,shapes.geometric}
+            """
+            begin_command = (
+                r"\begin{tikzpicture}[%s]" % self.options
+                if self.options
+                else r"\begin{tikzpicture}[->,>={Stealth[round]},shorten >=1pt,auto,node distance=2cm,on grid,semithick,inner sep=2pt,bend angle=50,initial text=]"
+            )
+            writer.create_tex_file(
+                "\n".join(
+                    (
+                        begin_command,
+                        self.contents.strip(),
+                        "\\end{tikzpicture}\n",
+                    )
+                ),
+                filename,
+            )
+
+            writer.create_svg_from_tex(filename)
+
             with open(f"{filename}.svg", "r", encoding="utf-8") as f:
-                svg_str = f.read(None)
-            os.chdir("..")
+                svg_str = f.read()
+
+            if not cachefile:
+                try:
+                    os.remove(filename + ".svg")
+                except FileNotFoundError:
+                    pass
+
             return svg_str
+        finally:
+            if changed_dir:
+                os.chdir(orig_cwd)
 
-        writer = TeXWriter()
-        writer.config.preamble = r"""
-\documentclass[dvisvgm]{standalone}
-\usepackage{tikz}
 
-\usetikzlibrary {arrows.meta,automata,positioning,shapes.geometric}
-        """
-        begin_command = (
-            r"\begin{tikzpicture}[%s]" % self.options
-            if self.options
-            else r"\begin{tikzpicture}[->,>={Stealth[round]},shorten >=1pt,auto,node distance=2cm,on grid,semithick,inner sep=2pt,bend angle=50,initial text=]"
-        )
-        writer.create_tex_file(
-            "\n".join(
-                (
-                    begin_command,
-                    self.contents.strip(),
-                    "\\end{tikzpicture}\n",
-                )
-            ),
-            filename,
-        )
+class TikZQtreeRenderer:
+    def __init__(self, options: str, contents: str) -> None:
+        self.options = options
+        self.contents = contents
 
-        writer.create_svg_from_tex(filename)
+    def write_to_svg(self, cachefile: bool) -> str:
+        filename = sha256(
+            self.contents.encode() + (self.options.encode() if self.options else b"")
+        ).hexdigest()
 
-        with open(f"{filename}.svg", "r", encoding="utf-8") as f:
-            svg_str = f.read(None)
+        orig_cwd = os.getcwd()
+        changed_dir = False
 
-        # clean up
-        if not cachefile:
-            try:
-                os.remove(filename + ".svg")
-            except FileNotFoundError:
-                pass
+        try:
+            if cachefile:
+                os.makedirs("cache", exist_ok=True)
+                os.chdir("cache")
+                changed_dir = True
 
-        os.chdir("..")
+            if cachefile and os.path.exists(f"{filename}.svg"):
+                log.debug("[tikzqtree] load from existing file...")
+                with open(f"{filename}.svg", "r", encoding="utf-8") as f:
+                    return f.read()
 
-        return svg_str
+            writer = TeXWriter()
+            writer.config.preamble = r"""
+    \documentclass[dvisvgm]{standalone}
+    \usepackage{tikz}
+    \usepackage{tikz-qtree}
+            """
+            begin_command = (
+                r"\begin{tikzpicture}[%s]" % self.options
+                if self.options
+                else r"\begin{tikzpicture}[level distance=1.6cm,sibling distance=2.5cm, every tree node/.style={align=center}]"
+            )
+            writer.create_tex_file(
+                "\n".join(
+                    (
+                        begin_command,
+                        self.contents.strip(),
+                        "\\end{tikzpicture}\n",
+                    )
+                ),
+                filename,
+            )
+
+            writer.create_svg_from_tex(filename)
+
+            with open(f"{filename}.svg", "r", encoding="utf-8") as f:
+                svg_str = f.read()
+
+            if not cachefile:
+                try:
+                    os.remove(filename + ".svg")
+                except FileNotFoundError:
+                    pass
+
+            return svg_str
+        finally:
+            if changed_dir:
+                os.chdir(orig_cwd)

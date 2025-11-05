@@ -8,5 +8,5 @@
 
 - [机器学习](ml/index.md)
 - [生成式人工智能](genai/index.md)
-- [计算机视觉导论](cv/index.md)
+- [计算机视觉](cv/index.md)
 

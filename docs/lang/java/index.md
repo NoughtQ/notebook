@@ -11,4 +11,7 @@
 
     - [x] [Introduction](1.md)
     - [x] [Basic Java](2.md)
-    - [x] [Inheritance and Polymorphism](3.md)
+    - [x] [Inheritance, Polymorphism and Classes of Other Kinds](3.md)
+    - [x] [Containers and Generic](4.md)
+    - [x] [Stream and Exception](5.md)
+    - [x] [Optional and I/O](6.md)
