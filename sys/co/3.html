@@ -1,0 +1,1996 @@
+<!DOCTYPE html>
+<html class="no-js" lang="zh"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="NoughtQ的笔记本，主要记录一些 CS 相关的笔记" name="description"/>
+<meta content="NoughtQ" name="author"/>
+<link href="https://notebook.noughtq.top/sys/co/3.html" rel="canonical"/>
+<link href="2.html" rel="prev"/>
+<link href="4.html" rel="next"/>
+<link href="../../feed_rss_created.xml" rel="alternate" title="RSS 订阅" type="application/rss+xml"/>
+<link href="../../feed_rss_updated.xml" rel="alternate" title="已更新内容的 RSS 订阅" type="application/rss+xml"/>
+<link href="../../assets/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.6.18" name="generator"/>
+<title>Chap 3: Arithmetic for Computer - NoughtQ的笔记本</title>
+<link href="../../assets/stylesheets/main.7e37652d.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/palette.06af60db.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=JetBrains+Mono,+LXGW+WenKai+Screen+GB+Screen:300,300i,400,400i,700,700i%7CJetBrains+Mono,+Consolas:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"JetBrains Mono, LXGW WenKai Screen GB Screen";--md-code-font:"JetBrains Mono, Consolas"}</style>
+<link href="../../css/heti.css" rel="stylesheet"/>
+<link href="../../css/toc_extra.css" rel="stylesheet"/>
+<link href="../../css/timeline.css" rel="stylesheet"/>
+<link href="../../css/card.css" rel="stylesheet"/>
+<link href="../../css/custom.css" rel="stylesheet"/>
+<link href="../../css/extra_changelog.css" rel="stylesheet"/>
+<link href="../../css/header.css" rel="stylesheet"/>
+<link href="../../css/sidebar.css" rel="stylesheet"/>
+<link href="https://unpkg.com/katex@0/dist/katex.min.css" rel="stylesheet"/>
+<link href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css" rel="stylesheet"/>
+<link href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.css" rel="stylesheet"/>
+<script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-43NH8CVRCJ"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-43NH8CVRCJ",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-43NH8CVRCJ",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+<script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+<link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+<body data-md-color-accent="indigo" data-md-color-primary="indigo" data-md-color-scheme="slate" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#chap-3-arithmetic-for-computer">
+          跳转至
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header" data-md-component="header">
+<nav aria-label="页眉" class="md-header__inner md-grid">
+<a aria-label="NoughtQ的笔记本" class="md-header__button md-logo" data-md-component="logo" href="../.." title="NoughtQ的笔记本">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.05 9H7.06V6h1.99V4.03H7.06v-1c0-1.11.89-1.99 1.99-1.99h5.98V8l2.47-1.5L20 8V1.04h1c1.05 0 2 .96 2 1.99V17c0 1.03-.95 2-2 2H9.05c-1.05 0-1.99-.95-1.99-2v-1h1.99v-2H7.06v-3h1.99zM1 18h2v-3H1v-2h2v-3H1V8h2V5h2v3H3v2h2v3H3v2h2v3H3v2h2v1h16v2H5a2 2 0 0 1-2-2v-1H1z"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            NoughtQ的笔记本
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              Chap 3: Arithmetic for Computer
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="Dark Mode" class="md-option" data-md-color-accent="indigo" data-md-color-media="(prefer-color-scheme: dark)" data-md-color-primary="indigo" data-md-color-scheme="slate" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="Dark Mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"></path></svg>
+</label>
+<input aria-label="Light Mode" class="md-option" data-md-color-accent="indigo" data-md-color-media="(prefer-color-scheme: light)" data-md-color-primary="indigo" data-md-color-scheme="default" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="Light Mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="搜索" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="搜索" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 256 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" fill="currentColor"></path></svg>
+</label>
+<nav aria-label="查找" class="md-search__options">
+<a aria-label="分享" class="md-search__icon md-icon" data-clipboard="" data-clipboard-text="" data-md-component="search-share" href="javascript:void(0)" tabindex="-1" title="分享">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"></path></svg>
+</a>
+<button aria-label="清空当前内容" class="md-search__icon md-icon" tabindex="-1" title="清空当前内容" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header__source">
+<a class="md-source" data-md-component="source" href="https://github.com/noughtq/notebook" title="前往仓库">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4" fill="currentColor"></path></svg>
+</div>
+<div class="md-source__repository">
+    NoughtQ/Notebook
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<nav aria-label="标签" class="md-tabs" data-md-component="tabs">
+<div class="md-grid">
+<ul class="md-tabs__list">
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../index.html">
+          
+  
+  
+    
+  
+  🏫主页
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../lang/index.html">
+          
+  
+  
+    
+  
+  🔡编程语言
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../math/index.html">
+          
+  
+  
+    
+  
+  📊数学相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../algo/index.html">
+          
+  
+  
+    
+  
+  🧮算法相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../software/index.html">
+          
+  
+  
+    
+  
+  💾软件相关
+
+        </a>
+</li>
+<li class="md-tabs__item md-tabs__item--active">
+<a class="md-tabs__link" href="../index.html">
+          
+  
+  
+    
+  
+  💻系统相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../web/index.html">
+          
+  
+  
+    
+  
+  🌏Web相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../sec/ctf-101/index.html">
+          
+  
+  
+    
+  
+  🛡️信息安全
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../ai/index.html">
+          
+  
+  
+    
+  
+  🤖人工智能
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../misc/index.html">
+          
+  
+  
+    
+  
+  🗃️杂项
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../tools/index.html">
+          
+  
+  
+    
+  
+  🛠️工具
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../papers/index.html">
+          
+  
+  
+    
+  
+  📑论文阅读
+
+        </a>
+</li>
+</ul>
+</div>
+</nav>
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="导航栏" class="md-nav md-nav--primary md-nav--lifted" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="NoughtQ的笔记本" class="md-nav__button md-logo" data-md-component="logo" href="../.." title="NoughtQ的笔记本">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.05 9H7.06V6h1.99V4.03H7.06v-1c0-1.11.89-1.99 1.99-1.99h5.98V8l2.47-1.5L20 8V1.04h1c1.05 0 2 .96 2 1.99V17c0 1.03-.95 2-2 2H9.05c-1.05 0-1.99-.95-1.99-2v-1h1.99v-2H7.06v-3h1.99zM1 18h2v-3H1v-2h2v-3H1V8h2V5h2v3H3v2h2v3H3v2h2v3H3v2h2v1h16v2H5a2 2 0 0 1-2-2v-1H1z"></path></svg>
+</a>
+    NoughtQ的笔记本
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-component="source" href="https://github.com/noughtq/notebook" title="前往仓库">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4" fill="currentColor"></path></svg>
+</div>
+<div class="md-source__repository">
+    NoughtQ/Notebook
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../index.html">
+<span class="md-ellipsis">
+    🏫主页
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../lang/index.html">
+<span class="md-ellipsis">
+    🔡编程语言
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../math/index.html">
+<span class="md-ellipsis">
+    📊数学相关
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../algo/index.html">
+<span class="md-ellipsis">
+    🧮算法相关
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../software/index.html">
+<span class="md-ellipsis">
+    💾软件相关
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_6" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../index.html">
+<span class="md-ellipsis">
+    💻系统相关
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="true" aria-labelledby="__nav_6_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_6">
+<span class="md-nav__icon md-icon"></span>
+            💻系统相关
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../csapp/index.html">
+<span class="md-ellipsis">
+    CSAPP
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../dld/index.html">
+<span class="md-ellipsis">
+    数字逻辑设计
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_6_4" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="index.html">
+<span class="md-ellipsis">
+    计算机组成
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_6_4" id="__nav_6_4_label" tabindex="0">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="true" aria-labelledby="__nav_6_4_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_6_4">
+<span class="md-nav__icon md-icon"></span>
+            计算机组成
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="1.html">
+<span class="md-ellipsis">
+    Chap 1: Computer Abstractions and Technology
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="2.html">
+<span class="md-ellipsis">
+    Chap 2: Language of the Machine
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    Chap 3: Arithmetic for Computer
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="3.html">
+<span class="md-ellipsis">
+    Chap 3: Arithmetic for Computer
+    
+  </span>
+</a>
+<nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#overflow">
+<span class="md-ellipsis">
+      Overflow
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#constructing-a-basic-alu">
+<span class="md-ellipsis">
+      Constructing a Basic ALU
+    </span>
+</a>
+<nav aria-label="Constructing a Basic ALU" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#a-1-bit-alu">
+<span class="md-ellipsis">
+      A 1-Bit ALU
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#a-64-bit-alu">
+<span class="md-ellipsis">
+      A 64-Bit ALU
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tailoring-the-64-bit-alu-to-risc-v">
+<span class="md-ellipsis">
+      Tailoring the 64-Bit ALU to RISC-V
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#fast-addition-carry-lookahead">
+<span class="md-ellipsis">
+      Fast Addition: Carry Lookahead
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#multiplication">
+<span class="md-ellipsis">
+      Multiplication
+    </span>
+</a>
+<nav aria-label="Multiplication" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#sequential-multiplication-hardware">
+<span class="md-ellipsis">
+      Sequential Multiplication Hardware
+    </span>
+</a>
+<nav aria-label="Sequential Multiplication Hardware" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#v1">
+<span class="md-ellipsis">
+      V1
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#v2">
+<span class="md-ellipsis">
+      V2
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#v3">
+<span class="md-ellipsis">
+      V3
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#signed-multiplication">
+<span class="md-ellipsis">
+      Signed Multiplication
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#faster-multiplication">
+<span class="md-ellipsis">
+      Faster Multiplication
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#division">
+<span class="md-ellipsis">
+      Division
+    </span>
+</a>
+<nav aria-label="Division" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#improved-version">
+<span class="md-ellipsis">
+      Improved Version
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#signed-division">
+<span class="md-ellipsis">
+      Signed Division
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#fast-division">
+<span class="md-ellipsis">
+      Fast Division
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#floating-point-numbers">
+<span class="md-ellipsis">
+      Floating Point Numbers
+    </span>
+</a>
+<nav aria-label="Floating Point Numbers" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#ieee-754-floating-point-standard">
+<span class="md-ellipsis">
+      IEEE 754 Floating-Point Standard
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#floating-point-addition">
+<span class="md-ellipsis">
+      Floating-Point Addition
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#floating-point-multiplication">
+<span class="md-ellipsis">
+      Floating-Point Multiplication
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#accurate-arithmetic">
+<span class="md-ellipsis">
+      Accurate Arithmetic
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#fallacies-and-pitfalls">
+<span class="md-ellipsis">
+      Fallacies and Pitfalls
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="4.html">
+<span class="md-ellipsis">
+    Chap 4: The Processor
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="5.html">
+<span class="md-ellipsis">
+    Chap 5: Memory Hierarchy
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="6.html">
+<span class="md-ellipsis">
+    Chap 6: Appendix: Storage, Networks and Other Peripherals
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../ca/index.html">
+<span class="md-ellipsis">
+    计算机体系结构
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../db/index.html">
+<span class="md-ellipsis">
+    数据库系统
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../os/index.html">
+<span class="md-ellipsis">
+    操作系统
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../aai/index.html">
+<span class="md-ellipsis">
+    汇编与接口
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../web/index.html">
+<span class="md-ellipsis">
+    🌏Web相关
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../sec/ctf-101/index.html">
+<span class="md-ellipsis">
+    🛡️信息安全
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ai/index.html">
+<span class="md-ellipsis">
+    🤖人工智能
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../misc/index.html">
+<span class="md-ellipsis">
+    🗃️杂项
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../tools/index.html">
+<span class="md-ellipsis">
+    🛠️工具
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../papers/index.html">
+<span class="md-ellipsis">
+    📑论文阅读
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#overflow">
+<span class="md-ellipsis">
+      Overflow
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#constructing-a-basic-alu">
+<span class="md-ellipsis">
+      Constructing a Basic ALU
+    </span>
+</a>
+<nav aria-label="Constructing a Basic ALU" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#a-1-bit-alu">
+<span class="md-ellipsis">
+      A 1-Bit ALU
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#a-64-bit-alu">
+<span class="md-ellipsis">
+      A 64-Bit ALU
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tailoring-the-64-bit-alu-to-risc-v">
+<span class="md-ellipsis">
+      Tailoring the 64-Bit ALU to RISC-V
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#fast-addition-carry-lookahead">
+<span class="md-ellipsis">
+      Fast Addition: Carry Lookahead
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#multiplication">
+<span class="md-ellipsis">
+      Multiplication
+    </span>
+</a>
+<nav aria-label="Multiplication" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#sequential-multiplication-hardware">
+<span class="md-ellipsis">
+      Sequential Multiplication Hardware
+    </span>
+</a>
+<nav aria-label="Sequential Multiplication Hardware" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#v1">
+<span class="md-ellipsis">
+      V1
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#v2">
+<span class="md-ellipsis">
+      V2
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#v3">
+<span class="md-ellipsis">
+      V3
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#signed-multiplication">
+<span class="md-ellipsis">
+      Signed Multiplication
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#faster-multiplication">
+<span class="md-ellipsis">
+      Faster Multiplication
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#division">
+<span class="md-ellipsis">
+      Division
+    </span>
+</a>
+<nav aria-label="Division" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#improved-version">
+<span class="md-ellipsis">
+      Improved Version
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#signed-division">
+<span class="md-ellipsis">
+      Signed Division
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#fast-division">
+<span class="md-ellipsis">
+      Fast Division
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#floating-point-numbers">
+<span class="md-ellipsis">
+      Floating Point Numbers
+    </span>
+</a>
+<nav aria-label="Floating Point Numbers" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#ieee-754-floating-point-standard">
+<span class="md-ellipsis">
+      IEEE 754 Floating-Point Standard
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#floating-point-addition">
+<span class="md-ellipsis">
+      Floating-Point Addition
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#floating-point-multiplication">
+<span class="md-ellipsis">
+      Floating-Point Multiplication
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#accurate-arithmetic">
+<span class="md-ellipsis">
+      Accurate Arithmetic
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#fallacies-and-pitfalls">
+<span class="md-ellipsis">
+      Fallacies and Pitfalls
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<article class="md-content__inner md-typeset">
+<a class="md-content__button md-icon" href="https://github.com/noughtq/notebook/edit/master/docs/sys/co/3.md" rel="edit" title="编辑此页">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"></path></svg>
+</a>
+<a class="md-content__button md-icon" href="https://github.com/noughtq/notebook/raw/master/docs/sys/co/3.md" title="查看本页的源代码">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"></path></svg>
+</a>
+<h1 id="chap-3-arithmetic-for-computer">Chap 3: Arithmetic for Computer<a class="headerlink" href="#chap-3-arithmetic-for-computer" title="Permanent link">⚓︎</a></h1>
+<div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>8789<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 576 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M360.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6m64.6 136.1c-12.5 12.5-12.5 32.8 0 45.3l73.4 73.4-73.4 73.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l96-96c12.5-12.5 12.5-32.8 0-45.3l-96-96c-12.5-12.5-32.8-12.5-45.3 0zm-274.7 0c-12.5-12.5-32.8-12.5-45.3 0l-96 96c-12.5 12.5-12.5 32.8 0 45.3l96 96c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l73.3-73.4c12.5-12.5 12.5-32.8 0-45.3z" fill="currentColor"></path></svg></span> <span>19<span class="heti-spacing"> </span></span>行代码 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>44<span class="heti-spacing"> </span></span>分钟</p>
+</div>
+<details class="abstract">
+<summary>核心知识</summary>
+<ul>
+<li>ALU<ul>
+<li>基本功能、<span>RISC-V<span class="heti-spacing"> </span></span>指令的电路实现</li>
+<li>行波加法器<span class="heti-skip"><span class="heti-spacing"> </span>vs<span class="heti-spacing"> </span></span>超前进位加法器</li>
+</ul>
+</li>
+<li>乘法<ul>
+<li>各个版本下的乘法器及其执行流程</li>
+<li>符号数乘法</li>
+<li>并行乘法计算</li>
+</ul>
+</li>
+<li>除法<ul>
+<li>各个版本下的除法器及其执行流程</li>
+</ul>
+</li>
+<li>浮点数<ul>
+<li><span>IEEE 754<span class="heti-spacing"> </span></span>标准：浮点数的表示（符号位、指数、尾数<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>、单精度<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>双精度、有效位数、偏移码<span><span class="heti-spacing"> </span>...</span></li>
+<li>浮点数加法（需要掌握<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>、浮点数乘法（大致了解即可）</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p><del>个人感觉这章内容实际上是数逻组合逻辑电路部分的<span class="heti-skip"><span class="heti-spacing"> </span>pro<span class="heti-spacing"> </span></span>版。</del></p>
+</blockquote>
+</details>
+<div class="admonition info">
+<p class="admonition-title">前提</p>
+<p>这一章的开篇涉及到许多数逻部分的知识，如果有点忘记的话可以点开下面的链接去回顾一下。下面就当大家都明白这些东西了<span><span class="heti-spacing"> </span>~</span></p>
+<ul>
+<li><a href="../dld/1.html#number-systems">数字体系</a></li>
+<li><a href="../dld/3.html#iterative-combinational-circuits">组合电路设计<span class="heti-skip"><span class="heti-spacing"> </span>-&gt;<span class="heti-spacing"> </span></span>算术运算相关部分</a></li>
+</ul>
+</div>
+<h2 id="overflow">Overflow<a class="headerlink" href="#overflow" title="Permanent link">⚓︎</a></h2>
+<p>在加法或减法的运算中，<strong>溢出</strong><span>(overflow)<span class="heti-spacing"> </span></span>是我们常常会遇到的问题。下面总结一下（符号数的）溢出会<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>不会出现的情况：</p>
+<ul>
+<li>加法<ul>
+<li>不会溢出：两个符号不同的操作数相加</li>
+<li>可能会溢出：两个正数<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>两个负数的相加</li>
+</ul>
+</li>
+<li>减法<ul>
+<li>不会溢出：两个符号相同的操作数相减</li>
+<li>可能会溢出：正数<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>负数<span class="heti-skip"><span class="heti-spacing"> </span>-&gt;<span class="heti-spacing"> </span></span>负数？ 负数<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>正数<span class="heti-skip"><span class="heti-spacing"> </span>-&gt;<span class="heti-spacing"> </span></span>正数？</li>
+</ul>
+</li>
+</ul>
+<p>溢出情况的表格总结：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/22.png"><img src="images/C3/22.png" width="60%"/></a>
+</div>
+<ul>
+<li>对于<strong>无符号数</strong>，我们会将“溢出”看作<strong>进位</strong><span>(carry)<span class="heti-spacing"> </span></span>或<strong>借位</strong>(borrow)，因此计算机会将其视为一般情况而不做特殊处理</li>
+<li>对于<strong>符号数</strong>，计算机提供了以下应对<strong>溢出</strong>的处理方式：<ul>
+<li><span>ALU<span class="heti-spacing"> </span></span>检测到溢出问题</li>
+<li>处理器会抛出<a href="4.html#exceptions">异常</a><span class="heti-skip"><span class="heti-spacing"> </span>(exception)<span class="heti-spacing"> </span></span>或中断<span><span class="heti-spacing"> </span>(interrupt)</span>，将指令地址保存在特定的寄存器<span class="heti-skip"><span class="heti-spacing"> </span>EPC<span class="heti-spacing"> </span></span>上</li>
+<li>跳转到操作系统的特定例程：纠正程序、返回错误代码、或者中止程序</li>
+</ul>
+</li>
+</ul>
+<details class="example">
+<summary>例题</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="" id="__tabbed_1_1" name="__tabbed_1" type="radio"/><input id="__tabbed_1_2" name="__tabbed_1" type="radio"/><div class="tabbed-labels"><label for="__tabbed_1_1">题目</label><label for="__tabbed_1_2">答案</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>下列<span class="heti-skip"><span class="heti-spacing"> </span>8<span class="heti-spacing"> </span></span>位补码加法运算中，哪一个运算是既有溢出也有进位的？</p>
+<p>A. 0x12 + 0x34
+B. 0x12 + 0xEF
+C. 0x80 + 0x80
+D. 0x12 + 0x78</p>
+</div>
+<div class="tabbed-block">
+<p>C</p>
+<p>分析：</p>
+<ul>
+<li>A: 0x12 + 0x34 = 0x46，既没溢出也没进位</li>
+<li>B: 0x12 + 0xEF = 0x01，既没溢出也没进位</li>
+<li>C: 0x80 + 0x80 = 0x00，既有溢出也有进位</li>
+<li>D: 0x12 + 0x78 = 0x8A，有溢出但没进位</li>
+</ul>
+</div>
+</div>
+</div>
+</details>
+<p>具体的加减法由<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>来实现，下面我们将会从零开始搭建<span><span class="heti-spacing"> </span>ALU~</span></p>
+<h2 id="constructing-a-basic-alu">Constructing a Basic ALU<a class="headerlink" href="#constructing-a-basic-alu" title="Permanent link">⚓︎</a></h2>
+<p><strong>算术逻辑单元</strong>(arithmetic logic unit, <strong>ALU</strong><span>)<span class="heti-spacing"> </span></span>用于执行各种类型的算术（加、减等）和逻辑（与、或等）运算。由于<span class="heti-skip"><span class="heti-spacing"> </span>RISC-V<span class="heti-spacing"> </span></span>寄存器是<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位宽的，因此我们需要设计<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位宽的<span><span class="heti-spacing"> </span>ALU</span>。对于初学<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>的各位，先从学习<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>位的<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>的搭建开始吧！</p>
+<h3 id="a-1-bit-alu">A 1-Bit ALU<a class="headerlink" href="#a-1-bit-alu" title="Permanent link">⚓︎</a></h3>
+<p>我们希望这个<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>位的<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>能够实现：</p>
+<ul>
+<li>
+<p>AND、<span>OR<span class="heti-spacing"> </span></span>运算<span class="heti-skip"><span class="heti-spacing"> </span>-&gt; 1<span class="heti-spacing"> </span></span>个与门和<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>个或门就可以搞定了</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/2.png"><img src="images/C3/2.png" width="40%"/></a>
+</div><p></p>
+<blockquote>
+<p>注：中间这个圆角矩形代表多路选择器，<span>Operation<span class="heti-spacing"> </span></span>表示选择输入</p>
+</blockquote>
+</li>
+<li>
+<p>加法运算<span class="heti-skip"><span class="heti-spacing"> </span>-&gt;<span class="heti-spacing"> </span></span><a href="../dld/3.html#full-adderfa">全加器</a></p>
+<div class="admonition hint">
+<p class="admonition-title">实现细节（图片摘自数逻笔记）</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/23.png"><img src="images/C3/23.png" width="70%"/></a>
+</div><p></p>
+</div>
+</li>
+<li>
+<p>还要一个多路选择器<span><span class="heti-spacing"> </span>(multiplexor)</span>（在第一张图展示出来了<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，用于挑选其中一种运算</p>
+</li>
+</ul>
+<p>将它们组装起来，我们就可以得到一个最基本的<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>位<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>了！</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/4.png"><img src="images/C3/4.png" width="40%"/></a>
+</div>
+<h3 id="a-64-bit-alu">A 64-Bit ALU<a class="headerlink" href="#a-64-bit-alu" title="Permanent link">⚓︎</a></h3>
+<p>现在我们手边有了<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>位的<span><span class="heti-spacing"> </span>ALU</span>，要想构建一个<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位的<span><span class="heti-spacing"> </span>ALU</span>，很自然的想法是：将这些<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>位<span><span class="heti-spacing"> </span>ALU</span>（可看作黑箱，此时我们并不需关心底层的实现细节）一个个串连起来，此时每个<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>的进位出<span class="heti-skip"><span class="heti-spacing"> </span>(CarryOut)<span class="heti-spacing"> </span></span>和下一个<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>的进位入<span class="heti-skip"><span class="heti-spacing"> </span>(CarryIn)<span class="heti-spacing"> </span></span>相连。这样的话，单个的进位就会从最低位一直传到最高位，因此我们把这种加法器称为<a href="../dld/3.html#ripple-carry-adder"><strong>行波加法器</strong></a>(ripple carry adder)，最终效果如下图所示：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/5.png"><img src="images/C3/5.png" width="40%"/></a>
+</div>
+<blockquote>
+<p>正如数逻提到过的，这是一种<strong>迭代电路</strong>(iterative circuit)</p>
+</blockquote>
+<hr/>
+<p>在这个<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>的基础上，我们还可以添加更多的功能：</p>
+<p>（1）实现<strong>减法</strong>操作</p>
+<p>上过数逻课程的小伙伴们想必已经知道：</p>
+<ul>
+<li>减去一个正数<span class="heti-skip"><span class="heti-spacing"> </span>=<span class="heti-spacing"> </span></span>加上对应负数的补码</li>
+<li>负数的补码<span class="heti-skip"><span class="heti-spacing"> </span>=<span class="heti-spacing"> </span></span>它的反码<span><span class="heti-spacing"> </span>+ 1</span></li>
+<li>负数的反码<span class="heti-skip"><span class="heti-spacing"> </span>=<span class="heti-spacing"> </span></span>原码按位取反</li>
+</ul>
+<p>所以只需要在原来<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>的基础上做一些小小的改变，我们便能实现减法操作了：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/6.png"><img src="images/C3/6.png" width="50%"/></a>
+</div>
+<p>可以看到，这里给输入<span class="heti-skip"><span class="heti-spacing"> </span>B<span class="heti-spacing"> </span></span>加了一个非门和一个<span><span class="heti-spacing"> </span>MUX</span>，并且新增一个输入<code>Binvert</code>，用于决定<span class="heti-skip"><span class="heti-spacing"> </span>B<span class="heti-spacing"> </span></span>是否应该按位取反（得到<span class="heti-skip"><span class="heti-spacing"> </span>B<span class="heti-spacing"> </span></span>的反码<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
+<hr/>
+<p>（2）实现<strong>或非<span><span class="heti-spacing"> </span>(NOR)</span></strong>运算。</p>
+<p>由德摩根定律，<span class="arithmatex">\(\overline{a + b} = \overline{a} \cdot \overline{b}\)</span>，所以只要让输入<span class="heti-skip"><span class="heti-spacing"> </span>a<span class="heti-spacing"> </span></span>像输入<span class="heti-skip"><span class="heti-spacing"> </span>b<span class="heti-spacing"> </span></span>一样能够选择取反，并配合与运算，就可以实现或非运算了：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/7.png"><img src="images/C3/7.png" width="50%"/></a>
+</div>
+<h3 id="tailoring-the-64-bit-alu-to-risc-v">Tailoring the 64-Bit ALU to RISC-V<a class="headerlink" href="#tailoring-the-64-bit-alu-to-risc-v" title="Permanent link">⚓︎</a></h3>
+<p>对于一个<span class="heti-skip"><span class="heti-spacing"> </span>RISC-V<span class="heti-spacing"> </span></span>架构下的<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>而言，这样的设计还不够完善，因为还缺少一些常用指令的实现——接下来将补充<span class="heti-skip"><span class="heti-spacing"> </span>set less than(<span class="heti-spacing"> </span></span><code>slt</code><span class="heti-skip"><span class="heti-spacing"> </span>)<span class="heti-spacing"> </span></span>指令和<span class="heti-skip"><span class="heti-spacing"> </span>branch if equal(<span class="heti-spacing"> </span></span><code>beq</code><span class="heti-skip"><span class="heti-spacing"> </span>)<span class="heti-spacing"> </span></span>指令。</p>
+<p>先来看<code>slt</code>指令：<code>slt rd, rs1, rs2</code>。它的功能是比较寄存器<code>rs1</code>和<code>rs2</code>的大小，若<code>rs1 &lt; rs2</code>则<code>rd = 1</code>，否则<code>rd = 0</code>。为了增加这个功能，</p>
+<ul>
+<li>首先得扩充<span class="heti-skip"><span class="heti-spacing"> </span>MUX<span class="heti-spacing"> </span></span>的输入脚，让它接受第<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>种指令的输入</li>
+<li>然后，我们引入一个输入脚<code>Less</code>，让它直接与<span class="heti-skip"><span class="heti-spacing"> </span>MUX<span class="heti-spacing"> </span></span>的第<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>个输入脚相连，它的值便代表<code>slt</code>指令的返回值</li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/8.png"><img src="images/C3/8.png" width="50%"/></a>
+</div>
+<ul>
+<li>对于一个<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位的<span><span class="heti-spacing"> </span>ALU</span>，我们只需要用到<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>个<span class="heti-skip"><span class="heti-spacing"> </span>Less<span class="heti-spacing"> </span></span>输入即可，因此除了第一位上的<span><span class="heti-spacing"> </span>Less</span>，让其余位对应的<span class="heti-skip"><span class="heti-spacing"> </span>Less<span class="heti-spacing"> </span></span>的值均为<span><span class="heti-spacing"> </span>0</span></li>
+<li>那么<code>Less</code>的值从何而来呢？我们将<code>a &lt; b</code>的比较运算转化为<code>a - b &lt; 0</code>的减法运算（减法运算已设计在<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>内<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，然后将减法结果的符号位传给<code>Less</code>就<span class="heti-skip"><span class="heti-spacing"> </span>OK<span class="heti-spacing"> </span></span>了，因为符号位的值正好对应<code>slt</code>指令的返回值</li>
+<li>符号位产生于最高位的<span><span class="heti-spacing"> </span>ALU</span>，所以从最高位<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>中加法器的进位输出端口引出一条线<code>Set</code>，将它连接到最低位<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>的<code>Less</code>输入脚。下图展示的是最高位的<span><span class="heti-spacing"> </span>ALU</span>：</li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/9.png"><img src="images/C3/9.png" width="50%"/></a>
+</div>
+<ul>
+<li>为了处理溢出问题，还在最高位的<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>内专门添加一个<strong>溢出侦测</strong><span>(overflow detection)<span class="heti-spacing"> </span></span>装置</li>
+<li>最终的实现效果：</li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/10.png"><img src="images/C3/10.png" width="50%"/></a>
+</div>
+<hr/>
+<p>再来看<code>beq</code>指令，它的功能是当两个寄存器的值相等时则跳转。<span>ALU<span class="heti-spacing"> </span></span>的实现步骤如下：</p>
+<ul>
+<li>这里同样对两个数做减法来进行比较：两个数相减结果为<span><span class="heti-spacing"> </span>0</span>，表示两个数相等</li>
+<li>最简单粗暴的方法是用一个很大的或非门，获取每一位上<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>的减法结果，若这个或非门的输出结果为<span><span class="heti-spacing"> </span>1</span>，表明减法的结果为<span><span class="heti-spacing"> </span>0</span>，即两个数相等</li>
+</ul>
+<div class="arithmatex">\[
+\mathrm{Zero} = \overline{(\mathrm{Result63 + result62 + \dots + Result2 + Result1 + Result0})}
+\]</div>
+<ul>
+<li>也许各位读者早就发现：<code>Binvert</code>的值和<code>CarryIn</code>的值始终是一致的。所以可以将这两个输入并在一起，叫做<code>Bnegate</code></li>
+</ul>
+<p>最终版本的<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>逻辑电路图如下：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/11.png"><img src="images/C3/11.png" width="60%"/></a>
+</div>
+<p>对应<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>的功能表：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/12.png"><img src="images/C3/12.png" width="50%"/></a>
+</div>
+<p>为了简化电路的描绘，一般会用下面这个符号代表<span><span class="heti-spacing"> </span>ALU</span>：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/13.png"><img src="images/C3/13.png" width="30%"/></a>
+</div>
+<details class="code">
+<summary><span>Verilog<span class="heti-spacing"> </span></span>代码实现</summary>
+<div class="language-verilog highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="k">module</span><span class="w"> </span><span class="n">RISCVALU</span><span class="p">(</span><span class="n">ALUctl</span><span class="p">,</span><span class="w"> </span><span class="n">A</span><span class="p">,</span><span class="w"> </span><span class="n">B</span><span class="p">,</span><span class="w"> </span><span class="n">ALUOut</span><span class="p">,</span><span class="w"> </span><span class="n">Zero</span><span class="p">);</span>
+</span><span id="__span-0-2"><a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="w">    </span><span class="k">input</span><span class="w"> </span><span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">ALUctl</span><span class="p">;</span>
+</span><span id="__span-0-3"><a href="#__codelineno-0-3" id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="w">    </span><span class="k">input</span><span class="w"> </span><span class="p">[</span><span class="mh">63</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">A</span><span class="p">,</span><span class="w"> </span><span class="n">B</span><span class="p">;</span>
+</span><span id="__span-0-4"><a href="#__codelineno-0-4" id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">reg</span><span class="w"> </span><span class="p">[</span><span class="mh">63</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">ALUOut</span><span class="p">;</span>
+</span><span id="__span-0-5"><a href="#__codelineno-0-5" id="__codelineno-0-5" name="__codelineno-0-5"></a><span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="n">Zero</span><span class="p">;</span>
+</span><span id="__span-0-6"><a href="#__codelineno-0-6" id="__codelineno-0-6" name="__codelineno-0-6"></a>
+</span><span id="__span-0-7"><a href="#__codelineno-0-7" id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="w">    </span><span class="k">assign</span><span class="w"> </span><span class="n">Zero</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">ALUOut</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mh">0</span><span class="p">);</span>
+</span><span id="__span-0-8"><a href="#__codelineno-0-8" id="__codelineno-0-8" name="__codelineno-0-8"></a><span class="w">    </span><span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+</span><span id="__span-0-9"><a href="#__codelineno-0-9" id="__codelineno-0-9" name="__codelineno-0-9"></a><span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="n">ALUctl</span><span class="p">)</span>
+</span><span id="__span-0-10"><a href="#__codelineno-0-10" id="__codelineno-0-10" name="__codelineno-0-10"></a><span class="w">            </span><span class="mh">0</span><span class="o">:</span><span class="w"> </span><span class="n">ALUOut</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">A</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">B</span><span class="p">;</span>
+</span><span id="__span-0-11"><a href="#__codelineno-0-11" id="__codelineno-0-11" name="__codelineno-0-11"></a><span class="w">            </span><span class="mh">1</span><span class="o">:</span><span class="w"> </span><span class="n">ALUOut</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">A</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">B</span><span class="p">;</span>
+</span><span id="__span-0-12"><a href="#__codelineno-0-12" id="__codelineno-0-12" name="__codelineno-0-12"></a><span class="w">            </span><span class="mh">2</span><span class="o">:</span><span class="w"> </span><span class="n">ALUOut</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">A</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">B</span><span class="p">;</span>
+</span><span id="__span-0-13"><a href="#__codelineno-0-13" id="__codelineno-0-13" name="__codelineno-0-13"></a><span class="w">            </span><span class="mh">6</span><span class="o">:</span><span class="w"> </span><span class="n">ALUOut</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">A</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">B</span><span class="p">;</span>
+</span><span id="__span-0-14"><a href="#__codelineno-0-14" id="__codelineno-0-14" name="__codelineno-0-14"></a><span class="w">            </span><span class="mh">7</span><span class="o">:</span><span class="w"> </span><span class="n">ALUOut</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">A</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">B</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="mh">1</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mh">0</span><span class="p">;</span>
+</span><span id="__span-0-15"><a href="#__codelineno-0-15" id="__codelineno-0-15" name="__codelineno-0-15"></a><span class="w">            </span><span class="mh">12</span><span class="o">:</span><span class="w"> </span><span class="n">ALUOut</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="o">~</span><span class="p">(</span><span class="n">A</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">B</span><span class="p">);</span>
+</span><span id="__span-0-16"><a href="#__codelineno-0-16" id="__codelineno-0-16" name="__codelineno-0-16"></a><span class="w">            </span><span class="k">default</span><span class="o">:</span><span class="w"> </span><span class="n">ALUOut</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">0</span><span class="p">;</span>
+</span><span id="__span-0-17"><a href="#__codelineno-0-17" id="__codelineno-0-17" name="__codelineno-0-17"></a><span class="w">        </span><span class="k">endcase</span>
+</span><span id="__span-0-18"><a href="#__codelineno-0-18" id="__codelineno-0-18" name="__codelineno-0-18"></a><span class="w">    </span><span class="k">end</span>
+</span><span id="__span-0-19"><a href="#__codelineno-0-19" id="__codelineno-0-19" name="__codelineno-0-19"></a><span class="k">endmodule</span>
+</span></code></pre></div>
+</details>
+<details class="hint">
+<summary>来自课件的<span><span class="heti-spacing"> </span>ALU plus</span></summary>
+<p>这个<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>添加了更多的算术逻辑运算，但本质上还是一样的。</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/24.png"><img src="images/C3/24.png" width="50%"/></a>
+</div><p></p>
+<p>对应的功能表：</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/25.png"><img src="images/C3/25.png" width="50%"/></a>
+</div><p></p>
+</details>
+<details class="info">
+<summary>补充说明</summary>
+<p>是不是忘了移位运算？实际上，在硬件设计中，移位的功能往往放在<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>外面的「桶式移位器」中，实现<span class="heti-skip"><span class="heti-spacing"> </span>1-63<span class="heti-spacing"> </span></span>位的移位运算所花时间与加法运算差不多。</p>
+</details>
+<h3 id="fast-addition-carry-lookahead">Fast Addition: Carry Lookahead<a class="headerlink" href="#fast-addition-carry-lookahead" title="Permanent link">⚓︎</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">注意</p>
+<p>下面讲到的“进位”一般指的都是<span><span class="heti-spacing"> </span>CarryIn</span>。</p>
+</div>
+<p><span>64<span class="heti-spacing"> </span></span>位<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>的加法器（行波加法器）是通过<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>个<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>位<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>内的加法器串联而成的，因此加法的执行速度非常地慢——拿最高位的<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>来说，它的加法运算要从最低位的运算开始一直等待，直到前<span class="heti-skip"><span class="heti-spacing"> </span>63<span class="heti-spacing"> </span></span>位运算产生的进位传到最高位的<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>内。</p>
+<p>所以，提升加法速度的关键在于：<strong>让高位进位更快地传到高位加法器内</strong>。下面将介绍一种将速度<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(O(N)\)</span><span class="heti-spacing"> </span></span>提升到<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(O(\log N)\)</span><span class="heti-spacing"> </span></span>的加法器：<strong>超前进位加法器</strong>(carry lookahead adder)。</p>
+<details class="failure">
+<summary>简单粗暴的实现方法</summary>
+<p>我们将当前位上的加法器的进位计算公式全部展开，尝试仅用<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>的两个操作数的前面几位，以及来自外部的进位（最低位的进位）表示该位产生的进位。因为这些量都是已知的，且不受前面加法器的影响，因此只需要<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(O(1)\)</span><span class="heti-spacing"> </span></span>的时间，加法器就能几乎在同一时间完成所有位上的加法运算。</p>
+<p>下面我们用<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(a_i\)</span><span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(b_i\)</span><span class="heti-spacing"> </span></span>表示第<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(i(i \ge 0)\)</span><span class="heti-spacing"> </span></span>位（最低位为第<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>位）的两个操作数，<span><span class="arithmatex">\(c_i\)</span><span class="heti-spacing"> </span></span>表示来自第<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(i-1\)</span><span class="heti-spacing"> </span></span>位，传入第<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(i\)</span><span class="heti-spacing"> </span></span>位的进位。</p>
+<div class="arithmatex">\[
+\begin{align}
+c_1 &amp; = (b_0 \cdot c_0) + (a_0 \cdot c_0) + (a_0 \cdot b_0) \notag \\
+c_2 &amp; = (b_1 \cdot c_1) + (a_1 \cdot c_1) + (a_1 \cdot b_1) \notag \\
+&amp; = (a_1 \cdot a_0 \cdot b_0) + (a_1 \cdot a_0 \cdot c_0) + (a_1 \cdot b_0 \cdot c_0) \notag \\
+&amp; \quad + (b_1 \cdot a_0 \cdot b_0) + (b_1 \cdot a_0 \cdot c_0) + (b_1 \cdot b_0 \cdot c_0) + (a_1 \cdot b_1) \notag
+\end{align}
+\]</div>
+<p>可以看到，第<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>位的进位展开式就已经相当复杂了，更何况更高位的进位呢？所以设计这样的电路开销太大了，是不可行的！</p>
+</details>
+<p>超前进位加法器的实现借助<strong>多层抽象</strong>的概念。我们先来分析第一层的抽象：</p>
+<p>第<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(i+1\)</span><span class="heti-spacing"> </span></span>位的进位有以下递推公式：</p>
+<div class="arithmatex">\[
+\begin{align}
+c_{i+1} &amp; = (b_i \cdot c_i) + (a_i \cdot c_i) + (a_i \cdot b_i) \notag \\ 
+&amp; = (a_i \cdot b_i) + (a_i + b_i) \cdot c_i \notag
+\end{align}
+\]</div>
+<p>将这个公式用于第<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>位的进位，得到：</p>
+<div class="arithmatex">\[
+c_2 = (a_1 \cdot b_1) + (a_1 + b_1) \cdot ((a_0 \cdot b_0) + (a_0 + b_0) \cdot c_0)
+\]</div>
+<p>不难看到，有很多类似<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\((a_i \cdot b_i)\)</span><span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\((a_i + b_i)\)</span><span class="heti-spacing"> </span></span>的项出现在公式内，它们分别被称为<strong>生成项<span><span class="heti-spacing"> </span>(generate)</span></strong><span><span class="arithmatex">\(g_i\)</span><span class="heti-spacing"> </span></span>和<strong>传播项<span><span class="heti-spacing"> </span>(propagate)</span></strong><span class="arithmatex">\(p_i\)</span>。因此进位公式还可以表示成以下形式：</p>
+<div class="arithmatex">\[
+c_{i+1} = g_i + p_i \cdot c_i
+\]</div>
+<ul>
+<li>当<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(g_i = 1\)</span><span class="heti-spacing"> </span></span>时，<span class="arithmatex">\(c_{i+1} = 1\)</span>，就好像<span><span class="heti-spacing"> </span><span class="arithmatex">\(g_i\)</span></span>“产生”了一个进位，因此称<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(g_i\)</span><span class="heti-spacing"> </span></span>为<strong>生成项</strong></li>
+<li>而如果<span><span class="heti-spacing"> </span><span class="arithmatex">\(g_i = 0, p_i = 1\)</span></span>，<span class="arithmatex">\(c_{i+1} = c_i\)</span>，就好像<span><span class="heti-spacing"> </span><span class="arithmatex">\(p_i\)</span></span>“传递”前一位的进位给当前的进位，因此称<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(p_i\)</span><span class="heti-spacing"> </span></span>为<strong>传播项</strong></li>
+</ul>
+<p>对应的逻辑电路图：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/28.png"><img src="images/C3/28.png" width="20%"/></a>
+</div>
+<p>将这一公式用于<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>位的加法进位上：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/14.png"><img src="images/C3/14.png" width="60%"/></a>
+</div>
+<p>从上面的式子中，我们可以总结出：对于当前位而言，如果生成项为<span><span class="heti-spacing"> </span>1</span>，或者前面的位上存在值为<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>的生成项且该生成项所在位到当前位之间的所有传播项均为<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>时，当前位的进位值为<span><span class="heti-spacing"> </span>1</span>，否则为<span><span class="heti-spacing"> </span>0</span>。</p>
+<details class="info">
+<summary>类比：水管系统</summary>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/15.png"><img src="images/C3/15.png" width="60%"/></a>
+</div><p></p>
+</details>
+<hr/>
+<p>仅用一层抽象，我们可以在保持两级逻辑电路优势的同时，以较小的门成本实现<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>位加法进位的化简。但如果要继续扩展到更多的位，那就需要进一步的抽象设计。下面以<span class="heti-skip"><span class="heti-spacing"> </span>16<span class="heti-spacing"> </span></span>位加法器为例介绍更高层的抽象。</p>
+<p>我们约定：</p>
+<ul>
+<li>用<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(P_i\)</span><span class="heti-spacing"> </span></span>表示更高一级的传播项，它表示<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>个位上的<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>个<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(p_j\)</span><span class="heti-spacing"> </span></span>的乘积（与）</li>
+<li>用<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(G_i\)</span><span class="heti-spacing"> </span></span>表示更高一级的生成项，它考虑<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>个位上的<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>个生成项的和（或<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，注意位数较低的生成项受到更高位的传播项的制约</li>
+</ul>
+<details class="info">
+<summary>还是水管系统的类比</summary>
+<p>上图表示<span><span class="heti-spacing"> </span><span class="arithmatex">\(P_i\)</span></span>，下图表示<span><span class="heti-spacing"> </span><span class="arithmatex">\(G_i\)</span></span></p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/16.png"><img src="images/C3/16.png" width="60%"/></a>
+</div><p></p>
+</details>
+<p>对于一个<span class="heti-skip"><span class="heti-spacing"> </span>16<span class="heti-spacing"> </span></span>位的加法器，我们用<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(p_j\)</span><span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(g_j(0 \le j \le 15)\)</span><span class="heti-spacing"> </span></span>来展开<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(P_i\)</span><span class="heti-spacing"> </span></span>和<span><span class="heti-spacing"> </span><span class="arithmatex">\(G_i(0 \le i \le 3)\)</span></span>：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/17.png"><img src="images/C3/17.png" width="30%"/></a>
+</div>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/18.png"><img src="images/C3/18.png" width="70%"/></a>
+</div>
+<p>最后，用<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(P_i\)</span><span class="heti-spacing"> </span></span>和<span><span class="heti-spacing"> </span><span class="arithmatex">\(G_i\)</span></span>，以及最开始的进位<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(c_0\)</span><span class="heti-spacing"> </span></span>来表示<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>位一组的大进位<span><span class="heti-spacing"> </span><span class="arithmatex">\(C_i\)</span></span>：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/20.png"><img src="images/C3/20.png" width="60%"/></a>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注</p>
+<p>对于加法的进位，我们一般更在意<strong>最后的进位</strong>，因此中间产生的进位可以忽略。对于这个例子而言，我们无需关心<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(C_1\)</span><span class="heti-spacing"> </span></span>到<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(C_3\)</span><span class="heti-spacing"> </span></span>的实际内容，只需关注最高位的进位<span><span class="heti-spacing"> </span><span class="arithmatex">\(C_4\)</span></span>（它的值正好等于<span><span class="heti-spacing"> </span><span class="arithmatex">\(c_{15}\)</span></span>）</p>
+</div>
+<p>超前进位加法器的逻辑电路图：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/21.png"><img src="images/C3/21.png" width="60%"/></a>
+</div>
+<div class="admonition note">
+<p class="admonition-title">行波加法器与超前进位加法器的速度比较</p>
+<p>为了便于讨论，我们用数据（或者说信号）经过门的数量来估算时间（也被称为<strong>门延迟</strong>(gate delay)<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。下面我们就<span class="heti-skip"><span class="heti-spacing"> </span>16<span class="heti-spacing"> </span></span>位加法器来比较两种加法器的速度</p>
+<ul>
+<li>行波加法器：进位值每经过一个加法器，就需要经过两个门电路，因此<span class="heti-skip"><span class="heti-spacing"> </span>16<span class="heti-spacing"> </span></span>位加法器就需要经过<span class="heti-skip"><span class="heti-spacing"> </span>32<span class="heti-spacing"> </span></span>个门电路</li>
+<li>超前进位加法器：在前面的分析中，我们知道这种加法器用到了两层抽象，每层抽象都是两级逻辑电路，外加<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(g_i\)</span><span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(p_i\)</span><span class="heti-spacing"> </span></span>都用到了一个门，所以总共经过的门数量为<span class="heti-skip"><span class="heti-spacing"> </span>2 + 2 + 1 = 5<span class="heti-spacing"> </span></span>个<span class="heti-skip"><span class="heti-spacing"> </span>= <span class="arithmatex">\(\log_2 32\)</span><span class="heti-spacing"> </span></span>个</li>
+</ul>
+<p>综上，后者的速度比前者快了<span class="heti-skip"><span class="heti-spacing"> </span>6<span class="heti-spacing"> </span></span>倍多。如果位数更多，超前进位加法器的优势还会更明显（<del>遥遥领先<span><span class="heti-spacing"> </span>x</span></del>）</p>
+</div>
+<details class="info">
+<summary>其他快速加法器</summary>
+<ul>
+<li>跳跃进位加法器<span><span class="heti-spacing"> </span>(carry skip adder)</span>：<del>课件上没详细展开，看起来也不像考点，过</del></li>
+<li>选择进位加法器<span><span class="heti-spacing"> </span>(carry select adder)</span>：也是几个位为一组，高位组暂时不管来自低位组的进位，它直接把进位<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>的情况都先算出来，然后再根据之后传上来的进位选择正确的计算结果（预测<span class="heti-skip"><span class="heti-spacing"> </span>&amp;<span class="heti-spacing"> </span></span>冗余）</li>
+</ul>
+<div class="admonition example">
+<p class="admonition-title">例子</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/26.png"><img src="images/C3/26.png" width="60%"/></a>
+</div><p></p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/27.png"><img src="images/C3/27.png" width="60%"/></a>
+</div><p></p>
+</div>
+</details>
+<h2 id="multiplication">Multiplication<a class="headerlink" href="#multiplication" title="Permanent link">⚓︎</a></h2>
+<p>乘法运算的实现原理就是我们小学时候学的竖式乘法，先来简单回顾一下（这里是二进制乘法，仅考虑<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>和<span><span class="heti-spacing"> </span>1</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
+<ul>
+<li>如果当前乘数<span class="heti-skip"><span class="heti-spacing"> </span>(multiplier)<span class="heti-spacing"> </span></span>位置上的数字为<span><span class="heti-spacing"> </span>1</span>，那么就将被乘数<span><span class="heti-spacing"> </span>(multiplicand)</span>（乘积就是被乘数）复制到正确的位置上（因为乘数数位每上升一位，这个乘积就要往右移一位）</li>
+<li>如果数字为<span><span class="heti-spacing"> </span>0</span>，那么就将<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>放在正确的位置上</li>
+<li>如果被乘数为<span class="heti-skip"><span class="heti-spacing"> </span>n<span class="heti-spacing"> </span></span>位，乘数为<span class="heti-skip"><span class="heti-spacing"> </span>m<span class="heti-spacing"> </span></span>位，那么乘积的位数就是<span class="heti-skip"><span class="heti-spacing"> </span>n+m<span class="heti-spacing"> </span></span>位了</li>
+</ul>
+<h3 id="sequential-multiplication-hardware">Sequential Multiplication Hardware<a class="headerlink" href="#sequential-multiplication-hardware" title="Permanent link">⚓︎</a></h3>
+<h4 id="v1">V1<a class="headerlink" href="#v1" title="Permanent link">⚓︎</a></h4>
+<p>根据上面的乘法规则，我们设计出<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位的乘法器：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/33.png"><img src="images/C3/33.png" width="60%"/></a>
+</div>
+<p>其中仅有乘数寄存器是<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位，被乘数寄存器、ALU、乘积寄存器都是<span class="heti-skip"><span class="heti-spacing"> </span>128<span class="heti-spacing"> </span></span>位（因为在每一步的计算后，被乘数都需要向左移一位。因此在<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>次计算后，<span>64<span class="heti-spacing"> </span></span>位的被乘数被移动了<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位，所以被乘数寄存器需要<span class="heti-skip"><span class="heti-spacing"> </span>128<span class="heti-spacing"> </span></span>位）</p>
+<p>运算流程（包括加法、移位、比较等运算<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/30.png"><img src="images/C3/30.png" width="60%"/></a>
+</div>
+<ol>
+<li>检查乘数的最低位数字</li>
+<li>如果是<span><span class="heti-spacing"> </span>1</span>，就将被乘数加到乘积的寄存器内；如果是<span><span class="heti-spacing"> </span>0</span>，继续下一步</li>
+<li>将被乘数寄存器的值左移一位</li>
+<li>将乘数寄存器的值右移一位</li>
+<li>如果已经完成<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>次计算，完成整个乘法运算；否则的话回到第一步继续计算 </li>
+</ol>
+<details class="example">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/36.png"><img src="images/C3/36.png" width="70%"/></a>
+</div><p></p>
+</details>
+<div class="admonition bug">
+<p class="admonition-title"><span>V1<span class="heti-spacing"> </span></span>乘法器的问题</p>
+<ul>
+<li>如果每一步花费一个时钟周期，那么完成整个乘法运算需耗费<span class="heti-skip"><span class="heti-spacing"> </span>200<span class="heti-spacing"> </span></span>个时钟周期——太慢了！</li>
+<li>其中一个较为耗时的运算是<span class="heti-skip"><span class="heti-spacing"> </span>128<span class="heti-spacing"> </span></span>位的<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>加法运算，然而被乘数和被乘数都是<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位的，只是因为被乘数要向左移，我们为被乘数寄存器多预留了<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位，因而<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>也需要多留<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位。</li>
+</ul>
+</div>
+<h4 id="v2">V2<a class="headerlink" href="#v2" title="Permanent link">⚓︎</a></h4>
+<p>我们的改进方案是：不移动被乘数，改为<strong>移动乘积</strong>，这样的话被乘数寄存器就可以只用<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位，而且<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>也可以仅用<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位，而乘积寄存器需要扩展到<span class="heti-skip"><span class="heti-spacing"> </span>128+1<span class="heti-spacing"> </span></span>位。此时的中间计算就是<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位加法运算，有效提升了乘法运算速度。逻辑电路图如下所示：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/34.png"><img src="images/C3/34.png" width="80%"/></a>
+</div>
+<p>计算步骤：</p>
+<ol>
+<li>检查乘数的最低位数字</li>
+<li>如果是<span><span class="heti-spacing"> </span>1</span>，就将被乘数加到乘积的寄存器内的左半边；如果是<span><span class="heti-spacing"> </span>0</span>，继续下一步</li>
+<li>将乘数寄存器的值右移一位</li>
+<li>将乘积寄存器的值右移一位</li>
+<li>如果已经完成<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>次计算，完成整个乘法运算；否则的话回到第一步继续计算 </li>
+</ol>
+<details class="question" open="open">
+<summary>为何乘积寄存器是<span class="heti-skip"><span class="heti-spacing"> </span>129<span class="heti-spacing"> </span></span>位而非<span class="heti-skip"><span class="heti-spacing"> </span>128<span class="heti-spacing"> </span></span>位？</summary>
+<p>当被乘数与乘积寄存器的值相加时可能产生<strong>进位</strong>，因此需要多出<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>位来存储这个进位（当然乘积的结果不会超过<span class="heti-skip"><span class="heti-spacing"> </span>128<span class="heti-spacing"> </span></span>位<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
+</details>
+<h4 id="v3">V3<a class="headerlink" href="#v3" title="Permanent link">⚓︎</a></h4>
+<div class="admonition bug">
+<p class="admonition-title"><span>V2<span class="heti-spacing"> </span></span>乘法器的问题</p>
+<ul>
+<li>初始状态下，乘积寄存器只有左半边的值保存值，右半边的很多位在刚开始没有什么意义，也就是说乘积寄存器的空间利用率太低了</li>
+<li>每一趟循环中，乘数寄存器和乘积寄存器都需要往右移<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>位</li>
+</ul>
+</div>
+<p>改进措施：为了提高乘积寄存器的空间利用率，我们可以<strong>将乘数放在乘积寄存器的右半边</strong>。每一趟循环中，乘积寄存器里的所有位整体向右移一位，中间结果和乘数同时向右移一位。这样做的好处在于：</p>
+<ul>
+<li>节省存储空间：少用一个<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位的寄存器</li>
+<li>加快运算速度：每趟循环中少了一次右移操作，提升了速度</li>
+</ul>
+<p>逻辑电路图如下所示：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/35.png"><img src="images/C3/35.png" width="70%"/></a>
+</div>
+<p>计算步骤：</p>
+<ol>
+<li>检查乘数的最低位数字</li>
+<li>如果是<span><span class="heti-spacing"> </span>1</span>，就将被乘数加到乘积的寄存器内的左半边；如果是<span><span class="heti-spacing"> </span>0</span>，继续下一步</li>
+<li>将乘积寄存器的值右移一位</li>
+<li>如果已经完成<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>次计算，完成整个乘法运算；否则的话回到第一步继续计算 </li>
+</ol>
+<details class="example">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/66.png"><img src="images/C3/66.png" width="60%"/></a>
+</div><p></p>
+</details>
+<div class="admonition note">
+<p class="admonition-title">注</p>
+<p>如果一个数乘上<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>的<span class="heti-skip"><span class="heti-spacing"> </span>n<span class="heti-spacing"> </span></span>次幂，就相当于这个数左移<span class="heti-skip"><span class="heti-spacing"> </span>n<span class="heti-spacing"> </span></span>位，这时我们可以省略<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>的加法运算，直接进行移位运算即可。</p>
+</div>
+<h3 id="signed-multiplication">Signed Multiplication<a class="headerlink" href="#signed-multiplication" title="Permanent link">⚓︎</a></h3>
+<p>较为简单的想法：</p>
+<ul>
+<li>先存储两个操作数的符号位</li>
+<li>将这两个操作数暂时转化为无符号数（令它们的最高位为<span><span class="heti-spacing"> </span>0</span>）</li>
+<li>执行乘法运算</li>
+<li>对两个符号位进行异或运算，得到乘积符号位（相同为<span><span class="heti-spacing"> </span>0</span>，不同为<span><span class="heti-spacing"> </span>1</span>）</li>
+</ul>
+<hr/>
+<p>更好的方法：<a href="https://en.wikipedia.org/wiki/Booth%27s_multiplication_algorithm"><strong><span>Booth<span class="heti-spacing"> </span></span>算法</strong></a>。相比前面多次使用加法和移位操作实现的乘法运算，这种算法更侧重于使用<strong>移位</strong>运算——它对<strong>乘数</strong><span>(multiplier)<span class="heti-spacing"> </span></span>做了一些变化，使得计算过程中仅涉及一次加法和一次减法。如果移位运算所需时间比加法运算少，那么这种方法的优势就比较明显了。这么说可能有点抽象，结合下面的例子理解就比较清楚了：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/37.png"><img src="images/C3/37.png" width="70%"/></a>
+</div>
+<p>再稍微展开点说，它的原理是：将乘数中出现一连串<code>1</code>的部分（形如<code>00..00111..1100..000</code>，假设连续的<code>1</code>出现在第<span class="heti-skip"><span class="heti-spacing"> </span>i<span class="heti-spacing"> </span></span>位和第<span class="heti-skip"><span class="heti-spacing"> </span>j<span class="heti-spacing"> </span></span>位之间（包括这两位<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>）转为形如<code>1000...000 - 100...00</code>的减法（前者为<span class="heti-skip"><span class="heti-spacing"> </span>i+j+1<span class="heti-spacing"> </span></span>位，后者为<span class="heti-skip"><span class="heti-spacing"> </span>j+1<span class="heti-spacing"> </span></span>位<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。这样的话原本乘数里有很多个<code>1</code>，现在就只有两个<code>1</code>了，与被乘数相乘的话，分别对应一个加法和一个减法，所以这个算法在速度上有了不错的提升（原本<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(O(n)\)</span><span class="heti-spacing"> </span></span>次加法运算降为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(O(1)\)</span><span class="heti-spacing"> </span></span>次（减法也算作加法<heti-adjacent class="heti-adjacent-half">）</heti-adjacent><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
+<p>然而，计算机可无法直接得到这种减法的形式，它通过判别相邻两位的数字来寻找合适的计算加减法的时机，下面是它的判别依据：</p>
+<ul>
+<li><code>10</code>：发现（可能）一连串<code>1</code>的开端（低位<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，做<strong>减法</strong></li>
+<li><code>11</code>、<code>00</code>：移位</li>
+<li><code>01</code>：发现（可能）一连串<code>1</code>的末端（高位<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，做<strong>加法</strong></li>
+<li>还要预留一个<span class="heti-skip"><span class="heti-spacing"> </span>-1<span class="heti-spacing"> </span></span>位，且初始化为<span><span class="heti-spacing"> </span><span class="arithmatex">\(Bit_{-1} = 0\)</span></span>，便于最低位的判别。当进行右移运算时，原本最右边的数还会保留在<span class="heti-skip"><span class="heti-spacing"> </span>-1<span class="heti-spacing"> </span></span>位上，直至下一次右移运算</li>
+</ul>
+<p>其他的说明：</p>
+<ul>
+<li><span>Booth<span class="heti-spacing"> </span></span>算法可用前面讲到过的乘法器来实现</li>
+<li><span>Booth<span class="heti-spacing"> </span></span>算法可以用于处理负数的乘法，且无需改变前面的规则便能实现。</li>
+</ul>
+<details class="example" open="open">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/38.png"><img src="images/C3/38.png" width="70%"/></a>
+</div><p></p>
+<p>实现原理：<span>Booth<span class="heti-spacing"> </span></span>算法<span class="heti-skip"><span class="heti-spacing"> </span>+ V3<span class="heti-spacing"> </span></span>乘法器</p>
+</details>
+<h3 id="faster-multiplication">Faster Multiplication<a class="headerlink" href="#faster-multiplication" title="Permanent link">⚓︎</a></h3>
+<p>另一种提升乘法速度的方法是提升加法的速度。下面的这个方法会用到很多的<span><span class="heti-spacing"> </span>ALU</span>，将这些<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>像倒立金字塔似的摆放着，分层地进行加法运算。对于<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位的乘法而言，第<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>层用到<span class="heti-skip"><span class="heti-spacing"> </span>32<span class="heti-spacing"> </span></span>个<span><span class="heti-spacing"> </span>ALU</span>，每个<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>计算相邻<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>位的乘数分别与被乘数的乘积之和。这样得到的<span class="heti-skip"><span class="heti-spacing"> </span>32<span class="heti-spacing"> </span></span>个和在第二层的<span class="heti-skip"><span class="heti-spacing"> </span>16<span class="heti-spacing"> </span></span>个<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>中会被再一次汇总，如此下去，最终得到一个总的和。这样原本需要<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>次的加法时间，就缩短到<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\log_2(64) = 6\)</span><span class="heti-spacing"> </span></span>次，速度得到明显的提升。这种方法体现了<strong>并行</strong>运算的思想。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/32.png"><img src="images/C3/32.png" width="80%"/></a>
+</div>
+<details class="info" open="open">
+<summary><span>RISC-V<span class="heti-spacing"> </span></span>中的乘法指令</summary>
+<ul>
+<li><code>mul rd, rs1, rs2</code>：<span>64<span class="heti-spacing"> </span></span>位乘法，<code>rd</code>保存<span class="heti-skip"><span class="heti-spacing"> </span>128<span class="heti-spacing"> </span></span>位乘积的低<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位</li>
+<li><code>mulh rd, rs1, rs2</code>：<span>64<span class="heti-spacing"> </span></span>位乘法，<code>rd</code>保存<span class="heti-skip"><span class="heti-spacing"> </span>128<span class="heti-spacing"> </span></span>位<strong>符号数</strong>之间的乘积的高<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位</li>
+<li><code>mulhu rd, rs1, rs2</code>：<span>64<span class="heti-spacing"> </span></span>位乘法，<code>rd</code>保存<span class="heti-skip"><span class="heti-spacing"> </span>128<span class="heti-spacing"> </span></span>位<strong>无符号数</strong>之间的乘积的高<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位</li>
+<li><code>mulhsu rd, rs1, rs2</code>：<span>64<span class="heti-spacing"> </span></span>位乘法，<code>rd</code>保存<span class="heti-skip"><span class="heti-spacing"> </span>128<span class="heti-spacing"> </span></span>位<strong>无符号数与符号数</strong>的乘积的高<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位</li>
+</ul>
+</details>
+<h2 id="division">Division<a class="headerlink" href="#division" title="Permanent link">⚓︎</a></h2>
+<p>除法运算的实现原理是数论里的<a href="../../math/dm/4.html#the-division-algorithm">除法算法</a>（<del>其实也是小学学过的</del><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
+<div class="arithmatex">\[
+\mathrm{Dividend} = \mathrm{Quotient} \times \mathrm{Divisor} + \mathrm{Remainder}
+\]</div>
+<p><span>64<span class="heti-spacing"> </span></span>位除法器的逻辑电路图如下（长得和<span class="heti-skip"><span class="heti-spacing"> </span>V1<span class="heti-spacing"> </span></span>乘法器很像<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/39.png"><img src="images/C3/39.png" width="60%"/></a>
+</div>
+<ul>
+<li>组成部分：<ul>
+<li><span>128<span class="heti-spacing"> </span></span>位除数<span class="heti-skip"><span class="heti-spacing"> </span>(divisor)<span class="heti-spacing"> </span></span>寄存器：初始状态下，<span>64<span class="heti-spacing"> </span></span>位的除数被存储在除数寄存器的<strong>左半边</strong>（由于我们不清楚被除数有多大，所以先将除数扩大很多倍，然后再慢慢缩小，最终找到合适的位数，因此除数寄存器的位数留的有点多）</li>
+<li><span>64<span class="heti-spacing"> </span></span>位商<span class="heti-skip"><span class="heti-spacing"> </span>(quotient)<span class="heti-spacing"> </span></span>寄存器</li>
+<li><span>128<span class="heti-spacing"> </span></span>位余数<span class="heti-skip"><span class="heti-spacing"> </span>(remainder)<span class="heti-spacing"> </span></span>寄存器：初始状态下，<span>64<span class="heti-spacing"> </span></span>位的<strong>被除数</strong><span>(dividend)<span class="heti-spacing"> </span></span>被存储在余数寄存器的<strong>右半边</strong>（从低位开始存储）</li>
+<li><span>128<span class="heti-spacing"> </span></span>位<span><span class="heti-spacing"> </span>ALU</span></li>
+<li>控制器</li>
+</ul>
+</li>
+<li>
+<p>运算流程：</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/40.png"><img src="images/C3/40.png" width="60%"/></a>
+</div><p></p>
+<ol>
+<li>用余数寄存器的值减去除数寄存器的值，并将结果放在余数寄存器</li>
+<li>将商寄存器里的值左移一位，然后检查余数寄存器内的值<ul>
+<li>若其值<span><span class="heti-spacing"> </span><span class="arithmatex">\(\ge 0\)</span></span>（看符号位（最高位）的数字<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，则将商寄存器最右端的位设成<span><span class="heti-spacing"> </span>1</span></li>
+<li>若其值<span><span class="heti-spacing"> </span><span class="arithmatex">\(&lt; 0\)</span></span>，则将除数寄存器的值加到余数寄存器的值以撤销上一步的减法操作，并将商寄存器最右端的位设成<span><span class="heti-spacing"> </span>0</span></li>
+</ul>
+</li>
+<li>将除数寄存器的值右移一位</li>
+<li>如果上面的步骤已经重复了<strong><span>65<span class="heti-spacing"> </span></span>次</strong>，中止整个流程，否则返回第一步</li>
+</ol>
+</li>
+</ul>
+<details class="example">
+<summary>例子</summary>
+<p>用<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>位除法器计算除法：<span class="arithmatex">\((7)_D \div (2)_D\)</span>，或者<span><span class="heti-spacing"> </span><span class="arithmatex">\((0111)_B \div (0010)_B\)</span></span></p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/41.png"><img src="images/C3/41.png" width="70%"/></a>
+</div><p></p>
+</details>
+<h3 id="improved-version">Improved Version<a class="headerlink" href="#improved-version" title="Permanent link">⚓︎</a></h3>
+<p>我们可以借鉴<span class="heti-skip"><span class="heti-spacing"> </span>V1<span class="heti-spacing"> </span></span>乘法器进化到<span class="heti-skip"><span class="heti-spacing"> </span>V3<span class="heti-spacing"> </span></span>乘法器的经验，将某几步操作放在一起进行（节省时间<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，并且让某些值共用一个寄存器（节省空间<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，以此提高除法器的性能。下面就是改进后的除法器的逻辑电路图：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/42.png"><img src="images/C3/42.png" width="60%"/></a>
+</div>
+<p>这个除法器有了以下的改进之处：</p>
+<ul>
+<li>除法寄存器的位数降至<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位，从而<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>的位数也降至<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位，节省空间的同时提升了<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>做减法的计算速度</li>
+<li>去掉了商寄存器，将<strong>商</strong>放在余数寄存器的<strong>右半边</strong>，而<strong>左半边</strong>用于存放<strong>余数</strong><ul>
+<li><strong>初始</strong>情况下由于没有算出商，因此余数（此时为<strong>被除数</strong>）暂时存在余数寄存器的<strong>右半边</strong>，之后会不断往左移</li>
+</ul>
+</li>
+<li>余数寄存器多出的<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>位，是为了间隔余数和商的值，防止计算的时候混淆</li>
+<li>该除法器还减少了<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>次迭代过程</li>
+</ul>
+<p>计算步骤为（仍是以<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位除法器为例<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
+<ol>
+<li>将被除数放在余数寄存器的右半边，然后将余数寄存器左移一位</li>
+<li><span>ALU<span class="heti-spacing"> </span></span>计算（余数寄存器的高<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>除数寄存器<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，将结果放在与余数寄存器的高<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位上<ul>
+<li>如果计算结果<span><span class="heti-spacing"> </span>&gt;0</span>，余数寄存器左移一位，将<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>放入余数寄存器的最右端</li>
+<li>如果计算结果<span><span class="heti-spacing"> </span>&lt;0</span>，则加上除数以撤销前面的减法操作，然后余数寄存器左移一位，将<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>放入余数寄存器的最右端</li>
+</ul>
+</li>
+<li>若第<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>步已经执行过<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>次，则结束循环，否则继续执行第<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>步</li>
+<li>将余数寄存器的左半边右移一位，此时左半边存的是余数，右半边存的是商</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">注</p>
+<ul>
+<li>不难发现，<span>V3<span class="heti-spacing"> </span></span>乘法器与改进后的除法器从逻辑结构上看几乎没有区别，最大的区别在于它们控制信号的不同</li>
+<li>这个过程还是有些绕的（<del>我自己就被绕晕了很多次</del><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，需要下功夫理解清楚，建议看下面给出的例子以加深理解</li>
+</ul>
+</div>
+<details class="example">
+<summary>例子</summary>
+<p>还是计算<span><span class="heti-spacing"> </span><span class="arithmatex">\((7)_D \div (2)_D\)</span></span>，只不过用改进过的除法器：</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/43.png"><img src="images/C3/43.png" width="60%"/></a>
+</div><p></p>
+<p>不难发现，相比上面的例子，此时每次迭代过程中少进行一步操作（移动除数<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，从而提升了运算速度。</p>
+</details>
+<h3 id="signed-division">Signed Division<a class="headerlink" href="#signed-division" title="Permanent link">⚓︎</a></h3>
+<p>使用类似符号数乘法运算的方法：先将被除数和除数的符号位提取出来，然后计算无符号除法，最后根据两个符号位决定商的符号位：如果两者相同，商的符号位为<span><span class="heti-spacing"> </span>0</span>，否则为<span><span class="heti-spacing"> </span>1</span>。</p>
+<p>但较为麻烦的地方在于决定余数的值，简单来说它遵循以下规则：</p>
+<ul>
+<li>余数的符号位同被除数的符号位</li>
+<li>余数的绝对值不超过除数的绝对值</li>
+</ul>
+<details class="example">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/44.png"><img src="images/C3/44.png" width="50%"/></a>
+</div><p></p>
+</details>
+<h3 id="fast-division">Fast Division<a class="headerlink" href="#fast-division" title="Permanent link">⚓︎</a></h3>
+<p>遗憾的是，我们不能像乘法运算那样，通过<span class="heti-skip"><span class="heti-spacing"> </span>ALU<span class="heti-spacing"> </span></span>的并行计算来提升除法速度，因为中间过程会用到很多减法运算，余数寄存器上的符号位是随时变化的，依赖于运算的顺序，所以只能在最后确定符号位，不能提前计算出来。</p>
+<p>改进措施：<a href="https://en.wikipedia.org/wiki/Division_algorithm#SRT_division">SRT Division</a>，在每一趟循环中尝试预测多个可能的商（个人认为类似前面提到过的选择进位加法器）</p>
+<div class="admonition warning">
+<p class="admonition-title">注意</p>
+<p><span>RISC-V<span class="heti-spacing"> </span></span>会忽视除法运算过程中出现的溢出和除以<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>的问题，一般由软件决定怎么处置这两类异常情况。</p>
+</div>
+<details class="info" open="open">
+<summary><span>RISC-V<span class="heti-spacing"> </span></span>中的除法指令</summary>
+<ul>
+<li><code>div rd, rs1, rs2</code>：<code>rd</code>保存符号数除法的商</li>
+<li><code>divu rd, rs1, rs2</code>：<code>rd</code>保存无符号数除法的商</li>
+<li><code>rem rd, rs1, rs2</code>：<code>rd</code>保存符号数除法的余数</li>
+<li><code>remu rd, rs1, rs2</code>：<code>rd</code>保存无符号数除法的余数</li>
+</ul>
+</details>
+<h2 id="floating-point-numbers">Floating Point Numbers<a class="headerlink" href="#floating-point-numbers" title="Permanent link">⚓︎</a></h2>
+<h3 id="ieee-754-floating-point-standard">IEEE 754 Floating-Point Standard<a class="headerlink" href="#ieee-754-floating-point-standard" title="Permanent link">⚓︎</a></h3>
+<p>下面对浮点数的规定来自于<a href="https://en.wikipedia.org/wiki/IEEE_754"><strong>IEEE 754</strong></a>标准，而<span class="heti-skip"><span class="heti-spacing"> </span>RISC-V<span class="heti-spacing"> </span></span>的浮点数便采用这一标准。该标准提升了浮点数程序的可移植性，并且保证了算术运算的质量。</p>
+<p>在接下来的讨论中，我们统一使用<strong>科学计数法</strong><span>(scientific notation)<span class="heti-spacing"> </span></span>表示<strong>浮点数</strong>，在这种表示法下小数点左边只有<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>位数字。如果小数点左边的数字不是<span><span class="heti-spacing"> </span>0</span>，那么称这种数为<strong>规范化数</strong>(normalized number)。</p>
+<p>二进制的规范化数形如下面的数字：</p>
+<div class="arithmatex">\[
+1.xxxxxxxxx_{\mathrm{two}} \times 2^{yyyy}
+\]</div>
+<p>使用科学计数法的好处在于：</p>
+<ul>
+<li>简化交换浮点数数据的过程</li>
+<li>简化浮点数的算术运算</li>
+<li>提升存储数字的精度</li>
+</ul>
+<p>浮点数表示法由三部分组成：符号<span><span class="heti-spacing"> </span><span class="arithmatex">\(S\)</span></span>、<strong>指数</strong>(exponent)<span class="arithmatex">\(E\)</span>、<strong>尾数</strong>(fraction)<span class="arithmatex">\(F\)</span>。其中指数和尾数分别指定了浮点数的范围和精度。由于数据宽度是固定的，因此需要权衡好指数与位数的大小，即权衡好浮点数的范围和精度。用符号化的语言可以将浮点数表示为：</p>
+<div class="arithmatex">\[
+(-1)^S \times F \times 2^E
+\]</div>
+<p>浮点数的表示形式（这种表示法被称为<em>sign and magnitude</em><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
+<ul>
+<li>
+<p>单精度（<code>float</code>）</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/45.png"><img src="images/C3/45.png" width="90%"/></a>
+</div><p></p>
+<ul>
+<li>范围：<span class="arithmatex">\(2.0_{\mathrm{ten}} \times 10^{-38} \sim 2.0_{\mathrm{ten}} \times 10^{38}\)</span><ul>
+<li>根据偏移码的知识（后面马上会讲的<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，实际上单精度浮点数的指数取值范围为<span><span class="heti-spacing"> </span><span class="arithmatex">\([-126, 127]\)</span></span>（最低的<span class="heti-skip"><span class="heti-spacing"> </span>-127<span class="heti-spacing"> </span></span>和最高的<span class="heti-skip"><span class="heti-spacing"> </span>128<span class="heti-spacing"> </span></span>被保留了无法使用<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，那么<span><span class="heti-spacing"> </span><span class="arithmatex">\(\pm 1.0 \times 2^{-126} \approx \pm 1.2 \times 10^{-38}, \pm 2.0 \times 2^{127} \approx \pm 3.4 \times 10^{38}\)</span></span></li>
+</ul>
+</li>
+<li>精度：<span>23<span class="heti-spacing"> </span></span>位尾数<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\approx\)</span> 6<span class="heti-spacing"> </span></span>位十进制数</li>
+</ul>
+</li>
+<li>
+<p>双精度（<code>double</code>）</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/46.png"><img src="images/C3/46.png" width="90%"/></a>
+</div><p></p>
+<blockquote>
+<p>注：教材上给出的图片是错误的（指数位多了一位<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，这张图是我<span class="heti-skip"><span class="heti-spacing"> </span>P<span class="heti-spacing"> </span></span>过的</p>
+</blockquote>
+<ul>
+<li>范围：<span class="arithmatex">\(2.0_{\mathrm{ten}} \times 10^{-308} \sim 2.0_{\mathrm{ten}} \times 10^{308}\)</span><ul>
+<li>根据偏移码的知识，实际上单精度浮点数的指数取值范围为<span><span class="heti-spacing"> </span><span class="arithmatex">\([-1022, 1023]\)</span></span>（最低的<span class="heti-skip"><span class="heti-spacing"> </span>-1023<span class="heti-spacing"> </span></span>和最高的<span class="heti-skip"><span class="heti-spacing"> </span>1024<span class="heti-spacing"> </span></span>被保留了无法使用<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，那么<span><span class="heti-spacing"> </span><span class="arithmatex">\(\pm 1.0 \times 2^{-1022} \approx \pm 2.2 \times 10^{-308}, \pm 2.0 \times 2^{1023} \approx \pm 1.8 \times 10^{38}\)</span></span></li>
+</ul>
+</li>
+<li>精度：<span>52<span class="heti-spacing"> </span></span>位尾数<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\approx\)</span> 16<span class="heti-spacing"> </span></span>位十进制数    </li>
+</ul>
+</li>
+</ul>
+<p>不难发现，二进制下的非零规范化数的小数点左边那一位一定是<span><span class="heti-spacing"> </span>1</span>，因此为了存储更多的数字，我们就省去这个<span><span class="heti-spacing"> </span>1</span>（称为<strong>hidden 1</strong><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，并将这一位的空间挪出来给尾数用（即单精度浮点数的尾数增至<span class="heti-skip"><span class="heti-spacing"> </span>24<span class="heti-spacing"> </span></span>位，双精度浮点数的尾数增至<span class="heti-skip"><span class="heti-spacing"> </span>53<span class="heti-spacing"> </span></span>位<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。实际上用于表示浮点数的尾数位被称为<strong>有效数字</strong>(significand)（不包括低位的一串<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>和省去的<span><span class="heti-spacing"> </span>1</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。于是我们可以这么表示一个浮点数：</p>
+<div class="arithmatex">\[
+(-1)^S \times (1 + \mathrm{Fraction}) \times 2^E
+\]</div>
+<p>其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\mathrm{Fraction}\)</span><span class="heti-spacing"> </span></span>是一个位于<span class="heti-skip"><span class="heti-spacing"> </span>0-1<span class="heti-spacing"> </span></span>之间的数，如果我们假定它的每一位分别为<span><span class="heti-spacing"> </span><span class="arithmatex">\(s_1, s_2, s_3, \dots\)</span></span>，那么又可以表示为：</p>
+<div class="arithmatex">\[
+(-1)^S \times (1 + (s_1 \times 2^{-1}) + (s_2 \times 2^{-2}) + (s_3 \times 2^{-3}) + \dots) \times 2^E
+\]</div>
+<p>之所以<span class="heti-skip"><span class="heti-spacing"> </span>RISC-V<span class="heti-spacing"> </span></span>会按照符号、指数、尾数的顺序存储浮点数，其中一个原因是为了方便浮点数的比较或排序：先比较符号位，再比较指数，最后比较尾数，这样的比较顺序符合我们的直觉。但正数和负数之间的比较就比较麻烦了：如果用补码表示指数位，那么负数的指数看起来就比正数的指数大很多（负数符号位，即最高位为<span><span class="heti-spacing"> </span>1</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，比较起来就没那么直接了。</p>
+<p>因此，<span>IEEE 754<span class="heti-spacing"> </span></span>标准引入了<strong>偏移标记法</strong><span>(biased notation)<span class="heti-spacing"> </span></span>的概念，使得最小的指数（负数）对应<span><span class="heti-spacing"> </span><span class="arithmatex">\(00 \dots 00_{\mathrm{two}}\)</span></span>，最大的指数对应<span><span class="heti-spacing"> </span><span class="arithmatex">\(11 \dots 11_{\mathrm{two}}\)</span></span>，这样就可以直接做无符号数的比较，便于计算机处理。</p>
+<ul>
+<li>偏移值的计算公式：<span class="arithmatex">\(\text{Bias} = 2^{\text{Number of Exp bits } - 1} - 1\)</span></li>
+<li>单精度浮点数的偏移值<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\mathrm{Bias}\)</span><span class="heti-spacing"> </span></span>为<span><span class="heti-spacing"> </span>127</span>，双精度浮点数的偏移值<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\mathrm{Bias}\)</span><span class="heti-spacing"> </span></span>为<span><span class="heti-spacing"> </span>1023</span></li>
+<li>现在浮点数表示成如下形式：</li>
+</ul>
+<div class="arithmatex">\[
+(-1)^S \times (1 + \mathrm{Fraction}) \times 2^{\mathrm{Exponent - Bias}}
+\]</div>
+<details class="example">
+<summary>例题</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="" id="__tabbed_2_1" name="__tabbed_2" type="radio"/><input id="__tabbed_2_2" name="__tabbed_2" type="radio"/><div class="tabbed-labels"><label for="__tabbed_2_1">问题</label><label for="__tabbed_2_2">答案</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/48.png"><img src="images/C3/48.png" width="80%"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/49.png"><img src="images/C3/49.png" width="90%"/></a>
+</div><p></p>
+</div>
+</div>
+</div>
+</details>
+<p>异常情况的处理：</p>
+<ul>
+<li><strong>溢出</strong>：虽然浮点数表示的范围很大，但还是可能会出现这一情况。在浮点数中，溢出分为<strong>上溢</strong><span>(overflow)<span class="heti-spacing"> </span></span>和<strong>下溢</strong>(underflow)，分别表示浮点数的<u>正指数过大</u>或<u>负指数过小</u>的情况。具体处理方法在<a href="#overflow">前面</a>已经提到过了，这里便不再赘述</li>
+<li><strong>NaN</strong>(Not a Number)：表示<strong>未定义的</strong><span>(undefined)<span class="heti-spacing"> </span></span>或<strong>非法的</strong><span>(illegal)<span class="heti-spacing"> </span></span>结果，比如：<ul>
+<li>任何涉及<span class="heti-skip"><span class="heti-spacing"> </span>NaN<span class="heti-spacing"> </span></span>的运算结果</li>
+<li>不定式（无穷之间的运算、无穷与<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>的运算<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：<ul>
+<li>除法运算：0/0、<span class="arithmatex">\(\infty\)</span>/<span class="arithmatex">\(\infty\)</span>、<span class="arithmatex">\(\infty\)</span>/(<span class="arithmatex">\(-\infty\)</span>)、(<span class="arithmatex">\(-\infty\)</span>)/<span class="arithmatex">\(\infty\)</span>、(<span class="arithmatex">\(-\infty\)</span>)/(<span class="arithmatex">\(-\infty\)</span>)</li>
+<li>求余运算：任意值<span><span class="heti-spacing"> </span>% 0</span>、<span><span class="arithmatex">\(\infty\)</span> %<span class="heti-spacing"> </span></span>任意值</li>
+<li>乘法运算：0<span class="arithmatex">\(\times \infty\)</span>、0<span class="arithmatex">\(\times -\infty\)</span></li>
+<li>加法运算：<span class="arithmatex">\(\infty\)</span> + (−<span class="arithmatex">\(\infty\)</span>)、(−<span class="arithmatex">\(\infty\)</span>) + <span class="arithmatex">\(\infty\)</span></li>
+<li>减法运算：<span class="arithmatex">\(\infty\)</span> - <span class="arithmatex">\(\infty\)</span>、(<span class="arithmatex">\(-\infty\)</span>) - (<span class="arithmatex">\(-\infty\)</span>)</li>
+<li>指数运算：<span class="arithmatex">\(0^0\)</span>、<span class="arithmatex">\(\infty^0\)</span>、<span class="arithmatex">\(1^\infty\)</span>、<span class="arithmatex">\(\infty^-\infty\)</span></li>
+</ul>
+</li>
+<li>产生复数结果或无意义的实数运算，比如对负数开偶次方根、对负数进行对数运算等</li>
+</ul>
+</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">注意</p>
+<p>虽然在数学中，任何数除以<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>的结果是未定义的，但是在<span class="heti-skip"><span class="heti-spacing"> </span>IEEE 754<span class="heti-spacing"> </span></span>标准下，这个结果被定义为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\infty\)</span><span class="heti-spacing"> </span></span>或<span><span class="heti-spacing"> </span><span class="arithmatex">\(-\infty\)</span></span>，不要搞错了！</p>
+</div>
+<p><span>IEEE 754<span class="heti-spacing"> </span></span>标准下的浮点数的编码形式：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/47.png"><img src="images/C3/47.png" width="80%"/></a>
+</div>
+<details class="info">
+<summary>补充：半精度浮点数</summary>
+<p><a href="https://en.wikipedia.org/wiki/Half-precision_floating-point_format">半精度浮点数</a>是<span class="heti-skip"><span class="heti-spacing"> </span>16<span class="heti-spacing"> </span></span>位的浮点数，它同样来自<span class="heti-skip"><span class="heti-spacing"> </span>IEEE 754<span class="heti-spacing"> </span></span>标准，它的组成部分为：</p>
+<ul>
+<li>最高位仍然是<strong>符号位</strong>S</li>
+<li>中间<span class="heti-skip"><span class="heti-spacing"> </span>5<span class="heti-spacing"> </span></span>位是<strong>指数位</strong>E</li>
+<li>低<span class="heti-skip"><span class="heti-spacing"> </span>10<span class="heti-spacing"> </span></span>位是<strong>尾数位</strong>F</li>
+<li>偏移码<span class="heti-skip"><span class="heti-spacing"> </span>(bias)<span class="heti-spacing"> </span></span>为<span><span class="heti-spacing"> </span><span class="arithmatex">\(2^{5-1} - 1 = 15\)</span></span></li>
+</ul>
+<p>能够表示的数的范围：<span class="arithmatex">\(\pm 1.0 \times 2^{-14} \sim \pm 2.0 \times 2^{15}\)</span></p>
+</details>
+<p>实用工具：<a href="https://www.h-schmidt.net/FloatConverter/IEEE754.html"><span>IEEE 754<span class="heti-spacing"> </span></span>浮点数转换器</a></p>
+<h3 id="floating-point-addition">Floating-Point Addition<a class="headerlink" href="#floating-point-addition" title="Permanent link">⚓︎</a></h3>
+<p>下面是浮点数加法的流程图：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/53.png"><img src="images/C3/53.png" width="50%"/></a>
+</div>
+<ol>
+<li><strong>对齐</strong>(alignment)：比较两个数的指数部分，将指数较小的数的尾数部分往右移（对应地，指数部分就会增大<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，直到两个数指数部分相同为止</li>
+<li><strong>相加</strong>(addition)：将两个数的有效数字<span class="heti-skip"><span class="heti-spacing"> </span>(significand)<span class="heti-spacing"> </span></span>相加</li>
+<li>
+<p><strong>规范化</strong>(normalization)：使结果规范化（见前面“规范化数”的定义<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，可以通过右移尾数来增加指数，或者左移尾数来减小指数的方式实现</p>
+<blockquote>
+<p>注：前往下一步之前还要判断一下数字是否溢出，如果是的话抛出异常，否则继续下一步</p>
+</blockquote>
+</li>
+<li>
+<p><strong>舍入</strong>(rounding)：如果舍入后结果变得不规范，则需要返回到第<span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span>步再做调整，否则的话计算完成</p>
+</li>
+</ol>
+<p>对应的逻辑电路图如下所示（仅做了解即可<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/56.png"><img src="images/C3/56.png" width="80%"/></a>
+</div>
+<details class="example">
+<summary>例题</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="" id="__tabbed_3_1" name="__tabbed_3" type="radio"/><input id="__tabbed_3_2" name="__tabbed_3" type="radio"/><div class="tabbed-labels"><label for="__tabbed_3_1">十进制</label><label for="__tabbed_3_2">二进制</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="" id="__tabbed_4_1" name="__tabbed_4" type="radio"/><input id="__tabbed_4_2" name="__tabbed_4" type="radio"/><div class="tabbed-labels"><label for="__tabbed_4_1">问题</label><label for="__tabbed_4_2">答案</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>计算<span><span class="heti-spacing"> </span><span class="arithmatex">\(9.999_{\mathrm{ten}} \times 10^1 + 1.610_{\mathrm{ten}} \times 10^{-1}\)</span></span></p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/54.png"><img src="images/C3/54.png" width="50%"/></a>
+</div> <p></p>
+</div>
+</div>
+</div>
+</div>
+<div class="tabbed-block">
+<div class="tabbed-set tabbed-alternate" data-tabs="5:2"><input checked="" id="__tabbed_5_1" name="__tabbed_5" type="radio"/><input id="__tabbed_5_2" name="__tabbed_5" type="radio"/><div class="tabbed-labels"><label for="__tabbed_5_1">问题</label><label for="__tabbed_5_2">答案</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>计算<span><span class="heti-spacing"> </span><span class="arithmatex">\(0.5_{\mathrm{ten}} + (-0.4375_{\mathrm{ten}})\)</span></span></p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/55.png"><img src="images/C3/55.png" width="70%"/></a>
+</div> <p></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</details>
+<h3 id="floating-point-multiplication">Floating-Point Multiplication<a class="headerlink" href="#floating-point-multiplication" title="Permanent link">⚓︎</a></h3>
+<p>下面是浮点数乘法的流程图：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/57.png"><img src="images/C3/57.png" width="50%"/></a>
+</div>
+<ol>
+<li>将两个带偏移量的指数相加（偏移量算了两次<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，并减去多算的一个偏移量</li>
+<li>有效位数相乘</li>
+<li>如有必要，使乘积规范化；如果有溢出，抛出异常并中止程序，否则继续下一步</li>
+<li>对有效数字四舍五入，如果结果不规范，需要回到第<span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span>步再次调整，否则继续下一步</li>
+<li>如果两个操作数的符号位相同，乘积的符号位为正；否则乘积的符号位为负。完成计算</li>
+</ol>
+<p>对应的逻辑电路图如下所示（仅做了解即可<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/58.png"><img src="images/C3/58.png" width="70%"/></a>
+</div>
+<details class="example">
+<summary>例题</summary>
+<ul>
+<li>例<span><span class="heti-spacing"> </span>1</span>：教材<span><span class="heti-spacing"> </span><span class="arithmatex">\(P_{201, 203}\)</span></span></li>
+<li>例<span><span class="heti-spacing"> </span>2</span>：教材<span><span class="heti-spacing"> </span><span class="arithmatex">\(P_{205-206}\)</span></span></li>
+</ul>
+</details>
+<h3 id="accurate-arithmetic">Accurate Arithmetic<a class="headerlink" href="#accurate-arithmetic" title="Permanent link">⚓︎</a></h3>
+<p>为了提高舍入的精度，<span>IEEE 754<span class="heti-spacing"> </span></span>标准规定为浮点数额外添加低<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>位，从左到右分别称为<strong>guard</strong>和<strong>round</strong>，这两位数字保留了浮点数计算的中间过程，从而尽可能地避免精度上的损失。</p>
+<blockquote>
+<p>还可以再额外添加第<span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span>位，称为<strong>sticky</strong>。</p>
+</blockquote>
+<div class="admonition example">
+<p class="admonition-title">例子</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="6:2"><input checked="" id="__tabbed_6_1" name="__tabbed_6" type="radio"/><input id="__tabbed_6_2" name="__tabbed_6" type="radio"/><div class="tabbed-labels"><label for="__tabbed_6_1">例<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span></label><label for="__tabbed_6_2">例<span><span class="heti-spacing"> </span>2</span></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>左图使用了<span class="heti-skip"><span class="heti-spacing"> </span>guard<span class="heti-spacing"> </span></span>和<span><span class="heti-spacing"> </span>round</span>，右图没有使用这两位数字</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/60.png"><img src="images/C3/60.png" width="25%"/></a>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/61.png"><img src="images/C3/61.png" width="21%"/></a>
+</div><p></p>
+<p>由于规定有效位数为<span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span>位，因此前者的最终计算结果为<span><span class="heti-spacing"> </span>2.37</span>，从而可以看出<span class="heti-skip"><span class="heti-spacing"> </span>guard<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>round<span class="heti-spacing"> </span></span>确实能够提升浮点数计算的精度。</p>
+</div>
+<div class="tabbed-block">
+<div class="tabbed-set tabbed-alternate" data-tabs="7:2"><input checked="" id="__tabbed_7_1" name="__tabbed_7" type="radio"/><input id="__tabbed_7_2" name="__tabbed_7" type="radio"/><div class="tabbed-labels"><label for="__tabbed_7_1">题目</label><label for="__tabbed_7_2">答案</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/64.png"><img src="images/C3/64.png" width="70%"/></a>
+</div><p></p>
+<p>摘自作业题，这题可以很好地检测各位对浮点数及其加法运算的理解。</p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/65.png"><img src="images/C3/65.png" width="70%"/></a>
+</div> <p></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>最后一位上的单位值<span><span class="heti-spacing"> </span>(unit in the last place,</span> <strong>ulp</strong>)：看不太懂，就引用了原文<span><span class="heti-spacing"> </span>...</span></p>
+<blockquote>
+<p>The number of bits in error in the least significant bits of the significant between the actual number and the number that can be represented.</p>
+</blockquote>
+<hr/>
+<p><span>IEEE 754<span class="heti-spacing"> </span></span>标准还提供了四种舍入模式<span><span class="heti-spacing"> </span>(rounding mode)</span>：</p>
+<ul>
+<li>向上取整</li>
+<li>向下取整</li>
+<li>截断取整</li>
+<li>舍入至最近的偶数<span><span class="heti-spacing"> </span>(round to nearest even)</span></li>
+</ul>
+<p>下图用具体的数据展示这四种不同的模式（图片来自<a href="https://xuan-insr.github.io/computer_organization/3_arithmetic/#344-%E7%B2%BE%E7%A1%AE%E7%AE%97%E6%9C%AF"><span class="heti-skip"><span class="heti-spacing"> </span>xyx<span class="heti-spacing"> </span></span>前辈的笔记</a><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/59.png"><img src="images/C3/59.png" width="70%"/></a>
+</div>
+<details class="info">
+<summary>浮点数相关的<span class="heti-skip"><span class="heti-spacing"> </span>RISC-V<span class="heti-spacing"> </span></span>汇编操作数<span class="heti-skip"><span class="heti-spacing"> </span>&amp;<span class="heti-spacing"> </span></span>指令（仅做了解）</summary>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/63.png"><img src="images/C3/63.png" width="90%"/></a>
+</div><p></p>
+</details>
+<h2 id="fallacies-and-pitfalls">Fallacies and Pitfalls<a class="headerlink" href="#fallacies-and-pitfalls" title="Permanent link">⚓︎</a></h2>
+<div class="admonition failure">
+<p class="admonition-title">谬误</p>
+<ul>
+<li>
+<p>将一个数右移就相当于对这个数整除以<span><span class="heti-spacing"> </span>2</span></p>
+<ul>
+<li>这个结论对于无符号数是成立的，但是对于符号数，如果整体向右移一位，符号位也会跟着右移，那么最高位就会变成<span><span class="heti-spacing"> </span>0</span>，导致负数变成了正数</li>
+<li>解决方法：右移符号位<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>的时候，符号位左边的数均为<span><span class="heti-spacing"> </span>1</span>，这样保证结果仍然是一个负数（符号扩充）</li>
+</ul>
+</li>
+<li>
+<p>适用于整数的并行计算也同样适用于浮点数</p>
+<ul>
+<li>请注意：由于浮点数在计算过程中精度可能会损失，所以结合律<span class="heti-skip"><span class="heti-spacing"> </span>(associative)<span class="heti-spacing"> </span></span>是无效的，即对于浮点数<span><span class="heti-spacing"> </span><span class="arithmatex">\(a, b, c\)</span></span>，<span class="arithmatex">\(c + (a + b) \ne (c + a) + b\)</span></li>
+</ul>
+<details class="example">
+<summary>例子</summary>
+<p>（这里第二个式子等号左边的括号位置错了<heti-adjacent class="heti-adjacent-half">！</heti-adjacent>）</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/62.png"><img src="images/C3/62.png" width="50%"/></a>
+</div><p></p>
+<p>可以看到，使用结合律后，计算结果就完全不一样了</p>
+</details>
+<ul>
+<li>并行计算的实现依赖于结合律，因此浮点数无法进行并行计算</li>
+</ul>
+</li>
+</ul>
+</div>
+<aside class="md-source-file">
+<span class="md-source-file__fact">
+<span class="md-icon" title="最后更新">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"></path></svg>
+</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年11月7日 20:28:09">2025年11月7日 20:28:09</span>
+</span>
+<span class="md-source-file__fact">
+<span class="md-icon" title="创建日期">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"></path></svg>
+</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年11月7日 20:28:09">2025年11月7日 20:28:09</span>
+</span>
+</aside>
+<p style="font-size: 30px; font-weight: 600">评论区</p>
+<div>
+    如果大家有什么问题或想法，欢迎在下方留言~
+  </div>
+<!-- Insert generated snippet here -->
+<script async="" crossorigin="anonymous" data-category="Announcements" data-category-id="DIC_kwDOMAb9Zs4CfmpP" data-emit-metadata="0" data-input-position="bottom" data-lang="zh-CN" data-mapping="pathname" data-reactions-enabled="1" data-repo="noughtq/notebook" data-repo-id="R_kgDOMAb9Zg" data-strict="0" data-theme="preferred_color_scheme" src="https://giscus.app/client.js">
+</script>
+<!-- Synchronize Giscus theme with palette -->
+<script>
+    var giscus = document.querySelector("script[src*=giscus]")
+
+    // Set palette on initial load
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object") {
+      var theme = palette.color.scheme === "slate"
+        ? "transparent_dark"
+        : "light"
+
+      // Instruct Giscus to set theme
+      giscus.setAttribute("data-theme", theme) 
+    }
+
+    // Register event handlers after documented loaded
+    document.addEventListener("DOMContentLoaded", function() {
+      var ref = document.querySelector("[data-md-component=palette]")
+      ref.addEventListener("change", function() {
+        var palette = __md_get("__palette")
+        if (palette && typeof palette.color === "object") {
+          var theme = palette.color.scheme === "slate"
+            ? "dark"
+            : "light"
+
+          // Instruct Giscus to change theme
+          var frame = document.querySelector(".giscus-frame")
+          frame.contentWindow.postMessage(
+            { giscus: { setConfig: { theme } } },
+            "https://giscus.app"
+          )
+        }
+      })
+    })
+  </script>
+<!-- 标题计数器 -->
+<link href="/css/counter.css" rel="stylesheet"/>
+<!-- 主页个性化 -->
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+<button class="md-top md-icon" data-md-component="top" hidden="" type="button">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  回到页面顶部
+</button>
+</main>
+<footer class="md-footer">
+<nav aria-label="页脚" class="md-footer__inner md-grid">
+<a aria-label="上一页: Chap 2: Language of the Machine" class="md-footer__link md-footer__link--prev" href="2.html">
+<div class="md-footer__button md-icon">
+<svg viewbox="0 0 256 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" fill="currentColor"></path></svg>
+</div>
+<div class="md-footer__title">
+<span class="md-footer__direction">
+                上一页
+              </span>
+<div class="md-ellipsis">
+                Chap 2: Language of the Machine
+              </div>
+</div>
+</a>
+<a aria-label="下一页: Chap 4: The Processor" class="md-footer__link md-footer__link--next" href="4.html">
+<div class="md-footer__title">
+<span class="md-footer__direction">
+                下一页
+              </span>
+<div class="md-ellipsis">
+                Chap 4: The Processor
+              </div>
+</div>
+<div class="md-footer__button md-icon">
+<svg viewbox="0 0 256 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M247.1 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L179.2 256 41.9 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z" fill="currentColor"></path></svg>
+</div>
+</a>
+</nav>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright" style="margin-left: 33.5%">
+<div class="md-copyright__highlight" style="text-align: center">
+        Copyright © 2024-2025 <a href="https://github.com/NoughtQ">NoughtQ</a>
+</div>
+    
+    
+      Powered by
+      <a href="https://www.mkdocs.org/" rel="noopener" target="_blank">
+        MkDocs
+      </a>
+      with theme
+      <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+        Material
+      </a>
+      modified by
+      <a href="https://github.com/NoughtQ" rel="noopener" target="_blank">
+        NoughtQ
+      </a>
+<!-- <br> -->
+<div style="text-align: center;">
+<a href="https://icp.gov.moe/?keyword=20252357" target="_blank">萌ICP备20252357号</a>
+</div>
+</div>
+<div class="md-social">
+<a class="md-social__link" href="https://noughtq.top" rel="noopener" target="_blank" title="noughtq.top">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M277.8 8.6c-12.3-11.4-31.3-11.4-43.5 0l-224 208c-9.6 9-12.8 22.9-8 35.1S18.8 272 32 272h16v176c0 35.3 28.7 64 64 64h288c35.3 0 64-28.7 64-64V272h16c13.2 0 25-8.1 29.8-20.3s1.6-26.2-8-35.1zM240 320h32c26.5 0 48 21.5 48 48v96H192v-96c0-26.5 21.5-48 48-48" fill="currentColor"></path></svg>
+</a>
+<a class="md-social__link" href="https://blog.noughtq.top" rel="noopener" target="_blank" title="blog.noughtq.top">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M224 24c0-13.3 10.7-24 24-24 145.8 0 264 118.2 264 264 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-119.3-96.7-216-216-216-13.3 0-24-10.7-24-24M80 96c26.5 0 48 21.5 48 48v224c0 26.5 21.5 48 48 48s48-21.5 48-48-21.5-48-48-48c-8.8 0-16-7.2-16-16v-64c0-8.8 7.2-16 16-16 79.5 0 144 64.5 144 144s-64.5 144-144 144S32 447.5 32 368V144c0-26.5 21.5-48 48-48m168 0c92.8 0 168 75.2 168 168 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-66.3-53.7-120-120-120-13.3 0-24-10.7-24-24s10.7-24 24-24" fill="currentColor"></path></svg>
+</a>
+<a class="md-social__link" href="https://github.com/noughtq" rel="noopener" target="_blank" title="github.com">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2" fill="currentColor"></path></svg>
+</a>
+<a class="md-social__link" href="mailto:noughtq666@gmail.com" rel="noopener" target="_blank" title="">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m20 8-8 5-8-5V6l8 5 8-5m0-2H4c-1.11 0-2 .89-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2"></path></svg>
+</a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"base": "../..", "features": ["content.action.edit", "content.action.view", "content.code.copy", "content.code.annotate", "content.footnote.tooltips", "navigation.tabs", "navigation.top", "navigation.footer", "navigation.indexes", "navigation.tracking", "navigation.prune", "search.share"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.92b07e13.min.js"></script>
+<script src="../../js/anchor.js"></script>
+<script src="../../js/katex.js"></script>
+<script src="../../js/toc.js"></script>
+<script src="../../js/typed.js"></script>
+<script src="../../js/custom.js"></script>
+<script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+<script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.js"></script>
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>

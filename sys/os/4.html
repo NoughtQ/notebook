@@ -1,0 +1,1613 @@
+<!DOCTYPE html>
+<html class="no-js" lang="zh"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="NoughtQ的笔记本，主要记录一些 CS 相关的笔记" name="description"/>
+<meta content="NoughtQ" name="author"/>
+<link href="https://notebook.noughtq.top/sys/os/4.html" rel="canonical"/>
+<link href="3.html" rel="prev"/>
+<link href="5.html" rel="next"/>
+<link href="../../feed_rss_created.xml" rel="alternate" title="RSS 订阅" type="application/rss+xml"/>
+<link href="../../feed_rss_updated.xml" rel="alternate" title="已更新内容的 RSS 订阅" type="application/rss+xml"/>
+<link href="../../assets/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.6.18" name="generator"/>
+<title>Threads and Concurrency - NoughtQ的笔记本</title>
+<link href="../../assets/stylesheets/main.7e37652d.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/palette.06af60db.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=JetBrains+Mono,+LXGW+WenKai+Screen+GB+Screen:300,300i,400,400i,700,700i%7CJetBrains+Mono,+Consolas:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"JetBrains Mono, LXGW WenKai Screen GB Screen";--md-code-font:"JetBrains Mono, Consolas"}</style>
+<link href="../../css/heti.css" rel="stylesheet"/>
+<link href="../../css/toc_extra.css" rel="stylesheet"/>
+<link href="../../css/timeline.css" rel="stylesheet"/>
+<link href="../../css/card.css" rel="stylesheet"/>
+<link href="../../css/custom.css" rel="stylesheet"/>
+<link href="../../css/extra_changelog.css" rel="stylesheet"/>
+<link href="../../css/header.css" rel="stylesheet"/>
+<link href="../../css/sidebar.css" rel="stylesheet"/>
+<link href="https://unpkg.com/katex@0/dist/katex.min.css" rel="stylesheet"/>
+<link href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css" rel="stylesheet"/>
+<link href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.css" rel="stylesheet"/>
+<script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-43NH8CVRCJ"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-43NH8CVRCJ",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-43NH8CVRCJ",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+<script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+<link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+<body data-md-color-accent="indigo" data-md-color-primary="indigo" data-md-color-scheme="slate" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#threads-and-concurrency">
+          跳转至
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header" data-md-component="header">
+<nav aria-label="页眉" class="md-header__inner md-grid">
+<a aria-label="NoughtQ的笔记本" class="md-header__button md-logo" data-md-component="logo" href="../.." title="NoughtQ的笔记本">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.05 9H7.06V6h1.99V4.03H7.06v-1c0-1.11.89-1.99 1.99-1.99h5.98V8l2.47-1.5L20 8V1.04h1c1.05 0 2 .96 2 1.99V17c0 1.03-.95 2-2 2H9.05c-1.05 0-1.99-.95-1.99-2v-1h1.99v-2H7.06v-3h1.99zM1 18h2v-3H1v-2h2v-3H1V8h2V5h2v3H3v2h2v3H3v2h2v3H3v2h2v1h16v2H5a2 2 0 0 1-2-2v-1H1z"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            NoughtQ的笔记本
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              Threads and Concurrency
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="Dark Mode" class="md-option" data-md-color-accent="indigo" data-md-color-media="(prefer-color-scheme: dark)" data-md-color-primary="indigo" data-md-color-scheme="slate" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="Dark Mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"></path></svg>
+</label>
+<input aria-label="Light Mode" class="md-option" data-md-color-accent="indigo" data-md-color-media="(prefer-color-scheme: light)" data-md-color-primary="indigo" data-md-color-scheme="default" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="Light Mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="搜索" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="搜索" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 256 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" fill="currentColor"></path></svg>
+</label>
+<nav aria-label="查找" class="md-search__options">
+<a aria-label="分享" class="md-search__icon md-icon" data-clipboard="" data-clipboard-text="" data-md-component="search-share" href="javascript:void(0)" tabindex="-1" title="分享">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"></path></svg>
+</a>
+<button aria-label="清空当前内容" class="md-search__icon md-icon" tabindex="-1" title="清空当前内容" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header__source">
+<a class="md-source" data-md-component="source" href="https://github.com/noughtq/notebook" title="前往仓库">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4" fill="currentColor"></path></svg>
+</div>
+<div class="md-source__repository">
+    NoughtQ/Notebook
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<nav aria-label="标签" class="md-tabs" data-md-component="tabs">
+<div class="md-grid">
+<ul class="md-tabs__list">
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../index.html">
+          
+  
+  
+    
+  
+  🏫主页
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../lang/index.html">
+          
+  
+  
+    
+  
+  🔡编程语言
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../math/index.html">
+          
+  
+  
+    
+  
+  📊数学相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../algo/index.html">
+          
+  
+  
+    
+  
+  🧮算法相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../software/index.html">
+          
+  
+  
+    
+  
+  💾软件相关
+
+        </a>
+</li>
+<li class="md-tabs__item md-tabs__item--active">
+<a class="md-tabs__link" href="../index.html">
+          
+  
+  
+    
+  
+  💻系统相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../web/index.html">
+          
+  
+  
+    
+  
+  🌏Web相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../sec/ctf-101/index.html">
+          
+  
+  
+    
+  
+  🛡️信息安全
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../ai/index.html">
+          
+  
+  
+    
+  
+  🤖人工智能
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../misc/index.html">
+          
+  
+  
+    
+  
+  🗃️杂项
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../tools/index.html">
+          
+  
+  
+    
+  
+  🛠️工具
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../papers/index.html">
+          
+  
+  
+    
+  
+  📑论文阅读
+
+        </a>
+</li>
+</ul>
+</div>
+</nav>
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="导航栏" class="md-nav md-nav--primary md-nav--lifted" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="NoughtQ的笔记本" class="md-nav__button md-logo" data-md-component="logo" href="../.." title="NoughtQ的笔记本">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.05 9H7.06V6h1.99V4.03H7.06v-1c0-1.11.89-1.99 1.99-1.99h5.98V8l2.47-1.5L20 8V1.04h1c1.05 0 2 .96 2 1.99V17c0 1.03-.95 2-2 2H9.05c-1.05 0-1.99-.95-1.99-2v-1h1.99v-2H7.06v-3h1.99zM1 18h2v-3H1v-2h2v-3H1V8h2V5h2v3H3v2h2v3H3v2h2v3H3v2h2v1h16v2H5a2 2 0 0 1-2-2v-1H1z"></path></svg>
+</a>
+    NoughtQ的笔记本
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-component="source" href="https://github.com/noughtq/notebook" title="前往仓库">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4" fill="currentColor"></path></svg>
+</div>
+<div class="md-source__repository">
+    NoughtQ/Notebook
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../index.html">
+<span class="md-ellipsis">
+    🏫主页
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../lang/index.html">
+<span class="md-ellipsis">
+    🔡编程语言
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../math/index.html">
+<span class="md-ellipsis">
+    📊数学相关
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../algo/index.html">
+<span class="md-ellipsis">
+    🧮算法相关
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../software/index.html">
+<span class="md-ellipsis">
+    💾软件相关
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_6" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../index.html">
+<span class="md-ellipsis">
+    💻系统相关
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="true" aria-labelledby="__nav_6_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_6">
+<span class="md-nav__icon md-icon"></span>
+            💻系统相关
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../csapp/index.html">
+<span class="md-ellipsis">
+    CSAPP
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../dld/index.html">
+<span class="md-ellipsis">
+    数字逻辑设计
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../co/index.html">
+<span class="md-ellipsis">
+    计算机组成
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../ca/index.html">
+<span class="md-ellipsis">
+    计算机体系结构
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../db/index.html">
+<span class="md-ellipsis">
+    数据库系统
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_6_7" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="index.html">
+<span class="md-ellipsis">
+    操作系统
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_6_7" id="__nav_6_7_label" tabindex="0">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="true" aria-labelledby="__nav_6_7_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_6_7">
+<span class="md-nav__icon md-icon"></span>
+            操作系统
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="1.html">
+<span class="md-ellipsis">
+    Overview
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_6_7_3" type="checkbox"/>
+<label class="md-nav__link" for="__nav_6_7_3" id="__nav_6_7_3_label" tabindex="0">
+<span class="md-ellipsis">
+    Process Management
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_6_7_3_label" class="md-nav" data-md-level="3">
+<label class="md-nav__title" for="__nav_6_7_3">
+<span class="md-nav__icon md-icon"></span>
+            Process Management
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="3.html">
+<span class="md-ellipsis">
+    Processes
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    Threads and Concurrency
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="4.html">
+<span class="md-ellipsis">
+    Threads and Concurrency
+    
+  </span>
+</a>
+<nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#overview">
+<span class="md-ellipsis">
+      Overview
+    </span>
+</a>
+<nav aria-label="Overview" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#motivation">
+<span class="md-ellipsis">
+      Motivation
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#benefits">
+<span class="md-ellipsis">
+      Benefits
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#multicore-programming">
+<span class="md-ellipsis">
+      Multicore Programming
+    </span>
+</a>
+<nav aria-label="Multicore Programming" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#programming-challenges">
+<span class="md-ellipsis">
+      Programming Challenges
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#types-of-parallelism">
+<span class="md-ellipsis">
+      Types of Parallelism
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#multithreading-model">
+<span class="md-ellipsis">
+      Multithreading Model
+    </span>
+</a>
+<nav aria-label="Multithreading Model" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#many-to-one-model">
+<span class="md-ellipsis">
+      Many-to-One Model
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#one-to-one-model">
+<span class="md-ellipsis">
+      One-to-One Model
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#many-to-many-model">
+<span class="md-ellipsis">
+      Many-to-Many Model
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#thread-libraries">
+<span class="md-ellipsis">
+      Thread Libraries
+    </span>
+</a>
+<nav aria-label="Thread Libraries" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#pthreads">
+<span class="md-ellipsis">
+      Pthreads
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#implicit-threading">
+<span class="md-ellipsis">
+      Implicit Threading
+    </span>
+</a>
+<nav aria-label="Implicit Threading" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#thread-pools">
+<span class="md-ellipsis">
+      Thread Pools
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#fork-join">
+<span class="md-ellipsis">
+      Fork Join
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#threading-issues">
+<span class="md-ellipsis">
+      Threading Issues
+    </span>
+</a>
+<nav aria-label="Threading Issues" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#the-fork-and-exec-system-calls">
+<span class="md-ellipsis">
+      The fork() and exec() System Calls
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#signal-handling">
+<span class="md-ellipsis">
+      Signal Handling
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#thread-cancellation">
+<span class="md-ellipsis">
+      Thread Cancellation
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#thread-local-storage">
+<span class="md-ellipsis">
+      Thread-Local Storage
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#scheduler-activation">
+<span class="md-ellipsis">
+      Scheduler Activation
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="5.html">
+<span class="md-ellipsis">
+    CPU Scheduling
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="6.html">
+<span class="md-ellipsis">
+    Process Synchronization
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="9.html">
+<span class="md-ellipsis">
+    Memory Management
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="11.html">
+<span class="md-ellipsis">
+    Storage Management
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="13.html">
+<span class="md-ellipsis">
+    File System
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../aai/index.html">
+<span class="md-ellipsis">
+    汇编与接口
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../web/index.html">
+<span class="md-ellipsis">
+    🌏Web相关
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../sec/ctf-101/index.html">
+<span class="md-ellipsis">
+    🛡️信息安全
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ai/index.html">
+<span class="md-ellipsis">
+    🤖人工智能
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../misc/index.html">
+<span class="md-ellipsis">
+    🗃️杂项
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../tools/index.html">
+<span class="md-ellipsis">
+    🛠️工具
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../papers/index.html">
+<span class="md-ellipsis">
+    📑论文阅读
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#overview">
+<span class="md-ellipsis">
+      Overview
+    </span>
+</a>
+<nav aria-label="Overview" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#motivation">
+<span class="md-ellipsis">
+      Motivation
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#benefits">
+<span class="md-ellipsis">
+      Benefits
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#multicore-programming">
+<span class="md-ellipsis">
+      Multicore Programming
+    </span>
+</a>
+<nav aria-label="Multicore Programming" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#programming-challenges">
+<span class="md-ellipsis">
+      Programming Challenges
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#types-of-parallelism">
+<span class="md-ellipsis">
+      Types of Parallelism
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#multithreading-model">
+<span class="md-ellipsis">
+      Multithreading Model
+    </span>
+</a>
+<nav aria-label="Multithreading Model" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#many-to-one-model">
+<span class="md-ellipsis">
+      Many-to-One Model
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#one-to-one-model">
+<span class="md-ellipsis">
+      One-to-One Model
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#many-to-many-model">
+<span class="md-ellipsis">
+      Many-to-Many Model
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#thread-libraries">
+<span class="md-ellipsis">
+      Thread Libraries
+    </span>
+</a>
+<nav aria-label="Thread Libraries" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#pthreads">
+<span class="md-ellipsis">
+      Pthreads
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#implicit-threading">
+<span class="md-ellipsis">
+      Implicit Threading
+    </span>
+</a>
+<nav aria-label="Implicit Threading" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#thread-pools">
+<span class="md-ellipsis">
+      Thread Pools
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#fork-join">
+<span class="md-ellipsis">
+      Fork Join
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#threading-issues">
+<span class="md-ellipsis">
+      Threading Issues
+    </span>
+</a>
+<nav aria-label="Threading Issues" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#the-fork-and-exec-system-calls">
+<span class="md-ellipsis">
+      The fork() and exec() System Calls
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#signal-handling">
+<span class="md-ellipsis">
+      Signal Handling
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#thread-cancellation">
+<span class="md-ellipsis">
+      Thread Cancellation
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#thread-local-storage">
+<span class="md-ellipsis">
+      Thread-Local Storage
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#scheduler-activation">
+<span class="md-ellipsis">
+      Scheduler Activation
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<article class="md-content__inner md-typeset">
+<a class="md-content__button md-icon" href="https://github.com/noughtq/notebook/edit/master/docs/sys/os/4.md" rel="edit" title="编辑此页">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"></path></svg>
+</a>
+<a class="md-content__button md-icon" href="https://github.com/noughtq/notebook/raw/master/docs/sys/os/4.md" title="查看本页的源代码">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"></path></svg>
+</a>
+<h1 id="threads-and-concurrency">Threads and Concurrency<a class="headerlink" href="#threads-and-concurrency" title="Permanent link">⚓︎</a></h1>
+<div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>8212<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 576 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M360.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6m64.6 136.1c-12.5 12.5-12.5 32.8 0 45.3l73.4 73.4-73.4 73.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l96-96c12.5-12.5 12.5-32.8 0-45.3l-96-96c-12.5-12.5-32.8-12.5-45.3 0zm-274.7 0c-12.5-12.5-32.8-12.5-45.3 0l-96 96c-12.5 12.5-12.5 32.8 0 45.3l96 96c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l73.3-73.4c12.5-12.5 12.5-32.8 0-45.3z" fill="currentColor"></path></svg></span> <span>56<span class="heti-spacing"> </span></span>行代码 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>42<span class="heti-spacing"> </span></span>分钟</p>
+</div>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">⚓︎</a></h2>
+<p><strong>线程</strong><span>(thread)<span class="heti-spacing"> </span></span>是<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>利用的基本单位，包括了线程<span><span class="heti-spacing"> </span>ID</span>、程序计数器（PC<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>、寄存器集和栈空间。一个线程和属于同一进程的其他线程共享进程的代码段、数据段和其他<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>资源。下图展示了传统的单线程进程和多线程进程之间的区别：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C4/1.png"><img src="images/C4/1.png" width="60%"/></a>
+</div>
+<p>而在地址空间上的差别如下：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C4/14.png"><img src="images/C4/14.png" width="50%"/></a>
+</div>
+<p>线程看起来很像一个单独的进程，除了一个区别：线程能共享地址空间，因而能访问相同的数据。</p>
+<p>类似进程，线程也有一个叫做<strong>线程控制块</strong><span>(thread control blocks, TCB)<span class="heti-spacing"> </span></span>的东西，用于保存进程中每个线程的状态。</p>
+<h3 id="motivation">Motivation<a class="headerlink" href="#motivation" title="Permanent link">⚓︎</a></h3>
+<p>使用线程的原因可归纳为以下两点：</p>
+<ul>
+<li><strong>并行</strong>(parallelism)<ul>
+<li>将单线程程序转变为能在多个<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>上执行此类工作的任务称为<strong>并行化</strong>(parallelization)</li>
+<li>而让每个线程使用一个<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>的方式是实现并行化的自然且典型的方法</li>
+</ul>
+</li>
+<li>避免因<span class="heti-skip"><span class="heti-spacing"> </span>I/O<span class="heti-spacing"> </span></span>速度慢导致程序进程阻塞<ul>
+<li>线程使得单个程序内的<span class="heti-skip"><span class="heti-spacing"> </span>I/O<span class="heti-spacing"> </span></span>操作能够与其他活动<strong>重叠</strong><span>(overlap)<span class="heti-spacing"> </span></span>进行，类似跨进程的多道程序设计</li>
+</ul>
+</li>
+</ul>
+<p>这样看进程也能做到这些事，但线程的独特之处在于共享地址空间使得共享数据变得很容易，而进程更适合逻辑上相对独立，且不怎么需要共享数据的任务上。</p>
+<details class="example" open="open">
+<summary>例子</summary>
+<p>有时我们会要求用一个应用程序执行一组类似的任务，比如一个<span class="heti-skip"><span class="heti-spacing"> </span>web<span class="heti-spacing"> </span></span>服务器处理多个（有时是大量）来自不同客户端的请求。</p>
+<ul>
+<li>如果仍然采用传统的单线程进程，那么一次只能处理一个客户端的请求，其他请求需要等待很长的时间</li>
+<li>在线程这个概念诞生前，一种解决方案是创建单独的进程来处理一个请求，但这样做不仅耗时，而且容易导致资源紧张</li>
+<li>
+<p>而采用包含多个线程的进程的话，服务器能够创建一个用于专门监听其中一个客户端请求的线程，并且可以继续监听其他服务器的请求，这样做显然更高效</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C4/2.png"><img src="images/C4/2.png" width="60%"/></a>
+</div><p></p>
+</li>
+</ul>
+</details>
+<p>除了应用程序，大多数<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>的内核也是多线程的。在<span class="heti-skip"><span class="heti-spacing"> </span>Linux<span class="heti-spacing"> </span></span>系统中可通过 <code class="language-bash highlight">ps<span class="w"> </span>-ef</code> 命令查看当前运行在系统中的内核进程，其中线程 <code>kthreadd</code>（<code>pid = 2</code>）是所有线程的父线程。</p>
+<p>多线程还有更广泛的应用，包括各种算法和数据结构的实现、以及当前的<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>密集型问题（数据挖掘、图形学、<span>AI<span class="heti-spacing"> </span></span>等<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
+<h3 id="benefits">Benefits<a class="headerlink" href="#benefits" title="Permanent link">⚓︎</a></h3>
+<p>多线程编程的好处可归纳为以下几点：</p>
+<ul>
+<li><strong>响应性</strong>(responsiveness)：<ul>
+<li>多线程的交互式应用程序可以让程序即使在部分被阻塞，或执行长时间操作的情况下也能继续运行，从而提高对用户的响应能力</li>
+<li>这种特性在设计<strong>用户界面</strong>时特别有用。如果是单线程，应用程序在操作完成之前会处于无响应状态；而如果单独的异步线程中执行，应用程序仍然可对用户保持响应</li>
+</ul>
+</li>
+<li><strong>资源共享</strong>(resource sharing)：<ul>
+<li>进程只能通过共享内存和消息传递等技术来共享资源，而且必须由程序员自行安排</li>
+<li>而线程默认情况下会共享它们所属进程的内存和资源，使得一个应用程序在相同的地址空间内拥有几个不同的活动线程</li>
+</ul>
+</li>
+<li><strong>经济性</strong>(economy)：<ul>
+<li>进程创建时分配内存和资源的开销不小；而线程共享它们所属进程的资源，所以创建和切换线程的成本更少</li>
+<li>一般来说，线程创建比进程创建消耗更少的时间和内存，并且线程之间的上下文切换通常比进程之间的上下文切换更快</li>
+</ul>
+</li>
+<li><strong>可扩展性</strong>(scalability)：多线程在多处理器架构下能发挥更大的潜力，因为线程可以在不同的处理核心上并行运行</li>
+</ul>
+<h2 id="multicore-programming">Multicore Programming<a class="headerlink" href="#multicore-programming" title="Permanent link">⚓︎</a></h2>
+<p>考虑一个带<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>个线程的应用程序。</p>
+<ul>
+<li>
+<p>在单核系统上，并发仅仅意味着线程在时间上<strong>交错</strong><span>(interleave)<span class="heti-spacing"> </span></span>执行，因为核心一次只能执行一个线程</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C4/3.png"><img src="images/C4/3.png" width="60%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>但在多核系统上，并发意味着一些线程可并行运行，因为系统可将一个线程分配给一个单独的核心</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C4/4.png"><img src="images/C4/4.png" width="40%"/></a>
+</div><p></p>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">并发<span class="heti-skip"><span class="heti-spacing"> </span>v.s.<span class="heti-spacing"> </span></span>并行</p>
+<ul>
+<li><strong>并发</strong><span>(concurrency)<span class="heti-spacing"> </span></span>系统通过推进所有任务（不一定同时推进）来执行<span class="heti-skip"><span class="heti-spacing"> </span>&gt; 1<span class="heti-spacing"> </span></span>任务</li>
+<li><strong>并行</strong><span>(parallelism)<span class="heti-spacing"> </span></span>系统可以同时执行<span class="heti-skip"><span class="heti-spacing"> </span>&gt;1<span class="heti-spacing"> </span></span>个的任务</li>
+</ul>
+<p>所以即便没有并行，也可以有并发。在多处理器和多核架构出现之前，大多数计算机系统只有一个处理器，因此系统利用<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>调度器快速在进程之间切换的能力来提供并行的错觉，但实际上这样的进程是并发运行而不是并行运行的。</p>
+</div>
+<h3 id="programming-challenges">Programming Challenges<a class="headerlink" href="#programming-challenges" title="Permanent link">⚓︎</a></h3>
+<p>多核系统的发展趋势持续对系统设计师和应用程序员提出挑战：</p>
+<ul>
+<li><span>OS<span class="heti-spacing"> </span></span>设计师必须编写出使用多个处理核心的调度算法，实现并行执行</li>
+<li>而应用程序员要修改现有程序以及设计新的多线程程序</li>
+</ul>
+<p>总而言之，在多核系统中有以下几方面的编程挑战：</p>
+<ul>
+<li><strong>识别任务</strong>(identifying tasks)：<ul>
+<li>具体来说就是检查应用程序，找到可以划分为单独的、并发的任务</li>
+<li>理想情况下，这些任务彼此独立，因此可以在各自的核心上并行运行</li>
+</ul>
+</li>
+<li><strong>均衡</strong>(balanceing)：<ul>
+<li>在识别可并行运行的任务的同时，程序员还必须确保这些任务的执行工作量尽可能相等</li>
+<li>在某些情况下，某个特定任务对整个流程的贡献可能不如其他任务大，此时使用单独的执行核心来运行该任务或许并不划算</li>
+</ul>
+</li>
+<li><strong>数据分割</strong>(data splitting)：正如应用程序被划分为不同的任务一样，被这些任务访问和操作的数据也必须进行划分，以便在独立的处理器核心上运行</li>
+<li><strong>数据依赖</strong>(data dependency)：<ul>
+<li>必须检查任务所访问的数据是否存在两个或更多任务间的依赖关系</li>
+<li>当一个任务依赖于另一个任务的数据时，程序员必须确保任务的执行同步进行，以适应数据依赖性</li>
+</ul>
+</li>
+<li><strong>测试和调试</strong>(testing and debugging)：当一个程序在多个核心上并行运行时，可能会出现许多不同的执行路径，因此测试和调试这类并发程序本质上比测试和调试单线程应用程序更为困难</li>
+</ul>
+<p>鉴于这些挑战，许多软件开发者认为，多核系统的出现将要求未来在软件系统设计上采取全新的方法。</p>
+<h3 id="types-of-parallelism">Types of Parallelism<a class="headerlink" href="#types-of-parallelism" title="Permanent link">⚓︎</a></h3>
+<p>这里我们大致分成两种并行类型（不同教材或课程的划分可能有所不同，目前以这里介绍的为准<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
+<ul>
+<li><strong>数据级并行</strong>(data parallelism)：将同一数据的子集分布到多个计算核心上，并在每个核心上执行相同的操作</li>
+<li>
+<p>例子：考虑对一个大小为 <code>N</code> 的数组内容进行求和</p>
+<ul>
+<li>在单核系统中，一个线程会简单地累加元素 <code>[0]</code> 至 <code>[N-1]</code></li>
+<li>而在双核系统中，运行于核心<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>上的线程<span class="heti-skip"><span class="heti-spacing"> </span>A<span class="heti-spacing"> </span></span>负责累加元素 <code>[0]</code> 至 <code>[N/2-1]</code>，而运行于核心<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>上的线程<span class="heti-skip"><span class="heti-spacing"> </span>B<span class="heti-spacing"> </span></span>则负责累加元素 <code>[N/2]</code> 至 <code>[N-1]</code>，并且这两个线程将在各自的计算核心上并行运行</li>
+</ul>
+</li>
+<li>
+<p><strong>任务级并行</strong>(task parallelism)：将任务（线程）而非数据分配到多个计算核心上；每个线程执行不同的操作，它们可能处理相同的数据，也可能处理不同的数据</p>
+<ul>
+<li>例子：对于上述累加任务，两个线程可能各自对数组执行唯一的统计运算，这些线程同样在独立的计算核心上并行运行，但每一个都在执行独一无二的操作</li>
+</ul>
+</li>
+</ul>
+<p>总之，数据级并行涉及将数据分布到多个核心上，而任务级并行则是将任务分布到多个核心上。它们的区别如下图所示：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C4/5.png"><img src="images/C4/5.png" width="50%"/></a>
+</div>
+<p>这两种并行并不相互排斥，而且事实上一些应用程序会同时（混合<span><span class="heti-spacing"> </span>(hybrid)</span>）采用这两种策略。</p>
+<h2 id="multithreading-model">Multithreading Model<a class="headerlink" href="#multithreading-model" title="Permanent link">⚓︎</a></h2>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C4/6.png"><img align="right" alt="" src="images/C4/6.png" width="30%"/></a></p>
+<p>对线程的支持既可由用户提供（即<strong>用户线程</strong>(user thread)<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，又可由内核提供（即<strong>内核线程</strong>(kernel thread)<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。用户线程在内核之上得到支持，且无需内核介入管理；而内核线程则直接由<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>支持和管理，并且几乎所有的现代<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>都支持内核线程。</p>
+<p>不难想到，用户线程与内核线程之间必须存在某种关系。下面就来探讨建立这种关系的几种常见方式。</p>
+<h3 id="many-to-one-model">Many-to-One Model<a class="headerlink" href="#many-to-one-model" title="Permanent link">⚓︎</a></h3>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C4/8.png"><img align="right" alt="" src="images/C4/8.png" width="30%"/></a></p>
+<p><strong>多对一模型</strong><span>(many-to-one model)<span class="heti-spacing"> </span></span>将多个用户线程映射到一个内核线程上。</p>
+<ul>
+<li>线程管理由用户空间的线程库完成，因此效率较高</li>
+<li>然而，如果某个线程执行了阻塞式的系统调用，整个进程将会被阻塞</li>
+<li>此外，由于同一时间仅有一个线程能够访问内核，多线程无法在多核系统上并行运行</li>
+</ul>
+<h3 id="one-to-one-model">One-to-One Model<a class="headerlink" href="#one-to-one-model" title="Permanent link">⚓︎</a></h3>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C4/7.png"><img align="right" alt="" src="images/C4/7.png" width="30%"/></a></p>
+<p><strong>一对一模型</strong><span>(one-to-one model)<span class="heti-spacing"> </span></span>将单个用户线程映射到一个内核线程。</p>
+<ul>
+<li>相比多对一模型，通过允许在线程发起阻塞式的系统调用时运行另一个线程，提供了更高的并发性</li>
+<li>同时它还允许多个线程在多处理器上并行运行</li>
+<li>唯一的缺点就是创建用户线程时需要创建相应的内核线程，而大量的内核线程可能会损害系统性能</li>
+<li><span>Linux<span class="heti-spacing"> </span></span>及<span class="heti-skip"><span class="heti-spacing"> </span>Windows<span class="heti-spacing"> </span></span>均实现了一对一模型</li>
+</ul>
+<h3 id="many-to-many-model">Many-to-Many Model<a class="headerlink" href="#many-to-many-model" title="Permanent link">⚓︎</a></h3>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C4/9.png"><img align="right" alt="" src="images/C4/9.png" width="30%"/></a></p>
+<p><strong>多对多模型</strong><span>(many-to-many model)<span class="heti-spacing"> </span></span>将多个用户线程多路复用<span class="heti-skip"><span class="heti-spacing"> </span>(multiplex)<span class="heti-spacing"> </span></span>到数量较少或相等的内核线程上。</p>
+<ul>
+<li>内核线程的数量视特定的应用程序或特定的机器而定</li>
+<li>对并发性的影响：开发者可根据需要创建任意多的用户线程，而对应的内核线程能在多处理器上并行运行；此外，当某个线程执行阻塞式的系统调用时，内核能够调度其他线程继续执行</li>
+</ul>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C4/10.png"><img align="right" alt="" src="images/C4/10.png" width="30%"/></a></p>
+<ul>
+<li>一个多对多模型的变种（<strong>两级模型</strong>(two-level model)<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：仍将多个用户线程复用到数量较少或相等的内核线程上，但同时允许一个用户线程绑定到单个内核线程上</li>
+<li>尽管这是三种模型中最灵活的一种，但在实践中难以实现<ul>
+<li>此外，随着大多数系统上处理核心数量的不断增加，限制内核线程的数量已变得不那么重要，因此现今多数<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>仍然采用一对一模型</li>
+</ul>
+</li>
+</ul>
+<h2 id="thread-libraries">Thread Libraries<a class="headerlink" href="#thread-libraries" title="Permanent link">⚓︎</a></h2>
+<p><strong>线程库</strong><span>(thread libraries)<span class="heti-spacing"> </span></span>为程序员提供了创建和管理线程的<span><span class="heti-spacing"> </span>API</span>。实现线程库的方法有：</p>
+<ul>
+<li>完全在<strong>用户空间</strong>内提供库，无需内核支持：该库的所有代码和数据结构都存在于用户空间中，这意味着调用库中的函数会导致在用户空间中进行<strong>本地函数调用</strong>，而非系统调用</li>
+<li>实现一个由<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>直接支持的<strong>内核级</strong>线程库：库的代码和数据结构位于内核空间，并且调用该<span class="heti-skip"><span class="heti-spacing"> </span>API<span class="heti-spacing"> </span></span>中的函数通常会引发对内核的<strong>系统调用</strong></li>
+</ul>
+<p>几种常用的线程库：</p>
+<ul>
+<li><strong>POSIX Pthreads</strong>：作为<span class="heti-skip"><span class="heti-spacing"> </span>POSIX<span class="heti-spacing"> </span></span>标准的线程扩展，既可以作为用户级库提供，也可以作为内核级库存在</li>
+<li><strong><span>Windows<span class="heti-spacing"> </span></span>线程库</strong>：适用于<span class="heti-skip"><span class="heti-spacing"> </span>Windows<span class="heti-spacing"> </span></span>系统的内核级库</li>
+<li><strong><span>Java<span class="heti-spacing"> </span></span>线程<span><span class="heti-spacing"> </span>API</span></strong>：允许在<span class="heti-skip"><span class="heti-spacing"> </span>Java<span class="heti-spacing"> </span></span>程序中直接创建和管理线程<ul>
+<li>然而，由于大多数情况下<span class="heti-skip"><span class="heti-spacing"> </span>JVM<span class="heti-spacing"> </span></span>运行在宿主<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>之上，因此<span class="heti-skip"><span class="heti-spacing"> </span>Java<span class="heti-spacing"> </span></span>线程<span class="heti-skip"><span class="heti-spacing"> </span>API<span class="heti-spacing"> </span></span>通常利用宿主系统上的现有的线程库来实现<ul>
+<li><span>Windows<span class="heti-spacing"> </span></span>系统<span><span class="heti-spacing"> </span>-&gt; Windows API</span></li>
+<li>UNIX、Linux、macOS -&gt; Pthreads</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>对于<span class="heti-skip"><span class="heti-spacing"> </span>POSIX<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>Windows<span class="heti-spacing"> </span></span>线程模型，任何<strong>全局数据</strong><span>(global data)<span class="heti-spacing"> </span></span>为属于同一进程的全部线程所共享。然而，由于<span class="heti-skip"><span class="heti-spacing"> </span>Java<span class="heti-spacing"> </span></span>没有“全局数据”的概念，因此在线程之间访问共享数据必须显式安排。</p>
+<p>创建多线程的策略分为同步线程和异步线程：</p>
+<ul>
+<li><strong>异步线程</strong>(asynchronous threading)：<ul>
+<li>父线程创建子线程后，父线程仍然可以继续执行当前任务，因此父子线程能够并发且独立地运行</li>
+<li>由于这些线程相互独立，因此它们之间通常很少共享数据</li>
+<li>这一方法常用于设计<span class="heti-skip"><span class="heti-spacing"> </span>web<span class="heti-spacing"> </span></span>服务器，以及响应式的用户界面等</li>
+</ul>
+</li>
+<li><strong>同步线程</strong>(synchronous threading)：<ul>
+<li>父线程创建一个或多个子线程后，这些子线程可以并发地执行任务，但父线程必须要等待所有子线程终止后才能继续执行</li>
+<li>当每个子线程完成其工作后，它便会终止并与父线程汇合<span><span class="heti-spacing"> </span>(join)</span>；只有在所有子线程都汇合之后，父线程才能恢复执行</li>
+<li>通常来说，同步线程涉及大量数据在线程间的共享，比如父线程可能会整合各个子线程的计算结果</li>
+</ul>
+</li>
+</ul>
+<h3 id="pthreads">Pthreads<a class="headerlink" href="#pthreads" title="Permanent link">⚓︎</a></h3>
+<p><strong>Pthreads</strong> 是指定义线程创建与同步<span class="heti-skip"><span class="heti-spacing"> </span>API<span class="heti-spacing"> </span></span>的<span class="heti-skip"><span class="heti-spacing"> </span>POSIX<span class="heti-spacing"> </span></span>标准。这是一份关于线程行为的<strong>规范</strong>(specification)，而非具体实现。因此<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>设计师可以通过他们希望的任何方式来实现这份规范，并且很多<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>实现了这份规范。</p>
+<p>下面展示了用基本的<span class="heti-skip"><span class="heti-spacing"> </span>Pthreads API<span class="heti-spacing"> </span></span>来构建一个计算非负整数累加的多线程程序。</p>
+<details class="code">
+<summary>代码实现</summary>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;pthread.h&gt;</span>
+</span><span id="__span-0-2"><a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+</span><span id="__span-0-3"><a href="#__codelineno-0-3" id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span>
+</span><span id="__span-0-4"><a href="#__codelineno-0-4" id="__codelineno-0-4" name="__codelineno-0-4"></a>
+</span><span id="__span-0-5"><a href="#__codelineno-0-5" id="__codelineno-0-5" name="__codelineno-0-5"></a><span class="kt">int</span><span class="w"> </span><span class="n">sum</span><span class="p">;</span><span class="w"> </span><span class="cm">/* this data is shared by the thread(s) */</span>
+</span><span id="__span-0-6"><a href="#__codelineno-0-6" id="__codelineno-0-6" name="__codelineno-0-6"></a><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="nf">runner</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">param</span><span class="p">);</span><span class="w"> </span><span class="cm">/* threads call this function */</span>
+</span><span id="__span-0-7"><a href="#__codelineno-0-7" id="__codelineno-0-7" name="__codelineno-0-7"></a>
+</span><span id="__span-0-8"><a href="#__codelineno-0-8" id="__codelineno-0-8" name="__codelineno-0-8"></a><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">argv</span><span class="p">[])</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-9"><a href="#__codelineno-0-9" id="__codelineno-0-9" name="__codelineno-0-9"></a><span class="w">    </span><span class="n">pthread_t</span><span class="w"> </span><span class="n">tid</span><span class="p">;</span><span class="w"> </span><span class="cm">/* the thread identifier */</span>
+</span><span id="__span-0-10"><a href="#__codelineno-0-10" id="__codelineno-0-10" name="__codelineno-0-10"></a><span class="w">    </span><span class="n">pthread_attr_t</span><span class="w"> </span><span class="n">attr</span><span class="p">;</span><span class="w"> </span><span class="cm">/* set of thread attributes */</span>
+</span><span id="__span-0-11"><a href="#__codelineno-0-11" id="__codelineno-0-11" name="__codelineno-0-11"></a>
+</span><span id="__span-0-12"><a href="#__codelineno-0-12" id="__codelineno-0-12" name="__codelineno-0-12"></a><span class="w">    </span><span class="cm">/* set the default attributes of the thread */</span>
+</span><span id="__span-0-13"><a href="#__codelineno-0-13" id="__codelineno-0-13" name="__codelineno-0-13"></a><span class="hll"><span class="w">    </span><span class="n">pthread_attr_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">attr</span><span class="p">);</span>
+</span></span><span id="__span-0-14"><a href="#__codelineno-0-14" id="__codelineno-0-14" name="__codelineno-0-14"></a><span class="w">    </span><span class="cm">/* create the thread */</span>
+</span><span id="__span-0-15"><a href="#__codelineno-0-15" id="__codelineno-0-15" name="__codelineno-0-15"></a><span class="hll"><span class="w">    </span><span class="n">pthread_create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tid</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">attr</span><span class="p">,</span><span class="w"> </span><span class="n">runner</span><span class="p">,</span><span class="w"> </span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+</span></span><span id="__span-0-16"><a href="#__codelineno-0-16" id="__codelineno-0-16" name="__codelineno-0-16"></a><span class="w">    </span><span class="cm">/* wait for the thread to exit */</span>
+</span><span id="__span-0-17"><a href="#__codelineno-0-17" id="__codelineno-0-17" name="__codelineno-0-17"></a><span class="hll"><span class="w">    </span><span class="n">pthread_join</span><span class="p">(</span><span class="n">tid</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+</span></span><span id="__span-0-18"><a href="#__codelineno-0-18" id="__codelineno-0-18" name="__codelineno-0-18"></a>
+</span><span id="__span-0-19"><a href="#__codelineno-0-19" id="__codelineno-0-19" name="__codelineno-0-19"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">"sum = %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">sum</span><span class="p">);</span>
+</span><span id="__span-0-20"><a href="#__codelineno-0-20" id="__codelineno-0-20" name="__codelineno-0-20"></a><span class="p">}</span>
+</span><span id="__span-0-21"><a href="#__codelineno-0-21" id="__codelineno-0-21" name="__codelineno-0-21"></a>
+</span><span id="__span-0-22"><a href="#__codelineno-0-22" id="__codelineno-0-22" name="__codelineno-0-22"></a><span class="cm">/* The thread will execute in this function */</span>
+</span><span id="__span-0-23"><a href="#__codelineno-0-23" id="__codelineno-0-23" name="__codelineno-0-23"></a><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="nf">runner</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">param</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-24"><a href="#__codelineno-0-24" id="__codelineno-0-24" name="__codelineno-0-24"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">upper</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">atoi</span><span class="p">(</span><span class="n">param</span><span class="p">);</span>
+</span><span id="__span-0-25"><a href="#__codelineno-0-25" id="__codelineno-0-25" name="__codelineno-0-25"></a><span class="w">    </span><span class="n">sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-0-26"><a href="#__codelineno-0-26" id="__codelineno-0-26" name="__codelineno-0-26"></a>
+</span><span id="__span-0-27"><a href="#__codelineno-0-27" id="__codelineno-0-27" name="__codelineno-0-27"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">upper</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span><span id="__span-0-28"><a href="#__codelineno-0-28" id="__codelineno-0-28" name="__codelineno-0-28"></a><span class="w">        </span><span class="n">sum</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+</span><span id="__span-0-29"><a href="#__codelineno-0-29" id="__codelineno-0-29" name="__codelineno-0-29"></a>
+</span><span id="__span-0-30"><a href="#__codelineno-0-30" id="__codelineno-0-30" name="__codelineno-0-30"></a><span class="hll"><span class="w">    </span><span class="n">pthread_exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span id="__span-0-31"><a href="#__codelineno-0-31" id="__codelineno-0-31" name="__codelineno-0-31"></a><span class="p">}</span>
+</span></code></pre></div>
+<ul>
+<li>所有<span class="heti-skip"><span class="heti-spacing"> </span>Pthreads<span class="heti-spacing"> </span></span>程序都必须包含 <code>pthread.h</code> 头文件</li>
+<li>在<span class="heti-skip"><span class="heti-spacing"> </span>Pthreads<span class="heti-spacing"> </span></span>程序中，独立线程从指定函数开始执行；对于上面的程序，这个函数就是 <code>runner()</code></li>
+<li>当程序启动时，一个控制线程始于 <code>main()</code> 函数；经过一些初始化后，<code>main()</code> 创建了第二个线程，该控制线程始于 <code>runner()</code> 函数</li>
+<li>这两个线程共享全局数据 <code>sum</code></li>
+<li>每个线程都有一套属性，包括栈大小和调度信息等，而 <code>pthread_attr_t attr</code> 就是用于声明该线程的属性，之后通过函数调用 <code>pthread_attr_init(&amp;attr)</code> 中设置这些属性。<ul>
+<li>由于这里没有明确设置任何属性，因此使用的是默认属性</li>
+</ul>
+</li>
+<li>通过调用 <code>pthread_create()</code> 函数创建了一个独立线程<ul>
+<li>除了传递线程标识符和线程属性外，还要传递新线程开始执行的函数名称<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>（这里是 <code>runner()</code> 函数）</li>
+<li>最后传递了命令行上提供的整数参数 <code>argv[1]</code></li>
+</ul>
+</li>
+<li>此时程序有两个线程：一个是在 <code>main()</code> 函数中的初始（或父）线程，另一个是在 <code>runner()</code> 函数中执行求和操作的求和（或子）线程</li>
+<li>该程序遵循线程创建<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>加入策略<ul>
+<li>在创建了求和线程之后，父线程将通过调用 <code>pthread_join()</code> 函数等待其终止</li>
+<li>当求和线程调用 <code>pthread_exit()</code> 函数时便会结束运行</li>
+<li>一旦求和线程返回结果，父线程将输出共享数据 <code>sum</code> 的值</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>运行程序时一定要传入一个正整数，不然会报错（不输入参数就是段错误<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
+</blockquote>
+<p>运行结果：</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C4/11.png"><img src="images/C4/11.png" width="80%"/></a>
+</div><p></p>
+</details>
+<p>使用 <code>pthread_join()</code> 函数等待多个线程终止的简单方法是将该函数包在一个 <code class="language-c highlight"><span class="k">for</span></code> 循环中，比如：</p>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="cp">#define NUM_THREADS 10</span>
+</span><span id="__span-1-2"><a href="#__codelineno-1-2" id="__codelineno-1-2" name="__codelineno-1-2"></a>
+</span><span id="__span-1-3"><a href="#__codelineno-1-3" id="__codelineno-1-3" name="__codelineno-1-3"></a><span class="cm">/* an array of threads to be joined upon */</span>
+</span><span id="__span-1-4"><a href="#__codelineno-1-4" id="__codelineno-1-4" name="__codelineno-1-4"></a><span class="n">pthread_t</span><span class="w"> </span><span class="n">workers</span><span class="p">[</span><span class="n">NUM</span><span class="w"> </span><span class="n">THREADS</span><span class="p">];</span>
+</span><span id="__span-1-5"><a href="#__codelineno-1-5" id="__codelineno-1-5" name="__codelineno-1-5"></a>
+</span><span id="__span-1-6"><a href="#__codelineno-1-6" id="__codelineno-1-6" name="__codelineno-1-6"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NUM_THREADS</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span><span id="__span-1-7"><a href="#__codelineno-1-7" id="__codelineno-1-7" name="__codelineno-1-7"></a><span class="hll"><span class="w">    </span><span class="n">pthread_join</span><span class="p">(</span><span class="n">workers</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+</span></span></code></pre></div>
+<h2 id="implicit-threading">Implicit Threading<a class="headerlink" href="#implicit-threading" title="Permanent link">⚓︎</a></h2>
+<p>随着多核处理技术的进步，应用程序包含的进程数也会随之增多。要设计这样的程序可不是一个简单的任务：程序员不仅要应对之前列出的<a href="#programming-challenges">那些挑战</a>，还包括程序正确性等其他挑战。</p>
+<p>解决这些困难，并且更好地支持并发与并行应用程序设计的一种方法是：将线程的创建与管理从应用开发者手中转移给<strong>编译器</strong><span>(compiler)<span class="heti-spacing"> </span></span>和<strong>运行时库</strong>(runtime libraries)，这一策略被称为<strong>隐式线程</strong>(implicit thread)。下面将探讨几种不同的设计方案，使应用程序能够借助隐式线程充分利用多核处理器的优势。</p>
+<p>需要注意的是，这些策略通常要求应用开发者识别出可以并行运行的<strong>任务</strong>，而非线程本身。任务通常以<strong>函数</strong>形式编写，随后由运行时库将其映射到独立的线程上，并且普遍采用<strong>多对多模型</strong>。这种方法的优势在于开发者只需确定并行任务的具体内容，而关于线程创建和管理的具体细节则由相关库来处理。</p>
+<h3 id="thread-pools">Thread Pools<a class="headerlink" href="#thread-pools" title="Permanent link">⚓︎</a></h3>
+<p>之前我们介绍过一个多线程的<span class="heti-skip"><span class="heti-spacing"> </span>web<span class="heti-spacing"> </span></span>服务器：每当服务器接收到请求时，它会创建一个独立的线程来处理该请求。然而这样的多线程服务器仍存在一些问题：</p>
+<ul>
+<li>考虑创建线程所需的时间成本，以及一旦任务完成，该线程即被丢弃的情况</li>
+<li>若允许每个并发请求都由新创建的线程来服务，那么系统中同时活跃的线程数量将不受限制，而无限制的线程可能会耗尽系统资源</li>
+</ul>
+<p>解决这些问题的一种方案是采用<strong>线程池</strong><span>(thread pool)<span class="heti-spacing"> </span></span>技术。它的基本思路是：</p>
+<ul>
+<li>在启动时创建一定数量的线程，并将它们置于一个池中，这些线程会处于空闲状态并等待被分配任务</li>
+<li>当服务器接收到请求时，它不会直接创建新线程，而是将请求提交给线程池后继续等待其他请求</li>
+<li>如果池中有空闲的线程，该线程会被唤醒并立即处理请求；若无线程可用，则该任务会排队等候，直到有线程释放出来</li>
+<li>一旦某个线程完成了它的工作，它会返回到池中，等待之后的工作分配</li>
+<li>当提交给池的任务能够异步执行时，使用线程池效果最佳</li>
+</ul>
+<p>使用线程池的好处有：</p>
+<ul>
+<li>使用现成的线程处理请求通常比等待创建新线程更快</li>
+<li>线程池限制了在任何时刻存在的线程数量，这对于无法支持大量并发线程的系统尤为重要</li>
+<li>将要执行的任务与创建任务的机制分离开来，使我们能够采用不同的策略来运行任务，比如可以安排任务在延迟一段时间后执行或定期执行</li>
+</ul>
+<p>线程池中的线程数量可以根据系统<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>数量、物理内存大小以及预期的并发客户端请求数等因素进行<strong>启发式的</strong><span>(heuristic)<span class="heti-spacing"> </span></span>设置。而更先进的线程池架构能够根据使用模式<strong>动态调整</strong>池中线程的数量；它的额外优势在于，当系统负载较低时，可以维持较小的线程池规模，从而减少内存占用。</p>
+<h3 id="fork-join">Fork Join<a class="headerlink" href="#fork-join" title="Permanent link">⚓︎</a></h3>
+<p>“<a href="#thread-libraries">线程库</a>”一节介绍的线程创建策略通常被称为<strong>分叉<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>合并</strong><span>(fork-join)<span class="heti-spacing"> </span></span>模型。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C4/12.png"><img src="images/C4/12.png" width="60%"/></a>
+</div>
+<ul>
+<li>父线程会创建（<strong>分叉</strong>(fork)）一个或多个子线程，随后等待这些子线程终止并与之<strong>合并</strong>(join)（获取并整合子进程的结果）</li>
+<li>这种同步模型通常是一种显式的线程创建，但它同样非常适合隐式的线程处理。对于后者，分叉阶段并不直接构建线程，而是指定并行任务</li>
+</ul>
+<p>一般会用一个库来管理创建的线程数量，并负责将任务分配给各个线程，比如<span class="heti-skip"><span class="heti-spacing"> </span>Java<span class="heti-spacing"> </span></span>提供相关的<span><span class="heti-spacing"> </span>API</span>（具体见教材<span><span class="heti-spacing"> </span><span class="arithmatex">\(P_{180-183}\)</span></span>）等。</p>
+<h2 id="threading-issues">Threading Issues<a class="headerlink" href="#threading-issues" title="Permanent link">⚓︎</a></h2>
+<h3 id="the-fork-and-exec-system-calls">The fork() and exec() System Calls<a class="headerlink" href="#the-fork-and-exec-system-calls" title="Permanent link">⚓︎</a></h3>
+<p>在多线程程序中，<code>fork()</code> 和 <code>exec()</code> 系统调用的语义会发生变化。</p>
+<ul>
+<li>一些<span class="heti-skip"><span class="heti-spacing"> </span>UNIX<span class="heti-spacing"> </span></span>系统提供了两种版本的 <code>fork()</code>：一种可以复制所有线程，另一种仅复制发起 <code>fork()</code> 系统调用的那个线程</li>
+<li>而 <code>exec()</code> 系统调用通常与上一章介绍的方式相同，也就是说如果一个线程调用 <code>exec()</code> 系统调用，参数中指定的程序将替换整个进程，包括其所有线程</li>
+<li>选择使用哪种版本的 <code>fork()</code> 取决于应用程序的具体情况<ul>
+<li>如果在执行分叉后立即调用 <code>exec()</code>，那么复制所有线程就显得多余了，因为随后由 <code>exec()</code> 参数指定的程序会取代原进程；因此在这种情况下，只复制调用线程更为合适</li>
+<li>然而<span class="heti-skip"><span class="heti-spacing"> </span>,<span class="heti-spacing"> </span></span>如果分离出的进程在分叉之后不立即调用<code>exec()</code><span class="heti-skip"><span class="heti-spacing"> </span>,<span class="heti-spacing"> </span></span>则应当完整地复制所有线程到新进程中</li>
+</ul>
+</li>
+</ul>
+<h3 id="signal-handling">Signal Handling<a class="headerlink" href="#signal-handling" title="Permanent link">⚓︎</a></h3>
+<p>在<span class="heti-skip"><span class="heti-spacing"> </span>UNIX<span class="heti-spacing"> </span></span>系统中，<strong>信号</strong><span>(signal)<span class="heti-spacing"> </span></span>用于通知进程的某个特定事件已经发生。根据事件的来源和发出信号的原因，信号的接收可以是<strong>同步</strong>的或<strong>异步</strong>的。无论是同步还是异步信号，它们都遵循相同的模式：</p>
+<ol>
+<li>发生一个特定事件时产生一个信号</li>
+<li>该信号被传递给一个进程</li>
+<li>一旦进程收到信号，必须对其进行处理</li>
+</ol>
+<p>同步和异步信号的例子有：</p>
+<ul>
+<li><strong>同步</strong>信号：<ul>
+<li>包括非法内存访问和除以零操作等</li>
+<li>如果正在运行的程序发生上述情况，就会产生一个信号，并且同步信号会传递给执行导致该信号出现的操作的同一进程</li>
+</ul>
+</li>
+<li><strong>异步</strong>信号：<ul>
+<li>当一个信号来自运行中进程的外部事件时，该进程会异步接收到这个信号</li>
+<li>包括通过特定按键（如<span><span class="heti-spacing"> </span>Ctrl + C</span>）终止进程以及定时器超时等</li>
+<li>通常异步信号会被发送给另一个进程</li>
+</ul>
+</li>
+</ul>
+<p>信号既可被<strong>默认的信号处理器</strong><span>(default signal handler)<span class="heti-spacing"> </span></span>处理，也可被<strong>用户定义的信号处理器</strong><span>(user-defined signal handler)<span class="heti-spacing"> </span></span>处理。</p>
+<ul>
+<li>每个信号都有一个默认的信号处理器，内核处理信号时就会运行默认处理器</li>
+<li>可以用用户自定义的信号处理器覆盖默认版本，用于处理信号</li>
+<li>信号可以有不同的的处理方式，包括直接忽略，或通过终止程序来处理</li>
+</ul>
+<p>然而，在多线程程序中传递信号相对复杂，将信号传递给谁就成为一个不可忽视的问题，可能的选项有：</p>
+<ul>
+<li>将信号传递给该信号<strong>所适用的线程</strong></li>
+<li>将信号传递给进程中的<strong>每一个线程</strong></li>
+<li>将信号传递给进程中的<strong>某些特定线程</strong></li>
+<li><strong>指定一个特定的线程</strong>来接收该进程的<strong>所有信号</strong></li>
+</ul>
+<p>信号的传递方式取决于所产生信号的类型：</p>
+<ul>
+<li>同步信号需要传递给引发该信号的线程，而非进程中的其他线程</li>
+<li>异步信号的情况则不那么明确<ul>
+<li>一些异步信号（比如终止进程的信号）应当发送给所有线程</li>
+</ul>
+</li>
+</ul>
+<p>在<span class="heti-skip"><span class="heti-spacing"> </span>UNIX<span class="heti-spacing"> </span></span>中，传递信号的标准函数是 <code class="language-c highlight"><span class="n">kill</span><span class="p">(</span><span class="n">pid</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="n">pid</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">signal</span><span class="p">)</span></code>，它指定了将特定信号（<code>signal</code>）传递给哪个进程（<code>pid</code><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。此外某些特定按键组合也能传递信号，比如<span class="keys"><kbd class="key-control"><span class="heti-skip"><span class="heti-spacing"> </span>Ctrl<span class="heti-spacing"> </span></span></kbd><span><span class="heti-skip"><span class="heti-spacing"> </span>+<span class="heti-spacing"> </span></span></span><kbd class="key-c"><span class="heti-skip"><span class="heti-spacing"> </span>C<span class="heti-spacing"> </span></span></kbd></span>发送 <code>SIGINT</code>（中断）信号（通常用于终止进程<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，<span class="keys"><kbd class="key-control"><span>Ctrl<span class="heti-spacing"> </span></span></kbd><span><span>+<span class="heti-spacing"> </span></span></span><kbd class="key-z"><span>Z<span class="heti-spacing"> </span></span></kbd></span>发送 <code>SIGSTP</code>（停止）信号，因而暂停进程的执行（之后可通过 <code>fg</code> 等命令继续该命令<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
+<p>而<span class="heti-skip"><span class="heti-spacing"> </span>POSIX Pthreads<span class="heti-spacing"> </span></span>提供的将信号传递给特定线程（<code>tid</code>）的函数是 <code class="language-c highlight"><span class="n">pthread</span><span class="w"> </span><span class="n">kill</span><span class="p">(</span><span class="n">pthread</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="n">tid</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">signal</span><span class="p">)</span></code>。</p>
+<h3 id="thread-cancellation">Thread Cancellation<a class="headerlink" href="#thread-cancellation" title="Permanent link">⚓︎</a></h3>
+<p><strong>线程取消</strong><span>(thread cancellation)<span class="heti-spacing"> </span></span>是指在某个线程完成之前终止它的执行。例子有：</p>
+<ul>
+<li>当多个线程同时搜索数据库时，一旦有一个线程返回了结果，其余线程便可能被取消</li>
+<li>用户点击<span class="heti-skip"><span class="heti-spacing"> </span>web<span class="heti-spacing"> </span></span>浏览器上的停止按钮以中断页面加载过程，此时所有正在加载页面的线程都会被取消</li>
+</ul>
+<p>一个可能要被取消的线程通常被称为<strong>目标线程</strong>(target thread)。目标线程的取消可能发生在以下场景中：</p>
+<ul>
+<li><strong>异步取消</strong>(asynchronous cancellation)：某个线程立即终止目标线程</li>
+<li><strong>延迟取消</strong>(deferred cancellation)：目标线程周期性地检查是否应该终止，从而使其有机会以有序的方式自行终止</li>
+</ul>
+<p>取消操作的难点在于：在资源已被分配给一个已取消的线程时，或者某个线程在更新与其他线程共享的数据过程中被取消，这对<strong>异步取消</strong>尤为棘手。通常，<span>OS<span class="heti-spacing"> </span></span>会从已取消的线程中回收系统资源，但并非所有资源都能得到回收。因此，异步取消一个线程可能无法释放必要的系统级资源。</p>
+<p>相比之下，采用<strong>延迟取消</strong>的方式时，一个线程指示目标线程应被取消，但实际上的取消操作仅在目标线程检查了一个标志位、确认自身是否应被取消之后才发生。这样一来，该线程可以在能够被安全撤销时执行这一检查。</p>
+<p>在<span class="heti-skip"><span class="heti-spacing"> </span>Pthreads<span class="heti-spacing"> </span></span>中，线程取消是通过调用 <code>pthread_cancel()</code> 函数来发起的，其中目标线程的标识符作为参数传递给该函数。</p>
+<details class="example">
+<summary>例子</summary>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-2-1"><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="n">pthread_t</span><span class="w"> </span><span class="n">tid</span><span class="p">;</span>
+</span><span id="__span-2-2"><a href="#__codelineno-2-2" id="__codelineno-2-2" name="__codelineno-2-2"></a>
+</span><span id="__span-2-3"><a href="#__codelineno-2-3" id="__codelineno-2-3" name="__codelineno-2-3"></a><span class="cm">/* create the thread */</span>
+</span><span id="__span-2-4"><a href="#__codelineno-2-4" id="__codelineno-2-4" name="__codelineno-2-4"></a><span class="n">pthread_create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tid</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">worker</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+</span><span id="__span-2-5"><a href="#__codelineno-2-5" id="__codelineno-2-5" name="__codelineno-2-5"></a>
+</span><span id="__span-2-6"><a href="#__codelineno-2-6" id="__codelineno-2-6" name="__codelineno-2-6"></a><span class="cm">/* ... */</span>
+</span><span id="__span-2-7"><a href="#__codelineno-2-7" id="__codelineno-2-7" name="__codelineno-2-7"></a>
+</span><span id="__span-2-8"><a href="#__codelineno-2-8" id="__codelineno-2-8" name="__codelineno-2-8"></a><span class="cm">/* cancel the thread */</span>
+</span><span id="__span-2-9"><a href="#__codelineno-2-9" id="__codelineno-2-9" name="__codelineno-2-9"></a><span class="hll"><span class="n">pthread_cancel</span><span class="p">(</span><span class="n">tid</span><span class="p">);</span>
+</span></span><span id="__span-2-10"><a href="#__codelineno-2-10" id="__codelineno-2-10" name="__codelineno-2-10"></a>
+</span><span id="__span-2-11"><a href="#__codelineno-2-11" id="__codelineno-2-11" name="__codelineno-2-11"></a><span class="cm">/* wait for the thread to terminate */</span>
+</span><span id="__span-2-12"><a href="#__codelineno-2-12" id="__codelineno-2-12" name="__codelineno-2-12"></a><span class="n">pthread_join</span><span class="p">(</span><span class="n">tid</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+</span></code></pre></div>
+</details>
+<p>调用 <code>pthread_cancel()</code> 仅表示向目标线程<strong>发送取消请求</strong>，但实际的取消操作取决于目标线程如何处理该请求。当目标线程最终被取消时，发起取消的线程中对 <code>pthread_join()</code> 的调用将返回。<span>Pthreads<span class="heti-spacing"> </span></span>支持三种取消模式，每种模式都定义为一个状态和一个类型，线程可以通过<span class="heti-skip"><span class="heti-spacing"> </span>API<span class="heti-spacing"> </span></span>设置其自身的取消状态和类型，具体如下表所示：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">模式</th>
+<th style="text-align: center;">状态</th>
+<th style="text-align: center;">类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">Off</td>
+<td style="text-align: center;">Disabled</td>
+<td style="text-align: center;">-</td>
+</tr>
+<tr>
+<td style="text-align: center;">Deferred</td>
+<td style="text-align: center;">Enabled</td>
+<td style="text-align: center;">Deferred</td>
+</tr>
+<tr>
+<td style="text-align: center;">Asynchronous</td>
+<td style="text-align: center;">Enabled</td>
+<td style="text-align: center;">Asynchronous</td>
+</tr>
+</tbody>
+</table>
+<p>如上表所示，<span>Pthreads<span class="heti-spacing"> </span></span>允许线程<strong>禁用</strong>或<strong>启用</strong>取消。显然，如果禁用取消，则线程无法被取消，但取消请求仍然挂起，因此线程可以稍后启用取消并响应请求。</p>
+<p><strong>默认</strong>的取消类型是<strong>延迟取消</strong>。然而，取消仅在线程达到<strong>取消点</strong><span>(cancellation point)<span class="heti-spacing"> </span></span>时发生。<span>POSIX<span class="heti-spacing"> </span></span>和标准<span class="heti-skip"><span class="heti-spacing"> </span>C<span class="heti-spacing"> </span></span>库中的大多数阻塞系统调用都被定义为取消点。建立取消点的一种技术是调用 <code>pthread_testcancel()</code> 函数。</p>
+<ul>
+<li>如果发现存在挂起的取消请求，对 <code>pthread_testcancel()</code> 的调用将不会返回，线程将终止</li>
+<li>否则，对函数的调用将返回，线程将继续运行</li>
+</ul>
+<p>此外，<span>Pthreads<span class="heti-spacing"> </span></span>在线程被取消时可以调用一个名为<strong>清理处理器</strong><span>(cleanup handler)<span class="heti-spacing"> </span></span>的函数，此函数允许在线程终止之前释放线程可能获取的任何资源。</p>
+<p>以下代码展示了线程如何使用延迟取消来响应取消请求：</p>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-3-1"><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-2"><a href="#__codelineno-3-2" id="__codelineno-3-2" name="__codelineno-3-2"></a><span class="w">    </span><span class="cm">/* do some work for a while */</span>
+</span><span id="__span-3-3"><a href="#__codelineno-3-3" id="__codelineno-3-3" name="__codelineno-3-3"></a>
+</span><span id="__span-3-4"><a href="#__codelineno-3-4" id="__codelineno-3-4" name="__codelineno-3-4"></a><span class="w">    </span><span class="cm">/* check if there is a cancellation request */</span>
+</span><span id="__span-3-5"><a href="#__codelineno-3-5" id="__codelineno-3-5" name="__codelineno-3-5"></a><span class="hll"><span class="w">    </span><span class="n">pthread_testcancel</span><span class="p">();</span>
+</span></span><span id="__span-3-6"><a href="#__codelineno-3-6" id="__codelineno-3-6" name="__codelineno-3-6"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>鉴于异步取消存在的问题，<span>Pthreads<span class="heti-spacing"> </span></span>官方文档并不推荐使用异步取消方式，因此这里便不再赘述。</p>
+<p>值得一提的是，在<span class="heti-skip"><span class="heti-spacing"> </span>Linux<span class="heti-spacing"> </span></span>系统上，通过<span class="heti-skip"><span class="heti-spacing"> </span>Pthreads API<span class="heti-spacing"> </span></span>实现的线程取消是通过<strong>信号</strong>来处理的。</p>
+<h3 id="thread-local-storage">Thread-Local Storage<a class="headerlink" href="#thread-local-storage" title="Permanent link">⚓︎</a></h3>
+<p>线程间的数据共享是多线程编程的优势之一。但是在某些情况下，每个线程可能需要拥有特定数据的独立副本，我们将这类数据称为<strong>线程局部存储</strong>(thread-local storage, <strong>TLS</strong>)。</p>
+<p>例如，在事务处理系统中，我们可能会为每个事务分配一个单独的线程来服务，而每个事务可能被赋予唯一的<span><span class="heti-spacing"> </span>id</span>。为了将各个线程与其唯一的事务<span class="heti-skip"><span class="heti-spacing"> </span>id<span class="heti-spacing"> </span></span>关联起来，可以用<span class="heti-skip"><span class="heti-spacing"> </span>TLS<span class="heti-spacing"> </span></span>实现。</p>
+<p>需要注意的是，不要将<span class="heti-skip"><span class="heti-spacing"> </span>TLS<span class="heti-spacing"> </span></span>与<strong>局部变量</strong>混为一谈：</p>
+<ul>
+<li>局部变量仅在单次函数调用期间可见</li>
+<li>而<span class="heti-skip"><span class="heti-spacing"> </span>TLS<span class="heti-spacing"> </span></span>数据则在多次函数调用间仍然保持可见性</li>
+</ul>
+<p>另外，<span>TLS<span class="heti-spacing"> </span></span>与<strong>静态数据</strong>相似，但不同之处在于，<span>TLS<span class="heti-spacing"> </span></span>数据对每个线程来说是唯一的。而实际上，<span>TLS<span class="heti-spacing"> </span></span>通常被声明为 <code class="language-c highlight"><span class="k">static</span></code>。</p>
+<p>大多数线程库和编译器都提供了对<span class="heti-skip"><span class="heti-spacing"> </span>TLS<span class="heti-spacing"> </span></span>的支持，比如<span class="heti-skip"><span class="heti-spacing"> </span>GCC<span class="heti-spacing"> </span></span>编译器则提供了存储类关键字 <code>__thread</code> 来声明<span class="heti-skip"><span class="heti-spacing"> </span>TLS<span class="heti-spacing"> </span></span>数据。举例来说，
+如果我们想为每个线程分配一个唯一 id，可以这样声明：<code class="language-c highlight"><span class="k">static</span><span class="w"> </span><span class="n">__thread</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">threadID</span><span class="p">;</span></code></p>
+<h3 id="scheduler-activation">Scheduler Activation<a class="headerlink" href="#scheduler-activation" title="Permanent link">⚓︎</a></h3>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C4/13.png"><img align="right" alt="" src="images/C4/13.png" width="20%"/></a></p>
+<p>最后一个要讨论的问题是内核与线程库之间的通信，这对多对多模型和两级模型中可能是必需的，因为这有助于动态调整内核线程的数量，从而确保最佳性能。</p>
+<p>许多采用多对多或两级模型的系统在用户线程与内核线程之间设置了一个中间的数据结构，通常被称为<strong>轻量级进程</strong>(lightweight process, <strong>LWP</strong>)，如右图所示。</p>
+<ul>
+<li>对于用户线程库而言，<span>LWP<span class="heti-spacing"> </span></span>如同一个<strong>虚拟处理器</strong>，应用程序可以在其上调度用户线程运行</li>
+<li>每个<span class="heti-skip"><span class="heti-spacing"> </span>LWP<span class="heti-spacing"> </span></span>都与一个内核线程相连，而<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>正是通过这些内核线程来安排在物理处理器上运行的</li>
+<li>如果某个内核线程阻塞（例如等待<span class="heti-skip"><span class="heti-spacing"> </span>I/O<span class="heti-spacing"> </span></span>操作完成<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，相应的<span class="heti-skip"><span class="heti-spacing"> </span>LWP<span class="heti-spacing"> </span></span>也会随之阻塞，进而依附于该<span class="heti-skip"><span class="heti-spacing"> </span>LWP<span class="heti-spacing"> </span></span>的用户线程同样会被阻塞</li>
+</ul>
+<p>应用程序可能需要任意数量的<span class="heti-skip"><span class="heti-spacing"> </span>LWPs<span class="heti-spacing"> </span></span>才能高效运行。比如对于<span class="heti-skip"><span class="heti-spacing"> </span>I/O<span class="heti-spacing"> </span></span>密集型的应用来说，可能需要多个<span class="heti-skip"><span class="heti-spacing"> </span>LWPs<span class="heti-spacing"> </span></span>同时执行。通常，每个并发的阻塞系统调用都需要一个<span class="heti-skip"><span class="heti-spacing"> </span>LWP<span class="heti-spacing"> </span></span>来处理。</p>
+<p>举例来说，如果有<span class="heti-skip"><span class="heti-spacing"> </span>5<span class="heti-spacing"> </span></span>个不同的文件读取请求同时发生，就需要<span class="heti-skip"><span class="heti-spacing"> </span>5<span class="heti-spacing"> </span></span>个<span class="heti-skip"><span class="heti-spacing"> </span>LWPs<span class="heti-spacing"> </span></span>来应对，因为它们可能全部在内核中等待<span class="heti-skip"><span class="heti-spacing"> </span>I/O<span class="heti-spacing"> </span></span>完成；如果一个进程只有<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>个<span class="heti-skip"><span class="heti-spacing"> </span>LWPs<span class="heti-spacing"> </span></span>可用，那么第<span class="heti-skip"><span class="heti-spacing"> </span>5<span class="heti-spacing"> </span></span>个请求就必须等到其中一个<span class="heti-skip"><span class="heti-spacing"> </span>LWP<span class="heti-spacing"> </span></span>从内核返回后才能得到处理。</p>
+<p>用户线程库与内核之间的一种通信方案叫做<strong>调度器激活</strong>(scheduler activation)。其工作原理如下：</p>
+<ul>
+<li>内核为应用程序提供一组虚拟处理器（LWPs<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，应用程序可以将用户线程调度到可用的虚拟处理器上运行</li>
+<li>此外，内核必须向应用程序通知某些事件，这一过程称为<strong>上行调用</strong>(upcall)<ul>
+<li>上行调用由线程库通过<strong>上行调用处理程序</strong><span>(upcall handler)<span class="heti-spacing"> </span></span>来处理，且这些处理程序必须在虚拟处理器上执行</li>
+</ul>
+</li>
+</ul>
+<p>触发上行调用的一种情况是应用程序线程即将阻塞的时候。</p>
+<ul>
+<li>在这种场景下，内核会向应用程序发起一个上行调用，通知它有一个线程将要阻塞，并指明具体的线程</li>
+<li>随后，内核为应用程序分配一个新的虚拟处理器，之后应用程序在这个新的虚拟处理器上运行一个上行调用处理程序，该程序保存阻塞线程的状态并释放正在运行阻塞线程的虚拟处理器</li>
+<li>接着，上行调用处理程序调度另一个有资格运行的线程到新的虚拟处理器上执行</li>
+<li>当阻塞线程等待的事件发生时，内核再次向线程库发起另一个上行调用，告知之前被阻塞的线程现在可以运行了</li>
+<li>此事件的上行调用处理程序同样需要一个虚拟处理器；内核可能会分配一个新的虚拟处理器，或抢占某个用户线程的虚拟处理器来运行这个处理程序</li>
+<li>在将解除阻塞的线程标记为可运行后，应用程序会在可用的虚拟处理器上调度一个有资格运行的线程执行</li>
+</ul>
+<aside class="md-source-file">
+<span class="md-source-file__fact">
+<span class="md-icon" title="最后更新">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"></path></svg>
+</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年11月7日 20:28:10">2025年11月7日 20:28:10</span>
+</span>
+<span class="md-source-file__fact">
+<span class="md-icon" title="创建日期">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"></path></svg>
+</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年11月7日 20:28:10">2025年11月7日 20:28:10</span>
+</span>
+</aside>
+<p style="font-size: 30px; font-weight: 600">评论区</p>
+<div>
+    如果大家有什么问题或想法，欢迎在下方留言~
+  </div>
+<!-- Insert generated snippet here -->
+<script async="" crossorigin="anonymous" data-category="Announcements" data-category-id="DIC_kwDOMAb9Zs4CfmpP" data-emit-metadata="0" data-input-position="bottom" data-lang="zh-CN" data-mapping="pathname" data-reactions-enabled="1" data-repo="noughtq/notebook" data-repo-id="R_kgDOMAb9Zg" data-strict="0" data-theme="preferred_color_scheme" src="https://giscus.app/client.js">
+</script>
+<!-- Synchronize Giscus theme with palette -->
+<script>
+    var giscus = document.querySelector("script[src*=giscus]")
+
+    // Set palette on initial load
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object") {
+      var theme = palette.color.scheme === "slate"
+        ? "transparent_dark"
+        : "light"
+
+      // Instruct Giscus to set theme
+      giscus.setAttribute("data-theme", theme) 
+    }
+
+    // Register event handlers after documented loaded
+    document.addEventListener("DOMContentLoaded", function() {
+      var ref = document.querySelector("[data-md-component=palette]")
+      ref.addEventListener("change", function() {
+        var palette = __md_get("__palette")
+        if (palette && typeof palette.color === "object") {
+          var theme = palette.color.scheme === "slate"
+            ? "dark"
+            : "light"
+
+          // Instruct Giscus to change theme
+          var frame = document.querySelector(".giscus-frame")
+          frame.contentWindow.postMessage(
+            { giscus: { setConfig: { theme } } },
+            "https://giscus.app"
+          )
+        }
+      })
+    })
+  </script>
+<!-- 标题计数器 -->
+<link href="/css/counter.css" rel="stylesheet"/>
+<!-- 主页个性化 -->
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+<button class="md-top md-icon" data-md-component="top" hidden="" type="button">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  回到页面顶部
+</button>
+</main>
+<footer class="md-footer">
+<nav aria-label="页脚" class="md-footer__inner md-grid">
+<a aria-label="上一页: Processes" class="md-footer__link md-footer__link--prev" href="3.html">
+<div class="md-footer__button md-icon">
+<svg viewbox="0 0 256 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" fill="currentColor"></path></svg>
+</div>
+<div class="md-footer__title">
+<span class="md-footer__direction">
+                上一页
+              </span>
+<div class="md-ellipsis">
+                Processes
+              </div>
+</div>
+</a>
+<a aria-label="下一页: CPU Scheduling" class="md-footer__link md-footer__link--next" href="5.html">
+<div class="md-footer__title">
+<span class="md-footer__direction">
+                下一页
+              </span>
+<div class="md-ellipsis">
+                CPU Scheduling
+              </div>
+</div>
+<div class="md-footer__button md-icon">
+<svg viewbox="0 0 256 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M247.1 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L179.2 256 41.9 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z" fill="currentColor"></path></svg>
+</div>
+</a>
+</nav>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright" style="margin-left: 33.5%">
+<div class="md-copyright__highlight" style="text-align: center">
+        Copyright © 2024-2025 <a href="https://github.com/NoughtQ">NoughtQ</a>
+</div>
+    
+    
+      Powered by
+      <a href="https://www.mkdocs.org/" rel="noopener" target="_blank">
+        MkDocs
+      </a>
+      with theme
+      <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+        Material
+      </a>
+      modified by
+      <a href="https://github.com/NoughtQ" rel="noopener" target="_blank">
+        NoughtQ
+      </a>
+<!-- <br> -->
+<div style="text-align: center;">
+<a href="https://icp.gov.moe/?keyword=20252357" target="_blank">萌ICP备20252357号</a>
+</div>
+</div>
+<div class="md-social">
+<a class="md-social__link" href="https://noughtq.top" rel="noopener" target="_blank" title="noughtq.top">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M277.8 8.6c-12.3-11.4-31.3-11.4-43.5 0l-224 208c-9.6 9-12.8 22.9-8 35.1S18.8 272 32 272h16v176c0 35.3 28.7 64 64 64h288c35.3 0 64-28.7 64-64V272h16c13.2 0 25-8.1 29.8-20.3s1.6-26.2-8-35.1zM240 320h32c26.5 0 48 21.5 48 48v96H192v-96c0-26.5 21.5-48 48-48" fill="currentColor"></path></svg>
+</a>
+<a class="md-social__link" href="https://blog.noughtq.top" rel="noopener" target="_blank" title="blog.noughtq.top">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M224 24c0-13.3 10.7-24 24-24 145.8 0 264 118.2 264 264 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-119.3-96.7-216-216-216-13.3 0-24-10.7-24-24M80 96c26.5 0 48 21.5 48 48v224c0 26.5 21.5 48 48 48s48-21.5 48-48-21.5-48-48-48c-8.8 0-16-7.2-16-16v-64c0-8.8 7.2-16 16-16 79.5 0 144 64.5 144 144s-64.5 144-144 144S32 447.5 32 368V144c0-26.5 21.5-48 48-48m168 0c92.8 0 168 75.2 168 168 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-66.3-53.7-120-120-120-13.3 0-24-10.7-24-24s10.7-24 24-24" fill="currentColor"></path></svg>
+</a>
+<a class="md-social__link" href="https://github.com/noughtq" rel="noopener" target="_blank" title="github.com">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2" fill="currentColor"></path></svg>
+</a>
+<a class="md-social__link" href="mailto:noughtq666@gmail.com" rel="noopener" target="_blank" title="">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m20 8-8 5-8-5V6l8 5 8-5m0-2H4c-1.11 0-2 .89-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2"></path></svg>
+</a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"base": "../..", "features": ["content.action.edit", "content.action.view", "content.code.copy", "content.code.annotate", "content.footnote.tooltips", "navigation.tabs", "navigation.top", "navigation.footer", "navigation.indexes", "navigation.tracking", "navigation.prune", "search.share"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.92b07e13.min.js"></script>
+<script src="../../js/anchor.js"></script>
+<script src="../../js/katex.js"></script>
+<script src="../../js/toc.js"></script>
+<script src="../../js/typed.js"></script>
+<script src="../../js/custom.js"></script>
+<script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+<script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.js"></script>
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>
