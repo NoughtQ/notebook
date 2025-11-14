@@ -1,0 +1,1747 @@
+<!DOCTYPE html>
+<html class="no-js" lang="zh"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="NoughtQ的笔记本，主要记录一些 CS 相关的笔记" name="description"/>
+<meta content="NoughtQ" name="author"/>
+<link href="https://notebook.noughtq.top/sys/aai/5.html" rel="canonical"/>
+<link href="4.html" rel="prev"/>
+<link href="../../web/index.html" rel="next"/>
+<link href="../../feed_rss_created.xml" rel="alternate" title="RSS 订阅" type="application/rss+xml"/>
+<link href="../../feed_rss_updated.xml" rel="alternate" title="已更新内容的 RSS 订阅" type="application/rss+xml"/>
+<link href="../../assets/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.6.23" name="generator"/>
+<title>Arithmetic and Logic Instructions - NoughtQ的笔记本</title>
+<link href="../../assets/stylesheets/main.84d31ad4.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/palette.06af60db.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=JetBrains+Mono,+LXGW+WenKai+Screen+GB+Screen:300,300i,400,400i,700,700i%7CJetBrains+Mono,+Consolas:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"JetBrains Mono, LXGW WenKai Screen GB Screen";--md-code-font:"JetBrains Mono, Consolas"}</style>
+<link href="../../css/heti.css" rel="stylesheet"/>
+<link href="../../css/timeline.css" rel="stylesheet"/>
+<link href="../../css/card.css" rel="stylesheet"/>
+<link href="../../css/custom.css" rel="stylesheet"/>
+<link href="../../css/extra_changelog.css" rel="stylesheet"/>
+<link href="../../css/header.css" rel="stylesheet"/>
+<link href="../../css/sidebar.css" rel="stylesheet"/>
+<link href="../../css/neoteroi-css.css" rel="stylesheet"/>
+<link href="../../css/toc_extra.css" rel="stylesheet"/>
+<link href="https://unpkg.com/katex@0/dist/katex.min.css" rel="stylesheet"/>
+<link href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css" rel="stylesheet"/>
+<link href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.css" rel="stylesheet"/>
+<script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-43NH8CVRCJ"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-43NH8CVRCJ",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-43NH8CVRCJ",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+<script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+<link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+<body data-md-color-accent="indigo" data-md-color-primary="indigo" data-md-color-scheme="slate" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#arithmetic-and-logic-instructions">
+          跳转至
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header" data-md-component="header">
+<nav aria-label="页眉" class="md-header__inner md-grid">
+<a aria-label="NoughtQ的笔记本" class="md-header__button md-logo" data-md-component="logo" href="../.." title="NoughtQ的笔记本">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.05 9H7.06V6h1.99V4.03H7.06v-1c0-1.11.89-1.99 1.99-1.99h5.98V8l2.47-1.5L20 8V1.04h1c1.05 0 2 .96 2 1.99V17c0 1.03-.95 2-2 2H9.05c-1.05 0-1.99-.95-1.99-2v-1h1.99v-2H7.06v-3h1.99zM1 18h2v-3H1v-2h2v-3H1V8h2V5h2v3H3v2h2v3H3v2h2v3H3v2h2v1h16v2H5a2 2 0 0 1-2-2v-1H1z"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            NoughtQ的笔记本
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              Arithmetic and Logic Instructions
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="Dark Mode" class="md-option" data-md-color-accent="indigo" data-md-color-media="(prefer-color-scheme: dark)" data-md-color-primary="indigo" data-md-color-scheme="slate" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="Dark Mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"></path></svg>
+</label>
+<input aria-label="Light Mode" class="md-option" data-md-color-accent="indigo" data-md-color-media="(prefer-color-scheme: light)" data-md-color-primary="indigo" data-md-color-scheme="default" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="Light Mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="搜索" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="搜索" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 256 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path></svg>
+</label>
+<nav aria-label="查找" class="md-search__options">
+<a aria-label="分享" class="md-search__icon md-icon" data-clipboard="" data-clipboard-text="" data-md-component="search-share" href="javascript:void(0)" tabindex="-1" title="分享">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"></path></svg>
+</a>
+<button aria-label="清空当前内容" class="md-search__icon md-icon" tabindex="-1" title="清空当前内容" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header__source">
+<a class="md-source" data-md-component="source" href="https://github.com/noughtq/notebook" title="前往仓库">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    NoughtQ/Notebook
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<nav aria-label="标签" class="md-tabs" data-md-component="tabs">
+<div class="md-grid">
+<ul class="md-tabs__list">
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../index.html">
+          
+  
+  
+    
+  
+  🏫主页
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../lang/index.html">
+          
+  
+  
+    
+  
+  🔡编程语言
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../math/index.html">
+          
+  
+  
+    
+  
+  📊数学相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../algo/index.html">
+          
+  
+  
+    
+  
+  🧮算法相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../software/index.html">
+          
+  
+  
+    
+  
+  💾软件相关
+
+        </a>
+</li>
+<li class="md-tabs__item md-tabs__item--active">
+<a class="md-tabs__link" href="../index.html">
+          
+  
+  
+    
+  
+  💻系统相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../web/index.html">
+          
+  
+  
+    
+  
+  🌏Web相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../sec/ctf-101/index.html">
+          
+  
+  
+    
+  
+  🛡️信息安全
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../ai/index.html">
+          
+  
+  
+    
+  
+  🤖人工智能
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../misc/index.html">
+          
+  
+  
+    
+  
+  🗃️杂项
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../tools/index.html">
+          
+  
+  
+    
+  
+  🛠️工具
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../papers/index.html">
+          
+  
+  
+    
+  
+  📑论文阅读
+
+        </a>
+</li>
+</ul>
+</div>
+</nav>
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="导航栏" class="md-nav md-nav--primary md-nav--lifted" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="NoughtQ的笔记本" class="md-nav__button md-logo" data-md-component="logo" href="../.." title="NoughtQ的笔记本">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.05 9H7.06V6h1.99V4.03H7.06v-1c0-1.11.89-1.99 1.99-1.99h5.98V8l2.47-1.5L20 8V1.04h1c1.05 0 2 .96 2 1.99V17c0 1.03-.95 2-2 2H9.05c-1.05 0-1.99-.95-1.99-2v-1h1.99v-2H7.06v-3h1.99zM1 18h2v-3H1v-2h2v-3H1V8h2V5h2v3H3v2h2v3H3v2h2v3H3v2h2v1h16v2H5a2 2 0 0 1-2-2v-1H1z"></path></svg>
+</a>
+    NoughtQ的笔记本
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-component="source" href="https://github.com/noughtq/notebook" title="前往仓库">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    NoughtQ/Notebook
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../index.html">
+<span class="md-ellipsis">
+    🏫主页
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../lang/index.html">
+<span class="md-ellipsis">
+    🔡编程语言
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../math/index.html">
+<span class="md-ellipsis">
+    📊数学相关
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../algo/index.html">
+<span class="md-ellipsis">
+    🧮算法相关
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../software/index.html">
+<span class="md-ellipsis">
+    💾软件相关
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_6" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../index.html">
+<span class="md-ellipsis">
+    💻系统相关
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="true" aria-labelledby="__nav_6_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_6">
+<span class="md-nav__icon md-icon"></span>
+            💻系统相关
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../csapp/index.html">
+<span class="md-ellipsis">
+    CSAPP
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../dld/index.html">
+<span class="md-ellipsis">
+    数字逻辑设计
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../co/index.html">
+<span class="md-ellipsis">
+    计算机组成
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../ca/index.html">
+<span class="md-ellipsis">
+    计算机体系结构
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../db/index.html">
+<span class="md-ellipsis">
+    数据库系统
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../os/index.html">
+<span class="md-ellipsis">
+    操作系统
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_6_8" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="index.html">
+<span class="md-ellipsis">
+    汇编与接口
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_6_8" id="__nav_6_8_label" tabindex="0">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="true" aria-labelledby="__nav_6_8_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_6_8">
+<span class="md-nav__icon md-icon"></span>
+            汇编与接口
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="1.html">
+<span class="md-ellipsis">
+    Introduction to the Microprocessor and Computer
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="2.html">
+<span class="md-ellipsis">
+    The Microprocessor and its Architecture
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="3.html">
+<span class="md-ellipsis">
+    Addressing Modes
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="4.html">
+<span class="md-ellipsis">
+    Data Movement Instructions
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    Arithmetic and Logic Instructions
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="5.html">
+<span class="md-ellipsis">
+    Arithmetic and Logic Instructions
+    
+  </span>
+</a>
+<nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#addition-subtraction-and-comparison">
+<span class="md-ellipsis">
+      Addition, Subtraction and Comparison
+    </span>
+</a>
+<nav aria-label="Addition, Subtraction and Comparison" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#addition">
+<span class="md-ellipsis">
+      Addition
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#subtraction">
+<span class="md-ellipsis">
+      Subtraction
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#comparison">
+<span class="md-ellipsis">
+      Comparison
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#multiplication-and-division">
+<span class="md-ellipsis">
+      Multiplication and Division
+    </span>
+</a>
+<nav aria-label="Multiplication and Division" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#multiplication">
+<span class="md-ellipsis">
+      Multiplication
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#division">
+<span class="md-ellipsis">
+      Division
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#bcd-and-ascii-arithmetic">
+<span class="md-ellipsis">
+      BCD and ASCII Arithmetic
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#basic-logic-instructions">
+<span class="md-ellipsis">
+      Basic Logic Instructions
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#string-comparisons">
+<span class="md-ellipsis">
+      String Comparisons
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../web/index.html">
+<span class="md-ellipsis">
+    🌏Web相关
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../sec/ctf-101/index.html">
+<span class="md-ellipsis">
+    🛡️信息安全
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ai/index.html">
+<span class="md-ellipsis">
+    🤖人工智能
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../misc/index.html">
+<span class="md-ellipsis">
+    🗃️杂项
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../tools/index.html">
+<span class="md-ellipsis">
+    🛠️工具
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../papers/index.html">
+<span class="md-ellipsis">
+    📑论文阅读
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#addition-subtraction-and-comparison">
+<span class="md-ellipsis">
+      Addition, Subtraction and Comparison
+    </span>
+</a>
+<nav aria-label="Addition, Subtraction and Comparison" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#addition">
+<span class="md-ellipsis">
+      Addition
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#subtraction">
+<span class="md-ellipsis">
+      Subtraction
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#comparison">
+<span class="md-ellipsis">
+      Comparison
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#multiplication-and-division">
+<span class="md-ellipsis">
+      Multiplication and Division
+    </span>
+</a>
+<nav aria-label="Multiplication and Division" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#multiplication">
+<span class="md-ellipsis">
+      Multiplication
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#division">
+<span class="md-ellipsis">
+      Division
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#bcd-and-ascii-arithmetic">
+<span class="md-ellipsis">
+      BCD and ASCII Arithmetic
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#basic-logic-instructions">
+<span class="md-ellipsis">
+      Basic Logic Instructions
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#string-comparisons">
+<span class="md-ellipsis">
+      String Comparisons
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<article class="md-content__inner md-typeset">
+<a class="md-content__button md-icon" href="https://github.com/noughtq/notebook/edit/master/docs/sys/aai/5.md" rel="edit" title="编辑此页">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"></path></svg>
+</a>
+<a class="md-content__button md-icon" href="https://github.com/noughtq/notebook/raw/master/docs/sys/aai/5.md" title="查看本页的源代码">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"></path></svg>
+</a>
+<h1 id="arithmetic-and-logic-instructions">Arithmetic and Logic Instructions<a class="headerlink" href="#arithmetic-and-logic-instructions" title="Permanent link">⚓︎</a></h1>
+<div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>4736<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 576 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M360.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6m64.6 136.1c-12.5 12.5-12.5 32.8 0 45.3l73.4 73.4-73.4 73.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l96-96c12.5-12.5 12.5-32.8 0-45.3l-96-96c-12.5-12.5-32.8-12.5-45.3 0zm-274.7 0c-12.5-12.5-32.8-12.5-45.3 0l-96 96c-12.5 12.5-12.5 32.8 0 45.3l96 96c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l73.3-73.4c12.5-12.5 12.5-32.8 0-45.3z"></path></svg></span> <span>94<span class="heti-spacing"> </span></span>行代码 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>25<span class="heti-spacing"> </span></span>分钟</p>
+</div>
+<h2 id="addition-subtraction-and-comparison">Addition, Subtraction and Comparison<a class="headerlink" href="#addition-subtraction-and-comparison" title="Permanent link">⚓︎</a></h2>
+<p>任何微处理器中的算术指令主要包括加法、减法和比较。</p>
+<h3 id="addition">Addition<a class="headerlink" href="#addition" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li><strong>加法</strong>（<code class="language-asm highlight"><span class="nf">ADD</span></code>）在微处理器中以多种形式出现</li>
+<li>
+<p>唯二不允许的加法类型是内存到内存，以及段寄存器</p>
+<ul>
+<li>段寄存器只能移动、压栈或弹出</li>
+</ul>
+</li>
+<li>
+<p>当算术和逻辑指令执行时，标志寄存器的内容会改变</p>
+<ul>
+<li>中断、陷阱和其他标志位不会因此改变</li>
+<li>发生改变的是符号、零、进位、辅助进位、奇偶校验和溢出标志位</li>
+</ul>
+</li>
+<li>
+<p><strong>立即数</strong>加法：涉及到常量和已知数据的加法</p>
+<div class="language-asm highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="nf">MOV</span><span class="w"> </span><span class="no">DL</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="no">H</span>
+</span><span id="__span-0-2"><a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="nf">ADD</span><span class="w"> </span><span class="no">DL</span><span class="p">,</span><span class="w"> </span><span class="mi">33</span><span class="no">H</span>
+</span></code></pre></div>
+</li>
+<li>
+<p><strong>内存<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>寄存器</strong>加法</p>
+<ul>
+<li>将参与加法的内存数据移动到 <code>AL</code>（或别的）寄存器中</li>
+<li>
+<p>示例：将存储在数据段偏移位置的 <code>NUMB</code> 的两个连续字节的数据相加，结果存储在 <code>AL</code> 寄存器中</p>
+<div class="language-asm highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="err">0000</span><span class="w"> </span><span class="nf">BF</span><span class="w"> </span><span class="mi">0000</span><span class="w"> </span><span class="no">R</span><span class="w">      </span><span class="no">MOV</span><span class="w"> </span><span class="no">DI</span><span class="p">,</span><span class="w"> </span><span class="no">OFFSET</span><span class="w"> </span><span class="no">NUMB</span><span class="w">        </span><span class="c1">; address NUMB</span>
+</span><span id="__span-1-2"><a href="#__codelineno-1-2" id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="err">0003</span><span class="w"> </span><span class="nf">BO</span><span class="w"> </span><span class="mi">00</span><span class="w">          </span><span class="no">MOV</span><span class="w"> </span><span class="no">AL</span><span class="p">,</span><span class="w"> </span><span class="no">O</span><span class="w"> </span><span class="err">¡</span><span class="no">clear</span><span class="w"> </span><span class="no">sum</span>
+</span><span id="__span-1-3"><a href="#__codelineno-1-3" id="__codelineno-1-3" name="__codelineno-1-3"></a><span class="err">0005</span><span class="w"> </span><span class="err">02</span><span class="w"> </span><span class="err">05</span><span class="w">          </span><span class="nf">ADD</span><span class="w"> </span><span class="no">AL</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="no">DI</span><span class="p">]</span><span class="w">               </span><span class="c1">; add NUMB</span>
+</span><span id="__span-1-4"><a href="#__codelineno-1-4" id="__codelineno-1-4" name="__codelineno-1-4"></a><span class="err">0007</span><span class="w"> </span><span class="err">02</span><span class="w"> </span><span class="err">45</span><span class="w"> </span><span class="err">01</span><span class="w">       </span><span class="nf">ADD</span><span class="w"> </span><span class="no">AL</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="no">DI</span><span class="err">+</span><span class="mi">1</span><span class="p">]</span><span class="w">             </span><span class="c1">; ada NUMB + 1</span>
+</span></code></pre></div>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>数组</strong>加法</p>
+<ul>
+<li>内存数组是连续的数据列表</li>
+<li>
+<p>假设一个数据数组（<code>ARRAY</code>）包含<span class="heti-skip"><span class="heti-spacing"> </span>10<span class="heti-spacing"> </span></span>字节，从元素<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>编号到元素<span><span class="heti-spacing"> </span>9</span>；下面展示了如何将数组元素<span><span class="heti-spacing"> </span>3</span>、<span>5<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>7<span class="heti-spacing"> </span></span>的内容相加：</p>
+<div class="language-asm highlight"><pre><span></span><code><span id="__span-2-1"><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="nf">ARRAY</span><span class="w"> </span><span class="no">DB</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="no">...</span>
+</span><span id="__span-2-2"><a href="#__codelineno-2-2" id="__codelineno-2-2" name="__codelineno-2-2"></a><span class="na">...</span>
+</span><span id="__span-2-3"><a href="#__codelineno-2-3" id="__codelineno-2-3" name="__codelineno-2-3"></a><span class="nf">MOV</span><span class="w"> </span><span class="no">AL</span><span class="p">,</span><span class="w"> </span><span class="no">O</span><span class="w">                      </span><span class="c1">; clear sum</span>
+</span><span id="__span-2-4"><a href="#__codelineno-2-4" id="__codelineno-2-4" name="__codelineno-2-4"></a><span class="nf">MOV</span><span class="w"> </span><span class="no">SI</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="w">                      </span><span class="c1">; address element 3</span>
+</span><span id="__span-2-5"><a href="#__codelineno-2-5" id="__codelineno-2-5" name="__codelineno-2-5"></a><span class="nf">ADD</span><span class="w"> </span><span class="no">AL</span><span class="p">,</span><span class="w"> </span><span class="no">ARRAY</span><span class="w"> </span><span class="p">[</span><span class="no">SI</span><span class="p">]</span><span class="w">             </span><span class="c1">; add element 3</span>
+</span><span id="__span-2-6"><a href="#__codelineno-2-6" id="__codelineno-2-6" name="__codelineno-2-6"></a><span class="nf">ADD</span><span class="w"> </span><span class="no">AL</span><span class="p">,</span><span class="w"> </span><span class="no">ARRAY</span><span class="w"> </span><span class="p">[</span><span class="no">SI</span><span class="w"> </span><span class="err">+</span><span class="w"> </span><span class="mi">2</span><span class="p">]</span><span class="w">         </span><span class="c1">; add element 5</span>
+</span><span id="__span-2-7"><a href="#__codelineno-2-7" id="__codelineno-2-7" name="__codelineno-2-7"></a><span class="nf">ADD</span><span class="w"> </span><span class="no">AL</span><span class="p">,</span><span class="w"> </span><span class="no">ARRAY</span><span class="w"> </span><span class="p">[</span><span class="no">SI</span><span class="w"> </span><span class="err">+</span><span class="w"> </span><span class="mi">4</span><span class="p">]</span><span class="w">         </span><span class="c1">; ada element 7</span>
+</span></code></pre></div>
+</li>
+<li>
+<p>假设一个数据数组包含数字的字，用于在寄存器 <code>AX</code> 中形成<span class="heti-skip"><span class="heti-spacing"> </span>16<span class="heti-spacing"> </span></span>位的和；下面的指令序列展示了用<strong>比例变址寻址</strong>添加名为 <code>ARRAY</code> 的内存区域中的元素<span><span class="heti-spacing"> </span>3</span>、<span>5<span class="heti-spacing"> </span></span>和<span><span class="heti-spacing"> </span>7</span></p>
+<div class="language-asm highlight"><pre><span></span><code><span id="__span-3-1"><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="nf">ARRAY</span><span class="w"> </span><span class="no">DW</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="no">...</span>
+</span><span id="__span-3-2"><a href="#__codelineno-3-2" id="__codelineno-3-2" name="__codelineno-3-2"></a><span class="na">...</span>
+</span><span id="__span-3-3"><a href="#__codelineno-3-3" id="__codelineno-3-3" name="__codelineno-3-3"></a><span class="nf">MOV</span><span class="w"> </span><span class="no">EBX</span><span class="p">,</span><span class="w"> </span><span class="no">OFFSET</span><span class="w"> </span><span class="no">ARRAY</span><span class="w">         </span><span class="c1">; address ARRAY</span>
+</span><span id="__span-3-4"><a href="#__codelineno-3-4" id="__codelineno-3-4" name="__codelineno-3-4"></a><span class="nf">MOV</span><span class="w"> </span><span class="no">ECX</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="w">                    </span><span class="c1">; address element 3</span>
+</span><span id="__span-3-5"><a href="#__codelineno-3-5" id="__codelineno-3-5" name="__codelineno-3-5"></a><span class="nf">MOV</span><span class="w"> </span><span class="no">AX</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="no">EBX</span><span class="w"> </span><span class="err">+</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p">*</span><span class="w"> </span><span class="no">ECX</span><span class="p">]</span><span class="w">       </span><span class="c1">; get element 3</span>
+</span><span id="__span-3-6"><a href="#__codelineno-3-6" id="__codelineno-3-6" name="__codelineno-3-6"></a><span class="nf">MOV</span><span class="w"> </span><span class="no">ECX</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="w">                    </span><span class="c1">; address element 5</span>
+</span><span id="__span-3-7"><a href="#__codelineno-3-7" id="__codelineno-3-7" name="__codelineno-3-7"></a><span class="nf">ADD</span><span class="w"> </span><span class="no">AX</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="no">EBX</span><span class="w"> </span><span class="err">+</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p">*</span><span class="w"> </span><span class="no">ECX</span><span class="p">]</span><span class="w">       </span><span class="c1">; add element 5</span>
+</span><span id="__span-3-8"><a href="#__codelineno-3-8" id="__codelineno-3-8" name="__codelineno-3-8"></a><span class="nf">MOV</span><span class="w"> </span><span class="no">ECX</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="w">                    </span><span class="c1">; address element 7</span>
+</span><span id="__span-3-9"><a href="#__codelineno-3-9" id="__codelineno-3-9" name="__codelineno-3-9"></a><span class="nf">ADD</span><span class="w"> </span><span class="no">AX</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="no">EBX</span><span class="w"> </span><span class="err">+</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p">*</span><span class="w"> </span><span class="no">ECX</span><span class="p">]</span><span class="w">       </span><span class="c1">; add element 7</span>
+</span></code></pre></div>
+<ul>
+<li><code>EBX</code> 加载了 <code>ARRAY</code> 的地址</li>
+<li><code>ECX</code> 保存了数组元素编号</li>
+<li>比例因子用于将 <code>ECX</code> 寄存器的内容乘以<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>以定位数据字</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>递增</strong><span>(increment)<span class="heti-spacing"> </span></span>指令（<code class="language-asm highlight"><span class="nf">INC</span></code>）将<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>加到任何寄存器或内存位置（段寄存器除外）</p>
+<ul>
+<li>
+<p>保持 <code>CF</code>（进位）标志的状态不变</p>
+<div class="language-asm highlight"><pre><span></span><code><span id="__span-4-1"><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="nf">MOV</span><span class="w"> </span><span class="no">AX</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="no">FFFFh</span>
+</span><span id="__span-4-2"><a href="#__codelineno-4-2" id="__codelineno-4-2" name="__codelineno-4-2"></a><span class="nf">INC</span><span class="w"> </span><span class="no">AX</span><span class="w">          </span><span class="c1">; 40 (opcode)</span>
+</span><span id="__span-4-3"><a href="#__codelineno-4-3" id="__codelineno-4-3" name="__codelineno-4-3"></a><span class="w">                </span><span class="c1">; CF = 0</span>
+</span></code></pre></div>
+<div class="language-asm highlight"><pre><span></span><code><span id="__span-5-1"><a href="#__codelineno-5-1" id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="nf">MOV</span><span class="w"> </span><span class="no">AX</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="no">FFFFh</span>
+</span><span id="__span-5-2"><a href="#__codelineno-5-2" id="__codelineno-5-2" name="__codelineno-5-2"></a><span class="nf">ADD</span><span class="w"> </span><span class="no">AX</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w">       </span><span class="c1">; 05 01 00</span>
+</span><span id="__span-5-3"><a href="#__codelineno-5-3" id="__codelineno-5-3" name="__codelineno-5-3"></a><span class="w">                </span><span class="c1">; CF = 1</span>
+</span></code></pre></div>
+</li>
+<li>
+<p>使用<strong>间接内存递增</strong>时，数据的大小必须通过使用<code class="language-asm highlight"><span class="nf">BYTE</span><span class="w"> </span><span class="no">PTR</span></code><span class="heti-skip"><span class="heti-spacing"> </span>,<span class="heti-spacing"> </span></span><code class="language-asm highlight"><span class="nf">WORD</span><span class="w"> </span><span class="no">PTR</span></code>或 <code class="language-asm highlight"><span class="nf">DWORD</span><span class="w"> </span><span class="no">PTR</span></code> 指令来描述</p>
+</li>
+<li>
+<p>汇编器<strong>无法确定</strong> <code class="language-asm highlight"><span class="nf">INC</span><span class="w"> </span><span class="p">[</span><span class="no">DI</span><span class="p">]</span></code> 是字节大小、字大小还是双字大小的递增</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">汇编语言</th>
+<th style="text-align: left;">操作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code class="language-asm highlight"><span class="nf">INC</span><span class="w"> </span><span class="no">BL</span></code></td>
+<td style="text-align: left;"><code>BL = BL + 1</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code class="language-asm highlight"><span class="nf">INC</span><span class="w"> </span><span class="no">SP</span></code></td>
+<td style="text-align: left;"><code>SP = SP + 1</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code class="language-asm highlight"><span class="nf">INC</span><span class="w"> </span><span class="no">EAX</span></code></td>
+<td style="text-align: left;"><code>EAX = EAX + 1</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code class="language-asm highlight"><span class="nf">INC</span><span class="w"> </span><span class="no">BYTE</span><span class="w"> </span><span class="no">PTR</span><span class="p">[</span><span class="no">BX</span><span class="p">]</span></code></td>
+<td style="text-align: left;">对 <code>BX</code> 所寻址的数据段内存位置的字节内容加<span><span class="heti-spacing"> </span>1</span></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code class="language-asm highlight"><span class="nf">INC</span><span class="w"> </span><span class="no">WORD</span><span class="w"> </span><span class="no">PTR</span><span class="p">[</span><span class="no">SI</span><span class="p">]</span></code></td>
+<td style="text-align: left;">对 <code>SI</code> 所寻址的数据段内存位置的字内容加<span><span class="heti-spacing"> </span>1</span></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code class="language-asm highlight"><span class="nf">INC</span><span class="w"> </span><span class="no">DWORD</span><span class="w"> </span><span class="no">PTR</span><span class="p">[</span><span class="no">ECX</span><span class="p">]</span></code></td>
+<td style="text-align: left;">对 <code>ECX</code> 所寻址的数据段内存位置的双字内容加<span><span class="heti-spacing"> </span>1</span></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code class="language-asm highlight"><span class="nf">INC</span><span class="w"> </span><span class="no">DATA1</span></code></td>
+<td style="text-align: left;">对数据段内存位置 <code>DATA1</code> 的内容加<span><span class="heti-spacing"> </span>1</span></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code class="language-asm highlight"><span class="nf">INC</span><span class="w"> </span><span class="no">RCX</span></code></td>
+<td style="text-align: left;">对 <code>RCX</code> 加<span><span class="heti-spacing"> </span>1</span>（<span>64<span class="heti-spacing"> </span></span>位模式）</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+</li>
+<li>
+<p><code class="language-asm highlight"><span class="nf">ADC</span></code>（带进位加法<span><span class="heti-spacing"> </span>(add-with-carry)</span>）将进位标志（<code>C</code>）中的位加到操作数数据上</p>
+<ul>
+<li>主要出现在<span class="heti-skip"><span class="heti-spacing"> </span>80386<span class="heti-spacing"> </span></span>到<span class="heti-skip"><span class="heti-spacing"> </span>Core2<span class="heti-spacing"> </span></span>中添加宽于<span class="heti-skip"><span class="heti-spacing"> </span>16<span class="heti-spacing"> </span></span>或<span class="heti-skip"><span class="heti-spacing"> </span>32<span class="heti-spacing"> </span></span>位数字的软件中</li>
+<li>和 <code class="language-asm highlight"><span class="nf">ADD</span></code> 类似，<code class="language-asm highlight"><span class="nf">ADC</span></code> 在加法后会影响标志位</li>
+<li>
+<p>下图展示了该指令的操作细节：</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/1.png"><img src="images/C5/1.png" width="50%"/></a>
+</div><p></p>
+</li>
+</ul>
+<details class="example">
+<summary>例子</summary>
+<p>使用 <code class="language-asm highlight"><span class="nf">ADC</span></code> 计算两个双字长的长整数之和。</p>
+<div class="language-asm highlight"><pre><span></span><code><span id="__span-6-1"><a href="#__codelineno-6-1" id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="c1">; [int1][0:7] = [int1][O:7] + [int2][0:7]</span>
+</span><span id="__span-6-2"><a href="#__codelineno-6-2" id="__codelineno-6-2" name="__codelineno-6-2"></a><span class="na">.data</span>
+</span><span id="__span-6-3"><a href="#__codelineno-6-3" id="__codelineno-6-3" name="__codelineno-6-3"></a><span class="nf">int1</span><span class="w">  </span><span class="no">DD</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="w">       </span>
+</span><span id="__span-6-4"><a href="#__codelineno-6-4" id="__codelineno-6-4" name="__codelineno-6-4"></a><span class="no">int2</span><span class="w">  </span><span class="no">DD</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span>
+</span><span id="__span-6-5"><a href="#__codelineno-6-5" id="__codelineno-6-5" name="__codelineno-6-5"></a>
+</span><span id="__span-6-6"><a href="#__codelineno-6-6" id="__codelineno-6-6" name="__codelineno-6-6"></a><span class="na">.code</span>
+</span><span id="__span-6-7"><a href="#__codelineno-6-7" id="__codelineno-6-7" name="__codelineno-6-7"></a><span class="w">      </span><span class="nf">MOV</span><span class="w"> </span><span class="no">EDI</span><span class="p">,</span><span class="w"> </span><span class="no">OFFSET</span><span class="w"> </span><span class="no">int1</span>
+</span><span id="__span-6-8"><a href="#__codelineno-6-8" id="__codelineno-6-8" name="__codelineno-6-8"></a><span class="w">      </span><span class="nf">MOV</span><span class="w"> </span><span class="no">ESI</span><span class="p">,</span><span class="w"> </span><span class="no">OFFSET</span><span class="w"> </span><span class="no">int2</span>
+</span><span id="__span-6-9"><a href="#__codelineno-6-9" id="__codelineno-6-9" name="__codelineno-6-9"></a><span class="w">      </span><span class="nf">MOV</span><span class="w"> </span><span class="no">ECX</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="w">              </span><span class="c1">; ECX = 8</span>
+</span><span id="__span-6-10"><a href="#__codelineno-6-10" id="__codelineno-6-10" name="__codelineno-6-10"></a><span class="w">      </span><span class="nf">CLC</span><span class="w">                     </span><span class="c1">; start out with carry flag cleared</span>
+</span><span id="__span-6-11"><a href="#__codelineno-6-11" id="__codelineno-6-11" name="__codelineno-6-11"></a><span class="hll"><span class="nl">loop:</span><span class="w"> </span><span class="nf">MOV</span><span class="w"> </span><span class="no">EAX</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="no">ESI</span><span class="p">]</span>
+</span></span><span id="__span-6-12"><a href="#__codelineno-6-12" id="__codelineno-6-12" name="__codelineno-6-12"></a><span class="hll"><span class="w">      </span><span class="nf">ADC</span><span class="w"> </span><span class="p">[</span><span class="no">EDI</span><span class="p">],</span><span class="w"> </span><span class="no">EAX</span><span class="w">          </span><span class="c1">; with carry from previous loop pass</span>
+</span></span><span id="__span-6-13"><a href="#__codelineno-6-13" id="__codelineno-6-13" name="__codelineno-6-13"></a><span class="hll"><span class="w">      </span><span class="nf">LEA</span><span class="w"> </span><span class="no">ESI</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="no">ESI</span><span class="err">+</span><span class="mi">4</span><span class="p">]</span><span class="w">        </span><span class="c1">; point to next source</span>
+</span></span><span id="__span-6-14"><a href="#__codelineno-6-14" id="__codelineno-6-14" name="__codelineno-6-14"></a><span class="hll"><span class="w">      </span><span class="nf">LEA</span><span class="w"> </span><span class="no">EDI</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="no">EDI</span><span class="err">+</span><span class="mi">4</span><span class="p">]</span><span class="w">        </span><span class="c1">; point to next destination</span>
+</span></span><span id="__span-6-15"><a href="#__codelineno-6-15" id="__codelineno-6-15" name="__codelineno-6-15"></a><span class="w">      </span><span class="nf">DEC</span><span class="w"> </span><span class="no">ECX</span><span class="w">                 </span><span class="c1">; adjust loop count</span>
+</span><span id="__span-6-16"><a href="#__codelineno-6-16" id="__codelineno-6-16" name="__codelineno-6-16"></a><span class="w">      </span><span class="nf">JNZ</span><span class="w"> </span><span class="no">loop</span><span class="w">                </span><span class="c1">; if ECX &gt; 0 then repeat</span>
+</span></code></pre></div>
+</details>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/2.png"><img align="right" alt="" src="images/C5/2.png" width="15%"/></a></p>
+</li>
+<li>
+<p><code class="language-asm highlight"><span class="nf">ADC</span></code> 的变体：<code class="language-asm highlight"><span class="nf">ADCX</span></code> 和 <code class="language-asm highlight"><span class="nf">ADOX</span></code></p>
+<ul>
+<li>
+<p><code class="language-asm highlight"><span class="nf">ADD</span></code> 和 <code class="language-asm highlight"><span class="nf">ADC</span></code> 指令可用于加速大整数算数运算，通过形如右侧的代码序列实现</p>
+<ul>
+<li>问题：这些指令创建了一个<strong>依赖链</strong>(dependency chain)，因此处理器无法并行执行算术运算</li>
+</ul>
+</li>
+<li>
+<p>为了解决这个问题，<span>Intel<span class="heti-spacing"> </span></span>增加了<strong>第二条进位链</strong>，使得两个独立的进位链可同时发生；它们对应 <code class="language-asm highlight"><span class="nf">ADC</span></code> 的两个变体 <code class="language-asm highlight"><span class="nf">ADCX</span></code> 和 <code class="language-asm highlight"><span class="nf">ADOX</span></code></p>
+</li>
+<li>这两个变体不会相互影响，因为它们有单独的进位标志<ul>
+<li><code class="language-asm highlight"><span class="nf">ADCX</span></code> 使用<strong>进位标志</strong>，并保留其他标志不变</li>
+<li><code class="language-asm highlight"><span class="nf">ADOX</span></code> 使用<strong>溢出标志</strong>，并保留其他标志不变</li>
+</ul>
+</li>
+</ul>
+<details class="example">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/3.png"><img src="images/C5/3.png" width="60%"/></a>
+</div><p></p>
+</details>
+<ul>
+<li>
+<p><code class="language-asm highlight"><span class="nf">ADCX</span></code>、<code class="language-asm highlight"><span class="nf">ADOX</span></code> 和 <code class="language-asm highlight"><span class="nf">MULX</span></code> 指令为大型整数乘法带来了很大便利</p>
+<ul>
+<li>而大型整数算术在密码学（例如<span class="heti-skip"><span class="heti-spacing"> </span>RSA<span class="heti-spacing"> </span></span>公钥算法）和高性能计算中有许多应用场景</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/4.png"><img src="images/C5/4.png" width="60%"/></a>
+</div><p></p>
+</li>
+</ul>
+</li>
+<li>
+<p><code class="language-asm highlight"><span class="nf">XADD</span></code>（<strong>交换和加</strong>(exchange and add)）</p>
+<ul>
+<li>首次出现在<span class="heti-skip"><span class="heti-spacing"> </span>80486<span class="heti-spacing"> </span></span>中，并一直延续到<span><span class="heti-spacing"> </span>Core2</span></li>
+<li>
+<p>语法：<code class="language-asm highlight"><span class="nf">XADD</span><span class="w"> </span><span class="no">des</span><span class="p">,</span><span class="w"> </span><span class="no">src</span></code>，对应操作如下：</p>
+<ul>
+<li>交换 <code>des</code> 操作数与 <code>src</code> 操作数</li>
+<li>将两个值的和加载到 <code>des</code> 操作数中：<code>des = src + des</code></li>
+</ul>
+</li>
+<li>
+<p>是少数改变源操作数的指令之一</p>
+</li>
+<li>
+<p>例子：</p>
+<div class="language-asm highlight"><pre><span></span><code><span id="__span-7-1"><a href="#__codelineno-7-1" id="__codelineno-7-1" name="__codelineno-7-1"></a><span class="nf">MOV</span><span class="w"> </span><span class="no">AX</span><span class="p">,</span><span class="w"> </span><span class="mi">1000</span><span class="no">H</span>
+</span><span id="__span-7-2"><a href="#__codelineno-7-2" id="__codelineno-7-2" name="__codelineno-7-2"></a><span class="nf">MOV</span><span class="w"> </span><span class="no">BX</span><span class="p">,</span><span class="w"> </span><span class="mi">2000</span><span class="no">H</span><span class="w">    </span><span class="c1">; AX = 1000H, BX = 2000H</span>
+</span><span id="__span-7-3"><a href="#__codelineno-7-3" id="__codelineno-7-3" name="__codelineno-7-3"></a><span class="nf">XADD</span><span class="w"> </span><span class="no">AX</span><span class="p">,</span><span class="w"> </span><span class="no">BX</span><span class="w">      </span><span class="c1">; AX = 3000H, BX = 1000H</span>
+</span></code></pre></div>
+</li>
+<li>
+<p>目标操作数可以是寄存器或内存位置，而源操作数只能是寄存器</p>
+</li>
+<li>对于<strong>多处理器系统</strong>，<code class="language-asm highlight"><span class="nf">XADD</span></code> 可以与 <code>LOCK</code> 前缀在多处理器系统中结合使用，以允许多个处理器执行一个 <code>DO</code> 循环</li>
+<li><code class="language-c highlight"><span class="kt">int</span><span class="w"> </span><span class="n">atomic_xadd</span><span class="p">(</span><span class="n">atomic_t</span><span class="w"> </span><span class="o">*</span><span class="n">v</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">inc</span><span class="p">)</span></code><ul>
+<li><code class="language-asm highlight"><span class="nf">XADD</span></code> 将给定的增量 <code>inc</code> 加到 <code>*v</code> 上，并原子性地返回 <code>*v</code> 的先前值</li>
+<li><code class="language-asm highlight"><span class="nf">XADD</span></code> 在原子值 <code>*v</code> 上执行原子交换和加法操作</li>
+<li>当多个<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>在线时，<code class="language-asm highlight"><span class="nf">XADD</span></code> 会被锁住</li>
+</ul>
+</li>
+<li><code class="language-asm highlight"><span class="nf">XADD</span></code> 可以实现共享计数器和各种数据结构</li>
+<li>
+<p><code class="language-asm highlight"><span class="nf">XADD</span></code> 可用于<strong>乐观锁</strong>(optimistic locking)，主要适用于高并发系统中</p>
+<details class="example">
+<summary>例子</summary>
+<p>以下指令使用乐观锁来安全地通过多个线程更新共享版本。</p>
+<div class="language-asm highlight"><pre><span></span><code><span id="__span-8-1"><a href="#__codelineno-8-1" id="__codelineno-8-1" name="__codelineno-8-1"></a><span class="na">.data</span>
+</span><span id="__span-8-2"><a href="#__codelineno-8-2" id="__codelineno-8-2" name="__codelineno-8-2"></a><span class="nf">version</span><span class="w"> </span><span class="no">DD</span><span class="w"> </span><span class="mi">0</span><span class="w">                 </span><span class="c1">; shared version number initialized to 0</span>
+</span><span id="__span-8-3"><a href="#__codelineno-8-3" id="__codelineno-8-3" name="__codelineno-8-3"></a>
+</span><span id="__span-8-4"><a href="#__codelineno-8-4" id="__codelineno-8-4" name="__codelineno-8-4"></a><span class="na">.code</span>
+</span><span id="__span-8-5"><a href="#__codelineno-8-5" id="__codelineno-8-5" name="__codelineno-8-5"></a><span class="w">        </span><span class="nf">MOV</span><span class="w"> </span><span class="no">ECX</span><span class="p">,</span><span class="w"> </span><span class="no">version</span><span class="w">     </span><span class="c1">; load the current value of version</span>
+</span><span id="__span-8-6"><a href="#__codelineno-8-6" id="__codelineno-8-6" name="__codelineno-8-6"></a><span class="w">        </span><span class="na">......</span><span class="w">               </span><span class="c1">; working optimistically</span>
+</span><span id="__span-8-7"><a href="#__codelineno-8-7" id="__codelineno-8-7" name="__codelineno-8-7"></a><span class="w">        </span><span class="nf">MOV</span><span class="w"> </span><span class="no">EAX</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w">           </span><span class="c1">; EAX = 1</span>
+</span><span id="__span-8-8"><a href="#__codelineno-8-8" id="__codelineno-8-8" name="__codelineno-8-8"></a><span class="w">        </span><span class="nf">XADD</span><span class="w"> </span><span class="no">version</span><span class="p">,</span><span class="w"> </span><span class="no">EAX</span><span class="w">    </span><span class="c1">; version ⇔ EAX, version = version+1</span>
+</span><span id="__span-8-9"><a href="#__codelineno-8-9" id="__codelineno-8-9" name="__codelineno-8-9"></a><span class="w">        </span><span class="nf">CMP</span><span class="w"> </span><span class="no">EAX</span><span class="p">,</span><span class="w"> </span><span class="no">ECX</span><span class="w">         </span><span class="c1">; check if the value was modified by another thread</span>
+</span><span id="__span-8-10"><a href="#__codelineno-8-10" id="__codelineno-8-10" name="__codelineno-8-10"></a><span class="w">        </span><span class="nf">JNE</span><span class="w"> </span><span class="no">retry</span><span class="w">            </span><span class="c1">; if version was updated then rollback</span>
+</span><span id="__span-8-11"><a href="#__codelineno-8-11" id="__codelineno-8-11" name="__codelineno-8-11"></a><span class="w">        </span><span class="na">......</span>
+</span><span id="__span-8-12"><a href="#__codelineno-8-12" id="__codelineno-8-12" name="__codelineno-8-12"></a><span class="nl">retry:</span><span class="w"> </span><span class="na">......</span><span class="w">                </span><span class="c1">; handle the conflict</span>
+</span></code></pre></div>
+</details>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="subtraction">Subtraction<a class="headerlink" href="#subtraction" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li>
+<p>指令集中有许多形式的减法（<code class="language-asm highlight"><span class="nf">SUB</span></code>）指令的</p>
+<ul>
+<li>使用任何寻址模式，带有<span class="heti-skip"><span class="heti-spacing"> </span>8<span class="heti-spacing"> </span></span>位、<span>16<span class="heti-spacing"> </span></span>位或<span class="heti-skip"><span class="heti-spacing"> </span>32<span class="heti-spacing"> </span></span>位数据</li>
+</ul>
+</li>
+<li>
+<p>寄存器加法：每次执行减法运算时，微处理器修改标志寄存器的内容</p>
+</li>
+<li>立即数加法：允许常量数据作为减法中的立即操作数</li>
+<li>
+<p><code class="language-asm highlight"><span class="nf">DEC</span></code>（<strong>递减</strong>(decrement)<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：从任何寄存器或内存位置减去<span><span class="heti-spacing"> </span>1</span></p>
+<ul>
+<li>影响除 <code>CF</code> 外的所有标志位</li>
+<li>像 <code class="language-asm highlight"><span class="nf">CMP</span></code> 这样的指令会将所有标志位更新为执行结果，但<code>#!asm INC</code> 和 <code class="language-asm highlight"><span class="nf">DEC</span></code> 会写入除 <code>CF</code> 之外的标志位</li>
+<li>
+<p>因此，如果 <code class="language-asm highlight"><span class="nf">JCC</span></code> 直接使用来自<code class="language-asm highlight"><span class="nf">INC</span></code><span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span><code class="language-asm highlight"><span class="nf">DEC</span></code>的标志位，<code class="language-asm highlight"><span class="nf">JCC</span></code> 可能会因为意外指令而产生错误依赖，例如：</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/5.png"><img src="images/C5/5.png" width="60%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>所以编译器通常不会生成用于循环计数更新，或重用 <code class="language-asm highlight"><span class="nf">JCC</span></code> 上产生的<code class="language-asm highlight"><span class="nf">INC</span></code><span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span><code class="language-asm highlight"><span class="nf">DEC</span></code>的标志位</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>带借位的减法</strong><span>(subtract-with-borrow)<span class="heti-spacing"> </span></span>指令（<code class="language-asm highlight"><span class="nf">SBB</span></code>）</p>
+<ul>
+<li>功能与普通减法相同，但包含借位的进位标志（<code>C</code>）也要从差值中减去</li>
+<li>常用于（在<span><span class="heti-spacing"> </span>80386 - Core 2</span>）执行在超过<span class="heti-skip"><span class="heti-spacing"> </span>16<span class="heti-spacing"> </span></span>位或<span class="heti-skip"><span class="heti-spacing"> </span>32<span class="heti-spacing"> </span></span>位的数字上的减法</li>
+<li>宽减法需要借位来传播，就像宽加法传播进位一样</li>
+<li>
+<p>下面展示该指令的运算细节：</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/6.png"><img src="images/C5/6.png" width="50%"/></a>
+</div><p></p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="comparison">Comparison<a class="headerlink" href="#comparison" title="Permanent link">⚓︎</a></h3>
+<p><strong>比较</strong><span>(comparison)<span class="heti-spacing"> </span></span>指令（<code class="language-asm highlight"><span class="nf">CMP</span></code>）是一种只改变标志位，而不会改变目标操作数的减法，用于检查寄存器或内存位置的内容与另一个值是否相等。后面通常会跟一个<strong>条件跳转指令</strong>，用于测试标志位的条件。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">汇编语言</th>
+<th style="text-align: left;">操作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code class="language-asm highlight"><span class="nf">CMP</span><span class="w"> </span><span class="no">CL</span><span class="p">,</span><span class="w"> </span><span class="no">BL</span></code></td>
+<td style="text-align: left;"><code>CL - BL</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code class="language-asm highlight"><span class="nf">CMP</span><span class="w"> </span><span class="no">AX</span><span class="p">,</span><span class="w"> </span><span class="no">SP</span></code></td>
+<td style="text-align: left;"><code>AX - SP</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code class="language-asm highlight"><span class="nf">CMP</span><span class="w"> </span><span class="no">EBP</span><span class="p">,</span><span class="w"> </span><span class="no">ESI</span></code></td>
+<td style="text-align: left;"><code>EBP - ESI</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code class="language-asm highlight"><span class="nf">CMP</span><span class="w"> </span><span class="no">RDI</span><span class="p">,</span><span class="w"> </span><span class="no">RSI</span></code></td>
+<td style="text-align: left;"><code>RDI - RSI</code>（<span>64<span class="heti-spacing"> </span></span>位模式）</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code class="language-asm highlight"><span class="nf">CMP</span><span class="w"> </span><span class="no">AX</span><span class="p">,</span><span class="w"> </span><span class="mi">2000</span><span class="no">H</span></code></td>
+<td style="text-align: left;"><code>AX - 2000H</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>
+<p><strong>比较和交换</strong>指令（<code class="language-asm highlight"><span class="nf">CMPXCHG</span></code>）比较<strong>目的操作数</strong>与<strong>累加器</strong>(accumulator)（隐式操作数<span><span class="heti-spacing"> </span>(implicit operand)</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，</p>
+<ul>
+<li>
+<p>例子：<code class="language-asm highlight"><span class="nf">CMPXCHG</span><span class="w"> </span><span class="no">des</span><span class="p">,</span><span class="w"> </span><span class="no">src</span><span class="w"> </span><span class="p">(</span><span class="no">AL</span><span class="err">/</span><span class="no">AX</span><span class="err">/</span><span class="no">EAX</span><span class="p">)</span></code></p>
+<ul>
+<li>如果 <code>des == accu</code>，则 <code>des = src</code>，<code>ZF = 1</code></li>
+<li>如果 <code>des != accu</code>，则 <code>accu = des</code>，<code>ZF = 0</code></li>
+<li><code>EFLAGS</code> 中的 <code>ZF</code> 位相应地被赋值</li>
+</ul>
+</li>
+<li>
+<p>仅存在于<span class="heti-skip"><span class="heti-spacing"> </span>80486 - Core2<span class="heti-spacing"> </span></span>指令集</p>
+</li>
+<li>指令功能与<span class="heti-skip"><span class="heti-spacing"> </span>8<span class="heti-spacing"> </span></span>位、<span>16<span class="heti-spacing"> </span></span>位或<span class="heti-skip"><span class="heti-spacing"> </span>32<span class="heti-spacing"> </span></span>位数据相关</li>
+<li>
+<p><code>ZF</code> 标志在目标操作数和寄存器 <code>AL</code>、<code>AX</code> 或 <code>EAX</code> 中的值相等时被设置，否则被清除</p>
+<ul>
+<li>
+<p>案例<span><span class="heti-spacing"> </span>1</span>：</p>
+<ul>
+<li>执行前：<code>(CX)=00FFH, (DX)=00EFH, (AX)=00FFH</code></li>
+<li>执行后：<code>(CX)=00EFH, (DX)=00EFH, (AX)=00FFH, ZF=1</code></li>
+</ul>
+</li>
+<li>
+<p>案例<span><span class="heti-spacing"> </span>2</span>：</p>
+<ul>
+<li>执行前：<code>(CX)=00FFH, (DX)=00EFH, (AX)=00EEH</code></li>
+<li>执行后：<code>(CX)=00FFH, (DX)=00EFH, (AX)=00FFH, ZF=0</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><code class="language-c highlight"><span class="kt">int</span><span class="w"> </span><span class="n">atomic_cmpxchg</span><span class="p">(</span><span class="n">atomic_t</span><span class="w"> </span><span class="o">*</span><span class="n">v</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">new</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">old</span><span class="p">)</span></code></p>
+<ul>
+<li>此函数使用给定的旧值和新值，在原子值 <code>v</code> 上执行原子比较交换操作，返回操作前原子变量 <code>v</code> 的旧值</li>
+<li>它在操作周围提供显式的<strong>内存屏障</strong></li>
+<li>例子<heti-adjacent class="heti-adjacent-half">：</heti-adjacent><code class="language-asm highlight"><span class="nf">CMPXCHG</span><span class="w"> </span><span class="no">CX</span><span class="p">,</span><span class="w"> </span><span class="no">DX</span><span class="w"> </span><span class="p">(</span><span class="no">AX</span><span class="p">)</span></code>（三个寄存器分别表示原子值、新值和旧值）<ul>
+<li>若 <code>CX == AX</code>，<code>DX</code> 被拷贝到 <code>CX</code> 中</li>
+<li>若 <code>CX != AX</code>，<code>CX</code> 被拷贝到 <code>AX</code> 中</li>
+<li><code>AX</code> 保留执行前 <code>CX</code> 的值</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<details class="example" open="open">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/7.png"><img src="images/C5/7.png" width="60%"/></a>
+</div><p></p>
+<ul>
+<li>顺序栈在可能存在<strong>竞态条件</strong>的并发系统中将无法工作</li>
+<li>自旋锁和读写锁可以帮助将锁从一个持有者转移到另一个持有者，但成本高</li>
+</ul>
+<p>我们使用 <code>cmpxchg</code> 函数解决这一问题：</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/8.png"><img src="images/C5/8.png" width="60%"/></a>
+</div><p></p>
+</details>
+</li>
+<li>
+<p><code class="language-asm highlight"><span class="nf">CMPXCHG8B</span></code> 指令：比较并交换八个字节</p>
+<ul>
+<li>
+<p>语法：<code>CMPXCHG8B [mem64-operand]</code></p>
+<ul>
+<li><code class="language-asm highlight"><span class="nl">ECX:</span><span class="nf">EBX</span></code>：<span>64<span class="heti-spacing"> </span></span>位新值（隐式操作数）</li>
+<li><code class="language-asm highlight"><span class="nl">EDX:</span><span class="nf">EAX</span></code>：<span>64<span class="heti-spacing"> </span></span>位旧值（隐式操作数）</li>
+<li>如果操作数<span><span class="heti-spacing"> </span>==</span> <code>EDX:EAX</code>，则操作数<span><span class="heti-spacing"> </span>=</span> <code>ECX:EBX</code>，<code>ZF = 1</code>，否则<code>EDX:EAX</code><span class="heti-skip"><span class="heti-spacing"> </span>=<span class="heti-spacing"> </span></span>操作数，<code>ZF = 0</code>
+– <code>Z</code> 标志位表示比较后的值相等</li>
+</ul>
+<details class="example" open="open">
+<summary>例子</summary>
+<div class="language-asm highlight"><pre><span></span><code><span id="__span-9-1"><a href="#__codelineno-9-1" id="__codelineno-9-1" name="__codelineno-9-1"></a><span class="nf">MOV</span><span class="w"> </span><span class="no">EAX</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="no">mem</span><span class="p">]</span><span class="w">                    </span><span class="c1">; low 32 bits</span>
+</span><span id="__span-9-2"><a href="#__codelineno-9-2" id="__codelineno-9-2" name="__codelineno-9-2"></a><span class="nf">MOV</span><span class="w"> </span><span class="no">EDX</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="no">mem</span><span class="w"> </span><span class="err">+</span><span class="w"> </span><span class="mi">4</span><span class="p">]</span><span class="w">                </span><span class="c1">; high 32 bits</span>
+</span><span id="__span-9-3"><a href="#__codelineno-9-3" id="__codelineno-9-3" name="__codelineno-9-3"></a><span class="nf">MOV</span><span class="w"> </span><span class="no">EBX</span><span class="p">,</span><span class="w"> </span><span class="no">new_low</span><span class="w">                  </span><span class="c1">; low 32 bits of the new value</span>
+</span><span id="__span-9-4"><a href="#__codelineno-9-4" id="__codelineno-9-4" name="__codelineno-9-4"></a><span class="nf">MOV</span><span class="w"> </span><span class="no">ECX</span><span class="p">,</span><span class="w"> </span><span class="no">new_high</span><span class="w">                 </span><span class="c1">; high 32 bits of the new value</span>
+</span><span id="__span-9-5"><a href="#__codelineno-9-5" id="__codelineno-9-5" name="__codelineno-9-5"></a><span class="nf">LOCK</span><span class="w"> </span><span class="no">CMPXCHG8B</span><span class="w"> </span><span class="no">QWORD</span><span class="w"> </span><span class="no">PTR</span><span class="w"> </span><span class="p">[</span><span class="no">mem</span><span class="p">]</span>
+</span><span id="__span-9-6"><a href="#__codelineno-9-6" id="__codelineno-9-6" name="__codelineno-9-6"></a><span class="nf">JZ</span><span class="w"> </span><span class="no">SUCCESS</span><span class="w">                        </span><span class="c1">; if ZF = 1，then goto success</span>
+</span></code></pre></div>
+</details>
+</li>
+<li>
+<p><code class="language-asm highlight"><span class="nf">CMPXCHG8B</span></code> 通常在多处理器环境中与 <code>LOCK</code> 前缀一起使用，以确保原子操作</p>
+</li>
+</ul>
+</li>
+<li>
+<p><code class="language-asm highlight"><span class="nf">CMPXCHG16B</span></code>：将 <code>RDX:RAX</code> 中的<span class="heti-skip"><span class="heti-spacing"> </span>128<span class="heti-spacing"> </span></span>位值与内存中位于目的操作数的<span class="heti-skip"><span class="heti-spacing"> </span>128<span class="heti-spacing"> </span></span>位数字进行比较</p>
+<ul>
+<li>如果值相等，则将 <code>RCX:RBX</code> 中的<span class="heti-skip"><span class="heti-spacing"> </span>128<span class="heti-spacing"> </span></span>位值存储到目的操作数中，否则目的操作数中的值将加载到 <code>RDX:RAX</code> 中</li>
+<li><code>CMPXCHG16B</code> 要求目的（内存）操作数应为<span class="heti-skip"><span class="heti-spacing"> </span>16<span class="heti-spacing"> </span></span>字节对齐</li>
+</ul>
+</li>
+</ul>
+<h2 id="multiplication-and-division">Multiplication and Division<a class="headerlink" href="#multiplication-and-division" title="Permanent link">⚓︎</a></h2>
+<h3 id="multiplication">Multiplication<a class="headerlink" href="#multiplication" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li>早期的<span class="heti-skip"><span class="heti-spacing"> </span>8<span class="heti-spacing"> </span></span>位微处理器不能使用乘法或除法程序，只能通过一系列移位和加减运算来实现<ul>
+<li>后来，制造商们意识到了这种不足，于是他们将乘法和除法纳入了最新的微处理器指令集中</li>
+</ul>
+</li>
+<li>
+<p>Pentium – <span>Core2<span class="heti-spacing"> </span></span>包含特殊电路，可以在最少的时钟周期内完成乘法</p>
+<ul>
+<li>而早期的处理器执行乘法需要超过<span class="heti-skip"><span class="heti-spacing"> </span>40<span class="heti-spacing"> </span></span>个时钟周期</li>
+</ul>
+</li>
+<li>
+<p>乘法在字节、字或双字上执行</p>
+<ul>
+<li>有无符号整数（<code class="language-asm highlight"><span class="nf">MUL</span></code>）和符号整数（<code class="language-asm highlight"><span class="nf">IMUL</span></code>）两个版本</li>
+<li>对于 <code class="language-asm highlight"><span class="nf">MUL</span></code>，乘数始终在<code>AL</code><span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span><code>AX</code><span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span><code>EAX</code>寄存器中作为隐式操作数，例如 <code class="language-asm highlight"><span class="nf">MUL</span><span class="w"> </span><span class="no">CL</span><span class="w"> </span><span class="c1">; AX = AL*CL</span></code></li>
+</ul>
+</li>
+<li>
+<p>积始终是<strong>双宽度积</strong>(double-width product)</p>
+<ul>
+<li>两个<span class="heti-skip"><span class="heti-spacing"> </span>8<span class="heti-spacing"> </span></span>位数字相乘生成一个<span class="heti-skip"><span class="heti-spacing"> </span>16<span class="heti-spacing"> </span></span>位积；两个<span class="heti-skip"><span class="heti-spacing"> </span>16<span class="heti-spacing"> </span></span>位数字生成一个<span class="heti-skip"><span class="heti-spacing"> </span>32<span class="heti-spacing"> </span></span>位积；两个<span class="heti-skip"><span class="heti-spacing"> </span>32<span class="heti-spacing"> </span></span>位数字生成一个<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位积</li>
+<li>在<span class="heti-skip"><span class="heti-spacing"> </span>Pentium 4<span class="heti-spacing"> </span></span>的<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位模式下，两个<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位数字相乘生成一个<span class="heti-skip"><span class="heti-spacing"> </span>128<span class="heti-spacing"> </span></span>位积</li>
+</ul>
+</li>
+<li>
+<p><span>8<span class="heti-spacing"> </span></span>位乘法</p>
+<ul>
+<li>使用<span class="heti-skip"><span class="heti-spacing"> </span>8<span class="heti-spacing"> </span></span>位乘法时，乘数始终在 <code>AL</code> 寄存器中，符号<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>无符号整数<ul>
+<li>乘数可以是任何<span class="heti-skip"><span class="heti-spacing"> </span>8<span class="heti-spacing"> </span></span>位寄存器或内存位置</li>
+<li>使用内存操作数时需要指令来指示操作数大小，例如 <code class="language-asm highlight"><span class="nf">MUL</span><span class="w"> </span><span class="no">WORD</span><span class="w"> </span><span class="no">PTR</span><span class="w"> </span><span class="p">[</span><span class="no">BX</span><span class="p">]</span></code></li>
+</ul>
+</li>
+<li>没有立即数乘法的形式（形如 <code class="language-asm highlight"><span class="nf">MUL</span><span class="w"> </span><span class="mi">12</span><span class="no">H</span></code><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，除非是 <code class="language-asm highlight"><span class="nf">IMUL</span></code> 乘法的两个或三个操作数形式</li>
+<li>乘法完成后，积放在 <code>AX</code> 上</li>
+<li>
+<p>下面列举一些<span class="heti-skip"><span class="heti-spacing"> </span>8<span class="heti-spacing"> </span></span>位乘法指令：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">汇编语言</th>
+<th style="text-align: left;">操作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code class="language-asm highlight"><span class="nf">MUL</span><span class="w"> </span><span class="no">CL</span></code></td>
+<td style="text-align: left;"><code>AL</code> 乘以 <code>CL</code>；无符号积在 <code>AX</code> 中</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code class="language-asm highlight"><span class="nf">IMUL</span><span class="w"> </span><span class="no">DH</span></code></td>
+<td style="text-align: left;"><code>AL</code> 乘以 <code>DH</code>；符号积在 <code>AX</code> 中</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code class="language-asm highlight"><span class="nf">IMUL</span><span class="w"> </span><span class="no">BYTE</span><span class="w"> </span><span class="no">PTR</span><span class="p">[</span><span class="no">BX</span><span class="p">]</span></code></td>
+<td style="text-align: left;"><code>AL</code> 乘以 <code>BX</code> 所寻址的数据段内存位置的字节内容；符号积在 <code>AX</code> 中</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code class="language-asm highlight"><span class="nf">MUL</span><span class="w"> </span><span class="no">TEMP</span></code></td>
+<td style="text-align: left;"><code>AL</code> 乘以内存位置 <code>TEMP</code> 的字节内容；无符号积在 <code>AX</code> 中</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+</li>
+<li>
+<p><span>16<span class="heti-spacing"> </span></span>位乘法</p>
+<ul>
+<li>此时乘数放在 <code>AX</code> 中</li>
+<li><span>32<span class="heti-spacing"> </span></span>位积放在 <code>DX-AX</code> 中<ul>
+<li><code>DX</code> 包含积的高<span class="heti-skip"><span class="heti-spacing"> </span>16<span class="heti-spacing"> </span></span>位</li>
+<li><code>AX</code> 包含积的低<span class="heti-skip"><span class="heti-spacing"> </span>16<span class="heti-spacing"> </span></span>位</li>
+</ul>
+</li>
+<li>与<span class="heti-skip"><span class="heti-spacing"> </span>8<span class="heti-spacing"> </span></span>位乘法一样，乘数的选取取决于程序员</li>
+</ul>
+</li>
+<li>
+<p><span>32<span class="heti-spacing"> </span></span>位乘法</p>
+<ul>
+<li>在<span class="heti-skip"><span class="heti-spacing"> </span>80386<span class="heti-spacing"> </span></span>及以上版本中可以实现<span class="heti-skip"><span class="heti-spacing"> </span>32<span class="heti-spacing"> </span></span>位乘法，因为这些微处理器包含<span class="heti-skip"><span class="heti-spacing"> </span>32<span class="heti-spacing"> </span></span>位寄存器</li>
+<li><code>EAX</code> 寄存器的内容与指令指定的操作数相乘</li>
+<li><span>64<span class="heti-spacing"> </span></span>位积位于 <code>EDX-EAX</code> 中，其中 <code>EAX</code> 包含积的低<span class="heti-skip"><span class="heti-spacing"> </span>32<span class="heti-spacing"> </span></span>位</li>
+</ul>
+</li>
+<li>
+<p><span>64<span class="heti-spacing"> </span></span>位乘法</p>
+<ul>
+<li>在<span class="heti-skip"><span class="heti-spacing"> </span>Pentium 4<span class="heti-spacing"> </span></span>中，<span>64<span class="heti-spacing"> </span></span>位乘法的结果以<span class="heti-skip"><span class="heti-spacing"> </span>128<span class="heti-spacing"> </span></span>位积的形式出现在 <code>RDX:RAX</code> 寄存器对中</li>
+<li>尽管这种大小的乘法相对较少见，但<span class="heti-skip"><span class="heti-spacing"> </span>Pentium 4<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>Core 2<span class="heti-spacing"> </span></span>可以同时对符号和无符号数进行此操作</li>
+</ul>
+</li>
+<li>
+<p><code class="language-asm highlight"><span class="nf">IMUL</span></code> 指令有三种形式：</p>
+<ul>
+<li>单操作数形式：这种形式与 <code class="language-asm highlight"><span class="nf">MUL</span></code> 指令使用的相同</li>
+<li>
+<p>双操作数形式：目的操作数是一个寄存器，源操作数是一个立即值、一个寄存器或一个内存位置，中间乘积（输入操作数大小的两倍）被<strong>截断</strong>并存储在目的操作数位置</p>
+<div class="language-asm highlight"><pre><span></span><code><span id="__span-10-1"><a href="#__codelineno-10-1" id="__codelineno-10-1" name="__codelineno-10-1"></a><span class="nf">IMUL</span><span class="w"> </span><span class="no">ECX</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="no">EAX</span><span class="err">+</span><span class="mi">4</span><span class="p">]</span><span class="w">    </span><span class="c1">; ECX = ECX * [EAX+4]</span>
+</span><span id="__span-10-2"><a href="#__codelineno-10-2" id="__codelineno-10-2" name="__codelineno-10-2"></a><span class="nf">IMUL</span><span class="w"> </span><span class="no">ECX</span><span class="p">,</span><span class="w"> </span><span class="mi">16</span><span class="w">         </span><span class="c1">; ECX = ECX * 16</span>
+</span></code></pre></div>
+</li>
+<li>
+<p>三操作数形式：第一个源操作数乘以第二个源操作数，中间乘积被<strong>截断</strong>并存储在目的操作数</p>
+<div class="language-asm highlight"><pre><span></span><code><span id="__span-11-1"><a href="#__codelineno-11-1" id="__codelineno-11-1" name="__codelineno-11-1"></a><span class="nf">IMUL</span><span class="w"> </span><span class="no">ECX</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="no">EAX</span><span class="err">+</span><span class="mi">4</span><span class="p">],</span><span class="w"> </span><span class="mi">5</span><span class="err">；</span><span class="no">ECX</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="p">[</span><span class="no">EAX</span><span class="err">+</span><span class="mi">4</span><span class="p">]</span><span class="w"> </span><span class="p">*</span><span class="w"> </span><span class="mi">5</span>
+</span></code></pre></div>
+</li>
+</ul>
+</li>
+<li>
+<p>一种特殊的立即数乘法</p>
+<ul>
+<li>在双操作数或三操作数形式的 <code class="language-asm highlight"><span class="nf">IMUL</span></code> 指令中，源操作数可以是一个<strong>立即值</strong></li>
+<li>当使用立即值作为操作数时，它会被<strong>符号扩展</strong>到目标操作数格式的长度</li>
+<li>比如 <code class="language-asm highlight"><span class="nf">IMUL</span><span class="w"> </span><span class="no">CX</span><span class="p">,</span><span class="w"> </span><span class="no">DX</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="no">H</span></code> 指令将 <code>12H</code> 乘以 <code>DX</code>，并将一个<span class="heti-skip"><span class="heti-spacing"> </span>16<span class="heti-spacing"> </span></span>位符号积留在 <code>CX</code> 中</li>
+<li>注意，双操作数形式会被汇编为三操作数以支持立即数乘法，例如，<code class="language-asm highlight"><span class="nf">IMUL</span><span class="w"> </span><span class="no">BX</span><span class="p">,</span><span class="w"> </span><span class="mi">16</span><span class="no">H</span></code> -&gt; <code class="language-asm highlight"><span class="nf">IMUL</span><span class="w"> </span><span class="no">BX</span><span class="p">,</span><span class="w"> </span><span class="no">BX</span><span class="p">,</span><span class="w"> </span><span class="mi">16</span><span class="no">H</span></code></li>
+</ul>
+</li>
+<li>
+<p><code class="language-asm highlight"><span class="nf">MUL</span></code> 和 <code class="language-asm highlight"><span class="nf">IMUL</span></code> 的差别：前者用<strong>零扩展</strong>填充高位，而后者用<strong>符号扩展</strong>填充高位</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/9.png"><img src="images/C5/9.png" width="60%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>受 <code class="language-asm highlight"><span class="nf">MUL</span></code> 影响的标志</p>
+<ul>
+<li>
+<p>当积完全位于积的下寄存器内时，<code>MUL</code> 指令清除 <code>OF</code> 和 <code>CF</code> 标志，否则 <code>OF</code> 和 <code>CF</code> 标志被设置</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/10.png"><img src="images/C5/10.png" width="60%"/></a>
+</div><p></p>
+</li>
+<li>
+<p><code>CF</code> 和 <code>OF</code> 标志表示积的上半部分是否包含有效数字</p>
+</li>
+</ul>
+</li>
+<li>
+<p>受 <code class="language-asm highlight"><span class="nf">IMUL</span></code> 影响的标志</p>
+<ul>
+<li>
+<p>当中间乘积的符号整数值与符号扩展操作数大小的截断乘积不同时，<code>CF</code> 和 <code>OF</code> 标志被设置，否则 <code>CF</code> 和 <code>OF</code> 标志被清除</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/11.png"><img src="images/C5/11.png" width="60%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>使用两个和三个操作数形式时，由于截断，应检查 <code>CF</code> 或 <code>OF</code> 标志以确保没有重要的位丢失</p>
+</li>
+</ul>
+</li>
+</ul>
+<details class="question">
+<summary>思考</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="" id="__tabbed_1_1" name="__tabbed_1" type="radio"/><input id="__tabbed_1_2" name="__tabbed_1" type="radio"/><div class="tabbed-labels"><label for="__tabbed_1_1">问题<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span></label><label for="__tabbed_1_2">问题<span><span class="heti-spacing"> </span>2</span></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="" id="__tabbed_2_1" name="__tabbed_2" type="radio"/><input id="__tabbed_2_2" name="__tabbed_2" type="radio"/><div class="tabbed-labels"><label for="__tabbed_2_1">问题</label><label for="__tabbed_2_2">解答</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>为什么 <code class="language-asm highlight"><span class="nf">MUL</span></code> 只有单操作数形式，而 <code class="language-asm highlight"><span class="nf">IMUL</span></code> 有扩展的双操作数和三操作数形式？</p>
+</div>
+<div class="tabbed-block">
+<ul>
+<li>随着编程语言和编译器的开发，<span>Intel<span class="heti-spacing"> </span></span>发现符号整数（如<span class="heti-skip"><span class="heti-spacing"> </span>C<span class="heti-spacing"> </span></span>中的 <code class="language-c highlight"><span class="kt">int</span></code>）的使用频率远高于无符号整数（例如，表达式 <code>x = y * 10</code> 或 <code>x = y * z</code>）</li>
+<li>因此，<span>Intel<span class="heti-spacing"> </span></span>引入了 <code class="language-asm highlight"><span class="nf">IMUL</span></code> 的双操作数和三操作数形式，以简化在汇编级别实现高级语言乘法语义的实现</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="tabbed-block">
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="" id="__tabbed_3_1" name="__tabbed_3" type="radio"/><input id="__tabbed_3_2" name="__tabbed_3" type="radio"/><div class="tabbed-labels"><label for="__tabbed_3_1">问题</label><label for="__tabbed_3_2">解答</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>为什么 <code class="language-asm highlight"><span class="nf">IMUL</span></code> 指令的两位操作数和三位操作数形式使用截断乘法而不是扩展乘法？</p>
+</div>
+<div class="tabbed-block">
+<p>– 单操作数的 <code class="language-asm highlight"><span class="nf">MUL</span></code> 和 <code class="language-asm highlight"><span class="nf">IMUL</span></code> 最初是为高精度<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>大数字算术（例如加密、哈希计算）等场景设计的，这些场景更依赖于完整的<span class="heti-skip"><span class="heti-spacing"> </span>2N<span class="heti-spacing"> </span></span>位结果，因此它们使用扩展乘法
+– 在编程语言中，对于像 <code>c = a * b</code> （其中 <code>a</code>、<code>b</code> 和 <code>c</code> 都是相同的 <code class="language-c highlight"><span class="kt">int</span></code> 类型）这样的常见表达式，程序员关注的是结果的低 N 位，因此 <code class="language-asm highlight"><span class="nf">IMUL</span></code> 的双操作数和三操作数形式使用截断乘法</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</details>
+<h3 id="division">Division<a class="headerlink" href="#division" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li>除法发生在<span class="heti-skip"><span class="heti-spacing"> </span>8<span class="heti-spacing"> </span></span>位、<span>16<span class="heti-spacing"> </span></span>位和<span class="heti-skip"><span class="heti-spacing"> </span>32<span class="heti-spacing"> </span></span>位数字上，具体取决于微处理器</li>
+<li>有无符号整数（<code class="language-asm highlight"><span class="nf">DIV</span></code>）或有符号整数（<code class="language-asm highlight"><span class="nf">IDIV</span></code>）版本</li>
+<li>被除数始终是<strong>双倍宽度的</strong>，除以操作数</li>
+<li><strong>没有</strong>任何微处理器有<strong>立即数</strong>除法指令可用</li>
+<li>在<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位模式下的<span class="heti-skip"><span class="heti-spacing"> </span>Pentium 4<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>Core 2<span class="heti-spacing"> </span></span>中，可以实现<span class="heti-skip"><span class="heti-spacing"> </span>128<span class="heti-spacing"> </span></span>位数字除以<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位数字</li>
+<li>
+<p>一个除法操作可能导致两种类型的错误：</p>
+<ul>
+<li>尝试除以零</li>
+<li>除法溢出（发生在一个大数除以一个小数时）</li>
+</ul>
+</li>
+<li>
+<p>在任何情况下，如果发生除法错误，微处理器都会生成一个<strong>中断</strong>，在屏幕上显示错误信息</p>
+</li>
+<li>
+<p><span>8<span class="heti-spacing"> </span></span>位除法</p>
+<ul>
+<li>使用 <code>AX</code> 存储被任何<span class="heti-skip"><span class="heti-spacing"> </span>8<span class="heti-spacing"> </span></span>位寄存器或内存位置的内容除以的<strong>被除数</strong>(dividend)，即用 <code>r/m8</code> 除以 <code>AX</code></li>
+<li>
+<p>结果存储在<code>AL</code><span><span class="heti-spacing"> </span>:=</span> <strong>商</strong>(quotient)，<code>AH</code> := <strong>余数</strong>(remainder)</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/12.png"><img src="images/C5/12.png" width="60%"/></a>
+</div><p></p>
+</li>
+</ul>
+<details class="example">
+<summary>例子</summary>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/13.png"><img align="right" alt="" src="images/C5/13.png" width="20%"/></a></p>
+<div class="language-asm highlight"><pre><span></span><code><span id="__span-12-1"><a href="#__codelineno-12-1" id="__codelineno-12-1" name="__codelineno-12-1"></a><span class="nf">MOV</span><span class="w"> </span><span class="no">AX</span><span class="p">,</span><span class="w"> </span><span class="mi">237</span><span class="w">     </span><span class="c1">; AX = 237</span>
+</span><span id="__span-12-2"><a href="#__codelineno-12-2" id="__codelineno-12-2" name="__codelineno-12-2"></a><span class="nf">MOV</span><span class="w"> </span><span class="no">CL</span><span class="p">,</span><span class="w"> </span><span class="mi">11</span><span class="w">      </span><span class="c1">; CL = 11</span>
+</span><span id="__span-12-3"><a href="#__codelineno-12-3" id="__codelineno-12-3" name="__codelineno-12-3"></a><span class="nf">DIV</span><span class="w"> </span><span class="no">CL</span><span class="w">          </span><span class="c1">; AH: AL = AX÷CL</span>
+</span><span id="__span-12-4"><a href="#__codelineno-12-4" id="__codelineno-12-4" name="__codelineno-12-4"></a><span class="w">                </span><span class="c1">; AH = 6, AL = 21</span>
+</span></code></pre></div>
+</details>
+<ul>
+<li>商或正或负，而余数始终取被除数的符号；这种舍入模式称为<strong>向零舍入</strong>(round-to-zero)</li>
+<li>
+<p>示例：<code class="language-asm highlight"><span class="nf">IDIV</span><span class="w"> </span><span class="no">BL</span></code></p>
+<ul>
+<li>对于<code>AX=10H</code><span class="heti-skip"><span class="heti-spacing"> </span>(+16)<span class="heti-spacing"> </span></span>和<code>BL=0FDH</code><span><span class="heti-spacing"> </span>(-3)</span><ul>
+<li>结果：商为<span><span class="heti-spacing"> </span>-5 (</span><code>AL</code><span><span class="heti-spacing"> </span>)</span>，余数为<span><span class="heti-spacing"> </span>1 (</span><code>AH</code><span><span class="heti-spacing"> </span>)</span></li>
+</ul>
+</li>
+<li>对于<code>AX=0FFF0H</code><span class="heti-skip"><span class="heti-spacing"> </span>(-16)<span class="heti-spacing"> </span></span>和<code>BL=03H</code><span><span class="heti-spacing"> </span>(+3)</span><ul>
+<li>结果：商为<span><span class="heti-spacing"> </span>-5 (</span><code>AL</code><span><span class="heti-spacing"> </span>)</span>，余数为<span><span class="heti-spacing"> </span>-1 (</span><code>AH</code><span><span class="heti-spacing"> </span>)</span></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>数字通常在<span class="heti-skip"><span class="heti-spacing"> </span>8<span class="heti-spacing"> </span></span>位除法中为<span class="heti-skip"><span class="heti-spacing"> </span>8<span class="heti-spacing"> </span></span>位宽。
+    – 被除数必须转换为 <code>AX</code> 中的 16 位宽数字；对于符号和无符号数字，实现方式不同</p>
+</li>
+<li>
+<p>以下示例说明如何将内存位置 <code>NUMB</code> 的无符号字节内容除以内存位置 <code>NUMB1</code> 的无符号内容（即，<code>NUMB</code> / <code>NUMB1</code>）</p>
+<div class="language-asm highlight"><pre><span></span><code><span id="__span-13-1"><a href="#__codelineno-13-1" id="__codelineno-13-1" name="__codelineno-13-1"></a><span class="nf">MOV</span><span class="w"> </span><span class="no">AL</span><span class="p">,</span><span class="w"> </span><span class="no">NUMB</span><span class="w">        </span><span class="c1">; get NUMB</span>
+</span><span id="__span-13-2"><a href="#__codelineno-13-2" id="__codelineno-13-2" name="__codelineno-13-2"></a><span class="nf">MOV</span><span class="w"> </span><span class="no">AH</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="w">           </span><span class="c1">; zero-extend</span>
+</span><span id="__span-13-3"><a href="#__codelineno-13-3" id="__codelineno-13-3" name="__codelineno-13-3"></a><span class="nf">DIV</span><span class="w"> </span><span class="no">NUMB1</span><span class="w">           </span><span class="c1">; divide by NUMB1</span>
+</span><span id="__span-13-4"><a href="#__codelineno-13-4" id="__codelineno-13-4" name="__codelineno-13-4"></a><span class="nf">MOV</span><span class="w"> </span><span class="no">ANSQ</span><span class="p">,</span><span class="w"> </span><span class="no">AL</span><span class="w">        </span><span class="c1">; save quotient</span>
+</span><span id="__span-13-5"><a href="#__codelineno-13-5" id="__codelineno-13-5" name="__codelineno-13-5"></a><span class="nf">MOV</span><span class="w"> </span><span class="no">ANSR</span><span class="p">,</span><span class="w"> </span><span class="no">AH</span><span class="w">        </span><span class="c1">; save remainder</span>
+</span></code></pre></div>
+<ul>
+<li>注意：位置 <code>NUMB</code> 的内容被零扩展，以形成一个<span class="heti-skip"><span class="heti-spacing"> </span>16<span class="heti-spacing"> </span></span>位无符号数，作为被除数</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><span>16<span class="heti-spacing"> </span></span>位除法</p>
+<ul>
+<li>此时以 <code>DX-AX</code> 作为被除数（<span>32<span class="heti-spacing"> </span></span>位）</li>
+<li>在<span class="heti-skip"><span class="heti-spacing"> </span>80386<span class="heti-spacing"> </span></span>以上的处理器中，使用 <code class="language-asm highlight"><span class="nf">MOVZX</span></code> 指令对数字进行零扩展</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/14.png"><img src="images/C5/14.png" width="60%"/></a>
+</div><p></p>
+</li>
+<li>
+<p><span>32<span class="heti-spacing"> </span></span>位除法</p>
+<ul>
+<li><span>80386 - Pertium 4<span class="heti-spacing"> </span></span>可在无符号或符号数上执行<span class="heti-skip"><span class="heti-spacing"> </span>32<span class="heti-spacing"> </span></span>位除法</li>
+<li><code>EDX-EAX</code> 中的<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位内容除以指令指定的操作数</li>
+<li><span>32<span class="heti-spacing"> </span></span>位的商和余数分别在 <code>EAX</code> 和 <code>EDX</code> 中</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C5/15.png"><img src="images/C5/15.png" width="60%"/></a>
+</div><p></p>
+</li>
+<li>
+<p><span>64<span class="heti-spacing"> </span></span>位除法</p>
+<ul>
+<li>处于<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位模式的<span class="heti-skip"><span class="heti-spacing"> </span>Pertium 4<span class="heti-spacing"> </span></span>可在无符号或符号数上执行<span class="heti-skip"><span class="heti-spacing"> </span>32<span class="heti-spacing"> </span></span>位除法</li>
+<li>使用 <code>RDX-RAX</code> 来保存被除数</li>
+<li>商和余数分别在 <code>RAX</code> 和 <code>RDX</code> 中</li>
+</ul>
+</li>
+<li>
+<p><span>3<span class="heti-spacing"> </span></span>种类型的<strong>符号扩展</strong>：</p>
+<ul>
+<li>
+<p><code class="language-asm highlight"><span class="nf">CBW</span></code> / <code class="language-asm highlight"><span class="nf">CWDE</span></code> / <code class="language-asm highlight"><span class="nf">CDQE</span></code>：将<code>AL</code><span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span><code>AX</code><span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span><code>EAX</code>中的符号字节<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>字<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>双字转换为符号字<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>双字<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>在 <code>RAX</code> 中的四字</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">指令</th>
+<th style="text-align: left;">Op/En</th>
+<th style="text-align: left;"><span>64<span class="heti-spacing"> </span></span>位模式</th>
+<th style="text-align: left;">兼容<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>传统模式</th>
+<th style="text-align: left;">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code class="language-asm highlight"><span class="nf">CBW</span></code></td>
+<td style="text-align: left;"><code>ZO</code></td>
+<td style="text-align: left;">有效</td>
+<td style="text-align: left;">有效</td>
+<td style="text-align: left;"><code>AX := AL</code> 的符号扩展</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code class="language-asm highlight"><span class="nf">CWDE</span></code></td>
+<td style="text-align: left;"><code>ZO</code></td>
+<td style="text-align: left;">有效</td>
+<td style="text-align: left;">有效</td>
+<td style="text-align: left;"><code>EAX := AX</code> 的符号扩展</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code class="language-asm highlight"><span class="nf">CDQE</span></code></td>
+<td style="text-align: left;"><code>ZO</code></td>
+<td style="text-align: left;">有效</td>
+<td style="text-align: left;">不适用</td>
+<td style="text-align: left;"><code>RAX := EAX</code> 的符号扩展</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p><code class="language-asm highlight"><span class="nf">CWD</span></code> / <code class="language-asm highlight"><span class="nf">CDQ</span></code> / <code class="language-asm highlight"><span class="nf">CQO</span></code>：将 <code>RAX</code> 的符号位拷贝到 <code>RDX</code> 寄存器的所有位上</p>
+<ul>
+<li>
+<p>以下例子展示了通过 <code class="language-asm highlight"><span class="nf">CWD</span></code> 指令对<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>个<span class="heti-skip"><span class="heti-spacing"> </span>16<span class="heti-spacing"> </span></span>位符号数的除法</p>
+<div class="language-asm highlight"><pre><span></span><code><span id="__span-14-1"><a href="#__codelineno-14-1" id="__codelineno-14-1" name="__codelineno-14-1"></a><span class="nf">MOV</span><span class="w"> </span><span class="no">AX</span><span class="p">,</span><span class="w"> </span><span class="p">-</span><span class="w"> </span><span class="mi">100</span><span class="w">           </span><span class="c1">; load a -100</span>
+</span><span id="__span-14-2"><a href="#__codelineno-14-2" id="__codelineno-14-2" name="__codelineno-14-2"></a><span class="nf">MOV</span><span class="w"> </span><span class="no">CX</span><span class="p">,</span><span class="w"> </span><span class="mi">9</span><span class="w">               </span><span class="c1">; load +9</span>
+</span><span id="__span-14-3"><a href="#__codelineno-14-3" id="__codelineno-14-3" name="__codelineno-14-3"></a><span class="nf">CWD</span><span class="w">                     </span><span class="c1">; convert the signed 16-bit number in AX</span>
+</span><span id="__span-14-4"><a href="#__codelineno-14-4" id="__codelineno-14-4" name="__codelineno-14-4"></a><span class="nf">IDIV</span><span class="w"> </span><span class="no">CX</span><span class="w">                 </span><span class="c1">; to a 32-bit signed number in DX: AX</span>
+</span></code></pre></div>
+</li>
+</ul>
+</li>
+<li>
+<p><code class="language-asm highlight"><span class="nf">MOVSX</span></code> / <code class="language-asm highlight"><span class="nf">MOVSXD</span></code>：将源操作数（寄存器<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>内存位置）的内容通过<strong>符号扩展</strong>拷贝到目标操作数（寄存器）</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-15-1"><a href="#__codelineno-15-1" id="__codelineno-15-1" name="__codelineno-15-1"></a>MOVSX reg16, reg/mem8       MOVSX reg32, reg/mem16
+</span><span id="__span-15-2"><a href="#__codelineno-15-2" id="__codelineno-15-2" name="__codelineno-15-2"></a>MOVSX reg32, reg/mem8       MOVSX reg64, reg/mem16
+</span><span id="__span-15-3"><a href="#__codelineno-15-3" id="__codelineno-15-3" name="__codelineno-15-3"></a>MOVSX reg64, reg/mem8       MOVSXD reg64, reg/mem32
+</span></code></pre></div>
+<ul>
+<li>
+<p><code class="language-asm highlight"><span class="nf">MOVZX</span></code>：将源操作数（寄存器<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>内存位置）的内容通过<strong>零扩展</strong>拷贝到目标操作数（寄存器）</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-16-1"><a href="#__codelineno-16-1" id="__codelineno-16-1" name="__codelineno-16-1"></a>MOVZX reg16, reg/mem8       MOVZX reg32, reg/mem16
+</span><span id="__span-16-2"><a href="#__codelineno-16-2" id="__codelineno-16-2" name="__codelineno-16-2"></a>MOVZX reg32, reg/mem8       MOVZX reg64, reg/mem16
+</span><span id="__span-16-3"><a href="#__codelineno-16-3" id="__codelineno-16-3" name="__codelineno-16-3"></a>MOVZX reg64, reg/mem8
+</span></code></pre></div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>余数</p>
+<ul>
+<li>在除法后，余数有以下几种处理方式：<ul>
+<li><strong>截断求商</strong>(dropped to truncate the quotient)：比如<span><span class="heti-spacing"> </span>13 / 2 = 6</span></li>
+<li><strong>舍入求商</strong>(round the quotient)：如果除法是无符号的，舍入需要将余数与除数的一半进行比较，以决定是否将商数向上取整（比如<span><span class="heti-spacing"> </span>13 / 2 = 7</span>）</li>
+<li><strong>分数余数</strong>(fractional remainder)：比如<span><span class="heti-spacing"> </span>13 / 2 = 6.5</span></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<details class="example" open="open">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="" id="__tabbed_4_1" name="__tabbed_4" type="radio"/><input id="__tabbed_4_2" name="__tabbed_4" type="radio"/><div class="tabbed-labels"><label for="__tabbed_4_1">例<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span></label><label for="__tabbed_4_2">例<span><span class="heti-spacing"> </span>2</span></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>下面展示了一个将 <code>AX</code> 除以 <code>BL</code> 的程序，并舍入无符号结果（即，<code>AX</code> / <code>BL</code>）</p>
+<div class="language-asm highlight"><pre><span></span><code><span id="__span-17-1"><a href="#__codelineno-17-1" id="__codelineno-17-1" name="__codelineno-17-1"></a><span class="err">0000</span><span class="w"> </span><span class="nf">F6</span><span class="w"> </span><span class="no">F3</span><span class="w">          </span><span class="no">DIV</span><span class="w"> </span><span class="no">BL</span><span class="w">          </span><span class="c1">; divide</span>
+</span><span id="__span-17-2"><a href="#__codelineno-17-2" id="__codelineno-17-2" name="__codelineno-17-2"></a><span class="err">0002</span><span class="w"> </span><span class="err">02</span><span class="w"> </span><span class="nf">E4</span><span class="w">          </span><span class="no">ADD</span><span class="w"> </span><span class="no">AH</span><span class="p">,</span><span class="w"> </span><span class="no">AH</span><span class="w">      </span><span class="c1">; double remainder</span>
+</span><span id="__span-17-3"><a href="#__codelineno-17-3" id="__codelineno-17-3" name="__codelineno-17-3"></a><span class="err">0004</span><span class="w"> </span><span class="err">ЗА</span><span class="w"> </span><span class="err">ЕЗ</span><span class="w">          </span><span class="nf">CMP</span><span class="w"> </span><span class="no">AH</span><span class="p">,</span><span class="w"> </span><span class="no">BL</span><span class="w">      </span><span class="c1">; test for rounding</span>
+</span><span id="__span-17-4"><a href="#__codelineno-17-4" id="__codelineno-17-4" name="__codelineno-17-4"></a><span class="err">0006</span><span class="w"> </span><span class="err">72</span><span class="w"> </span><span class="err">02</span><span class="w">          </span><span class="nf">JB</span><span class="w"> </span><span class="no">NEXT</span><span class="w">         </span><span class="c1">; if OK</span>
+</span><span id="__span-17-5"><a href="#__codelineno-17-5" id="__codelineno-17-5" name="__codelineno-17-5"></a><span class="err">0008</span><span class="w"> </span><span class="nf">FE</span><span class="w"> </span><span class="no">CO</span><span class="w">          </span><span class="no">INC</span><span class="w"> </span><span class="no">AL</span><span class="w">          </span><span class="c1">; round</span>
+</span><span id="__span-17-6"><a href="#__codelineno-17-6" id="__codelineno-17-6" name="__codelineno-17-6"></a><span class="err">000</span><span class="nf">A</span><span class="w">           </span><span class="no">NEXT</span><span class="p">:</span>
+</span></code></pre></div>
+<ul>
+<li>在比较之前将余数加倍，以决定是否舍入求商</li>
+<li><code class="language-asm highlight"><span class="nf">INC</span></code> 指令在比较后舍入 <code>AL</code> 的内容</li>
+</ul>
+</div>
+<div class="tabbed-block">
+<p>下面展示了如何将<span class="heti-skip"><span class="heti-spacing"> </span>13<span class="heti-spacing"> </span></span>除以<span><span class="heti-spacing"> </span>2</span>。</p>
+<div class="language-asm highlight"><pre><span></span><code><span id="__span-18-1"><a href="#__codelineno-18-1" id="__codelineno-18-1" name="__codelineno-18-1"></a><span class="err">0000</span><span class="w"> </span><span class="nf">B8</span><span class="w"> </span><span class="mi">000</span><span class="no">D</span><span class="w">        </span><span class="no">MOV</span><span class="w"> </span><span class="no">AX</span><span class="p">,</span><span class="w"> </span><span class="mi">13</span><span class="w">      </span><span class="c1">; load 13</span>
+</span><span id="__span-18-2"><a href="#__codelineno-18-2" id="__codelineno-18-2" name="__codelineno-18-2"></a><span class="err">0003</span><span class="w"> </span><span class="nf">B3</span><span class="w"> </span><span class="mi">02</span><span class="w">          </span><span class="no">MOV</span><span class="w"> </span><span class="no">BL</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="w">       </span><span class="c1">; load 2</span>
+</span><span id="__span-18-3"><a href="#__codelineno-18-3" id="__codelineno-18-3" name="__codelineno-18-3"></a><span class="err">0005</span><span class="w"> </span><span class="nf">F6</span><span class="w"> </span><span class="no">F3</span><span class="w">          </span><span class="no">DIV</span><span class="w"> </span><span class="no">BL</span><span class="w">          </span><span class="c1">; 13/2</span>
+</span><span id="__span-18-4"><a href="#__codelineno-18-4" id="__codelineno-18-4" name="__codelineno-18-4"></a><span class="err">0007</span><span class="w"> </span><span class="nf">A2</span><span class="w"> </span><span class="mi">0003</span><span class="w"> </span><span class="no">R</span><span class="w">      </span><span class="no">MOV</span><span class="w"> </span><span class="no">ANSQ</span><span class="p">,</span><span class="w"> </span><span class="no">AL</span><span class="w">    </span><span class="c1">; save quotient</span>
+</span><span id="__span-18-5"><a href="#__codelineno-18-5" id="__codelineno-18-5" name="__codelineno-18-5"></a><span class="err">000</span><span class="nf">A</span><span class="w"> </span><span class="no">BO</span><span class="w"> </span><span class="mi">00</span><span class="w">          </span><span class="no">MOV</span><span class="w"> </span><span class="no">AL</span><span class="p">,</span><span class="w"> </span><span class="no">O</span><span class="w">       </span><span class="c1">; clear AL</span>
+</span><span id="__span-18-6"><a href="#__codelineno-18-6" id="__codelineno-18-6" name="__codelineno-18-6"></a><span class="err">000</span><span class="nf">C</span><span class="w"> </span><span class="no">F6</span><span class="w"> </span><span class="no">F3</span><span class="w">          </span><span class="no">DIV</span><span class="w"> </span><span class="no">BL</span><span class="w">          </span><span class="c1">; generate remainder</span>
+</span><span id="__span-18-7"><a href="#__codelineno-18-7" id="__codelineno-18-7" name="__codelineno-18-7"></a><span class="err">000</span><span class="nf">E</span><span class="w"> </span><span class="no">A2</span><span class="w"> </span><span class="mi">0004</span><span class="w"> </span><span class="no">R</span><span class="w">      </span><span class="no">MOV</span><span class="w"> </span><span class="no">ANSR</span><span class="p">,</span><span class="w"> </span><span class="no">AL</span><span class="w">    </span><span class="c1">; save remainder</span>
+</span></code></pre></div>
+<ul>
+<li><span>8<span class="heti-spacing"> </span></span>位商被保存在内存位置 <code>ANSQ</code> 中，然后<span class="heti-skip"><span class="heti-spacing"> </span>AL<span class="heti-spacing"> </span></span>被清零</li>
+<li>接下来，<code>AX</code> 的内容再次除以<span><span class="heti-spacing"> </span>2</span>，以生成一个分数余数</li>
+<li>在第二次除法后，<code>AL</code> 寄存器的值为 <code>80H</code></li>
+<li>如果将二进制点（基数）放置在 <code>AL</code> 的最左边位之前，则 <code>AL</code> 中的小数余数为<span class="heti-skip"><span class="heti-spacing"> </span>0.510<span class="heti-spacing"> </span></span>或<span><span class="heti-spacing"> </span>0.100000002</span></li>
+<li>余数保存在内存位置 <code>ANSR</code> 中</li>
+</ul>
+</div>
+</div>
+</div>
+</details>
+<h2 id="bcd-and-ascii-arithmetic">BCD and ASCII Arithmetic<a class="headerlink" href="#bcd-and-ascii-arithmetic" title="Permanent link">⚓︎</a></h2>
+<h2 id="basic-logic-instructions">Basic Logic Instructions<a class="headerlink" href="#basic-logic-instructions" title="Permanent link">⚓︎</a></h2>
+<h2 id="string-comparisons">String Comparisons<a class="headerlink" href="#string-comparisons" title="Permanent link">⚓︎</a></h2>
+<aside class="md-source-file">
+<span class="md-source-file__fact">
+<span class="md-icon" title="最后更新">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"></path></svg>
+</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年11月14日 13:47:49 CST">2025年11月14日 13:47:49</span>
+</span>
+<span class="md-source-file__fact">
+<span class="md-icon" title="创建日期">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"></path></svg>
+</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年11月14日 13:47:49 CST">2025年11月14日 13:47:49</span>
+</span>
+</aside>
+<p style="font-size: 30px; font-weight: 600">评论区</p>
+<div>
+    如果大家有什么问题或想法，欢迎在下方留言~
+  </div>
+<!-- Insert generated snippet here -->
+<script async="" crossorigin="anonymous" data-category="Announcements" data-category-id="DIC_kwDOMAb9Zs4CfmpP" data-emit-metadata="0" data-input-position="bottom" data-lang="zh-CN" data-mapping="pathname" data-reactions-enabled="1" data-repo="noughtq/notebook" data-repo-id="R_kgDOMAb9Zg" data-strict="0" data-theme="preferred_color_scheme" src="https://giscus.app/client.js">
+</script>
+<!-- Synchronize Giscus theme with palette -->
+<script>
+    var giscus = document.querySelector("script[src*=giscus]")
+
+    // Set palette on initial load
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object") {
+      var theme = palette.color.scheme === "slate"
+        ? "transparent_dark"
+        : "light"
+
+      // Instruct Giscus to set theme
+      giscus.setAttribute("data-theme", theme) 
+    }
+
+    // Register event handlers after documented loaded
+    document.addEventListener("DOMContentLoaded", function() {
+      var ref = document.querySelector("[data-md-component=palette]")
+      ref.addEventListener("change", function() {
+        var palette = __md_get("__palette")
+        if (palette && typeof palette.color === "object") {
+          var theme = palette.color.scheme === "slate"
+            ? "dark"
+            : "light"
+
+          // Instruct Giscus to change theme
+          var frame = document.querySelector(".giscus-frame")
+          frame.contentWindow.postMessage(
+            { giscus: { setConfig: { theme } } },
+            "https://giscus.app"
+          )
+        }
+      })
+    })
+  </script>
+<!-- 标题计数器 -->
+<link href="/css/counter.css" rel="stylesheet"/>
+<!-- 主页个性化 -->
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+<button class="md-top md-icon" data-md-component="top" hidden="" type="button">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  回到页面顶部
+</button>
+</main>
+<footer class="md-footer">
+<nav aria-label="页脚" class="md-footer__inner md-grid">
+<a aria-label="上一页: Data Movement Instructions" class="md-footer__link md-footer__link--prev" href="4.html">
+<div class="md-footer__button md-icon">
+<svg viewbox="0 0 256 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path></svg>
+</div>
+<div class="md-footer__title">
+<span class="md-footer__direction">
+                上一页
+              </span>
+<div class="md-ellipsis">
+                Data Movement Instructions
+              </div>
+</div>
+</a>
+<a aria-label="下一页: Web 相关" class="md-footer__link md-footer__link--next" href="../../web/index.html">
+<div class="md-footer__title">
+<span class="md-footer__direction">
+                下一页
+              </span>
+<div class="md-ellipsis">
+                Web 相关
+              </div>
+</div>
+<div class="md-footer__button md-icon">
+<svg viewbox="0 0 256 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M247.1 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L179.2 256 41.9 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"></path></svg>
+</div>
+</a>
+</nav>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright" style="margin-left: 33.5%">
+<div class="md-copyright__highlight" style="text-align: center">
+        Copyright © 2024-2025 <a href="https://github.com/NoughtQ">NoughtQ</a>
+</div>
+    
+    
+      Powered by
+      <a href="https://www.mkdocs.org/" rel="noopener" target="_blank">
+        MkDocs
+      </a>
+      with theme
+      <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+        Material
+      </a>
+      modified by
+      <a href="https://github.com/NoughtQ" rel="noopener" target="_blank">
+        NoughtQ
+      </a>
+<!-- <br> -->
+<div style="text-align: center;">
+<a href="https://icp.gov.moe/?keyword=20252357" target="_blank">萌ICP备20252357号</a>
+</div>
+</div>
+<div class="md-social">
+<a class="md-social__link" href="https://noughtq.top" rel="noopener" target="_blank" title="noughtq.top">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M277.8 8.6c-12.3-11.4-31.3-11.4-43.5 0l-224 208c-9.6 9-12.8 22.9-8 35.1S18.8 272 32 272h16v176c0 35.3 28.7 64 64 64h288c35.3 0 64-28.7 64-64V272h16c13.2 0 25-8.1 29.8-20.3s1.6-26.2-8-35.1zM240 320h32c26.5 0 48 21.5 48 48v96H192v-96c0-26.5 21.5-48 48-48"></path></svg>
+</a>
+<a class="md-social__link" href="https://blog.noughtq.top" rel="noopener" target="_blank" title="blog.noughtq.top">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M224 24c0-13.3 10.7-24 24-24 145.8 0 264 118.2 264 264 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-119.3-96.7-216-216-216-13.3 0-24-10.7-24-24M80 96c26.5 0 48 21.5 48 48v224c0 26.5 21.5 48 48 48s48-21.5 48-48-21.5-48-48-48c-8.8 0-16-7.2-16-16v-64c0-8.8 7.2-16 16-16 79.5 0 144 64.5 144 144s-64.5 144-144 144S32 447.5 32 368V144c0-26.5 21.5-48 48-48m168 0c92.8 0 168 75.2 168 168 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-66.3-53.7-120-120-120-13.3 0-24-10.7-24-24s10.7-24 24-24"></path></svg>
+</a>
+<a class="md-social__link" href="https://github.com/noughtq" rel="noopener" target="_blank" title="github.com">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"></path></svg>
+</a>
+<a class="md-social__link" href="mailto:noughtq666@gmail.com" rel="noopener" target="_blank" title="">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m20 8-8 5-8-5V6l8 5 8-5m0-2H4c-1.11 0-2 .89-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2"></path></svg>
+</a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"base": "../..", "features": ["content.action.edit", "content.action.view", "content.code.copy", "content.code.annotate", "content.footnote.tooltips", "navigation.tabs", "navigation.top", "navigation.footer", "navigation.indexes", "navigation.tracking", "navigation.prune", "search.share"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+<script src="../../js/anchor.js"></script>
+<script src="../../js/katex.js"></script>
+<script src="../../js/toc.js"></script>
+<script src="../../js/typed.js"></script>
+<script src="../../js/custom.js"></script>
+<script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+<script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.js"></script>
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>
