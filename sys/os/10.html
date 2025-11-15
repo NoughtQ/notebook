@@ -702,13 +702,6 @@
     </span>
 </a>
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#current-practice">
-<span class="md-ellipsis">
-      Current Practice
-    </span>
-</a>
-</li>
 </ul>
 </nav>
 </li>
@@ -1110,13 +1103,6 @@
     </span>
 </a>
 </li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#current-practice">
-<span class="md-ellipsis">
-      Current Practice
-    </span>
-</a>
-</li>
 </ul>
 </nav>
 </li>
@@ -1220,7 +1206,7 @@
 </a>
 <h1 id="virtual-memory">Virtual Memory<a class="headerlink" href="#virtual-memory" title="Permanent link">⚓︎</a></h1>
 <div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
-<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>6417<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>32<span class="heti-spacing"> </span></span>分钟</p>
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>10968<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>55<span class="heti-spacing"> </span></span>分钟</p>
 </div>
 <p><strong>虚拟内存</strong><span>(virtual memory)<span class="heti-spacing"> </span></span>是一种让进程的执行可以不完全在内存中的技术。该技术的一个主要优点是可以让程序比物理内存还大，因为虚拟内存将主存抽象为一个非常大且统一的存储数组。</p>
 <h2 id="background">Background<a class="headerlink" href="#background" title="Permanent link">⚓︎</a></h2>
@@ -1626,20 +1612,211 @@
 <p>由于这些问题，一些<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>允许特定程序将二级存储分区作为大型顺序逻辑块数组来使用，而无需任何文件系统数据结构。这个数组有时被称为<strong>原始磁盘</strong>(raw disk)；对该数组的<span class="heti-skip"><span class="heti-spacing"> </span>I/O<span class="heti-spacing"> </span></span>称为原始<span><span class="heti-spacing"> </span>I/O</span>，它能绕过所有文件系统服务。</p>
 <p>请注意，尽管某些应用程序在原始分区上实施自己的专用存储服务时效率更高，但大多数应用程序在使用常规文件系统服务时表现得更好。</p>
 <h2 id="allocations-of-frames">Allocations of Frames<a class="headerlink" href="#allocations-of-frames" title="Permanent link">⚓︎</a></h2>
+<p>在解决完页的替换问题后，我们来回答第二个问题：如何为页分配（空闲的）帧？</p>
 <h3 id="minimum-number-of-frames">Minimum Number of Frames<a class="headerlink" href="#minimum-number-of-frames" title="Permanent link">⚓︎</a></h3>
+<p>帧的分配策略受限于多种因素。例如分配的帧数不得超过最大帧数（除非存在页共享<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，并且分配帧数也有一个最小值要求。前者是显然的，所以我们来看后者是怎么一回事。</p>
+<p>之所以要确定最小分配数量，一个原因是考虑到性能。显然，分配给每个进程的帧数越少，页错误率就会增加，从而降低程序执行速度。所以必须有足够多的帧来保存所有的页。</p>
+<p>帧的最小数量取决于计算机架构（不同的寻址模式等<heti-adjacent class="heti-adjacent-half">，</heti-adjacent>）而最大数量取决于可用的物理内存。</p>
 <h3 id="allocation-algorithms">Allocation Algorithms<a class="headerlink" href="#allocation-algorithms" title="Permanent link">⚓︎</a></h3>
+<p>假如要为<span class="heti-skip"><span class="heti-spacing"> </span>n<span class="heti-spacing"> </span></span>个进程分配共<span class="heti-skip"><span class="heti-spacing"> </span>m<span class="heti-spacing"> </span></span>个帧，最简单的方法是<strong>平等分配</strong>(equal allocation)，即每个进程得到<span class="heti-skip"><span class="heti-spacing"> </span>m / n<span class="heti-spacing"> </span></span>个帧。</p>
+<p>第二种方法基于一个发现：各种进程所需的内存量不同，比如有些进程所需的帧数远低于平均值，那么采用前一种方法就会浪费掉很多帧。为解决该问题，我们采用名为<strong>比例分配</strong><span>(proportional allocation)<span class="heti-spacing"> </span></span>的方法，它基于进程大小来分配内存。令进程<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(p_i\)</span><span class="heti-spacing"> </span></span>的虚拟内存大小为<span><span class="heti-spacing"> </span><span class="arithmatex">\(s_i\)</span></span>，总的可用帧数为<span><span class="heti-spacing"> </span><span class="arithmatex">\(m\)</span></span>，定义<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(S = \sum s_i\)</span><span class="heti-spacing"> </span></span>为总大小。那么分配给进程<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(p_i\)</span><span class="heti-spacing"> </span></span>的帧数近似为：
+$$
+a_i = s_i / S \times m
+$$</p>
+<p>需要确保<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(a_i\)</span><span class="heti-spacing"> </span></span>为大于指令集要求的最小帧数的整数，且不超过<span><span class="heti-spacing"> </span><span class="arithmatex">\(m\)</span></span>。</p>
+<p>在前两种分配算法中，具体的分配还会随多道程序设计的程度发生变化。并且无论哪种算法，高优先级和低优先级的进程会被一视同仁，但显然我们希望高优先级的进程能分配到更多内存，以加快执行。一种解决方法是：在比例分配中，帧的比例不再取决于进程大小，而是基于进程的<strong>优先级</strong>，或者为两者的结合。</p>
 <h3 id="global-vs-local-allocation">Global v.s. Local Allocation<a class="headerlink" href="#global-vs-local-allocation" title="Permanent link">⚓︎</a></h3>
+<p>另一个影响帧分配的因素是页替换。我们可将页替换分成两大类：</p>
+<ul>
+<li><strong>全局替换</strong>(global replacement)：允许进程从所有帧中选择一个替换帧，即便该帧当前被分配到其他进程上，也就是说一个进程可以夺取另一个进程的帧</li>
+<li><strong>局部替换</strong>(local replacement)：每个进程仅能从自己的一组帧中选择</li>
+</ul>
+<p>全局替换算法的一个问题是进程的内存页不仅取决于该进程的分页行为，还取决于其他进程的分页行为。因此即便是相同的进程也可以有不同的执行结果。而局部替换算法不存在这种问题，但它可能会阻碍一个进程，因为它没有为其提供其他不常用的内存页。因此<strong>全局替换</strong>通常有<strong>更高的吞吐量</strong>，于是成为<strong>最常用</strong>的方法。</p>
+<p>接下来我们仅考虑全局页替换策略。该方法能满足来自空闲帧列表的所有内存请求，但不是在空闲内存降至零之前开始选择替换页面，而是在降至某个阈值以下时触发页替换，以确保始终有足够的空闲内存来满足新的请求。该过程如下所示：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C10/15.png"><img src="images/C10/15.png" width="40%"/></a>
+</div>
+<ul>
+<li>当降低至阈值以下时会触发内核例程（称为<strong>收割者</strong>(reaper)<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，开始回收<span class="heti-skip"><span class="heti-spacing"> </span>(reclaim)<span class="heti-spacing"> </span></span>所有进程的页<ul>
+<li>收割者例程可采取前面介绍的任何页替换算法，但常用的还是某种近似<span class="heti-skip"><span class="heti-spacing"> </span>LRU<span class="heti-spacing"> </span></span>算法</li>
+</ul>
+</li>
+<li>当空闲内存量到达最大阈值时，收割者进程就会挂起<span><span class="heti-spacing"> </span>(suspend)</span>，仅在空闲内存降至最小阈值时继续</li>
+</ul>
+<p>在<span class="heti-skip"><span class="heti-spacing"> </span>Linux<span class="heti-spacing"> </span></span>中，如果空闲内存量变得很低很低时，一个叫做“<strong>内存不足杀手</strong>(out-of-memory(OOM) killer)”的例程就会选择一个进程终止，从而释放其内存。每个进程都有一个<span class="heti-skip"><span class="heti-spacing"> </span>OOM<span class="heti-spacing"> </span></span>分数，分数越高意味着该进程越有可能被内存不足杀手给终止。<span>OOM<span class="heti-spacing"> </span></span>分数通过进程正在使用的内存比例来计算——比例越高，分数越高。</p>
 <h3 id="non-uniform-memory-access">Non-Uniform Memory Access<a class="headerlink" href="#non-uniform-memory-access" title="Permanent link">⚓︎</a></h3>
+<p>到目前为止，我们假设所有主存都是相等的；而在<strong>非均匀内存访问</strong>(non-uniform memory access, <strong>NUMA</strong>)，情况就有所不同了。在这类系统中，每个<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>都有自己的局部内存，且各<span class="heti-skip"><span class="heti-spacing"> </span>CPUs<span class="heti-spacing"> </span></span>之间通过共享系统互联组织起来。显然，<span>CPU<span class="heti-spacing"> </span></span>访问自己的局部内存会比访问其他<span class="heti-skip"><span class="heti-spacing"> </span>CPUs<span class="heti-spacing"> </span></span>的局部内存会快。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C10/16.png"><img src="images/C10/16.png" width="30%"/></a>
+</div>
+<p>于是，管理好哪个帧放在哪个位置上会极大影响<span class="heti-skip"><span class="heti-spacing"> </span>NUMA<span class="heti-spacing"> </span></span>系统的性能。如果还是把所有内存一视同仁，<span>CPU<span class="heti-spacing"> </span></span>可能会花费更长时间等待。所以对于<span><span class="heti-spacing"> </span>NUMA</span>，我们的目标是<u>让分配的内存帧和进程运行所处的<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>尽可能接近（即最小化时延<heti-adjacent class="heti-adjacent-half">）</heti-adjacent></u>。</p>
+<p>同时，调度器必须追踪每个进程上一次运行所在的<span><span class="heti-spacing"> </span>CPU</span>，这样虚拟内存系统就能尝试为每个进程分配离进程所在<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>尽可能接近的帧，从而提升高速缓存命中并减少内存访问时间。</p>
+<p>如果还要考虑线程的话，情况会变得更加复杂。<span>Linux<span class="heti-spacing"> </span></span>的做法是：</p>
+<ul>
+<li>让内核识别<strong>调度域层级</strong>(hierarchy of scheduling domains)</li>
+<li><strong><span>CFS<span class="heti-spacing"> </span></span>调度器</strong>不允许线程在不同域之间迁移，从而避免了内存访问损失</li>
+<li><span>Linux<span class="heti-spacing"> </span></span>还为每个<span class="heti-skip"><span class="heti-spacing"> </span>NUMA<span class="heti-spacing"> </span></span>节点维护一个单独的空闲帧列表，从而确保线程将从其运行所在的节点分配内存</li>
+</ul>
 <h2 id="thrashing">Thrashing<a class="headerlink" href="#thrashing" title="Permanent link">⚓︎</a></h2>
+<p>若进程没有足够多的帧，进程将很快发生页错误，此时它必须要替换一些页。但由于所有页都在使用中，它必须替换一个马上就会再次需要的页，因此它很快再次发生页错误。然后又需要替换，又发生页错误，如此循环往复。这种情况被称为<strong>抖动</strong>(thrashing)，此时一个进程花费在页交换上的时间比执行的时间多，这显然会导致严重的性能问题。</p>
 <h3 id="cause-of-thrashing">Cause of Thrashing<a class="headerlink" href="#cause-of-thrashing" title="Permanent link">⚓︎</a></h3>
+<p>试想这样一种情况：</p>
+<ul>
+<li>如果<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>利用率太低，我们希望增加多道程序设计的程度，那么就会向系统引入新的进程</li>
+<li>假设采用全局页替换算法</li>
+<li>若进程在执行过程中需要更多的页，那么该进程就会发生页错误，需要从别的进程中获取一些页</li>
+<li>这么一来，别的进程也会发生页错误，也会用到分页设备</li>
+<li>当进程排队使用分页设备时，<span>CPU<span class="heti-spacing"> </span></span>利用率又下降了，那么<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>调度器又会尝试提高多道程序设计的程度，这意味着上述情况还会重复发生</li>
+</ul>
+<p>这就是发生<strong>抖动</strong>的一个案例。要想增加<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>利用率并停止抖动，就必须降低多道程序设计的程度。于是我们采用<strong>局部替换算法</strong>(local replacement algorithm)（<strong>或优先级替换算法</strong>(priority replacement algorithm)<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。此时，若一个进程发生抖动，它不会从别的进程中窃取页，从而避免其他进程发生抖动。</p>
+<p>但这还没完，要想阻止抖动，必须向进程提供足够多的帧。一种策略是定义一个进程执行时的<strong>局部性模型</strong>(locality model)。</p>
+<ul>
+<li>一个「局部性」是指一组被一起被活跃使用的页，其定义同时来自程序结构和数据结构</li>
+<li>一个运行中的程序通常由多个不同的局部性构成，并且这些局部性可能会重叠</li>
+<li>比如一次函数调用就会创建一个局部性</li>
+</ul>
+<p>下图展示了某个进程的局部性随时间发生的变化：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C10/17.png"><img src="images/C10/17.png" width="50%"/></a>
+</div>
+<ul>
+<li>假设为一个进程分配足够的帧以容纳其当前的局部性，它会因其局部性中的页而发生页错误，直到所有这些页都在内存中；之后就不再发生页错误，直到它的局部性发生改变</li>
+<li>若没有分配足够的帧来容纳当前局部性的大小，该进程将会出现频繁的页错误，因为无法在内存中保持所有正在使用的页</li>
+</ul>
 <h3 id="working-set-model">Working-Set Model<a class="headerlink" href="#working-set-model" title="Permanent link">⚓︎</a></h3>
+<p><strong>工作集模型</strong><span>(working-set model)<span class="heti-spacing"> </span></span>基于局部性的假设。我们用参数<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\Delta\)</span><span class="heti-spacing"> </span></span>定义<strong>工作集窗口</strong>(working-set window)，以检测最近<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\Delta\)</span><span class="heti-spacing"> </span></span>份页的引用；而这些页就是<strong>工作集</strong><span>(working-set)<span class="heti-spacing"> </span></span>了，说明这些页正在被积极使用。因此，工作集是对局部性的近似表示。</p>
+<p>对于下图的例子，<span><span class="arithmatex">\(t_1\)</span><span class="heti-spacing"> </span></span>时刻的工作集为<span><span class="heti-spacing"> </span><span class="arithmatex">\(\{1, 2, 5, 6, 7\}\)</span></span>，<span><span class="arithmatex">\(t_2\)</span><span class="heti-spacing"> </span></span>时刻的工作集为<span><span class="heti-spacing"> </span><span class="arithmatex">\(\{3, 4\}\)</span></span>。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C10/18.png"><img src="images/C10/18.png" width="60%"/></a>
+</div>
+<p>工作集的精度取决于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\Delta\)</span><span class="heti-spacing"> </span></span>的选择。若<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\Delta\)</span><span class="heti-spacing"> </span></span>太小，则无法包含完整的局部性；若<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\Delta\)</span><span class="heti-spacing"> </span></span>太大，则可能会让多个局部性重叠。</p>
+<p>工作集最重要的性质是它的大小。假设每个进程的工作集大小为<span><span class="heti-spacing"> </span><span class="arithmatex">\(WSS_i\)</span></span>，那么<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(D = \sum WSS_i\)</span><span class="heti-spacing"> </span></span>就是总共需要的帧。若<span><span class="heti-spacing"> </span><span class="arithmatex">\(D &gt; m\)</span></span>（可用帧的总数<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，那么抖动就会发生。</p>
+<p>一旦确定<span><span class="heti-spacing"> </span><span class="arithmatex">\(\Delta\)</span></span>，工作集模型就很简单了。</p>
+<ul>
+<li><span>OS<span class="heti-spacing"> </span></span>监控每个进程的工作集，并为工作集提供足够多的帧，以满足其工作集大小</li>
+<li>若存在足够多的额外的帧，那么就能发起别的进程了</li>
+<li>若工作集大小增加，超出可用帧的总数，那么<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>会选择一个进程，将其挂起；该进程的页会被写出，且其帧会被重新分配给别的进程，之后该进程会重新启动</li>
+</ul>
+<p>工作集策略能够避免抖动，同时能够让多道程序设计程度尽可能高，因而优化了<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>的利用率。</p>
+<p>该模型的难点在于追踪工作集。我们可以用一个<strong>固定间隔的定时器中断</strong>和一个<strong>引用位</strong>来近似表示工作集模型。</p>
+<ul>
+<li>假设<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\Delta\)</span> = 10000<span class="heti-spacing"> </span></span>次引用，那么可以让定时器中断每隔<span class="heti-skip"><span class="heti-spacing"> </span>5000<span class="heti-spacing"> </span></span>次引用触发</li>
+<li>当中断发生时，拷贝和清空每个页的引用位</li>
+<li>因此当页错误发生时，可以检验当前的引用位以及两个在内存的位<span><span class="heti-spacing"> </span>(in-memory bits)</span>，以确定哪个页在最近<span class="heti-skip"><span class="heti-spacing"> </span>5000<span class="heti-spacing"> </span></span>次引用中被用到过</li>
+<li>如果某个页有被用到过，那么至少有一个位是被置位的，说明它在工作集中；若没被用过，所有位都没有被设置</li>
+</ul>
+<p>上述安排并不准确，因为我们不知道在<span class="heti-skip"><span class="heti-spacing"> </span>5000<span class="heti-spacing"> </span></span>次引用中哪里会发生引用。不过可通过<strong>增加历史位和中断频率</strong>来减少不确定性，然而这会带来更高的成本。</p>
 <h3 id="page-fault-frequency">Page-Fault Frequency<a class="headerlink" href="#page-fault-frequency" title="Permanent link">⚓︎</a></h3>
-<h3 id="current-practice">Current Practice<a class="headerlink" href="#current-practice" title="Permanent link">⚓︎</a></h3>
+<p>我们想要控制页错误率的水平，因为：</p>
+<ul>
+<li>太高<span class="heti-skip"><span class="heti-spacing"> </span>-&gt;<span class="heti-spacing"> </span></span>进程需要更多的帧</li>
+<li>太低<span class="heti-skip"><span class="heti-spacing"> </span>-&gt;<span class="heti-spacing"> </span></span>进程的帧可能太多了</li>
+</ul>
+<p>所以需要为所需的页错误率设置上界和下界，如图所示：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C10/19.png"><img src="images/C10/19.png" width="60%"/></a>
+</div>
+<ul>
+<li>若页错误率超出上界，则为进程分配更多的帧</li>
+<li>若页错误率低于下界，则要移除一些该进程拥有的帧</li>
+</ul>
+<p>假如页错误率太高，已经没有可用帧时，可能需要选择一些进程，将其交换至后备存储中。</p>
 <h2 id="memory-compression">Memory Compression<a class="headerlink" href="#memory-compression" title="Permanent link">⚓︎</a></h2>
+<p>分页的一种替代方案是<strong>内存压缩</strong>(memory compression)。采用该方法时，系统不是将修改过的页交换到交换空间中，而是<strong>将多个页压缩成一个单一的页</strong>，从而使系统能够减少内存使用，而无需进行页交换。下面展示了空闲帧表在压缩前后的情况：</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="" id="__tabbed_2_1" name="__tabbed_2" type="radio"/><input id="__tabbed_2_2" name="__tabbed_2" type="radio"/><div class="tabbed-labels"><label for="__tabbed_2_1">压缩前</label><label for="__tabbed_2_2">压缩后</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C10/20.png"><img src="images/C10/20.png" width="50%"/></a>
+</div><p></p>
+<ul>
+<li>空闲帧列表包含六个帧</li>
+<li>假设空闲帧的数量低于某个触发页替换的阈值，替换算法选择四个帧（15、3、35、26）将它们放置在一个修改后的帧列表中</li>
+<li>通常，修改后的帧列表接下来会被写入交换空间，使这些帧可用于空闲帧列表</li>
+<li>如果采用内存压缩方法，就需要压缩一定数量的帧，并将它们的压缩版本存储在一个单独的页帧中</li>
+</ul>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C10/21.png"><img src="images/C10/21.png" width="60%"/></a>
+</div><p></p>
+<ul>
+<li>帧<span class="heti-skip"><span class="heti-spacing"> </span>7<span class="heti-spacing"> </span></span>从空闲帧列表中移除</li>
+<li>帧<span><span class="heti-spacing"> </span>15</span>、3、<span>35<span class="heti-spacing"> </span></span>被压缩并存储在帧<span class="heti-skip"><span class="heti-spacing"> </span>7<span class="heti-spacing"> </span></span>中，然后该帧存储在压缩帧列表中</li>
+<li>现在可以将帧<span><span class="heti-spacing"> </span>15</span>、3、<span>35<span class="heti-spacing"> </span></span>移动到空闲帧列表中</li>
+<li>如果稍后引用这三个压缩帧中的任何一个，将发生页错误，压缩帧将被解压缩，恢复内存中那三个页</li>
+</ul>
+</div>
+</div>
+</div>
+<hr/>
+<p>由于移动设备通常不支持分页，因此内存压缩是大多数移动操作系统的内存管理的重要部分。</p>
+<p>尽管内存压缩确实需要分配空闲帧来保存压缩页，但从压缩算法的结果看，这一做法确实可以显著节省内存的使用。不过无论哪种形式的数据压缩，压缩算法的速度和压缩实现的减小量（即<strong>压缩比</strong>(compression ratio)）之间始终存在一种竞争。另外，多核有助于让压缩算法并行执行。</p>
 <h2 id="allocating-kernel-memory">Allocating Kernel Memory<a class="headerlink" href="#allocating-kernel-memory" title="Permanent link">⚓︎</a></h2>
+<p>通常从不同于用于满足一般用户进程的空闲内存池中分配<strong>内核内存</strong>，这是因为：</p>
+<ul>
+<li>内核请求不同大小的数据结构内存，其中一些小于单个页的大小。因此，内核必须谨慎使用内存，并尝试最小化由于碎片造成的浪费。这十分重要，因为许多操作系统不对内核代码或数据进行分页系统处理。</li>
+<li>某些硬件设备会直接与物理内存交互，因此可能需要存在于物理连续页中的内存</li>
+</ul>
+<p>下面将介绍用于管理分配给内核进程的空闲内存的一些策略。</p>
 <h3 id="buddy-system">Buddy System<a class="headerlink" href="#buddy-system" title="Permanent link">⚓︎</a></h3>
+<p><strong>伙伴系统</strong><span>(buddy system)<span class="heti-spacing"> </span></span>从由物理连续页组成的固定大小段中分配内存。使用 <strong><span>2<span class="heti-spacing"> </span></span>的幂次方分配器</strong><span>(power-of-2 allocator)<span class="heti-spacing"> </span></span>从这个段中分配内存，该分配器以<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>的幂次方大小（4 KB、8 KB、<span>16 KB<span class="heti-spacing"> </span></span>等等）为单位满足请求。对于不适当尺寸的请求，向上取整到下一个最高的<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>的幂次方。</p>
+<details class="example" open="open">
+<summary>例子</summary>
+<ul>
+<li>假设一个内存段的大小最初为<span><span class="heti-spacing"> </span>256 KB</span>，内核请求<span class="heti-skip"><span class="heti-spacing"> </span>21 KB<span class="heti-spacing"> </span></span>的内存</li>
+<li>该段最初被分成两个伙伴<span><span class="heti-spacing"> </span><span class="arithmatex">\(A_L, A_R\)</span></span>，大小均为<span><span class="heti-spacing"> </span>128 KB</span></li>
+<li>其中一个伙伴进一步分成两个<span class="heti-skip"><span class="heti-spacing"> </span>64 KB<span class="heti-spacing"> </span></span>的伙伴<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(B_L\)</span><span class="heti-spacing"> </span></span>和<span><span class="heti-spacing"> </span><span class="arithmatex">\(B_R\)</span></span></li>
+<li>由于从<span class="heti-skip"><span class="heti-spacing"> </span>21 KB<span class="heti-spacing"> </span></span>开始下一个最高的<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>的幂是<span><span class="heti-spacing"> </span>32 KB</span>，因此<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(B_L\)</span><span class="heti-spacing"> </span></span>或<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(B_R\)</span><span class="heti-spacing"> </span></span>再次被分成两个<span class="heti-skip"><span class="heti-spacing"> </span>32 KB<span class="heti-spacing"> </span></span>的伙伴<span><span class="heti-spacing"> </span><span class="arithmatex">\(C_L, C_R\)</span></span>，这些伙伴中的一个用于满足<span class="heti-skip"><span class="heti-spacing"> </span>21 KB<span class="heti-spacing"> </span></span>的请求</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C10/22.png"><img src="images/C10/22.png" width="40%"/></a>
+</div><p></p>
+</details>
+<p>伙伴系统的一个优点是相邻的伙伴可通过<strong>合并</strong><span>(coalescing)<span class="heti-spacing"> </span></span>快速形成一个更大的段。比如对于上面的例子，当<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(C_L\)</span><span class="heti-spacing"> </span></span>被释放时，<span><span class="arithmatex">\(C_L, C_R\)</span><span class="heti-spacing"> </span></span>可合并成一个<span class="heti-skip"><span class="heti-spacing"> </span>64 KB<span class="heti-spacing"> </span></span>的段<span><span class="heti-spacing"> </span><span class="arithmatex">\(B_L\)</span></span>。接着<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(B_L\)</span><span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(B_R\)</span><span class="heti-spacing"> </span></span>也可以合并成一个<span class="heti-skip"><span class="heti-spacing"> </span>128 KB<span class="heti-spacing"> </span></span>的段，最终又能回到<span class="heti-skip"><span class="heti-spacing"> </span>256 KB<span class="heti-spacing"> </span></span>的段。</p>
+<p>然而，该系统的一个明显缺点是：向上取整到下一个最高<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>的幂很可能导致分配的段内出现<strong>碎片</strong>。实际上无法保证分配的单位中有不超过<span class="heti-skip"><span class="heti-spacing"> </span>50%<span class="heti-spacing"> </span></span>的部分会因内部碎片而被浪费。</p>
 <h3 id="slab-allocation">Slab Allocation<a class="headerlink" href="#slab-allocation" title="Permanent link">⚓︎</a></h3>
+<p>第二种策略叫做<strong>板分配</strong>(slab allocation)。</p>
+<ul>
+<li><strong>板</strong><span>(slab)<span class="heti-spacing"> </span></span>是由一个或多个物理连续页构成的</li>
+<li><strong>缓存</strong><span>(cache)<span class="heti-spacing"> </span></span>包含了一个或多个板<ul>
+<li>对每个唯一的内核数据结构而言，存在单个的缓存，比如单独用于进程描述符的高速缓存，单独用于文件对象的缓存等</li>
+</ul>
+</li>
+<li>每个高速缓存都填充了代表该高速缓存所表示的内核数据结构的实例化<strong>对象</strong>(object)</li>
+</ul>
+<p>下图展示了这三者的关系：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C10/23.png"><img src="images/C10/23.png" width="50%"/></a>
+</div>
+<p>板分配算法使用缓存来存储内核对象。</p>
+<ul>
+<li>当创建一个缓存时，会分配一些初始标记为自由的对象到该缓存中</li>
+<li>缓存中的对象数量取决于相关的板的大小</li>
+<li>一开始，缓存中的所有对象都被标记为空闲</li>
+<li>当需要一个新的内核数据结构对象时，分配器可以从缓存中分配任何空闲对象以满足请求；从缓存中分配的对象被标记为已使用（<code>used</code>）</li>
+</ul>
+<p>在<span class="heti-skip"><span class="heti-spacing"> </span>Linux<span class="heti-spacing"> </span></span>中，一个板可能处在以下几种状态之一：</p>
+<ul>
+<li><strong>满</strong>(full)：板中所有对象都被标记为已使用</li>
+<li><strong>空</strong>(empty)：板中所有对象都被标记为空闲</li>
+<li><strong>部分</strong>(partial)：板内同时包含已使用的和空闲的对象</li>
+</ul>
+<p><strong>板分配器</strong>首先尝试使用部分板中的空闲对象来满足请求。如果不存在，则从一个空的板中分配一个空闲对象。如果没有可用的空板，则从连续的物理页中分配一个新的板，并将其分配给缓存，然后为该对象在此板中分配内存。</p>
+<p>板分配器带来的好处有：</p>
+<ul>
+<li>没有因碎片而浪费的内存</li>
+<li>内存请求可快速得到满足</li>
+</ul>
+<hr/>
+<p>最新的<span class="heti-skip"><span class="heti-spacing"> </span>Linux<span class="heti-spacing"> </span></span>发行版提供了新的两类内核内存分配器：<span>SLOB<span class="heti-spacing"> </span></span>和<span><span class="heti-spacing"> </span>SLUB</span>。</p>
+<ul>
+<li><strong>SLOB</strong>：为有限内存量的系统而设计的分配器，维护了三种对象列表：小（&lt; 256 B<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>、中（&lt; 1024 B<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>、大（<span>&lt; 1<span class="heti-spacing"> </span></span>个页）</li>
+<li><strong>SLUB</strong>：替代<span><span class="heti-spacing"> </span>SLAB</span>，作为<span class="heti-skip"><span class="heti-spacing"> </span>Linux<span class="heti-spacing"> </span></span>的默认内核分配器，相比<span class="heti-skip"><span class="heti-spacing"> </span>SLAB<span class="heti-spacing"> </span></span>大幅降低开销</li>
+</ul>
 <h2 id="other-considerations">Other Considerations<a class="headerlink" href="#other-considerations" title="Permanent link">⚓︎</a></h2>
+<p>在分页系统中，除了上面主要讨论的替换算法和分配策略外，还有以下因素需要考虑。</p>
+<p>（<del>鸽掉了，应该不会考这种吧<span><span class="heti-spacing"> </span>...</span></del>）</p>
 <h3 id="prepaging">Prepaging<a class="headerlink" href="#prepaging" title="Permanent link">⚓︎</a></h3>
 <h3 id="page-size">Page Size<a class="headerlink" href="#page-size" title="Permanent link">⚓︎</a></h3>
 <h3 id="tlb-reach">TLB Reach<a class="headerlink" href="#tlb-reach" title="Permanent link">⚓︎</a></h3>
@@ -1651,13 +1828,13 @@
 <span class="md-icon" title="最后更新">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"></path></svg>
 </span>
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年11月14日 15:18:39 CST">2025年11月14日 15:18:39</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年11月15日 16:34:41 CST">2025年11月15日 16:34:41</span>
 </span>
 <span class="md-source-file__fact">
 <span class="md-icon" title="创建日期">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"></path></svg>
 </span>
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年11月14日 15:18:39 CST">2025年11月14日 15:18:39</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年11月15日 16:34:41 CST">2025年11月15日 16:34:41</span>
 </span>
 </aside>
 <p style="font-size: 30px; font-weight: 600">评论区</p>
