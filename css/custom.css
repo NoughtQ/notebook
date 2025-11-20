@@ -38,6 +38,11 @@
   background-attachment: fixed;
   background-repeat: no-repeat;
   background-image: linear-gradient(0deg, rgba(30, 30, 30, 1) 0%, rgba(70, 70, 70, 1) 100%);
+  --heimu-bg-color: #252525;
+  --heimu-text-color: #252525;
+  --heimu-hover-text-color: rgba(235, 235, 235, 0.9);
+  --heimu-link-hover-color: #add8e6; /* lightblue */
+  --heimu-new-link-color: #ba0000;
 }
 
 /* indigo 那块不能省去（好奇怪啊...） */
@@ -86,6 +91,11 @@
   background-attachment: fixed;
   background-repeat: no-repeat;
   background-image: linear-gradient(180deg, #5e9fbf29 0%, rgb(255 255 255) 100%);
+  --heimu-bg-color: #dcdcdc; 
+  --heimu-text-color: #dcdcdc;
+  --heimu-hover-text-color: #252525;
+  --heimu-link-hover-color: #0056b3; /* 深蓝，在浅色背景上更清晰 */
+  --heimu-new-link-color: #d9534f;
 }
 
 [data-md-color-scheme="default"] .md-top {
@@ -283,22 +293,32 @@ img:not([src$=".svg"]) {
 
 
 /* heimu moegirl */
-.heimu, .heimu a, a .heimu, .heimu a.new {
-  background-color: #252525;
-  color: #252525;
+.heimu, 
+.heimu a, 
+a .heimu, 
+.heimu a.new {
+  background-color: var(--heimu-bg-color);
+  color: var(--heimu-text-color);
   text-shadow: none;
+  transition: color 0.2s ease-in-out; /* 增加一点渐变效果让体验更好 */
 }
+
+/* 悬停/激活状态：显示文字 */
 .heimu:hover, .heimu:active,
 .heimu:hover .heimu, .heimu:active .heimu {
-  color: white !important;
+  color: var(--heimu-hover-text-color) !important;
 }
+
+/* 链接悬停状态 */
 .heimu:hover a, a:hover .heimu,
 .heimu:active a, a:active .heimu {
-  color: lightblue !important;
+  color: var(--heimu-link-hover-color) !important;
 }
+
+/* New 链接状态 */
 .heimu:hover .new, .heimu .new:hover, .new:hover .heimu,
 .heimu:active .new, .heimu .new:active, .new:active .heimu {
-  color: #BA0000 !important;
+  color: var(--heimu-new-link-color) !important;
 }
 
 .md-typeset .admonition,

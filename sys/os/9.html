@@ -966,17 +966,17 @@
 </a>
 <h1 id="main-memory">Main Memory<a class="headerlink" href="#main-memory" title="Permanent link">⚓︎</a></h1>
 <div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
-<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>6299<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>31<span class="heti-spacing"> </span></span>分钟</p>
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>6305<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>32<span class="heti-spacing"> </span></span>分钟</p>
 </div>
 <p>本章将介绍各种管理内存的方法，这些方法各有优缺点。挑选这些方法时需考虑多种因素，尤其是系统的硬件设计，因为多数算法需要硬件的支持。</p>
 <h2 id="background">Background<a class="headerlink" href="#background" title="Permanent link">⚓︎</a></h2>
-<p>内存居于现代计算机系统操作的中心，由一个很大的字节数组构成，每个字节都有一个对应的地址。对内存单元而言，它只能看到一串内存地址流，不知道它们是如何产生的（我们也并不关心这点<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，以及是作为什么用途的（指令<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>数据<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
+<p><strong>内存</strong>位于现代计算机系统操作的中心，由一个很大的字节数组构成，每个字节都有一个对应的地址。对内存单元而言，它只能看到一串内存地址流，不知道它们是如何产生的（我们也并不关心这点<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，以及是作为什么用途的（指令<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>数据<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
 <p>以下讨论将覆盖和管理内存相关的几个问题：基本硬件、虚拟地址和物理地址的绑定和两者的区别。</p>
 <h3 id="basic-hardware">Basic Hardware<a class="headerlink" href="#basic-hardware" title="Permanent link">⚓︎</a></h3>
-<p>内建于处理单元的<strong>主存</strong><span>(main memory)<span class="heti-spacing"> </span></span>和<strong>寄存器</strong><span>(register)<span class="heti-spacing"> </span></span>是<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>唯一能直接访问的通用目的存储设备。一般来说，访问寄存器仅需一个<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>时钟周期，但完成一次内存访问需要多个<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>时钟周期。对于后者，处理器通常会<strong>停顿</strong>(stall)，因为后续指令的执行需要内存数据。然而这种停顿是不能容忍的——解决方法是在<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>和内存之间加入一个<strong>高速缓存</strong>(cache)，以实现更快的访问。</p>
+<p>内建于处理单元的<strong>主存</strong><span>(main memory)<span class="heti-spacing"> </span></span>和<strong>寄存器</strong><span>(register)<span class="heti-spacing"> </span></span>是<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>唯一能直接访问的通用目的存储设备。一般来说，访问寄存器仅需一个<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>时钟周期，但完成一次内存访问需要多个<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>时钟周期。对于后者，处理器通常会<strong>停顿</strong>(stall)，因为后续指令的执行需要内存数据。然而这种停顿是不能容忍的。解决方法是在<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>和内存之间插入<strong>高速缓存</strong>(cache)，以实现更快的访问。</p>
 <p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C9/1.png"><img align="right" alt="" src="images/C9/1.png" width="30%"/></a></p>
-<p>除了速度外，另一个关心的问题是确保操作的正确性。这一点需要通过硬件提供的保护来实现，因为<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>通常不能在<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>以及其内存访问之间干预。具体来说，首先要做的是保证<strong>每个进程有单独的内存空间</strong>，这一点可通过<strong>基址寄存器</strong><span>(base register)<span class="heti-spacing"> </span></span>和<strong>界限寄存器</strong><span>(limit register)<span class="heti-spacing"> </span></span>来实现，它们分别保存最小的有效物理内存地址和内存空间的大小，如右图所示。</p>
-<p>任何在用户模式下执行的程序对<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>内存或其他用户内存访问的尝试（即访问超出由基址寄存器和界限寄存器划定范围的区域）都会触发<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>陷阱，并被当作致命错误<span><span class="heti-spacing"> </span>(fatal error)</span>，从而起到对内存的保护作用。</p>
+<p>除了速度外，另一个关心的问题是确保操作的正确性。这一点需要通过硬件提供的保护来实现，因为<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>通常不能在<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>以及其内存访问之间干预。具体来说，首先要做的是保证<strong>每个进程有单独的内存空间</strong>，这一点可通过<strong>基址寄存器</strong><span>(base register)<span class="heti-spacing"> </span></span>和<strong>界限寄存器</strong><span>(limit register)<span class="heti-spacing"> </span></span>来实现，它们分别保存<u>最小的有效物理内存地址</u>和<u>内存空间的大小</u>，如右图所示。</p>
+<p>任何在用户模式下执行的程序对<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>内存或其他用户内存访问的尝试（即访问超出由基址寄存器和界限寄存器划定范围的区域）都会触发<span><span class="heti-spacing"> </span>OS</span> <strong>陷阱</strong>，并被当作致命错误<span><span class="heti-spacing"> </span>(fatal error)</span>，从而起到对内存的保护作用。</p>
 <div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C9/2.png"><img src="images/C9/2.png" width="60%"/></a>
 </div>
@@ -989,15 +989,15 @@
 <li><strong>编译时</strong>(compile time)：若在编译时知道进程会在内存中，那么就会生成<strong>绝对代码</strong>(absolute code)；若之后进程的起始地址发生变化，就需要重新编译代码</li>
 <li><strong>加载时</strong>(load time)：若在编译时不知道进程是否在内存中，那么编译器必须生成<strong>可重定位代码</strong>(relocatable code)，此时最终绑定被推迟到加载时；若之后进程的起始地址发生变化，只需重新加载代码，以纳入这个新的改变值</li>
 <li><strong>执行时</strong>(execution time)：若进程能在执行时在内存段中移动，那么绑定必须被推迟到运行时<ul>
-<li>多数<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>采用该方法</li>
+<li><strong>多数<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>采用该方法</strong></li>
 </ul>
 </li>
 </ul>
 <h3 id="logical-vs-physical-address-space">Logical v.s. Physical Address Space<a class="headerlink" href="#logical-vs-physical-address-space" title="Permanent link">⚓︎</a></h3>
 <ul>
 <li><span>CPU<span class="heti-spacing"> </span></span>生成的地址通常是<strong>逻辑地址</strong>(logical address)；而内存单元可见的地址，即加载到<strong>内存地址寄存器</strong><span>(memory-address register)<span class="heti-spacing"> </span></span>的地址是<strong>物理地址</strong>(physical address)</li>
-<li>若在编译和加载时绑定地址，那么逻辑地址<span class="heti-skip"><span class="heti-spacing"> </span>=<span class="heti-spacing"> </span></span>物理地址；若在执行时绑定地址，那么两者就不同了</li>
-<li>在后一种情况，一般称逻辑地址为<strong>虚拟地址</strong>(virtual address)</li>
+<li>若在<strong>编译</strong>和<strong>加载</strong>时绑定地址，那么逻辑地址<span class="heti-skip"><span class="heti-spacing"> </span>=<span class="heti-spacing"> </span></span>物理地址；若在执行时绑定地址，那么两者就不同了</li>
+<li>对于后一种情况，此时一般称逻辑地址为<strong>虚拟地址</strong>(virtual address)</li>
 <li>由程序产生的所有逻辑地址被称为<strong>逻辑地址空间</strong>(logical address space)，对应地也有<strong>物理地址空间</strong><span>(physical address space)<span class="heti-spacing"> </span></span>的概念</li>
 <li>
 <p>从虚拟地址到物理地址的运行时映射由一个叫作<strong>内存管理单元</strong>(memory-management unit, <strong>MMU</strong><span>)<span class="heti-spacing"> </span></span>的硬件设备完成</p>
@@ -1022,26 +1022,26 @@
 <p>该技术的优点是可以仅在需要时加载例程，这对于需要用大量代码处理不常发生的情况（比如处理错误）而言非常有用，因为尽管程序很大，加载的部分会很少。并且该技术不要求<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>给予特殊支持，不过也可能会提供一些库函数来支持动态加载。</p>
 <h3 id="dynamic-linking-and-shared-libraries">Dynamic Linking and Shared Libraries<a class="headerlink" href="#dynamic-linking-and-shared-libraries" title="Permanent link">⚓︎</a></h3>
 <p><strong>动态链接库</strong>(dynamic linking libraries, <strong>DLL</strong><span>s)<span class="heti-spacing"> </span></span>是程序运行时链接到用户程序的系统库。采用动态链接后，链接过程被推迟到执行时，从而减小可执行映像的大小。另外<span class="heti-skip"><span class="heti-spacing"> </span>DLLs<span class="heti-spacing"> </span></span>能被多个进程共享，因此主存中只需一个<span class="heti-skip"><span class="heti-spacing"> </span>DLL<span class="heti-spacing"> </span></span>实例即可。</p>
-<p><span>DLLs<span class="heti-spacing"> </span></span>能被延伸到库更新中——当某个库采用新版本时，所有引用该库的程序都会自动采用新版本（若不用动态链接，则需要手动重新链接<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
+<p><span>DLLs<span class="heti-spacing"> </span></span>的概念还可以延伸到库更新中——当某个库采用新版本时，所有引用该库的程序都会自动采用新版本（若不用动态链接，则需要手动重新链接<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
 <p>不同于动态加载，动态链接需要<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>的帮助。</p>
 <details class="info">
 <summary>注</summary>
-<p>一些<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>仅支持<strong>静态链接</strong>(static linking)，此时系统库库被视为一般的对象模块，并由加载器组合成二进制程序映像。此时每个程序在可执行映像中都包含库的拷贝，不仅增大体积还浪费内存。</p>
+<p>一些<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>仅支持<strong>静态链接</strong>(static linking)，此时系统库被视为一般的对象模块，并由加载器组合成二进制程序映像。此时每个程序在可执行映像中都包含库的拷贝，不仅增大体积还浪费内存。</p>
 </details>
 <h2 id="contiguous-memory-allocation">Contiguous Memory Allocation<a class="headerlink" href="#contiguous-memory-allocation" title="Permanent link">⚓︎</a></h2>
 <p>内存通常被划分为两部分，一块分给<span><span class="heti-spacing"> </span>OS</span>，另一块分给用户进程。在多数<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>中，给 <strong>OS</strong> 的内存一般都是<strong>高地址</strong>的。</p>
 <p>在<strong>连续内存分配</strong><span>(contiguous memory allocation)<span class="heti-spacing"> </span></span>中，每个进程都包含在一个单独的内存区段中，该区段与包含下一个进程的区段是连续的。</p>
 <h3 id="memory-protection">Memory Protection<a class="headerlink" href="#memory-protection" title="Permanent link">⚓︎</a></h3>
-<p>通过前面的学习，我们知道系统通过重定位寄存器<span class="heti-skip"><span class="heti-spacing"> </span>+<span class="heti-spacing"> </span></span>界限寄存器来阻止进程去访问不属于它的内存，这一过程如下所示：</p>
+<p>通过前面的学习，我们知道系统通过<strong>重定位寄存器<span class="heti-skip"><span class="heti-spacing"> </span>+<span class="heti-spacing"> </span></span>界限寄存器</strong>来阻止进程去访问不属于它的内存，这一过程如下所示：</p>
 <div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C9/6.png"><img src="images/C9/6.png" width="60%"/></a>
 </div>
-<p>当<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>调度器选择进程执行时，分派器<span class="heti-skip"><span class="heti-spacing"> </span>(dispatcher)<span class="heti-spacing"> </span></span>会加载重定位寄存器和界限寄存器的值，作为上下文切换的一部分。</p>
+<p>当<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>调度器选择进程执行时，<strong>分派器</strong><span>(dispatcher)<span class="heti-spacing"> </span></span>会加载重定位寄存器和界限寄存器的值，作为<strong>上下文切换</strong>的一部分。</p>
 <p>这一方案能让<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>的大小动态改变，这一灵活性在很多情况下是可取的。</p>
 <h3 id="memory-allocation">Memory Allocation<a class="headerlink" href="#memory-allocation" title="Permanent link">⚓︎</a></h3>
-<p>最简单的内存分配方案是<strong>变长分区</strong><span>(variable-partition)<span class="heti-spacing"> </span></span>方案：</p>
+<p>最简单的内存分配方案是<strong>可变分区</strong><span>(variable-partition)<span class="heti-spacing"> </span></span>方案：</p>
 <ul>
-<li>为进程赋予变长的内存分区，每个分区仅包含一个进程</li>
+<li>为进程赋予可变的内存分区，每个分区仅包含一个进程</li>
 <li><span>OS<span class="heti-spacing"> </span></span>保留一张表，记录哪部分内存可用，哪部分内存被占据</li>
 <li>我们称某一大块可用内存为「<strong>洞</strong>(hole)<heti-adjacent class="heti-adjacent-half">」</heti-adjacent>；随着内存分配的进行，内存中会出现多个洞（下图蓝色区域）</li>
 </ul>
@@ -1050,14 +1050,14 @@
 </div>
 <p>当现有内存无法满足进程要求时，</p>
 <ul>
-<li>一种选择是拒绝后来的进程并提供合适的错误消息</li>
-<li>另一种方法是把后来的进程放在等待队列中；当之后内存被释放时，<span>OS<span class="heti-spacing"> </span></span>检查等待队列，并确定当前可用内存是否满足进程需求</li>
+<li>一种选择是<strong>拒绝</strong>后来的进程并提供合适的错误消息</li>
+<li>另一种方法是把后来的进程放在<strong>等待队列</strong>中；当之后内存被释放时，<span>OS<span class="heti-spacing"> </span></span>检查等待队列，并确定当前可用内存是否满足进程需求</li>
 </ul>
 <p>一般来说，可用的内存块由一组分散在内存中的变长的洞构成。</p>
 <ul>
 <li>当某个进程到达并需要内存时，<span>OS<span class="heti-spacing"> </span></span>就会从这些洞中找到足够大的洞</li>
-<li>如果洞太大，把这个洞分为两部分，一部分给进程，另一部分仍然回到那组洞中</li>
-<li>当进程终止时，它会释放内存块，该块就会被放回到那组洞中</li>
+<li>如果洞太大，把这个洞分为两部分，一部分给进程，另一部分仍然作为洞</li>
+<li>当进程终止时，它会释放内存块，该块就会重新变为洞</li>
 <li>当新的洞和其他洞相邻时，这些相邻的洞就会合并为一个更大的洞</li>
 </ul>
 <p>上述过程是一种<strong>动态存储分配问题</strong>(dynamic storage-allocation problem)。对于该问题，有以下可能的策略：</p>
@@ -1066,7 +1066,10 @@
 <li><strong>最佳适配</strong>(best fit)：分配能满足需求的最小的洞</li>
 <li><strong>最差适配</strong>(worst fit)：分配最大的洞</li>
 </ul>
-<p>模拟结果表明，首先适配和最佳适配在时间和存储效率上都比最差适配的表现更好。前两者的表现不分上下，但首先适配通常更快。</p>
+<blockquote>
+<p>很难让人不想到<span class="heti-skip"><span class="heti-spacing"> </span>ADS<span class="heti-spacing"> </span></span>介绍过的<a href="../../algo/ads/11.html#bin-packing"><span class="heti-skip"><span class="heti-spacing"> </span>bin packing<span class="heti-spacing"> </span></span></a>问题。</p>
+</blockquote>
+<p>模拟结果表明，<strong>首先适配</strong>和<strong>最佳适配</strong>在时间和存储效率上都比最差适配的表现更好。前两者的表现不分上下，但<u>首先适配通常更快</u>。</p>
 <h3 id="fragmentation">Fragmentation<a class="headerlink" href="#fragmentation" title="Permanent link">⚓︎</a></h3>
 <p>首先适配和最佳适配都会遇到<strong>外部碎片</strong><span>(external fragmentation)<span class="heti-spacing"> </span></span>的问题：</p>
 <ul>
@@ -1074,15 +1077,14 @@
 <li>外部碎片发生在当总的内存空间大小足够满足进程需求，但是这个可用的空间不连续（被划分为多个小洞）时</li>
 <li>另一个影响外部碎片量的因素是空闲块的哪一端会被分配</li>
 <li>外部碎片问题可大可小，取决于总的内存存储量以及平均进程大小</li>
-<li>统计数据表明，对于首先适配，即便采用一些优化手段，给定<span class="heti-skip"><span class="heti-spacing"> </span>N<span class="heti-spacing"> </span></span>个分配块，有<span class="heti-skip"><span class="heti-spacing"> </span>0.5 N<span class="heti-spacing"> </span></span>的块因碎片而丢失，这一性质称为<span class="heti-skip"><span class="heti-spacing"> </span>50%<span class="heti-spacing"> </span></span>法则<span><span class="heti-spacing"> </span>(50-percent rule)</span></li>
+<li>统计数据表明，对于首先适配，即便采用一些优化手段，给定<span class="heti-skip"><span class="heti-spacing"> </span>N<span class="heti-spacing"> </span></span>个分配块，有<span class="heti-skip"><span class="heti-spacing"> </span>0.5 N<span class="heti-spacing"> </span></span>的块因碎片而丢失，这一性质称为 <strong><span>50%<span class="heti-spacing"> </span></span>法则</strong>(50-percent rule)</li>
 </ul>
-<p>内存碎片还可发生在内部。一般会将物理内存分割为固定大小的块，然后以块大小为单位分配内存。这么做会导致被分配给进程的内存略大于需要的内存，这些未使用的内存就对应<strong>内部碎片</strong><span>(internal fragementation)<span class="heti-spacing"> </span></span>的问题。</p>
 <p>对于外部碎片问题，我们有以下解决方案：</p>
 <ul>
 <li><strong>压缩</strong>(compactation)<ul>
 <li>目标是打乱内存内容，好把所有空闲内存放在同一个大块中</li>
 <li>但这一方法并不总是有效——如果重定位是静态的，且在汇编或加载时就完成的话，就没法完成压缩了</li>
-<li>也就是说只有在重定位是动态的，且在执行时完成时才能使用压缩技术</li>
+<li>也就是说只有<strong>在重定位是动态的，且在执行时完成</strong>的条件下才能使用压缩技术</li>
 <li>最简单的压缩算法是将所有进程移动到内存的一端，所有的洞移动到另一端，但成本高昂</li>
 </ul>
 </li>
@@ -1093,11 +1095,13 @@
 </ul>
 </li>
 </ul>
+<hr/>
+<p>内存碎片还可发生在内部。一般会将物理内存分割为固定大小的块，然后以块大小为单位分配内存。这么做会导致被分配给进程的内存略大于需要的内存，这些未使用的内存就对应<strong>内部碎片</strong><span>(internal fragementation)<span class="heti-spacing"> </span></span>的问题。</p>
 <h2 id="paging">Paging<a class="headerlink" href="#paging" title="Permanent link">⚓︎</a></h2>
 <h3 id="basic-method">Basic Method<a class="headerlink" href="#basic-method" title="Permanent link">⚓︎</a></h3>
 <p>实现分页的基本方法是将物理内存分割成叫作「<strong>帧</strong>(frame)」的定长块，将逻辑内存分割成叫作「<strong>页</strong>(page)」的定长块。</p>
 <ul>
-<li>当进程执行时，进程的页会被加载到任意可用的（来自文件系统或后备存储<span><span class="heti-spacing"> </span>(backing store)</span>）内存帧中</li>
+<li>当进程执行时，来自源（文件系统或后备存储<span><span class="heti-spacing"> </span>(backing store)</span>）的进程页会被加载到任意可用的内存帧中</li>
 <li>后备存储同样被划分为定长的，和内存帧大小相同的块</li>
 </ul>
 <p>逻辑地址被划分为两部分：</p>
@@ -1137,7 +1141,7 @@
 </div>
 <p>分页技术能让程序员看待内存的视角和与实际物理内存之间有明确的分离：</p>
 <ul>
-<li>程序员将内存视为一个仅包含这个程序的单一空间</li>
+<li>程序员将内存视为一个仅包含某个程序的单一空间</li>
 <li>实际上用户程序散布在整个物理内存中</li>
 </ul>
 <p>而建立起这两种理解的桥梁是用于地址转换的硬件。</p>
@@ -1170,7 +1174,7 @@
 <ul>
 <li>当<span class="heti-skip"><span class="heti-spacing"> </span>TLB<span class="heti-spacing"> </span></span>尝试解析虚拟页编号时，它需要确保当前运行进程的<span class="heti-skip"><span class="heti-spacing"> </span>ASID<span class="heti-spacing"> </span></span>和关联到虚拟页上的<span class="heti-skip"><span class="heti-spacing"> </span>ASID<span class="heti-spacing"> </span></span>匹配起来，若不匹配就会出现<span class="heti-skip"><span class="heti-spacing"> </span>TLB<span class="heti-spacing"> </span></span>失效</li>
 <li><span>ASID<span class="heti-spacing"> </span></span>允许<span class="heti-skip"><span class="heti-spacing"> </span>TLB<span class="heti-spacing"> </span></span>同时包含来自不同进程的项</li>
-<li>若<span class="heti-skip"><span class="heti-spacing"> </span>TLB<span class="heti-spacing"> </span></span>不支持单独的<span><span class="heti-spacing"> </span>ASIDs</span>，那么每次选择一个新页表时，<span>TLB<span class="heti-spacing"> </span></span>必须被<strong>清除</strong>(flushed)，确保下一个执行的进程不会使用错误的转换信息</li>
+<li>若<span class="heti-skip"><span class="heti-spacing"> </span>TLB<span class="heti-spacing"> </span></span>不支持<span><span class="heti-spacing"> </span>ASID</span>，那么每次选择一个新页表时，<span>TLB<span class="heti-spacing"> </span></span>必须被<strong>清除</strong>(flushed)，确保下一个执行的进程不会使用错误的转换信息</li>
 </ul>
 </li>
 <li>
@@ -1236,7 +1240,7 @@
 </li>
 </ul>
 <h3 id="hashed-page-tables">Hashed Page Tables<a class="headerlink" href="#hashed-page-tables" title="Permanent link">⚓︎</a></h3>
-<p>一种用于处理超过<span class="heti-skip"><span class="heti-spacing"> </span>32<span class="heti-spacing"> </span></span>位地址的方法是使用<strong>哈希页表</strong>(hashed page table)。</p>
+<p>一种替代方案是使用<strong>哈希页表</strong>(hashed page table)。</p>
 <ul>
 <li>用哈希值表示虚拟页编号</li>
 <li>哈希表的每一项包含了一个链表，同一链表中各元素的哈希值相同</li>
@@ -1267,17 +1271,17 @@
 </div><p></p>
 </li>
 <li>
-<p>倒排页表通常需要一个地址空间标识符，存储在页表的每一项内，以确保特定进程的逻辑地址被映射到对应的物理页帧上</p>
+<p>倒排页表通常需要一个<strong>地址空间标识符</strong>，存储在页表的每一项内，以确保特定进程的逻辑地址被映射到对应的物理页帧上</p>
 </li>
 <li>
 <p>尽管该方案减少了存储每个页表所需的内存量，但它增加了页引用发生时查找页表所需的时间，因为倒排页表按物理地址排序，但查找发生在虚拟地址上</p>
 <ul>
-<li>为缓解这一问题，可以使用一个哈希表，将搜索限制在一个或少数页表项上</li>
+<li>为缓解这一问题，可以使用一个<strong>哈希表</strong>，将搜索限制在一个或少数页表项上</li>
 <li>但每访问一次哈希表就会增加一次额外的内存引用</li>
 </ul>
 </li>
 <li>
-<p>当存在共享内存时就不能用倒排页表了，因为一个物理页无法对应多个共享的虚拟地址</p>
+<p>当存在<strong>共享内存</strong>时就<strong>不能</strong>用倒排页表了，因为一个物理页无法对应多个共享的虚拟地址</p>
 </li>
 </ul>
 <h2 id="swapping">Swapping<a class="headerlink" href="#swapping" title="Permanent link">⚓︎</a></h2>
@@ -1305,18 +1309,21 @@
 <li>实际上，我们通常用「交换」指代标准交换，用「<strong>分页</strong>」指代“带分页的交换”</li>
 <li><strong>页出</strong><span>(page out)<span class="heti-spacing"> </span></span>操作将页面从内存移动到后备存储，相反的过程称为<strong>页入</strong>(page in)</li>
 </ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C9/19.png"><img src="images/C9/19.png" width="50%"/></a>
+</div>
 <aside class="md-source-file">
 <span class="md-source-file__fact">
 <span class="md-icon" title="最后更新">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"></path></svg>
 </span>
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年11月19日 13:47:05 CST">2025年11月19日 13:47:05</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年11月20日 17:08:52 CST">2025年11月20日 17:08:52</span>
 </span>
 <span class="md-source-file__fact">
 <span class="md-icon" title="创建日期">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"></path></svg>
 </span>
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年11月19日 13:47:05 CST">2025年11月19日 13:47:05</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年11月20日 17:08:52 CST">2025年11月20日 17:08:52</span>
 </span>
 </aside>
 <p style="font-size: 30px; font-weight: 600">评论区</p>
