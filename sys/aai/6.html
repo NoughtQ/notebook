@@ -1,0 +1,1950 @@
+<!DOCTYPE html>
+<html class="no-js" lang="zh"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="NoughtQ的笔记本，主要记录一些 CS 相关的笔记" name="description"/>
+<meta content="NoughtQ" name="author"/>
+<link href="https://notebook.noughtq.top/sys/aai/6.html" rel="canonical"/>
+<link href="5.html" rel="prev"/>
+<link href="../../web/index.html" rel="next"/>
+<link href="../../feed_rss_created.xml" rel="alternate" title="RSS 订阅" type="application/rss+xml"/>
+<link href="../../feed_rss_updated.xml" rel="alternate" title="已更新内容的 RSS 订阅" type="application/rss+xml"/>
+<link href="../../assets/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.6.23" name="generator"/>
+<title>Program Control Instructions - NoughtQ的笔记本</title>
+<link href="../../assets/stylesheets/main.84d31ad4.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/palette.06af60db.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=JetBrains+Mono,+LXGW+WenKai+Screen+GB+Screen:300,300i,400,400i,700,700i%7CJetBrains+Mono,+Consolas:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"JetBrains Mono, LXGW WenKai Screen GB Screen";--md-code-font:"JetBrains Mono, Consolas"}</style>
+<link href="../../css/heti.css" rel="stylesheet"/>
+<link href="../../css/timeline.css" rel="stylesheet"/>
+<link href="../../css/card.css" rel="stylesheet"/>
+<link href="../../css/custom.css" rel="stylesheet"/>
+<link href="../../css/extra_changelog.css" rel="stylesheet"/>
+<link href="../../css/header.css" rel="stylesheet"/>
+<link href="../../css/sidebar.css" rel="stylesheet"/>
+<link href="../../css/neoteroi-css.css" rel="stylesheet"/>
+<link href="../../css/toc_extra.css" rel="stylesheet"/>
+<link href="https://unpkg.com/katex@0/dist/katex.min.css" rel="stylesheet"/>
+<link href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css" rel="stylesheet"/>
+<link href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.css" rel="stylesheet"/>
+<script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-43NH8CVRCJ"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-43NH8CVRCJ",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-43NH8CVRCJ",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+<script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+<link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+<body data-md-color-accent="indigo" data-md-color-primary="indigo" data-md-color-scheme="slate" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#program-control-instructions">
+          跳转至
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header" data-md-component="header">
+<nav aria-label="页眉" class="md-header__inner md-grid">
+<a aria-label="NoughtQ的笔记本" class="md-header__button md-logo" data-md-component="logo" href="../.." title="NoughtQ的笔记本">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.05 9H7.06V6h1.99V4.03H7.06v-1c0-1.11.89-1.99 1.99-1.99h5.98V8l2.47-1.5L20 8V1.04h1c1.05 0 2 .96 2 1.99V17c0 1.03-.95 2-2 2H9.05c-1.05 0-1.99-.95-1.99-2v-1h1.99v-2H7.06v-3h1.99zM1 18h2v-3H1v-2h2v-3H1V8h2V5h2v3H3v2h2v3H3v2h2v3H3v2h2v1h16v2H5a2 2 0 0 1-2-2v-1H1z"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            NoughtQ的笔记本
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              Program Control Instructions
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="Dark Mode" class="md-option" data-md-color-accent="indigo" data-md-color-media="(prefer-color-scheme: dark)" data-md-color-primary="indigo" data-md-color-scheme="slate" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="Dark Mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"></path></svg>
+</label>
+<input aria-label="Light Mode" class="md-option" data-md-color-accent="indigo" data-md-color-media="(prefer-color-scheme: light)" data-md-color-primary="indigo" data-md-color-scheme="default" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="Light Mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="搜索" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="搜索" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 256 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path></svg>
+</label>
+<nav aria-label="查找" class="md-search__options">
+<a aria-label="分享" class="md-search__icon md-icon" data-clipboard="" data-clipboard-text="" data-md-component="search-share" href="javascript:void(0)" tabindex="-1" title="分享">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"></path></svg>
+</a>
+<button aria-label="清空当前内容" class="md-search__icon md-icon" tabindex="-1" title="清空当前内容" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header__source">
+<a class="md-source" data-md-component="source" href="https://github.com/noughtq/notebook" title="前往仓库">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    NoughtQ/Notebook
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<nav aria-label="标签" class="md-tabs" data-md-component="tabs">
+<div class="md-grid">
+<ul class="md-tabs__list">
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../index.html">
+          
+  
+  
+    
+  
+  🏫主页
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../lang/index.html">
+          
+  
+  
+    
+  
+  🔡编程语言
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../math/index.html">
+          
+  
+  
+    
+  
+  📊数学相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../algo/index.html">
+          
+  
+  
+    
+  
+  🧮算法相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../software/index.html">
+          
+  
+  
+    
+  
+  💾软件相关
+
+        </a>
+</li>
+<li class="md-tabs__item md-tabs__item--active">
+<a class="md-tabs__link" href="../index.html">
+          
+  
+  
+    
+  
+  💻系统相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../web/index.html">
+          
+  
+  
+    
+  
+  🌏Web相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../sec/ctf-101/index.html">
+          
+  
+  
+    
+  
+  🛡️信息安全
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../ai/index.html">
+          
+  
+  
+    
+  
+  🤖人工智能
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../misc/index.html">
+          
+  
+  
+    
+  
+  🗃️杂项
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../tools/index.html">
+          
+  
+  
+    
+  
+  🛠️工具
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../papers/index.html">
+          
+  
+  
+    
+  
+  📑论文阅读
+
+        </a>
+</li>
+</ul>
+</div>
+</nav>
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="导航栏" class="md-nav md-nav--primary md-nav--lifted" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="NoughtQ的笔记本" class="md-nav__button md-logo" data-md-component="logo" href="../.." title="NoughtQ的笔记本">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.05 9H7.06V6h1.99V4.03H7.06v-1c0-1.11.89-1.99 1.99-1.99h5.98V8l2.47-1.5L20 8V1.04h1c1.05 0 2 .96 2 1.99V17c0 1.03-.95 2-2 2H9.05c-1.05 0-1.99-.95-1.99-2v-1h1.99v-2H7.06v-3h1.99zM1 18h2v-3H1v-2h2v-3H1V8h2V5h2v3H3v2h2v3H3v2h2v3H3v2h2v1h16v2H5a2 2 0 0 1-2-2v-1H1z"></path></svg>
+</a>
+    NoughtQ的笔记本
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-component="source" href="https://github.com/noughtq/notebook" title="前往仓库">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    NoughtQ/Notebook
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../index.html">
+<span class="md-ellipsis">
+    🏫主页
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../lang/index.html">
+<span class="md-ellipsis">
+    🔡编程语言
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../math/index.html">
+<span class="md-ellipsis">
+    📊数学相关
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../algo/index.html">
+<span class="md-ellipsis">
+    🧮算法相关
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../software/index.html">
+<span class="md-ellipsis">
+    💾软件相关
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_6" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../index.html">
+<span class="md-ellipsis">
+    💻系统相关
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="true" aria-labelledby="__nav_6_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_6">
+<span class="md-nav__icon md-icon"></span>
+            💻系统相关
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../csapp/index.html">
+<span class="md-ellipsis">
+    CSAPP
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../dld/index.html">
+<span class="md-ellipsis">
+    数字逻辑设计
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../co/index.html">
+<span class="md-ellipsis">
+    计算机组成
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../ca/index.html">
+<span class="md-ellipsis">
+    计算机体系结构
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../db/index.html">
+<span class="md-ellipsis">
+    数据库系统
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../os/index.html">
+<span class="md-ellipsis">
+    操作系统
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_6_8" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="index.html">
+<span class="md-ellipsis">
+    汇编与接口
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_6_8" id="__nav_6_8_label" tabindex="0">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="true" aria-labelledby="__nav_6_8_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_6_8">
+<span class="md-nav__icon md-icon"></span>
+            汇编与接口
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="1.html">
+<span class="md-ellipsis">
+    Introduction to the Microprocessor and Computer
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="2.html">
+<span class="md-ellipsis">
+    The Microprocessor and its Architecture
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="3.html">
+<span class="md-ellipsis">
+    Addressing Modes
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="4.html">
+<span class="md-ellipsis">
+    Data Movement Instructions
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="5.html">
+<span class="md-ellipsis">
+    Arithmetic and Logic Instructions
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    Program Control Instructions
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="6.html">
+<span class="md-ellipsis">
+    Program Control Instructions
+    
+  </span>
+</a>
+<nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#the-jump-group">
+<span class="md-ellipsis">
+      The Jump Group
+    </span>
+</a>
+<nav aria-label="The Jump Group" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#unconditional-jump-jmp">
+<span class="md-ellipsis">
+      Unconditional Jump (JMP)
+    </span>
+</a>
+<nav aria-label="Unconditional Jump (JMP)" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#short-jump">
+<span class="md-ellipsis">
+      Short Jump
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#near-jump">
+<span class="md-ellipsis">
+      Near Jump
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#far-jump">
+<span class="md-ellipsis">
+      Far Jump
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#jump-with-register-operands">
+<span class="md-ellipsis">
+      Jump with Register Operands
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#indirect-jump-using-indexes">
+<span class="md-ellipsis">
+      Indirect Jump Using Indexes
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#conditional-jumps">
+<span class="md-ellipsis">
+      Conditional Jumps
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#conditional-sets">
+<span class="md-ellipsis">
+      Conditional Sets
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#loop">
+<span class="md-ellipsis">
+      LOOP
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#conditional-loops">
+<span class="md-ellipsis">
+      Conditional LOOPs
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#for-do-while-while-loops-in-assembly-language">
+<span class="md-ellipsis">
+      For, Do-while, While Loops in Assembly Language
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#controlling-the-flow-of-the-program">
+<span class="md-ellipsis">
+      Controlling the Flow of the Program
+    </span>
+</a>
+<nav aria-label="Controlling the Flow of the Program" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#if-else-elseif-and-endif">
+<span class="md-ellipsis">
+      .IF, .ELSE, .ELSEIF, and .ENDIF
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#while-loops">
+<span class="md-ellipsis">
+      WHILE Loops
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#repeat-until-loops">
+<span class="md-ellipsis">
+      REPEAT-UNTIL Loops
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#procedures">
+<span class="md-ellipsis">
+      Procedures
+    </span>
+</a>
+<nav aria-label="Procedures" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#call">
+<span class="md-ellipsis">
+      CALL
+    </span>
+</a>
+<nav aria-label="CALL" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#near-call">
+<span class="md-ellipsis">
+      Near CALL
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#far-call">
+<span class="md-ellipsis">
+      Far CALL
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#interrupts">
+<span class="md-ellipsis">
+      Interrupts
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#machine-control-and-miscellaneous-instructions">
+<span class="md-ellipsis">
+      Machine Control and Miscellaneous Instructions
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../web/index.html">
+<span class="md-ellipsis">
+    🌏Web相关
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../sec/ctf-101/index.html">
+<span class="md-ellipsis">
+    🛡️信息安全
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ai/index.html">
+<span class="md-ellipsis">
+    🤖人工智能
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../misc/index.html">
+<span class="md-ellipsis">
+    🗃️杂项
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../tools/index.html">
+<span class="md-ellipsis">
+    🛠️工具
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../papers/index.html">
+<span class="md-ellipsis">
+    📑论文阅读
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#the-jump-group">
+<span class="md-ellipsis">
+      The Jump Group
+    </span>
+</a>
+<nav aria-label="The Jump Group" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#unconditional-jump-jmp">
+<span class="md-ellipsis">
+      Unconditional Jump (JMP)
+    </span>
+</a>
+<nav aria-label="Unconditional Jump (JMP)" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#short-jump">
+<span class="md-ellipsis">
+      Short Jump
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#near-jump">
+<span class="md-ellipsis">
+      Near Jump
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#far-jump">
+<span class="md-ellipsis">
+      Far Jump
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#jump-with-register-operands">
+<span class="md-ellipsis">
+      Jump with Register Operands
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#indirect-jump-using-indexes">
+<span class="md-ellipsis">
+      Indirect Jump Using Indexes
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#conditional-jumps">
+<span class="md-ellipsis">
+      Conditional Jumps
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#conditional-sets">
+<span class="md-ellipsis">
+      Conditional Sets
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#loop">
+<span class="md-ellipsis">
+      LOOP
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#conditional-loops">
+<span class="md-ellipsis">
+      Conditional LOOPs
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#for-do-while-while-loops-in-assembly-language">
+<span class="md-ellipsis">
+      For, Do-while, While Loops in Assembly Language
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#controlling-the-flow-of-the-program">
+<span class="md-ellipsis">
+      Controlling the Flow of the Program
+    </span>
+</a>
+<nav aria-label="Controlling the Flow of the Program" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#if-else-elseif-and-endif">
+<span class="md-ellipsis">
+      .IF, .ELSE, .ELSEIF, and .ENDIF
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#while-loops">
+<span class="md-ellipsis">
+      WHILE Loops
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#repeat-until-loops">
+<span class="md-ellipsis">
+      REPEAT-UNTIL Loops
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#procedures">
+<span class="md-ellipsis">
+      Procedures
+    </span>
+</a>
+<nav aria-label="Procedures" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#call">
+<span class="md-ellipsis">
+      CALL
+    </span>
+</a>
+<nav aria-label="CALL" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#near-call">
+<span class="md-ellipsis">
+      Near CALL
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#far-call">
+<span class="md-ellipsis">
+      Far CALL
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#interrupts">
+<span class="md-ellipsis">
+      Interrupts
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#machine-control-and-miscellaneous-instructions">
+<span class="md-ellipsis">
+      Machine Control and Miscellaneous Instructions
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<article class="md-content__inner md-typeset">
+<a class="md-content__button md-icon" href="https://github.com/noughtq/notebook/edit/master/docs/sys/aai/6.md" rel="edit" title="编辑此页">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"></path></svg>
+</a>
+<a class="md-content__button md-icon" href="https://github.com/noughtq/notebook/raw/master/docs/sys/aai/6.md" title="查看本页的源代码">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"></path></svg>
+</a>
+<h1 id="program-control-instructions">Program Control Instructions<a class="headerlink" href="#program-control-instructions" title="Permanent link">⚓︎</a></h1>
+<div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>4769<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 576 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M360.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6m64.6 136.1c-12.5 12.5-12.5 32.8 0 45.3l73.4 73.4-73.4 73.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l96-96c12.5-12.5 12.5-32.8 0-45.3l-96-96c-12.5-12.5-32.8-12.5-45.3 0zm-274.7 0c-12.5-12.5-32.8-12.5-45.3 0l-96 96c-12.5 12.5-12.5 32.8 0 45.3l96 96c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l73.3-73.4c12.5-12.5 12.5-32.8 0-45.3z"></path></svg></span> <span>165<span class="heti-spacing"> </span></span>行代码 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>26<span class="heti-spacing"> </span></span>分钟</p>
+</div>
+<h2 id="the-jump-group">The Jump Group<a class="headerlink" href="#the-jump-group" title="Permanent link">⚓︎</a></h2>
+<ul>
+<li>通过<strong>无条件</strong>或<strong>条件跳转</strong><span>(unconditional / conditional jump)<span class="heti-spacing"> </span></span>指令，能跳过程序段，并跳转到内存的任何部分以执行下一条指令</li>
+<li>条件跳转指令允许基于<strong>数值测试</strong>做出决策，结果存储在标志位中，然后由条件跳转指令测试</li>
+<li><code>LOOP</code> 和条件 <code>LOOP</code> 也是跳转指令的一种形式</li>
+</ul>
+<h3 id="unconditional-jump-jmp">Unconditional Jump (JMP)<a class="headerlink" href="#unconditional-jump-jmp" title="Permanent link">⚓︎</a></h3>
+<p>无条件跳转指令分为三类：</p>
+<ul>
+<li><strong>短跳</strong>(short jump)：<span>2<span class="heti-spacing"> </span></span>字节指令，允许跳转到以跳转指令地址为中心的<span class="heti-skip"><span class="heti-spacing"> </span>-128B ~ 127B<span class="heti-spacing"> </span></span>范围内的内存位置</li>
+<li><strong>近跳</strong>(near jump)：<span>3<span class="heti-spacing"> </span></span>字节指令，允许跳转到在当前代码段中的指令<span class="heti-skip"><span class="heti-spacing"> </span>±32 KB<span class="heti-spacing"> </span></span>范围内的地方</li>
+<li><strong>远跳</strong>(far jump)：<span>5<span class="heti-spacing"> </span></span>字节指令，允许跳转到在真实内存系统上的任意位置</li>
+</ul>
+<p>其中前面两种指令称为<strong>段内跳转</strong>(infrasegment jump)，最后一种称为<strong>段间跳转</strong>(intersegment jump)。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C6/1.png"><img src="images/C6/1.png" width="50%"/></a>
+</div>
+<h4 id="short-jump">Short Jump<a class="headerlink" href="#short-jump" title="Permanent link">⚓︎</a></h4>
+<ul>
+<li>
+<p>短跳又称<strong>相对跳转</strong>(relative jump)，因为可以通过相关软件移动到当前代码段中的任何位置，而不会发生变化</p>
+<ul>
+<li>跳转地址并不存储在操作码中</li>
+<li>操作码后会跟一个（跳转）<strong>距离</strong><span>(distance)<span class="heti-spacing"> </span></span>或偏移量<span><span class="heti-spacing"> </span>(displacement)</span></li>
+</ul>
+</li>
+<li>
+<p>短跳偏移量是一个用<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>字节符号数表示的距离，范围在<span class="heti-skip"><span class="heti-spacing"> </span>-128 ~ 127<span class="heti-spacing"> </span></span>之间</p>
+</li>
+</ul>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C6/2.png"><img align="right" alt="" src="images/C6/2.png" width="30%"/></a></p>
+<ul>
+<li>
+<p>右图展示了短跳操作的细节：</p>
+<ul>
+<li>当微处理器执行短跳时，对偏移量进行符号扩展，并将其加到指令指针（<code>IP</code> / <code>EIP</code>）中，以生成在当前代码段内的跳转地址</li>
+<li>指令跳转到程序中下一条指令的新地址</li>
+</ul>
+</li>
+<li>
+<p>当跳转指令引用一个地址时，通常用标签标识该地址，比如 <code>JMP NEXT</code></p>
+<ul>
+<li>跳转到标签 <code>NEXT</code> 上以执行下一条指令</li>
+<li>很少会在跳转指令中使用十六进制地址</li>
+<li>标签 <code>NEXT</code> 后必须跟一个<strong>冒号</strong>（<code>NEXT:</code><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，从而让指令能够引用它，否则该标签无法被引用</li>
+<li>唯一使用冒号的情况是当标签与跳转或调用指令一起使用时</li>
+</ul>
+</li>
+</ul>
+<h4 id="near-jump">Near Jump<a class="headerlink" href="#near-jump" title="Permanent link">⚓︎</a></h4>
+<ul>
+<li>实模式下，近跳是一个<span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span>字节指令，包含操作码以及一个<span class="heti-skip"><span class="heti-spacing"> </span>16<span class="heti-spacing"> </span></span>位的符号偏移量</li>
+<li>近跳将控制权传递给当前代码段内的一个指令，该指令位于近跳转指令的<span class="heti-skip"><span class="heti-spacing"> </span>±32KB<span class="heti-spacing"> </span></span>范围内<ul>
+<li>因此可以跳转到当前实模式代码段内的任何内存位置</li>
+</ul>
+</li>
+<li><span>80386 - Pertium 4<span class="heti-spacing"> </span></span>中偏移量是<span class="heti-skip"><span class="heti-spacing"> </span>32<span class="heti-spacing"> </span></span>位的，因此近跳指令长为<span class="heti-skip"><span class="heti-spacing"> </span>5<span class="heti-spacing"> </span></span>字节</li>
+<li>在保护模式下，<span>80386<span class="heti-spacing"> </span></span>以上的处理器的跳转范围为<span><span class="heti-spacing"> </span>±2GB</span></li>
+<li>将符号偏移量加在指令指针上（<code>IP</code><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，生成跳转地址</li>
+<li>
+<p>下图展示了近跳操作的细节：</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C6/3.png"><img src="images/C6/3.png" width="50%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>近跳是<strong>可重定位的</strong>(relocatable)，因为它也是一种相对跳转</p>
+<ul>
+<li>该功能连同可重定位的数据段，使得<span class="heti-skip"><span class="heti-spacing"> </span>Intel<span class="heti-spacing"> </span></span>微处理器是通用计算机系统的理想选择</li>
+<li>软件可以写入和加载到内存的任何位置，并且由于相对跳转和可重定位的数据段，无需修改即可运行</li>
+</ul>
+</li>
+</ul>
+<details class="example" open="open">
+<summary>例子</summary>
+<p>下面是一段用到近跳的程序：</p>
+<div class="language-asm highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="err">0000</span><span class="w">  </span><span class="err">33</span><span class="nf">DB</span><span class="w">                 </span><span class="no">XOR</span><span class="w">   </span><span class="no">BX</span><span class="p">,</span><span class="no">BX</span>
+</span><span id="__span-0-2"><a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="err">0002</span><span class="w">  </span><span class="nf">B8</span><span class="w"> </span><span class="mi">0001</span><span class="w">      </span><span class="no">START</span><span class="p">:</span><span class="w">  </span><span class="no">MOV</span><span class="w">   </span><span class="no">AX</span><span class="p">,</span><span class="mi">1</span>
+</span><span id="__span-0-3"><a href="#__codelineno-0-3" id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="err">0005</span><span class="w">  </span><span class="err">03</span><span class="w"> </span><span class="nf">C3</span><span class="w">                </span><span class="no">ADD</span><span class="w">   </span><span class="no">AX</span><span class="p">,</span><span class="no">BX</span>
+</span><span id="__span-0-4"><a href="#__codelineno-0-4" id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="err">0007</span><span class="w">  </span><span class="nf">E9</span><span class="w"> </span><span class="mi">0200</span><span class="w">              </span><span class="no">JMP</span><span class="w">   </span><span class="no">NEXT</span>
+</span><span id="__span-0-5"><a href="#__codelineno-0-5" id="__codelineno-0-5" name="__codelineno-0-5"></a><span class="err">000</span><span class="nf">A</span>
+</span><span id="__span-0-6"><a href="#__codelineno-0-6" id="__codelineno-0-6" name="__codelineno-0-6"></a>
+</span><span id="__span-0-7"><a href="#__codelineno-0-7" id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="na">...</span><span class="w">                </span><span class="err">&lt;</span><span class="no">skipped</span><span class="w"> </span><span class="no">memory</span><span class="w"> </span><span class="no">locations</span><span class="err">&gt;</span>
+</span><span id="__span-0-8"><a href="#__codelineno-0-8" id="__codelineno-0-8" name="__codelineno-0-8"></a>
+</span><span id="__span-0-9"><a href="#__codelineno-0-9" id="__codelineno-0-9" name="__codelineno-0-9"></a><span class="err">0200</span><span class="w">  </span><span class="err">8</span><span class="nf">B</span><span class="w"> </span><span class="no">D8</span><span class="w">        </span><span class="no">NEXT</span><span class="p">:</span><span class="w">   </span><span class="no">MOV</span><span class="w">   </span><span class="no">BX</span><span class="p">,</span><span class="no">AX</span>
+</span><span id="__span-0-10"><a href="#__codelineno-0-10" id="__codelineno-0-10" name="__codelineno-0-10"></a><span class="err">0202</span><span class="w">  </span><span class="nf">E9</span><span class="w"> </span><span class="mi">0002</span><span class="w"> </span><span class="no">R</span><span class="w">            </span><span class="no">JMP</span><span class="w">   </span><span class="no">START</span>
+</span></code></pre></div>
+<ul>
+<li>第一个跳转指令（<code class="language-asm highlight"><span class="nf">JUMP</span><span class="w"> </span><span class="no">NEXT</span></code>）将控制权传递给代码段内内存地址偏移量为 <code>0200H</code> 的指令</li>
+<li>注意到指令汇编为 <code>E9 0200 R</code>。字母 <code>R</code> 表示 <code>0200H</code> 的<strong>可重定位跳转地址</strong></li>
+<li>链接后，跳转指令以 <code>E9 F6 01</code> 形式呈现（真实的偏移量为 <code>01F6H</code>（<code>0200H - 000AH = 01F6H</code><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>）</li>
+</ul>
+</details>
+<h4 id="far-jump">Far Jump<a class="headerlink" href="#far-jump" title="Permanent link">⚓︎</a></h4>
+<ul>
+<li>获取新的段和偏移地址来实现跳转</li>
+<li>在实模式在是<span class="heti-skip"><span class="heti-spacing"> </span>5<span class="heti-spacing"> </span></span>字节指令<ul>
+<li>字节<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span>包含新的偏移地址</li>
+<li>字节<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>5<span class="heti-spacing"> </span></span>包含新的段地址</li>
+</ul>
+</li>
+<li>
+<p>在保护模式下</p>
+<ul>
+<li>段地址访问具有远跳段的基址的描述符</li>
+<li><span>16<span class="heti-spacing"> </span></span>或<span class="heti-skip"><span class="heti-spacing"> </span>32<span class="heti-spacing"> </span></span>位的偏移地址包含新代码段的偏移地址</li>
+</ul>
+</li>
+<li>
+<p>下图展示了远跳操作的细节：</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C6/4.png"><img src="images/C6/4.png" width="50%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>两种实现远跳的方式：</p>
+<ul>
+<li>使用 <code class="language-asm highlight"><span class="nf">FAR</span><span class="w"> </span><span class="no">PTR</span></code> 指示符，比如 <code class="language-asm highlight"><span class="nf">JMP</span><span class="w"> </span><span class="no">FAR</span><span class="w"> </span><span class="no">PTR</span><span class="w"> </span><span class="no">START</span></code></li>
+<li>定义一个<strong>远标签</strong>(far label)，比如 <code class="language-asm highlight"><span class="nf">EXTRN</span><span class="w"> </span><span class="no">START</span><span class="p">:</span><span class="no">FAR</span></code></li>
+</ul>
+</li>
+<li>
+<p>仅当标签在当前代码段或过程的外面时，该标签才是远标签；外部标签出现在包含多个程序文件的程序中</p>
+</li>
+<li>两种定义可被来自过程块外访问的远标签的方式：<ul>
+<li>使用 <code>EXTRN</code> 指示符，比如 <code>EXTRN START:FAR</code></li>
+<li>使用<strong>双冒号</strong>，比如 <code class="language-asm highlight"><span class="nl">START:</span><span class="err">:</span></code></li>
+</ul>
+</li>
+</ul>
+<details class="example" open="open">
+<summary>例子</summary>
+<div class="language-asm highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="nf">EXTRN</span><span class="w"> </span><span class="no">UP</span><span class="p">:</span><span class="no">FAR</span>
+</span><span id="__span-1-2"><a href="#__codelineno-1-2" id="__codelineno-1-2" name="__codelineno-1-2"></a>
+</span><span id="__span-1-3"><a href="#__codelineno-1-3" id="__codelineno-1-3" name="__codelineno-1-3"></a><span class="err">0000</span><span class="w">  </span><span class="err">33</span><span class="w"> </span><span class="nf">DB</span><span class="w">                 </span><span class="no">XOR</span><span class="w">  </span><span class="no">BX</span><span class="p">,</span><span class="w"> </span><span class="no">BX</span><span class="w">         </span><span class="c1">; far label</span>
+</span><span id="__span-1-4"><a href="#__codelineno-1-4" id="__codelineno-1-4" name="__codelineno-1-4"></a><span class="err">0002</span><span class="w">  </span><span class="nf">B8</span><span class="w"> </span><span class="mi">0001</span><span class="w">        </span><span class="no">START</span><span class="p">:</span><span class="w"> </span><span class="no">ADD</span><span class="w">  </span><span class="no">AX</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span>
+</span><span id="__span-1-5"><a href="#__codelineno-1-5" id="__codelineno-1-5" name="__codelineno-1-5"></a><span class="err">0005</span><span class="w">  </span><span class="nf">E9</span><span class="w"> </span><span class="mi">0200</span><span class="w"> </span><span class="no">R</span><span class="w">             </span><span class="no">JMP</span><span class="w">  </span><span class="no">NEXT</span>
+</span><span id="__span-1-6"><a href="#__codelineno-1-6" id="__codelineno-1-6" name="__codelineno-1-6"></a>
+</span><span id="__span-1-7"><a href="#__codelineno-1-7" id="__codelineno-1-7" name="__codelineno-1-7"></a><span class="w">                    </span><span class="c1">;&lt;skipped memory locations&gt;</span>
+</span><span id="__span-1-8"><a href="#__codelineno-1-8" id="__codelineno-1-8" name="__codelineno-1-8"></a>
+</span><span id="__span-1-9"><a href="#__codelineno-1-9" id="__codelineno-1-9" name="__codelineno-1-9"></a><span class="err">0200</span><span class="w">  </span><span class="err">8</span><span class="nf">B</span><span class="w"> </span><span class="no">D8</span><span class="w">          </span><span class="no">NEXT</span><span class="p">:</span><span class="w">  </span><span class="no">MOV</span><span class="w">  </span><span class="no">BX</span><span class="p">,</span><span class="w"> </span><span class="no">AX</span>
+</span><span id="__span-1-10"><a href="#__codelineno-1-10" id="__codelineno-1-10" name="__codelineno-1-10"></a><span class="c1">; segment address</span>
+</span><span id="__span-1-11"><a href="#__codelineno-1-11" id="__codelineno-1-11" name="__codelineno-1-11"></a><span class="err">0202</span><span class="w">  </span><span class="nf">EA</span><span class="w"> </span><span class="mi">0002</span><span class="w"> </span><span class="p">--</span><span class="w"> </span><span class="no">R</span><span class="w">          </span><span class="no">JMP</span><span class="w">  </span><span class="no">FAR</span><span class="w"> </span><span class="no">PTR</span><span class="w"> </span><span class="no">START</span><span class="w">   </span><span class="c1">; far jump</span>
+</span><span id="__span-1-12"><a href="#__codelineno-1-12" id="__codelineno-1-12" name="__codelineno-1-12"></a><span class="err">0207</span><span class="w">  </span><span class="nf">EA</span><span class="w"> </span><span class="mi">0000</span><span class="w"> </span><span class="p">--</span><span class="w"> </span><span class="no">E</span><span class="w">          </span><span class="no">JMP</span><span class="w">  </span><span class="no">UP</span><span class="w">              </span><span class="c1">; far jump</span>
+</span></code></pre></div>
+<ul>
+<li>当标签 <code>UP</code> 通过 <code class="language-asm highlight"><span class="nf">EXTRN</span><span class="w"> </span><span class="no">UP</span><span class="p">:</span><span class="no">FAR</span></code> 指令定义为远标签时，<code class="language-asm highlight"><span class="nf">JMP</span><span class="w"> </span><span class="no">UP</span></code> 指令引用了一个远标签</li>
+<li>当程序文件被连接时，链接器将 <code>UP</code> 标签的地址插入到 <code class="language-asm highlight"><span class="nf">JMP</span><span class="w"> </span><span class="no">UP</span></code> 指令中，还将段地址插入到 <code class="language-asm highlight"><span class="nf">JMP</span><span class="w"> </span><span class="no">START</span></code> 指令中</li>
+</ul>
+</details>
+<h4 id="jump-with-register-operands">Jump with Register Operands<a class="headerlink" href="#jump-with-register-operands" title="Permanent link">⚓︎</a></h4>
+<ul>
+<li>
+<p>跳转指令可以使用<span class="heti-skip"><span class="heti-spacing"> </span>16<span class="heti-spacing"> </span></span>或<span class="heti-skip"><span class="heti-spacing"> </span>32<span class="heti-spacing"> </span></span>位寄存器作为操作数</p>
+<ul>
+<li>自动设置为<strong>绝对间接跳转</strong>(absolute indirect jump)</li>
+<li>跳转地址位于跳转指令指定的寄存器中</li>
+</ul>
+</li>
+<li>
+<p>与近跳转相关的偏移不同，寄存器内容直接被传输给指令指针上，而不会和指令指针做加法</p>
+</li>
+<li>例子：<ul>
+<li><code class="language-asm highlight"><span class="nf">JMP</span><span class="w"> </span><span class="no">AX</span></code> 将 <code>AX</code> 寄存器的内容复制到 <code>IP</code> 上</li>
+<li>而在<span class="heti-skip"><span class="heti-spacing"> </span>80386<span class="heti-spacing"> </span></span>以上的处理器中，<code class="language-asm highlight"><span class="nf">JMP</span><span class="w"> </span><span class="no">EAX</span></code> 能跳转到当前代码段的任意位置上<ul>
+<li>因为在保护模式下，代码段长度为<span><span class="heti-spacing"> </span>4GB</span>，因此需要<span class="heti-skip"><span class="heti-spacing"> </span>32<span class="heti-spacing"> </span></span>位的偏移地址</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="indirect-jump-using-indexes">Indirect Jump Using Indexes<a class="headerlink" href="#indirect-jump-using-indexes" title="Permanent link">⚓︎</a></h4>
+<ul>
+<li>跳转指令也可能使用<span class="heti-skip"><span class="heti-spacing"> </span>[]<span class="heti-spacing"> </span></span>形式的寻址（比如 <code class="language-asm highlight"><span class="nf">JMP</span><span class="w"> </span><span class="no">TABLE</span><span class="w"> </span><span class="p">[</span><span class="no">SI</span><span class="p">]</span></code>）来直接访问<strong>跳转表</strong>(jump table)</li>
+<li>
+<p>跳转表可以包含<strong>近间接跳转</strong>的偏移地址，或者<strong>远间接跳转</strong>的段和偏移地址</p>
+<ul>
+<li>若寄存器跳转被称为间接跳转，那么这种跳转也可被称为<strong>双重间接跳转</strong>(double-indirect jump)</li>
+</ul>
+</li>
+<li>
+<p>编译器假定跳转是近的，除非 <code class="language-asm highlight"><span class="nf">FAR</span><span class="w"> </span><span class="no">PTR</span></code> 指令指示为远跳转指令</p>
+</li>
+<li>
+<p>访问跳转表的机制与正常内存引用相同</p>
+<ul>
+<li>例子：<code class="language-asm highlight"><span class="nf">JMP</span><span class="w"> </span><span class="no">TABLE</span><span class="w"> </span><span class="p">[</span><span class="no">SI</span><span class="p">]</span></code> 指令指向由 <code>SI</code> 指定的数据段偏移位置存储的跳转地址</li>
+</ul>
+</li>
+<li>
+<p>寄存器和间接索引跳转指令通常指向<span class="heti-skip"><span class="heti-spacing"> </span>16<span class="heti-spacing"> </span></span>位偏移，因此都属于近跳转</p>
+</li>
+<li>如果 <code class="language-asm highlight"><span class="nf">JMP</span><span class="w"> </span><span class="no">FAR</span><span class="w"> </span><span class="no">PTR</span><span class="w"> </span><span class="p">[</span><span class="no">SI</span><span class="p">]</span></code> 或 <code class="language-asm highlight"><span class="nf">JMP</span><span class="w"> </span><span class="no">TABLE</span><span class="w"> </span><span class="p">[</span><span class="no">SI</span><span class="p">]</span></code>，并且 <code>TABLE</code> 数据由 <code>DD</code> 指令定义，那么微处理器假定跳转表包含双字，<span>32<span class="heti-spacing"> </span></span>位地址（<code>IP</code> 和 <code>CS</code>）</li>
+</ul>
+<h3 id="conditional-jumps">Conditional Jumps<a class="headerlink" href="#conditional-jumps" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li>在<span class="heti-skip"><span class="heti-spacing"> </span>8086-80286<span class="heti-spacing"> </span></span>中，条件跳转指令始终是短跳转，范围限制在条件跳转后位置<span class="heti-skip"><span class="heti-spacing"> </span>-128 ~ 127<span class="heti-spacing"> </span></span>字节内</li>
+<li>
+<p>在<span class="heti-skip"><span class="heti-spacing"> </span>80386<span class="heti-spacing"> </span></span>及以上版本中，条件跳转可以是短跳转或近跳转（±32K）</p>
+<ul>
+<li>在<span class="heti-skip"><span class="heti-spacing"> </span>Pertium 4<span class="heti-spacing"> </span></span>的<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位模式下，条件跳转的近跳转距离为<span><span class="heti-spacing"> </span>±2G</span></li>
+<li>允许条件跳转到当前代码段内的任何位置</li>
+</ul>
+</li>
+<li>
+<p>条件跳转指令测试标志位：</p>
+<ul>
+<li>符号（<code>S</code><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，零（<code>Z</code><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，进位（<code>C</code>）</li>
+<li>奇偶（<code>P</code><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，溢出（<code>O</code>）</li>
+</ul>
+</li>
+<li>
+<p>如果测试的条件为真，则跳转到指定标签上</p>
+</li>
+<li>否则按顺序执行程序中的下一条指令</li>
+<li>例子：如果进位标志位置<span><span class="heti-spacing"> </span>1</span>，则 <code>JC</code> 将执行跳转操作</li>
+<li>大多数条件跳转指令都很直接，因为它们通常只测试一个标志位（不过还是有测试多个标志位的指令）</li>
+</ul>
+<details class="question" open="open">
+<summary>思考</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="" id="__tabbed_1_1" name="__tabbed_1" type="radio"/><input id="__tabbed_1_2" name="__tabbed_1" type="radio"/><div class="tabbed-labels"><label for="__tabbed_1_1">问题</label><label for="__tabbed_1_2">答案</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>如何比较一个有符号值和一个无符号值？比如当比较<span><span class="heti-spacing"> </span>-1</span>（0xFF）和<span><span class="heti-spacing"> </span>1</span>（0x01）时，<span>-1<span class="heti-spacing"> </span></span>看起来更大</p>
+</div>
+<div class="tabbed-block">
+<p>有符号和无符号的比较是相同的，关键在于如何解释标志位。比如关于<span class="heti-skip"><span class="heti-spacing"> </span>-1<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>的无符号数和符号数比较：</p>
+<div class="grid cards" markdown="">
+<ul>
+<li>
+<p>无符号比较（<code>0xFF &gt; 0x01</code>）</p>
+<div class="language-asm highlight"><pre><span></span><code><span id="__span-2-1"><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="nf">MOV</span><span class="w"> </span><span class="no">EAX</span><span class="p">,</span><span class="w"> </span><span class="mi">-1</span>
+</span><span id="__span-2-2"><a href="#__codelineno-2-2" id="__codelineno-2-2" name="__codelineno-2-2"></a><span class="nf">CMP</span><span class="w"> </span><span class="no">EAX</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w">      </span><span class="c1">; Z=0, C=0, S=1, O=0</span>
+</span><span id="__span-2-3"><a href="#__codelineno-2-3" id="__codelineno-2-3" name="__codelineno-2-3"></a><span class="nf">JA</span><span class="w">  </span><span class="no">LABEL</span><span class="w">       </span><span class="c1">; if Z=0 and C=0 jump</span>
+</span><span id="__span-2-4"><a href="#__codelineno-2-4" id="__codelineno-2-4" name="__codelineno-2-4"></a><span class="w">                </span><span class="c1">; else do not jump</span>
+</span><span id="__span-2-5"><a href="#__codelineno-2-5" id="__codelineno-2-5" name="__codelineno-2-5"></a><span class="w">                </span><span class="c1">; jump to LABEL</span>
+</span></code></pre></div>
+</li>
+<li>
+<p>符号比较（<code>-1 &lt; 1</code>）</p>
+<div class="language-asm highlight"><pre><span></span><code><span id="__span-3-1"><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="nf">MOV</span><span class="w"> </span><span class="no">EAX</span><span class="p">,</span><span class="w"> </span><span class="mi">-1</span>
+</span><span id="__span-3-2"><a href="#__codelineno-3-2" id="__codelineno-3-2" name="__codelineno-3-2"></a><span class="nf">CMP</span><span class="w"> </span><span class="no">EAX</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w">      </span><span class="c1">; Z=0, C=0, S=1, O=0</span>
+</span><span id="__span-3-3"><a href="#__codelineno-3-3" id="__codelineno-3-3" name="__codelineno-3-3"></a><span class="nf">JG</span><span class="w">  </span><span class="no">LABEL</span><span class="w">       </span><span class="c1">; if Z=0 and S=0 jump</span>
+</span><span id="__span-3-4"><a href="#__codelineno-3-4" id="__codelineno-3-4" name="__codelineno-3-4"></a><span class="w">                </span><span class="c1">; else do not jump</span>
+</span><span id="__span-3-5"><a href="#__codelineno-3-5" id="__codelineno-3-5" name="__codelineno-3-5"></a><span class="w">                </span><span class="c1">; jump to LABEL</span>
+</span></code></pre></div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</details>
+<ul>
+<li>
+<p>因为编程中既可能使用有符号数，也可能使用无符号数，而这些数的顺序不同，所以存在两组用于大小比较的条件跳转指令</p>
+<ul>
+<li><span>16<span class="heti-spacing"> </span></span>位和<span class="heti-skip"><span class="heti-spacing"> </span>32<span class="heti-spacing"> </span></span>位数字的顺序与<span class="heti-skip"><span class="heti-spacing"> </span>8<span class="heti-spacing"> </span></span>位数字相同，只是它们更大</li>
+<li>
+<p>下图展示了有符号和无符号<span class="heti-skip"><span class="heti-spacing"> </span>8<span class="heti-spacing"> </span></span>位数字的顺序</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C6/5.png"><img src="images/C6/5.png" width="50%"/></a>
+</div><p></p>
+</li>
+</ul>
+</li>
+<li>
+<p>当比较无符号数时，使用<span><span class="heti-spacing"> </span>JA</span>、JB、JAE、JBE、<span>JE<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>JNE<span class="heti-spacing"> </span></span>指令</p>
+<ul>
+<li><span>above<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>below<span class="heti-spacing"> </span></span>均指代无符号数</li>
+</ul>
+</li>
+<li>
+<p>当比较符号数时，使用<span><span class="heti-spacing"> </span>JG</span>、JL、JGE、JLE、<span>JE<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>JNE<span class="heti-spacing"> </span></span>指令</p>
+<ul>
+<li><span>greater than<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>less than<span class="heti-spacing"> </span></span>均指代符号数</li>
+</ul>
+</li>
+<li>
+<p>下表列出了完整的条件跳转指令列表：</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C6/6.png"><img src="images/C6/6.png" width="70%"/></a>
+</div><p></p>
+</li>
+</ul>
+<details class="example">
+<summary>例子：加热器控制</summary>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C6/7.png"><img align="right" alt="" src="images/C6/7.png" width="20%"/></a></p>
+<p>下面的简短程序展示了如何使用温度计和加热器保持恒定温度（在<span><span class="heti-spacing"> </span>15</span>℃ 至<span><span class="heti-spacing"> </span>25</span>℃ 之间<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
+<ul>
+<li>假设空气温度低于<span><span class="heti-spacing"> </span>15</span>℃</li>
+<li>空气温度可以从<span class="heti-skip"><span class="heti-spacing"> </span>I/O<span class="heti-spacing"> </span></span>端口<span class="heti-skip"><span class="heti-spacing"> </span>125<span class="heti-spacing"> </span></span>读取</li>
+<li>加热器可以通过<span class="heti-skip"><span class="heti-spacing"> </span>I/O<span class="heti-spacing"> </span></span>端口<span class="heti-skip"><span class="heti-spacing"> </span>127<span class="heti-spacing"> </span></span>打开（<code>1</code>）和关闭（<code>0</code>）</li>
+</ul>
+<div class="language-asm highlight"><pre><span></span><code><span id="__span-4-1"><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="na">.code</span>
+</span><span id="__span-4-2"><a href="#__codelineno-4-2" id="__codelineno-4-2" name="__codelineno-4-2"></a><span class="nl">start:</span>
+</span><span id="__span-4-3"><a href="#__codelineno-4-3" id="__codelineno-4-3" name="__codelineno-4-3"></a><span class="w">    </span><span class="nf">in</span><span class="w"> </span><span class="no">al</span><span class="p">,</span><span class="w"> </span><span class="mi">125</span><span class="w">      </span><span class="c1">; read temperature</span>
+</span><span id="__span-4-4"><a href="#__codelineno-4-4" id="__codelineno-4-4" name="__codelineno-4-4"></a>
+</span><span id="__span-4-5"><a href="#__codelineno-4-5" id="__codelineno-4-5" name="__codelineno-4-5"></a><span class="w">    </span><span class="nf">cmp</span><span class="w"> </span><span class="no">al</span><span class="p">,</span><span class="w"> </span><span class="mi">15</span>
+</span><span id="__span-4-6"><a href="#__codelineno-4-6" id="__codelineno-4-6" name="__codelineno-4-6"></a><span class="w">    </span><span class="nf">jb</span><span class="w"> </span><span class="no">low</span><span class="w">          </span><span class="c1">; &lt;-- jl low</span>
+</span><span id="__span-4-7"><a href="#__codelineno-4-7" id="__codelineno-4-7" name="__codelineno-4-7"></a>
+</span><span id="__span-4-8"><a href="#__codelineno-4-8" id="__codelineno-4-8" name="__codelineno-4-8"></a><span class="w">    </span><span class="nf">cmp</span><span class="w"> </span><span class="no">al</span><span class="p">,</span><span class="w"> </span><span class="mi">25</span>
+</span><span id="__span-4-9"><a href="#__codelineno-4-9" id="__codelineno-4-9" name="__codelineno-4-9"></a><span class="w">    </span><span class="nf">ja</span><span class="w"> </span><span class="no">high</span><span class="w">         </span><span class="c1">; &lt;-- jg high</span>
+</span><span id="__span-4-10"><a href="#__codelineno-4-10" id="__codelineno-4-10" name="__codelineno-4-10"></a>
+</span><span id="__span-4-11"><a href="#__codelineno-4-11" id="__codelineno-4-11" name="__codelineno-4-11"></a><span class="w">    </span><span class="nf">jmp</span><span class="w"> </span><span class="no">start</span>
+</span><span id="__span-4-12"><a href="#__codelineno-4-12" id="__codelineno-4-12" name="__codelineno-4-12"></a>
+</span><span id="__span-4-13"><a href="#__codelineno-4-13" id="__codelineno-4-13" name="__codelineno-4-13"></a><span class="nl">low:</span>
+</span><span id="__span-4-14"><a href="#__codelineno-4-14" id="__codelineno-4-14" name="__codelineno-4-14"></a><span class="w">    </span><span class="nf">mov</span><span class="w"> </span><span class="no">al</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span>
+</span><span id="__span-4-15"><a href="#__codelineno-4-15" id="__codelineno-4-15" name="__codelineno-4-15"></a><span class="w">    </span><span class="nf">out</span><span class="w"> </span><span class="mi">127</span><span class="p">,</span><span class="w"> </span><span class="no">al</span><span class="w">     </span><span class="c1">; turn on heater</span>
+</span><span id="__span-4-16"><a href="#__codelineno-4-16" id="__codelineno-4-16" name="__codelineno-4-16"></a><span class="w">    </span><span class="nf">jmp</span><span class="w"> </span><span class="no">start</span>
+</span><span id="__span-4-17"><a href="#__codelineno-4-17" id="__codelineno-4-17" name="__codelineno-4-17"></a>
+</span><span id="__span-4-18"><a href="#__codelineno-4-18" id="__codelineno-4-18" name="__codelineno-4-18"></a><span class="nl">high:</span>
+</span><span id="__span-4-19"><a href="#__codelineno-4-19" id="__codelineno-4-19" name="__codelineno-4-19"></a><span class="w">    </span><span class="nf">mov</span><span class="w"> </span><span class="no">al</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span>
+</span><span id="__span-4-20"><a href="#__codelineno-4-20" id="__codelineno-4-20" name="__codelineno-4-20"></a><span class="w">    </span><span class="nf">out</span><span class="w"> </span><span class="mi">127</span><span class="p">,</span><span class="w"> </span><span class="no">al</span><span class="w">     </span><span class="c1">; turn off heater</span>
+</span><span id="__span-4-21"><a href="#__codelineno-4-21" id="__codelineno-4-21" name="__codelineno-4-21"></a><span class="w">    </span><span class="nf">jmp</span><span class="w"> </span><span class="no">start</span>
+</span><span id="__span-4-22"><a href="#__codelineno-4-22" id="__codelineno-4-22" name="__codelineno-4-22"></a>
+</span><span id="__span-4-23"><a href="#__codelineno-4-23" id="__codelineno-4-23" name="__codelineno-4-23"></a><span class="w">    </span><span class="nf">hlt</span>
+</span><span id="__span-4-24"><a href="#__codelineno-4-24" id="__codelineno-4-24" name="__codelineno-4-24"></a>
+</span><span id="__span-4-25"><a href="#__codelineno-4-25" id="__codelineno-4-25" name="__codelineno-4-25"></a><span class="na">.exit</span>
+</span></code></pre></div>
+</details>
+<ul>
+<li>
+<p>剩余的条件跳转测试单个标志位，例如溢出和奇偶校验</p>
+<ul>
+<li>注意，<code class="language-asm highlight"><span class="nf">JE</span></code> 有一个替代操作码 <code class="language-asm highlight"><span class="nf">JZ</span></code></li>
+</ul>
+</li>
+<li>
+<p>所有指令都有替代指令，但许多在编程中未使用，因为它们通常不符合测试的条件</p>
+</li>
+<li>
+<p>条件跳转指令都测试标志位，除了</p>
+<ul>
+<li>
+<p><code class="language-asm highlight"><span class="nf">JCXZ</span></code> 指令直接测试 <code>CX</code> 寄存器的内容</p>
+<ul>
+<li>如果 <code>CX = 0</code>，则发生跳转</li>
+<li>如果 <code>CX != 0</code>，则不发生跳转</li>
+</ul>
+</li>
+<li>
+<p><code class="language-asm highlight"><span class="nf">JECXZ</span></code> 则测试 <code>ECX</code> 寄存器的内容</p>
+<ul>
+<li>如果 <code>ECX = 0</code>，则发生跳转</li>
+<li>如果 <code>ECX != 0</code>，则不发生跳转</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<details class="example">
+<summary>例子</summary>
+<ul>
+<li>以下程序使用 <code class="language-asm highlight"><span class="nf">SCASB</span></code> 指令在表中搜索 <code>0AH</code></li>
+<li>搜索之后使用 <code class="language-asm highlight"><span class="nf">JCXZ</span></code> 指令测试 <code>CX</code> 以查看计数是否达到零</li>
+</ul>
+<div class="language-asm highlight"><pre><span></span><code><span id="__span-5-1"><a href="#__codelineno-5-1" id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="c1">; Instructions that search a table of 100 bytes for OAH</span>
+</span><span id="__span-5-2"><a href="#__codelineno-5-2" id="__codelineno-5-2" name="__codelineno-5-2"></a><span class="c1">; The offset address of TABLE is assumed to be in SI</span>
+</span><span id="__span-5-3"><a href="#__codelineno-5-3" id="__codelineno-5-3" name="__codelineno-5-3"></a>
+</span><span id="__span-5-4"><a href="#__codelineno-5-4" id="__codelineno-5-4" name="__codelineno-5-4"></a><span class="w">    </span><span class="nf">MOV</span><span class="w"> </span><span class="no">CX</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="w">             </span><span class="c1">; load counter</span>
+</span><span id="__span-5-5"><a href="#__codelineno-5-5" id="__codelineno-5-5" name="__codelineno-5-5"></a><span class="w">    </span><span class="nf">MOV</span><span class="w"> </span><span class="no">AL</span><span class="p">,</span><span class="w"> </span><span class="no">OAH</span><span class="w">             </span><span class="c1">; load AL with OAH</span>
+</span><span id="__span-5-6"><a href="#__codelineno-5-6" id="__codelineno-5-6" name="__codelineno-5-6"></a><span class="w">    </span><span class="nf">CLD</span><span class="w">                     </span><span class="c1">; auto-increment</span>
+</span><span id="__span-5-7"><a href="#__codelineno-5-7" id="__codelineno-5-7" name="__codelineno-5-7"></a><span class="w">    </span><span class="nf">REPNE</span><span class="w"> </span><span class="no">SCASB</span><span class="w">             </span><span class="c1">; search for 0AH</span>
+</span><span id="__span-5-8"><a href="#__codelineno-5-8" id="__codelineno-5-8" name="__codelineno-5-8"></a><span class="w">    </span><span class="nf">JCXZ</span><span class="w"> </span><span class="no">NOT_FOUND</span><span class="w">          </span><span class="c1">; if not found</span>
+</span><span id="__span-5-9"><a href="#__codelineno-5-9" id="__codelineno-5-9" name="__codelineno-5-9"></a><span class="nl">NOT_FOUND:</span>
+</span></code></pre></div>
+</details>
+<h3 id="conditional-sets">Conditional Sets<a class="headerlink" href="#conditional-sets" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li><span>80386 - Core 2<span class="heti-spacing"> </span></span>处理器还包含<strong>条件设置指令</strong>(conditional set instructions)</li>
+<li>
+<p><strong>条件设置字节</strong>（<code>SETcc</code>）指令检查 <code>EFLAGS</code> 寄存器中的状态标志</p>
+<ul>
+<li>如果标志符合助记符（cc）中指定的条件，将指定<span class="heti-skip"><span class="heti-spacing"> </span>8<span class="heti-spacing"> </span></span>位内存位置或寄存器中的值设置为<span><span class="heti-spacing"> </span>1</span></li>
+<li>如果标志不符合指定的条件，<code>SETcc</code> 将内存位置或寄存器清<span><span class="heti-spacing"> </span>0</span></li>
+</ul>
+</li>
+<li>
+<p>例子：<code class="language-asm highlight"><span class="nf">SETC</span><span class="w"> </span><span class="no">EAX</span></code></p>
+<ul>
+<li>如果进位被设置，<code>EAX = 01H</code>；如果进位被清除，<code>EAX = 00H</code></li>
+<li>
+<p><code>EAX</code> 的内容可以在程序稍后的某个点进行测试，以确定 <code class="language-asm highlight"><span class="nf">SETC</span><span class="w"> </span><span class="no">EAX</span></code> 指令执行点是否清除进位</p>
+</li>
+<li>
+<p>条件设置指令在必须测试程序中较晚的点上的条件时很有用</p>
+</li>
+</ul>
+</li>
+<li>
+<p>下表罗列了各种条件设置指令：</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C6/8.png"><img src="images/C6/8.png" width="60%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>软件通常使用 <code>SETcc</code> 指令来设置逻辑指示器</p>
+</li>
+<li>
+<p>与 <code>CMOVcc</code> 指令类似，<code>SETcc</code> 指令可以替换两个指令：一个条件跳转和一个移动，比如：</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C6/9.png"><img src="images/C6/9.png" width="60%"/></a>
+</div><p></p>
+</li>
+</ul>
+<details class="example" open="open">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C6/10.png"><img src="images/C6/10.png" width="60%"/></a>
+</div><p></p>
+</details>
+<h3 id="loop">LOOP<a class="headerlink" href="#loop" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li><code class="language-asm highlight"><span class="nf">LOOP</span></code> 指令使用<code>RCX</code><span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span><code>ECX</code><span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span><code>CX</code>作为计数器执行循环操作</li>
+<li>
+<p><code class="language-asm highlight"><span class="nf">LOOP</span></code> 指令等价于 </p>
+<ul>
+<li><code class="language-asm highlight"><span class="nf">SUB</span><span class="w"> </span><span class="no">RCX</span><span class="err">/</span><span class="no">ECX</span><span class="err">/</span><span class="no">CX</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span></code></li>
+<li><code class="language-asm highlight"><span class="nf">JNZ</span><span class="w"> </span><span class="no">label</span></code></li>
+</ul>
+</li>
+<li>
+<p>每次执行 <code class="language-asm highlight"><span class="nf">LOOP</span></code> 指令时，计数器会递减，然后检查是否为<span><span class="heti-spacing"> </span>0</span></p>
+<ul>
+<li>如果 <code>CX != 0</code>，则执行到标签的近跳转</li>
+<li>如果 <code>CX == 0</code>，则执行下一条指令</li>
+</ul>
+</li>
+<li>
+<p><code class="language-asm highlight"><span class="nf">LOOP</span></code> 指令不影响任何标志</p>
+</li>
+<li>在<span class="heti-skip"><span class="heti-spacing"> </span>16<span class="heti-spacing"> </span></span>位指令模式下，<code class="language-asm highlight"><span class="nf">LOOP</span></code> 使用 <code>CX</code></li>
+<li>在<span class="heti-skip"><span class="heti-spacing"> </span>32<span class="heti-spacing"> </span></span>位模式下，<code class="language-asm highlight"><span class="nf">LOOP</span></code> 使用 <code>ECX</code></li>
+<li>在<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位模式下，循环计数器在 <code>RCX</code> 中</li>
+<li>使用的计数寄存器的大小取决于 <code class="language-asm highlight"><span class="nf">LOOP</span></code> 指令的地址大小属性</li>
+</ul>
+<details class="example">
+<summary>例子</summary>
+<p>以下程序计算 <code>BLOCK1</code> 和 <code>BLOCK2</code> 的内容之和，并将结果存储在 <code>BLOCK2</code> 的数据上方。</p>
+<div class="language-asm highlight"><pre><span></span><code><span id="__span-6-1"><a href="#__codelineno-6-1" id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="na">.MODEL</span><span class="w"> </span><span class="no">SMALL</span><span class="w">                    </span><span class="c1">; select SMALL model</span>
+</span><span id="__span-6-2"><a href="#__codelineno-6-2" id="__codelineno-6-2" name="__codelineno-6-2"></a><span class="na">.DATA</span><span class="w">                           </span><span class="c1">; start data segment</span>
+</span><span id="__span-6-3"><a href="#__codelineno-6-3" id="__codelineno-6-3" name="__codelineno-6-3"></a><span class="nf">BLOCK1</span><span class="w"> </span><span class="no">DW</span><span class="w"> </span><span class="mi">100</span><span class="w"> </span><span class="no">DUP</span><span class="w"> </span><span class="p">(</span><span class="err">?</span><span class="p">)</span><span class="w">           </span><span class="c1">; 100 words for BLOCK1</span>
+</span><span id="__span-6-4"><a href="#__codelineno-6-4" id="__codelineno-6-4" name="__codelineno-6-4"></a><span class="nf">BLOCK2</span><span class="w"> </span><span class="no">DW</span><span class="w"> </span><span class="mi">100</span><span class="w"> </span><span class="no">DUP</span><span class="w"> </span><span class="p">(</span><span class="err">?</span><span class="p">)</span><span class="w">           </span><span class="c1">; 100 words for BLOCK2</span>
+</span><span id="__span-6-5"><a href="#__codelineno-6-5" id="__codelineno-6-5" name="__codelineno-6-5"></a>
+</span><span id="__span-6-6"><a href="#__codelineno-6-6" id="__codelineno-6-6" name="__codelineno-6-6"></a><span class="na">.CODE</span><span class="w">                           </span><span class="c1">; start code segment</span>
+</span><span id="__span-6-7"><a href="#__codelineno-6-7" id="__codelineno-6-7" name="__codelineno-6-7"></a><span class="na">.STARTUP</span><span class="w">                        </span><span class="c1">; start program</span>
+</span><span id="__span-6-8"><a href="#__codelineno-6-8" id="__codelineno-6-8" name="__codelineno-6-8"></a><span class="w">    </span><span class="nf">MOV</span><span class="w"> </span><span class="no">AX</span><span class="p">,</span><span class="w"> </span><span class="no">DS</span><span class="w">                  </span><span class="c1">; overlap DS and ES</span>
+</span><span id="__span-6-9"><a href="#__codelineno-6-9" id="__codelineno-6-9" name="__codelineno-6-9"></a><span class="w">    </span><span class="nf">MOV</span><span class="w"> </span><span class="no">ES</span><span class="p">,</span><span class="w"> </span><span class="no">AX</span>
+</span><span id="__span-6-10"><a href="#__codelineno-6-10" id="__codelineno-6-10" name="__codelineno-6-10"></a><span class="w">    </span><span class="nf">CLD</span><span class="w">                         </span><span class="c1">; select auto-increment</span>
+</span><span id="__span-6-11"><a href="#__codelineno-6-11" id="__codelineno-6-11" name="__codelineno-6-11"></a><span class="w">    </span><span class="nf">MOV</span><span class="w"> </span><span class="no">CX</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="w">                 </span><span class="c1">; load counter</span>
+</span><span id="__span-6-12"><a href="#__codelineno-6-12" id="__codelineno-6-12" name="__codelineno-6-12"></a><span class="w">    </span><span class="nf">MOV</span><span class="w"> </span><span class="no">SI</span><span class="p">,</span><span class="w"> </span><span class="no">OFFSET</span><span class="w"> </span><span class="no">BLOCK1</span><span class="w">       </span><span class="c1">; address BLOCK1</span>
+</span><span id="__span-6-13"><a href="#__codelineno-6-13" id="__codelineno-6-13" name="__codelineno-6-13"></a><span class="w">    </span><span class="nf">MOV</span><span class="w"> </span><span class="no">DI</span><span class="p">,</span><span class="w"> </span><span class="no">OFFSET</span><span class="w"> </span><span class="no">BLOCK2</span><span class="w">       </span><span class="c1">; address BLOCK2</span>
+</span><span id="__span-6-14"><a href="#__codelineno-6-14" id="__codelineno-6-14" name="__codelineno-6-14"></a><span class="nl">L1:</span><span class="w"> </span><span class="nf">LODSW</span><span class="w">                       </span><span class="c1">; load AX with BLOCK1</span>
+</span><span id="__span-6-15"><a href="#__codelineno-6-15" id="__codelineno-6-15" name="__codelineno-6-15"></a><span class="w">    </span><span class="nf">ADD</span><span class="w"> </span><span class="no">AX</span><span class="p">,</span><span class="w"> </span><span class="no">ES</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="no">DI</span><span class="p">]</span><span class="w">            </span><span class="c1">; add BLOCK2</span>
+</span><span id="__span-6-16"><a href="#__codelineno-6-16" id="__codelineno-6-16" name="__codelineno-6-16"></a><span class="w">    </span><span class="nf">STOSW</span><span class="w">                       </span><span class="c1">; save answer</span>
+</span><span id="__span-6-17"><a href="#__codelineno-6-17" id="__codelineno-6-17" name="__codelineno-6-17"></a><span class="w">    </span><span class="nf">LOOP</span><span class="w"> </span><span class="no">L1</span><span class="w">                     </span><span class="c1">; repeat 100 times</span>
+</span><span id="__span-6-18"><a href="#__codelineno-6-18" id="__codelineno-6-18" name="__codelineno-6-18"></a><span class="na">.EXIT</span>
+</span><span id="__span-6-19"><a href="#__codelineno-6-19" id="__codelineno-6-19" name="__codelineno-6-19"></a><span class="nf">END</span>
+</span></code></pre></div>
+</details>
+<h3 id="conditional-loops">Conditional LOOPs<a class="headerlink" href="#conditional-loops" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li>
+<p><code class="language-asm highlight"><span class="nf">LOOP</span></code> 指令也有条件形式，语法为：</p>
+<ul>
+<li><code class="language-asm highlight"><span class="nf">LOOPE</span><span class="w"> </span><span class="no">dest</span></code></li>
+<li><code class="language-asm highlight"><span class="nf">LOOPNE</span><span class="w"> </span><span class="no">dest</span></code></li>
+</ul>
+</li>
+<li>
+<p><code class="language-asm highlight"><span class="nf">LOOPE</span></code>（循环直到相等<span><span class="heti-spacing"> </span>(loop while equal)</span>）指令接受 <code>ZF</code> 标志作为在计数达到零之前终止循环的条件</p>
+<ul>
+<li>如果条件不相等或 <code>CX</code> 寄存器递减到<span><span class="heti-spacing"> </span>0</span>，将退出循环</li>
+</ul>
+</li>
+<li>
+<p><code class="language-asm highlight"><span class="nf">LOOPNE</span></code>（当不相等时循环<span><span class="heti-spacing"> </span>(loop while not equal)</span>）在 <code>CX</code> 不等于<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>且存在不相等条件时跳转</p>
+<ul>
+<li>如果条件相等或 <code>CX</code> 寄存器递减到<span><span class="heti-spacing"> </span>0</span>，将退出循环</li>
+</ul>
+</li>
+<li>
+<p><code class="language-asm highlight"><span class="nf">LOOPE</span></code> 在扫描数组以查找第一个<strong>不匹配</strong>给定值的元素时很有用</p>
+</li>
+<li><code class="language-asm highlight"><span class="nf">LOOPNE</span></code> 在扫描数组以查找第一个<strong>匹配</strong>给定值的元素时很有用</li>
+<li><code class="language-asm highlight"><span class="nf">LOOPE</span></code> 和 <code class="language-asm highlight"><span class="nf">LOOPNE</span></code> 指令不影响任何标志</li>
+<li>
+<p>在<span class="heti-skip"><span class="heti-spacing"> </span>80386 - Core 2<span class="heti-spacing"> </span></span>处理器中，条件循环可以使用 <code>CX</code> 或 <code>ECX</code> 作为计数器</p>
+<ul>
+<li>如有需要，<code class="language-asm highlight"><span class="nf">LOOPEW</span></code> <span>/<span class="heti-spacing"> </span></span><code class="language-asm highlight"><span class="nf">LOOPED</span></code>或<code class="language-asm highlight"><span class="nf">LOOPNEW</span></code><span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span><code class="language-asm highlight"><span class="nf">LOOPNED</span></code>可覆盖指令模式</li>
+</ul>
+</li>
+<li>
+<p>在<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位的操作下，循环计数器使用 <code>RCX</code>，宽度为<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位</p>
+</li>
+<li>
+<p><code class="language-asm highlight"><span class="nf">LOOPE</span></code> 和 <code class="language-asm highlight"><span class="nf">LOOPNE</span></code> 存在替代方案</p>
+<ul>
+<li><code class="language-asm highlight"><span class="nf">LOOPE</span><span class="w"> </span><span class="err">==</span><span class="w"> </span><span class="no">LOOPZ</span></code></li>
+<li><code class="language-asm highlight"><span class="nf">LOOPNE</span><span class="w"> </span><span class="err">==</span><span class="w"> </span><span class="no">LOOPNZ</span></code></li>
+</ul>
+</li>
+<li>
+<p>在大多数程序中，只有 <code class="language-asm highlight"><span class="nf">LOOPE</span></code> 和 <code class="language-asm highlight"><span class="nf">LOOPNE</span></code> 适用</p>
+</li>
+</ul>
+<details class="example">
+<summary>例子</summary>
+<p>以下代码寻找数组中的第一个正整数：</p>
+<div class="language-asm highlight"><pre><span></span><code><span id="__span-7-1"><a href="#__codelineno-7-1" id="__codelineno-7-1" name="__codelineno-7-1"></a><span class="na">.data</span>
+</span><span id="__span-7-2"><a href="#__codelineno-7-2" id="__codelineno-7-2" name="__codelineno-7-2"></a><span class="nf">array</span><span class="w"> </span><span class="no">DW</span><span class="w"> </span><span class="mi">-3</span><span class="p">,-</span><span class="mi">6</span><span class="p">,-</span><span class="mi">1</span><span class="p">,-</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">40</span><span class="p">,</span><span class="mi">4</span>
+</span><span id="__span-7-3"><a href="#__codelineno-7-3" id="__codelineno-7-3" name="__codelineno-7-3"></a>
+</span><span id="__span-7-4"><a href="#__codelineno-7-4" id="__codelineno-7-4" name="__codelineno-7-4"></a><span class="na">.code</span>
+</span><span id="__span-7-5"><a href="#__codelineno-7-5" id="__codelineno-7-5" name="__codelineno-7-5"></a><span class="w">    </span><span class="nf">MOV</span><span class="w"> </span><span class="no">ESI</span><span class="p">,</span><span class="w"> </span><span class="no">OFFSET</span><span class="w"> </span><span class="no">array</span>
+</span><span id="__span-7-6"><a href="#__codelineno-7-6" id="__codelineno-7-6" name="__codelineno-7-6"></a><span class="w">    </span><span class="nf">MOV</span><span class="w"> </span><span class="no">ECX</span><span class="p">,</span><span class="w"> </span><span class="no">LENGTHOF</span><span class="w"> </span><span class="no">array</span><span class="w">     </span><span class="c1">; get the number of array</span>
+</span><span id="__span-7-7"><a href="#__codelineno-7-7" id="__codelineno-7-7" name="__codelineno-7-7"></a><span class="nl">next:</span>
+</span><span id="__span-7-8"><a href="#__codelineno-7-8" id="__codelineno-7-8" name="__codelineno-7-8"></a><span class="w">    </span><span class="nf">TEST</span><span class="w"> </span><span class="no">WORD</span><span class="w"> </span><span class="no">PTR</span><span class="w"> </span><span class="p">[</span><span class="no">ESI</span><span class="p">],</span><span class="mi">8000</span><span class="no">h</span><span class="w">   </span><span class="c1">; sign bit=1 (negative), Z=0, else Z=1 (positive)</span>
+</span><span id="__span-7-9"><a href="#__codelineno-7-9" id="__codelineno-7-9" name="__codelineno-7-9"></a><span class="w">    </span><span class="nf">PUSHF</span><span class="w">                       </span><span class="c1">; protect flags on stack</span>
+</span><span id="__span-7-10"><a href="#__codelineno-7-10" id="__codelineno-7-10" name="__codelineno-7-10"></a><span class="w">    </span><span class="nf">ADD</span><span class="w"> </span><span class="no">ESI</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="w">                  </span><span class="c1">; inc ESI to next value</span>
+</span><span id="__span-7-11"><a href="#__codelineno-7-11" id="__codelineno-7-11" name="__codelineno-7-11"></a><span class="w">    </span><span class="nf">POPF</span><span class="w">                        </span><span class="c1">; restore flags from stack</span>
+</span><span id="__span-7-12"><a href="#__codelineno-7-12" id="__codelineno-7-12" name="__codelineno-7-12"></a><span class="w">    </span><span class="nf">LOOPNZ</span><span class="w"> </span><span class="no">next</span><span class="w">                 </span><span class="c1">; if Z=0 and ECX != 0 continue</span>
+</span><span id="__span-7-13"><a href="#__codelineno-7-13" id="__codelineno-7-13" name="__codelineno-7-13"></a><span class="w">    </span><span class="nf">JNZ</span><span class="w"> </span><span class="no">quit</span><span class="w">                    </span><span class="c1">; if Z=0, not found</span>
+</span><span id="__span-7-14"><a href="#__codelineno-7-14" id="__codelineno-7-14" name="__codelineno-7-14"></a><span class="w">    </span><span class="nf">SUB</span><span class="w"> </span><span class="no">ESI</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="w">                  </span><span class="c1">; ESI points to value</span>
+</span><span id="__span-7-15"><a href="#__codelineno-7-15" id="__codelineno-7-15" name="__codelineno-7-15"></a><span class="nl">quit:</span>
+</span></code></pre></div>
+</details>
+<h3 id="for-do-while-while-loops-in-assembly-language">For, Do-while, While Loops in Assembly Language<a class="headerlink" href="#for-do-while-while-loops-in-assembly-language" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li>
+<p><code class="language-c highlight"><span class="k">do</span><span class="o">-</span><span class="k">while</span></code> 循环</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C6/11.png"><img src="images/C6/11.png" width="50%"/></a>
+</div><p></p>
+</li>
+<li>
+<p><code class="language-c highlight"><span class="k">while</span></code> 循环</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C6/12.png"><img src="images/C6/12.png" width="50%"/></a>
+</div><p></p>
+</li>
+<li>
+<p><code class="language-c highlight"><span class="k">for</span></code> 循环</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C6/13.png"><img src="images/C6/13.png" width="50%"/></a>
+</div><p></p>
+</li>
+</ul>
+<h2 id="controlling-the-flow-of-the-program">Controlling the Flow of the Program<a class="headerlink" href="#controlling-the-flow-of-the-program" title="Permanent link">⚓︎</a></h2>
+<ul>
+<li>使用汇编语言指示符 <code>.IF</code>、<code>.ELSE</code>、<code>.ELSEIF</code> 和 <code>.ENDIF</code> 来控制程序流程比使用正确的条件跳转语句要容易得多，这些语句始终指示一个对于<span class="heti-skip"><span class="heti-spacing"> </span>MASM<span class="heti-spacing"> </span></span>特殊的汇编语言命令</li>
+<li>从点号开始的控制流程汇编语言语句在<span class="heti-skip"><span class="heti-spacing"> </span>MASM 6.xx<span class="heti-spacing"> </span></span>版本中可用，而不适用于更早的版本</li>
+<li>
+<p>其他指示符包括 <code>.REPEAT–.UNTIL</code> 和 <code>.WHILE–.ENDW</code></p>
+<ul>
+<li><strong>点命令</strong><span>(dot commands)<span class="heti-spacing"> </span></span>在<span class="heti-skip"><span class="heti-spacing"> </span>Visual C++<span class="heti-spacing"> </span></span>内联汇编器中不起作用</li>
+</ul>
+</li>
+<li>
+<p>在内联汇编器中，绝不要使用大写字母表示汇编语言指示符，因为其中一些被<span class="heti-skip"><span class="heti-spacing"> </span>C++<span class="heti-spacing"> </span></span>保留，使用会导致问题</p>
+</li>
+<li>
+<p>条件控制流指示符：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a href="#__codelineno-8-1" id="__codelineno-8-1" name="__codelineno-8-1"></a>.WHILE
+</span><span id="__span-8-2"><a href="#__codelineno-8-2" id="__codelineno-8-2" name="__codelineno-8-2"></a>.ENDW
+</span><span id="__span-8-3"><a href="#__codelineno-8-3" id="__codelineno-8-3" name="__codelineno-8-3"></a>
+</span><span id="__span-8-4"><a href="#__codelineno-8-4" id="__codelineno-8-4" name="__codelineno-8-4"></a>.REPEAT
+</span><span id="__span-8-5"><a href="#__codelineno-8-5" id="__codelineno-8-5" name="__codelineno-8-5"></a>.UNTIL
+</span><span id="__span-8-6"><a href="#__codelineno-8-6" id="__codelineno-8-6" name="__codelineno-8-6"></a>.UNTILCXZ
+</span><span id="__span-8-7"><a href="#__codelineno-8-7" id="__codelineno-8-7" name="__codelineno-8-7"></a>
+</span><span id="__span-8-8"><a href="#__codelineno-8-8" id="__codelineno-8-8" name="__codelineno-8-8"></a>.BREAK
+</span><span id="__span-8-9"><a href="#__codelineno-8-9" id="__codelineno-8-9" name="__codelineno-8-9"></a>.CONTINUE
+</span><span id="__span-8-10"><a href="#__codelineno-8-10" id="__codelineno-8-10" name="__codelineno-8-10"></a>
+</span><span id="__span-8-11"><a href="#__codelineno-8-11" id="__codelineno-8-11" name="__codelineno-8-11"></a>.IF
+</span><span id="__span-8-12"><a href="#__codelineno-8-12" id="__codelineno-8-12" name="__codelineno-8-12"></a>.ENDIF
+</span><span id="__span-8-13"><a href="#__codelineno-8-13" id="__codelineno-8-13" name="__codelineno-8-13"></a>.ELSE
+</span><span id="__span-8-14"><a href="#__codelineno-8-14" id="__codelineno-8-14" name="__codelineno-8-14"></a>.ELSEIF
+</span></code></pre></div>
+</li>
+<li>
+<p>条件控制流运算符：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a href="#__codelineno-9-1" id="__codelineno-9-1" name="__codelineno-9-1"></a>!         // logical not
+</span><span id="__span-9-2"><a href="#__codelineno-9-2" id="__codelineno-9-2" name="__codelineno-9-2"></a>!=        // not equal
+</span><span id="__span-9-3"><a href="#__codelineno-9-3" id="__codelineno-9-3" name="__codelineno-9-3"></a>||        // logical or
+</span><span id="__span-9-4"><a href="#__codelineno-9-4" id="__codelineno-9-4" name="__codelineno-9-4"></a>&amp;&amp;        // logical and
+</span><span id="__span-9-5"><a href="#__codelineno-9-5" id="__codelineno-9-5" name="__codelineno-9-5"></a>&lt;         // less than
+</span><span id="__span-9-6"><a href="#__codelineno-9-6" id="__codelineno-9-6" name="__codelineno-9-6"></a>
+</span><span id="__span-9-7"><a href="#__codelineno-9-7" id="__codelineno-9-7" name="__codelineno-9-7"></a>&lt;=        // less or equal
+</span><span id="__span-9-8"><a href="#__codelineno-9-8" id="__codelineno-9-8" name="__codelineno-9-8"></a>==        // equal
+</span><span id="__span-9-9"><a href="#__codelineno-9-9" id="__codelineno-9-9" name="__codelineno-9-9"></a>&gt;         // greater than
+</span><span id="__span-9-10"><a href="#__codelineno-9-10" id="__codelineno-9-10" name="__codelineno-9-10"></a>&gt;=        // greater or equal
+</span><span id="__span-9-11"><a href="#__codelineno-9-11" id="__codelineno-9-11" name="__codelineno-9-11"></a>&amp;         // bitwise and
+</span><span id="__span-9-12"><a href="#__codelineno-9-12" id="__codelineno-9-12" name="__codelineno-9-12"></a>
+</span><span id="__span-9-13"><a href="#__codelineno-9-13" id="__codelineno-9-13" name="__codelineno-9-13"></a>CARRY?    // carry test
+</span><span id="__span-9-14"><a href="#__codelineno-9-14" id="__codelineno-9-14" name="__codelineno-9-14"></a>PARITY?   // parity test
+</span><span id="__span-9-15"><a href="#__codelineno-9-15" id="__codelineno-9-15" name="__codelineno-9-15"></a>SIGN?     // sign test
+</span><span id="__span-9-16"><a href="#__codelineno-9-16" id="__codelineno-9-16" name="__codelineno-9-16"></a>ZERO?     // zero test
+</span><span id="__span-9-17"><a href="#__codelineno-9-17" id="__codelineno-9-17" name="__codelineno-9-17"></a>OVERFLOW? // overflow test
+</span></code></pre></div>
+</li>
+</ul>
+<h3 id="if-else-elseif-and-endif">.IF, .ELSE, .ELSEIF, and .ENDIF<a class="headerlink" href="#if-else-elseif-and-endif" title="Permanent link">⚓︎</a></h3>
+<details class="example" open="open">
+<summary>例子</summary>
+<ul>
+<li>以下示例展示了如何使用 <code>.IF</code> 和 <code>.ENDIF</code> 语句通过测试 <code>AL</code> 的<span class="heti-skip"><span class="heti-spacing"> </span>ASCII<span class="heti-spacing"> </span></span>字母 <code>A</code> 到 <code>F</code> 来控制程序的流程</li>
+<li>如果 <code>AL</code> 的内容是 <code>A</code> 到 <code>F</code>，则从 <code>AL</code> 中减去<span><span class="heti-spacing"> </span>7</span></li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C6/14.png"><img src="images/C6/14.png" width="60%"/></a>
+</div><p></p>
+</details>
+<h3 id="while-loops">WHILE Loops<a class="headerlink" href="#while-loops" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li>
+<p>使用 <code>.WHILE</code> 语句与条件开启循环</p>
+<ul>
+<li><code>.ENDW</code> 语句结束循环</li>
+</ul>
+</li>
+<li>
+<p><code>.BREAK</code> 和 <code>.CONTINUE</code> 语句可用于 <code class="language-c highlight"><span class="k">while</span></code> 循环</p>
+<ul>
+<li><code>.BREAK</code> 通常跟随着 <code>.IF</code> 来选择中断条件，例如 <code class="language-asm highlight"><span class="na">.BREAK</span><span class="w"> </span><span class="no">.IF</span><span class="w"> </span><span class="no">AL</span><span class="w"> </span><span class="err">==</span><span class="w"> </span><span class="mi">0</span><span class="no">DH</span></code></li>
+<li><code>.CONTINUE</code> 可用于在满足特定条件时允许 <code>DO-.WHILE</code> 循环继续</li>
+</ul>
+</li>
+</ul>
+<details class="example" open="open">
+<summary>例子</summary>
+<p>以下示例展示了如何使用 <code>.WHILE</code> 语句从键盘读取数据并将其存储到数组（<code>BUF</code>）中，直到回车键（<code>0DH</code><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
+<div class="language-asm highlight"><pre><span></span><code><span id="__span-10-1"><a href="#__codelineno-10-1" id="__codelineno-10-1" name="__codelineno-10-1"></a><span class="na">.CODE</span><span class="w">                          </span><span class="c1">; start code segment</span>
+</span><span id="__span-10-2"><a href="#__codelineno-10-2" id="__codelineno-10-2" name="__codelineno-10-2"></a><span class="na">.STARTUP</span><span class="w">                       </span><span class="c1">; start program</span>
+</span><span id="__span-10-3"><a href="#__codelineno-10-3" id="__codelineno-10-3" name="__codelineno-10-3"></a><span class="w">        </span><span class="nf">MOV</span><span class="w"> </span><span class="no">AX</span><span class="p">,</span><span class="w"> </span><span class="no">DX</span><span class="w">                  </span><span class="c1">; overlap DS with ES</span>
+</span><span id="__span-10-4"><a href="#__codelineno-10-4" id="__codelineno-10-4" name="__codelineno-10-4"></a><span class="w">        </span><span class="nf">MOV</span><span class="w"> </span><span class="no">ES</span><span class="p">,</span><span class="w"> </span><span class="no">AX</span>
+</span><span id="__span-10-5"><a href="#__codelineno-10-5" id="__codelineno-10-5" name="__codelineno-10-5"></a><span class="w">        </span><span class="nf">CLD</span><span class="w">                        </span><span class="c1">; select auto-increment</span>
+</span><span id="__span-10-6"><a href="#__codelineno-10-6" id="__codelineno-10-6" name="__codelineno-10-6"></a><span class="w">        </span><span class="nf">MOV</span><span class="w"> </span><span class="no">DI</span><span class="p">,</span><span class="w"> </span><span class="no">OFFSET</span><span class="w"> </span><span class="no">BUF</span><span class="w">          </span><span class="c1">; address buffer</span>
+</span><span id="__span-10-7"><a href="#__codelineno-10-7" id="__codelineno-10-7" name="__codelineno-10-7"></a>
+</span><span id="__span-10-8"><a href="#__codelineno-10-8" id="__codelineno-10-8" name="__codelineno-10-8"></a><span class="na">.WHILE</span><span class="w"> </span><span class="no">AL</span><span class="w"> </span><span class="p">!</span><span class="err">=</span><span class="w"> </span><span class="mi">0</span><span class="no">DH</span><span class="w">               </span><span class="c1">; loop while not enter</span>
+</span><span id="__span-10-9"><a href="#__codelineno-10-9" id="__codelineno-10-9" name="__codelineno-10-9"></a><span class="w">        </span><span class="nf">jmp</span><span class="w"> </span><span class="err">@</span><span class="no">C0001</span>
+</span><span id="__span-10-10"><a href="#__codelineno-10-10" id="__codelineno-10-10" name="__codelineno-10-10"></a><span class="err">@</span><span class="nl">C0002:</span>
+</span><span id="__span-10-11"><a href="#__codelineno-10-11" id="__codelineno-10-11" name="__codelineno-10-11"></a><span class="w">        </span><span class="nf">MOV</span><span class="w"> </span><span class="no">AH</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w">                   </span><span class="c1">; read key</span>
+</span><span id="__span-10-12"><a href="#__codelineno-10-12" id="__codelineno-10-12" name="__codelineno-10-12"></a><span class="w">        </span><span class="nf">INT</span><span class="w"> </span><span class="mi">21</span><span class="no">H</span>
+</span><span id="__span-10-13"><a href="#__codelineno-10-13" id="__codelineno-10-13" name="__codelineno-10-13"></a><span class="w">        </span><span class="nf">STOSB</span><span class="w">                      </span><span class="c1">; store key code</span>
+</span><span id="__span-10-14"><a href="#__codelineno-10-14" id="__codelineno-10-14" name="__codelineno-10-14"></a><span class="na">.ENDW</span>
+</span><span id="__span-10-15"><a href="#__codelineno-10-15" id="__codelineno-10-15" name="__codelineno-10-15"></a>
+</span><span id="__span-10-16"><a href="#__codelineno-10-16" id="__codelineno-10-16" name="__codelineno-10-16"></a><span class="err">*</span><span class="w"> </span><span class="err">@</span><span class="nl">C0001:</span>
+</span><span id="__span-10-17"><a href="#__codelineno-10-17" id="__codelineno-10-17" name="__codelineno-10-17"></a><span class="w">        </span><span class="nf">cmp</span><span class="w"> </span><span class="no">al</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="no">dh</span>
+</span><span id="__span-10-18"><a href="#__codelineno-10-18" id="__codelineno-10-18" name="__codelineno-10-18"></a><span class="w">        </span><span class="nf">jne</span><span class="w"> </span><span class="err">@</span><span class="no">C0002</span>
+</span><span id="__span-10-19"><a href="#__codelineno-10-19" id="__codelineno-10-19" name="__codelineno-10-19"></a><span class="w">        </span><span class="nf">MOV</span><span class="w"> </span><span class="no">BYTE</span><span class="w"> </span><span class="no">PTR</span><span class="p">[</span><span class="no">DI-1</span><span class="p">],</span><span class="w"> </span><span class="err">'</span><span class="no">$</span><span class="err">'</span><span class="w">     </span><span class="c1">; '$' is the terminated string for DOS INT 21H function 9</span>
+</span><span id="__span-10-20"><a href="#__codelineno-10-20" id="__codelineno-10-20" name="__codelineno-10-20"></a><span class="w">        </span><span class="nf">MOV</span><span class="w"> </span><span class="no">DX</span><span class="p">,</span><span class="w"> </span><span class="no">OFFSET</span><span class="w"> </span><span class="no">BUF</span>
+</span><span id="__span-10-21"><a href="#__codelineno-10-21" id="__codelineno-10-21" name="__codelineno-10-21"></a><span class="w">        </span><span class="nf">MOV</span><span class="w"> </span><span class="no">AH</span><span class="p">,</span><span class="w"> </span><span class="mi">9</span>
+</span><span id="__span-10-22"><a href="#__codelineno-10-22" id="__codelineno-10-22" name="__codelineno-10-22"></a><span class="w">        </span><span class="nf">INT</span><span class="w"> </span><span class="mi">21</span><span class="no">H</span><span class="w">                    </span><span class="c1">; display BUF</span>
+</span><span id="__span-10-23"><a href="#__codelineno-10-23" id="__codelineno-10-23" name="__codelineno-10-23"></a><span class="na">.EXIT</span>
+</span><span id="__span-10-24"><a href="#__codelineno-10-24" id="__codelineno-10-24" name="__codelineno-10-24"></a><span class="nf">END</span>
+</span></code></pre></div>
+</details>
+<h3 id="repeat-until-loops">REPEAT-UNTIL Loops<a class="headerlink" href="#repeat-until-loops" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li><code>REPEAT-UNTIL</code> 循环表示一系列指令会重复执行，直到某个条件发生</li>
+<li><code>.REPEAT</code> 语句定义了循环的开始</li>
+<li>循环的结束由包含条件的 <code>.UNTIL</code> 语句定义</li>
+<li><code>.UNTILCXZ</code> 指令使用了 <code class="language-asm highlight"><span class="nf">LOOP</span></code> 指令检查作为计数器的寄存器 <code>CX</code> 以进行重复循环</li>
+</ul>
+<details class="example">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="" id="__tabbed_2_1" name="__tabbed_2" type="radio"/><input id="__tabbed_2_2" name="__tabbed_2" type="radio"/><div class="tabbed-labels"><label for="__tabbed_2_1">例<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span></label><label for="__tabbed_2_2">例<span><span class="heti-spacing"> </span>2</span></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>以下示例展示了如何使用 <code>REPEAT-UNTIL</code> 从键盘读取数据并将其存储到数组（<code>BUF</code>）中，直到回车键（<code>0DH</code><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
+<div class="language-asm highlight"><pre><span></span><code><span id="__span-11-1"><a href="#__codelineno-11-1" id="__codelineno-11-1" name="__codelineno-11-1"></a><span class="na">.CODE</span><span class="w">                       </span><span class="c1">; start code segment</span>
+</span><span id="__span-11-2"><a href="#__codelineno-11-2" id="__codelineno-11-2" name="__codelineno-11-2"></a><span class="na">.STARTUP</span><span class="w">                    </span><span class="c1">; start program</span>
+</span><span id="__span-11-3"><a href="#__codelineno-11-3" id="__codelineno-11-3" name="__codelineno-11-3"></a><span class="w">        </span><span class="nf">MOV</span><span class="w"> </span><span class="no">AX</span><span class="p">,</span><span class="w"> </span><span class="no">DX</span><span class="w">          </span><span class="c1">; overlap DS with ES</span>
+</span><span id="__span-11-4"><a href="#__codelineno-11-4" id="__codelineno-11-4" name="__codelineno-11-4"></a><span class="w">        </span><span class="nf">MOV</span><span class="w"> </span><span class="no">ES</span><span class="p">,</span><span class="w"> </span><span class="no">AX</span>
+</span><span id="__span-11-5"><a href="#__codelineno-11-5" id="__codelineno-11-5" name="__codelineno-11-5"></a><span class="w">        </span><span class="nf">CLD</span><span class="w">                 </span><span class="c1">; select auto-increment</span>
+</span><span id="__span-11-6"><a href="#__codelineno-11-6" id="__codelineno-11-6" name="__codelineno-11-6"></a><span class="w">        </span><span class="nf">MOV</span><span class="w"> </span><span class="no">DI</span><span class="p">,</span><span class="w"> </span><span class="no">OFFSET</span><span class="w"> </span><span class="no">BUF</span><span class="w">  </span><span class="c1">; address buffer</span>
+</span><span id="__span-11-7"><a href="#__codelineno-11-7" id="__codelineno-11-7" name="__codelineno-11-7"></a><span class="w">        </span><span class="na">.REPEAT</span><span class="w">             </span><span class="c1">; repeat until enter</span>
+</span><span id="__span-11-8"><a href="#__codelineno-11-8" id="__codelineno-11-8" name="__codelineno-11-8"></a>
+</span><span id="__span-11-9"><a href="#__codelineno-11-9" id="__codelineno-11-9" name="__codelineno-11-9"></a><span class="err">@</span><span class="nl">C0001:</span>
+</span><span id="__span-11-10"><a href="#__codelineno-11-10" id="__codelineno-11-10" name="__codelineno-11-10"></a><span class="w">        </span><span class="nf">MOV</span><span class="w"> </span><span class="no">AH</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w">           </span><span class="c1">; read key</span>
+</span><span id="__span-11-11"><a href="#__codelineno-11-11" id="__codelineno-11-11" name="__codelineno-11-11"></a><span class="w">        </span><span class="nf">INT</span><span class="w"> </span><span class="mi">21</span><span class="no">H</span>
+</span><span id="__span-11-12"><a href="#__codelineno-11-12" id="__codelineno-11-12" name="__codelineno-11-12"></a><span class="w">        </span><span class="nf">STOSB</span><span class="w">               </span><span class="c1">; store key code</span>
+</span><span id="__span-11-13"><a href="#__codelineno-11-13" id="__codelineno-11-13" name="__codelineno-11-13"></a>
+</span><span id="__span-11-14"><a href="#__codelineno-11-14" id="__codelineno-11-14" name="__codelineno-11-14"></a><span class="w">        </span><span class="na">.UNTIL</span><span class="w"> </span><span class="no">AL</span><span class="w"> </span><span class="err">==</span><span class="w"> </span><span class="no">ODH</span>
+</span><span id="__span-11-15"><a href="#__codelineno-11-15" id="__codelineno-11-15" name="__codelineno-11-15"></a>
+</span><span id="__span-11-16"><a href="#__codelineno-11-16" id="__codelineno-11-16" name="__codelineno-11-16"></a><span class="w">        </span><span class="nf">cmp</span><span class="w"> </span><span class="no">al</span><span class="p">,</span><span class="w"> </span><span class="no">odh</span>
+</span><span id="__span-11-17"><a href="#__codelineno-11-17" id="__codelineno-11-17" name="__codelineno-11-17"></a><span class="w">        </span><span class="nf">jne</span><span class="w"> </span><span class="err">@</span><span class="no">C0001</span>
+</span><span id="__span-11-18"><a href="#__codelineno-11-18" id="__codelineno-11-18" name="__codelineno-11-18"></a><span class="w">        </span><span class="nf">MOV</span><span class="w"> </span><span class="no">BYTE</span><span class="w"> </span><span class="no">PTR</span><span class="w"> </span><span class="p">[</span><span class="no">DI-1</span><span class="p">],</span><span class="w"> </span><span class="err">'</span><span class="no">S</span>
+</span><span id="__span-11-19"><a href="#__codelineno-11-19" id="__codelineno-11-19" name="__codelineno-11-19"></a><span class="w">        </span><span class="nf">MOV</span><span class="w"> </span><span class="no">DX</span><span class="p">,</span><span class="w"> </span><span class="no">OFFSET</span><span class="w"> </span><span class="no">BUF</span>
+</span><span id="__span-11-20"><a href="#__codelineno-11-20" id="__codelineno-11-20" name="__codelineno-11-20"></a><span class="w">        </span><span class="nf">MOV</span><span class="w"> </span><span class="no">AH</span><span class="p">,</span><span class="w"> </span><span class="mi">9</span>
+</span><span id="__span-11-21"><a href="#__codelineno-11-21" id="__codelineno-11-21" name="__codelineno-11-21"></a><span class="w">        </span><span class="nf">INT</span><span class="w"> </span><span class="mi">21</span><span class="no">H</span><span class="w">             </span><span class="c1">; display BUF</span>
+</span><span id="__span-11-22"><a href="#__codelineno-11-22" id="__codelineno-11-22" name="__codelineno-11-22"></a><span class="na">.EXIT</span>
+</span><span id="__span-11-23"><a href="#__codelineno-11-23" id="__codelineno-11-23" name="__codelineno-11-23"></a><span class="nf">END</span>
+</span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<p>以下代码使用 <code>.UNTILCXZ</code> 将字节数组 <code>ONE</code> 的内容添加到字节数组 <code>TWO</code>，总和存储在数组 <code>THREE</code> 中。</p>
+<div class="language-asm highlight"><pre><span></span><code><span id="__span-12-1"><a href="#__codelineno-12-1" id="__codelineno-12-1" name="__codelineno-12-1"></a><span class="w">        </span><span class="nf">MOV</span><span class="w"> </span><span class="no">CX</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="w">             </span><span class="c1">; set count</span>
+</span><span id="__span-12-2"><a href="#__codelineno-12-2" id="__codelineno-12-2" name="__codelineno-12-2"></a><span class="w">        </span><span class="nf">MOV</span><span class="w"> </span><span class="no">DI</span><span class="p">,</span><span class="w"> </span><span class="no">OFFSET</span><span class="w"> </span><span class="no">THREE</span><span class="w">    </span><span class="c1">; address arrays</span>
+</span><span id="__span-12-3"><a href="#__codelineno-12-3" id="__codelineno-12-3" name="__codelineno-12-3"></a><span class="w">        </span><span class="nf">MOV</span><span class="w"> </span><span class="no">SI</span><span class="p">,</span><span class="w"> </span><span class="no">OFFSET</span><span class="w"> </span><span class="no">ONE</span>
+</span><span id="__span-12-4"><a href="#__codelineno-12-4" id="__codelineno-12-4" name="__codelineno-12-4"></a><span class="w">        </span><span class="nf">MOV</span><span class="w"> </span><span class="no">BX</span><span class="p">,</span><span class="w"> </span><span class="no">OFFSET</span><span class="w"> </span><span class="no">TWO</span>
+</span><span id="__span-12-5"><a href="#__codelineno-12-5" id="__codelineno-12-5" name="__codelineno-12-5"></a>
+</span><span id="__span-12-6"><a href="#__codelineno-12-6" id="__codelineno-12-6" name="__codelineno-12-6"></a><span class="w">        </span><span class="na">.REPEAT</span>
+</span><span id="__span-12-7"><a href="#__codelineno-12-7" id="__codelineno-12-7" name="__codelineno-12-7"></a>
+</span><span id="__span-12-8"><a href="#__codelineno-12-8" id="__codelineno-12-8" name="__codelineno-12-8"></a><span class="err">@</span><span class="nl">C0001:</span>
+</span><span id="__span-12-9"><a href="#__codelineno-12-9" id="__codelineno-12-9" name="__codelineno-12-9"></a><span class="w">        </span><span class="nf">LODSB</span>
+</span><span id="__span-12-10"><a href="#__codelineno-12-10" id="__codelineno-12-10" name="__codelineno-12-10"></a><span class="w">        </span><span class="nf">ADD</span><span class="w"> </span><span class="no">AL</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="no">BX</span><span class="p">]</span>
+</span><span id="__span-12-11"><a href="#__codelineno-12-11" id="__codelineno-12-11" name="__codelineno-12-11"></a><span class="w">        </span><span class="nf">STOSB</span>
+</span><span id="__span-12-12"><a href="#__codelineno-12-12" id="__codelineno-12-12" name="__codelineno-12-12"></a><span class="w">        </span><span class="nf">INC</span><span class="w"> </span><span class="no">BX</span>
+</span><span id="__span-12-13"><a href="#__codelineno-12-13" id="__codelineno-12-13" name="__codelineno-12-13"></a>
+</span><span id="__span-12-14"><a href="#__codelineno-12-14" id="__codelineno-12-14" name="__codelineno-12-14"></a><span class="w">        </span><span class="na">.UNTILCXZ</span>
+</span><span id="__span-12-15"><a href="#__codelineno-12-15" id="__codelineno-12-15" name="__codelineno-12-15"></a>
+</span><span id="__span-12-16"><a href="#__codelineno-12-16" id="__codelineno-12-16" name="__codelineno-12-16"></a><span class="w">        </span><span class="nf">LOOP</span><span class="w"> </span><span class="err">@</span><span class="no">C0001</span>
+</span></code></pre></div>
+</div>
+</div>
+</div>
+</details>
+<h2 id="procedures">Procedures<a class="headerlink" href="#procedures" title="Permanent link">⚓︎</a></h2>
+<ul>
+<li>
+<p><strong>过程</strong><span>(procedure)<span class="heti-spacing"> </span></span>是一组指令的集合，通常用于执行一个任务</p>
+<ul>
+<li>子例程<span><span class="heti-spacing"> </span>(subroutine)</span>、方法或函数是任何系统架构的重要组成部分</li>
+</ul>
+</li>
+<li>
+<p>过程是软件中存储在内存中的<strong>可重用部分</strong>，根据需要频繁使用（节省内存空间，使软件开发更容易）</p>
+</li>
+<li>一个过程以 <code class="language-asm highlight"><span class="nf">PROC</span></code> 指令开始，并以 <code class="language-asm highlight"><span class="nf">ENDP</span></code> 指令结束；每个指令都显示过程名称</li>
+<li><code class="language-asm highlight"><span class="nf">PROC</span></code> 后跟过程的类型，包括 <code class="language-asm highlight"><span class="nf">NEAR</span></code> 或 <code class="language-asm highlight"><span class="nf">FAR</span></code></li>
+<li>在<span class="heti-skip"><span class="heti-spacing"> </span>MASM<span class="heti-spacing"> </span></span>版本<span class="heti-skip"><span class="heti-spacing"> </span>6.x<span class="heti-spacing"> </span></span>中，<code class="language-asm highlight"><span class="nf">NEAR</span></code> 或 <code class="language-asm highlight"><span class="nf">FAR</span></code> 类型可以跟 <code>USES</code> 语句，实现在过程中自动将任意数量的寄存器压入堆栈并在堆栈中弹出</li>
+<li><code class="language-asm highlight"><span class="nf">RET</span></code> 用于结束或退出过程</li>
+</ul>
+<details class="example" open="open">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C6/15.png"><img src="images/C6/15.png" width="60%"/></a>
+</div><p></p>
+</details>
+<ul>
+<li>被所有软件（<strong>全局</strong>）使用的程序应编写为<strong>远过程</strong></li>
+<li>由特定任务使用的程序（<strong>局部</strong>）通常定义为<strong>近过程</strong></li>
+<li>大多数程序是近过程</li>
+<li><code class="language-asm highlight"><span class="nf">CALL</span></code> 将紧随其后的指令地址（返回地址）推送到栈上</li>
+<li><code class="language-asm highlight"><span class="nf">RET</span></code> 指令从栈中移除一个地址，以便程序返回到紧随 <code class="language-asm highlight"><span class="nf">CALL</span></code> 之后的指令</li>
+<li>过程的缺点是计算机链接到过程（<code class="language-asm highlight"><span class="nf">CALL</span></code>）并从中返回（<code class="language-asm highlight"><span class="nf">RET</span></code>）需要一定时间</li>
+</ul>
+<h3 id="call">CALL<a class="headerlink" href="#call" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li><code class="language-asm highlight"><span class="nf">CALL</span></code> 将程序流转移到过程上</li>
+<li><code class="language-asm highlight"><span class="nf">CALL</span></code> 指令与跳转指令不同，因为 <code class="language-asm highlight"><span class="nf">CALL</span></code> 会将返回地址保存到堆栈上</li>
+<li>当执行 <code class="language-asm highlight"><span class="nf">RET</span></code> 指令时，返回地址将控制权返回到 <code class="language-asm highlight"><span class="nf">CALL</span></code> 指令之后的指令</li>
+<li>
+<p>有四种不同类型的调用：</p>
+<ul>
+<li><strong>近调用</strong>(near call)（段内调用<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：对当前代码段内过程的调用</li>
+<li><strong>远调用</strong>(far call)（段间调用<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：对位于与当前代码段不同的段中的过程的调用</li>
+<li><strong>跨特权级远调用</strong>(inter-previlige-level far call)：对位于与当前执行程序特权级不同的段中的过程的远程调用</li>
+<li><strong>任务切换</strong>(task switch)：对位于不同任务中的过程的调用</li>
+</ul>
+</li>
+<li>
+<p>后两种调用类型只能在<strong>保护模式</strong>下执行</p>
+</li>
+</ul>
+<h4 id="near-call">Near CALL<a class="headerlink" href="#near-call" title="Permanent link">⚓︎</a></h4>
+<ul>
+<li>
+<p>在执行近调用时</p>
+<ul>
+<li>在执行 <code class="language-asm highlight"><span class="nf">CALL</span></code> 指令之前将参数压入栈中（由<strong>程序员</strong>或<strong>编译器</strong>实现）</li>
+<li>将 <code>EIP</code> 寄存器的值压入栈中（通过<strong>调用</strong>）</li>
+</ul>
+</li>
+<li>
+<p>然后跳转到当前代码段中由目标操作数指定的地址</p>
+</li>
+<li>近调用不会改变 <code>CS</code> 寄存器的值</li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C6/16.png"><img src="images/C6/16.png" width="50%"/></a>
+</div>
+<ul>
+<li>
+<p>目标操作数指定两种类型</p>
+<ul>
+<li><strong>相对偏移</strong>（相对于当前<strong>指令指针</strong>指向的 <code class="language-asm highlight"><span class="nf">CALL</span></code> 指令后的一条指令的符号偏移）</li>
+<li>代码段的<strong>绝对偏移</strong>（从<strong>代码段基址</strong>开始的偏移）</li>
+</ul>
+</li>
+<li>
+<p>对于“<strong>近绝对间接</strong>(near absolute indirect)”调用，绝对偏移通过寄存器或内存位置间接指定，例如：</p>
+<div class="language-asm highlight"><pre><span></span><code><span id="__span-13-1"><a href="#__codelineno-13-1" id="__codelineno-13-1" name="__codelineno-13-1"></a><span class="nf">MOV</span><span class="w"> </span><span class="no">AX</span><span class="p">,</span><span class="w"> </span><span class="mi">64</span><span class="no">h</span>
+</span><span id="__span-13-2"><a href="#__codelineno-13-2" id="__codelineno-13-2" name="__codelineno-13-2"></a><span class="nf">CALL</span><span class="w"> </span><span class="no">AX</span><span class="w">         </span><span class="c1">; jump to CS:64h</span>
+</span></code></pre></div>
+</li>
+<li>
+<p>对于“<strong>近相对直接</strong>(near relative direct)”调用，指令长为<span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span>字节</p>
+<ul>
+<li>第一个字节是操作码</li>
+<li>第二个和第三个字节包含位移量</li>
+</ul>
+</li>
+<li>
+<p>当执行近相对 <code class="language-asm highlight"><span class="nf">CALL</span></code> 时</p>
+<ul>
+<li>首先将下一条指令的偏移地址压入堆栈，下一条指令的偏移地址出现在指令指针（<code>IP</code> / <code>EIP</code>）中</li>
+<li>然后将位移量加到 <code>IP</code> 上，以将控制权转移到过程</li>
+</ul>
+</li>
+<li>
+<p>之所以要在栈上保存 <code>IP</code> 或 <code>EIP</code>，是因为指令指针始终指向程序中的下一个指令</p>
+</li>
+<li>对于 <code class="language-asm highlight"><span class="nf">CALL</span></code> 指令，<code>IP</code> <span>/<span class="heti-spacing"> </span></span><code>EIP</code>的内容会被压入栈中；在过程结束后，程序控制传递到 <code class="language-asm highlight"><span class="nf">CALL</span></code> 指令后的指令</li>
+<li>
+<p>下图展示了存储在栈上的返回地址（<code>IP</code>）和调用过程</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C6/17.png"><img src="images/C6/17.png" width="60%"/></a>
+</div><p></p>
+</li>
+</ul>
+<h4 id="far-call">Far CALL<a class="headerlink" href="#far-call" title="Permanent link">⚓︎</a></h4>
+<ul>
+<li>
+<p>远调用是一条<span class="heti-skip"><span class="heti-spacing"> </span>5<span class="heti-spacing"> </span></span>字节指令，包含一个操作码，其后是 <code>IP</code> 和 <code>CS</code> 寄存器的下一个值</p>
+<ul>
+<li>字节<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span>包含 <code>IP</code> 的新内容</li>
+<li>字节<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>5<span class="heti-spacing"> </span></span>包含 <code>CS</code> 的新内容</li>
+</ul>
+</li>
+<li>
+<p>远调用在跳转到由字节<span class="heti-skip"><span class="heti-spacing"> </span>2-5<span class="heti-spacing"> </span></span>指示的地址之前，将 <code>IP</code> 和 <code>CS</code> 的内容压入堆栈</p>
+</li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C6/18.png"><img src="images/C6/18.png" width="50%"/></a>
+</div>
+<ul>
+<li>远调用可调用内存中任何位置的程序，并从该程序返回</li>
+<li>
+<p>在<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位模式下，远调用可以指向任何内存位置，放置到栈上的信息是一个<span class="heti-skip"><span class="heti-spacing"> </span>8<span class="heti-spacing"> </span></span>字节数字</p>
+<ul>
+<li>远返回指令从栈中检索一个<span class="heti-skip"><span class="heti-spacing"> </span>8<span class="heti-spacing"> </span></span>字节返回地址并将其放入 <code>RIP</code></li>
+</ul>
+</li>
+<li>
+<p>下图展示了远调用是如何调用远过程的：</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C6/19.png"><img src="images/C6/19.png" width="60%"/></a>
+</div><p></p>
+</li>
+</ul>
+<h2 id="interrupts">Interrupts<a class="headerlink" href="#interrupts" title="Permanent link">⚓︎</a></h2>
+<h2 id="machine-control-and-miscellaneous-instructions">Machine Control and Miscellaneous Instructions<a class="headerlink" href="#machine-control-and-miscellaneous-instructions" title="Permanent link">⚓︎</a></h2>
+<aside class="md-source-file">
+<span class="md-source-file__fact">
+<span class="md-icon" title="最后更新">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"></path></svg>
+</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年11月23日 17:19:26 CST">2025年11月23日 17:19:26</span>
+</span>
+<span class="md-source-file__fact">
+<span class="md-icon" title="创建日期">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"></path></svg>
+</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年11月23日 17:19:26 CST">2025年11月23日 17:19:26</span>
+</span>
+</aside>
+<p style="font-size: 30px; font-weight: 600">评论区</p>
+<div>
+    如果大家有什么问题或想法，欢迎在下方留言~
+  </div>
+<!-- Insert generated snippet here -->
+<script async="" crossorigin="anonymous" data-category="Announcements" data-category-id="DIC_kwDOMAb9Zs4CfmpP" data-emit-metadata="0" data-input-position="bottom" data-lang="zh-CN" data-mapping="pathname" data-reactions-enabled="1" data-repo="noughtq/notebook" data-repo-id="R_kgDOMAb9Zg" data-strict="0" data-theme="preferred_color_scheme" src="https://giscus.app/client.js">
+</script>
+<!-- Synchronize Giscus theme with palette -->
+<script>
+    var giscus = document.querySelector("script[src*=giscus]")
+
+    // Set palette on initial load
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object") {
+      var theme = palette.color.scheme === "slate"
+        ? "transparent_dark"
+        : "light"
+
+      // Instruct Giscus to set theme
+      giscus.setAttribute("data-theme", theme) 
+    }
+
+    // Register event handlers after documented loaded
+    document.addEventListener("DOMContentLoaded", function() {
+      var ref = document.querySelector("[data-md-component=palette]")
+      ref.addEventListener("change", function() {
+        var palette = __md_get("__palette")
+        if (palette && typeof palette.color === "object") {
+          var theme = palette.color.scheme === "slate"
+            ? "dark"
+            : "light"
+
+          // Instruct Giscus to change theme
+          var frame = document.querySelector(".giscus-frame")
+          frame.contentWindow.postMessage(
+            { giscus: { setConfig: { theme } } },
+            "https://giscus.app"
+          )
+        }
+      })
+    })
+  </script>
+<!-- 标题计数器 -->
+<link href="/css/counter.css" rel="stylesheet"/>
+<!-- 主页个性化 -->
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+<button class="md-top md-icon" data-md-component="top" hidden="" type="button">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  回到页面顶部
+</button>
+</main>
+<footer class="md-footer">
+<nav aria-label="页脚" class="md-footer__inner md-grid">
+<a aria-label="上一页: Arithmetic and Logic Instructions" class="md-footer__link md-footer__link--prev" href="5.html">
+<div class="md-footer__button md-icon">
+<svg viewbox="0 0 256 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path></svg>
+</div>
+<div class="md-footer__title">
+<span class="md-footer__direction">
+                上一页
+              </span>
+<div class="md-ellipsis">
+                Arithmetic and Logic Instructions
+              </div>
+</div>
+</a>
+<a aria-label="下一页: Web 相关" class="md-footer__link md-footer__link--next" href="../../web/index.html">
+<div class="md-footer__title">
+<span class="md-footer__direction">
+                下一页
+              </span>
+<div class="md-ellipsis">
+                Web 相关
+              </div>
+</div>
+<div class="md-footer__button md-icon">
+<svg viewbox="0 0 256 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M247.1 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L179.2 256 41.9 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"></path></svg>
+</div>
+</a>
+</nav>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright" style="margin-left: 33.5%">
+<div class="md-copyright__highlight" style="text-align: center">
+        Copyright © 2024-2025 <a href="https://github.com/NoughtQ">NoughtQ</a>
+</div>
+    
+    
+      Powered by
+      <a href="https://www.mkdocs.org/" rel="noopener" target="_blank">
+        MkDocs
+      </a>
+      with theme
+      <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+        Material
+      </a>
+      modified by
+      <a href="https://github.com/NoughtQ" rel="noopener" target="_blank">
+        NoughtQ
+      </a>
+<!-- <br> -->
+<div style="text-align: center;">
+<a href="https://icp.gov.moe/?keyword=20252357" target="_blank">萌ICP备20252357号</a>
+</div>
+</div>
+<div class="md-social">
+<a class="md-social__link" href="https://noughtq.top" rel="noopener" target="_blank" title="noughtq.top">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M277.8 8.6c-12.3-11.4-31.3-11.4-43.5 0l-224 208c-9.6 9-12.8 22.9-8 35.1S18.8 272 32 272h16v176c0 35.3 28.7 64 64 64h288c35.3 0 64-28.7 64-64V272h16c13.2 0 25-8.1 29.8-20.3s1.6-26.2-8-35.1zM240 320h32c26.5 0 48 21.5 48 48v96H192v-96c0-26.5 21.5-48 48-48"></path></svg>
+</a>
+<a class="md-social__link" href="https://blog.noughtq.top" rel="noopener" target="_blank" title="blog.noughtq.top">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M224 24c0-13.3 10.7-24 24-24 145.8 0 264 118.2 264 264 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-119.3-96.7-216-216-216-13.3 0-24-10.7-24-24M80 96c26.5 0 48 21.5 48 48v224c0 26.5 21.5 48 48 48s48-21.5 48-48-21.5-48-48-48c-8.8 0-16-7.2-16-16v-64c0-8.8 7.2-16 16-16 79.5 0 144 64.5 144 144s-64.5 144-144 144S32 447.5 32 368V144c0-26.5 21.5-48 48-48m168 0c92.8 0 168 75.2 168 168 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-66.3-53.7-120-120-120-13.3 0-24-10.7-24-24s10.7-24 24-24"></path></svg>
+</a>
+<a class="md-social__link" href="https://github.com/noughtq" rel="noopener" target="_blank" title="github.com">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"></path></svg>
+</a>
+<a class="md-social__link" href="mailto:noughtq666@gmail.com" rel="noopener" target="_blank" title="">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m20 8-8 5-8-5V6l8 5 8-5m0-2H4c-1.11 0-2 .89-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2"></path></svg>
+</a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"base": "../..", "features": ["content.action.edit", "content.action.view", "content.code.copy", "content.code.annotate", "content.footnote.tooltips", "navigation.tabs", "navigation.top", "navigation.footer", "navigation.indexes", "navigation.tracking", "navigation.prune", "search.share"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+<script src="../../js/anchor.js"></script>
+<script src="../../js/katex.js"></script>
+<script src="../../js/toc.js"></script>
+<script src="../../js/typed.js"></script>
+<script src="../../js/custom.js"></script>
+<script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+<script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.js"></script>
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>
