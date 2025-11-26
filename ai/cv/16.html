@@ -675,23 +675,24 @@
 </a>
 <h1 id="recognition">Recognition<a class="headerlink" href="#recognition" title="Permanent link">⚓︎</a></h1>
 <div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
-<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>1638<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>8<span class="heti-spacing"> </span></span>分钟</p>
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>2635<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>13<span class="heti-spacing"> </span></span>分钟</p>
 </div>
 <h2 id="semantic-segmentation">Semantic Segmentation<a class="headerlink" href="#semantic-segmentation" title="Permanent link">⚓︎</a></h2>
-<p><strong>语义分割</strong><span>(semantic segmentation)<span class="heti-spacing"> </span></span>的思路：</p>
-<ul>
-<li>使用分类标签标注图像上的每个像素</li>
-<li>不要区分实例</li>
-</ul>
+<p><strong>语义分割</strong><span>(semantic segmentation)<span class="heti-spacing"> </span></span>描述的是这样一个问题：</p>
 <div style="text-align: center">
-<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec16/1.png"><img src="images/lec16/1.png" width="40%"/></a>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec16/1.png"><img src="images/lec16/1.png" width="70%"/></a>
 </div>
+<ul>
+<li>成对的训练数据：对于每张训练图像，为每个像素标注一种语义类别<span><span class="heti-spacing"> </span>(semantic category)</span></li>
+<li>测试时，对图像的每个像素分类</li>
+<li>不区分实例，只关心像素</li>
+</ul>
 <p>实现途径：</p>
 <ul>
 <li>
 <p>滑动窗口<span><span class="heti-spacing"> </span>(sliding window)</span></p>
 <ul>
-<li>效率太低</li>
+<li>效率太低，无法在重叠块之间复用共享的特征</li>
 <li>有限的感受野</li>
 </ul>
 <p></p><div style="text-align: center">
@@ -699,25 +700,39 @@
 </div><p></p>
 </li>
 <li>
-<p>全卷积网络<span><span class="heti-spacing"> </span>(fully convolutional network)</span></p>
+<p>卷积：</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec16/58.png"><img src="images/lec16/58.png" width="70%"/></a>
+</div><p></p>
 <ul>
-<li>一次做完全部预测</li>
-<li>训练用的损失函数是逐像素的交叉熵</li>
-<li>感受野和卷积层数量呈线性关系</li>
-<li>高分辨率的卷积成本也很高</li>
+<li>一种直观的思路：使用卷积网络编码整张图像，然后在结果上做语义分割</li>
+<li>问题：分类架构通常通过减少特征空间大小来加深层次，但语义分割需要输出大小与输入大小相同</li>
 </ul>
+</li>
+<li>
+<p>全卷积网络<span><span class="heti-spacing"> </span>(fully convolutional network)</span></p>
 <p></p><div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec16/3.png"><img src="images/lec16/3.png" width="70%"/></a>
 </div><p></p>
 <ul>
-<li>提升效率和感受野的方法是<strong>降采样</strong>(downsampling)，包括<strong>池化</strong>(pooling)、<strong>步长卷积</strong>(strided conv)</li>
+<li>设计一个仅包含卷积层的网络，不使用降采样操作，以便一次性对所有像素进行预测</li>
+<li>训练用的损失函数是逐像素的交叉熵</li>
+<li>感受野和卷积层数量呈线性关系</li>
+<li>问题：高分辨率的卷积成本也很高</li>
 </ul>
+</li>
+<li>
+<p>解决方案：将网络设计为一组卷积层，内部包含降采样和升采样</p>
 <p></p><div style="text-align: center">
-<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec16/4.png"><img src="images/lec16/4.png" width="70%"/></a>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec16/61.png"><img src="images/lec16/61.png" width="70%"/></a>
 </div><p></p>
 <ul>
+<li><strong>降采样</strong>(downsampling)：<strong>池化</strong>(pooling)、<strong>步长卷积</strong>(strided conv)</li>
 <li>
-<p>但同时需要保持输出的分辨率，采用的方法是<strong>反池化</strong>(unpooling)</p>
+<p><strong>升采样</strong>(upsampling)：</p>
+<ul>
+<li>
+<p><strong>反池化</strong>(unpooling)</p>
 <ul>
 <li>
 <p><strong>钉床</strong>(bed of nails)</p>
@@ -729,6 +744,14 @@
 <p><strong>最近邻居</strong>(nearest neighbors)</p>
 <p></p><div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec16/6.png"><img src="images/lec16/6.png" width="40%"/></a>
+</div><p></p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>最大反池化</strong>(max unpooling)</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec16/59.png"><img src="images/lec16/59.png" width="70%"/></a>
 </div><p></p>
 </li>
 <li>
@@ -743,21 +766,16 @@
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec16/8.png"><img src="images/lec16/8.png" width="50%"/></a>
 </div><p></p>
 </li>
-</ul>
-</li>
 <li>
-<p><strong>转置卷积</strong>(transposed convolution)：反池化后的卷积</p>
+<p><strong>可学习的反池化</strong>(leanable unpooling)——<strong>转置卷积</strong>(transposed convolution)：反池化后的卷积</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec16/60.png"><img src="images/lec16/60.png" width="70%"/></a>
+</div><p></p>
 <p></p><div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec16/9.png"><img src="images/lec16/9.png" width="30%"/></a>
 </div><p></p>
 </li>
-<li>
-<p>全卷积网络的完整流程：</p>
-<ol>
-<li>降采样：池化、步长卷积</li>
-<li>将网络设计为一组卷积层，内部包含降采样和升采样</li>
-<li>升采样：线性插值、转置卷积</li>
-</ol>
+</ul>
 </li>
 </ul>
 </li>
@@ -766,6 +784,25 @@
 <p></p><div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec16/10.png"><img src="images/lec16/10.png" width="60%"/></a>
 </div><p></p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:3"><input checked="" id="__tabbed_1_1" name="__tabbed_1" type="radio"/><input id="__tabbed_1_2" name="__tabbed_1" type="radio"/><input id="__tabbed_1_3" name="__tabbed_1" type="radio"/><div class="tabbed-labels"><label for="__tabbed_1_1">降采样阶段</label><label for="__tabbed_1_2">升采样阶段</label><label for="__tabbed_1_3">拼接特征图</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec16/62.png"><img src="images/lec16/62.png" width="50%"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec16/63.png"><img src="images/lec16/63.png" width="50%"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec16/64.png"><img src="images/lec16/64.png" width="50%"/></a>
+</div><p></p>
+</div>
+</div>
+</div>
 </li>
 <li>
 <p><strong>DeepLab</strong>：FCN + CRF（条件随机场<span><span class="heti-spacing"> </span>(conditional random field)</span>）</p>
@@ -818,12 +855,31 @@
 <li>位置（x, y）</li>
 <li>大小（w, h）</li>
 </ul>
-<p>检测单个目标：</p>
+<details class="info" open="open">
+<summary>包围盒</summary>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec16/81.png"><img src="images/lec16/81.png" width="60%"/></a>
+</div><p></p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec16/82.png"><img src="images/lec16/82.png" width="60%"/></a>
+</div><p></p>
+<p>使用<strong>交并比</strong>(intersection over union, IoU)，将预测结果和基准事实框做比较。</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec16/83.png"><img src="images/lec16/83.png" width="60%"/></a>
+</div><p></p>
+</details>
+<p>挑战：</p>
+<ul>
+<li><strong>多个输出</strong>：需要每张图像输出可变数量的目标</li>
+<li><strong>多种类型的输出</strong>：需要预测“是什么”（类别标签）以及“在哪里”（包围盒）</li>
+<li><strong>大图像</strong>：分类可以在<span class="heti-skip"><span class="heti-spacing"> </span>224x224<span class="heti-spacing"> </span></span>的分辨率下进行，但检测需要更高的分辨率，通常在<span class="heti-skip"><span class="heti-spacing"> </span>800x600<span class="heti-spacing"> </span></span>左右</li>
+</ul>
+<p>检测单个目标（分类<span class="heti-skip"><span class="heti-spacing"> </span>(classification) +<span class="heti-spacing"> </span></span>定位<span><span class="heti-spacing"> </span>(localization)</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
 <div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec16/15.png"><img src="images/lec16/15.png" width="60%"/></a>
 </div>
 <ul>
-<li>将定位看作回归问题</li>
+<li>将定位看作回归<span class="heti-skip"><span class="heti-spacing"> </span>(regression)<span class="heti-spacing"> </span></span>问题</li>
 <li>
 <p>问题：图像可能有不止一个目标</p>
 <p></p><div style="text-align: center">
@@ -837,7 +893,7 @@
 <p><strong>滑动窗口</strong>：将<span class="heti-skip"><span class="heti-spacing"> </span>CNN<span class="heti-spacing"> </span></span>应用于图像的许多不同部分，<span>CNN<span class="heti-spacing"> </span></span>将每个部分分类为目标或背景</p>
 <details class="example">
 <summary>例子</summary>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:3"><input checked="" id="__tabbed_1_1" name="__tabbed_1" type="radio"/><input id="__tabbed_1_2" name="__tabbed_1" type="radio"/><input id="__tabbed_1_3" name="__tabbed_1" type="radio"/><div class="tabbed-labels"><label for="__tabbed_1_1">背景</label><label for="__tabbed_1_2">狗</label><label for="__tabbed_1_3">猫</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:3"><input checked="" id="__tabbed_2_1" name="__tabbed_2" type="radio"/><input id="__tabbed_2_2" name="__tabbed_2" type="radio"/><input id="__tabbed_2_3" name="__tabbed_2" type="radio"/><div class="tabbed-labels"><label for="__tabbed_2_1">背景</label><label for="__tabbed_2_2">狗</label><label for="__tabbed_2_3">猫</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p></p><div style="text-align: center">
@@ -859,20 +915,24 @@
 </details>
 <ul>
 <li>
-<p>假如包围盒大小为<span><span class="heti-spacing"> </span>h * w</span></p>
+<p>问题：需要将<span class="heti-skip"><span class="heti-spacing"> </span>CNN<span class="heti-spacing"> </span></span>应用于大量位置、尺度和宽高比，计算成本非常高</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec16/65.png"><img src="images/lec16/65.png" width="40%"/></a>
+</div><p></p>
 <ul>
+<li>假如包框大小为<span><span class="heti-spacing"> </span>h * w</span><ul>
 <li>可能的<span class="heti-skip"><span class="heti-spacing"> </span>x<span class="heti-spacing"> </span></span>位置：W - w + 1</li>
 <li>可能的<span class="heti-skip"><span class="heti-spacing"> </span>y<span class="heti-spacing"> </span></span>位置：H - h + 1</li>
 <li>可能的位置：(W - w + 1) * (H - h + 1)</li>
 </ul>
 </li>
-<li>
-<p>所以对于一张<span class="heti-skip"><span class="heti-spacing"> </span>800x600<span class="heti-spacing"> </span></span>的图像，包围盒大小约为<span><span class="heti-spacing"> </span>58MB</span>，成本太高，这样我们就没法评估所有目标了</p>
+<li>所以对于一张<span class="heti-skip"><span class="heti-spacing"> </span>800x600<span class="heti-spacing"> </span></span>的图像，包框大小约为<span><span class="heti-spacing"> </span>58MB</span>，成本太高，这样我们就没法评估所有目标了</li>
+</ul>
 </li>
 </ul>
 </li>
 <li>
-<p><strong>区域建议</strong>(region proposal)：寻找一组可能可以包含所有目标的小的包围盒</p>
+<p><strong>区域建议</strong>(region proposal)：寻找一组可能可以包含所有目标的小的包框</p>
 <ul>
 <li>通常基于启发式<span><span class="heti-spacing"> </span>(heuristics)</span>，比如根据分割</li>
 <li>运行速度相对更快，比如通过选择性搜索，在<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>上花几秒钟就能给出<span class="heti-skip"><span class="heti-spacing"> </span>2000<span class="heti-spacing"> </span></span>个区域建议</li>
@@ -882,37 +942,112 @@
 </div><p></p>
 </li>
 <li>
-<p><strong>R-CNN</strong></p>
+<p><strong>R-CNN</strong>（基于区域的<span><span class="heti-spacing"> </span>(region-based) CNN</span>）</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:6"><input checked="" id="__tabbed_3_1" name="__tabbed_3" type="radio"/><input id="__tabbed_3_2" name="__tabbed_3" type="radio"/><input id="__tabbed_3_3" name="__tabbed_3" type="radio"/><input id="__tabbed_3_4" name="__tabbed_3" type="radio"/><input id="__tabbed_3_5" name="__tabbed_3" type="radio"/><input id="__tabbed_3_6" name="__tabbed_3" type="radio"/><div class="tabbed-labels"><label for="__tabbed_3_1">Step 1</label><label for="__tabbed_3_2">Step 2</label><label for="__tabbed_3_3">Step 3</label><label for="__tabbed_3_4">Step 4</label><label for="__tabbed_3_5">Step 5</label><label for="__tabbed_3_6">Step 6</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
 <p></p><div style="text-align: center">
-<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec16/21.png"><img src="images/lec16/21.png" width="40%"/></a>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec16/66.png"><img src="images/lec16/66.png" width="40%"/></a>
 </div><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec16/67.png"><img src="images/lec16/67.png" width="50%"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec16/68.png"><img src="images/lec16/68.png" width="50%"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec16/69.png"><img src="images/lec16/69.png" width="50%"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec16/70.png"><img src="images/lec16/70.png" width="55%"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec16/71.png"><img src="images/lec16/71.png" width="60%"/></a>
+</div><p></p>
+</div>
+</div>
+</div>
 <ul>
-<li>运行区域建议方法，计算大约<span class="heti-skip"><span class="heti-spacing"> </span>2000<span class="heti-spacing"> </span></span>次</li>
-<li>将每个区域大小调整为<span><span class="heti-spacing"> </span>224x224</span>，并通过<span class="heti-skip"><span class="heti-spacing"> </span>CNN<span class="heti-spacing"> </span></span>运行</li>
-<li>预测类别分数和包围盒变换</li>
-<li>使用分数选择区域建议的子集作为输出</li>
+<li>问题：非常慢，每张图像需要大约<span class="heti-skip"><span class="heti-spacing"> </span>2000<span class="heti-spacing"> </span></span>次的独立的前向传递</li>
+<li>解决思路：在裁剪之前通过<span class="heti-skip"><span class="heti-spacing"> </span>CNN<span class="heti-spacing"> </span></span>传递图像，这样传递的就是裁剪了的卷积特征</li>
+</ul>
+<details class="note" open="open">
+<summary><strong>框回归</strong>(box regression)</summary>
+<ul>
+<li>考虑一个区域建议，其中心为<span><span class="heti-spacing"> </span><span class="arithmatex">\((p_x, p_y)\)</span></span>，宽为<span><span class="heti-spacing"> </span><span class="arithmatex">\(p_w\)</span></span>，高为<span><span class="heti-spacing"> </span><span class="arithmatex">\(p_h\)</span></span></li>
+<li>模型预测一个变换<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\((t_x, t_y, t_w, t_h)\)</span><span class="heti-spacing"> </span></span>来纠正区域建议</li>
+</ul>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec16/84.png"><img align="right" alt="" src="images/lec16/84.png" width="30%"/></a></p>
+<ul>
+<li>
+<ul>
+<li>根据建议大小相对地移动中心<ul>
+<li><span class="arithmatex">\(\textcolor{orange}{b_x} = \textcolor{cornflowerblue}{p_x} + \textcolor{cornflowerblue}{p_w}\textcolor{green}{t_x}\)</span></li>
+<li><span class="arithmatex">\(\textcolor{orange}{b_y} = \textcolor{cornflowerblue}{p_y} + \textcolor{cornflowerblue}{p_h}\textcolor{green}{t_y}\)</span></li>
+</ul>
+</li>
+</ul>
+<p>输出框的定义为：</p>
+<ul>
+<li>尺度建议；<span><span class="arithmatex">\(\exp\)</span><span class="heti-spacing"> </span></span>确保缩放因子<span><span class="heti-spacing"> </span><span class="arithmatex">\(&gt; 0\)</span></span><ul>
+<li><span class="arithmatex">\(\textcolor{orange}{b_w} = \textcolor{cornflowerblue}{p_w} \exp(\textcolor{green}{t_w})\)</span></li>
+<li><span class="arithmatex">\(\textcolor{orange}{b_h} = \textcolor{cornflowerblue}{p_h} \exp(\textcolor{green}{t_h})\)</span></li>
+</ul>
+</li>
 </ul>
 </li>
 <li>
-<p>评估指标：依然采用<strong>交并比</strong>(intersection over union, IoU)</p>
+<p>当变换<span class="heti-skip"><span class="heti-spacing"> </span>= 0<span class="heti-spacing"> </span></span>时，输出<span class="heti-skip"><span class="heti-spacing"> </span>=<span class="heti-spacing"> </span></span>建议</p>
+</li>
+<li><span>L2<span class="heti-spacing"> </span></span>正则化鼓励不让建议发生改变</li>
+<li><strong>尺度<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>平移不变性</strong>(scale/translation invariance)：变换编码了提议和输出之间的<strong>相对</strong>差异；这很重要，因为卷积神经网络在裁剪后无法看到绝对大小或位置。</li>
+<li>给定建议和目标输出，我们可以求解网络应输出的变换：<ul>
+<li><span class="arithmatex">\(\textcolor{green}{t_x} = (\textcolor{orange}{b_x} - \textcolor{cornflowerblue}{p_x})/\textcolor{cornflowerblue}{p_w}\)</span></li>
+<li><span class="arithmatex">\(\textcolor{green}{t_y} = (\textcolor{orange}{b_y} - \textcolor{cornflowerblue}{p_y})/\textcolor{cornflowerblue}{p_h}\)</span></li>
+<li><span class="arithmatex">\(\textcolor{green}{t_w} = \log(\textcolor{orange}{b_w}/\textcolor{cornflowerblue}{p_w})\)</span></li>
+<li><span class="arithmatex">\(\textcolor{green}{t_h} = \log(\textcolor{orange}{b_h}/\textcolor{cornflowerblue}{p_h})\)</span></li>
+</ul>
+</li>
+</ul>
+</details>
+<ul>
+<li>
+<p>训练：</p>
 <p></p><div style="text-align: center">
-<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec16/22.png"><img src="images/lec16/22.png" width="60%"/></a>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec16/85.png"><img src="images/lec16/85.png" width="70%"/></a>
 </div><p></p>
 </li>
 <li>
-<p><strong>非极大值抑制</strong>(non-max suppression)</p>
+<p>测试：</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec16/86.png"><img src="images/lec16/86.png" width="70%"/></a>
+</div><p></p>
+</li>
+</ul>
+<details class="note" open="open">
+<summary><strong>非极大值抑制</strong>(non-max suppression, NMS)</summary>
 <ul>
 <li>目标检测器通常会输出很多重叠的检测</li>
 <li>步骤：<ol>
-<li>选择分数最高的包围盒</li>
-<li>使用<span class="heti-skip"><span class="heti-spacing"> </span>IoU &gt;<span class="heti-spacing"> </span></span>阈值来去除最低分数的包围盒</li>
-<li>如果还有剩余的包围盒，回到第<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>步</li>
+<li>选择分数最高的包框</li>
+<li>使用<span class="heti-skip"><span class="heti-spacing"> </span>IoU &gt;<span class="heti-spacing"> </span></span>阈值来去除最低分数的包框</li>
+<li>如果还有剩余的包框，回到第<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>步</li>
 </ol>
 </li>
 </ul>
 <details class="example">
 <summary>例子</summary>
-<div class="tabbed-set tabbed-alternate" data-tabs="2:3"><input checked="" id="__tabbed_2_1" name="__tabbed_2" type="radio"/><input id="__tabbed_2_2" name="__tabbed_2" type="radio"/><input id="__tabbed_2_3" name="__tabbed_2" type="radio"/><div class="tabbed-labels"><label for="__tabbed_2_1">去除第<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>个目标的多余包围盒</label><label for="__tabbed_2_2">去除第<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>个目标的多余包围盒</label><label for="__tabbed_2_3">结果</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:3"><input checked="" id="__tabbed_4_1" name="__tabbed_4" type="radio"/><input id="__tabbed_4_2" name="__tabbed_4" type="radio"/><input id="__tabbed_4_3" name="__tabbed_4" type="radio"/><div class="tabbed-labels"><label for="__tabbed_4_1">去除第<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>个目标的多余包框</label><label for="__tabbed_4_2">去除第<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>个目标的多余包框</label><label for="__tabbed_4_3">结果</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p></p><div style="text-align: center">
@@ -931,6 +1066,45 @@
 </div>
 </div>
 </div>
+</details>
+<div class="admonition bug">
+<p class="admonition-title">问题：<span>NMS<span class="heti-spacing"> </span></span>可能在目标高度重叠时消除“好”的框（目前没有好的解决方案）</p>
+</div>
+</details>
+<details class="info">
+<summary>评估目标检测器：平均精度均值<span><span class="heti-spacing"> </span>(mean average precision, mAP)</span></summary>
+<ol>
+<li>在所有测试图像上运行目标检测器（带<span><span class="heti-spacing"> </span>NMS</span>）</li>
+<li>
+<ol>
+<li>
+<ol>
+<li>如果它与某些<span class="heti-skip"><span class="heti-spacing"> </span>GT<span class="heti-spacing"> </span></span>框匹配且<span><span class="heti-spacing"> </span>loU &gt; 0.5</span>，将其标记为正例并消除<span><span class="heti-spacing"> </span>GT</span></li>
+<li>否则将其标记为负例</li>
+<li>在<span class="heti-skip"><span class="heti-spacing"> </span>PR<span class="heti-spacing"> </span></span>曲线上绘制一个点</li>
+</ol>
+<p>对于每个检测（从最高分数到最低分数）</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec16/88.png"><img src="images/lec16/88.png" width="48%"/></a>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec16/89.png"><img src="images/lec16/89.png" width="48%"/></a>
+</div><p></p>
+</li>
+</ol>
+<p>对于每个类别，计算平均精度（AP）<span>=<span class="heti-spacing"> </span></span>精确度与召回率曲线下的面积</p>
+<ol>
+<li>
+<p>平均精度（AP）<span>= PR<span class="heti-spacing"> </span></span>曲线下的面积</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec16/87.png"><img src="images/lec16/87.png" width="40%"/></a>
+</div><p></p>
+</li>
+</ol>
+</li>
+<li>
+<p>均值平均精度（mAP）<span>=<span class="heti-spacing"> </span></span>每个类别的<span class="heti-skip"><span class="heti-spacing"> </span>AP<span class="heti-spacing"> </span></span>平均值</p>
+</li>
+<li>对于<span><span class="heti-spacing"> </span>COCO mAP</span>：计算每个<span class="heti-skip"><span class="heti-spacing"> </span>loU<span class="heti-spacing"> </span></span>的<span class="heti-skip"><span class="heti-spacing"> </span>mAP @thresh<span class="heti-spacing"> </span></span>阈值<span><span class="heti-spacing"> </span>(0.5</span>，0.55，0.6，...，<span>0.95)<span class="heti-spacing"> </span></span>并取平均值</li>
+</ol>
 </details>
 </li>
 <li>
@@ -951,11 +1125,34 @@
 <li>
 <p><strong>RPN</strong>（区域建议网络<span><span class="heti-spacing"> </span>(region proposal network)</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
 <ul>
-<li>在特征图的每个点上都有一个固定大小的<strong>锚盒</strong>(anchor box)</li>
-</ul>
+<li>
+<p>在特征图的每个点上都有一个固定大小的<strong>锚框</strong>(anchor box)</p>
 <p></p><div style="text-align: center">
-<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec16/28.png"><img src="images/lec16/28.png" width="60%"/></a>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec16/72.png"><img src="images/lec16/72.png" width="60%"/></a>
 </div><p></p>
+</li>
+<li>
+<p>在每一个点上预测相应的锚框是否包含一个目标（二元分类）</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec16/73.png"><img src="images/lec16/73.png" width="70%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>对于每个正框，还要预测从锚框到基准事实框的修正（每个像素回归<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>个数字）</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec16/74.png"><img src="images/lec16/74.png" width="70%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>在实际应用中，每个点使用<span class="heti-skip"><span class="heti-spacing"> </span>K<span class="heti-spacing"> </span></span>个不同大小<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>比例的锚框</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec16/75.png"><img src="images/lec16/75.png" width="70%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>按“目标性<span><span class="heti-spacing"> </span>(objectness)</span>”分数对<span class="heti-skip"><span class="heti-spacing"> </span>K*20*15<span class="heti-spacing"> </span></span>个盒子进行排序，取前大约<span class="heti-skip"><span class="heti-spacing"> </span>300<span class="heti-spacing"> </span></span>个作为建议</p>
+</li>
+</ul>
 </li>
 <li>
 <p>可学习的区域建议</p>
@@ -978,22 +1175,33 @@
 <ul>
 <li>裁剪特征：<span>Rol<span class="heti-spacing"> </span></span>池化<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>对齐</li>
 <li>预测目标类别</li>
-<li>预测包围盒偏移量</li>
+<li>预测包框偏移量</li>
 </ul>
 </li>
 </ul>
 </li>
 <li>
-<p>单阶段目标检测：</p>
+<p>单阶段目标检测：包括<span><span class="heti-spacing"> </span>YOLO / SSD / RetinaNet</span></p>
 <p></p><div style="text-align: center">
-<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec16/30.png"><img src="images/lec16/30.png" width="60%"/></a>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec16/76.png"><img src="images/lec16/76.png" width="70%"/></a>
 </div><p></p>
-</li>
+<ul>
 <li>
-<p>例子：<span>YOLO<span class="heti-spacing"> </span></span>检测器</p>
+<p>例子：<strong>YOLO</strong><span>(You Only Look Once)<span class="heti-spacing"> </span></span>实时对象检测</p>
 <p></p><div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec16/31.png"><img src="images/lec16/31.png" width="60%"/></a>
 </div><p></p>
+<p>对于每个输出框：</p>
+<ul>
+<li>P(object)：该框包含对象的概率</li>
+<li>B：包围盒<span><span class="heti-spacing"> </span>(x, y, h, w)</span>（图中<span><span class="heti-spacing"> </span>B = 2</span>）</li>
+<li>P(class)：属于该类别的概率</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec16/77.png"><img src="images/lec16/77.png" width="70%"/></a>
+</div><p></p>
+</li>
+</ul>
 </li>
 <li>
 <p>两阶段<span class="heti-skip"><span class="heti-spacing"> </span>vs<span class="heti-spacing"> </span></span>单阶段</p>
@@ -1003,6 +1211,17 @@
 </ul>
 </li>
 </ul>
+</li>
+<li>
+<p>使用<span class="heti-skip"><span class="heti-spacing"> </span>Transformer<span class="heti-spacing"> </span></span>的目标检测：<strong>DETR</strong></p>
+<ul>
+<li>简单目标检测流程：直接从<span class="heti-skip"><span class="heti-spacing"> </span>Transformer<span class="heti-spacing"> </span></span>输出一组框</li>
+<li>没有锚框，没有框变换的回归</li>
+<li>通过二分图匹配<span class="heti-skip"><span class="heti-spacing"> </span>(bipartite matching)<span class="heti-spacing"> </span></span>将预测框与<span class="heti-skip"><span class="heti-spacing"> </span>GT<span class="heti-spacing"> </span></span>框匹配；训练回归框坐标</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec16/78.png"><img src="images/lec16/78.png" width="70%"/></a>
+</div><p></p>
 </li>
 </ul>
 <h2 id="instance-segmentation">Instance Segmentation<a class="headerlink" href="#instance-segmentation" title="Permanent link">⚓︎</a></h2>
@@ -1021,10 +1240,23 @@
 <p></p><div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec16/33.png"><img src="images/lec16/33.png" width="50%"/></a>
 </div><p></p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec16/79.png"><img src="images/lec16/79.png" width="60%"/></a>
+</div><p></p>
+<ul>
+<li>
+<p>样例掩码训练目标：</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec16/80.png"><img src="images/lec16/80.png" width="60%"/></a>
+</div><p></p>
+</li>
+<li>
 <p>可以看到效果非常好：</p>
 <p></p><div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec16/34.png"><img src="images/lec16/34.png" width="60%"/></a>
 </div><p></p>
+</li>
+</ul>
 </li>
 <li>
 <p>深蛇<span><span class="heti-spacing"> </span>(deep snake)</span>：利用轮廓<span><span class="heti-spacing"> </span>(contours)</span></p>
@@ -1087,7 +1319,7 @@
 <li>
 <p>自顶向下：</p>
 <ul>
-<li>检测每个包围盒内的人体和关键点（<strong>更精确</strong>）</li>
+<li>检测每个包框内的人体和关键点（<strong>更精确</strong>）</li>
 <li>
 <p>例子：<strong>掩码<span><span class="heti-spacing"> </span>R-CNN</span></strong></p>
 <p></p><div style="text-align: center">
@@ -1215,13 +1447,13 @@
 <span class="md-icon" title="最后更新">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"></path></svg>
 </span>
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年11月26日 20:22:54 CST">2025年11月26日 20:22:54</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年11月26日 21:55:15 CST">2025年11月26日 21:55:15</span>
 </span>
 <span class="md-source-file__fact">
 <span class="md-icon" title="创建日期">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"></path></svg>
 </span>
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年11月26日 20:22:54 CST">2025年11月26日 20:22:54</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年11月26日 21:55:15 CST">2025年11月26日 21:55:15</span>
 </span>
 </aside>
 <p style="font-size: 30px; font-weight: 600">评论区</p>
