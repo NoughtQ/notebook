@@ -286,9 +286,9 @@ counter: true
 
 学了《数据库系统》课程后，发现 SQLite 只是 SQL 的其中一种实现，它支持大多数的 SQL 语句，因此这里就不再列出详细的语法规则。对此不太了解的读者可以阅读我的数据库笔记的 Lec 3-5（已完更！）。
 
-- [Lec 3: Introduction to SQL](../system/db/3.md)
-- [Lec 4: Intermediate SQL](../system//db/4.md)
-- [Lec 5: Advanced SQL](../system/db/5.md)
+- [Lec 3: Introduction to SQL](../sys/db/3.md)
+- [Lec 4: Intermediate SQL](../sys//db/4.md)
+- [Lec 5: Advanced SQL](../sys/db/5.md)
 
 下面只会介绍一些带有 SQLite 特色的语法。
 
@@ -941,7 +941,7 @@ Java 提供了一些连接 SQLite 数据库的接口，一些是 C 语言 API �
 
 !!! info "注"
 
-    这里假设你对“事务”这一概念有所了解，如果不清楚的话，建议看这篇[笔记](https://note.noughtq.top/system/db/4)。
+    这里假设你对“事务”这一概念有所了解，如果不清楚的话，建议看这篇[笔记](https://note.noughtq.top/sys/db/4)。
 
 默认情况下，使用 JDBC 连接 SQLite 数据库时启用自动提交(auto-commit)模式，也就是说每执行一条 SQL 语句，语句都会被提交从而生效。如果想要禁用这一模式的话，需要使用 `Connection` 对象的 `setAutoCommit(false)` 方法，但此时需要手动提交和回滚，也是用 `Connection` 对象的方法 `commit()` 和 `rollback()` 分别实现。
 

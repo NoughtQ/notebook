@@ -18,16 +18,23 @@
         - [x] [Image Matching and Motion Estimation](5.md)
         - [x] [Image Stitching](6.md)
         - [x] [Structure from Motion](7.md)
-        - [ ] [3D Reconstruction](8.md)
+        - [x] [Depth Estimation and 3D Reconstruction](8.md)
     - Deep Learning Basics
         - [x] [Image Classification with Linear Classifiers](9.md)
         - [x] [Regularization and Optimization](10.md)
         - [x] [Neural Networks and Backpropagation](11.md)
     - Perceiving and Understanding the Visual World
         - [x] [Image Classification with CNNs](12.md)
-        - [ ] [CNN Architectures](13.md)
-        - [ ] [Recurrent Neural Networks](14.md)
-        - [ ] [Attention and Transformers](15.md)
+        - [x] [CNN Architectures](13.md)
+        - [x] [Recurrent Neural Networks](14.md)
+        - [x] [Attention and Transformers](15.md)
+        - [x] [Recognition](16.md)
+        - [x] [Video Understanding](17.md)
+        - [x] [Large Scale Distributed Training](18.md)
+        - [ ] [Self-supervised Learning](19.md)
+        - [ ] [Generative Models](20.md)
+        - [x] [3D Deep Learning](21.md)
+        - [x] [Computational Photography](24.md)
     
 !!! recommend "参考资料"
 

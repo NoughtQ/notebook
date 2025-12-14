@@ -56,8 +56,8 @@ ZJU 本科 23 级 CSer
 <div style="padding-left: 1em;" markdown="1">
 - 🔡[面向对象程序设计（C++）](lang/cpp/index.md)
 - 📊[数值分析](math/na/index.md)
-- 💻[计算机体系结构](system/ca/index.md)
-- 💻[数据库系统](system/db/index.md)
+- 💻[计算机体系结构](sys/ca/index.md)
+- 💻[数据库系统](sys/db/index.md)
 </div>
 </div>
 </div>

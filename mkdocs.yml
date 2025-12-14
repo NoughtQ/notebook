@@ -49,6 +49,7 @@ theme:
         name: Light Mode
 
 hooks:
+  - hooks/toc.py
   - hooks/tikzautomata.py
   # - hooks/tikzqtree.py
 
@@ -58,7 +59,6 @@ plugins:
   - drawio
   - glightbox
   - search
-  - toc
   - heti:
       disable_serve: true
   - statistics: # 需要在 markdown_extensions 里面加一句 md_in_html 才能显示 icon
@@ -139,6 +139,7 @@ markdown_extensions:
       slugify: !!python/object/apply:pymdownx.slugs.slugify {kwds: {case: lower}} # enable Unicode link
   - md_in_html
   - footnotes
+  - neoteroi.cards
 
 extra:
   social:
@@ -160,10 +161,12 @@ extra_css:
   - css/extra_changelog.css
   - css/header.css
   - css/sidebar.css
+  - css/neoteroi-css.css
+  - css/toc_extra.css
   - https://unpkg.com/katex@0/dist/katex.min.css
   - https://gcore.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css
   - https://gcore.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css
-  - https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap
+  # - https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap
   - https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.css
 
 extra_javascript:
@@ -221,6 +224,13 @@ nav:
       - lang/java/3.md
       - lang/java/4.md
       - lang/java/5.md
+      - lang/java/6.md
+      - lang/java/7.md
+      - lang/java/8.md
+      - lang/java/9.md
+      - lang/java/10.md
+      - lang/java/11.md
+      - lang/java/12.md
     - x86 汇编语言:
       - lang/asm/index.md
       - lang/asm/1.md
@@ -288,38 +298,38 @@ nav:
       - math/toc/5.md
     
   - 🧮算法相关:
-    - algorithms/index.md
+    - algo/index.md
     - 数据结构基础:
-      - algorithms/fds/index.md
-      - algorithms/fds/2.md
-      - algorithms/fds/3.md
-      - algorithms/fds/4.md
-      - algorithms/fds/5.md
-      - algorithms/fds/6.md
-      - algorithms/fds/7.md
-      - algorithms/fds/8.md
-      - algorithms/fds/9.md
-      - Mistakes: algorithms/fds/mistakes.md
+      - algo/fds/index.md
+      - algo/fds/2.md
+      - algo/fds/3.md
+      - algo/fds/4.md
+      - algo/fds/5.md
+      - algo/fds/6.md
+      - algo/fds/7.md
+      - algo/fds/8.md
+      - algo/fds/9.md
+      - Mistakes: algo/fds/mistakes.md
     - 高级数据结构与算法分析:
-      - algorithms/ads/index.md
+      - algo/ads/index.md
       - Balanced Search Trees:
-        - algorithms/ads/1.md
-        - algorithms/ads/2.md
-      - Inverted Index: algorithms/ads/3.md
+        - algo/ads/1.md
+        - algo/ads/2.md
+      - Inverted Index: algo/ads/3.md
       - Heaps:
-        - algorithms/ads/4.md
-        - algorithms/ads/5.md
+        - algo/ads/4.md
+        - algo/ads/5.md
       - Algorithms:
-        - algorithms/ads/6.md
-        - algorithms/ads/7.md
-        - algorithms/ads/8.md
-        - algorithms/ads/9.md
-        - algorithms/ads/10.md
-        - algorithms/ads/11.md
-        - algorithms/ads/12.md
-        - algorithms/ads/13.md
-        - algorithms/ads/14.md
-        - algorithms/ads/15.md
+        - algo/ads/6.md
+        - algo/ads/7.md
+        - algo/ads/8.md
+        - algo/ads/9.md
+        - algo/ads/10.md
+        - algo/ads/11.md
+        - algo/ads/12.md
+        - algo/ads/13.md
+        - algo/ads/14.md
+        - algo/ads/15.md
 
   - 💾软件相关:
       - software/index.md
@@ -352,93 +362,101 @@ nav:
       - 游戏引擎:
         - software/ge/index.md
         - software/ge/1.md
+        - software/ge/2.md
+        - software/ge/3.md
+        - software/ge/4.md
 
   - 💻系统相关:
-    - system/index.md
+    - sys/index.md
     - CSAPP:
-      - system/csapp/index.md
-      - system/csapp/1.md
-      - system/csapp/2.md
-      - system/csapp/3.md
-      - system/csapp/4.md
-      - system/csapp/5.md
-      - system/csapp/6.md
-      - system/csapp/7.md
-      - system/csapp/8.md
-      - system/csapp/9.md
-      - system/csapp/10.md
-      - system/csapp/11.md
-      - system/csapp/12.md
+      - sys/csapp/index.md
+      - sys/csapp/1.md
+      - sys/csapp/2.md
+      - sys/csapp/3.md
+      - sys/csapp/4.md
+      - sys/csapp/5.md
+      - sys/csapp/6.md
+      - sys/csapp/7.md
+      - sys/csapp/8.md
+      - sys/csapp/9.md
+      - sys/csapp/10.md
+      - sys/csapp/11.md
+      - sys/csapp/12.md
     - 数字逻辑设计:
-      - system/dld/index.md
-      - system/dld/1.md
-      - system/dld/2.md
-      - system/dld/3.md
-      - system/dld/4.md
-      - system/dld/5.md
-      - system/dld/6.md
-      - system/dld/7.md
-      - system/dld/verilog.md
+      - sys/dld/index.md
+      - sys/dld/1.md
+      - sys/dld/2.md
+      - sys/dld/3.md
+      - sys/dld/4.md
+      - sys/dld/5.md
+      - sys/dld/6.md
+      - sys/dld/7.md
+      - sys/dld/verilog.md
     - 计算机组成:
-      - system/co/index.md
-      - system/co/1.md
-      - system/co/2.md
-      - system/co/3.md
-      - system/co/4.md
-      - system/co/5.md
-      - system/co/6.md
+      - sys/co/index.md
+      - sys/co/1.md
+      - sys/co/2.md
+      - sys/co/3.md
+      - sys/co/4.md
+      - sys/co/5.md
+      - sys/co/6.md
     - 计算机体系结构:
-      - system/ca/index.md
-      - system/ca/1.md
-      - system/ca/2.md
-      - system/ca/3.md
-      - system/ca/4.md
-      - system/ca/5.md
+      - sys/ca/index.md
+      - sys/ca/1.md
+      - sys/ca/2.md
+      - sys/ca/3.md
+      - sys/ca/4.md
+      - sys/ca/5.md
     - 数据库系统:
-      - system/db/index.md
-      - system/db/1.md
-      - system/db/2.md
-      - system/db/3.md
-      - system/db/4.md
-      - system/db/5.md
-      - system/db/6.md
-      - system/db/7.md
-      - system/db/8.md
-      - system/db/9.md
-      - system/db/10.md
-      - system/db/11.md
-      - system/db/12.md
-      - system/db/13.md
-      - system/db/14.md
-      - system/db/15.md
+      - sys/db/index.md
+      - sys/db/1.md
+      - sys/db/2.md
+      - sys/db/3.md
+      - sys/db/4.md
+      - sys/db/5.md
+      - sys/db/6.md
+      - sys/db/7.md
+      - sys/db/8.md
+      - sys/db/9.md
+      - sys/db/10.md
+      - sys/db/11.md
+      - sys/db/12.md
+      - sys/db/13.md
+      - sys/db/14.md
+      - sys/db/15.md
     - 操作系统:
-      - system/os/index.md
+      - sys/os/index.md
       - Overview:
-        - system/os/1.md
-        - system/os/2.md
+        - sys/os/1.md
+        - sys/os/2.md
       - Process Management:
-        - system/os/3.md
-        - system/os/4.md
-        - system/os/5.md
+        - sys/os/3.md
+        - sys/os/4.md
+        - sys/os/5.md
       - Process Synchronization:
-        - system/os/6.md
-        - system/os/7.md
-        - system/os/8.md
+        - sys/os/6.md
+        - sys/os/7.md
+        - sys/os/8.md
       - Memory Management:
-        - system/os/9.md
-        - system/os/10.md
+        - sys/os/9.md
+        - sys/os/10.md
       - Storage Management:
-        - system/os/11.md
-        - system/os/12.md
+        - sys/os/11.md
+        - sys/os/12.md
       - File System:
-        - system/os/13.md
-        - system/os/14.md
+        - sys/os/13.md
+        - sys/os/14.md
+        - sys/os/15.md
     - 汇编与接口:
-      - system/aai/index.md
-      - system/aai/1.md
-      - system/aai/2.md
-      - system/aai/3.md
-      - system/aai/4.md
+      - sys/aai/index.md
+      - sys/aai/1.md
+      - sys/aai/2.md
+      - sys/aai/3.md
+      - sys/aai/4.md
+      - sys/aai/5.md
+      - sys/aai/6.md
+      - sys/aai/9.md
+      - sys/aai/11.md
 
   - 🌏Web相关:
     - web/index.md
@@ -540,6 +558,13 @@ nav:
         - ai/cv/13.md
         - ai/cv/14.md
         - ai/cv/15.md
+        - ai/cv/16.md
+        - ai/cv/17.md
+        - ai/cv/18.md
+        - ai/cv/19.md
+        - ai/cv/20.md
+        - ai/cv/21.md
+        - ai/cv/24.md
     - 工具箱:
       - ai/toolbox/index.md
       - Numpy: ai/toolbox/numpy.md
@@ -568,6 +593,7 @@ nav:
         - misc/qc/2.md
         - misc/qc/3.md
         - misc/qc/4.md
+        - misc/qc/5.md
     - 心理学相关:
       - 心理学导论:
         - misc/psychology/intro/index.md

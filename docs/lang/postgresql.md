@@ -22,9 +22,9 @@ counter: true
 
     这里只会介绍一些 PostgreSQL 独有的语法。至于完全遵循 SQL 标准的语法，如果读者还不熟悉的话，可以阅读笔者的其他几篇笔记：
 
-    - [Lec 3: Introduction to SQL](../system/db/3.md)
-    - [Lec 4: Intermediate SQL](../system//db/4.md)
-    - [Lec 5: Advanced SQL](../system/db/5.md)
+    - [Lec 3: Introduction to SQL](../sys/db/3.md)
+    - [Lec 4: Intermediate SQL](../sys//db/4.md)
+    - [Lec 5: Advanced SQL](../sys/db/5.md)
 
 
 ## 高级特性

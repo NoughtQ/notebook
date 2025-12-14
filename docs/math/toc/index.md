@@ -14,9 +14,9 @@
 
 !!! abstract "目录"
 
-    - [x] [Sets, Relations, and Language](1.md)
-    - [x] [Finite Automata](2.md)
-    - [ ] [Context-Free Languages](3.md)
+    - [x] [Sets, Relations and Language](1.md)
+    - [x] [Finite Automata and Regular Expressions](2.md)
+    - [x] [Context-Free Languages](3.md)
     - [ ] [Turing Machine](4.md)
     - [ ] [Undecidability](5.md)
 

@@ -32,7 +32,7 @@
     - [机器学习](https://note.noughtq.top/ai/ml/)
     - [生成式人工智能](https://note.noughtq.top/ai/genai/)
   - 课内笔记：
-    - [操作系统](https://note.noughtq.top/system/os/)
+    - [操作系统](https://note.noughtq.top/sys/os/)
     - [计算理论](https://note.noughtq.top/math/toc/)
     - [计算机网络](https://note.noughtq.top/web/cn/)
     - [计算机视觉导论](https://note.noughtq.top/ai/cv/)

@@ -83,9 +83,9 @@ counter: true
 
 几类常见的搜索算法：
 
-- [深度优先搜索](../../algorithms/fds/9.md#applications-of-depth-first-search)(depth-first search, DFS)
+- [深度优先搜索](../../algo/fds/9.md#applications-of-depth-first-search)(depth-first search, DFS)
     - 应用：无向图的双连通性、欧拉环...
-- [广度优先搜索](../../algorithms/fds/9.md#unweighted-shortest-paths)(breath-first search, BFS)
+- [广度优先搜索](../../algo/fds/9.md#unweighted-shortest-paths)(breath-first search, BFS)
     - 应用：无权最短路算法...
 
 ???+ note "迭代深化(iterative deepening) = DFS + BFS"
@@ -159,7 +159,7 @@ counter: true
 
 !!! info "注"
 
-    对一般的贪心算法感兴趣的读者可以参考我的这篇[笔记](../../algorithms/ads/9.md)，里面介绍了更多贪心算法的应用，而非局限于搜索领域。
+    对一般的贪心算法感兴趣的读者可以参考我的这篇[笔记](../../algo/ads/9.md)，里面介绍了更多贪心算法的应用，而非局限于搜索领域。
 
 
 ### A* Search
@@ -433,7 +433,7 @@ $$
 
 >正如它的字面意思，该算法来源于进化学的研究。
 
-???+ example "例子：[八皇后问题](../../algorithms/ads/6.md#eight-queens)"
+???+ example "例子：[八皇后问题](../../algo/ads/6.md#eight-queens)"
 
     >由于问题过于经典，且在数据结构课程中已经提到过，故不再赘述题面内容。
 
@@ -494,4 +494,4 @@ $$
 
 !!! note "注"
 
-    关于局部搜索更多的讨论，可以参看我的[ADS笔记](../../algorithms/ads/12.md)！
+    关于局部搜索更多的讨论，可以参看我的[ADS笔记](../../algo/ads/12.md)！
