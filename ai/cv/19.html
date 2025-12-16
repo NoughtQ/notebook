@@ -1,0 +1,1630 @@
+<!DOCTYPE html>
+<html class="no-js" lang="zh"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="NoughtQ的笔记本，主要记录一些 CS 相关的笔记" name="description"/>
+<meta content="NoughtQ" name="author"/>
+<link href="https://notebook.noughtq.top/ai/cv/19.html" rel="canonical"/>
+<link href="18.html" rel="prev"/>
+<link href="20.html" rel="next"/>
+<link href="../../feed_rss_created.xml" rel="alternate" title="RSS 订阅" type="application/rss+xml"/>
+<link href="../../feed_rss_updated.xml" rel="alternate" title="已更新内容的 RSS 订阅" type="application/rss+xml"/>
+<link href="../../assets/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.6.23" name="generator"/>
+<title>Self-Supervised Learning - NoughtQ的笔记本</title>
+<link href="../../assets/stylesheets/main.84d31ad4.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/palette.06af60db.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=JetBrains+Mono,+LXGW+WenKai+Screen+GB+Screen:300,300i,400,400i,700,700i%7CJetBrains+Mono,+Consolas:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"JetBrains Mono, LXGW WenKai Screen GB Screen";--md-code-font:"JetBrains Mono, Consolas"}</style>
+<link href="../../css/heti.css" rel="stylesheet"/>
+<link href="../../css/timeline.css" rel="stylesheet"/>
+<link href="../../css/card.css" rel="stylesheet"/>
+<link href="../../css/custom.css" rel="stylesheet"/>
+<link href="../../css/extra_changelog.css" rel="stylesheet"/>
+<link href="../../css/header.css" rel="stylesheet"/>
+<link href="../../css/sidebar.css" rel="stylesheet"/>
+<link href="../../css/neoteroi-css.css" rel="stylesheet"/>
+<link href="../../css/toc_extra.css" rel="stylesheet"/>
+<link href="https://unpkg.com/katex@0/dist/katex.min.css" rel="stylesheet"/>
+<link href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css" rel="stylesheet"/>
+<link href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.css" rel="stylesheet"/>
+<script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-43NH8CVRCJ"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-43NH8CVRCJ",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-43NH8CVRCJ",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+<script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+<link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+<body data-md-color-accent="indigo" data-md-color-primary="indigo" data-md-color-scheme="slate" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#self-supervised-learning">
+          跳转至
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header" data-md-component="header">
+<nav aria-label="页眉" class="md-header__inner md-grid">
+<a aria-label="NoughtQ的笔记本" class="md-header__button md-logo" data-md-component="logo" href="../.." title="NoughtQ的笔记本">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.05 9H7.06V6h1.99V4.03H7.06v-1c0-1.11.89-1.99 1.99-1.99h5.98V8l2.47-1.5L20 8V1.04h1c1.05 0 2 .96 2 1.99V17c0 1.03-.95 2-2 2H9.05c-1.05 0-1.99-.95-1.99-2v-1h1.99v-2H7.06v-3h1.99zM1 18h2v-3H1v-2h2v-3H1V8h2V5h2v3H3v2h2v3H3v2h2v3H3v2h2v1h16v2H5a2 2 0 0 1-2-2v-1H1z"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            NoughtQ的笔记本
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              Self-Supervised Learning
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="Dark Mode" class="md-option" data-md-color-accent="indigo" data-md-color-media="(prefer-color-scheme: dark)" data-md-color-primary="indigo" data-md-color-scheme="slate" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="Dark Mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"></path></svg>
+</label>
+<input aria-label="Light Mode" class="md-option" data-md-color-accent="indigo" data-md-color-media="(prefer-color-scheme: light)" data-md-color-primary="indigo" data-md-color-scheme="default" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="Light Mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="搜索" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="搜索" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 256 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path></svg>
+</label>
+<nav aria-label="查找" class="md-search__options">
+<a aria-label="分享" class="md-search__icon md-icon" data-clipboard="" data-clipboard-text="" data-md-component="search-share" href="javascript:void(0)" tabindex="-1" title="分享">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"></path></svg>
+</a>
+<button aria-label="清空当前内容" class="md-search__icon md-icon" tabindex="-1" title="清空当前内容" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header__source">
+<a class="md-source" data-md-component="source" href="https://github.com/noughtq/notebook" title="前往仓库">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    NoughtQ/Notebook
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<nav aria-label="标签" class="md-tabs" data-md-component="tabs">
+<div class="md-grid">
+<ul class="md-tabs__list">
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../index.html">
+          
+  
+  
+    
+  
+  🏫主页
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../lang/index.html">
+          
+  
+  
+    
+  
+  🔡编程语言
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../math/index.html">
+          
+  
+  
+    
+  
+  📊数学相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../algo/index.html">
+          
+  
+  
+    
+  
+  🧮算法相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../software/index.html">
+          
+  
+  
+    
+  
+  💾软件相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../sys/index.html">
+          
+  
+  
+    
+  
+  💻系统相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../web/index.html">
+          
+  
+  
+    
+  
+  🌏Web相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../sec/ctf-101/index.html">
+          
+  
+  
+    
+  
+  🛡️信息安全
+
+        </a>
+</li>
+<li class="md-tabs__item md-tabs__item--active">
+<a class="md-tabs__link" href="../index.html">
+          
+  
+  
+    
+  
+  🤖人工智能
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../misc/index.html">
+          
+  
+  
+    
+  
+  🗃️杂项
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../tools/index.html">
+          
+  
+  
+    
+  
+  🛠️工具
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../papers/index.html">
+          
+  
+  
+    
+  
+  📑论文阅读
+
+        </a>
+</li>
+</ul>
+</div>
+</nav>
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="导航栏" class="md-nav md-nav--primary md-nav--lifted" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="NoughtQ的笔记本" class="md-nav__button md-logo" data-md-component="logo" href="../.." title="NoughtQ的笔记本">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.05 9H7.06V6h1.99V4.03H7.06v-1c0-1.11.89-1.99 1.99-1.99h5.98V8l2.47-1.5L20 8V1.04h1c1.05 0 2 .96 2 1.99V17c0 1.03-.95 2-2 2H9.05c-1.05 0-1.99-.95-1.99-2v-1h1.99v-2H7.06v-3h1.99zM1 18h2v-3H1v-2h2v-3H1V8h2V5h2v3H3v2h2v3H3v2h2v3H3v2h2v1h16v2H5a2 2 0 0 1-2-2v-1H1z"></path></svg>
+</a>
+    NoughtQ的笔记本
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-component="source" href="https://github.com/noughtq/notebook" title="前往仓库">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    NoughtQ/Notebook
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../index.html">
+<span class="md-ellipsis">
+    🏫主页
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../lang/index.html">
+<span class="md-ellipsis">
+    🔡编程语言
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../math/index.html">
+<span class="md-ellipsis">
+    📊数学相关
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../algo/index.html">
+<span class="md-ellipsis">
+    🧮算法相关
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../software/index.html">
+<span class="md-ellipsis">
+    💾软件相关
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../sys/index.html">
+<span class="md-ellipsis">
+    💻系统相关
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../web/index.html">
+<span class="md-ellipsis">
+    🌏Web相关
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../sec/ctf-101/index.html">
+<span class="md-ellipsis">
+    🛡️信息安全
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_9" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../index.html">
+<span class="md-ellipsis">
+    🤖人工智能
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="true" aria-labelledby="__nav_9_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_9">
+<span class="md-nav__icon md-icon"></span>
+            🤖人工智能
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../ml/index.html">
+<span class="md-ellipsis">
+    机器学习
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../genai/index.html">
+<span class="md-ellipsis">
+    生成式人工智能
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_9_4" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="index.html">
+<span class="md-ellipsis">
+    计算机视觉
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_9_4" id="__nav_9_4_label" tabindex="0">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="true" aria-labelledby="__nav_9_4_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_9_4">
+<span class="md-nav__icon md-icon"></span>
+            计算机视觉
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="1.html">
+<span class="md-ellipsis">
+    Introduction
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="2.html">
+<span class="md-ellipsis">
+    Basics
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="5.html">
+<span class="md-ellipsis">
+    Reconstruction
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="9.html">
+<span class="md-ellipsis">
+    Deep Learning Basics
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_9_4_6" type="checkbox"/>
+<label class="md-nav__link" for="__nav_9_4_6" id="__nav_9_4_6_label" tabindex="0">
+<span class="md-ellipsis">
+    Perceiving and Understanding the Visual World
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_9_4_6_label" class="md-nav" data-md-level="3">
+<label class="md-nav__title" for="__nav_9_4_6">
+<span class="md-nav__icon md-icon"></span>
+            Perceiving and Understanding the Visual World
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="12.html">
+<span class="md-ellipsis">
+    Image Classification with CNNs
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="13.html">
+<span class="md-ellipsis">
+    CNN Architectures
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="14.html">
+<span class="md-ellipsis">
+    Recurrent Neural Networks
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="15.html">
+<span class="md-ellipsis">
+    Attention and Transformers
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="16.html">
+<span class="md-ellipsis">
+    Recognition
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="17.html">
+<span class="md-ellipsis">
+    Video Understanding
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="18.html">
+<span class="md-ellipsis">
+    Large-Scale Distributed Training
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    Self-Supervised Learning
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="19.html">
+<span class="md-ellipsis">
+    Self-Supervised Learning
+    
+  </span>
+</a>
+<nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#pretext-tasks-from-image-transformations">
+<span class="md-ellipsis">
+      Pretext Tasks From Image Transformations
+    </span>
+</a>
+<nav aria-label="Pretext Tasks From Image Transformations" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#image-transformations">
+<span class="md-ellipsis">
+      Image Transformations
+    </span>
+</a>
+<nav aria-label="Image Transformations" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#rotation">
+<span class="md-ellipsis">
+      Rotation
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#inpainting">
+<span class="md-ellipsis">
+      Inpainting
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#image-coloring">
+<span class="md-ellipsis">
+      Image Coloring
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#video-coloring">
+<span class="md-ellipsis">
+      Video Coloring
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#reconstruction-based-learning-mae">
+<span class="md-ellipsis">
+      Reconstruction-based learning (MAE)
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#contrastive-representation-learning">
+<span class="md-ellipsis">
+      Contrastive Representation Learning
+    </span>
+</a>
+<nav aria-label="Contrastive Representation Learning" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#intuition-and-formulation">
+<span class="md-ellipsis">
+      Intuition and Formulation
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#instance-contrastive-learning-simclr-and-moco">
+<span class="md-ellipsis">
+      Instance Contrastive Learning: SimCLR and MoCo
+    </span>
+</a>
+<nav aria-label="Instance Contrastive Learning: SimCLR and MoCo" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#simclr">
+<span class="md-ellipsis">
+      SimCLR
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#moco">
+<span class="md-ellipsis">
+      MoCo
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#sequence-contrastive-learning-cpc">
+<span class="md-ellipsis">
+      Sequence Contrastive Learning: CPC
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#self-distillation-without-labels-dino">
+<span class="md-ellipsis">
+      Self-Distillation Without Labels: DINO
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="20.html">
+<span class="md-ellipsis">
+    20
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="21.html">
+<span class="md-ellipsis">
+    3D Deep Learning
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="22.html">
+<span class="md-ellipsis">
+    22
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="23.html">
+<span class="md-ellipsis">
+    23
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="24.html">
+<span class="md-ellipsis">
+    Computational Photography
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../toolbox/index.html">
+<span class="md-ellipsis">
+    工具箱
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../misc/index.html">
+<span class="md-ellipsis">
+    🗃️杂项
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../tools/index.html">
+<span class="md-ellipsis">
+    🛠️工具
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../papers/index.html">
+<span class="md-ellipsis">
+    📑论文阅读
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#pretext-tasks-from-image-transformations">
+<span class="md-ellipsis">
+      Pretext Tasks From Image Transformations
+    </span>
+</a>
+<nav aria-label="Pretext Tasks From Image Transformations" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#image-transformations">
+<span class="md-ellipsis">
+      Image Transformations
+    </span>
+</a>
+<nav aria-label="Image Transformations" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#rotation">
+<span class="md-ellipsis">
+      Rotation
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#inpainting">
+<span class="md-ellipsis">
+      Inpainting
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#image-coloring">
+<span class="md-ellipsis">
+      Image Coloring
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#video-coloring">
+<span class="md-ellipsis">
+      Video Coloring
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#reconstruction-based-learning-mae">
+<span class="md-ellipsis">
+      Reconstruction-based learning (MAE)
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#contrastive-representation-learning">
+<span class="md-ellipsis">
+      Contrastive Representation Learning
+    </span>
+</a>
+<nav aria-label="Contrastive Representation Learning" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#intuition-and-formulation">
+<span class="md-ellipsis">
+      Intuition and Formulation
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#instance-contrastive-learning-simclr-and-moco">
+<span class="md-ellipsis">
+      Instance Contrastive Learning: SimCLR and MoCo
+    </span>
+</a>
+<nav aria-label="Instance Contrastive Learning: SimCLR and MoCo" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#simclr">
+<span class="md-ellipsis">
+      SimCLR
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#moco">
+<span class="md-ellipsis">
+      MoCo
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#sequence-contrastive-learning-cpc">
+<span class="md-ellipsis">
+      Sequence Contrastive Learning: CPC
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#self-distillation-without-labels-dino">
+<span class="md-ellipsis">
+      Self-Distillation Without Labels: DINO
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<article class="md-content__inner md-typeset">
+<a class="md-content__button md-icon" href="https://github.com/noughtq/notebook/edit/master/docs/ai/cv/19.md" rel="edit" title="编辑此页">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"></path></svg>
+</a>
+<a class="md-content__button md-icon" href="https://github.com/noughtq/notebook/raw/master/docs/ai/cv/19.md" title="查看本页的源代码">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"></path></svg>
+</a>
+<h1 id="self-supervised-learning">Self-Supervised Learning<a class="headerlink" href="#self-supervised-learning" title="Permanent link">⚓︎</a></h1>
+<div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>3797<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>19<span class="heti-spacing"> </span></span>分钟</p>
+</div>
+<details class="note">
+<summary>监督学习<span class="heti-skip"><span class="heti-spacing"> </span>vs<span class="heti-spacing"> </span></span>无监督学习</summary>
+<ul>
+<li><strong>监督学习</strong>(supervised learning)：<ul>
+<li>数据：(x, y)，其中<span class="heti-skip"><span class="heti-spacing"> </span>x<span class="heti-spacing"> </span></span>是数据，<span>y<span class="heti-spacing"> </span></span>是标签</li>
+<li>目标：习得一个<span class="heti-skip"><span class="heti-spacing"> </span>x -&gt; y<span class="heti-spacing"> </span></span>的函数</li>
+<li>例子：分类、回归、目标检测、语义分割、图像描述等</li>
+</ul>
+</li>
+<li><strong>无监督学习</strong>(unsupervised learning)：<ul>
+<li>数据：x（只有数据，没有标签）</li>
+<li>目标：习得数据背后的隐藏结构</li>
+<li>例子：聚类、降维<span><span class="heti-spacing"> </span>(dimensionality reduction)</span>、特征学习、密度估计等</li>
+</ul>
+</li>
+</ul>
+</details>
+<p>上一讲介绍的大规模训练（<strong>监督学习</strong>）存在一些问题：</p>
+<ul>
+<li><strong>需要大量的标注数据</strong>，因而产生高成本</li>
+<li>监督学习和人类学习方式不一致：婴儿观察世界时没有任何“监督”</li>
+</ul>
+<p>那么是否存在一种方式，能够在无需大量手工标注的数据集的情况下训练神经网络呢？答案是有的，它便是本讲的主角——<strong>自监督学习</strong>(self-supervised learning)。</p>
+<p>自监督学习涉及到的任务分为两类：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/1.png"><img src="images/lec19/1.png" width="40%"/></a>
+</div>
+<ul>
+<li>
+<p><strong>预文本任务</strong>(pretext tasks)：</p>
+<ul>
+<li>定义一个基于数据本身的任务</li>
+<li>无手工标注</li>
+<li>可被考虑为一项<strong>无监督</strong><span>(unsupervised)<span class="heti-spacing"> </span></span>任务</li>
+<li>但要通过监督学习目标来学习，比如分类或回归</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/2.png"><img src="images/lec19/2.png" width="60%"/></a>
+</div><p></p>
+<details class="example" open="open">
+<summary>例子</summary>
+<p>学习预测图像变换<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>完全遭破坏的图像。</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/4.png"><img src="images/lec19/4.png" width="70%"/></a>
+</div><p></p>
+</details>
+<ul>
+<li>学习预文本任务能让模型学得更好的特征</li>
+<li>我们能自动生成用于预训练任务的标签</li>
+<li>预文本任务的类别：<ul>
+<li><strong>生成式</strong>(generative)：预测部分输入信号<ul>
+<li>例子：自编码器（稀疏、去噪<span><span class="heti-spacing"> </span>(denoising)</span>、掩码<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>、自回归<span><span class="heti-spacing"> </span>(autoregressive)</span>、GAN、上色<span><span class="heti-spacing"> </span>(colorization)</span>、修复<span><span class="heti-spacing"> </span>(inpainting)</span></li>
+</ul>
+</li>
+<li><strong>判别式</strong>(discriminative)：预测关于输入信号的某些内容<ul>
+<li>例子：上下文预测、旋转、聚类、对比</li>
+</ul>
+</li>
+<li><strong>多模态</strong>(multimodal)：使用除<span class="heti-skip"><span class="heti-spacing"> </span>RGB<span class="heti-spacing"> </span></span>图像外的额外信号<ul>
+<li>例子：视频、3D、音频、语言</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>下游任务</strong>(downstream tasks)：</p>
+<ul>
+<li>模型训练者关心的应用</li>
+<li>没有很大的数据集</li>
+<li>数据集是标注好的</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/3.png"><img src="images/lec19/3.png" width="60%"/></a>
+</div><p></p>
+</li>
+</ul>
+<p>评估一个自监督学习方法的指标有：</p>
+<ul>
+<li><strong>预文本任务表现</strong>(pretext task performance)：测量模型在没有标签的情况下训练时在任务上的表现</li>
+<li><strong>表示质量</strong>(representation quality)：评估学到的表示的质量<ul>
+<li><strong>线性评估协议</strong>(linear evaluation protocal)：在学到的表示中训练一个线性分类器</li>
+<li><strong>聚类</strong>(clustering)：测量聚类表现</li>
+<li><strong>t-SNE</strong>：可视化表示，以评估它们的分离性<span><span class="heti-spacing"> </span>(separability)</span></li>
+</ul>
+</li>
+<li><strong>健壮性和泛化</strong>(robustness and generalization)：测试模型对不同数据集的泛化能力以及其对变化的健壮性</li>
+<li><strong>计算效率</strong>(computational efficiency)：评估该方法在训练时间和资源需求方面的效率</li>
+<li><strong>迁移学习和下游任务表现</strong>(transfer learning and downstream task performance)：通过将学习到的表示迁移到下游的监督任务中来评估其效用</li>
+</ul>
+<details class="example" open="open">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/5.png"><img src="images/lec19/5.png" width="70%"/></a>
+</div><p></p>
+<ol>
+<li>从自监督预训练任务中学习好的特征提取器（比如用于预测图像旋转）</li>
+<li>在特征提取器上附加一个浅层网络；使用少量标记数据在目标任务上训练该浅层网络</li>
+</ol>
+</details>
+<p>虽然本讲只围绕自监督学习在<span class="heti-skip"><span class="heti-spacing"> </span>CV<span class="heti-spacing"> </span></span>领域的应用，但事实上这一技术可用于众多和<span class="heti-skip"><span class="heti-spacing"> </span>AI<span class="heti-spacing"> </span></span>相关的领域，包括机器人学<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>强化学习、语言模型、语音合成等等。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/6.png"><img src="images/lec19/6.png" width="70%"/></a>
+</div>
+<h2 id="pretext-tasks-from-image-transformations">Pretext Tasks From Image Transformations<a class="headerlink" href="#pretext-tasks-from-image-transformations" title="Permanent link">⚓︎</a></h2>
+<h3 id="image-transformations">Image Transformations<a class="headerlink" href="#image-transformations" title="Permanent link">⚓︎</a></h3>
+<h4 id="rotation">Rotation<a class="headerlink" href="#rotation" title="Permanent link">⚓︎</a></h4>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/7.png"><img src="images/lec19/7.png" width="70%"/></a>
+</div>
+<p>在预测旋转的预文本任务中需要做这样的一个假设：一个模型只有在拥有关于物体在未受干扰时应呈现何种外观的“视觉常识”时才能识别物体的正确旋转。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/8.png"><img src="images/lec19/8.png" width="50%"/></a>
+</div>
+<ul>
+<li>通过旋转完整的输入图像来进行自监督学习</li>
+<li>图中所示的模型学会预测应用哪种旋转（本质上是<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>路分类问题）</li>
+</ul>
+<p>然后在<strong>半监督学习</strong><span>(semi-supervised learning)<span class="heti-spacing"> </span></span>上评估这个模型：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/9.png"><img src="images/lec19/9.png" width="50%"/></a>
+</div>
+<ul>
+<li>在<span><span class="heti-spacing"> </span>CIFAR10</span>（整个数据集）上进行自监督学习</li>
+<li>固定<span class="heti-skip"><span class="heti-spacing"> </span>conv1<span class="heti-spacing"> </span></span>和<span><span class="heti-spacing"> </span>conv2</span>，用标注好的<span class="heti-skip"><span class="heti-spacing"> </span>CIFAR10<span class="heti-spacing"> </span></span>数据子集来训练<span class="heti-skip"><span class="heti-spacing"> </span>conv3<span class="heti-spacing"> </span></span>和线性层</li>
+</ul>
+<p>接下来将习得的特征迁移到自监督学习中：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/10.png"><img src="images/lec19/10.png" width="70%"/></a>
+</div>
+<ul>
+<li>在<span><span class="heti-spacing"> </span>ImageNet</span>（整个训练集）上使用<span class="heti-skip"><span class="heti-spacing"> </span>AlexNet<span class="heti-spacing"> </span></span>进行自监督学习</li>
+<li>在来自<span class="heti-skip"><span class="heti-spacing"> </span>Pascal VOC 2007<span class="heti-spacing"> </span></span>的标注数据上微调</li>
+</ul>
+<p>下面展示了习得的视觉注意力的可视化结果：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/11.png"><img src="images/lec19/11.png" width="60%"/></a>
+</div>
+<h4 id="inpainting">Inpainting<a class="headerlink" href="#inpainting" title="Permanent link">⚓︎</a></h4>
+<p>第二个预文本任务是预测相对块<span class="heti-skip"><span class="heti-spacing"> </span>(patch)<span class="heti-spacing"> </span></span>位置。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/12.png"><img src="images/lec19/12.png" width="60%"/></a>
+</div>
+<p>更好的做法是将其类比为一个“拼图<span><span class="heti-spacing"> </span>(jigsaw)</span>”问题来解决。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/13.png"><img src="images/lec19/13.png" width="70%"/></a>
+</div>
+<p>接下来将习得的特征迁移到自监督学习中：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/14.png"><img src="images/lec19/14.png" width="70%"/></a>
+</div>
+<ul>
+<li>表中<span class="heti-skip"><span class="heti-spacing"> </span>"Ours"<span class="heti-spacing"> </span></span>一行是从解决图像拼图难题中学习到的特征（Noroozi &amp; Favaro，2016）</li>
+<li><span>Doersch<span class="heti-spacing"> </span></span>等人的方法就是具有相对块位置的方法</li>
+</ul>
+<hr/>
+<p>另一个类似的预文本任务是预测缺失的像素，即<strong>图像修复</strong><span>(inpainting)<span class="heti-spacing"> </span></span>任务。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/15.png"><img src="images/lec19/15.png" width="60%"/></a>
+</div>
+<p><span>Pathak<span class="heti-spacing"> </span></span>等人于<span class="heti-skip"><span class="heti-spacing"> </span>2016<span class="heti-spacing"> </span></span>年提出了解决此问题的模型“<strong>上下文编码器</strong>(context encoder)”。它本质上是一个<a href="../ml/7.html#auto-encoder"><strong>自编码器</strong></a>(auto-encoder)，包含了编码器和解码器两部分，用来学习重构缺失的像素。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/16.png"><img src="images/lec19/16.png" width="60%"/></a>
+</div>
+<p>损失<span class="heti-skip"><span class="heti-spacing"> </span>=<span class="heti-spacing"> </span></span>重构<span><span class="heti-spacing"> </span>+</span> <strong>对抗学习</strong>(adversarial learning)（下一讲介绍）</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/18.png"><img src="images/lec19/18.png" width="70%"/></a>
+</div>
+<p>对抗损失位于真实图像和修复图像之间。</p>
+<p>图像修复评估：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/17.png"><img src="images/lec19/17.png" width="70%"/></a>
+</div>
+<p>接下来将习得的特征迁移到自监督学习中：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/19.png"><img src="images/lec19/19.png" width="70%"/></a>
+</div>
+<p>在<span class="heti-skip"><span class="heti-spacing"> </span>ImageNet<span class="heti-spacing"> </span></span>训练集上进行的自监督学习，迁移到分类（Pascal VOC 2007<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>、检测（Pascal VOC 2007）和语义分割（Pascal VOC 2012）任务中。</p>
+<h4 id="image-coloring">Image Coloring<a class="headerlink" href="#image-coloring" title="Permanent link">⚓︎</a></h4>
+<p>第三个可预测任务是<strong>图像着色</strong>(image coloring)。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/20.png"><img src="images/lec19/20.png" width="50%"/></a>
+</div>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/21.png"><img src="images/lec19/21.png" width="50%"/></a>
+</div>
+<p><strong><span>Split-brain<span class="heti-spacing"> </span></span>自编码器</strong>是一种用在该任务上的模型：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/22.png"><img src="images/lec19/22.png" width="60%"/></a>
+</div>
+<p>它的思路是<strong>交叉通道预测</strong>(cross-channel prediction)：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/23.png"><img src="images/lec19/23.png" width="60%"/></a>
+</div>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/24.png"><img src="images/lec19/24.png" width="60%"/></a>
+</div>
+<p>接下来将习得的特征迁移到自监督学习中：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/25.png"><img src="images/lec19/25.png" width="50%"/></a>
+</div>
+<ul>
+<li>在<span><span class="heti-spacing"> </span>ImageNet</span>（整个训练集）上进行的自监督学习</li>
+<li>使用来自<span class="heti-skip"><span class="heti-spacing"> </span>F1<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>F2<span class="heti-spacing"> </span></span>的连接特征</li>
+<li>标记数据来自<span class="heti-skip"><span class="heti-spacing"> </span>Places<span class="heti-spacing"> </span></span>数据集</li>
+</ul>
+<details class="example" open="open">
+<summary>效果</summary>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/26.png"><img src="images/lec19/26.png" width="50%"/></a>
+</div><p></p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/27.png"><img src="images/lec19/27.png" width="50%"/></a>
+</div><p></p>
+</details>
+<h4 id="video-coloring">Video Coloring<a class="headerlink" href="#video-coloring" title="Permanent link">⚓︎</a></h4>
+<p>同样地我们也可以完成视频着色这一预文本任务。解决该问题的思路是为视频中颜色的时间连贯性<span class="heti-skip"><span class="heti-spacing"> </span>(temporal coherence)<span class="heti-spacing"> </span></span>建模。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/28.png"><img src="images/lec19/28.png" width="70%"/></a>
+</div>
+<p>假设：学习为视频帧上色应该可以让模型学会在没有标签的情况下跟踪区域或物体。</p>
+<p>学习目标：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/29.png"><img src="images/lec19/29.png" width="50%"/></a>
+</div>
+<ul>
+<li>在学到的特征空间映射中建立参考帧和目标帧</li>
+<li>使用作为“指针”的映射来复制正确的颜色（LAB）</li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/30.png"><img src="images/lec19/30.png" width="60%"/></a>
+</div>
+<ul>
+<li>参考帧上的注意力图<span><span class="heti-spacing"> </span>(attention map)</span>：<span class="arithmatex">\(A_{ij} = \dfrac{\exp(f_i^T f_j)}{\sum_k \exp(f_k^T f_j)}\)</span></li>
+<li>预测颜色<span class="heti-skip"><span class="heti-spacing"> </span>=<span class="heti-spacing"> </span></span>参考颜色的权重和：<span class="arithmatex">\(y_j = \sum\limits_i A_{ij} c_i\)</span></li>
+<li>预测颜色和真实颜色之间的损失：<span class="arithmatex">\(\min\limits_\theta \sum\limits_j \mathcal{L}(y_j, c_j)\)</span></li>
+</ul>
+<details class="example" open="open">
+<summary>效果</summary>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/31.png"><img src="images/lec19/31.png" width="70%"/></a>
+</div><p></p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/32.png"><img src="images/lec19/32.png" width="70%"/></a>
+</div><p></p>
+</details>
+<details class="example" open="open">
+<summary>应用：源自上色的追踪</summary>
+<ul>
+<li>
+<p>使用学习到的注意力传播分割掩码</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/33.png"><img src="images/lec19/33.png" width="70%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>使用学习到的注意力传播姿态关键点</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/34.png"><img src="images/lec19/34.png" width="70%"/></a>
+</div><p></p>
+</li>
+</ul>
+</details>
+<h3 id="reconstruction-based-learning-mae">Reconstruction-based learning (MAE)<a class="headerlink" href="#reconstruction-based-learning-mae" title="Permanent link">⚓︎</a></h3>
+<p>下面介绍一个更现代的框架，叫做<strong>掩码自编码器</strong>(masked auto-encoder, <strong>MAE</strong>)，它能够在更大的掩码区域上实现重构。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/35.png"><img src="images/lec19/35.png" width="60%"/></a>
+</div>
+<p><span>MAE<span class="heti-spacing"> </span></span>架构图如下：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/36.png"><img src="images/lec19/36.png" width="50%"/></a>
+</div>
+<p>掩码方法论：</p>
+<ul>
+<li>类似于原始的<span><span class="heti-spacing"> </span>ViT</span>，将输入划分为不重叠的块<span><span class="heti-spacing"> </span>(patches)</span></li>
+<li>从这些块中均匀采样很大一部分（75%）进行掩码操作</li>
+<li><strong>高比例的掩码</strong>使得预测任务具有挑战性和意义</li>
+<li>此外，不使用掩码标记并选择高抽样比例（掩蔽大部分图像，例如<span><span class="heti-spacing"> </span>75%</span>，并抽取一小部分可见区域，例如<span><span class="heti-spacing"> </span>25%</span>，以供编码器使用）使得编码器非常庞大</li>
+</ul>
+<p>MAE <strong>编码器</strong>：</p>
+<ul>
+<li>编码器仅对未掩码的块（25%）进行操作</li>
+<li>通过线性投影将块转化为嵌入（向量）并添加位置嵌入（向量）</li>
+<li>使用<span class="heti-skip"><span class="heti-spacing"> </span>Transformer<span class="heti-spacing"> </span></span>块</li>
+<li>由于输入块只占输入的一小部分，因此可以选择非常大的编码器（编码器每<span class="heti-skip"><span class="heti-spacing"> </span>token<span class="heti-spacing"> </span></span>的计算量可超过解码器的<span class="heti-skip"><span class="heti-spacing"> </span>9<span class="heti-spacing"> </span></span>倍）</li>
+</ul>
+<p>MAE <strong>解码器</strong>：</p>
+<ul>
+<li>将编码器的输出与先前掩码位置中的<strong>共享掩码<span><span class="heti-spacing"> </span>token</span></strong> 合并，并向其添加位置编码</li>
+<li>使用<span class="heti-skip"><span class="heti-spacing"> </span>Transformer<span class="heti-spacing"> </span></span>块，随后通过线性投影来完成最终的像素重建</li>
+<li>解码器仅负责重建，意味着它<strong>不在训练后使用</strong>；因此它独立于编码器设计，十分灵活（与传统<span class="heti-skip"><span class="heti-spacing"> </span>AE<span class="heti-spacing"> </span></span>或<span class="heti-skip"><span class="heti-spacing"> </span>UNet<span class="heti-spacing"> </span></span>不同）</li>
+<li>这是一个<strong>非对称的</strong><span>(asymmetrical)<span class="heti-spacing"> </span></span>自动编码器设计</li>
+</ul>
+<p>关于重构：</p>
+<ul>
+<li>在输入图像和重建图像之间的像素空间中采用<strong>均方误差损失</strong>（MSE）</li>
+<li>损失<strong>仅计算掩码块</strong></li>
+</ul>
+<details class="info" open="open">
+<summary><strong>线性探测</strong>(linear probing) vs <strong>完整微调</strong>(full fine-tuning)</summary>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/37.png"><img align="right" alt="" src="images/lec19/37.png" width="25%"/></a></p>
+<ul>
+<li>
+<p>线性探测</p>
+<ul>
+<li><strong>预训练模型是固定的</strong>，在末端<strong>只添加一个线性层</strong>来预测标签（或产生输出<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>；这种方法用于评估预训练特征提取模型表示的质量</li>
+<li>在受限条件下提供预训练表示质量的一个度量</li>
+</ul>
+</li>
+<li>
+<p>微调</p>
+<ul>
+<li><strong>预训练模型进一步训练</strong>（不是固定的<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，并添加一个或多个层，可能包含非线性</li>
+<li>发掘模型接近真实潜力的能力，以适应新任务</li>
+</ul>
+</li>
+</ul>
+</details>
+<p><strong>消融研究</strong>(ablation studies)：多种建模<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>超参数的选择：</p>
+<ul>
+<li>掩码率</li>
+<li>解码器深度</li>
+<li>解码器宽度</li>
+<li>掩码<span><span class="heti-spacing"> </span>token</span>（在编码器中使用<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>未使用）</li>
+<li>重建目标</li>
+<li>数据增强</li>
+<li>掩码采样方法</li>
+<li>训练调度</li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/38.png"><img src="images/lec19/38.png" width="50%"/></a>
+</div>
+<p><span>MAE<span class="heti-spacing"> </span></span>和其他模型比较：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/39.png"><img src="images/lec19/39.png" width="60%"/></a>
+</div>
+<details class="abstract" open="open">
+<summary>总结：来自图像变换的预文本任务</summary>
+<ul>
+<li>预文本任务关注“视觉常识”，例如，预测旋转、修复、重新排列和着色</li>
+<li>模型被迫学习关于自然图像的良好特征，例如，对象类别的语义表示，以便解决预文本任务</li>
+<li>我们通常不关心（模型在）这些预文本任务的表现，而是关注学习到的特征对下游任务（分类、检测、分割）的实用性</li>
+<li>问题：<ul>
+<li>提出单个预文本任务很繁琐</li>
+<li>习到的表示可能不具有普遍性</li>
+</ul>
+</li>
+</ul>
+</details>
+<p>我们希望构建一个更通用的预文本任务，比如在模型能通过学习关于猫的图像的各种变换后，也能理解其他物体（比如狗）的图像变换。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/40.png"><img src="images/lec19/40.png" width="60%"/></a>
+</div>
+<p>这样的技术便是下面马上要介绍的<strong>对比表示学习</strong>(contrastive representation learning)。</p>
+<h2 id="contrastive-representation-learning">Contrastive Representation Learning<a class="headerlink" href="#contrastive-representation-learning" title="Permanent link">⚓︎</a></h2>
+<h3 id="intuition-and-formulation">Intuition and Formulation<a class="headerlink" href="#intuition-and-formulation" title="Permanent link">⚓︎</a></h3>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/41.png"><img src="images/lec19/41.png" width="60%"/></a>
+</div>
+<p>记参考样例、相同（正）样例和不同（负）样例分别为<span><span class="heti-spacing"> </span><span class="arithmatex">\(x, x^+, x^-\)</span></span>。我们的目标是：
+$$
+\text{score}(f(x), f(x^+)) \gg \text{score}(f(x), f(x^-))
+$$</p>
+<p>即给定一个选定的分数函数，我们的目标是学习一个编码器函数<span><span class="heti-spacing"> </span><span class="arithmatex">\(f\)</span></span>，该函数对正对<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\((x, x+^)\)</span><span class="heti-spacing"> </span></span>产生高得分，对负对<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\((x, x^-)\)</span><span class="heti-spacing"> </span></span>产生低得分。</p>
+<p>假如有<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(1\)</span><span class="heti-spacing"> </span></span>个正样例，<span><span class="arithmatex">\(N - 1\)</span><span class="heti-spacing"> </span></span>的负样例，那么损失为：</p>
+<div class="arithmatex">\[
+L = - \mathbb{E}_{x} \left[ \log \frac{\textcolor{green}{\exp(s(f(x), f(x^+)))}}{\textcolor{green}{\exp(s(f(x), f(x^+)))} + \textcolor{red}{\sum_{j=1}^{N-1} \exp(s(f(x), f(x_j^-)))}} \right]
+\]</div>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/42.png"><img src="images/lec19/42.png" width="50%"/></a>
+</div>
+<p>其中绿色部分表示正对，红色部分表示<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(N-1\)</span><span class="heti-spacing"> </span></span>个负对。</p>
+<p>上述损失公式和<span class="heti-skip"><span class="heti-spacing"> </span>N<span class="heti-spacing"> </span></span>路<span class="heti-skip"><span class="heti-spacing"> </span>softmax<span class="heti-spacing"> </span></span>分类器的交叉熵损失很像，即从<span class="heti-skip"><span class="heti-spacing"> </span>N<span class="heti-spacing"> </span></span>个样本中找出（唯一的）正样本。该损失通常被称为 <strong><span>InfoNCE<span class="heti-spacing"> </span></span>损失</strong>。</p>
+<p><span><span class="arithmatex">\(f(x), f(x^+)\)</span><span class="heti-spacing"> </span></span>之间互信息的下界为：
+$$
+MI[f(x), f(x^+)] - \log(N) \ge -L
+$$</p>
+<p>负样本大小（<span class="arithmatex">\(N\)</span>）越大，该边界越紧。</p>
+<h3 id="instance-contrastive-learning-simclr-and-moco">Instance Contrastive Learning: SimCLR and MoCo<a class="headerlink" href="#instance-contrastive-learning-simclr-and-moco" title="Permanent link">⚓︎</a></h3>
+<h4 id="simclr">SimCLR<a class="headerlink" href="#simclr" title="Permanent link">⚓︎</a></h4>
+<p><strong>SimCLR</strong>（<a href="https://arxiv.org/pdf/2002.05709.pdf">Chen et al, 2020</a>）是用于对比学习中的一个简易框架。</p>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/43.png"><img align="right" alt="" src="images/lec19/43.png" width="30%"/></a></p>
+<ul>
+<li>
+<p>将<strong>余弦相似度</strong><span>(cosine similarity)<span class="heti-spacing"> </span></span>作为分数函数：</p>
+<div class="arithmatex">\[
+s(u, v) = \dfrac{u^T v}{\|u\|\|v\|}
+\]</div>
+</li>
+<li>
+<p>使用<strong>投影网络</strong> <span><span class="arithmatex">\(g(\cdot)\)</span><span class="heti-spacing"> </span></span>将特征投影到应用对比学习的空间中</p>
+</li>
+<li>
+<p>通过<strong>数据增强</strong>（随机裁剪、随机颜色扭曲、随机模糊等）生成正样本</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/44.png"><img src="images/lec19/44.png" width="60%"/></a>
+</div><p></p>
+</li>
+</ul>
+<p>其主要学习算法如下：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/45.png"><img src="images/lec19/45.png" width="80%"/></a>
+</div>
+<p><strong>小批量训练</strong>(mini-batch training)：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/46.png"><img src="images/lec19/46.png" width="70%"/></a>
+</div>
+<p>在<span class="heti-skip"><span class="heti-spacing"> </span>SimCLR<span class="heti-spacing"> </span></span>特征上训练<strong>线性分类器</strong>：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/47.png"><img src="images/lec19/47.png" width="50%"/></a>
+</div>
+<ul>
+<li>在<span><span class="heti-spacing"> </span>ImageNet</span>（整个训练集）上使用<span class="heti-skip"><span class="heti-spacing"> </span>SimCLR<span class="heti-spacing"> </span></span>训练特征编码器</li>
+<li>固定特征编码器，在标记数据之上训练一个线性分类器</li>
+</ul>
+<p>在<span class="heti-skip"><span class="heti-spacing"> </span>SimCLR<span class="heti-spacing"> </span></span>特征上的<strong>半监督学习</strong>：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/48.png"><img src="images/lec19/48.png" width="50%"/></a>
+</div>
+<ul>
+<li>在<span><span class="heti-spacing"> </span>ImageNet</span>（整个训练集）上使用<span class="heti-skip"><span class="heti-spacing"> </span>SimCLR<span class="heti-spacing"> </span></span>训练特征编码器</li>
+<li>在来自<span class="heti-skip"><span class="heti-spacing"> </span>ImageNet<span class="heti-spacing"> </span></span>的<span class="heti-skip"><span class="heti-spacing"> </span>1%/10%<span class="heti-spacing"> </span></span>的数据上微调编码器</li>
+</ul>
+<p><span>SimCLR<span class="heti-spacing"> </span></span>的设计选择：</p>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/49.png"><img align="right" alt="" src="images/lec19/49.png" width="25%"/></a></p>
+<ul>
+<li>
+<p><strong>投影头</strong>(projection head)：线性<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>非线性投影头能够改善表示学习，一种可能的解释为：</p>
+<ul>
+<li>对比学习目标可能会丢弃下游任务的有用信息</li>
+<li>表示空间<span class="heti-skip"><span class="heti-spacing"> </span>z<span class="heti-spacing"> </span></span>被训练成对数据变换保持不变</li>
+<li>通过利用投影头<span><span class="heti-spacing"> </span><span class="arithmatex">\(g(\cdot)\)</span></span>，可以在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(h\)</span><span class="heti-spacing"> </span></span>表示空间中保留更多的信息</li>
+</ul>
+</li>
+<li>
+<p><strong>更大的批次大小</strong></p>
+<ul>
+<li>大的训练批次大小对于<span class="heti-skip"><span class="heti-spacing"> </span>SimCLR<span class="heti-spacing"> </span></span>至关重要</li>
+<li>但这会导致在反向传播期间的内存占用过大：需要<span class="heti-skip"><span class="heti-spacing"> </span>TPU<span class="heti-spacing"> </span></span>上的分布式训练（<span>ImageNet<span class="heti-spacing"> </span></span>实验）</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/50.png"><img src="images/lec19/50.png" width="50%"/></a>
+</div><p></p>
+</li>
+</ul>
+<h4 id="moco">MoCo<a class="headerlink" href="#moco" title="Permanent link">⚓︎</a></h4>
+<p><strong>MoCo</strong>（<a href="https://arxiv.org/abs/1911.05722">He et al, 2019</a>）和<span class="heti-skip"><span class="heti-spacing"> </span>SimCLR<span class="heti-spacing"> </span></span>的关键不同在于：</p>
+<ul>
+<li>保持键的运行<strong>队列</strong>（负样本）</li>
+<li><strong>仅通过查询</strong>计算梯度并更新编码器</li>
+<li>将最小批量大小与键的数量解耦，因而可以支持<strong>大量的负样本</strong></li>
+<li>
+<p>键编码器正通过以下动量更新规则<strong>缓慢进展</strong>：</p>
+<div class="arithmatex">\[
+\theta_k \leftarrow m \theta_k + (1 - m) \theta_q
+\]</div>
+</li>
+</ul>
+<p><span>Moco<span class="heti-spacing"> </span></span>算法的伪代码如下：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/51.png"><img src="images/lec19/51.png" width="80%"/></a>
+</div>
+<hr/>
+<p><strong>MoCo V2</strong> 结合了<span class="heti-skip"><span class="heti-spacing"> </span>SimCLR<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>Moco<span class="heti-spacing"> </span></span>的思想：</p>
+<ul>
+<li>来自<span><span class="heti-spacing"> </span>SimCLR</span>：非线性投影头和强大的数据增强</li>
+<li>来自<span><span class="heti-spacing"> </span>MoCo</span>：动量更新的队列，允许在大量负样本上进行训练（无需<span><span class="heti-spacing"> </span>TPU</span>）</li>
+</ul>
+<p>关键点：</p>
+<ul>
+<li>
+<p>非线性投影头和强大的数据增强对对比学习至关重要</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/53.png"><img src="images/lec19/53.png" width="50%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>将小批量大小与负样本大小解耦，使得<span class="heti-skip"><span class="heti-spacing"> </span>MoCo-V2<span class="heti-spacing"> </span></span>在较小的批量大小下（256 vs 8192）超越<span><span class="heti-spacing"> </span>SimCLR</span></p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/54.png"><img src="images/lec19/54.png" width="50%"/></a>
+</div><p></p>
+</li>
+<li>
+<p><span>...<span class="heti-spacing"> </span></span>所有这些都具有更小的内存占用（<span>"end-to-end"<span class="heti-spacing"> </span></span>在这里指的是<span><span class="heti-spacing"> </span>SimCLR</span>）</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/52.png"><img src="images/lec19/52.png" width="50%"/></a>
+</div><p></p>
+</li>
+</ul>
+<h3 id="sequence-contrastive-learning-cpc">Sequence Contrastive Learning: CPC<a class="headerlink" href="#sequence-contrastive-learning-cpc" title="Permanent link">⚓︎</a></h3>
+<details class="info" open="open">
+<summary>实例<span class="heti-skip"><span class="heti-spacing"> </span>vs<span class="heti-spacing"> </span></span>序列对比学习</summary>
+<ul>
+<li>
+<p><strong>实例</strong><span>(instance)<span class="heti-spacing"> </span></span>级对比学习：基于正负实例的对比学习，代表作有<span><span class="heti-spacing"> </span>SimCLR, MoCo</span></p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/55.png"><img src="images/lec19/55.png" width="50%"/></a>
+</div><p></p>
+</li>
+<li>
+<p><strong>序列</strong><span>(sequence)<span class="heti-spacing"> </span></span>级对比学习：基于顺序<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>时序的对比学习，代表作有<span><span class="heti-spacing"> </span>CPC</span></p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/56.png"><img src="images/lec19/56.png" width="50%"/></a>
+</div><p></p>
+</li>
+</ul>
+</details>
+<p><strong>CPC</strong> 全称<strong>对比预测编码</strong>(contrastive predictive coding)，这三个词的含义分别为：</p>
+<ul>
+<li>对比：使用对比学习区分“正确”和“错误”的<strong>序列</strong></li>
+<li>预测：模型必须根据当前的上下文预测<strong>未来的模式</strong>(future patterns)</li>
+<li>编码：类似于其他的自监督方法，模型学习对用于下游任务而言<strong>有用的特征向量</strong>或“编码”</li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/57.png"><img src="images/lec19/57.png" width="60%"/></a>
+</div>
+<p>步骤如下：</p>
+<ol>
+<li>将所有序列样本编码为向量<span><span class="heti-spacing"> </span><span class="arithmatex">\(z_t = g_{enc}(x_t)\)</span></span></li>
+<li>使用自回归模型（<span class="arithmatex">\(g_{ar}\)</span>）将上下文（比如一半序列）总结为上下文编码<span><span class="heti-spacing"> </span><span class="arithmatex">\(c_t\)</span></span></li>
+<li>
+<p>使用下面给出的<strong>时间依赖的分数函数</strong>计算上下文<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(c_t\)</span><span class="heti-spacing"> </span></span>与未来编码<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(z_{t+k}\)</span><span class="heti-spacing"> </span></span>之间的<span class="heti-skip"><span class="heti-spacing"> </span>InfoNCE<span class="heti-spacing"> </span></span>损失：</p>
+<div class="arithmatex">\[
+s_k(z_{t+k}, c_t) = z_{t+k}^T W_t c_t
+\]</div>
+<p>其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(W_k\)</span><span class="heti-spacing"> </span></span>是可训练的矩阵</p>
+</li>
+</ol>
+<details class="example" open="open">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="" id="__tabbed_1_1" name="__tabbed_1" type="radio"/><input id="__tabbed_1_2" name="__tabbed_1" type="radio"/><div class="tabbed-labels"><label for="__tabbed_1_1">例<span><span class="heti-spacing"> </span>1</span>：为音频序列建模</label><label for="__tabbed_1_2">例<span><span class="heti-spacing"> </span>2</span>：为视觉上下文建模</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/58.png"><img src="images/lec19/58.png" width="60%"/></a>
+</div><p></p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/59.png"><img src="images/lec19/59.png" width="60%"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<p>想法：将图像分割成块<span><span class="heti-spacing"> </span>(patch)</span>，从上到下按顺序建模块行，即使用顶部行作为上下文来预测底部行</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/60.png"><img src="images/lec19/60.png" width="60%"/></a>
+</div><p></p>
+</div>
+</div>
+</div>
+</details>
+<details class="info" open="open">
+<summary>其他例子：MoCo V3</summary>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/61.png"><img src="images/lec19/61.png" width="70%"/></a>
+</div><p></p>
+</details>
+<h3 id="self-distillation-without-labels-dino">Self-Distillation Without Labels: DINO<a class="headerlink" href="#self-distillation-without-labels-dino" title="Permanent link">⚓︎</a></h3>
+<p><strong>DINO</strong> 是一种无标签的自蒸馏<span class="heti-skip"><span class="heti-spacing"> </span>(self-distillation without labels)<span class="heti-spacing"> </span></span>方法。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/62.png"><img src="images/lec19/62.png" width="70%"/></a>
+</div>
+<p>图示：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/63.png"><img src="images/lec19/63.png" width="70%"/></a>
+</div>
+<p>算法的伪代码：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/64.png"><img src="images/lec19/64.png" width="50%"/></a>
+</div>
+<p>DINO v2：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec19/65.png"><img src="images/lec19/65.png" width="60%"/></a>
+</div>
+<aside class="md-source-file">
+<span class="md-source-file__fact">
+<span class="md-icon" title="最后更新">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"></path></svg>
+</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年12月16日 15:08:15 CST">2025年12月16日 15:08:15</span>
+</span>
+<span class="md-source-file__fact">
+<span class="md-icon" title="创建日期">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"></path></svg>
+</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年12月16日 15:08:15 CST">2025年12月16日 15:08:15</span>
+</span>
+</aside>
+<p style="font-size: 30px; font-weight: 600">评论区</p>
+<div>
+    如果大家有什么问题或想法，欢迎在下方留言~
+  </div>
+<!-- Insert generated snippet here -->
+<script async="" crossorigin="anonymous" data-category="Announcements" data-category-id="DIC_kwDOMAb9Zs4CfmpP" data-emit-metadata="0" data-input-position="bottom" data-lang="zh-CN" data-mapping="pathname" data-reactions-enabled="1" data-repo="noughtq/notebook" data-repo-id="R_kgDOMAb9Zg" data-strict="0" data-theme="preferred_color_scheme" src="https://giscus.app/client.js">
+</script>
+<!-- Synchronize Giscus theme with palette -->
+<script>
+    var giscus = document.querySelector("script[src*=giscus]")
+
+    // Set palette on initial load
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object") {
+      var theme = palette.color.scheme === "slate"
+        ? "transparent_dark"
+        : "light"
+
+      // Instruct Giscus to set theme
+      giscus.setAttribute("data-theme", theme) 
+    }
+
+    // Register event handlers after documented loaded
+    document.addEventListener("DOMContentLoaded", function() {
+      var ref = document.querySelector("[data-md-component=palette]")
+      ref.addEventListener("change", function() {
+        var palette = __md_get("__palette")
+        if (palette && typeof palette.color === "object") {
+          var theme = palette.color.scheme === "slate"
+            ? "dark"
+            : "light"
+
+          // Instruct Giscus to change theme
+          var frame = document.querySelector(".giscus-frame")
+          frame.contentWindow.postMessage(
+            { giscus: { setConfig: { theme } } },
+            "https://giscus.app"
+          )
+        }
+      })
+    })
+  </script>
+<!-- 标题计数器 -->
+<link href="/css/counter.css" rel="stylesheet"/>
+<!-- 主页个性化 -->
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+<button class="md-top md-icon" data-md-component="top" hidden="" type="button">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  回到页面顶部
+</button>
+</main>
+<footer class="md-footer">
+<nav aria-label="页脚" class="md-footer__inner md-grid">
+<a aria-label="上一页: Large-Scale Distributed Training" class="md-footer__link md-footer__link--prev" href="18.html">
+<div class="md-footer__button md-icon">
+<svg viewbox="0 0 256 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path></svg>
+</div>
+<div class="md-footer__title">
+<span class="md-footer__direction">
+                上一页
+              </span>
+<div class="md-ellipsis">
+                Large-Scale Distributed Training
+              </div>
+</div>
+</a>
+<a aria-label="下一页: 20" class="md-footer__link md-footer__link--next" href="20.html">
+<div class="md-footer__title">
+<span class="md-footer__direction">
+                下一页
+              </span>
+<div class="md-ellipsis">
+                20
+              </div>
+</div>
+<div class="md-footer__button md-icon">
+<svg viewbox="0 0 256 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M247.1 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L179.2 256 41.9 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"></path></svg>
+</div>
+</a>
+</nav>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright" style="margin-left: 33.5%">
+<div class="md-copyright__highlight" style="text-align: center">
+        Copyright © 2024-2025 <a href="https://github.com/NoughtQ">NoughtQ</a>
+</div>
+    
+    
+      Powered by
+      <a href="https://www.mkdocs.org/" rel="noopener" target="_blank">
+        MkDocs
+      </a>
+      with theme
+      <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+        Material
+      </a>
+      modified by
+      <a href="https://github.com/NoughtQ" rel="noopener" target="_blank">
+        NoughtQ
+      </a>
+<!-- <br> -->
+<div style="text-align: center;">
+<a href="https://icp.gov.moe/?keyword=20252357" target="_blank">萌ICP备20252357号</a>
+</div>
+</div>
+<div class="md-social">
+<a class="md-social__link" href="https://noughtq.top" rel="noopener" target="_blank" title="noughtq.top">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M277.8 8.6c-12.3-11.4-31.3-11.4-43.5 0l-224 208c-9.6 9-12.8 22.9-8 35.1S18.8 272 32 272h16v176c0 35.3 28.7 64 64 64h288c35.3 0 64-28.7 64-64V272h16c13.2 0 25-8.1 29.8-20.3s1.6-26.2-8-35.1zM240 320h32c26.5 0 48 21.5 48 48v96H192v-96c0-26.5 21.5-48 48-48"></path></svg>
+</a>
+<a class="md-social__link" href="https://blog.noughtq.top" rel="noopener" target="_blank" title="blog.noughtq.top">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M224 24c0-13.3 10.7-24 24-24 145.8 0 264 118.2 264 264 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-119.3-96.7-216-216-216-13.3 0-24-10.7-24-24M80 96c26.5 0 48 21.5 48 48v224c0 26.5 21.5 48 48 48s48-21.5 48-48-21.5-48-48-48c-8.8 0-16-7.2-16-16v-64c0-8.8 7.2-16 16-16 79.5 0 144 64.5 144 144s-64.5 144-144 144S32 447.5 32 368V144c0-26.5 21.5-48 48-48m168 0c92.8 0 168 75.2 168 168 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-66.3-53.7-120-120-120-13.3 0-24-10.7-24-24s10.7-24 24-24"></path></svg>
+</a>
+<a class="md-social__link" href="https://github.com/noughtq" rel="noopener" target="_blank" title="github.com">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"></path></svg>
+</a>
+<a class="md-social__link" href="mailto:noughtq666@gmail.com" rel="noopener" target="_blank" title="">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m20 8-8 5-8-5V6l8 5 8-5m0-2H4c-1.11 0-2 .89-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2"></path></svg>
+</a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"base": "../..", "features": ["content.action.edit", "content.action.view", "content.code.copy", "content.code.annotate", "content.footnote.tooltips", "navigation.tabs", "navigation.top", "navigation.footer", "navigation.indexes", "navigation.tracking", "navigation.prune", "search.share"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+<script src="../../js/anchor.js"></script>
+<script src="../../js/katex.js"></script>
+<script src="../../js/toc.js"></script>
+<script src="../../js/typed.js"></script>
+<script src="../../js/custom.js"></script>
+<script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+<script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.js"></script>
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>
