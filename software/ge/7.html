@@ -1,0 +1,1925 @@
+<!DOCTYPE html>
+<html class="no-js" lang="zh"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="NoughtQ的笔记本，主要记录一些 CS 相关的笔记" name="description"/>
+<meta content="NoughtQ" name="author"/>
+<link href="https://notebook.noughtq.top/software/ge/7.html" rel="canonical"/>
+<link href="6.html" rel="prev"/>
+<link href="../../sys/index.html" rel="next"/>
+<link href="../../feed_rss_created.xml" rel="alternate" title="RSS 订阅" type="application/rss+xml"/>
+<link href="../../feed_rss_updated.xml" rel="alternate" title="已更新内容的 RSS 订阅" type="application/rss+xml"/>
+<link href="../../assets/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.6.23" name="generator"/>
+<title>Render Pipeline, Post-process and Everything - NoughtQ的笔记本</title>
+<link href="../../assets/stylesheets/main.84d31ad4.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/palette.06af60db.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=JetBrains+Mono,+LXGW+WenKai+Screen+GB+Screen:300,300i,400,400i,700,700i%7CJetBrains+Mono,+Consolas:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"JetBrains Mono, LXGW WenKai Screen GB Screen";--md-code-font:"JetBrains Mono, Consolas"}</style>
+<link href="../../css/heti.css" rel="stylesheet"/>
+<link href="../../css/timeline.css" rel="stylesheet"/>
+<link href="../../css/card.css" rel="stylesheet"/>
+<link href="../../css/custom.css" rel="stylesheet"/>
+<link href="../../css/extra_changelog.css" rel="stylesheet"/>
+<link href="../../css/header.css" rel="stylesheet"/>
+<link href="../../css/sidebar.css" rel="stylesheet"/>
+<link href="../../css/neoteroi-css.css" rel="stylesheet"/>
+<link href="../../css/toc_extra.css" rel="stylesheet"/>
+<link href="https://unpkg.com/katex@0/dist/katex.min.css" rel="stylesheet"/>
+<link href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css" rel="stylesheet"/>
+<link href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.css" rel="stylesheet"/>
+<script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-43NH8CVRCJ"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-43NH8CVRCJ",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-43NH8CVRCJ",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+<script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+<link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+<body data-md-color-accent="indigo" data-md-color-primary="indigo" data-md-color-scheme="slate" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#render-pipeline-post-process-and-everything">
+          跳转至
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header" data-md-component="header">
+<nav aria-label="页眉" class="md-header__inner md-grid">
+<a aria-label="NoughtQ的笔记本" class="md-header__button md-logo" data-md-component="logo" href="../.." title="NoughtQ的笔记本">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.05 9H7.06V6h1.99V4.03H7.06v-1c0-1.11.89-1.99 1.99-1.99h5.98V8l2.47-1.5L20 8V1.04h1c1.05 0 2 .96 2 1.99V17c0 1.03-.95 2-2 2H9.05c-1.05 0-1.99-.95-1.99-2v-1h1.99v-2H7.06v-3h1.99zM1 18h2v-3H1v-2h2v-3H1V8h2V5h2v3H3v2h2v3H3v2h2v3H3v2h2v1h16v2H5a2 2 0 0 1-2-2v-1H1z"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            NoughtQ的笔记本
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              Render Pipeline, Post-process and Everything
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="Dark Mode" class="md-option" data-md-color-accent="indigo" data-md-color-media="(prefer-color-scheme: dark)" data-md-color-primary="indigo" data-md-color-scheme="slate" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="Dark Mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"></path></svg>
+</label>
+<input aria-label="Light Mode" class="md-option" data-md-color-accent="indigo" data-md-color-media="(prefer-color-scheme: light)" data-md-color-primary="indigo" data-md-color-scheme="default" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="Light Mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="搜索" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="搜索" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 256 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path></svg>
+</label>
+<nav aria-label="查找" class="md-search__options">
+<a aria-label="分享" class="md-search__icon md-icon" data-clipboard="" data-clipboard-text="" data-md-component="search-share" href="javascript:void(0)" tabindex="-1" title="分享">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"></path></svg>
+</a>
+<button aria-label="清空当前内容" class="md-search__icon md-icon" tabindex="-1" title="清空当前内容" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header__source">
+<a class="md-source" data-md-component="source" href="https://github.com/noughtq/notebook" title="前往仓库">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    NoughtQ/Notebook
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<nav aria-label="标签" class="md-tabs" data-md-component="tabs">
+<div class="md-grid">
+<ul class="md-tabs__list">
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../index.html">
+          
+  
+  
+    
+  
+  🏫主页
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../lang/index.html">
+          
+  
+  
+    
+  
+  🔡编程语言
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../math/index.html">
+          
+  
+  
+    
+  
+  📊数学相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../algo/index.html">
+          
+  
+  
+    
+  
+  🧮算法相关
+
+        </a>
+</li>
+<li class="md-tabs__item md-tabs__item--active">
+<a class="md-tabs__link" href="../index.html">
+          
+  
+  
+    
+  
+  💾软件相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../sys/index.html">
+          
+  
+  
+    
+  
+  💻系统相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../web/index.html">
+          
+  
+  
+    
+  
+  🌏Web相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../sec/ctf-101/index.html">
+          
+  
+  
+    
+  
+  🛡️信息安全
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../ai/index.html">
+          
+  
+  
+    
+  
+  🤖人工智能
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../misc/index.html">
+          
+  
+  
+    
+  
+  🗃️杂项
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../tools/index.html">
+          
+  
+  
+    
+  
+  🛠️工具
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../papers/index.html">
+          
+  
+  
+    
+  
+  📑论文阅读
+
+        </a>
+</li>
+</ul>
+</div>
+</nav>
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="导航栏" class="md-nav md-nav--primary md-nav--lifted" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="NoughtQ的笔记本" class="md-nav__button md-logo" data-md-component="logo" href="../.." title="NoughtQ的笔记本">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.05 9H7.06V6h1.99V4.03H7.06v-1c0-1.11.89-1.99 1.99-1.99h5.98V8l2.47-1.5L20 8V1.04h1c1.05 0 2 .96 2 1.99V17c0 1.03-.95 2-2 2H9.05c-1.05 0-1.99-.95-1.99-2v-1h1.99v-2H7.06v-3h1.99zM1 18h2v-3H1v-2h2v-3H1V8h2V5h2v3H3v2h2v3H3v2h2v3H3v2h2v1h16v2H5a2 2 0 0 1-2-2v-1H1z"></path></svg>
+</a>
+    NoughtQ的笔记本
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-component="source" href="https://github.com/noughtq/notebook" title="前往仓库">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    NoughtQ/Notebook
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../index.html">
+<span class="md-ellipsis">
+    🏫主页
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../lang/index.html">
+<span class="md-ellipsis">
+    🔡编程语言
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../math/index.html">
+<span class="md-ellipsis">
+    📊数学相关
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../algo/index.html">
+<span class="md-ellipsis">
+    🧮算法相关
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_5" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../index.html">
+<span class="md-ellipsis">
+    💾软件相关
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="true" aria-labelledby="__nav_5_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_5">
+<span class="md-nav__icon md-icon"></span>
+            💾软件相关
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../dip/index.html">
+<span class="md-ellipsis">
+    图像信息处理
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../cg/index.html">
+<span class="md-ellipsis">
+    计算机图形学
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_5_4" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="index.html">
+<span class="md-ellipsis">
+    游戏引擎
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_5_4" id="__nav_5_4_label" tabindex="0">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="true" aria-labelledby="__nav_5_4_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_5_4">
+<span class="md-nav__icon md-icon"></span>
+            游戏引擎
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="1.html">
+<span class="md-ellipsis">
+    Introduction
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="2.html">
+<span class="md-ellipsis">
+    Layered Architecture of Game Engine
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="3.html">
+<span class="md-ellipsis">
+    How to Build a Game World
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_5_4_5" type="checkbox"/>
+<label class="md-nav__link" for="__nav_5_4_5" id="__nav_5_4_5_label" tabindex="0">
+<span class="md-ellipsis">
+    Rendering
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_5_4_5_label" class="md-nav" data-md-level="3">
+<label class="md-nav__title" for="__nav_5_4_5">
+<span class="md-nav__icon md-icon"></span>
+            Rendering
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="4.html">
+<span class="md-ellipsis">
+    Basics
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="5.html">
+<span class="md-ellipsis">
+    Lighting, Materials and Shaders
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="6.html">
+<span class="md-ellipsis">
+    Rendering the Nature
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    Render Pipeline, Post-process and Everything
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="7.html">
+<span class="md-ellipsis">
+    Render Pipeline, Post-process and Everything
+    
+  </span>
+</a>
+<nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#ambient-occlusion">
+<span class="md-ellipsis">
+      Ambient Occlusion
+    </span>
+</a>
+<nav aria-label="Ambient Occlusion" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#screen-space-ambient-occlusion-ssao">
+<span class="md-ellipsis">
+      Screen Space Ambient Occlusion (SSAO)
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#ssao">
+<span class="md-ellipsis">
+      SSAO+
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#horizon-based-ambient-occlusion-hbao">
+<span class="md-ellipsis">
+      Horizon-based Ambient Occlusion (HBAO)
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#ground-truth-based-ambient-occlusion-gtao">
+<span class="md-ellipsis">
+      Ground Truth-based Ambient Occlusion (GTAO)
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#ray-tracing-ambient-occlusion">
+<span class="md-ellipsis">
+      Ray-Tracing Ambient Occlusion
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#fog">
+<span class="md-ellipsis">
+      Fog
+    </span>
+</a>
+<nav aria-label="Fog" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#depth-fog">
+<span class="md-ellipsis">
+      Depth Fog
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#height-fog">
+<span class="md-ellipsis">
+      Height Fog
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#voxel-based-volumetric-fog">
+<span class="md-ellipsis">
+      Voxel-Based Volumetric Fog
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#anti-aliasing">
+<span class="md-ellipsis">
+      Anti-Aliasing
+    </span>
+</a>
+<nav aria-label="Anti-Aliasing" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#super-sample-aa-ssaa-and-multi-sample-aa-msaa">
+<span class="md-ellipsis">
+      Super-Sample AA (SSAA) and Multi-Sample AA (MSAA)
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#fast-approximate-anti-aliasing-fxaa">
+<span class="md-ellipsis">
+      Fast Approximate Anti-Aliasing (FXAA)
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#temporal-anti-aliasing-taa">
+<span class="md-ellipsis">
+      Temporal Anti-Aliasing (TAA)
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#post-processing">
+<span class="md-ellipsis">
+      Post-Processing
+    </span>
+</a>
+<nav aria-label="Post-Processing" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#bloom">
+<span class="md-ellipsis">
+      Bloom
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tone-mapping">
+<span class="md-ellipsis">
+      Tone Mapping
+    </span>
+</a>
+<nav aria-label="Tone Mapping" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tone-mapping-curve">
+<span class="md-ellipsis">
+      Tone Mapping Curve
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#aces">
+<span class="md-ellipsis">
+      ACES
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#color-grading">
+<span class="md-ellipsis">
+      Color Grading
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#rendering-pipeline">
+<span class="md-ellipsis">
+      Rendering Pipeline
+    </span>
+</a>
+<nav aria-label="Rendering Pipeline" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#forward-rendering">
+<span class="md-ellipsis">
+      Forward Rendering
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#deferred-rendering">
+<span class="md-ellipsis">
+      Deferred Rendering
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tile-based-rendering">
+<span class="md-ellipsis">
+      Tile-Based Rendering
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cluster-based-rendering">
+<span class="md-ellipsis">
+      Cluster-Based Rendering
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#visibility-buffer">
+<span class="md-ellipsis">
+      Visibility Buffer
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#challenges">
+<span class="md-ellipsis">
+      Challenges
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#frame-graphs">
+<span class="md-ellipsis">
+      Frame Graphs
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#rendering-to-monitors">
+<span class="md-ellipsis">
+      Rendering to Monitors
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../sys/index.html">
+<span class="md-ellipsis">
+    💻系统相关
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../web/index.html">
+<span class="md-ellipsis">
+    🌏Web相关
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../sec/ctf-101/index.html">
+<span class="md-ellipsis">
+    🛡️信息安全
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ai/index.html">
+<span class="md-ellipsis">
+    🤖人工智能
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../misc/index.html">
+<span class="md-ellipsis">
+    🗃️杂项
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../tools/index.html">
+<span class="md-ellipsis">
+    🛠️工具
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../papers/index.html">
+<span class="md-ellipsis">
+    📑论文阅读
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#ambient-occlusion">
+<span class="md-ellipsis">
+      Ambient Occlusion
+    </span>
+</a>
+<nav aria-label="Ambient Occlusion" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#screen-space-ambient-occlusion-ssao">
+<span class="md-ellipsis">
+      Screen Space Ambient Occlusion (SSAO)
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#ssao">
+<span class="md-ellipsis">
+      SSAO+
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#horizon-based-ambient-occlusion-hbao">
+<span class="md-ellipsis">
+      Horizon-based Ambient Occlusion (HBAO)
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#ground-truth-based-ambient-occlusion-gtao">
+<span class="md-ellipsis">
+      Ground Truth-based Ambient Occlusion (GTAO)
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#ray-tracing-ambient-occlusion">
+<span class="md-ellipsis">
+      Ray-Tracing Ambient Occlusion
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#fog">
+<span class="md-ellipsis">
+      Fog
+    </span>
+</a>
+<nav aria-label="Fog" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#depth-fog">
+<span class="md-ellipsis">
+      Depth Fog
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#height-fog">
+<span class="md-ellipsis">
+      Height Fog
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#voxel-based-volumetric-fog">
+<span class="md-ellipsis">
+      Voxel-Based Volumetric Fog
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#anti-aliasing">
+<span class="md-ellipsis">
+      Anti-Aliasing
+    </span>
+</a>
+<nav aria-label="Anti-Aliasing" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#super-sample-aa-ssaa-and-multi-sample-aa-msaa">
+<span class="md-ellipsis">
+      Super-Sample AA (SSAA) and Multi-Sample AA (MSAA)
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#fast-approximate-anti-aliasing-fxaa">
+<span class="md-ellipsis">
+      Fast Approximate Anti-Aliasing (FXAA)
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#temporal-anti-aliasing-taa">
+<span class="md-ellipsis">
+      Temporal Anti-Aliasing (TAA)
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#post-processing">
+<span class="md-ellipsis">
+      Post-Processing
+    </span>
+</a>
+<nav aria-label="Post-Processing" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#bloom">
+<span class="md-ellipsis">
+      Bloom
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tone-mapping">
+<span class="md-ellipsis">
+      Tone Mapping
+    </span>
+</a>
+<nav aria-label="Tone Mapping" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tone-mapping-curve">
+<span class="md-ellipsis">
+      Tone Mapping Curve
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#aces">
+<span class="md-ellipsis">
+      ACES
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#color-grading">
+<span class="md-ellipsis">
+      Color Grading
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#rendering-pipeline">
+<span class="md-ellipsis">
+      Rendering Pipeline
+    </span>
+</a>
+<nav aria-label="Rendering Pipeline" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#forward-rendering">
+<span class="md-ellipsis">
+      Forward Rendering
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#deferred-rendering">
+<span class="md-ellipsis">
+      Deferred Rendering
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#tile-based-rendering">
+<span class="md-ellipsis">
+      Tile-Based Rendering
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cluster-based-rendering">
+<span class="md-ellipsis">
+      Cluster-Based Rendering
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#visibility-buffer">
+<span class="md-ellipsis">
+      Visibility Buffer
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#challenges">
+<span class="md-ellipsis">
+      Challenges
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#frame-graphs">
+<span class="md-ellipsis">
+      Frame Graphs
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#rendering-to-monitors">
+<span class="md-ellipsis">
+      Rendering to Monitors
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<article class="md-content__inner md-typeset">
+<a class="md-content__button md-icon" href="https://github.com/noughtq/notebook/edit/master/docs/software/ge/7.md" rel="edit" title="编辑此页">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"></path></svg>
+</a>
+<a class="md-content__button md-icon" href="https://github.com/noughtq/notebook/raw/master/docs/software/ge/7.md" title="查看本页的源代码">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"></path></svg>
+</a>
+<h1 id="render-pipeline-post-process-and-everything">Render Pipeline, Post-process and Everything<a class="headerlink" href="#render-pipeline-post-process-and-everything" title="Permanent link">⚓︎</a></h1>
+<div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>4164<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 576 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M360.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6m64.6 136.1c-12.5 12.5-12.5 32.8 0 45.3l73.4 73.4-73.4 73.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l96-96c12.5-12.5 12.5-32.8 0-45.3l-96-96c-12.5-12.5-32.8-12.5-45.3 0zm-274.7 0c-12.5-12.5-32.8-12.5-45.3 0l-96 96c-12.5 12.5-12.5 32.8 0 45.3l96 96c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l73.3-73.4c12.5-12.5 12.5-32.8 0-45.3z"></path></svg></span> <span>13<span class="heti-spacing"> </span></span>行代码 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>21<span class="heti-spacing"> </span></span>分钟</p>
+</div>
+<h2 id="ambient-occlusion">Ambient Occlusion<a class="headerlink" href="#ambient-occlusion" title="Permanent link">⚓︎</a></h2>
+<details class="example" open="open">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="" id="__tabbed_1_1" name="__tabbed_1" type="radio"/><input id="__tabbed_1_2" name="__tabbed_1" type="radio"/><div class="tabbed-labels"><label for="__tabbed_1_1">关闭<span class="heti-skip"><span class="heti-spacing"> </span>AO<span class="heti-spacing"> </span></span></label><label for="__tabbed_1_2">开启<span><span class="heti-spacing"> </span>AO</span></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/1.png"><img src="images/lec7/1.png" width="60%"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/2.png"><img src="images/lec7/2.png" width="60%"/></a>
+</div><p></p>
+</div>
+</div>
+</div>
+<p>对比发现，<span>AO<span class="heti-spacing"> </span></span>下的物体立体感更强（阴影效果更真实<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
+</details>
+<p><strong>环境光遮蔽</strong><span>(ambient occlusion, AO)<span class="heti-spacing"> </span></span>是指由遮挡引起的对环境光衰减的近似。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/3.png"><img src="images/lec7/3.png" width="70%"/></a>
+</div>
+<p>我们会使用光线追踪来离线计算<span class="heti-skip"><span class="heti-spacing"> </span>AO<span class="heti-spacing"> </span></span>并将其存储到纹理上（烘培<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，这被广泛用于物体建模的过程中。</p>
+<ul>
+<li>带来额外的存储成本</li>
+<li>只应用在静态物体上（动态没法预计算）</li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/4.png"><img src="images/lec7/4.png" width="60%"/></a>
+</div>
+<blockquote>
+<p>无论人脸多么好看，在纹理图上看起来都很吓人😱</p>
+</blockquote>
+<h3 id="screen-space-ambient-occlusion-ssao">Screen Space Ambient Occlusion (SSAO)<a class="headerlink" href="#screen-space-ambient-occlusion-ssao" title="Permanent link">⚓︎</a></h3>
+<p>最经典的<span class="heti-skip"><span class="heti-spacing"> </span>AO<span class="heti-spacing"> </span></span>方法是<strong>屏幕空间环境光遮蔽</strong>(screen space ambient occlusion, <strong>SSAO</strong>)。它的大致思路是：</p>
+<ul>
+<li>在以视图空间的每个像素点<span class="heti-skip"><span class="heti-spacing"> </span>p<span class="heti-spacing"> </span></span>为球心的球体上随机采样<span class="heti-skip"><span class="heti-spacing"> </span>N<span class="heti-spacing"> </span></span>个点</li>
+<li>
+<p>通过比较这些采样点深度和深度缓冲区的内容来检测采样点是否被遮挡</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/5.png"><img src="images/lec7/5.png" width="40%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>计算采样点可见性的平均值来近似表示<span><span class="heti-spacing"> </span>AO</span></p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/6.png"><img src="images/lec7/6.png" width="60%"/></a>
+</div><p></p>
+</li>
+</ul>
+<details class="bug" open="open">
+<summary>问题</summary>
+<p>上图的方程有很大的问题（就是来自论文原文<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，其中一个问题是拿整个球算，表面以下的那个半球一定是没有光照的。那么按这个方程算，光强至多为原来的<span><span class="heti-spacing"> </span>1/2</span>。</p>
+</details>
+<h3 id="ssao">SSAO+<a class="headerlink" href="#ssao" title="Permanent link">⚓︎</a></h3>
+<p><strong>SSAO+</strong> 是基于<span class="heti-skip"><span class="heti-spacing"> </span>SSAO<span class="heti-spacing"> </span></span>的改进方法，它的思路是沿着法线方向对半球采样，而不是完整的球。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/7.png"><img src="images/lec7/7.png" width="70%"/></a>
+</div>
+<details class="example" open="open">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="" id="__tabbed_2_1" name="__tabbed_2" type="radio"/><input id="__tabbed_2_2" name="__tabbed_2" type="radio"/><div class="tabbed-labels"><label for="__tabbed_2_1">关闭<span class="heti-skip"><span class="heti-spacing"> </span>SSAO+<span class="heti-spacing"> </span></span></label><label for="__tabbed_2_2">开启<span><span class="heti-spacing"> </span>SSAO+</span></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/8.png"><img src="images/lec7/8.png" width="60%"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/9.png"><img src="images/lec7/9.png" width="60%"/></a>
+</div><p></p>
+<p>虽然画面整体的立体感上来了，但是使用该技术又引入了新的问题。比如面前的水泥墩出现重影现象，这是因为尽管水泥墩离相机有一定距离，但是<span class="heti-skip"><span class="heti-spacing"> </span>AO<span class="heti-spacing"> </span></span>效果过于明显。</p>
+</div>
+</div>
+</div>
+</details>
+<h3 id="horizon-based-ambient-occlusion-hbao">Horizon-based Ambient Occlusion (HBAO)<a class="headerlink" href="#horizon-based-ambient-occlusion-hbao" title="Permanent link">⚓︎</a></h3>
+<p>第二种改进方法是<strong>基于水平线的环境光遮蔽</strong>(horizon-based ambient occlusion, <strong>HBAO</strong>)，它的思路是：</p>
+<ul>
+<li>使用深度缓冲区作为<span class="heti-skip"><span class="heti-spacing"> </span>2D<span class="heti-spacing"> </span></span>表面的高度场</li>
+<li>地平角的光线会被遮挡<ul>
+<li>从一个点出发，找到能越过物体的最高的点（仰角）</li>
+</ul>
+</li>
+</ul>
+<p>计算公式：
+$$
+A = 1 - \dfrac{1}{2\pi} \int_{\theta = -\pi}^\pi \int_{\alpha = t(\theta)}^{h(\theta)} W(\vec{\omega}) \cos (\alpha) d \alpha d \theta
+$$</p>
+<p>其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(W(\vec{\omega})\)</span><span class="heti-spacing"> </span></span>为<strong>衰减函数</strong>(attenuation function) <span class="arithmatex">\(\max(0, 1 - r(\theta) / R)\)</span>。它的作用是对于离相机很远的物体，降低它对<span class="heti-skip"><span class="heti-spacing"> </span>AO<span class="heti-spacing"> </span></span>的贡献（避免出现像<span class="heti-skip"><span class="heti-spacing"> </span>SSAO+<span class="heti-spacing"> </span></span>例子中的重影现象<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/10.png"><img src="images/lec7/10.png" width="70%"/></a>
+</div>
+<p><span>HBAO<span class="heti-spacing"> </span></span>的具体实现过程为：</p>
+<ul>
+<li>使用深度缓冲区作为<span class="heti-skip"><span class="heti-spacing"> </span>2D<span class="heti-spacing"> </span></span>表面的高度场</li>
+<li>直接在<span class="heti-skip"><span class="heti-spacing"> </span>2D<span class="heti-spacing"> </span></span>表面上追踪光线，并且从地平角近似表示<span><span class="heti-spacing"> </span>AO</span><ul>
+<li>用到之前介绍的光线步进算法，但每次移动都要稍微改变一点方向，否则由于采样率低，会看到一些瑕疵</li>
+</ul>
+</li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/11.png"><img src="images/lec7/11.png" width="70%"/></a>
+</div>
+<h3 id="ground-truth-based-ambient-occlusion-gtao">Ground Truth-based Ambient Occlusion (GTAO)<a class="headerlink" href="#ground-truth-based-ambient-occlusion-gtao" title="Permanent link">⚓︎</a></h3>
+<p>前面介绍的方法都没有考虑到实际光源在物体表面上的贡献值会随光照角度发生变化，所以结果都是不正确的。所以这里引入更现代的方法：<strong>基于基准事实的环境光遮蔽</strong>(ground truth-based ambient occlusion, <strong>GTAO</strong>)。它引入了缺失的余弦向量，移除了衰减函数，并增加了（光线）多次弹射的快速近似方法。计算公式为：
+$$
+\hat{\mathcal{A}}(x) = \dfrac{1}{\pi} \int_0^\pi \int_{\theta_1(\phi)}^{\theta_2(\phi)} \cos(\theta - \gamma)^+ |\sin (\theta)| d\theta d \phi
+$$</p>
+<p>其中<span><span class="heti-spacing"> </span><span class="arithmatex">\(\gamma = angle(\vec{n}, \vec{v})\)</span></span>。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/12.png"><img src="images/lec7/12.png" width="70%"/></a>
+</div>
+<p>值得一提的是<heti-adjacent class="heti-adjacent-half">，</heti-adjacent>（光线的）<strong>多次弹射</strong><span>(multiple bounces)<span class="heti-spacing"> </span></span>是通过为反照率<span><span class="heti-spacing"> </span>(albedo)</span><strong>拟合一个三次多项式</strong>实现的。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/13.png"><img src="images/lec7/13.png" width="70%"/></a>
+</div>
+<h3 id="ray-tracing-ambient-occlusion">Ray-Tracing Ambient Occlusion<a class="headerlink" href="#ray-tracing-ambient-occlusion" title="Permanent link">⚓︎</a></h3>
+<p>最近越来越火的一个方向是实时的<strong>光线追踪环境光遮蔽</strong>(ray-tracing ambient occlusion)，就是用<span class="heti-skip"><span class="heti-spacing"> </span>RTT<span class="heti-spacing"> </span></span>硬件为每个屏幕像素点投射光线。</p>
+<ul>
+<li>1 spp（每像素采样<span><span class="heti-spacing"> </span>(sample per pixel)</span>）能在远距离<span class="heti-skip"><span class="heti-spacing"> </span>AO<span class="heti-spacing"> </span></span>上取得不错的效果</li>
+<li><span>2-4 spp<span class="heti-spacing"> </span></span>就能实现在近距离区域的细节<span class="heti-skip"><span class="heti-spacing"> </span>AO<span class="heti-spacing"> </span></span>效果</li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/14.png"><img src="images/lec7/14.png" width="70%"/></a>
+</div>
+<h2 id="fog">Fog<a class="headerlink" href="#fog" title="Permanent link">⚓︎</a></h2>
+<h3 id="depth-fog">Depth Fog<a class="headerlink" href="#depth-fog" title="Permanent link">⚓︎</a></h3>
+<p>实现雾的最简单方法是<strong>深度雾</strong>(depth fog)，可分为以下几类：</p>
+<ul>
+<li><strong>线性雾</strong>(linear fog)：factor = (end - z) / (end - start)</li>
+<li><strong>指数雾</strong>(exp fog)：factor = exp(-density * z)</li>
+<li><strong>指数平方雾</strong>(exp squared fog)：exp(-(density * z)^2)</li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/15.png"><img src="images/lec7/15.png" width="80%"/></a>
+</div>
+<details class="example" open="open">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/16.png"><img src="images/lec7/16.png" width="40%"/></a>
+</div><p></p>
+</details>
+<h3 id="height-fog">Height Fog<a class="headerlink" href="#height-fog" title="Permanent link">⚓︎</a></h3>
+<p>第二种实现方法是<strong>高度雾</strong>(height fog)。它基于这样一个事实：雾是一种气溶胶，通常沉积在靠近地面的地方，因此位置越高雾越少。</p>
+<ul>
+<li>
+<p>沿视线方向对高度雾做积分</p>
+<div class="arithmatex">\[
+\begin{aligned}
+D(h) &amp; = D_{\max} \cdot e^{-\sigma \cdot \max(h - H_s, 0)} \\
+\text{FogDensityIntegration} &amp; = D_{\max} \cdot d \int_0^1 e^{-\sigma \cdot \max(v_z + t \cdot h_z - H_s, 0)} dt \\
+&amp; = D_{\max} \cdot d e^{-\sigma \cdot \max(v_z - H_s, 0)} \dfrac{1 - e^{-\sigma \cdot d_z}}{\sigma \cdot d_z} \\
+\end{aligned}
+\]</div>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/17.png"><img src="images/lec7/17.png" width="40%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>透射<span class="heti-skip"><span class="heti-spacing"> </span>(transmission)<span class="heti-spacing"> </span></span>后雾的颜色</p>
+<div class="arithmatex">\[
+\begin{aligned}
+\text{FogInScatter} &amp; = 1 - e^{-\text{FogDensityIntegration}} \\
+\text{FinalColor} &amp; = \text{FogColor} \cdot \text{FogInScatter}
+\end{aligned}
+\]</div>
+</li>
+</ul>
+<details class="example" open="open">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/18.png"><img src="images/lec7/18.png" width="50%"/></a>
+</div><p></p>
+</details>
+<h3 id="voxel-based-volumetric-fog">Voxel-Based Volumetric Fog<a class="headerlink" href="#voxel-based-volumetric-fog" title="Permanent link">⚓︎</a></h3>
+<p>前面介绍的两种方法都是上古时期的做法。现代的方法是采用<strong>基于纹素的体积雾</strong>(voxel-based volumetric fog)。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/19.png"><img src="images/lec7/19.png" width="50%"/></a>
+</div>
+<ul>
+<li>对视锥进行切分，离相机越近切分得越细（左上）<ul>
+<li>和之前介绍的云和大气的渲染的思路很像</li>
+</ul>
+</li>
+<li>雾的<span class="heti-skip"><span class="heti-spacing"> </span>3D<span class="heti-spacing"> </span></span>纹理适应屏幕宽高比（右上）<ul>
+<li>图中就是适应了<span class="heti-skip"><span class="heti-spacing"> </span>16:9<span class="heti-spacing"> </span></span>这一常见屏幕宽高比</li>
+</ul>
+</li>
+</ul>
+<details class="example" open="open">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/20.png"><img src="images/lec7/20.png" width="50%"/></a>
+</div><p></p>
+<p>我们能从雾中看到一道道光线，这在深度雾和高度雾中是无法体现的。</p>
+</details>
+<h2 id="anti-aliasing">Anti-Aliasing<a class="headerlink" href="#anti-aliasing" title="Permanent link">⚓︎</a></h2>
+<p><strong>走样</strong><span>(aliasing)<span class="heti-spacing"> </span></span>是由高频信号和在有限渲染分辨率下采样不足共同引起的一系列渲染瑕疵。其产生的原因：</p>
+<ul>
+<li><strong>边缘</strong>采样（几何）<ul>
+<li>对斜线采样就会产生锯齿状的效果</li>
+</ul>
+</li>
+<li><strong>纹理</strong>采样<ul>
+<li>典型现象为<strong>摩尔纹</strong></li>
+<li>能够用 <strong>mipmap</strong> 解决</li>
+</ul>
+</li>
+<li><strong>高光</strong>采样<ul>
+<li>稍微动一下高光物体，光就在一瞬间发生流动</li>
+</ul>
+</li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/21.png"><img src="images/lec7/21.png" width="80%"/></a>
+</div>
+<p>解决走样的办法就是<strong>反走样</strong>(anti-aliasing)。基于屏幕的反走样方案的总体策略是：使用一种采样模式来<strong>获取更多采样点</strong>，然后<strong>对采样点进行加权求和</strong>以产生像素颜色。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/22.png"><img src="images/lec7/22.png" width="70%"/></a>
+</div>
+<h3 id="super-sample-aa-ssaa-and-multi-sample-aa-msaa">Super-Sample AA (SSAA) and Multi-Sample AA (MSAA)<a class="headerlink" href="#super-sample-aa-ssaa-and-multi-sample-aa-msaa" title="Permanent link">⚓︎</a></h3>
+<p>在早期，实现反走样的方法有：</p>
+<ul>
+<li>
+<p><strong>超采样反走样</strong>(super-sample AA, <strong>SSAA</strong>)</p>
+<ul>
+<li>最直接的反走样方案</li>
+<li>思路：先增大分辨率，然后降采样<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>高斯滤波</li>
+<li>假设渲染分辨率提升<span><span class="heti-spacing"> </span>4x</span>，那么<span class="heti-skip"><span class="heti-spacing"> </span>z<span class="heti-spacing"> </span></span>缓冲区和帧缓冲区，以及光栅化和像素着色也要放大<span><span class="heti-spacing"> </span>4x</span></li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/23.png"><img src="images/lec7/23.png" width="50%"/></a>
+</div><p></p>
+</li>
+<li>
+<p><strong>多采样反走样</strong>(multi-sample AA， <strong>MSAA</strong>)：</p>
+<ul>
+<li>同样通过增加分辨率来获取更多采样点，但相比<span><span class="heti-spacing"> </span>SSAA</span>，它仅对必要的像素点进行超采样</li>
+<li>现代硬件默认支持（可通过标志位设置）</li>
+<li>假如分辨率为<span><span class="heti-spacing"> </span>4x</span>，除了像素着色次数为<span class="heti-skip"><span class="heti-spacing"> </span>1 + x<span class="heti-spacing"> </span></span>外，<span>z<span class="heti-spacing"> </span></span>缓冲区和帧缓冲区，以及光栅化仍然放大<span><span class="heti-spacing"> </span>4x</span></li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/24.png"><img src="images/lec7/24.png" width="50%"/></a>
+</div><p></p>
+</li>
+</ul>
+<p>两者的共同缺点是太吃硬件资源了，因此现代游戏引擎很少采用这两个方法。</p>
+<h3 id="fast-approximate-anti-aliasing-fxaa">Fast Approximate Anti-Aliasing (FXAA)<a class="headerlink" href="#fast-approximate-anti-aliasing-fxaa" title="Permanent link">⚓︎</a></h3>
+<p>接下来介绍的反走样技术都是业界比较推崇的。第一种叫做<strong>快速近似反走样</strong>(fast approximate anti-aliasing, <strong>FXAA</strong>)。它只需在原始分辨率图像上操作，其思路为：</p>
+<ul>
+<li>通过亮度寻找边缘像素（下图右侧代码）</li>
+<li>计算每个边缘像素的偏移量</li>
+<li>通过偏移量重采样边缘像素，实现和邻近像素的混合</li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/25.png"><img src="images/lec7/25.png" width="70%"/></a>
+</div>
+<p>计算偏移量的方向（利用卷积计算<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/26.png"><img src="images/lec7/26.png" width="70%"/></a>
+</div>
+<blockquote>
+<p>上图的例子中，通过计算法线横向变化更大些，并且中心像素和右邻居像素的差值更大，因此可以确定该像素的偏移量朝右。</p>
+</blockquote>
+<p>下面阐述<strong>边缘搜索算法</strong>的步骤：目标是寻找像素所在的走样边，</p>
+<ul>
+<li>记录对比亮度和当前像素与偏移量像素的平均亮度（<span class="arithmatex">\(L_{\text{avg}}, L_{\text{contrast}}\)</span>）</li>
+<li>沿着<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>个<strong>垂直的</strong><span>(perpendicular)<span class="heti-spacing"> </span></span>方向搜索，计算平均亮度（<span class="arithmatex">\(L_{\text{edge}1n}, L_{\text{edge}2n}\)</span>）</li>
+<li>
+<p>重复上述步骤，直到</p>
+<div class="arithmatex">\[
+\begin{aligned}
+\text{abs}(L_{\text{edge}1n} - L_{\text{current}}) &amp; &gt; 0.25 L_{\text{contrast}} \\
+\text{abs}(L_{\text{edge}2n} - L_{\text{current}}) &amp; &gt; 0.25 L_{\text{contrast}}
+\end{aligned}
+\]</div>
+</li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/27.png"><img src="images/lec7/27.png" width="40%"/></a>
+</div>
+<p>接下来计算<strong>混合系数</strong>(blend coefficient)：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/28.png"><img src="images/lec7/28.png" width="70%"/></a>
+</div>
+<p>最后拿这个系数和邻居像素进行混合，完成反走样。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/29.png"><img src="images/lec7/29.png" width="70%"/></a>
+</div>
+<p>公式为：</p>
+<div align="center">
+PixelNewColor = Texture(CurrentP_UV + offset_direction \* offset_magnitude)
+</div>
+<details class="example" open="open">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/30.png"><img src="images/lec7/30.png" width="60%"/></a>
+</div><p></p>
+</details>
+<h3 id="temporal-anti-aliasing-taa">Temporal Anti-Aliasing (TAA)<a class="headerlink" href="#temporal-anti-aliasing-taa" title="Permanent link">⚓︎</a></h3>
+<p>第二种现代反走样技术是<strong>时间反走样</strong>(temporal anti-aliasing, <strong>TAA</strong>)。它的思路是利用时空滤波方法来提升运动中的反走样的稳定性。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/31.png"><img src="images/lec7/31.png" width="70%"/></a>
+</div>
+<details class="example" open="open">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="" id="__tabbed_3_1" name="__tabbed_3" type="radio"/><input id="__tabbed_3_2" name="__tabbed_3" type="radio"/><div class="tabbed-labels"><label for="__tabbed_3_1">例<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span></label><label for="__tabbed_3_2">例<span><span class="heti-spacing"> </span>2</span></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/32.png"><img src="images/lec7/32.png" width="70%"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/33.gif"><img src="images/lec7/33.gif" width="60%"/></a>
+</div><p></p>
+<blockquote>
+<p>由于<span class="heti-skip"><span class="heti-spacing"> </span>ac<span class="heti-spacing"> </span></span>站码率太低，所以这个<span class="heti-skip"><span class="heti-spacing"> </span>gif<span class="heti-spacing"> </span></span>图的效果很糟糕。但我也没找到原视频，望好心人指路🙏</p>
+</blockquote>
+</div>
+</div>
+</div>
+</details>
+<h2 id="post-processing">Post-Processing<a class="headerlink" href="#post-processing" title="Permanent link">⚓︎</a></h2>
+<p><strong>后处理</strong><span>(post-processing)<span class="heti-spacing"> </span></span>是整个渲染过程中的重要一环。它就像一个“美颜相机”或者滤镜，开启后游戏画面就有一种大片感。</p>
+<p>具体来说，<span>3D<span class="heti-spacing"> </span></span>图形学的后处理指的是应用于最终图像的任何算法，可以出于风格原因（色彩校正、对比度等）或现实原因（色调映射、景深等）进行。</p>
+<p>下面主要介绍以下几种后处理技术：</p>
+<ul>
+<li><strong>泛光</strong>(bloom)</li>
+<li><strong>色调映射</strong>(tone mapping)</li>
+<li><strong>色彩分级</strong>(color grading)</li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/34.png"><img src="images/lec7/34.png" width="70%"/></a>
+</div>
+<h3 id="bloom">Bloom<a class="headerlink" href="#bloom" title="Permanent link">⚓︎</a></h3>
+<p>泛光存在于霓虹灯等强光中：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/35.png"><img src="images/lec7/35.png" width="50%"/></a>
+</div>
+<ul>
+<li>泛光的物理基础是：现实世界中，透镜难以准确对焦</li>
+<li>
+<p>即便是完美的透镜也会将接收的图像和<a href="https://en.wikipedia.org/wiki/Airy_disk">艾里斑</a><span class="heti-skip"><span class="heti-spacing"> </span>(Airy disk)<span class="heti-spacing"> </span></span>做卷积</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/36.png"><img src="images/lec7/36.png" width="40%"/></a>
+</div><p></p>
+</li>
+</ul>
+<p>下面逐步介绍实现泛光的方法：</p>
+<ol>
+<li>
+<p>通过<strong>阈值</strong>检测高亮区域</p>
+<ul>
+<li>
+<p>找到亮度<span><span class="heti-spacing"> </span>Y</span>（应用<span class="heti-skip"><span class="heti-spacing"> </span>sRGB<span class="heti-spacing"> </span></span>系数<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
+<div class="arithmatex">\[
+Y = R_{\text{lin}} \cdot 0.2126 + G_{\text{lin}} \cdot 0.7152 + B_{\text{lin}} \cdot 0.0722
+\]</div>
+</li>
+<li>
+<p>代码实现：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="kt">float</span><span class="w"> </span><span class="n">threshold</span><span class="p">;</span>
+</span><span id="__span-0-2"><a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a>
+</span><span id="__span-0-3"><a href="#__codelineno-0-3" id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="n">float4</span><span class="w"> </span><span class="nf">computeHighlightArea</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-4"><a href="#__codelineno-0-4" id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="w">    </span><span class="p">[...]</span><span class="w"> </span><span class="c1">// first do normal lighting calculations and output results</span>
+</span><span id="__span-0-5"><a href="#__codelineno-0-5" id="__codelineno-0-5" name="__codelineno-0-5"></a><span class="w">    </span><span class="n">float4</span><span class="w"> </span><span class="n">scene_color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">float4</span><span class="p">(</span><span class="n">lighting</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">);</span>
+</span><span id="__span-0-6"><a href="#__codelineno-0-6" id="__codelineno-0-6" name="__codelineno-0-6"></a><span class="w">    </span><span class="c1">// check whether fragment output is higher than threshold, if so output as highlight color</span>
+</span><span id="__span-0-7"><a href="#__codelineno-0-7" id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">luminance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dot</span><span class="p">(</span><span class="n">scene_color</span><span class="p">.</span><span class="n">rgb</span><span class="p">,</span><span class="w"> </span><span class="n">vec3</span><span class="p">(</span><span class="mf">0.2126f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.7152f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0722f</span><span class="p">));</span>
+</span><span id="__span-0-8"><a href="#__codelineno-0-8" id="__codelineno-0-8" name="__codelineno-0-8"></a>
+</span><span id="__span-0-9"><a href="#__codelineno-0-9" id="__codelineno-0-9" name="__codelineno-0-9"></a><span class="w">    </span><span class="n">float4</span><span class="w"> </span><span class="n">highlight_color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">float4</span><span class="p">(</span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">);</span>
+</span><span id="__span-0-10"><a href="#__codelineno-0-10" id="__codelineno-0-10" name="__codelineno-0-10"></a><span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">luminance</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">threshold</span><span class="p">)</span>
+</span><span id="__span-0-11"><a href="#__codelineno-0-11" id="__codelineno-0-11" name="__codelineno-0-11"></a><span class="w">        </span><span class="n">highlight_color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">float4</span><span class="p">(</span><span class="n">scene_color</span><span class="p">.</span><span class="n">rgb</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">);</span><span class="w">   </span>
+</span><span id="__span-0-12"><a href="#__codelineno-0-12" id="__codelineno-0-12" name="__codelineno-0-12"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">highlight_color</span><span class="p">;</span>
+</span><span id="__span-0-13"><a href="#__codelineno-0-13" id="__codelineno-0-13" name="__codelineno-0-13"></a><span class="p">}</span>
+</span></code></pre></div>
+</li>
+<li>
+<p>结果：</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/37.png"><img src="images/lec7/37.png" width="70%"/></a>
+</div><p></p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>高斯模糊</strong>(Gaussian blur)</p>
+<ul>
+<li>
+<p>具体过程：</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/38.png"><img src="images/lec7/38.png" width="80%"/></a>
+</div><p></p>
+<ul>
+<li>小技巧：一个规模为<span class="heti-skip"><span class="heti-spacing"> </span>nxn<span class="heti-spacing"> </span></span>的卷积运算可以转化为两次<span class="heti-skip"><span class="heti-spacing"> </span>n<span class="heti-spacing"> </span></span>维向量的卷积，从而大幅减少计算量</li>
+</ul>
+</li>
+<li>
+<p>结果：</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/39.png"><img src="images/lec7/39.png" width="70%"/></a>
+</div><p></p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>金字塔</strong>(pyramid)<strong>高斯模糊</strong></p>
+<ul>
+<li>实际上，我们无法直接在高分辨率图像上做滤波（计算量太大<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，因此需要一种对图像进行<strong>降采样</strong><span>(downsample)<span class="heti-spacing"> </span></span>和<strong>升采样</strong><span>(upsample)<span class="heti-spacing"> </span></span>的方式</li>
+<li>需要一个权重系数来调整最终效果</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/40.png"><img src="images/lec7/40.png" width="60%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>泛光复合</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/41.png"><img src="images/lec7/41.png" width="60%"/></a>
+</div><p></p>
+</li>
+</ol>
+<details class="example" open="open">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/42.png"><img src="images/lec7/42.png" width="60%"/></a>
+</div><p></p>
+</details>
+<h3 id="tone-mapping">Tone Mapping<a class="headerlink" href="#tone-mapping" title="Permanent link">⚓︎</a></h3>
+<p>我们不能直接将<span class="heti-skip"><span class="heti-spacing"> </span>HDR<span class="heti-spacing"> </span></span>图像放在<span class="heti-skip"><span class="heti-spacing"> </span>SDR<span class="heti-spacing"> </span></span>设备上显示，否则就会出现左图所示的过曝和色偏问题。然而，这个问题可以用<strong>色调映射</strong><span>(tone mapping)<span class="heti-spacing"> </span></span>来解决，它的目的就是将广泛的<strong>高动态范围</strong>(high dynamic range, <strong>HDR</strong><span>)<span class="heti-spacing"> </span></span>颜色映射到可以输出的<strong>标准动态范围</strong>(standard dynamic range, <strong>SDR</strong><span>)<span class="heti-spacing"> </span></span>的显示器。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/43.png"><img src="images/lec7/43.png" width="70%"/></a>
+</div>
+<h4 id="tone-mapping-curve">Tone Mapping Curve<a class="headerlink" href="#tone-mapping-curve" title="Permanent link">⚓︎</a></h4>
+<p>第一种方法是大名鼎鼎的<strong>电影曲线</strong>(filmic curve)。</p>
+<ul>
+<li>能获得电影般的视觉效果，而不使渲染变得脏乱</li>
+<li>为图像提供适当的对比度，并优雅地衰减任何超过<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>的像素</li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/44.png"><img src="images/lec7/44.png" width="70%"/></a>
+</div>
+<h4 id="aces">ACES<a class="headerlink" href="#aces" title="Permanent link">⚓︎</a></h4>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/45.png"><img align="right" alt="" src="images/lec7/45.png" width="30%"/></a></p>
+<p>表现更好，同时在业界中有越来越多的人在使用的技术是 <strong>ACES</strong>，全称学院色彩编码系统<span><span class="heti-spacing"> </span>(academy color encoding system)</span>（得名于发明组织——美国电影艺术与科学学院，<del>另外看到<span class="heti-skip"><span class="heti-spacing"> </span>Logo<span class="heti-spacing"> </span></span>中熟悉的东西吗</del><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
+<ul>
+<li>主要用在电影和动画制作上</li>
+<li>有趣的范式和变换</li>
+<li>应用<span class="heti-skip"><span class="heti-spacing"> </span>HDR<span class="heti-spacing"> </span></span>中的色彩分级</li>
+<li>固定管线，直到最终<span><span class="heti-spacing"> </span>ODT</span>（输出设备变换）转换的阶段为止<ul>
+<li>将艺术意图与支持不同设备的机制分开</li>
+</ul>
+</li>
+</ul>
+<p><span>HDR<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>SDR<span class="heti-spacing"> </span></span>流水线：</p>
+<ul>
+<li><span>HDR / SDR<span class="heti-spacing"> </span></span>之间的视觉一致性</li>
+<li>与之前<span class="heti-skip"><span class="heti-spacing"> </span>SDR<span class="heti-spacing"> </span></span>色彩流水线相似的<span class="heti-skip"><span class="heti-spacing"> </span>SDR<span class="heti-spacing"> </span></span>结果</li>
+<li>高质量</li>
+<li>高性能</li>
+<li>对艺术团队的破坏最小化<ul>
+<li>从当前色彩流水线中迁移出来很简单</li>
+<li>掌握<span class="heti-skip"><span class="heti-spacing"> </span>HDR<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>SDR<span class="heti-spacing"> </span></span>的额外开销最小化</li>
+</ul>
+</li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/46.png"><img src="images/lec7/46.png" width="70%"/></a>
+</div>
+<details class="example" open="open">
+<summary>各种色调映射曲线的比较</summary>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/47.png"><img src="images/lec7/47.png" width="70%"/></a>
+</div><p></p>
+</details>
+<h3 id="color-grading">Color Grading<a class="headerlink" href="#color-grading" title="Permanent link">⚓︎</a></h3>
+<p><strong>色彩分级</strong><span>(color grading)<span class="heti-spacing"> </span></span>的实现主要借助<strong>查找表</strong>(look-up table, LUT)，用于将源像素的输入色彩值重新映射到新的输出值。因此<span class="heti-skip"><span class="heti-spacing"> </span>LUT<span class="heti-spacing"> </span></span>可以被认为是一种可以应用于图像或素材<span class="heti-skip"><span class="heti-spacing"> </span>(footage)<span class="heti-spacing"> </span></span>的颜色预设<span><span class="heti-spacing"> </span>(preset)</span>。</p>
+<p><span>3D<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>2D<span class="heti-spacing"> </span></span>的<span><span class="heti-spacing"> </span>LUT</span>：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/48.png"><img src="images/lec7/48.png" width="70%"/></a>
+</div>
+<blockquote>
+<p>实际在工业界中不会存储完整的<span class="heti-skip"><span class="heti-spacing"> </span>256x256<span class="heti-spacing"> </span></span>的<span><span class="heti-spacing"> </span>LUT</span>，一般只需存<span class="heti-skip"><span class="heti-spacing"> </span>16x16<span class="heti-spacing"> </span></span>或<span class="heti-skip"><span class="heti-spacing"> </span>32x32<span class="heti-spacing"> </span></span>大小的<span><span class="heti-spacing"> </span>LUT</span>。因为颜色是连续变化的，那些不在<span class="heti-skip"><span class="heti-spacing"> </span>LUT<span class="heti-spacing"> </span></span>中的颜色也可通过插值获得。</p>
+</blockquote>
+<p>艺术家友好的工具（Photoshop<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/49.png"><img src="images/lec7/49.png" width="70%"/></a>
+</div>
+<p>色彩分级是游戏渲染中最具成本效益的功能。</p>
+<details class="example" open="open">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="" id="__tabbed_4_1" name="__tabbed_4" type="radio"/><input id="__tabbed_4_2" name="__tabbed_4" type="radio"/><div class="tabbed-labels"><label for="__tabbed_4_1">例<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span></label><label for="__tabbed_4_2">例<span><span class="heti-spacing"> </span>2</span></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/50.png"><img src="images/lec7/50.png" width="70%"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/51.png"><img src="images/lec7/51.png" width="70%"/></a>
+</div><p></p>
+</div>
+</div>
+</div>
+</details>
+<h2 id="rendering-pipeline">Rendering Pipeline<a class="headerlink" href="#rendering-pipeline" title="Permanent link">⚓︎</a></h2>
+<p><strong>渲染流水线</strong><span>(rendering pipeline)<span class="heti-spacing"> </span></span>是指所有渲染操作执行和资源分配的管理顺序。</p>
+<h3 id="forward-rendering">Forward Rendering<a class="headerlink" href="#forward-rendering" title="Permanent link">⚓︎</a></h3>
+<p>一种可行的流水线可分为以下几个阶段：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/52.png"><img src="images/lec7/52.png" width="70%"/></a>
+</div>
+<ul>
+<li>阴影</li>
+<li>着色（光照）</li>
+<li>后处理</li>
+</ul>
+<p>我们称这样的流水线为<strong>前向渲染</strong>(forward rendering)，可以用以下简短的伪代码表达：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a>for n meshes
+</span><span id="__span-1-2"><a href="#__codelineno-1-2" id="__codelineno-1-2" name="__codelineno-1-2"></a>    for m lights
+</span><span id="__span-1-3"><a href="#__codelineno-1-3" id="__codelineno-1-3" name="__codelineno-1-3"></a>        color += shading(mesh, light)
+</span></code></pre></div>
+<p>前向渲染中需要注意：</p>
+<ul>
+<li>对要渲染的物体做好排序</li>
+<li>由远及近渲染透明物体</li>
+<li>先渲染不透明物体，再渲染透明物体</li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/54.png"><img src="images/lec7/54.png" width="70%"/></a>
+</div>
+<details class="example" open="open">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="5:2"><input checked="" id="__tabbed_5_1" name="__tabbed_5" type="radio"/><input id="__tabbed_5_2" name="__tabbed_5" type="radio"/><div class="tabbed-labels"><label for="__tabbed_5_1">例<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span></label><label for="__tabbed_5_2">例<span><span class="heti-spacing"> </span>2</span></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/53.gif"><img src="images/lec7/53.gif" width="60%"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/55.png"><img src="images/lec7/55.png" width="70%"/></a>
+</div><p></p>
+</div>
+</div>
+</div>
+</details>
+<h3 id="deferred-rendering">Deferred Rendering<a class="headerlink" href="#deferred-rendering" title="Permanent link">⚓︎</a></h3>
+<p>但上述这套流水线难以应对现代游戏中同一场景下存在大量不同光源的情况。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/56.png"><img src="images/lec7/56.png" width="60%"/></a>
+</div>
+<p>为此，我们引入一种知名技术，称为<strong>延迟渲染</strong>(deferred rendering)。它分为两个阶段：</p>
+<ol>
+<li>
+<p><strong>渲染<span class="heti-skip"><span class="heti-spacing"> </span>G<span class="heti-spacing"> </span></span>缓冲区</strong>(G-buffer)</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/57.png"><img src="images/lec7/57.png" width="60%"/></a>
+</div><p></p>
+</li>
+<li>
+<p><strong>延迟着色</strong>(deferred shading)</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/58.png"><img src="images/lec7/58.png" width="30%"/></a>
+</div><p></p>
+</li>
+</ol>
+<p>伪代码如下：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a># Pass 1
+</span><span id="__span-2-2"><a href="#__codelineno-2-2" id="__codelineno-2-2" name="__codelineno-2-2"></a>for each object
+</span><span id="__span-2-3"><a href="#__codelineno-2-3" id="__codelineno-2-3" name="__codelineno-2-3"></a>    write G-Buffer
+</span><span id="__span-2-4"><a href="#__codelineno-2-4" id="__codelineno-2-4" name="__codelineno-2-4"></a>
+</span><span id="__span-2-5"><a href="#__codelineno-2-5" id="__codelineno-2-5" name="__codelineno-2-5"></a># Pass 2
+</span><span id="__span-2-6"><a href="#__codelineno-2-6" id="__codelineno-2-6" name="__codelineno-2-6"></a>for each pixel
+</span><span id="__span-2-7"><a href="#__codelineno-2-7" id="__codelineno-2-7" name="__codelineno-2-7"></a>    gbuffer = readGBuffer(G-Buffer)
+</span><span id="__span-2-8"><a href="#__codelineno-2-8" id="__codelineno-2-8" name="__codelineno-2-8"></a>    for each light
+</span><span id="__span-2-9"><a href="#__codelineno-2-9" id="__codelineno-2-9" name="__codelineno-2-9"></a>        computeShading(gbuffer, light)
+</span></code></pre></div>
+<details class="recommend" open="open">
+<summary>优点</summary>
+<ul>
+<li>只需计算可见片段的光照</li>
+<li>来自<span class="heti-skip"><span class="heti-spacing"> </span>G<span class="heti-spacing"> </span></span>缓冲区的数据可用于后处理</li>
+<li>易于调试</li>
+</ul>
+</details>
+<details class="bug" open="open">
+<summary>缺点</summary>
+<ul>
+<li>
+<p>内存和缓冲区成本高</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/59.png"><img src="images/lec7/59.png" width="40%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>不支持透明物体</p>
+</li>
+<li>对<span class="heti-skip"><span class="heti-spacing"> </span>MSAA<span class="heti-spacing"> </span></span>不友好</li>
+</ul>
+</details>
+<details class="example" open="open">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="6:2"><input checked="" id="__tabbed_6_1" name="__tabbed_6" type="radio"/><input id="__tabbed_6_2" name="__tabbed_6" type="radio"/><div class="tabbed-labels"><label for="__tabbed_6_1">例<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span></label><label for="__tabbed_6_2">例<span><span class="heti-spacing"> </span>2</span></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/60.png"><img src="images/lec7/60.png" width="40%"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/61.gif"><img src="images/lec7/61.gif" width="60%"/></a>
+</div><p></p>
+</div>
+</div>
+</div>
+</details>
+<h3 id="tile-based-rendering">Tile-Based Rendering<a class="headerlink" href="#tile-based-rendering" title="Permanent link">⚓︎</a></h3>
+<p>在移动端中，更常见的渲染流水线是<strong>基于块的流水线</strong>(tile-based rendering)，因为移动端需要考虑存储芯片（DRAM）的发热问题。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/62.png"><img src="images/lec7/62.png" width="70%"/></a>
+</div>
+<p>具体做法是将画面切分为一个个块，然后一块块地渲染，将小块的渲染结果放入帧缓冲区，这样就不会产生很大的<span class="heti-skip"><span class="heti-spacing"> </span>G<span class="heti-spacing"> </span></span>缓冲区了。</p>
+<p>该算法带来的额外好处是同时将光进行切割，将其划分到一个个块中，这样方便区分某个块中存在哪些光照（被记录在<strong>光照列表</strong><span>(light list)<span class="heti-spacing"> </span></span>中<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。这种技术称为<strong>光照剔除</strong>(light culling)。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/63.png"><img src="images/lec7/63.png" width="70%"/></a>
+</div>
+<p>另外，我们还可以对该算法进行<strong>深度范围的优化</strong>(depth range optimization)：</p>
+<ul>
+<li>从<span class="heti-skip"><span class="heti-spacing"> </span>pre-z pass<span class="heti-spacing"> </span></span>中获取每个块的最小<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>最大深度</li>
+<li>为每个光照测试深度边界</li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/64.png"><img src="images/lec7/64.png" width="60%"/></a>
+</div>
+<details class="example" open="open">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/65.png"><img src="images/lec7/65.png" width="60%"/></a>
+</div><p></p>
+</details>
+<hr/>
+<p>基于块的渲染可以和前向渲染结合，得到新的流水线（即<strong>基于块的前向渲染</strong><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。它的特点是：</p>
+<ul>
+<li>深度预扫描<span><span class="heti-spacing"> </span>(depth prepass)</span>（防止覆盖绘制<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>提供块深度边界）</li>
+<li>块光照剔除（输出：每个块的光照列表）</li>
+<li>对每个对象进行着色（PS：遍历光照剔除中计算的光照列表）</li>
+</ul>
+<details class="example" open="open">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/66.png"><img src="images/lec7/66.png" width="70%"/></a>
+</div><p></p>
+</details>
+<h3 id="cluster-based-rendering">Cluster-Based Rendering<a class="headerlink" href="#cluster-based-rendering" title="Permanent link">⚓︎</a></h3>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/67.gif"><img src="images/lec7/67.gif" width="70%"/></a>
+</div>
+<h3 id="visibility-buffer">Visibility Buffer<a class="headerlink" href="#visibility-buffer" title="Permanent link">⚓︎</a></h3>
+<p>在延迟渲染中，像深度、法线等信息都存储在一个巨大<span class="heti-skip"><span class="heti-spacing"> </span>G<span class="heti-spacing"> </span></span>缓冲区中。而最近新发展出来的一个技术是<strong>可见性缓冲区</strong>(visibility buffer)，它存储的东西就没有那么多了，仅包括：</p>
+<ul>
+<li>深度</li>
+<li>原语<span><span class="heti-spacing"> </span>(primitive) ID</span>（即像素所属的几何体）</li>
+<li>（三角形网格的）重心</li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/68.png"><img src="images/lec7/68.png" width="70%"/></a>
+</div>
+<p>有了这些信息后，我们可以通过间接查找材质、法线等信息。在几何密度非常高的场景中，这样的技术能够有效减少内存的使用，并且查找效率也是很高的。</p>
+<details class="abstract" open="open">
+<summary>真实的渲染管线</summary>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/69.png"><img src="images/lec7/69.png" width="70%"/></a>
+</div><p></p>
+<blockquote>
+<p><del>来自<a href="https://unrealcommunity.wiki/unreal-schematics-2d6859">不真实的<span class="heti-skip"><span class="heti-spacing"> </span>(Unreal)<span class="heti-spacing"> </span></span>渲染管线</a>（doge）</del></p>
+</blockquote>
+</details>
+<h3 id="challenges">Challenges<a class="headerlink" href="#challenges" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li>复杂的并行工作需要与复杂的资源依赖同步</li>
+<li>需要考虑大量的生命周期<span class="heti-skip"><span class="heti-spacing"> </span>&lt; 1<span class="heti-spacing"> </span></span>帧的瞬时<span class="heti-skip"><span class="heti-spacing"> </span>(transient)<span class="heti-spacing"> </span></span>资源</li>
+<li>复杂的资源状态管理<ul>
+<li>像最新的<span class="heti-skip"><span class="heti-spacing"> </span>Vulkan, DX12<span class="heti-spacing"> </span></span>把裸的硬件算力开放出来了，需要开发者对底层硬件知识有更加扎实的理解</li>
+</ul>
+</li>
+<li>在不深入了解用户的低层级知识的情况下使用新发布的<span class="heti-skip"><span class="heti-spacing"> </span>GPU<span class="heti-spacing"> </span></span>特性</li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/70.png"><img src="images/lec7/70.png" width="70%"/></a>
+</div>
+<h3 id="frame-graphs">Frame Graphs<a class="headerlink" href="#frame-graphs" title="Permanent link">⚓︎</a></h3>
+<p><strong>帧图</strong><span>(frame graphs)<span class="heti-spacing"> </span></span>是一个在帧中传递和资源依赖的有向无环图（DAG<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，并不是一个真正可见的图。</p>
+<ul>
+<li>将流水线中的所有东西都变成一个个模块<span><span class="heti-spacing"> </span>(modules)</span>，在图中可拖拽</li>
+<li>通过<span class="heti-skip"><span class="heti-spacing"> </span>DAG<span class="heti-spacing"> </span></span>表达模块间的依赖关系，并且自动优化资源的可重用部分</li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/71.png"><img src="images/lec7/71.png" width="70%"/></a>
+</div>
+<h2 id="rendering-to-monitors">Rendering to Monitors<a class="headerlink" href="#rendering-to-monitors" title="Permanent link">⚓︎</a></h2>
+<p>渲染完游戏后，最后还得考虑呈现在显示器<span class="heti-skip"><span class="heti-spacing"> </span>(monitors)<span class="heti-spacing"> </span></span>上的效果。其中一种和渲染相关的问题是<strong>屏幕撕裂</strong>(screen tearning)，即画面的上下两半是错位的。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/72.png"><img src="images/lec7/72.png" width="60%"/></a>
+</div>
+<p>产生这一现象的原因是：在大多数游戏中，<span>GPU<span class="heti-spacing"> </span></span>的帧率可能会不稳定。当新的<span class="heti-skip"><span class="heti-spacing"> </span>GPU<span class="heti-spacing"> </span></span>帧更新处于前一个屏幕帧的中间时，就会出现屏幕撕裂的现象。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/73.png"><img src="images/lec7/73.png" width="60%"/></a>
+</div>
+<p>解决这一问题的方法有：</p>
+<ul>
+<li>
+<p><strong><span>V-Sync<span class="heti-spacing"> </span></span>技术</strong>：同步缓冲区交换与垂直刷新</p>
+<ul>
+<li>缺点：帧率会降低，导致鼠标延迟和卡顿，破坏游戏体验</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/74.png"><img src="images/lec7/74.png" width="60%"/></a>
+</div><p></p>
+</li>
+<li>
+<p><strong>变长刷新率</strong>(variable refresh rate)：</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec7/75.png"><img src="images/lec7/75.png" width="70%"/></a>
+</div><p></p>
+</li>
+</ul>
+<aside class="md-source-file">
+<span class="md-source-file__fact">
+<span class="md-icon" title="最后更新">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"></path></svg>
+</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年12月18日 09:24:47 CST">2025年12月18日 09:24:47</span>
+</span>
+<span class="md-source-file__fact">
+<span class="md-icon" title="创建日期">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"></path></svg>
+</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年12月18日 09:24:47 CST">2025年12月18日 09:24:47</span>
+</span>
+</aside>
+<p style="font-size: 30px; font-weight: 600">评论区</p>
+<div>
+    如果大家有什么问题或想法，欢迎在下方留言~
+  </div>
+<!-- Insert generated snippet here -->
+<script async="" crossorigin="anonymous" data-category="Announcements" data-category-id="DIC_kwDOMAb9Zs4CfmpP" data-emit-metadata="0" data-input-position="bottom" data-lang="zh-CN" data-mapping="pathname" data-reactions-enabled="1" data-repo="noughtq/notebook" data-repo-id="R_kgDOMAb9Zg" data-strict="0" data-theme="preferred_color_scheme" src="https://giscus.app/client.js">
+</script>
+<!-- Synchronize Giscus theme with palette -->
+<script>
+    var giscus = document.querySelector("script[src*=giscus]")
+
+    // Set palette on initial load
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object") {
+      var theme = palette.color.scheme === "slate"
+        ? "transparent_dark"
+        : "light"
+
+      // Instruct Giscus to set theme
+      giscus.setAttribute("data-theme", theme) 
+    }
+
+    // Register event handlers after documented loaded
+    document.addEventListener("DOMContentLoaded", function() {
+      var ref = document.querySelector("[data-md-component=palette]")
+      ref.addEventListener("change", function() {
+        var palette = __md_get("__palette")
+        if (palette && typeof palette.color === "object") {
+          var theme = palette.color.scheme === "slate"
+            ? "dark"
+            : "light"
+
+          // Instruct Giscus to change theme
+          var frame = document.querySelector(".giscus-frame")
+          frame.contentWindow.postMessage(
+            { giscus: { setConfig: { theme } } },
+            "https://giscus.app"
+          )
+        }
+      })
+    })
+  </script>
+<!-- 标题计数器 -->
+<link href="/css/counter.css" rel="stylesheet"/>
+<!-- 主页个性化 -->
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+<button class="md-top md-icon" data-md-component="top" hidden="" type="button">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  回到页面顶部
+</button>
+</main>
+<footer class="md-footer">
+<nav aria-label="页脚" class="md-footer__inner md-grid">
+<a aria-label="上一页: Rendering the Nature" class="md-footer__link md-footer__link--prev" href="6.html">
+<div class="md-footer__button md-icon">
+<svg viewbox="0 0 256 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path></svg>
+</div>
+<div class="md-footer__title">
+<span class="md-footer__direction">
+                上一页
+              </span>
+<div class="md-ellipsis">
+                Rendering the Nature
+              </div>
+</div>
+</a>
+<a aria-label="下一页: 系统相关" class="md-footer__link md-footer__link--next" href="../../sys/index.html">
+<div class="md-footer__title">
+<span class="md-footer__direction">
+                下一页
+              </span>
+<div class="md-ellipsis">
+                系统相关
+              </div>
+</div>
+<div class="md-footer__button md-icon">
+<svg viewbox="0 0 256 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M247.1 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L179.2 256 41.9 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"></path></svg>
+</div>
+</a>
+</nav>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright" style="margin-left: 33.5%">
+<div class="md-copyright__highlight" style="text-align: center">
+        Copyright © 2024-2025 <a href="https://github.com/NoughtQ">NoughtQ</a>
+</div>
+    
+    
+      Powered by
+      <a href="https://www.mkdocs.org/" rel="noopener" target="_blank">
+        MkDocs
+      </a>
+      with theme
+      <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+        Material
+      </a>
+      modified by
+      <a href="https://github.com/NoughtQ" rel="noopener" target="_blank">
+        NoughtQ
+      </a>
+<!-- <br> -->
+<div style="text-align: center;">
+<a href="https://icp.gov.moe/?keyword=20252357" target="_blank">萌ICP备20252357号</a>
+</div>
+</div>
+<div class="md-social">
+<a class="md-social__link" href="https://noughtq.top" rel="noopener" target="_blank" title="noughtq.top">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M277.8 8.6c-12.3-11.4-31.3-11.4-43.5 0l-224 208c-9.6 9-12.8 22.9-8 35.1S18.8 272 32 272h16v176c0 35.3 28.7 64 64 64h288c35.3 0 64-28.7 64-64V272h16c13.2 0 25-8.1 29.8-20.3s1.6-26.2-8-35.1zM240 320h32c26.5 0 48 21.5 48 48v96H192v-96c0-26.5 21.5-48 48-48"></path></svg>
+</a>
+<a class="md-social__link" href="https://blog.noughtq.top" rel="noopener" target="_blank" title="blog.noughtq.top">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M224 24c0-13.3 10.7-24 24-24 145.8 0 264 118.2 264 264 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-119.3-96.7-216-216-216-13.3 0-24-10.7-24-24M80 96c26.5 0 48 21.5 48 48v224c0 26.5 21.5 48 48 48s48-21.5 48-48-21.5-48-48-48c-8.8 0-16-7.2-16-16v-64c0-8.8 7.2-16 16-16 79.5 0 144 64.5 144 144s-64.5 144-144 144S32 447.5 32 368V144c0-26.5 21.5-48 48-48m168 0c92.8 0 168 75.2 168 168 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-66.3-53.7-120-120-120-13.3 0-24-10.7-24-24s10.7-24 24-24"></path></svg>
+</a>
+<a class="md-social__link" href="https://github.com/noughtq" rel="noopener" target="_blank" title="github.com">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"></path></svg>
+</a>
+<a class="md-social__link" href="mailto:noughtq666@gmail.com" rel="noopener" target="_blank" title="">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m20 8-8 5-8-5V6l8 5 8-5m0-2H4c-1.11 0-2 .89-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2"></path></svg>
+</a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"base": "../..", "features": ["content.action.edit", "content.action.view", "content.code.copy", "content.code.annotate", "content.footnote.tooltips", "navigation.tabs", "navigation.top", "navigation.footer", "navigation.indexes", "navigation.tracking", "navigation.prune", "search.share"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+<script src="../../js/anchor.js"></script>
+<script src="../../js/katex.js"></script>
+<script src="../../js/toc.js"></script>
+<script src="../../js/typed.js"></script>
+<script src="../../js/custom.js"></script>
+<script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+<script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.js"></script>
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>

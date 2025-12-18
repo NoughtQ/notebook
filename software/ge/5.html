@@ -1,0 +1,1827 @@
+<!DOCTYPE html>
+<html class="no-js" lang="zh"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="NoughtQ的笔记本，主要记录一些 CS 相关的笔记" name="description"/>
+<meta content="NoughtQ" name="author"/>
+<link href="https://notebook.noughtq.top/software/ge/5.html" rel="canonical"/>
+<link href="4.html" rel="prev"/>
+<link href="6.html" rel="next"/>
+<link href="../../feed_rss_created.xml" rel="alternate" title="RSS 订阅" type="application/rss+xml"/>
+<link href="../../feed_rss_updated.xml" rel="alternate" title="已更新内容的 RSS 订阅" type="application/rss+xml"/>
+<link href="../../assets/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.6.23" name="generator"/>
+<title>Lighting, Materials and Shaders - NoughtQ的笔记本</title>
+<link href="../../assets/stylesheets/main.84d31ad4.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/palette.06af60db.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=JetBrains+Mono,+LXGW+WenKai+Screen+GB+Screen:300,300i,400,400i,700,700i%7CJetBrains+Mono,+Consolas:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"JetBrains Mono, LXGW WenKai Screen GB Screen";--md-code-font:"JetBrains Mono, Consolas"}</style>
+<link href="../../css/heti.css" rel="stylesheet"/>
+<link href="../../css/timeline.css" rel="stylesheet"/>
+<link href="../../css/card.css" rel="stylesheet"/>
+<link href="../../css/custom.css" rel="stylesheet"/>
+<link href="../../css/extra_changelog.css" rel="stylesheet"/>
+<link href="../../css/header.css" rel="stylesheet"/>
+<link href="../../css/sidebar.css" rel="stylesheet"/>
+<link href="../../css/neoteroi-css.css" rel="stylesheet"/>
+<link href="../../css/toc_extra.css" rel="stylesheet"/>
+<link href="https://unpkg.com/katex@0/dist/katex.min.css" rel="stylesheet"/>
+<link href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css" rel="stylesheet"/>
+<link href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.css" rel="stylesheet"/>
+<script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-43NH8CVRCJ"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-43NH8CVRCJ",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-43NH8CVRCJ",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+<script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+<link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+<body data-md-color-accent="indigo" data-md-color-primary="indigo" data-md-color-scheme="slate" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#lighting-materials-and-shaders">
+          跳转至
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header" data-md-component="header">
+<nav aria-label="页眉" class="md-header__inner md-grid">
+<a aria-label="NoughtQ的笔记本" class="md-header__button md-logo" data-md-component="logo" href="../.." title="NoughtQ的笔记本">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.05 9H7.06V6h1.99V4.03H7.06v-1c0-1.11.89-1.99 1.99-1.99h5.98V8l2.47-1.5L20 8V1.04h1c1.05 0 2 .96 2 1.99V17c0 1.03-.95 2-2 2H9.05c-1.05 0-1.99-.95-1.99-2v-1h1.99v-2H7.06v-3h1.99zM1 18h2v-3H1v-2h2v-3H1V8h2V5h2v3H3v2h2v3H3v2h2v3H3v2h2v1h16v2H5a2 2 0 0 1-2-2v-1H1z"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            NoughtQ的笔记本
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              Lighting, Materials and Shaders
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="Dark Mode" class="md-option" data-md-color-accent="indigo" data-md-color-media="(prefer-color-scheme: dark)" data-md-color-primary="indigo" data-md-color-scheme="slate" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="Dark Mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"></path></svg>
+</label>
+<input aria-label="Light Mode" class="md-option" data-md-color-accent="indigo" data-md-color-media="(prefer-color-scheme: light)" data-md-color-primary="indigo" data-md-color-scheme="default" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="Light Mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="搜索" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="搜索" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 256 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path></svg>
+</label>
+<nav aria-label="查找" class="md-search__options">
+<a aria-label="分享" class="md-search__icon md-icon" data-clipboard="" data-clipboard-text="" data-md-component="search-share" href="javascript:void(0)" tabindex="-1" title="分享">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"></path></svg>
+</a>
+<button aria-label="清空当前内容" class="md-search__icon md-icon" tabindex="-1" title="清空当前内容" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header__source">
+<a class="md-source" data-md-component="source" href="https://github.com/noughtq/notebook" title="前往仓库">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    NoughtQ/Notebook
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<nav aria-label="标签" class="md-tabs" data-md-component="tabs">
+<div class="md-grid">
+<ul class="md-tabs__list">
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../index.html">
+          
+  
+  
+    
+  
+  🏫主页
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../lang/index.html">
+          
+  
+  
+    
+  
+  🔡编程语言
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../math/index.html">
+          
+  
+  
+    
+  
+  📊数学相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../algo/index.html">
+          
+  
+  
+    
+  
+  🧮算法相关
+
+        </a>
+</li>
+<li class="md-tabs__item md-tabs__item--active">
+<a class="md-tabs__link" href="../index.html">
+          
+  
+  
+    
+  
+  💾软件相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../sys/index.html">
+          
+  
+  
+    
+  
+  💻系统相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../web/index.html">
+          
+  
+  
+    
+  
+  🌏Web相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../sec/ctf-101/index.html">
+          
+  
+  
+    
+  
+  🛡️信息安全
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../ai/index.html">
+          
+  
+  
+    
+  
+  🤖人工智能
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../misc/index.html">
+          
+  
+  
+    
+  
+  🗃️杂项
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../tools/index.html">
+          
+  
+  
+    
+  
+  🛠️工具
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../papers/index.html">
+          
+  
+  
+    
+  
+  📑论文阅读
+
+        </a>
+</li>
+</ul>
+</div>
+</nav>
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="导航栏" class="md-nav md-nav--primary md-nav--lifted" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="NoughtQ的笔记本" class="md-nav__button md-logo" data-md-component="logo" href="../.." title="NoughtQ的笔记本">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.05 9H7.06V6h1.99V4.03H7.06v-1c0-1.11.89-1.99 1.99-1.99h5.98V8l2.47-1.5L20 8V1.04h1c1.05 0 2 .96 2 1.99V17c0 1.03-.95 2-2 2H9.05c-1.05 0-1.99-.95-1.99-2v-1h1.99v-2H7.06v-3h1.99zM1 18h2v-3H1v-2h2v-3H1V8h2V5h2v3H3v2h2v3H3v2h2v3H3v2h2v1h16v2H5a2 2 0 0 1-2-2v-1H1z"></path></svg>
+</a>
+    NoughtQ的笔记本
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-component="source" href="https://github.com/noughtq/notebook" title="前往仓库">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    NoughtQ/Notebook
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../index.html">
+<span class="md-ellipsis">
+    🏫主页
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../lang/index.html">
+<span class="md-ellipsis">
+    🔡编程语言
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../math/index.html">
+<span class="md-ellipsis">
+    📊数学相关
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../algo/index.html">
+<span class="md-ellipsis">
+    🧮算法相关
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_5" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../index.html">
+<span class="md-ellipsis">
+    💾软件相关
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="true" aria-labelledby="__nav_5_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_5">
+<span class="md-nav__icon md-icon"></span>
+            💾软件相关
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../dip/index.html">
+<span class="md-ellipsis">
+    图像信息处理
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../cg/index.html">
+<span class="md-ellipsis">
+    计算机图形学
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_5_4" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="index.html">
+<span class="md-ellipsis">
+    游戏引擎
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_5_4" id="__nav_5_4_label" tabindex="0">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="true" aria-labelledby="__nav_5_4_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_5_4">
+<span class="md-nav__icon md-icon"></span>
+            游戏引擎
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="1.html">
+<span class="md-ellipsis">
+    Introduction
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="2.html">
+<span class="md-ellipsis">
+    Layered Architecture of Game Engine
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="3.html">
+<span class="md-ellipsis">
+    How to Build a Game World
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_5_4_5" type="checkbox"/>
+<label class="md-nav__link" for="__nav_5_4_5" id="__nav_5_4_5_label" tabindex="0">
+<span class="md-ellipsis">
+    Rendering
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_5_4_5_label" class="md-nav" data-md-level="3">
+<label class="md-nav__title" for="__nav_5_4_5">
+<span class="md-nav__icon md-icon"></span>
+            Rendering
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="4.html">
+<span class="md-ellipsis">
+    Basics
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    Lighting, Materials and Shaders
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="5.html">
+<span class="md-ellipsis">
+    Lighting, Materials and Shaders
+    
+  </span>
+</a>
+<nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#starting-from-simple">
+<span class="md-ellipsis">
+      Starting from Simple
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#pre-computed-global-illumination">
+<span class="md-ellipsis">
+      Pre-computed Global Illumination
+    </span>
+</a>
+<nav aria-label="Pre-computed Global Illumination" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#spherical-harmonics">
+<span class="md-ellipsis">
+      Spherical Harmonics
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#lightmap">
+<span class="md-ellipsis">
+      Lightmap
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#light-probes">
+<span class="md-ellipsis">
+      Light Probes
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#reflection-probes">
+<span class="md-ellipsis">
+      Reflection Probes
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#materials">
+<span class="md-ellipsis">
+      Materials
+    </span>
+</a>
+<nav aria-label="Materials" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#bling-phong-materials">
+<span class="md-ellipsis">
+      Bling-Phong Materials
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#physical-based-materials">
+<span class="md-ellipsis">
+      Physical-Based Materials
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#image-based-lighting-ibl">
+<span class="md-ellipsis">
+      Image-Based Lighting (IBL)
+    </span>
+</a>
+<nav aria-label="Image-Based Lighting (IBL)" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#diffuse-irradiance-map">
+<span class="md-ellipsis">
+      Diffuse Irradiance Map
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#specular-approximation">
+<span class="md-ellipsis">
+      Specular Approximation
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#classic-shadow-solution">
+<span class="md-ellipsis">
+      Classic Shadow Solution
+    </span>
+</a>
+<nav aria-label="Classic Shadow Solution" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cascade-shadow">
+<span class="md-ellipsis">
+      Cascade Shadow
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#soft-shadow">
+<span class="md-ellipsis">
+      Soft Shadow
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#moving-wave-of-high-quality">
+<span class="md-ellipsis">
+      Moving Wave of High Quality
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#shader-management">
+<span class="md-ellipsis">
+      Shader Management
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="6.html">
+<span class="md-ellipsis">
+    Rendering the Nature
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="7.html">
+<span class="md-ellipsis">
+    Render Pipeline, Post-process and Everything
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../sys/index.html">
+<span class="md-ellipsis">
+    💻系统相关
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../web/index.html">
+<span class="md-ellipsis">
+    🌏Web相关
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../sec/ctf-101/index.html">
+<span class="md-ellipsis">
+    🛡️信息安全
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ai/index.html">
+<span class="md-ellipsis">
+    🤖人工智能
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../misc/index.html">
+<span class="md-ellipsis">
+    🗃️杂项
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../tools/index.html">
+<span class="md-ellipsis">
+    🛠️工具
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../papers/index.html">
+<span class="md-ellipsis">
+    📑论文阅读
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#starting-from-simple">
+<span class="md-ellipsis">
+      Starting from Simple
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#pre-computed-global-illumination">
+<span class="md-ellipsis">
+      Pre-computed Global Illumination
+    </span>
+</a>
+<nav aria-label="Pre-computed Global Illumination" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#spherical-harmonics">
+<span class="md-ellipsis">
+      Spherical Harmonics
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#lightmap">
+<span class="md-ellipsis">
+      Lightmap
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#light-probes">
+<span class="md-ellipsis">
+      Light Probes
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#reflection-probes">
+<span class="md-ellipsis">
+      Reflection Probes
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#materials">
+<span class="md-ellipsis">
+      Materials
+    </span>
+</a>
+<nav aria-label="Materials" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#bling-phong-materials">
+<span class="md-ellipsis">
+      Bling-Phong Materials
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#physical-based-materials">
+<span class="md-ellipsis">
+      Physical-Based Materials
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#image-based-lighting-ibl">
+<span class="md-ellipsis">
+      Image-Based Lighting (IBL)
+    </span>
+</a>
+<nav aria-label="Image-Based Lighting (IBL)" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#diffuse-irradiance-map">
+<span class="md-ellipsis">
+      Diffuse Irradiance Map
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#specular-approximation">
+<span class="md-ellipsis">
+      Specular Approximation
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#classic-shadow-solution">
+<span class="md-ellipsis">
+      Classic Shadow Solution
+    </span>
+</a>
+<nav aria-label="Classic Shadow Solution" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cascade-shadow">
+<span class="md-ellipsis">
+      Cascade Shadow
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#soft-shadow">
+<span class="md-ellipsis">
+      Soft Shadow
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#moving-wave-of-high-quality">
+<span class="md-ellipsis">
+      Moving Wave of High Quality
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#shader-management">
+<span class="md-ellipsis">
+      Shader Management
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<article class="md-content__inner md-typeset">
+<a class="md-content__button md-icon" href="https://github.com/noughtq/notebook/edit/master/docs/software/ge/5.md" rel="edit" title="编辑此页">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"></path></svg>
+</a>
+<a class="md-content__button md-icon" href="https://github.com/noughtq/notebook/raw/master/docs/software/ge/5.md" title="查看本页的源代码">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"></path></svg>
+</a>
+<h1 id="lighting-materials-and-shaders">Lighting, Materials and Shaders<a class="headerlink" href="#lighting-materials-and-shaders" title="Permanent link">⚓︎</a></h1>
+<div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>10314<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>52<span class="heti-spacing"> </span></span>分钟</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">高能预警</p>
+<p>本节将涉及到不少复杂深奥的渲染技术。笔者在撰写本笔记时只学了<span><span class="heti-spacing"> </span>GAMES101</span>，还没开始学<span><span class="heti-spacing"> </span>GAMES202</span>，所以有些技术可能理解得不是很透彻，甚至有些可能还没搞明白。因此可能会出现更多的错误和纰漏，如有读者发现并指出，笔者将不胜感激<span><span class="heti-spacing"> </span>orz</span></p>
+</div>
+<p>在图形渲染中，光照、材质和着色器是最核心的三个要素：</p>
+<ul>
+<li><strong>光照</strong>提供了场景中的能量来源，从微观角度看就是光子的发射、反射、吸收，最终进入人眼形成图像</li>
+<li><strong>材质</strong>决定了物体如何与光相互作用：当光照射到物体表面时，可能被反射回来，或被部分吸收，或在物体内部散射，这些过程共同决定了我们看到的物体外观</li>
+<li><strong>着色器</strong><span>(shader)<span class="heti-spacing"> </span></span>指运行在图形处理器上的小程序，用于模拟光与材质作用的复杂计算，将理论模型转化为逼真的实时画面</li>
+</ul>
+<p>现代光照理论以<strong>渲染方程</strong><span>(render equation)<span class="heti-spacing"> </span></span>为基础，这一方程为<span class="heti-skip"><span class="heti-spacing"> </span>James Kajiya<span class="heti-spacing"> </span></span>在<span class="heti-skip"><span class="heti-spacing"> </span>1986<span class="heti-spacing"> </span></span>年的论文中首次提出。</p>
+<div class="arithmatex">\[
+L_o(\bm{x}, \omega_o) = L_e(\bm{x}, \omega_o) + \int_{H^2} f_r(\bm{x}, \omega_o, \omega_i) L_i(\bm{x}, \omega_i) \cos \theta_i d\omega_i
+\]</div>
+<ul>
+<li>简单来说，该方程描述了从物体表面某点沿特定方向<strong>射出的辐射度</strong><span>(ongoing/observed radiance)<span class="heti-spacing"> </span></span>等于两个部分之和：<ul>
+<li>该点自身的发光（自发辐射项<span><span class="heti-spacing"> </span>(emitted radiance)</span>）</li>
+<li>来自所有入射<span class="heti-skip"><span class="heti-spacing"> </span>(incoming)<span class="heti-spacing"> </span></span>方向的光在该点经散射后朝观察方向反射的贡献</li>
+</ul>
+</li>
+</ul>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/1.png"><img align="right" alt="" src="images/lec5/1.png" width="30%"/></a></p>
+<ul>
+<li>方程形式上是一个关于方向和位置的六维积分，遍历半球空间上所有可能的入射光方向，并通过物体的材质属性函数对每一方向的入射辐射进行加权累加</li>
+<li>这里涉及两个重要物理量：<ul>
+<li><strong>辐射度</strong>(radiance)：物体表面向外辐射（反射）出的能量</li>
+<li><strong>辐照度</strong>(irradiance)：入射到表面上的能量</li>
+</ul>
+</li>
+</ul>
+<p><br/></p>
+<ul>
+<li>
+<p>渲染方程中的散射函数通常用 <strong>BRDF</strong>（Bidirectional Reflectance Distribution Function，<strong>双向反射分布函数</strong>）表示，它描述了光从入射方向转化为出射方向时能量变化的比例，是材质最关键的特性函数</p>
+<ul>
+<li>通过<span><span class="heti-spacing"> </span>BRDF</span>，渲染方程将入射辐照度与出射辐射度联系起来，严格地刻画了光与材质交互的物理过程</li>
+</ul>
+</li>
+<li>
+<p>渲染方程在理论上完备地描述了光照成像过程，但直接求解它非常困难，尤其是<strong>在实时渲染中几乎不可行</strong></p>
+<ul>
+<li>
+<p>原因在于现实世界的光照过于复杂，方程求解涉及的计算量极其庞大</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/2.png"><img src="images/lec5/2.png" width="60%"/></a>
+</div><p></p>
+</li>
+</ul>
+</li>
+</ul>
+<p>下面我们总结渲染方程在实践中遇到的主要挑战，并为后续讨论游戏引擎中的近似方案做好铺垫。</p>
+<ul>
+<li>
+<p><strong>光线可见性</strong>与<strong>光源复杂性</strong>：</p>
+<ul>
+<li>
+<p>光线的可见性<span><span class="heti-spacing"> </span>(visibility to lights)</span>：确定场景中每一点从各个光源方向是否有光照射到的问题，即<strong>阴影</strong><span>(shadow)<span class="heti-spacing"> </span></span>计算</p>
+<ul>
+<li>别看阴影只是“光被挡住”的简单现象，要在计算机中准确、高效地生成动态阴影却非常困难，需要处理大量特殊情况和优化</li>
+<li>然而阴影又至关重要：如果场景中没有正确的阴影，人眼对空间深度和物体关系的判断就会混乱，画面显得不真实</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/3.png"><img src="images/lec5/3.png" width="60%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>光源的复杂性<span><span class="heti-spacing"> </span>(light source complexity)</span>：</p>
+<ul>
+<li>
+<p>现实中光源形态多样：</p>
+<ul>
+<li>方向光：如太阳光，可近似为平行光线</li>
+<li>点光源：如灯泡，向四面八方均匀发光</li>
+<li>聚光灯：有特定方向锥角的光束</li>
+<li>面光源<heti-adjacent class="heti-adjacent-half">：</heti-adjacent>（如发光的面板）会产生软阴影和角度相关的亮度变化，极大增加了计算复杂度</li>
+</ul>
+</li>
+<li>
+<p>要高效地模拟不同类型光源对场景的照明，这本身就是一项巨大挑战</p>
+</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/4.png"><img src="images/lec5/4.png" width="60%"/></a>
+</div><p></p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>计算光照积分的高成本</strong>：</p>
+<ul>
+<li>根据渲染方程，要计算物体表面上一点的明亮程度，必须将半球范围内所有入射光的贡献积分求和，这意味着对无数方向的光进行采样和累加</li>
+<li>精确的积分往往无法找到解析解，只能<strong>通过大量采样近似</strong></li>
+<li>如果逐像素在渲染时用数值积分（如<strong>蒙特卡罗随机采样</strong>）计算光照，开销巨大，实时应用根本无法接受</li>
+<li>因此如何在不损失太多精度的前提下，以近似方法加速光照积分，是渲染中的另一个重大难题</li>
+</ul>
+</li>
+<li>
+<p><strong>全局光照的递归性</strong>：</p>
+<ul>
+<li>光线在场景中往往会发生多次弹跳，也就是说一个物体反射的光线又可以照亮其他物体，这些<strong>间接光照</strong><span>(indirect illumination)<span class="heti-spacing"> </span></span>对真实感有着重要贡献</li>
+<li>然而，这使渲染方程具有<strong>递归</strong><span>(recursive)<span class="heti-spacing"> </span></span>性质：求解某处的光照需要考虑来自其他物体的间接光，而那些物体的光照又取决于更多物体，如此循环，因此引入<strong>全局光照</strong>(global illumination, GI)（直接光照<span class="heti-skip"><span class="heti-spacing"> </span>+<span class="heti-spacing"> </span></span>间接光照）后会令计算复杂度呈指数级提升</li>
+<li>直接光照和间接光照的综合才构成了我们在现实中看到的最终亮度，这也是为何简单的局部模型往往显得“不真实”的原因，但要在<strong>实时性</strong>下计算全局光照无疑是难上加难</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/5.png"><img src="images/lec5/5.png" width="60%"/></a>
+</div><p></p>
+</li>
+</ul>
+<p>以上三大挑战叠加在一起，使得“实时解渲染方程”成为一项几乎不可能完成的任务。游戏引擎的渲染系统正是围绕如何高效近似解决这些难题而发展演进的。接下来，我们将介绍早期游戏引擎是如何在“舍弃精确、追求效率”的指导下，采用各种取舍与巧妙技巧来绕开渲染方程的直接求解，从而实时生成令人满意的画面的。</p>
+<h2 id="starting-from-simple">Starting from Simple<a class="headerlink" href="#starting-from-simple" title="Permanent link">⚓︎</a></h2>
+<p>面对渲染方程带来的计算挑战，早期的游戏引擎并未直接求解复杂的光照积分，而是采用了一套简化的光照模型来近似模拟视觉效果。</p>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/6.png"><img align="right" alt="" src="images/lec5/6.png" width="40%"/></a></p>
+<ul>
+<li><strong>主光源</strong>(main light)：<ul>
+<li>假设场景中存在一个最主要的光源</li>
+<li>例如在户外场景下通常用一个<strong>方向光</strong>模拟太阳光，仅考虑这一束平行光产生的直接照明和阴影</li>
+<li>在需要时再辅以少量点光源或聚光灯用于特殊效果，但全局仍以单一主光为中心</li>
+<li>通过将绝大多数光照归结为一个方向光，极大简化了光源处理的复杂度</li>
+</ul>
+</li>
+</ul>
+<p><br/></p>
+<ul>
+<li><strong>环境光</strong>(ambient light)：<ul>
+<li>模拟来自各个方向的<strong>间接光照</strong></li>
+<li>通常被实现为一个<strong>常量</strong>，它为场景所有物体提供一个均匀的基础照明</li>
+<li>可以把环境光理解为“天光”或半球漫射光的平均值，用一个固定亮度来近似来自周围环境的漫反射光照</li>
+<li>早期的<strong>图形<span class="heti-skip"><span class="heti-spacing"> </span>API<span class="heti-spacing"> </span></span>直接支持</strong>环境光：只需设定一个<span class="heti-skip"><span class="heti-spacing"> </span>RGB<span class="heti-spacing"> </span></span>强度，未被直接光照到的区域都会被照亮到该平均亮度</li>
+<li>尽管这么做会令阴影区域看起来不够真实，但至少保证了游戏场景不会出现完全漆黑的角落</li>
+</ul>
+</li>
+</ul>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/7.png"><img align="right" alt="" src="images/lec5/7.png" width="30%"/></a></p>
+<ul>
+<li><strong>环境映射</strong>(environment mapping)：<ul>
+<li>增强物体表面的<strong>反射</strong><span>(reflection)<span class="heti-spacing"> </span></span>质感</li>
+<li>具体而言，就是预先捕获或制作一张反映场景周围环境的全景图（<strong>环境贴图</strong>(environment map)<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，然后在渲染物体时，根据视角从这张贴图上采样颜色来模拟镜面反射</li>
+<li>对于理想的<strong>光滑表面</strong>，这相当于能看到周围环境的清晰倒影；而对于<strong>粗糙表面</strong>，则对环境贴图进行模糊处理来获得散漫的高光</li>
+<li>一种常用技巧是利用环境贴图的各级 <strong>mipmap</strong>（各层递减分辨率的纹理）来表示不同的粗糙度级别：粗糙度越高则取样更低分辨率（更模糊）的环境贴图，从而模拟更模糊的反射高光</li>
+<li>环境映射在上世纪末就已有探索，可视作早期的<a href="#image-based-lighting-ibl"><strong>基于图像的光照</strong></a>(image-based lighting, <strong>IBL</strong><span>)<span class="heti-spacing"> </span></span>的雏形</li>
+</ul>
+</li>
+</ul>
+<p>通过上述组合，游戏引擎在相当长一段时间内成功绘制出了令人接受的光照效果。</p>
+<p>此外，为了解决光线可见性问题，还引入了<strong>阴影映射</strong><span>(shadow map)<span class="heti-spacing"> </span></span>技术来绘制由主光源产生的阴影，这是目前实时渲染中最常用的动态阴影方案：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/8.png"><img src="images/lec5/8.png" width="70%"/></a>
+</div>
+<ul>
+<li>在渲染场景之前，先从光源视角渲染场景深度并存储成一张<strong>深度贴图</strong>，即<strong>阴影贴图</strong>(shadow map)</li>
+<li>然后在实际从相机视角绘制场景时，将每个像素转换到光源坐标系下，与阴影贴图的深度进行比较，以确定该像素是否被其它物体遮挡在阴影中</li>
+</ul>
+<p>凭借这些技巧，即使在硬件性能有限的年代，许多游戏已经能够呈现出相当不错的画面效果。如果美术风格得当、调教合理，这种基于经验的光照模型往往足以支撑令人愉悦的游戏体验。</p>
+<p>当然，上述方案是一种大刀阔斧的近似，其产生的图形质量与真实物理还是存在差距。其中最突出的不足在于缺乏真实的全局光照效果——环境光只是给阴影区域加上一层均匀的亮度，无法表现光线在空间中反弹所带来的光影渐变和颜色泛光。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/9.png"><img src="images/lec5/9.png" width="70%"/></a>
+</div>
+<p>为此，随着硬件的发展和算法的进步，游戏引擎开始探索在实时渲染中引入更加真实的全局光照模拟方法。</p>
+<h2 id="pre-computed-global-illumination">Pre-computed Global Illumination<a class="headerlink" href="#pre-computed-global-illumination" title="Permanent link">⚓︎</a></h2>
+<details class="info">
+<summary>First Wave of AAA Quality</summary>
+<p>图片所示的游戏均为《刺客信条》(<em>Assassin's Creed</em><span>)<span class="heti-spacing"> </span></span>系列，且“<span>xx<span class="heti-spacing"> </span></span>年前”以<span class="heti-skip"><span class="heti-spacing"> </span>2022<span class="heti-spacing"> </span></span>年（<span>GAMES104<span class="heti-spacing"> </span></span>开课时间）为锚点。</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:3"><input checked="" id="__tabbed_1_1" name="__tabbed_1" type="radio"/><input id="__tabbed_1_2" name="__tabbed_1" type="radio"/><input id="__tabbed_1_3" name="__tabbed_1" type="radio"/><div class="tabbed-labels"><label for="__tabbed_1_1"><span>15<span class="heti-spacing"> </span></span>年前</label><label for="__tabbed_1_2"><span class="heti-skip"><span class="heti-spacing"> </span>10<span class="heti-spacing"> </span></span>年前</label><label for="__tabbed_1_3"><span class="heti-skip"><span class="heti-spacing"> </span>5<span class="heti-spacing"> </span></span>年前</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/10.png"><img src="images/lec5/10.png" width="50%"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/11.png"><img src="images/lec5/11.png" width="50%"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/12.png"><img src="images/lec5/12.png" width="50%"/></a>
+</div><p></p>
+</div>
+</div>
+</div>
+</details>
+<p>在现实世界中，<strong>全局光照</strong>现象对人类视觉影响深远。例如，在房间内没有灯光，且阳光透过窗户射入时，靠近窗口的地板被直射光强烈照亮，而房间深处即使没有直射光，也并非全黑，因为地板和墙壁会把部分阳光反射到阴影区域，形成柔和的漫射光照。这种间接光赋予场景更丰富的明暗层次和氛围。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/13.png"><img src="images/lec5/13.png" width="60%"/></a>
+</div>
+<p>在早年，游戏会采用环境光，把阴影区域整体抬亮，但这样一刀切的做法会让房间亮度到处一样，缺乏立体感。真正的全局光照，应该能表现出地板、墙面之间的明暗渐变、物体之间的软阴影、以及颜色在物体之间“串色”的效果。也正因为如此，全局光照对<span class="heti-skip"><span class="heti-spacing"> </span>3A<span class="heti-spacing"> </span></span>游戏的真实感非常关键，很多玩家买游戏时都会看一句“是否支持<span><span class="heti-spacing"> </span>GI</span>”。</p>
+<p>在前面的介绍中，我们已经认识到全局光照的实现难点。为了解决“算不动”的问题，一种典型的解决思路是“<strong>用空间换时间</strong>”：既然实时算太贵，那就干脆预先算好，把结果存到内存或纹理里，运行时查表即可。</p>
+<p>具体做法是：假设场景中绝大部分东西都是<strong>静态</strong>的，比如<span class="heti-skip"><span class="heti-spacing"> </span>90%<span class="heti-spacing"> </span></span>的场景几何不动，太阳的方向和强度在每个关卡中也固定下来，那么光线在这些静态几何之间的弹跳结果其实可以离线算一遍。我们把这个过程称为<strong>预计算全局光照</strong>(pre-computed GI)。</p>
+<ul>
+<li>预计算阶段可以用慢而精的算法（比如大量光线追踪）反复迭代，把各处的间接光照分布算到比较精确</li>
+<li>而在游戏运行时，只需要对每个点查一次预计算结果，再配上实时的直接光照，就能得到比较真实的光照效果</li>
+</ul>
+<h3 id="spherical-harmonics">Spherical Harmonics<a class="headerlink" href="#spherical-harmonics" title="Permanent link">⚓︎</a></h3>
+<p>那么间接光照到底以什么形式存下来？</p>
+<ul>
+<li>如果直接把球面上每个方向的亮度都采样成一张完整的环境贴图，那么数据量会非常大，而且之后要和材质的<span class="heti-skip"><span class="heti-spacing"> </span>BRDF<span class="heti-spacing"> </span></span>做积分，也就是在这个球面上做复杂的数值积分，非常难搞</li>
+<li>
+<p>所以要满足两个目标：</p>
+<ul>
+<li>
+<p><strong>好的压缩率</strong></p>
+<ul>
+<li>一个关卡里可能要存储成千上万个辐射度探针<span><span class="heti-spacing"> </span>(radiance probe)</span></li>
+</ul>
+</li>
+<li>
+<p><strong>容易和材质函数做积分</strong>，也就是能方便地和<span class="heti-skip"><span class="heti-spacing"> </span>BRDF<span class="heti-spacing"> </span></span>做卷积</p>
+<ul>
+<li>
+<p>回顾了傅里叶变换和卷积定理：</p>
+<ul>
+<li>在空间域里两个函数的卷积，在频域里可以转化为对应系数的逐项相乘</li>
+<li>对应到光照上，就是环境光照分布和材质<span class="heti-skip"><span class="heti-spacing"> </span>BRDF<span class="heti-spacing"> </span></span>在球面上的卷积，可以尝试先把它们展开到某个“球面上的傅里叶基”下，然后在系数空间里做简单的乘加运算，而不必在球面上做复杂积分</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/14.png"><img src="images/lec5/14.png" width="60%"/></a>
+</div><p></p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>这就引出了<strong>球谐函数</strong>的概念<span><span class="heti-spacing"> </span>(spherical harmonics,</span> <strong>SH</strong>)。</p>
+<ul>
+<li>球谐函数是一组定义在球面上的正交基函数体系，数学上类比于球面上的傅里叶基</li>
+<li>
+<p>一个复杂的球面积分，可以用低阶的球谐多项式来近似，这就意味着我们可以用少量的<span class="heti-skip"><span class="heti-spacing"> </span>SH<span class="heti-spacing"> </span></span>系数来逼近某个点周围的入射光分布</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/15.png"><img src="images/lec5/15.png" width="60%"/></a>
+</div><p></p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/16.png"><img src="images/lec5/16.png" width="60%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>在实现上，如果我们只关心<strong>低频的漫反射间接光</strong>，一般用<strong>一阶或二阶的<span><span class="heti-spacing"> </span>SH</span></strong> 就已经足够</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/17.png"><img src="images/lec5/17.png" width="70%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>比如一阶<span class="heti-skip"><span class="heti-spacing"> </span>SH<span class="heti-spacing"> </span></span>只有<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>个基函数，我们可以把这<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>个系数打包到一个 <strong>RGBA</strong> 向量里；考虑到有<span><span class="heti-spacing"> </span>R</span>、G、<span>B<span class="heti-spacing"> </span></span>三个颜色通道，一个点的间接光总共只需要<span class="heti-skip"><span class="heti-spacing"> </span>12<span class="heti-spacing"> </span></span>个浮点参数就能表示</p>
+</li>
+<li>
+<p>这些系数还能继续通过<span class="heti-skip"><span class="heti-spacing"> </span>GPU<span class="heti-spacing"> </span></span>纹理压缩格式（课上提到例如<span><span class="heti-spacing"> </span>BC6H</span>、<span>BC7<span class="heti-spacing"> </span></span>等）再压一遍，使得每个点的间接光数据最终只占用非常少的位数</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/18.png"><img src="images/lec5/18.png" width="60%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>用<span class="heti-skip"><span class="heti-spacing"> </span>SH<span class="heti-spacing"> </span></span>来编码间接光有两个直接好处：</p>
+<ul>
+<li>压缩率高：相比整张环境贴图，只存几组系数节省了大量内存</li>
+<li>便于做积分：因为材质的<span class="heti-skip"><span class="heti-spacing"> </span>BRDF<span class="heti-spacing"> </span></span>也可以在球面上展开成多项式，求光照积分时就变成系数之间的若干次乘加，大幅减少了运行时的计算量</li>
+</ul>
+</li>
+</ul>
+<h3 id="lightmap">Lightmap<a class="headerlink" href="#lightmap" title="Permanent link">⚓︎</a></h3>
+<p>最经典的预计算<span class="heti-skip"><span class="heti-spacing"> </span>GI<span class="heti-spacing"> </span></span>方案是基于 <strong>lightmap</strong> 的全局光照。整体流程可以概括为几个阶段：</p>
+<ol>
+<li>
+<p>把场景表面参数化成<span class="heti-skip"><span class="heti-spacing"> </span>2D UV<span class="heti-spacing"> </span></span>图<span><span class="heti-spacing"> </span>(2D UV altas)</span></p>
+<ul>
+<li>这一步就是把复杂的三维几何“拍扁”到一张或几张二维纹理上，类似于做展开<span class="heti-skip"><span class="heti-spacing"> </span>UV<span class="heti-spacing"> </span></span>的过程</li>
+<li>
+<p>为减少成本</p>
+<ul>
+<li>使用低模几何来参与光照计算，而不是用最终的高精度模型</li>
+<li>尽量减少<span class="heti-skip"><span class="heti-spacing"> </span>UV<span class="heti-spacing"> </span></span>岛的数量，保证<span class="heti-skip"><span class="heti-spacing"> </span>lightmap<span class="heti-spacing"> </span></span>上的每个纹素<span class="heti-skip"><span class="heti-spacing"> </span>(texel)<span class="heti-spacing"> </span></span>在世界空间下覆盖的面积尽可能均匀，这样不会产生某些地方纹素极密、某些地方极稀的问题</li>
+</ul>
+</li>
+<li>
+<p>下图展示了把每个纹素画成小格子再反投影回场景的效果：理想情况下，这些小格子在三维空间中的分布大小大致一致，说明<span class="heti-skip"><span class="heti-spacing"> </span>lightmap<span class="heti-spacing"> </span></span>密度比较均匀</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/19.png"><img src="images/lec5/19.png" width="60%"/></a>
+</div><p></p>
+</li>
+</ul>
+</li>
+<li>
+<p>离线计算每个纹素的间接光照，并压缩为<span class="heti-skip"><span class="heti-spacing"> </span>SH<span class="heti-spacing"> </span></span>系数</p>
+<ul>
+<li>在<span class="heti-skip"><span class="heti-spacing"> </span>UV<span class="heti-spacing"> </span></span>展开的基础上，离线的<span class="heti-skip"><span class="heti-spacing"> </span>lighting farm<span class="heti-spacing"> </span></span>会对每个纹素对应的表面点做全局光照计算，求出那里的间接辐照度</li>
+<li>由于这一步是完全离线的，可以考虑多次弹跳、复杂遮挡和颜色串色等效果</li>
+<li>然后将这些间接光分布投影到<span class="heti-skip"><span class="heti-spacing"> </span>SH<span class="heti-spacing"> </span></span>基上，只保存对应的<span class="heti-skip"><span class="heti-spacing"> </span>SH<span class="heti-spacing"> </span></span>系数</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/20.png"><img src="images/lec5/20.png" width="60%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>从<span class="heti-skip"><span class="heti-spacing"> </span>proxy<span class="heti-spacing"> </span></span>几何投射回最终几何，并叠加高频细节</p>
+<ul>
+<li>运行时或关卡构建阶段，引擎会把<span class="heti-skip"><span class="heti-spacing"> </span>lightmap<span class="heti-spacing"> </span></span>投射到各个<span class="heti-skip"><span class="heti-spacing"> </span>LOD<span class="heti-spacing"> </span></span>的最终模型上，这样不同精度的网格都能复用同一套<span class="heti-skip"><span class="heti-spacing"> </span>GI<span class="heti-spacing"> </span></span>数据</li>
+<li>同时，还会在屏幕空间上叠加一个<span><span class="heti-spacing"> </span>HBAO</span>（基于水平直方图的环境光遮蔽）之类的算法，为近距离区域增加高频的暗角和遮挡细节</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/21.png"><img src="images/lec5/21.png" width="60%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>与实时直射光和材质一起组合成最终画面</p>
+<ul>
+<li>
+<p>烘焙的<span class="heti-skip"><span class="heti-spacing"> </span>lightmap<span class="heti-spacing"> </span></span>只负责间接光照部分；场景中主光源的<strong>直接光</strong>则还是<strong>实时</strong>计算的，例如方向光、点光源的直射光和阴影</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/22.png"><img src="images/lec5/22.png" width="60%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>再经过<strong>材质</strong>（<span>PBR<span class="heti-spacing"> </span></span>或其他模型）着色，将<span class="heti-skip"><span class="heti-spacing"> </span>lightmap<span class="heti-spacing"> </span></span>中的间接光与材质的反射率等属性综合起来，就得到了最终的帧</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/23.png"><img src="images/lec5/23.png" width="60%"/></a>
+</div><p></p>
+</li>
+</ul>
+</li>
+</ol>
+<details class="recommend" open="open">
+<summary>优点</summary>
+<ul>
+<li><strong>运行时极其高效</strong>：因为所有复杂的<span class="heti-skip"><span class="heti-spacing"> </span>GI<span class="heti-spacing"> </span></span>计算都已经离线完成，游戏过程中只需要贴图采样和少量运算，对<span class="heti-skip"><span class="heti-spacing"> </span>GPU<span class="heti-spacing"> </span></span>来说非常容易</li>
+<li>可以烘出很<strong>精细的<span class="heti-skip"><span class="heti-spacing"> </span>GI<span class="heti-spacing"> </span></span>细节</strong>：离线阶段可以用高质量算法、密集采样，所以可以把环境中很多微妙的明暗变化都烘出来</li>
+</ul>
+</details>
+<details class="bug" open="open">
+<summary>缺点</summary>
+<ul>
+<li>
+<p>预计算<strong>非常慢、非常贵</strong>：</p>
+<ul>
+<li>需要搭建<span><span class="heti-spacing"> </span>lightmap farm</span>，进行长时间的离线计算</li>
+</ul>
+</li>
+<li>
+<p><strong>只能处理静态</strong>几何和静态光源：</p>
+<ul>
+<li>一旦场景里的物体位置或光源位置发生较大变化，之前烘出来的<span class="heti-skip"><span class="heti-spacing"> </span>lightmap<span class="heti-spacing"> </span></span>就失效了，需要重新烘焙</li>
+<li>虽然可以用一些<span class="heti-skip"><span class="heti-spacing"> </span>hack<span class="heti-spacing"> </span></span>的办法让动态角色从周围采样一点<span class="heti-skip"><span class="heti-spacing"> </span>lightmap<span class="heti-spacing"> </span></span>颜色来“猜测”光照，但这种做法常常会带来奇怪的<span><span class="heti-spacing"> </span>bug</span>，比如角色刚好走到某个<span class="heti-skip"><span class="heti-spacing"> </span>dark<span class="heti-spacing"> </span></span>区域时全身突然变黑</li>
+</ul>
+</li>
+<li>
+<p><strong>存储压力大</strong>：把整个关卡参数化成大<span><span class="heti-spacing"> </span>lightmap atlas</span>，分辨率一高，纹理总大小就可能达到几十兆甚至上百兆，对包体和显存都是不小的负担</p>
+</li>
+</ul>
+</details>
+<h3 id="light-probes">Light Probes<a class="headerlink" href="#light-probes" title="Permanent link">⚓︎</a></h3>
+<p><strong>光照探针</strong><span>(light probe)<span class="heti-spacing"> </span></span>的思路很直接：</p>
+<ul>
+<li>既然把所有表面展开成<span class="heti-skip"><span class="heti-spacing"> </span>2D atlas<span class="heti-spacing"> </span></span>太麻烦，那就干脆在<span class="heti-skip"><span class="heti-spacing"> </span>3D<span class="heti-spacing"> </span></span>空间里直接撒一堆采样点，每个点就是一个<strong>光照探针</strong>，每个探针记录该点周围的光场（还是用<span class="heti-skip"><span class="heti-spacing"> </span>SH<span class="heti-spacing"> </span></span>来压缩）</li>
+<li>任何一个动态物体或角色，在移动时就根据自己所在位置附近的几个探针做<strong>插值</strong>，算出当前的间接光照</li>
+<li>为了做插值，通常会把这些采样点在空间中组成一些<strong>四面体</strong>，对每个像素找到自己处于哪个四面体中，再按顶点的<span class="heti-skip"><span class="heti-spacing"> </span>SH<span class="heti-spacing"> </span></span>系数插值，这样间接光在空间上是连续变化的</li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/24.png"><img src="images/lec5/24.png" width="60%"/></a>
+</div>
+<p>一个实际问题是：谁来在游戏场景中摆放这些光照探针？</p>
+<ul>
+<li>
+<p>早期比较“粗暴”的做法是：给艺术家一个工具，让他们<strong>手动</strong>在场景里点探针的位置</p>
+<ul>
+<li>刚开始艺术家可能觉得还不错，但随着关卡不断调整、路线不断修改，每次改布局都要重新挪 探针，很容易出错，而且效率极低</li>
+</ul>
+</li>
+<li>
+<p>所以现在更推荐用<strong>自动化算法</strong>生成探针点：根据空间几何和玩家可能活动的区域，均匀撒点，再进行一些优化，让探针分布既覆盖关键路径，又不过度密集</p>
+<ul>
+<li>如果要做工业级应用，最好写一套自动生成探针的算法，不要把这个苦活交给艺术家。</li>
+</ul>
+</li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/25.png"><img src="images/lec5/25.png" width="70%"/></a>
+</div>
+<p>值得一提的是，光照探针的一个优点是可以在<strong>运行时更新</strong>：如果场景发生了一些变化，比如角色移动到一个新的区域，或者场景里某些动态事件改变了环境光，有些系统可以在运行时“软更新” 探针的数据。这意味着它比纯静态的<span class="heti-skip"><span class="heti-spacing"> </span>lightmap<span class="heti-spacing"> </span></span>更有弹性，<strong>适合那些需要一定环境变化的游戏场景</strong>。</p>
+<h3 id="reflection-probes">Reflection Probes<a class="headerlink" href="#reflection-probes" title="Permanent link">⚓︎</a></h3>
+<p>从数据表达上看，光照探针主要用于漫反射<span><span class="heti-spacing"> </span>GI</span>，也就是说它主要考虑的是<strong>低频</strong>信息。但游戏里还有很多像车身、玻璃、金属这样的材质，需要用更<strong>高频</strong>的信息表达。为此，我们引入了另一种探针，即<strong>反射探针</strong>(reflection probe)。它的特征是数量相对较少，但每个都存一张比较高分辨率的环境贴图（一般是立方体纹理<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，专门用于做镜面反射。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/26.png"><img src="images/lec5/26.png" width="50%"/></a>
+</div>
+<p>通常这两类探针会分开采样、分开存储：</p>
+<ul>
+<li>前者密度高、精度低，主要贡献漫反射<span><span class="heti-spacing"> </span>GI</span></li>
+<li>后者密度低、精度高，负责高频的镜面反射</li>
+</ul>
+<p>把这两者结合起来，就能在相对合理的成本下，让静态环境和动态物体都拥有不错的全局光照感。</p>
+<details class="recommend" open="open">
+<summary>优点</summary>
+<ul>
+<li><strong>运行时</strong>同样非常<strong>高效</strong>：和<span class="heti-skip"><span class="heti-spacing"> </span>lightmap<span class="heti-spacing"> </span></span>一样，主要工作在离线完成，游戏里只是采样和插值</li>
+<li>可以同时应用到<strong>静态和动态</strong>物体：因为探针是分布在空间中的，动态物体只需要根据当前位置在相邻探针间进行插值，就可以获得合理的间接光照，无需为每个动态物体单独烘焙</li>
+<li>同时支持<strong>漫反射和镜面反射</strong>：光照探针提供漫反射<span><span class="heti-spacing"> </span>GI</span>，反射探针提供镜面反射</li>
+</ul>
+</details>
+<details class="bug" open="open">
+<summary>缺点</summary>
+<ul>
+<li>仍然需要一些预计算：布满整个世界的一大堆<span class="heti-skip"><span class="heti-spacing"> </span>SH<span class="heti-spacing"> </span></span>光照探针，需要离线阶段去采样和编码，虽然比<span class="heti-skip"><span class="heti-spacing"> </span>lightmap<span class="heti-spacing"> </span></span>要少很多数据，但预计算和资源管理的工作仍然不轻</li>
+<li>无法表现细节丰富的<span><span class="heti-spacing"> </span>GI</span>：因为探针数量有限、采样相对稀疏，相比于<span class="heti-skip"><span class="heti-spacing"> </span>lightmap<span class="heti-spacing"> </span></span>那种在几百万个纹素进行的密集采样，它在软阴影、物体接触处的暗部、以及非常细腻的颜色串色等方面难以达到同样的精度；采样率差了一个数量级，效果肯定也差一些</li>
+</ul>
+</details>
+<h2 id="materials">Materials<a class="headerlink" href="#materials" title="Permanent link">⚓︎</a></h2>
+<h3 id="bling-phong-materials">Bling-Phong Materials<a class="headerlink" href="#bling-phong-materials" title="Permanent link">⚓︎</a></h3>
+<p>有了光源和光照模型，下一步就是考虑<strong>材质</strong>如何响应光照。材质的作用由<span class="heti-skip"><span class="heti-spacing"> </span>BRDF<span class="heti-spacing"> </span></span>决定，简单理解就是表面把入射的光以怎样的角度和强度反射出去。在前面的简化光照方案中，游戏引擎普遍采用 <strong><span>Blinn-Phong<span class="heti-spacing"> </span></span>着色模型</strong>作为材质的光照计算方法。<span>Phong<span class="heti-spacing"> </span></span>模型是一种经验模型，它假定光照分为三部分：</p>
+<ul>
+<li>环境光<span><span class="heti-spacing"> </span>(ambient)</span></li>
+<li>漫反射<span><span class="heti-spacing"> </span>(diffuse)</span></li>
+<li>镜面高光<span><span class="heti-spacing"> </span>(specular)</span></li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/27.png"><img src="images/lec5/27.png" width="70%"/></a>
+</div>
+<p><span>Blinn-Phong<span class="heti-spacing"> </span></span>是<span class="heti-skip"><span class="heti-spacing"> </span>Phong<span class="heti-spacing"> </span></span>模型的改进版本，其高光计算使用<strong>半程向量</strong>（视线与光线方向的中间向量）提高了效率，但总体思想一致。由于<strong>实现简单且运行效率高</strong>，<span>Blinn-Phong<span class="heti-spacing"> </span></span>模型在很长一段时间内都是实时渲染领域的主流方案。</p>
+<p>然而，随着玩家们对游戏画面真实感的要求的不断提高，<span>Blinn-Phong<span class="heti-spacing"> </span></span>模型的局限性也日益凸显：</p>
+<ul>
+<li><strong>不遵循物理能量守恒原则</strong>(not energy conservative)：在某些参数组合下，表面反射出的光通量甚至可能超过入射光通量，这是物理上不合理的，也会导致画面偏亮失真</li>
+<li>在光线追踪等更精确的渲染中<strong>收敛不稳定</strong>：因为非物理性的着色函数会引入噪声和伪影，使得高级渲染算法难以得到正确结果</li>
+<li>难以模拟复杂材质的<strong>细节</strong>特征：现实中的材质种类繁多，例如各向异性材料、金属和非金属在反光性质上的差异，以及次表面散射等高级效果，都无法靠<span class="heti-skip"><span class="heti-spacing"> </span>Phong<span class="heti-spacing"> </span></span>模型有限的参数来逼真呈现</li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/28.png"><img src="images/lec5/28.png" width="60%"/></a>
+</div>
+<h3 id="physical-based-materials">Physical-Based Materials<a class="headerlink" href="#physical-based-materials" title="Permanent link">⚓︎</a></h3>
+<p>为了解决上述问题，<strong>基于物理的渲染</strong>(physical-based rendering, <strong>PBR</strong><span>)<span class="heti-spacing"> </span></span>的理念应运而生。</p>
+<ul>
+<li><span>PBR<span class="heti-spacing"> </span></span>的核心思想是以<strong>物理定律</strong>为指导来建模材质的光照响应，确保渲染结果在能量和视觉上都尽可能接近真实世界</li>
+<li>
+<p><span>PBR<span class="heti-spacing"> </span></span>引入了更完善的表面反射模型，其中最重要的就是<strong>微表面理论</strong>(microfacet theory)</p>
+<ul>
+<li>微表面模型认为，现实中的粗糙表面可以视作由无数微小的镜面（微凸体）组成</li>
+<li>即便肉眼看起来漫反射的<strong>粗糙材质</strong>，在微观尺度下也由<strong>很多朝向各异的微观平面</strong>构成</li>
+<li>光照到达表面后，会在这些微观平面上发生<strong>镜面反射</strong>，但由于每个平面的朝向不同，宏观上汇聚起来就形成了散射的反射效果</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/29.png"><img src="images/lec5/29.png" width="70%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>模型中的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(D\)</span><span class="heti-spacing"> </span></span>指代<strong>法线分布函数</strong>(normal distribution function, <strong>NDF</strong>)</p>
+<ul>
+<li>
+<p><span>NDF<span class="heti-spacing"> </span></span>给出了表面微法线朝向的概率分布</p>
+<ul>
+<li><strong>粗糙</strong>度高的表面其微法线分布范围广，意味着从宏观上看高光范围更大但强度更低</li>
+<li><strong>光滑</strong>表面微法线集中在一个方向，高光集中而强烈</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/31.png"><img src="images/lec5/31.png" width="70%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>常用的<span class="heti-skip"><span class="heti-spacing"> </span>NDF<span class="heti-spacing"> </span></span>有<span class="heti-skip"><span class="heti-spacing"> </span>Blinn-Phong<span class="heti-spacing"> </span></span>分布、<span>Beckmann<span class="heti-spacing"> </span></span>分布、<span>GGX<span class="heti-spacing"> </span></span>分布等，其中 <strong><span>GGX<span class="heti-spacing"> </span></span>分布</strong>是近年来游戏领域偏爱的选择，它相比<span class="heti-skip"><span class="heti-spacing"> </span>Phong<span class="heti-spacing"> </span></span>分布可以更好地模拟粗糙表面高光的“拖尾”现象，让材质看起来更加真实</p>
+<ul>
+<li>可以类比音箱的挑选（高音脆，低音沉<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，<span>GGX<span class="heti-spacing"> </span></span>的过渡相比<span class="heti-skip"><span class="heti-spacing"> </span>Phong<span class="heti-spacing"> </span></span>更加柔和</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>模型中的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(G\)</span><span class="heti-spacing"> </span></span>指代<strong>几何遮蔽</strong><span>(geometry attenuation)<span class="heti-spacing"> </span></span>项</p>
+<ul>
+<li>当观察角度或入射角度发生变化时，<strong>微表面之间会发生自我遮挡和阴影</strong></li>
+<li>当从一个很小的角度斜看表面时，实际上能“看到”的亮面变少了，因为许多微凸体彼此遮挡了对方的反射</li>
+<li>几何项通过对微表面遮挡效应建模，在高角度（掠射）观察时适当降低反射强度，以符合真实现象</li>
+<li>常用的几何项模型如 <strong><span>Smith<span class="heti-spacing"> </span></span>算法</strong>等，会根据粗糙度计算不同视角下可参与反射的有效微表面比例，从而修正<span class="heti-skip"><span class="heti-spacing"> </span>NDF<span class="heti-spacing"> </span></span>得到的理想反射强度</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/32.png"><img src="images/lec5/32.png" width="70%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>模型中的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(F\)</span><span class="heti-spacing"> </span></span>指代<strong>菲涅耳效应</strong>(Fresnel equation)</p>
+<ul>
+<li>它描述了<strong>材料对不同入射角光线的反射率的变化规律</strong></li>
+<li>当光线垂直入射（入射角接近<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>度）时，大部分能量会进入材质内部（非金属会将更多透射变为漫反射<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，只有一小部分被镜面反射</li>
+<li>
+<p>但当光线以很小的掠射角划过表面时，镜面反射率会大大增加，表面看起来更亮</p>
+<ul>
+<li>这就是为什么远处水面、油漆等在接近平行视角观察时会闪亮如镜，而正面对视时反光却没那么强烈</li>
+</ul>
+</li>
+<li>
+<p>实际应用中常用简单的 <strong><span>Schlick<span class="heti-spacing"> </span></span>近似公式</strong>，根据材质的折射率或金属度计算出不同角度下的反射率插值曲线，实现高效的实时菲涅耳计算</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>综合<span><span class="heti-spacing"> </span>NDF</span>、几何遮蔽和菲涅耳三部分，再加上一个宏观的漫反射项（如<strong>朗伯模型</strong>用于非金属的漫反射<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，就构成了现代<span class="heti-skip"><span class="heti-spacing"> </span>PBR<span class="heti-spacing"> </span></span>着色模型，如下所示。这种模型天然满足能量守恒，能稳定用于高级渲染算法，并且具有明确的物理意义。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/30.png"><img src="images/lec5/30.png" width="70%"/></a>
+</div>
+<details class="example" open="open">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/37.png"><img src="images/lec5/37.png" width="60%"/></a>
+</div><p></p>
+</details>
+<hr/>
+<p><span>PBR<span class="heti-spacing"> </span></span>参数的设计可遵循<span class="heti-skip"><span class="heti-spacing"> </span>Brent Burley<span class="heti-spacing"> </span></span>提出的原则：</p>
+<ul>
+<li>应该使用直观参数而不是物理参数</li>
+<li>参数量应尽可能少</li>
+<li>参数的合理范围为<span class="heti-skip"><span class="heti-spacing"> </span>0-1<span class="heti-spacing"> </span></span>之间</li>
+<li>参数应允许在合理范围内被推至其可能的范围之外</li>
+<li>所有参数的组合应尽可能鲁棒与合理</li>
+</ul>
+<p>在实际使用<span class="heti-skip"><span class="heti-spacing"> </span>PBR<span class="heti-spacing"> </span></span>时，游戏引擎倾向于<strong>提供直观且有限的参数集</strong>来由艺术家调整材质外观。下面是<span class="heti-skip"><span class="heti-spacing"> </span>Disney<span class="heti-spacing"> </span></span>原则下的材质参数：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/33.png"><img src="images/lec5/33.png" width="50%"/></a>
+</div>
+<p>在当下游戏行业最主流、最规范的实时<span class="heti-skip"><span class="heti-spacing"> </span>PBR<span class="heti-spacing"> </span></span>模型主要为两类：</p>
+<ul>
+<li>
+<p><strong>镜面光泽度</strong>(specular-glossiness, <strong>SG</strong>)</p>
+<ul>
+<li>它的一个特点是几乎不需要额外的标量参数，所有关键属性都用贴图来表达</li>
+<li>最迷人的地方在于它的表达力：比如艺术家可以通过镜面贴图对参数做非常细腻的控制，甚至支持彩色的金属高光，比如金色、铜色等，这些都可以通过镜面的<span class="heti-skip"><span class="heti-spacing"> </span>RGB<span class="heti-spacing"> </span></span>通道来体现</li>
+<li>不过，高度灵活也带来了问题：参数太容易被设错<ul>
+<li>从工程管理的角度看，在一个几十上百人规模的美术团队里，让所有人都正确理解和使用规定的参数，实际上很难做到</li>
+</ul>
+</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/34.png"><img src="images/lec5/34.png" width="70%"/></a>
+</div><p></p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/35.png"><img src="images/lec5/35.png" width="70%"/></a>
+</div><p></p>
+</li>
+<li>
+<p><strong>金属粗糙度</strong>(metallic-roughness, <strong>MR</strong>)</p>
+<ul>
+<li>相比<span class="heti-skip"><span class="heti-spacing"> </span>SG<span class="heti-spacing"> </span></span>更“土”，但更好用</li>
+<li>
+<p>参数非常简单且直观：</p>
+<ul>
+<li><code>base_color</code>（RGB，sRGB<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：漫反射颜色</li>
+<li><code>roughness</code>（灰度，线性<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：为<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>时表示理想光滑镜面，高光集中而锐利；增大时高光变宽变暗，细节被拉平</li>
+<li><code>metallic</code>（灰度，线性<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：在非金属和金属之间插值</li>
+</ul>
+</li>
+<li>
+<p>但底层仍然是同样强大的通用函数</p>
+</li>
+<li>这种把复杂逻辑包在<span class="heti-skip"><span class="heti-spacing"> </span>MR<span class="heti-spacing"> </span></span>外壳里的设计，直接提高了系统的可控性和鲁棒性，因此在实际项目里，越来越多的工作室倾向于使用 这一工作流</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/36.png"><img src="images/lec5/36.png" width="70%"/></a>
+</div><p></p>
+</li>
+</ul>
+<p><span>MR<span class="heti-spacing"> </span></span>转换到<span><span class="heti-spacing"> </span>SG</span>：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/44.png"><img src="images/lec5/44.png" width="70%"/></a>
+</div>
+<details class="abstract" open="open">
+<summary>MR vs SG</summary>
+<ul>
+<li>
+<ul>
+<li>优点<ul>
+<li>可以更容易地编写，且更不容易因提供错误的介电<span class="heti-skip"><span class="heti-spacing"> </span>F0<span class="heti-spacing"> </span></span>数据而产生错误</li>
+<li>使用更少的纹理内存，因为金属和粗糙度都是灰度图</li>
+</ul>
+</li>
+</ul>
+<p>MR</p>
+<ul>
+<li>缺点<ul>
+<li>在地图创建过程中无法控制介电<span><span class="heti-spacing"> </span>F0</span>。然而，大多数实现都有一个用于覆盖基本<span class="heti-skip"><span class="heti-spacing"> </span>4%<span class="heti-spacing"> </span></span>值的镜面反射控制</li>
+<li>边缘伪影更明显，尤其是在较低分辨率时</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>SG</p>
+<ul>
+<li>
+<p>优点</p>
+<ul>
+<li>边缘伪影不太明显</li>
+<li>可以控制镜面反射图中的介电<span><span class="heti-spacing"> </span>F0</span></li>
+</ul>
+</li>
+<li>
+<p>缺点</p>
+<ul>
+<li>由于镜面反射图提供了对介电<span class="heti-skip"><span class="heti-spacing"> </span>F0<span class="heti-spacing"> </span></span>的控制，因此更容易因使用错误值而受到影响；如果在不正确的着色器中处理，可能会破坏守恒定律</li>
+<li>使用额外的<span class="heti-skip"><span class="heti-spacing"> </span>RGB<span class="heti-spacing"> </span></span>图，因此需要更多的纹理内存</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/101.png"><img src="images/lec5/101.png" width="50%"/></a>
+</div><p></p>
+</details>
+<h2 id="image-based-lighting-ibl">Image-Based Lighting (IBL)<a class="headerlink" href="#image-based-lighting-ibl" title="Permanent link">⚓︎</a></h2>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/38.png"><img align="right" alt="" src="images/lec5/38.png" width="20%"/></a></p>
+<p>在前面讲<span class="heti-skip"><span class="heti-spacing"> </span>PBR<span class="heti-spacing"> </span></span>的时候，我们一直假设“光源”是方向光、点光、聚光灯之类的简单模型。但现实世界中的环境光往往来自四面八方，很难用几个理想化光源描述。<strong>基于图像的光照</strong><span>(image-based lighting, IBL)<span class="heti-spacing"> </span></span>的核心做法就是：</p>
+<ul>
+<li>用一张包住场景的<strong>图像</strong>来表示来自各个方向的远处光照，把整个环境本身当作一个巨大的光源</li>
+<li>这张图片通常以<strong>立方体贴图</strong><span>(cube map)<span class="heti-spacing"> </span></span>的形式存在</li>
+</ul>
+<p>如果严格按照渲染方程来做，在这种环境光下给一个表面着色，需要对半球上所有入射方向进行积分。最朴素的做法是直接用<strong>蒙特卡罗采样</strong>在环境上打很多随机光线做数值积分。但这么做采样量很大，非常慢，不适合实时渲染。我们希望在不牺牲太多质量的前提下，把环境光积分拆成若干可以预计算、查表解决的小问题。</p>
+<h3 id="diffuse-irradiance-map">Diffuse Irradiance Map<a class="headerlink" href="#diffuse-irradiance-map" title="Permanent link">⚓︎</a></h3>
+<p>我们可以从<strong>漫反射</strong>部分入手，因为漫反射的<span class="heti-skip"><span class="heti-spacing"> </span>BRDF<span class="heti-spacing"> </span></span>相对简单，可以看成一个随方向变化很平缓、近似与<span class="heti-skip"><span class="heti-spacing"> </span>cosθ<span class="heti-spacing"> </span></span>权重相关的函数。具体做法是如下：</p>
+<ul>
+<li>先在离线或加载时对环境贴图做一次漫反射卷积，也就是说对于环境中的每一个方向<span><span class="heti-spacing"> </span>n</span>，都以<span class="heti-skip"><span class="heti-spacing"> </span>n<span class="heti-spacing"> </span></span>为法线，把整个环境亮度乘上<span class="heti-skip"><span class="heti-spacing"> </span>cosθ<span class="heti-spacing"> </span></span>核心权重，在半球上做一次积分，得到“从这个方向看过去，漫反射地接收了多少环境光”的结果</li>
+<li>把所有方向算完，就得到了一张新的贴图，它比原始环境图模糊很多，但可以代表已卷积好的漫反射入射辐照度；这张图称作<strong>漫反射辐照度贴图</strong>(diffuse irradiance map)<ul>
+<li>关键在于：这一整套卷积<strong>只做一次</strong>，之后在游戏运行时，如果某个像素的表面法线是<span><span class="heti-spacing"> </span>n</span>，我们只需要在漫反射辐照度贴图上按<span class="heti-skip"><span class="heti-spacing"> </span>n<span class="heti-spacing"> </span></span>的方向<strong>采样一次</strong>，就能直接拿到该法线方向下的环境漫反射结果</li>
+<li>这也是一种「<strong>空间换时间</strong>」的策略：预先做完复杂的卷积运算，把结果存进一张小纹理里，实时渲染时只需要查表，而不用在每个像素上重新做积分</li>
+</ul>
+</li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/39.png"><img src="images/lec5/39.png" width="60%"/></a>
+</div>
+<h3 id="specular-approximation">Specular Approximation<a class="headerlink" href="#specular-approximation" title="Permanent link">⚓︎</a></h3>
+<p>相比之下，<strong>镜面</strong>部分的<span class="heti-skip"><span class="heti-spacing"> </span>IBL<span class="heti-spacing"> </span></span>要复杂得多。对一个<span class="heti-skip"><span class="heti-spacing"> </span>PBR BRDF<span class="heti-spacing"> </span></span>来说，镜面项不仅依赖入射方向，还依赖视线方向、粗糙度、菲涅耳等多个参数，因此直接拿环境贴图做高维卷积几乎不可能实时完成。所以我们采用业界常用的一种近似：<strong>拆分求和近似</strong>(split-sum approximation)。</p>
+<p>具体做法是：把这个积分粗略拆成“光照项<span class="heti-skip"><span class="heti-spacing"> </span>× BRDF<span class="heti-spacing"> </span></span>项（材质项）”两个部分，分别预计算。</p>
+<ul>
+<li>
+<p><strong>光照项</strong>：<strong>预滤波环境贴图</strong>(pre-filtered environment map)</p>
+<ul>
+<li>这一部分只和环境本身有关，和具体材质无关</li>
+<li>本质上是在沿着某个反射方向，对环境做一次带粗糙度的积分<span class="heti-skip"><span class="heti-spacing"> </span>:<span class="heti-spacing"> </span></span>粗糙度越大，积分核越模糊</li>
+<li>一个非常巧妙的工程技巧是<strong>利用<span class="heti-skip"><span class="heti-spacing"> </span>GPU<span class="heti-spacing"> </span></span>对立方体贴图提供的多级<span><span class="heti-spacing"> </span>mipmap</span></strong>：<ul>
+<li>对于每一个粗糙度<span><span class="heti-spacing"> </span><span class="arithmatex">\(\alpha\)</span></span>，把环境图按对应的模糊核做一次卷积，得到粗糙度<span class="heti-skip"><span class="heti-spacing"> </span>= <span class="arithmatex">\(\alpha\)</span><span class="heti-spacing"> </span></span>时的环境反射结果，然后把不同粗糙度的结果分别存进立方体贴图的不同<span class="heti-skip"><span class="heti-spacing"> </span>mip<span class="heti-spacing"> </span></span>级上</li>
+<li>粗糙度越高，结果越低频，就可以放在更低分辨率的<span class="heti-skip"><span class="heti-spacing"> </span>mip<span class="heti-spacing"> </span></span>里，这既符合直觉，也符合存储效率</li>
+</ul>
+</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/40.png"><img src="images/lec5/40.png" width="60%"/></a>
+</div><p></p>
+</li>
+<li>
+<p><strong><span>BRDF<span class="heti-spacing"> </span></span>项</strong>：查询<span class="heti-skip"><span class="heti-spacing"> </span>BRDF<span class="heti-spacing"> </span></span>查找表<span><span class="heti-spacing"> </span>(look-up table,</span> <strong>LUT</strong>)</p>
+<ul>
+<li>依赖粗糙度和视角与法线之间的夹角等参数</li>
+<li><span>LUT<span class="heti-spacing"> </span></span>本质上是一张二维查找表，纵轴表示粗糙度，横轴表示<span><span class="heti-spacing"> </span>cosθ</span>（视角与法线夹角的余弦<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，表里存的就是<span class="heti-skip"><span class="heti-spacing"> </span>BRDF<span class="heti-spacing"> </span></span>在环境光条件下积分后的结果</li>
+<li>也就是说复杂的积分被提前算好放进<span class="heti-skip"><span class="heti-spacing"> </span>LUT<span class="heti-spacing"> </span></span>中，运行时只需要根据当前材质的粗糙度和视角方向去采样一次这张<span><span class="heti-spacing"> </span>LUT</span>，就能得到<span class="heti-skip"><span class="heti-spacing"> </span>BRDF<span class="heti-spacing"> </span></span>项的系数</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/41.png"><img src="images/lec5/41.png" width="60%"/></a>
+</div><p></p>
+</li>
+</ul>
+<p>最后将两者相乘，得到了近似的镜面<span class="heti-skip"><span class="heti-spacing"> </span>IBL<span class="heti-spacing"> </span></span>结果。从严格数学上说，这是“不精确的解”，但这在工程上足够好用，是目前工业界广泛采用的一种方案。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/43.png"><img src="images/lec5/43.png" width="60%"/></a>
+</div>
+<p>对于同一个<span class="heti-skip"><span class="heti-spacing"> </span>PBR<span class="heti-spacing"> </span></span>材质，</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/42.png"><img src="images/lec5/42.png" width="60%"/></a>
+</div>
+<ul>
+<li>在关闭<span class="heti-skip"><span class="heti-spacing"> </span>IBL<span class="heti-spacing"> </span></span>时看上去只有主光源提供的高光和阴影，整体稍显单调</li>
+<li>而开启<span class="heti-skip"><span class="heti-spacing"> </span>IBL<span class="heti-spacing"> </span></span>后，模型表面立刻“接上了环境”，不仅暗部被环境光填亮，金属和玻璃等高光材质还能清楚反射出周围场景的轮廓</li>
+</ul>
+<h2 id="classic-shadow-solution">Classic Shadow Solution<a class="headerlink" href="#classic-shadow-solution" title="Permanent link">⚓︎</a></h2>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/46.png"><img align="right" alt="" src="images/lec5/46.png" width="30%"/></a></p>
+<p>正如前文提到，<strong>阴影</strong>是光照中不可或缺的一环，本质上是光被物体阻挡后在其后方形成的光照缺失区域。早期的<span class="heti-skip"><span class="heti-spacing"> </span>CG<span class="heti-spacing"> </span></span>中，曾采用过一些相对简单的阴影生成方法：</p>
+<ul>
+<li>平面阴影<span><span class="heti-spacing"> </span>(planar)</span>：将物体几何投影到一个平面上形成阴影映像</li>
+<li>阴影体积<span><span class="heti-spacing"> </span>(shadow volume)</span>：将物体轮廓向光线方向拉伸形成体积，用于判断场景中哪些区域被该体积遮挡从而处于阴影中</li>
+<li>投影纹理<span><span class="heti-spacing"> </span>(projective texture)</span>：将预先准备好的阴影贴图投射到场景中模拟阴影</li>
+</ul>
+<p>这些方法在特定情形下能产生阴影效果，但局限性也很明显。因此随着更通用的方法出现，上述传统阴影技术已基本被<strong>淘汰</strong>。</p>
+<p>目前实时图形中应用最广泛的动态阴影方案是前文简述过的<a href="#starting-from-simple"><strong>阴影映射</strong></a>。然而，阴影映射也有自己的问题。为改进阴影映射的质量，常用的方案包括级联和过滤两个方向。</p>
+<h3 id="cascade-shadow">Cascade Shadow<a class="headerlink" href="#cascade-shadow" title="Permanent link">⚓︎</a></h3>
+<p><strong>级联阴影映射</strong><span>(cascade shadow maps)<span class="heti-spacing"> </span></span>解决了单张阴影贴图难以同时兼顾近景和远景的问题。</p>
+<ul>
+<li>在广阔场景中，摄像机<strong>视锥体</strong><span>(frustum)<span class="heti-spacing"> </span></span>范围可能横跨几十上百米，固定分辨率的阴影贴图要么覆盖远处大片区域导致近处精度不足，要么照顾近处细节而远方阴影模糊不清</li>
+<li>
+<p>级联阴影映射的做法是将视锥按距离<strong>划分为多个子视锥体</strong>（一般<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>到<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>级<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，为每个区段分别生成一张针对该范围的独立阴影贴图</p>
+<ul>
+<li>最近的子视锥体覆盖玩家周围小范围区域，但采用高分辨率阴影贴图，因此近景阴影非常清晰</li>
+<li>越远的子视锥体范围越大，则使用相对低分辨率的阴影贴图，以节省开销</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/47.png"><img src="images/lec5/47.png" width="60%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>在渲染时，系统根据像素深度判断其属于哪一级阴影贴图区域，并使用对应的贴图进行阴影计算</p>
+</li>
+<li>级联阴影的实现步骤：</li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/48.png"><img src="images/lec5/48.png" width="70%"/></a>
+</div>
+<ul>
+<li>
+<p>由于不同级联贴图的分辨率不同，交界处可能出现阴影不连续的边界线<span><span class="heti-spacing"> </span>(seam)</span>，为此引擎通常在相邻两个级联区的交接处对阴影结果做<strong>混合</strong>(blend)；着色器随后根据像素在混合带中的位置，在两个值之间进行线性插值，从容实现平滑过渡</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/49.png"><img src="images/lec5/49.png" width="60%"/></a>
+</div><p></p>
+</li>
+</ul>
+<details class="recommend" open="open">
+<summary>优点</summary>
+<ul>
+<li>遮挡错误最普遍的方法：透视走样</li>
+<li>生成深度图速度快，仅深度写入时提升<span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span>倍</li>
+<li>提供相当好的结果</li>
+</ul>
+</details>
+<details class="bug" open="open">
+<summary>缺点</summary>
+<ul>
+<li>几乎无法生成高质量的区域阴影</li>
+<li>没有彩色阴影；半透明表面投射不透明阴影</li>
+</ul>
+</details>
+<h3 id="soft-shadow">Soft Shadow<a class="headerlink" href="#soft-shadow" title="Permanent link">⚓︎</a></h3>
+<p>硬阴影<span class="heti-skip"><span class="heti-spacing"> </span>vs<span class="heti-spacing"> </span></span>现实阴影：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/50.png"><img src="images/lec5/50.png" width="60%"/></a>
+</div>
+<p><strong>过滤</strong>指对阴影贴图采样结果做模糊处理，以柔化阴影边缘的锯齿。实现方式有：</p>
+<ul>
+<li>
+<p><strong>百分比接近过滤</strong>(percentage closer filtering, <strong>PCF</strong>)：</p>
+<ul>
+<li>要解决的问题：来自阴影映射的阴影走样严重</li>
+<li>从当前像素周围的阴影图中取样，并将其深度与所有样本进行比较</li>
+<li>通过平均结果，我们得到光与影之间更平滑的线条</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/51.png"><img src="images/lec5/51.png" width="50%"/></a>
+</div><p></p>
+</li>
+</ul>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/52.png"><img align="right" alt="" src="images/lec5/52.png" width="20%"/></a></p>
+<ul>
+<li>
+<p><strong>百分比接近软阴影</strong>(percentage closer soft shadows, PCSS)</p>
+<ul>
+<li>要解决的问题：走样<span class="heti-skip"><span class="heti-spacing"> </span>+<span class="heti-spacing"> </span></span>采样不足的问题</li>
+<li>搜索阴影图并平均与光源更接近的深度</li>
+<li>使用平行平面近似</li>
+</ul>
+</li>
+<li>
+<p>方差软阴影映射<span><span class="heti-spacing"> </span>(variance soft shadow map)</span></p>
+<ul>
+<li>要解决的问题：实时渲染合理的软阴影</li>
+<li>基于切比雪夫不等式，利用深度的平均值和方差，我们可以直接近似深度分布的百分比，而不是将单个深度与特定区域（PCSS）进行比较</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/53.png"><img src="images/lec5/53.png" width="40%"/></a>
+</div><p></p>
+</li>
+</ul>
+<h2 id="moving-wave-of-high-quality">Moving Wave of High Quality<a class="headerlink" href="#moving-wave-of-high-quality" title="Permanent link">⚓︎</a></h2>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/54.png"><img align="right" alt="" src="images/lec5/54.png" width="30%"/></a></p>
+<p>最近这些年，<span>GPU<span class="heti-spacing"> </span></span>的发展态势迅猛。于是我们有了</p>
+<ul>
+<li>
+<p>更灵活的新<strong>着色器</strong>模型</p>
+<ul>
+<li>计算着色器</li>
+<li>网格着色器</li>
+<li>光线追踪着色器</li>
+</ul>
+</li>
+<li>
+<p><strong>高性能的并行架构</strong>：束<span class="heti-skip"><span class="heti-spacing"> </span>(warp)<span class="heti-spacing"> </span></span>或波<span class="heti-skip"><span class="heti-spacing"> </span>(wave)<span class="heti-spacing"> </span></span>架构</p>
+</li>
+<li>
+<p>完全开放的图形<span><span class="heti-spacing"> </span>API</span>：DirectX 12、<span>Vulkan<span class="heti-spacing"> </span></span>等等</p>
+</li>
+</ul>
+<p><span>GPU<span class="heti-spacing"> </span></span>上的实时光线追踪：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/55.png"><img src="images/lec5/55.png" width="70%"/></a>
+</div>
+<p>实时全局光照：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/56.png"><img src="images/lec5/56.png" width="70%"/></a>
+</div>
+<p>更复杂的材质模型：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/57.png"><img src="images/lec5/57.png" width="60%"/></a>
+</div>
+<p>虚拟阴影映射<span><span class="heti-spacing"> </span>(virtual shadow map)</span>：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/58.png"><img src="images/lec5/58.png" width="70%"/></a>
+</div>
+<h2 id="shader-management">Shader Management<a class="headerlink" href="#shader-management" title="Permanent link">⚓︎</a></h2>
+<p>随着游戏规模和复杂度的增长，工程中涉及的着色器数量也呈爆炸式上涨。一个大型<span class="heti-skip"><span class="heti-spacing"> </span>3D<span class="heti-spacing"> </span></span>场景可能由成千上万个物体组成，不同物体可能使用不同的材质和光照模式，于是就需要众多不同的着色器来绘制。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/59.png"><img src="images/lec5/59.png" width="70%"/></a>
+</div>
+<p>着色器的来源有两个。首先是艺术家们会创造无穷多的着色器，因为他们的想象力是无穷的。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/60.png"><img src="images/lec5/60.png" width="70%"/></a>
+</div>
+<p>其次是来自程序员自己。由于一款游戏的限定条件非常多，比如材质、光源的不同组合就要求用到不同的着色器。为了避免创建大量的着色器，业内采用了一种叫做<strong>超级着色器</strong><span>(uber shader)<span class="heti-spacing"> </span></span>的设计模式，它是一个包含所有可能的光照类型、渲染通道和材质类型的着色器组合。</p>
+<ul>
+<li>共享很多状态和代码</li>
+<li>通过预定义宏编译为多种变化的小着色器</li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/61.png"><img src="images/lec5/61.png" width="50%"/></a>
+</div>
+<p>现实游戏中的着色器变体数量非常庞大：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/62.png"><img src="images/lec5/62.png" width="60%"/></a>
+</div>
+<p>跨平台的着色器编译：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/63.png"><img src="images/lec5/63.png" width="60%"/></a>
+</div>
+<aside class="md-source-file">
+<span class="md-source-file__fact">
+<span class="md-icon" title="最后更新">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"></path></svg>
+</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年12月18日 09:24:47 CST">2025年12月18日 09:24:47</span>
+</span>
+<span class="md-source-file__fact">
+<span class="md-icon" title="创建日期">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"></path></svg>
+</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年12月18日 09:24:47 CST">2025年12月18日 09:24:47</span>
+</span>
+</aside>
+<p style="font-size: 30px; font-weight: 600">评论区</p>
+<div>
+    如果大家有什么问题或想法，欢迎在下方留言~
+  </div>
+<!-- Insert generated snippet here -->
+<script async="" crossorigin="anonymous" data-category="Announcements" data-category-id="DIC_kwDOMAb9Zs4CfmpP" data-emit-metadata="0" data-input-position="bottom" data-lang="zh-CN" data-mapping="pathname" data-reactions-enabled="1" data-repo="noughtq/notebook" data-repo-id="R_kgDOMAb9Zg" data-strict="0" data-theme="preferred_color_scheme" src="https://giscus.app/client.js">
+</script>
+<!-- Synchronize Giscus theme with palette -->
+<script>
+    var giscus = document.querySelector("script[src*=giscus]")
+
+    // Set palette on initial load
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object") {
+      var theme = palette.color.scheme === "slate"
+        ? "transparent_dark"
+        : "light"
+
+      // Instruct Giscus to set theme
+      giscus.setAttribute("data-theme", theme) 
+    }
+
+    // Register event handlers after documented loaded
+    document.addEventListener("DOMContentLoaded", function() {
+      var ref = document.querySelector("[data-md-component=palette]")
+      ref.addEventListener("change", function() {
+        var palette = __md_get("__palette")
+        if (palette && typeof palette.color === "object") {
+          var theme = palette.color.scheme === "slate"
+            ? "dark"
+            : "light"
+
+          // Instruct Giscus to change theme
+          var frame = document.querySelector(".giscus-frame")
+          frame.contentWindow.postMessage(
+            { giscus: { setConfig: { theme } } },
+            "https://giscus.app"
+          )
+        }
+      })
+    })
+  </script>
+<!-- 标题计数器 -->
+<link href="/css/counter.css" rel="stylesheet"/>
+<!-- 主页个性化 -->
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+<button class="md-top md-icon" data-md-component="top" hidden="" type="button">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  回到页面顶部
+</button>
+</main>
+<footer class="md-footer">
+<nav aria-label="页脚" class="md-footer__inner md-grid">
+<a aria-label="上一页: Basics" class="md-footer__link md-footer__link--prev" href="4.html">
+<div class="md-footer__button md-icon">
+<svg viewbox="0 0 256 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path></svg>
+</div>
+<div class="md-footer__title">
+<span class="md-footer__direction">
+                上一页
+              </span>
+<div class="md-ellipsis">
+                Basics
+              </div>
+</div>
+</a>
+<a aria-label="下一页: Rendering the Nature" class="md-footer__link md-footer__link--next" href="6.html">
+<div class="md-footer__title">
+<span class="md-footer__direction">
+                下一页
+              </span>
+<div class="md-ellipsis">
+                Rendering the Nature
+              </div>
+</div>
+<div class="md-footer__button md-icon">
+<svg viewbox="0 0 256 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M247.1 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L179.2 256 41.9 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"></path></svg>
+</div>
+</a>
+</nav>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright" style="margin-left: 33.5%">
+<div class="md-copyright__highlight" style="text-align: center">
+        Copyright © 2024-2025 <a href="https://github.com/NoughtQ">NoughtQ</a>
+</div>
+    
+    
+      Powered by
+      <a href="https://www.mkdocs.org/" rel="noopener" target="_blank">
+        MkDocs
+      </a>
+      with theme
+      <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+        Material
+      </a>
+      modified by
+      <a href="https://github.com/NoughtQ" rel="noopener" target="_blank">
+        NoughtQ
+      </a>
+<!-- <br> -->
+<div style="text-align: center;">
+<a href="https://icp.gov.moe/?keyword=20252357" target="_blank">萌ICP备20252357号</a>
+</div>
+</div>
+<div class="md-social">
+<a class="md-social__link" href="https://noughtq.top" rel="noopener" target="_blank" title="noughtq.top">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M277.8 8.6c-12.3-11.4-31.3-11.4-43.5 0l-224 208c-9.6 9-12.8 22.9-8 35.1S18.8 272 32 272h16v176c0 35.3 28.7 64 64 64h288c35.3 0 64-28.7 64-64V272h16c13.2 0 25-8.1 29.8-20.3s1.6-26.2-8-35.1zM240 320h32c26.5 0 48 21.5 48 48v96H192v-96c0-26.5 21.5-48 48-48"></path></svg>
+</a>
+<a class="md-social__link" href="https://blog.noughtq.top" rel="noopener" target="_blank" title="blog.noughtq.top">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M224 24c0-13.3 10.7-24 24-24 145.8 0 264 118.2 264 264 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-119.3-96.7-216-216-216-13.3 0-24-10.7-24-24M80 96c26.5 0 48 21.5 48 48v224c0 26.5 21.5 48 48 48s48-21.5 48-48-21.5-48-48-48c-8.8 0-16-7.2-16-16v-64c0-8.8 7.2-16 16-16 79.5 0 144 64.5 144 144s-64.5 144-144 144S32 447.5 32 368V144c0-26.5 21.5-48 48-48m168 0c92.8 0 168 75.2 168 168 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-66.3-53.7-120-120-120-13.3 0-24-10.7-24-24s10.7-24 24-24"></path></svg>
+</a>
+<a class="md-social__link" href="https://github.com/noughtq" rel="noopener" target="_blank" title="github.com">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"></path></svg>
+</a>
+<a class="md-social__link" href="mailto:noughtq666@gmail.com" rel="noopener" target="_blank" title="">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m20 8-8 5-8-5V6l8 5 8-5m0-2H4c-1.11 0-2 .89-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2"></path></svg>
+</a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"base": "../..", "features": ["content.action.edit", "content.action.view", "content.code.copy", "content.code.annotate", "content.footnote.tooltips", "navigation.tabs", "navigation.top", "navigation.footer", "navigation.indexes", "navigation.tracking", "navigation.prune", "search.share"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+<script src="../../js/anchor.js"></script>
+<script src="../../js/katex.js"></script>
+<script src="../../js/toc.js"></script>
+<script src="../../js/typed.js"></script>
+<script src="../../js/custom.js"></script>
+<script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+<script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.js"></script>
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>
