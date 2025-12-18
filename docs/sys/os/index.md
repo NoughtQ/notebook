@@ -32,7 +32,7 @@
     - Part 6: File System
         - [x] [File-System Interface](13.md)
         - [x] [File-System Implementation](14.md)
-        - [ ] [File-System Internals](15.md)
+        - [x] [File-System Internals](15.md)
 
     >注：sld 的讲课会先跳过同步部分，等讲完内存部分后再回过头来学同步，这样的编排和 OSTEP 很像。
     

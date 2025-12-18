@@ -31,9 +31,11 @@
         - [x] [Recognition](16.md)
         - [x] [Video Understanding](17.md)
         - [x] [Large Scale Distributed Training](18.md)
-        - [ ] [Self-supervised Learning](19.md)
+        - [x] [Self-supervised Learning](19.md)
         - [ ] [Generative Models](20.md)
         - [x] [3D Deep Learning](21.md)
+        - [ ] [Vision and Language](22.md)
+        - [ ] [Robot Learning](23.md)
         - [x] [Computational Photography](24.md)
     
 !!! recommend "参考资料"
