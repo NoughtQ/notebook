@@ -1478,14 +1478,14 @@
 <li><code class="language-asm highlight"><span class="nf">MOV</span><span class="w"> </span><span class="p">[</span><span class="no">DI</span><span class="p">],</span><span class="w"> </span><span class="no">AL</span></code> 是一个字节大小的移动指令</li>
 <li>但 <code class="language-asm highlight"><span class="nf">MOV</span><span class="w"> </span><span class="p">[</span><span class="no">DI</span><span class="p">],</span><span class="w"> </span><span class="mi">10</span><span class="no">H</span></code> 则存在歧义</li>
 </ul>
-<p>在某些情况下，间接寻址需要通过<strong>大小指示符</strong><span>(size directive)<span class="heti-spacing"> </span></span>或<strong>指针指示符</strong>来明确数据的大小：<code>BYTE PTR</code>、<code>WORD PTR</code>、<code>DWORD PTR</code> 或 <code>QWORD PTR</code>。这些指示符指明了由内存指针<span class="heti-skip"><span class="heti-spacing"> </span>(memory pointer, PTR)<span class="heti-spacing"> </span></span>所指向的内存数据的大小。</p>
+<p>在某些情况下，间接寻址需要通过<strong>大小伪指令</strong><span>(size directive)<span class="heti-spacing"> </span></span>或<strong>指针伪指令</strong>来明确数据的大小：<code>BYTE PTR</code>、<code>WORD PTR</code>、<code>DWORD PTR</code> 或 <code>QWORD PTR</code>。这些伪指令指明了由内存指针<span class="heti-skip"><span class="heti-spacing"> </span>(memory pointer, PTR)<span class="heti-spacing"> </span></span>所指向的内存数据的大小。</p>
 <ul>
 <li><code class="language-asm highlight"><span class="nf">MOV</span><span class="w"> </span><span class="no">BYTE</span><span class="w"> </span><span class="no">PTR</span><span class="w"> </span><span class="p">[</span><span class="no">DI</span><span class="p">],</span><span class="w"> </span><span class="mi">10</span><span class="no">H</span></code> 指令将 <code>DI</code> 所指向的位置指定为一个<strong>字节</strong>大小的内存位置</li>
 <li><code class="language-asm highlight"><span class="nf">MOV</span><span class="w"> </span><span class="no">DWORD</span><span class="w"> </span><span class="no">PTR</span><span class="w"> </span><span class="p">[</span><span class="no">DI</span><span class="p">],</span><span class="mi">10</span><span class="no">H</span></code> 将该内存位置标识为<strong>双字</strong><span>(doubleword)<span class="heti-spacing"> </span></span>大小</li>
-<li>大小指示符仅用于那些通过指针或索引寄存器配合立即数寻址内存位置的指令</li>
+<li>大小伪指令仅用于那些通过指针或索引寄存器配合立即数寻址内存位置的指令</li>
 <li>对于<span class="heti-skip"><span class="heti-spacing"> </span>SIMD<span class="heti-spacing"> </span></span>指令，八进制 <code>OWORD PTR</code> 表示一个<span class="heti-skip"><span class="heti-spacing"> </span>128<span class="heti-spacing"> </span></span>位宽的数字</li>
 </ul>
-<p>下面来看大小指示符是如何影响指令的编码的？在<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位模式下：</p>
+<p>下面来看大小伪指令是如何影响指令的编码的？在<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位模式下：</p>
 <div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C3/13.png"><img src="images/C3/13.png" width="50%"/></a>
 </div>
@@ -1880,7 +1880,7 @@
 <p>使用直接程序寻址的指令是<strong>跨段</strong>或<strong>远</strong> <code class="language-asm highlight"><span class="nf">CALL</span></code> 指令</p>
 </li>
 <li>通常，内存地址的名称（即<strong>标签</strong>）指的是被调用或跳转到的位置，而不是实际的数字地址</li>
-<li>我们可以使用 <code class="language-asm highlight"><span class="nf">FAR</span><span class="w"> </span><span class="no">PTR</span></code> 指示符来实现远程跳转，例如：<code class="language-asm highlight"><span class="nf">JMP</span><span class="w"> </span><span class="no">FAR</span><span class="w"> </span><span class="no">PTR</span><span class="w"> </span><span class="no">START</span></code></li>
+<li>我们可以使用 <code class="language-asm highlight"><span class="nf">FAR</span><span class="w"> </span><span class="no">PTR</span></code> 伪指令来实现远程跳转，例如：<code class="language-asm highlight"><span class="nf">JMP</span><span class="w"> </span><span class="no">FAR</span><span class="w"> </span><span class="no">PTR</span><span class="w"> </span><span class="no">START</span></code></li>
 </ul>
 <h3 id="indirect-program-memory-addressing">Indirect Program Memory Addressing<a class="headerlink" href="#indirect-program-memory-addressing" title="Permanent link">⚓︎</a></h3>
 <p>微处理器支持多种形式的程序<strong>间接内存寻址方式</strong>(indirect program memory addressing)。</p>

@@ -916,14 +916,46 @@
 </a>
 <h1 id="image-matching-and-motion-estimation">Image Matching and Motion Estimation<a class="headerlink" href="#image-matching-and-motion-estimation" title="Permanent link">⚓︎</a></h1>
 <div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
-<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>2743<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>14<span class="heti-spacing"> </span></span>分钟</p>
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>3833<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>19<span class="heti-spacing"> </span></span>分钟</p>
 </div>
+<details class="abstract">
+<summary>核心知识</summary>
+<ul>
+<li>
+<p>图像匹配</p>
+<ul>
+<li>检测：<ul>
+<li>检测角点的基本方法</li>
+<li>哈里斯角检测器：不变性、自动尺度选择</li>
+<li>斑点检测：拉普拉斯滤波器、LoG、DoG</li>
+</ul>
+</li>
+<li>描述：SIFT（不变性）</li>
+<li>匹配：度量、检测歧义（比例测试、相互最近邻）</li>
+</ul>
+</li>
+<li>
+<p>运动估计：</p>
+<ul>
+<li>基本概念</li>
+<li><span>LK<span class="heti-spacing"> </span></span>方法：<ul>
+<li>三个假设：亮度持续性、空间一致性、运动量不大</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>明确不考的：基于深度学习的特征匹配，<span>Lucas-Kanade<span class="heti-spacing"> </span></span>方法的推导</p>
+</li>
+</ul>
+</details>
 <h2 id="image-matching">Image Matching<a class="headerlink" href="#image-matching" title="Permanent link">⚓︎</a></h2>
 <p><strong>特征匹配</strong>(feature matching)：寻找两图像之间点到点的对应关系。</p>
 <div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/1.png"><img src="images/lec5/1.png" width="50%"/></a>
 </div>
-<p>特征匹配有着大量应用：</p>
+<details class="example">
+<summary>应用</summary>
 <ul>
 <li>
 <p>图像对齐<span class="heti-skip"><span class="heti-spacing"> </span>(image alignement)/<span class="heti-spacing"> </span></span>拼接<span><span class="heti-spacing"> </span>(stitching)</span></p>
@@ -952,7 +984,8 @@
 <li>机器人导航</li>
 <li>...</li>
 </ul>
-<p>特征匹配的组成部分：</p>
+</details>
+<p>特征匹配的步骤：</p>
 <ol>
 <li><strong>检测</strong>(detection)：识别图像上的<strong>兴趣点</strong><span>(interest point)/<span class="heti-spacing"> </span></span>特征点</li>
 <li><strong>描述</strong>(description)：围绕每个兴趣点，提取向量特征描述符<span><span class="heti-spacing"> </span>(descriptor)</span></li>
@@ -971,18 +1004,23 @@
 <li><strong>边</strong>(edge)：沿着边的方向不会改变</li>
 <li><strong>角</strong>(corner)：沿任意方向都会有显著变化</li>
 </ul>
-<p>放大上面的图片，来看一下这些区域附近的梯度分布：</p>
+<p>我们可以根据区域附近像素的梯度分布来大致判断出当前区域属于上述三种情况中的哪一种：</p>
 <div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/7.png"><img src="images/lec5/7.png" width="60%"/></a>
 </div>
-<p><strong>主成分分析</strong>(principal component analysis)：</p>
+<p>基于梯度分布，我们可利用<strong>主成分分析</strong><span>(principal component analysis)<span class="heti-spacing"> </span></span>进行更准确的定量判断：</p>
 <ul>
-<li>第一主成分是<strong>方差最大</strong>的方向</li>
-<li>第二主成分是与前一个成分<strong>正交</strong>，且具有方差最大的方向</li>
+<li>第一主成分是<strong>方差最大</strong>（数据分布最分散）的方向</li>
+<li>第二主成分是与前一个成分<strong>正交</strong>，且具有方差最大的方向（捕获剩余信息中最分散的方向）</li>
 </ul>
 <div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/8.png"><img src="images/lec5/8.png" width="60%"/></a>
 </div>
+<ul>
+<li>平滑区域：两个主成分都很小</li>
+<li>边：第一主成分大，第二主成分小</li>
+<li>角：两个主成分都很大</li>
+</ul>
 <p>角检测的步骤：</p>
 <ol>
 <li>
@@ -990,10 +1028,13 @@
 <div class="arithmatex">\[
 H=\sum_{(u,v)}w(u,v)\begin{bmatrix}I_x^2&amp;I_xI_y\\I_xI_y&amp;I_y^2\end{bmatrix}\quad I_x=\frac{\partial f}{\partial x},I_y=\frac{\partial f}{\partial y}
 \]</div>
-<p>其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w(x, y)\)</span><span class="heti-spacing"> </span></span>一般为<strong>高斯权重</strong>(Gaussian weights)</p>
+<ul>
+<li>其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w(x, y)\)</span><span class="heti-spacing"> </span></span>一般为<strong>高斯权重</strong>(Gaussian weights)</li>
+<li>导数<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(I_x, I_y\)</span><span class="heti-spacing"> </span></span>可通过水平梯度和垂直梯度上的<strong>卷积</strong>得到（具体见第<span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span>讲的“<a href="3.html#edge-detection">边缘检测</a>”一节）</li>
+</ul>
 </li>
 <li>
-<p>计算特征值</p>
+<p>计算特征值（二维矩阵有两个特征值，对应数据在主成分方向（特征向量）上的方差大小）</p>
 <div class="arithmatex">\[
 H=\begin{bmatrix}a &amp; b\\c &amp; d\end{bmatrix}\quad\lambda_{\pm}=\frac{1}{2}\left((a+d)\pm\sqrt{4bc+(a-d)^2}\right)
 \]</div>
@@ -1006,7 +1047,7 @@ H=\begin{bmatrix}a &amp; b\\c &amp; d\end{bmatrix}\quad\lambda_{\pm}=\frac{1}{2}
 </li>
 </ol>
 <h4 id="harris-detector">Harris Detector<a class="headerlink" href="#harris-detector" title="Permanent link">⚓︎</a></h4>
-<p><strong>哈里斯角检测器</strong><span>(Harris corner detector)<span class="heti-spacing"> </span></span>计算以下响应函数：
+<p>尽管算出<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\lamnda_1, \lambda_2\)</span><span class="heti-spacing"> </span></span>并不难，但要想用这两个值判断是否存在角，需要设置各种约束条件，这个过程就有些麻烦。一种更简洁的做法是使用<strong>哈里斯角检测器</strong><span>(Harris corner detector)<span class="heti-spacing"> </span></span>计算以下响应函数：
 $$
 f=\frac{\lambda_1\lambda_2}{\lambda_1+\lambda_2}=\frac{determinant(H)}{trace(H)}
 $$</p>
@@ -1017,7 +1058,10 @@ $$</p>
 <li>计算每个像素周围高斯窗口内的协方差矩阵<span><span class="heti-spacing"> </span><span class="arithmatex">\(H\)</span></span></li>
 <li>计算角响应函数<span><span class="heti-spacing"> </span><span class="arithmatex">\(f\)</span></span></li>
 <li>为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f\)</span><span class="heti-spacing"> </span></span>设置阈值</li>
-<li>寻找响应函数的局部极大值（非极大值抑制<span><span class="heti-spacing"> </span>(nonmaximum suppression)</span>）</li>
+<li>寻找响应函数的局部极大值（<strong>非最大值抑制</strong>(nonmaximum suppression)）<ul>
+<li>因为角的邻近区域计算出来的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f\)</span><span class="heti-spacing"> </span></span>值都很大，但我们只需要其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f\)</span><span class="heti-spacing"> </span></span>值最大的那一个像素点作为角点</li>
+</ul>
+</li>
 </ol>
 <details class="example" open="open">
 <summary>例子</summary>
@@ -1046,12 +1090,13 @@ $$</p>
 </div>
 </div>
 </details>
-<p>对于上面例子的结果，如何确保这些点是<strong>可重复的</strong>(repeatable)？如何从数学层面定义这个可重复性？我们希望对应像素上的响应值在图像变换<span class="heti-skip"><span class="heti-spacing"> </span>(image transformation)<span class="heti-spacing"> </span></span>的过程中保持<strong>不变</strong>(invariant)。</p>
 <h4 id="invariance-properties">Invariance Properties<a class="headerlink" href="#invariance-properties" title="Permanent link">⚓︎</a></h4>
+<p>从上例可以看到，哈里斯角检测器确实能帮我们精确找到图中的特征点（角点<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。但一个好的检测器还需要具备另一个性质：确保这些点是<strong>可重复的</strong>(repeatable)，也就是说要确保两张图像（图片内容对应的是同一物体或场景，但图片的颜色、物体的位置姿态等可能会不同）得到的检测点能在之后匹配得上。</p>
+<p>现在我们从数学层面定义这种可重复性：两张图对应像素上的响应值在<strong>图像变换</strong><span>(image transformation)<span class="heti-spacing"> </span></span>的过程中保持<strong>不变</strong>(invariant)。</p>
 <p>图像变换包括：</p>
 <ul>
 <li>
-<p>光学：</p>
+<p>光度<span><span class="heti-spacing"> </span>(photometric)</span>（可简单理解为图像的颜色<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
 <ul>
 <li>
 <p><strong>光强</strong><span>(intensity)<span class="heti-spacing"> </span></span>改变</p>
@@ -1060,14 +1105,14 @@ $$</p>
 </div><p></p>
 <p>假设原图像光强为<span><span class="heti-spacing"> </span><span class="arithmatex">\(I\)</span></span>，改变后的光强为<span><span class="heti-spacing"> </span><span class="arithmatex">\(aI + b\)</span></span></p>
 <ul>
-<li>光强移动（<span class="arithmatex">\(I \rightarrow I + b\)</span>）是不变的<span><span class="heti-spacing"> </span>(invariant)</span></li>
-<li>光强缩放（<span class="arithmatex">\(I \rightarrow aI\)</span>）是变化的<span><span class="heti-spacing"> </span>(not invariant)</span></li>
+<li>光强<strong>移动</strong>(shift)（<span class="arithmatex">\(I \rightarrow I + b\)</span>）是<strong>不变的</strong>(invariant)</li>
+<li>光强<strong>缩放</strong>(scaling)（<span class="arithmatex">\(I \rightarrow aI\)</span>）是<strong>变化的</strong>(not invariant)</li>
 </ul>
 <p></p><div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/17.png"><img src="images/lec5/17.png" width="60%"/></a>
 </div><p></p>
 <ul>
-<li>综上，角响应值相对光强变化具有部分的不变性</li>
+<li>综上，角响应值相对光强变化具有<strong>部分的不变性</strong></li>
 </ul>
 </li>
 </ul>
@@ -1086,34 +1131,32 @@ $$</p>
 <p></p><div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/15.png"><img src="images/lec5/15.png" width="40%"/></a>
 </div><p></p>
-<ul>
-<li>
-<p>椭圆旋转，但其形状（即特征值）保持不变</p>
+<p>下图用<strong>椭圆</strong>表示像素点的协方差矩阵，其方向和大小分别对应矩阵的特征向量和特征值。可以看到，将角旋转后，椭圆的朝向发生了变化，但其形状（即<strong>特征值</strong>）保持不变。</p>
 <p></p><div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/19.png"><img src="images/lec5/19.png" width="40%"/></a>
 </div><p></p>
-<p></p><div style="text-align: center">
-<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/20.png"><img src="images/lec5/20.png" width="50%"/></a>
-</div><p></p>
-</li>
-</ul>
 </li>
 <li>
-<p><strong>放缩</strong>(scaling)：角响应值相对缩放<strong>不具有</strong>不变性</p>
+<p><strong>缩放</strong>(scaling)：角响应值相对缩放<strong>不具有</strong>不变性</p>
 <p></p><div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/16.png"><img src="images/lec5/16.png" width="40%"/></a>
 </div><p></p>
+<p>这很好理解：比如图像放大，但窗口大小不变，那么窗口看到的东西就发生了变化，自然就无法保持不变性。</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/20.png"><img src="images/lec5/20.png" width="50%"/></a>
+</div><p></p>
+<p>如果窗口能跟随图像等比例缩放的话，结果应该和原来差不多。</p>
 </li>
 </ul>
 </li>
 </ul>
 <h4 id="automatic-scale-selection">Automatic Scale Selection<a class="headerlink" href="#automatic-scale-selection" title="Permanent link">⚓︎</a></h4>
-<p>假如要在图像上找角，那么如何确定正确的比例呢？一种解决方案是<strong>自动比例选择</strong>(automatic scale selection)，通过给定的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f\)</span><span class="heti-spacing"> </span></span>的局部最大值找出比例：</p>
+<p>在图像上寻找角点时，我们希望确定一种合适的尺度（即窗口大小）呢，使对应的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f\)</span><span class="heti-spacing"> </span></span>值最大。对于一幅图像的两种缩放，针对同一点的尺度尺度是不同的，但最佳尺度下的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f\)</span><span class="heti-spacing"> </span></span>值应当是一样的。寻找最佳尺度的一种方案是<strong>自动尺度选择</strong>(automatic scale selection)，通过给定的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f\)</span><span class="heti-spacing"> </span></span>的局部最大值找出尺度：</p>
 <div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/21.png"><img src="images/lec5/21.png" width="50%"/></a>
 </div>
 <details class="play" open="open">
-<summary>演示</summary>
+<summary>步骤演示</summary>
 <div class="tabbed-set tabbed-alternate" data-tabs="2:4"><input checked="" id="__tabbed_2_1" name="__tabbed_2" type="radio"/><input id="__tabbed_2_2" name="__tabbed_2" type="radio"/><input id="__tabbed_2_3" name="__tabbed_2" type="radio"/><input id="__tabbed_2_4" name="__tabbed_2" type="radio"/><div class="tabbed-labels"><label for="__tabbed_2_1"><span>Step 1<span class="heti-spacing"> </span></span></label><label for="__tabbed_2_2"><span>Step 4<span class="heti-spacing"> </span></span></label><label for="__tabbed_2_3"><span>Step n<span class="heti-spacing"> </span></span></label><label for="__tabbed_2_4">绘制曲线</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -1139,44 +1182,51 @@ $$</p>
 </div>
 </div>
 </details>
-<p>我们可以采用<strong>固定窗口大小</strong>，并结合图像金字塔的方法来实现，而不是用越来越大的窗口计算<span><span class="heti-spacing"> </span><span class="arithmatex">\(f\)</span></span>。</p>
+<p>但在实际实现时，我们并不是像上面那样用逐渐放大的窗口来确定，而是采用固定的窗口大小，并结合<strong>图像金字塔</strong>(image pyramid)（对图像进行缩放）的方法来计算<span><span class="heti-spacing"> </span><span class="arithmatex">\(f\)</span></span>。</p>
 <div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/26.png"><img src="images/lec5/26.png" width="60%"/></a>
 </div>
 <h4 id="blob-detector">Blob Detector<a class="headerlink" href="#blob-detector" title="Permanent link">⚓︎</a></h4>
-<p><strong>斑点</strong><span>(blob)<span class="heti-spacing"> </span></span>是一种不错的图像特征。它在图像光强上有着较大的二阶导数值。因此可通过计算图像的拉普拉斯函数，找到其中的最小值和最大值，从而找到斑点。</p>
+<p><strong>斑点</strong><span>(blob)<span class="heti-spacing"> </span></span>是一种不错的图像特征。它在图像光强上有着较大的二阶导数值。因此可通过计算图像的<strong>拉普拉斯函数</strong>，找到其中的最小值和最大值，从而找到斑点。</p>
 <div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/27.png"><img src="images/lec5/27.png" width="60%"/></a>
 </div>
-<p>接下来的问题是如何计算拉普拉斯呢？</p>
-<ul>
-<li>
-<p><strong>拉普拉斯算子</strong>(Laplacian operator)</p>
+<p><strong>拉普拉斯算子</strong><span>(Laplacian operator)<span class="heti-spacing"> </span></span>如下：</p>
 <div class="arithmatex">\[
 \nabla^2=\frac{\partial^2}{\partial x^2}+\frac{\partial^2}{\partial y^2}
 \]</div>
-</li>
-<li>
-<p>通过滤波计算图像导数</p>
+<p>还是利用<strong>卷积</strong>（滤波）计算图像导数：</p>
 <div class="arithmatex">\[
 \begin{aligned}&amp;\frac{\partial^{2}f}{\partial x^{2}}=&amp;&amp;f\left(x+1\right)+f\left(x-1\right)-2f\left(x\right)\quad\to\quad\begin{bmatrix}1&amp;-2&amp;1\end{bmatrix} \quad (\text{x kernel})
 \\&amp;\frac{\partial^{2}f}{\partial y^{2}}=&amp;&amp;f\left(y+1\right)+f\left(y-1\right)-2f\left(y\right)\quad\to\quad\begin{bmatrix}1\\-2\\1\end{bmatrix}  \quad (\text{y kernel})\end{aligned}
 \]</div>
-</li>
-<li>
-<p><strong>拉普拉斯滤波器</strong>(Laplacian filter)</p>
-<p></p><div style="text-align: center">
-<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/28.png"><img src="images/lec5/28.png" width="60%"/></a>
-</div><p></p>
-</li>
-</ul>
-<p>由于拉普拉斯滤波器对噪音敏感，因此通常我们会将其和高斯滤波器结合起来一起用，构成了<strong>拉普拉斯<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>高斯滤波器</strong>(Laplacian of Gaussian, LoG)。</p>
+<p>最后将这两个二阶导数相加，得到<strong>拉普拉斯滤波器</strong>(Laplacian filter)：</p>
+<div class="arithmatex">\[
+\begin{bmatrix}
+0 &amp; 0 &amp; 0 \\
+1 &amp; -2 &amp; 1 \\
+0 &amp; 0 &amp; 0
+\end{bmatrix}
++
+\begin{bmatrix}
+0 &amp; 1 &amp; 0 \\
+0 &amp; -2 &amp; 0 \\
+0 &amp; 1 &amp; 0
+\end{bmatrix}
+= \begin{bmatrix}
+0 &amp; 1 &amp; 0 \\
+1 &amp; -4 &amp; 1 \\
+0 &amp; 1 &amp; 0
+\end{bmatrix}
+\]</div>
+<hr/>
+<p>由于拉普拉斯滤波器对噪音敏感，因此通常我们会将其和高斯滤波器结合起来一起用，构成了<strong>拉普拉斯<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>高斯滤波器</strong>(Laplacian of Gaussian, <strong>LoG</strong>)。</p>
 <p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/30.png"><img align="right" alt="" src="images/lec5/30.png" width="30%"/></a></p>
 <ul>
 <li>先使用高斯滤波器平滑图像</li>
 <li>然后再计算拉普拉斯值</li>
 </ul>
-<p>通过以下转换来高效计算<span><span class="heti-spacing"> </span>LoG</span>：</p>
+<p>利用结合律，可先算出高斯函数的二阶导来实现<span class="heti-skip"><span class="heti-spacing"> </span>LoG<span class="heti-spacing"> </span></span>的高效计算：</p>
 <div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/29.png"><img src="images/lec5/29.png" width="40%"/></a>
 </div>
@@ -1189,24 +1239,20 @@ $$</p>
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/31.png"><img src="images/lec5/31.png" width="60%"/></a>
 </div><p></p>
 </details>
-<p>特征点同时是位置和比例的局部最大值：</p>
+<p>特征点同时是位置和比例的局部最大值（所以依旧可以利用图像金字塔寻找最大值<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
 <div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/32.png"><img src="images/lec5/32.png" width="50%"/></a>
 </div>
 <details class="example" open="open">
 <summary>例子</summary>
 <p></p><div style="text-align: center">
-<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/33.png"><img src="images/lec5/33.png" width="40%"/></a>
-</div><p></p>
-<p></p><div style="text-align: center">
-<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/34.png"><img src="images/lec5/34.png" width="40%"/></a>
-</div><p></p>
-<p></p><div style="text-align: center">
-<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/35.png"><img src="images/lec5/35.png" width="40%"/></a>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/33.png"><img src="images/lec5/33.png" width="30%"/></a>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/34.png"><img src="images/lec5/34.png" width="30%"/></a>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/35.png"><img src="images/lec5/35.png" width="30%"/></a>
 </div><p></p>
 </details>
 <hr/>
-<p><span>LoG<span class="heti-spacing"> </span></span>可用两个<strong>高斯函数差</strong><span>(difference of Gaussian, DoG)<span class="heti-spacing"> </span></span>近似</p>
+<p><span>LoG<span class="heti-spacing"> </span></span>可用两个<strong>高斯函数差</strong>(difference of Gaussian, <strong>DoG</strong><span>)<span class="heti-spacing"> </span></span>近似（右图蓝线是两个高斯函数之差，黑线是<span class="heti-skip"><span class="heti-spacing"> </span>LoG<span class="heti-spacing"> </span></span>的结果<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
 <div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/36.png"><img src="images/lec5/36.png" width="50%"/></a>
 </div>
@@ -1223,34 +1269,30 @@ $$</p>
 <div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/38.png"><img src="images/lec5/38.png" width="40%"/></a>
 </div>
-<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/39.png"><img align="right" alt="" src="images/lec5/39.png" width="30%"/></a></p>
-<p>描述兴趣点周围区域的最简单方法是记录下光强值列表，从而构成一个<strong>特征向量</strong>。但这样做的问题是即便对微小的移动或旋转也很敏感（即不是不可变的<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
-<p>常用的一种方法是 <strong>SIFT</strong>（尺度不变特征变换<span><span class="heti-spacing"> </span>(scale invariant featrue transform)</span>）描述符，它有一个关于方向梯度的直方图。</p>
+<p>描述兴趣点周围区域的最简单方法是记录一个光强值列表，用于构建<strong>特征向量</strong>。但这样做会遇到的一个问题是：即便对微小的移动或旋转也很敏感（即不是不可变的<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。比如稍微移一下图像，对人类而言是微不足道的，但向量表示就会发生显著变化。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/39.png"><img src="images/lec5/39.png" width="30%"/></a>
+</div>
+<p>常用的解决方案是 <strong>SIFT</strong>（<strong>尺度不变特征变换</strong>(scale invariant featrue transform)）描述符。</p>
 <ul>
-<li>捕捉重要的纹理信息</li>
+<li>它有一个关于方向梯度的直方图（以角度为横坐标（范围为<span><span class="heti-spacing"> </span><span class="arithmatex">\([0, 2\pi]\)</span></span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，其中捕捉了重要的纹理信息</li>
 <li>对微小平移和仿射形变<span class="heti-skip"><span class="heti-spacing"> </span>(affine deformation)<span class="heti-spacing"> </span></span>具有鲁棒性</li>
 </ul>
 <div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/40.png"><img src="images/lec5/40.png" width="60%"/></a>
 </div>
-<hr/>
-<p><strong>方向归一化</strong>(orientation normalization)：</p>
-<ul>
-<li>计算方向直方图</li>
-<li>选择主方向</li>
-<li>归一化：旋转至固定方向</li>
-</ul>
+<p>显然，<span>SIFT<span class="heti-spacing"> </span></span>对<strong>旋转</strong>具有不变性。但是旋转后对应的方向梯度直方图发生了平移。要想将两张图像的直方图匹配起来，需要采用<strong>方向归一化</strong><span>(orientation normalization)<span class="heti-spacing"> </span></span>的方法：找出主方向（即直方图中值最大的角度<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，然后以该方向为基准旋转图像，直到两张图的朝向匹配为止。</p>
 <div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/41.png"><img src="images/lec5/41.png" width="40%"/></a>
 </div>
-<hr/>
-<p><strong>Lowe’<span>s SIFT<span class="heti-spacing"> </span></span>算法</strong>：</p>
+<p>值得注意的是，虽然<span class="heti-skip"><span class="heti-spacing"> </span>SIFT<span class="heti-spacing"> </span></span>叫做“尺度不变”，但这个尺度不变并不是靠<span class="heti-skip"><span class="heti-spacing"> </span>SIFT<span class="heti-spacing"> </span></span>保证的，而是<strong>在检测阶段中确定窗口的尺度</strong>。</p>
+<p>其中一种算法是 <strong><span>Lowe's SIFT<span class="heti-spacing"> </span></span>算法</strong>，它的大致流程为：</p>
 <ul>
 <li>运行<span class="heti-skip"><span class="heti-spacing"> </span>DoG<span class="heti-spacing"> </span></span>检测器（寻找位置<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>尺度空间的最大值）</li>
 <li>寻找主方向</li>
 <li>对于每一对（x，y，尺度，方向<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，创建描述符</li>
 </ul>
-<details class="example" open="open">
+<details class="example">
 <summary>例子</summary>
 <div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="" id="__tabbed_3_1" name="__tabbed_3" type="radio"/><input id="__tabbed_3_2" name="__tabbed_3" type="radio"/><div class="tabbed-labels"><label for="__tabbed_3_1">例<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span></label><label for="__tabbed_3_2">例<span><span class="heti-spacing"> </span>2</span></label></div>
 <div class="tabbed-content">
@@ -1267,20 +1309,17 @@ $$</p>
 </div>
 </div>
 </details>
-<p><span>SIFT<span class="heti-spacing"> </span></span>的性质——非常鲁棒的匹配技术：</p>
+<p><span>SIFT<span class="heti-spacing"> </span></span>是一种非常鲁棒的匹配技术：</p>
 <ul>
-<li>能处理视图上的变化，理论上具备对旋转和尺度上的不变性（为什么<heti-adjacent class="heti-adjacent-half">？</heti-adjacent>）</li>
-<li>能处理照明上的巨大变化<ul>
-<li>有时甚至能应对白天<span class="heti-skip"><span class="heti-spacing"> </span>v.s.<span class="heti-spacing"> </span></span>夜晚的变化</li>
-</ul>
-</li>
+<li>能处理视图上的变化，理论上具备对旋转和尺度上的不变性</li>
+<li>能处理照明上的巨大变化，有时甚至能应对白天<span class="heti-skip"><span class="heti-spacing"> </span>v.s.<span class="heti-spacing"> </span></span>夜晚的变化</li>
 <li>快速且高效，能够实时运行</li>
 <li>大量可用代码</li>
 </ul>
 <details class="abstract">
 <summary>其他检测器和描述符</summary>
 <p></p><div style="text-align: center">
-<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/44.png"><img src="images/lec5/44.png" width="60%"/></a>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/44.png"><img src="images/lec5/44.png" width="70%"/></a>
 </div><p></p>
 </details>
 <h3 id="matching">Matching<a class="headerlink" href="#matching" title="Permanent link">⚓︎</a></h3>
@@ -1292,17 +1331,12 @@ $$</p>
 <div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/45.png"><img src="images/lec5/45.png" width="40%"/></a>
 </div>
-<p>这个“距离”的衡量方式有（假设特征为<span><span class="heti-spacing"> </span><span class="arithmatex">\(f_1, f_2\)</span></span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
-<ul>
-<li>
-<p><strong><span>L2<span class="heti-spacing"> </span></span>距离</strong> <span class="arithmatex">\(\|f_1 - f_2\|\)</span></p>
-<ul>
-<li>问题：小距离带来了歧义（不正确）的匹配（比如下图不同位置栅栏部位的匹配）</li>
-</ul>
-<p></p><div style="text-align: center">
+<p>一般用 <strong><span>L2<span class="heti-spacing"> </span></span>距离</strong>或<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\|f_1 - f_2\|\)</span><span class="heti-spacing"> </span></span>来衡量距离（假设特征为<span><span class="heti-spacing"> </span><span class="arithmatex">\(f_1, f_2\)</span></span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
+<div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/46.png"><img src="images/lec5/46.png" width="60%"/></a>
-</div><p></p>
-</li>
+</div>
+<p>一个问题是：小距离带来了歧义（不正确）的匹配（比如下图不同位置栅栏部位的匹配<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。下面给出一些解决方案：</p>
+<ul>
 <li>
 <p><strong>比例测试</strong>(ratio test)</p>
 <ul>
@@ -1314,18 +1348,20 @@ $$</p>
 </ul>
 </li>
 <li>
-<p>问题：当比例分数较大时仍然可能带来有歧义的匹配</p>
+<p>取值范围为<span><span class="heti-spacing"> </span><span class="arithmatex">\((0, 1]\)</span></span>，值越大说明歧义问题越严重（说明<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f_2, f_2'\)</span><span class="heti-spacing"> </span></span>的值很接近<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，找到的点越不可靠</p>
 </li>
+<li>因此这起到了滤除歧义的作用</li>
 </ul>
 <p></p><div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/47.png"><img src="images/lec5/47.png" width="60%"/></a>
 </div><p></p>
 </li>
 <li>
-<p><strong>相互最近邻居</strong>(mutual nearest neighbor)</p>
+<p><strong>相互最近邻</strong>(mutual nearest neighbor)</p>
 <ul>
 <li><span><span class="arithmatex">\(f_2\)</span><span class="heti-spacing"> </span></span>是<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(I_2\)</span><span class="heti-spacing"> </span></span>中对应<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f_1\)</span><span class="heti-spacing"> </span></span>的最近邻居</li>
 <li><span><span class="arithmatex">\(f_1\)</span><span class="heti-spacing"> </span></span>是<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(I_1\)</span><span class="heti-spacing"> </span></span>中对应<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f_2\)</span><span class="heti-spacing"> </span></span>的最近邻居</li>
+<li>如果匹配可靠的话，图像上匹配的两点应互为最近邻</li>
 </ul>
 <p></p><div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/48.png"><img src="images/lec5/48.png" width="60%"/></a>
@@ -1334,15 +1370,12 @@ $$</p>
 </ul>
 <details class="example" open="open">
 <summary>例子</summary>
-<div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="" id="__tabbed_4_1" name="__tabbed_4" type="radio"/><input id="__tabbed_4_2" name="__tabbed_4" type="radio"/><div class="tabbed-labels"><label for="__tabbed_4_1">例<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span></label><label for="__tabbed_4_2">例<span><span class="heti-spacing"> </span>2</span></label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
 <p></p><div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/49.png"><img src="images/lec5/49.png" width="60%"/></a>
 </div><p></p>
-</div>
-<div class="tabbed-block">
-<p>用于特征匹配的深度学习</p>
+</details>
+<details class="info">
+<summary>基于深度学习的特征匹配</summary>
 <p></p><div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/50.png"><img src="images/lec5/50.png" width="60%"/></a>
 </div><p></p>
@@ -1350,13 +1383,10 @@ $$</p>
 <p></p><div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/51.png"><img src="images/lec5/51.png" width="70%"/></a>
 </div><p></p>
-</div>
-</div>
-</div>
 </details>
 <h2 id="motion-estimation">Motion Estimation<a class="headerlink" href="#motion-estimation" title="Permanent link">⚓︎</a></h2>
 <p>我们生活在<strong>运动</strong><span>(motion)<span class="heti-spacing"> </span></span>的世界里，因此观察、理解、预测运动是我们日常生活中的重要组成部分。</p>
-<details class="example" open="open">
+<details class="example">
 <summary>例子：一些有意思的错觉现象</summary>
 <p>盯着这些图案看，感觉它们好像在动，但实际上都是静止的图片。</p>
 <p></p><div style="text-align: center">
@@ -1394,29 +1424,18 @@ $$</p>
 </div><p></p>
 </li>
 </ul>
-<p>运动估计存在以下问题：</p>
+<p>运动估计相关的任务有：</p>
 <ul>
 <li><strong>特征追踪</strong>(feature tracking)：提取特征点，并在多帧间追踪它们，输出这些（稀疏）点的位移<span><span class="heti-spacing"> </span>(displacement)</span></li>
 <li><strong>光流</strong>(optical flow)：逐像素还原图像运动，输出密集位移场（光流）</li>
 </ul>
-<p>上述两个问题可用一个方法解决，那就是 <strong><span>Lucas-Kanade<span class="heti-spacing"> </span></span>法</strong>。运用此法时，要先做出以下假设：</p>
+<p>上述两个问题可用一个方法解决，那就是 <strong><span>Lucas-Kanade<span class="heti-spacing"> </span></span>方法</strong>。使用该方法时，需要先做出以下假设：</p>
 <div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/58.png"><img src="images/lec5/58.png" width="40%"/></a>
 </div>
 <ul>
 <li>
-<p><strong>运动量不大</strong>(small motion)：点不能移动太远</p>
-<ul>
-<li>
-<p>如果移动量太大（比如远超一个像素<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，那么可以考虑通过降低分辨率的方式来缓减影响</p>
-<p></p><div style="text-align: center">
-<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/65.png"><img src="images/lec5/65.png" width="50%"/></a>
-</div><p></p>
-</li>
-</ul>
-</li>
-<li>
-<p><strong>亮度持续性</strong>(brightness constancy)：相同点在每一帧上看起来应当是相同的</p>
+<p><strong>亮度持续性</strong>(brightness constancy)：相同点（的亮度<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>颜色）在每一帧上看起来应当是相同的</p>
 <ul>
 <li>
 <p>亮度持续方程：<span class="arithmatex">\(I(x, y, t) = I(x + u, y + v, t + 1)\)</span></p>
@@ -1430,7 +1449,7 @@ $$</p>
 \begin{aligned}
 I(x + u, y + v, t + 1) \approx I(x, y, t) + I_x \cdot u + I_y \cdot v + I_t \\
 I(x + u, y + v, t + 1) - I(x, y, t) = I_x \cdot u + I_y \cdot v + I_t \\
-I_x \cdot u + I_y \cdot v + I_t \approx 0 \quad \rightarrow \quad \nabla I \cdot \begin{bmatrix}u &amp; v\end{bmatrix}^T + I_t = 0
+I_x \cdot u + I_y \cdot v + I_t \approx 0 \quad \rightarrow \quad \boxed{\nabla I \cdot \begin{bmatrix}u &amp; v\end{bmatrix}^T + I_t = 0}
 \end{aligned}
 \]</div>
 </li>
@@ -1448,10 +1467,10 @@ I_x \cdot u + I_y \cdot v + I_t \approx 0 \quad \rightarrow \quad \nabla I \cdot
 <div class="arithmatex">\[
 \begin{bmatrix}I_x(\mathbf{p_1}) &amp; I_y(\mathbf{p_1}) \\ I_x(\mathbf{p_2}) &amp; I_y(\mathbf{p_2}) \\ \vdots &amp; \vdots \\ I_x(\mathbf{p_{25}}) &amp; I_y(\mathbf{p_{25}})\end{bmatrix} \begin{bmatrix}u \\ v\end{bmatrix} = -\begin{bmatrix}I_t(\mathbf{p_1}) \\ I_t(\mathbf{p_2}) \\ \vdots \\ I_t(\mathbf{p_{25}})\end{bmatrix}
 \]</div>
-<p>简化表示为<span><span class="heti-spacing"> </span><span class="arithmatex">\(Ad = b\)</span></span>。现在方程比变量多了。</p>
+<p>简化表示为<span><span class="heti-spacing"> </span><span class="arithmatex">\(Ad = b\)</span></span>。现在方程比变量多了！</p>
 </li>
 <li>
-<p>现在的目标是求解<span><span class="heti-spacing"> </span><span class="arithmatex">\(\min\limits_d \|Ad - b\|^2\)</span></span>，即关于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(d\)</span><span class="heti-spacing"> </span></span>的最小二乘问题。以下方程的解即为最终要求的<span><span class="heti-spacing"> </span><span class="arithmatex">\(d\)</span></span>：</p>
+<p>目标是求解<span><span class="heti-spacing"> </span><span class="arithmatex">\(\min\limits_d \|Ad - b\|^2\)</span></span>，即<strong>关于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(d\)</span><span class="heti-spacing"> </span></span>的最小二乘问题</strong>（优化问题<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。以下方程的解即为最终要求的<span><span class="heti-spacing"> </span><span class="arithmatex">\(d\)</span></span>：</p>
 <div class="arithmatex">\[
 \begin{aligned}
 (A^T A) d &amp; = A^T b \\
@@ -1460,16 +1479,12 @@ I_x \cdot u + I_y \cdot v + I_t \approx 0 \quad \rightarrow \quad \nabla I \cdot
 \]</div>
 </li>
 <li>
-<p>该方程何时能解：<span><span class="arithmatex">\(A^TA\)</span><span class="heti-spacing"> </span></span>可逆<span class="heti-skip"><span class="heti-spacing"> </span>(invertible)<span class="heti-spacing"> </span></span>且是良态的<span><span class="heti-spacing"> </span>(well-conditioned)</span></p>
+<p>该方程何时能解：<span class="arithmatex">\(A^TA\)</span> <strong>可逆</strong><span>(invertible)<span class="heti-spacing"> </span></span>且是<strong>良态的</strong>(well-conditioned)</p>
 <ul>
 <li>它的特征值<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\lambda_1, \lambda_2\)</span><span class="heti-spacing"> </span></span>不应过小</li>
-<li>这和<a href="#harris-detector">哈里斯角检测器</a>类似</li>
+<li>这和<a href="#harris-detector">哈里斯角检测器</a>类似（所以<span class="heti-skip"><span class="heti-spacing"> </span>LK<span class="heti-spacing"> </span></span>方法更适合用在<strong>强纹理区域</strong>，而不是弱纹理或边缘区域）</li>
 </ul>
-</li>
-</ul>
-</li>
-</ul>
-<div class="tabbed-set tabbed-alternate" data-tabs="5:3"><input checked="" id="__tabbed_5_1" name="__tabbed_5" type="radio"/><input id="__tabbed_5_2" name="__tabbed_5" type="radio"/><input id="__tabbed_5_3" name="__tabbed_5" type="radio"/><div class="tabbed-labels"><label for="__tabbed_5_1">低纹理区域<span class="heti-skip"><span class="heti-spacing"> </span>(low texture region)<span class="heti-spacing"> </span></span></label><label for="__tabbed_5_2">边</label><label for="__tabbed_5_3">高纹理区域<span><span class="heti-spacing"> </span>(high texture region)</span></label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:3"><input checked="" id="__tabbed_4_1" name="__tabbed_4" type="radio"/><input id="__tabbed_4_2" name="__tabbed_4" type="radio"/><input id="__tabbed_4_3" name="__tabbed_4" type="radio"/><div class="tabbed-labels"><label for="__tabbed_4_1">弱纹理区域<span class="heti-skip"><span class="heti-spacing"> </span>(low texture region)<span class="heti-spacing"> </span></span></label><label for="__tabbed_4_2">边</label><label for="__tabbed_4_3">强纹理区域<span><span class="heti-spacing"> </span>(high texture region)</span></label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p></p><div style="text-align: center">
@@ -1488,27 +1503,50 @@ I_x \cdot u + I_y \cdot v + I_t \approx 0 \quad \rightarrow \quad \nabla I \cdot
 </div>
 </div>
 </div>
+</li>
+<li>
 <p><strong>孔径问题</strong>(aperture problem)：平行于边缘的运动分量无法测量。</p>
-<div style="text-align: center">
+<p></p><div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/62.png"><img src="images/lec5/62.png" width="32.8%"/></a>
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/63.png"><img src="images/lec5/63.png" width="30%"/></a>
-</div>
-<p>导致<span class="heti-skip"><span class="heti-spacing"> </span>Lucas-Kanade<span class="heti-spacing"> </span></span>法存在误差的潜在原因有：</p>
+</div><p></p>
+<ul>
+<li>例子：<a href="https://en.wikipedia.org/wiki/Barberpole_illusion?useskin=vector">理发店三色柱错觉</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>运动量不大</strong>(small motion)：点不能移动太远</p>
+<ul>
+<li>
+<p>如果移动量太大（比如远超一个像素<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，那么可以考虑通过<strong>降低分辨率</strong>的方式来缓减影响</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/65.png"><img src="images/lec5/65.png" width="50%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>具体实现：<strong>从粗到精的光流估计</strong>(coarse-to-fine optical flow estimation)：</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/66.png"><img src="images/lec5/66.png" width="60%"/></a>
+</div><p></p>
+</li>
+</ul>
+</li>
+</ul>
+<p>导致<span class="heti-skip"><span class="heti-spacing"> </span>Lucas-Kanade<span class="heti-spacing"> </span></span>方法存在误差的潜在原因有：</p>
 <ul>
 <li>假设<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(A^TA\)</span><span class="heti-spacing"> </span></span>是容易可逆的</li>
 <li>假设图像上没有太多噪声</li>
+<li>以及违背前面三个假设的任何一条</li>
 </ul>
-<p><strong>从粗到精的光流估计</strong>(coarse-to-fine optical flow estimation)：</p>
-<div style="text-align: center">
-<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec5/66.png"><img src="images/lec5/66.png" width="60%"/></a>
-</div>
 <details class="example" open="open">
 <summary>例子</summary>
-<div class="tabbed-set tabbed-alternate" data-tabs="6:4"><input checked="" id="__tabbed_6_1" name="__tabbed_6" type="radio"/><input id="__tabbed_6_2" name="__tabbed_6" type="radio"/><input id="__tabbed_6_3" name="__tabbed_6" type="radio"/><input id="__tabbed_6_4" name="__tabbed_6" type="radio"/><div class="tabbed-labels"><label for="__tabbed_6_1">例<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span></label><label for="__tabbed_6_2">例<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span></label><label for="__tabbed_6_3">例<span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span></label><label for="__tabbed_6_4">例<span><span class="heti-spacing"> </span>4</span></label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="5:4"><input checked="" id="__tabbed_5_1" name="__tabbed_5" type="radio"/><input id="__tabbed_5_2" name="__tabbed_5" type="radio"/><input id="__tabbed_5_3" name="__tabbed_5" type="radio"/><input id="__tabbed_5_4" name="__tabbed_5" type="radio"/><div class="tabbed-labels"><label for="__tabbed_5_1">例<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span></label><label for="__tabbed_5_2">例<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span></label><label for="__tabbed_5_3">例<span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span></label><label for="__tabbed_5_4">例<span><span class="heti-spacing"> </span>4</span></label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p><strong>流质量评估</strong>(flow quality evaluation)</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="7:2"><input checked="" id="__tabbed_7_1" name="__tabbed_7" type="radio"/><input id="__tabbed_7_2" name="__tabbed_7" type="radio"/><div class="tabbed-labels"><label for="__tabbed_7_1">原图</label><label for="__tabbed_7_2">移动后</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="6:2"><input checked="" id="__tabbed_6_1" name="__tabbed_6" type="radio"/><input id="__tabbed_6_2" name="__tabbed_6" type="radio"/><div class="tabbed-labels"><label for="__tabbed_6_1">原图</label><label for="__tabbed_6_2">移动后</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p></p><div style="text-align: center">
