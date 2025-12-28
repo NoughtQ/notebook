@@ -6,10 +6,6 @@
     - 教师：寿黎但
     - 教材：*Operating System Concepts*, 10th Edition (7th edition is also OK)
 
-!!! warning "警告"
-
-    目前已完成的笔记本质上是对教材的机翻，只是略有删改。到期末复习时笔者会修订已有笔记，删减不必要的内容，做到厚积薄发。
-
 !!! abstract "目录"
 
     - Part 1: Overview
@@ -41,9 +37,11 @@
     - 教材
     - 课件
     - [Operating System: Three Easy Pieces](https://pages.cs.wisc.edu/~remzi/OSTEP/)（笔记中那些不存在于课件和教材的内容大都来自这里）
+        - 很可惜的是，随着课业压力增大，我不得不牺牲掉阅读 OSTEP 的时间了，所以大致从第 13 章后我就没再往下阅读了。如果之后重温操作系统的话，这应该是我首选的阅读资料！
     - 前辈们的笔记：
         - [修佬的笔记](https://note.isshikih.top/cour_note/D3QD_Operatingsys/)
         - [咸鱼暄老师的笔记](https://xuan-insr.github.io/%E6%A0%B8%E5%BF%83%E7%9F%A5%E8%AF%86/os/I_overview/1_intro/)
+        - [HobbitQia 前辈的笔记](https://note.hobbitqia.cc/OS/)
     - 国内外优质课程：
         - [NJU 蒋炎岩老师的 OS 课（2025）](https://jyywiki.cn/OS/2025/)
         - [THU rCore-Tutorial-Guide](https://learningos.cn/rCore-Tutorial-Guide-2025S/index.html)
@@ -51,4 +49,5 @@
     - 实验文档：
         - [sld 班的实验文档（2025）](https://os-25fall-81d0ad.pages.zjusct.io/)：好像目前照搬了 24 年的实验文档
         - [jjm, whs 班的实验文档（2025）](https://zju-os.github.io/doc/)：写得比笔者班的更好
+        - 注意期末考试和实验还是有一些关系的，所以复习时不能遗漏，具体见[实验文档的描述](https://zju-os.github.io/doc/#%E4%B8%8E%E8%80%83%E8%AF%95%E7%9A%84%E8%81%94%E7%B3%BB)
         

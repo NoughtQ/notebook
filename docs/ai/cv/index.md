@@ -32,12 +32,18 @@
         - [x] [Video Understanding](17.md)
         - [x] [Large Scale Distributed Training](18.md)
         - [x] [Self-supervised Learning](19.md)
-        - [ ] [Generative Models](20.md)
+        - [x] [Generative Models](20.md)
         - [x] [3D Deep Learning](21.md)
-        - [ ] [Vision and Language](22.md)
+        - [ ] [Multi-Modal Foundation Models](22.md)
         - [ ] [Robot Learning](23.md)
         - [x] [Computational Photography](24.md)
     
+!!! warning "复习注意事项"
+
+    - 不用死记硬背各种数值和复杂公式，重在理解概念
+    - 题型：（不定项）选择、判断、填空（偶尔涉及简单的计算）、简答（描述性）
+
+
 !!! recommend "参考资料"
 
     - 课件（~~拼好 slides~~）

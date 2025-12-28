@@ -292,7 +292,7 @@
     - [x] [Arithmetic and Logic Instructions](5.md)
     - [x] [Program Control Instructions](6.md)
     - [x] [8086/8088 Hardware Specifications](9.md)
-    - [ ] [Basic I/O Interface](11.md)
+    - [x] [Basic I/O Interface](11.md)
 
 !!! recommend "参考资料"
 
