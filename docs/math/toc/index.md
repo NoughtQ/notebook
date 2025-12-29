@@ -25,4 +25,5 @@
     - [xg 的笔记](https://note.tonycrane.cc/cs/tcs/toc/)
     - [咸鱼暄前辈的笔记](https://xuan-insr.github.io/other_courses/theory_of_computation)
     - [Xecades 大佬的笔记](https://note.xecades.xyz/cs/tcs)
-    - [shrike 大佬的笔记](https://nest.shrike505.cc/notes/ComputerScience/TCS/)
+    - [shrike-505 大佬的笔记](https://nest.shrike505.cc/notes/ComputerScience/TCS/)
+    - [2025 秋冬朋辈辅学资料](https://codeberg.org/LoctStrider/ZJU-2025AW-Theory-of-Computation-Peer-Tutoring)

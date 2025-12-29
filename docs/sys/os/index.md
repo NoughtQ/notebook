@@ -34,6 +34,8 @@
     
 !!! recommend "参考资料"
 
+    超级多资料！
+
     - 教材
     - 课件
     - [Operating System: Three Easy Pieces](https://pages.cs.wisc.edu/~remzi/OSTEP/)（笔记中那些不存在于课件和教材的内容大都来自这里）
@@ -42,6 +44,7 @@
         - [修佬的笔记](https://note.isshikih.top/cour_note/D3QD_Operatingsys/)
         - [咸鱼暄老师的笔记](https://xuan-insr.github.io/%E6%A0%B8%E5%BF%83%E7%9F%A5%E8%AF%86/os/I_overview/1_intro/)
         - [HobbitQia 前辈的笔记](https://note.hobbitqia.cc/OS/)
+    - 2025 朋辈辅学
     - 国内外优质课程：
         - [NJU 蒋炎岩老师的 OS 课（2025）](https://jyywiki.cn/OS/2025/)
         - [THU rCore-Tutorial-Guide](https://learningos.cn/rCore-Tutorial-Guide-2025S/index.html)
