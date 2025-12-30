@@ -22,6 +22,7 @@
 
 !!! recommend "参考资料"
 
+    - 教材
     - [xg 的笔记](https://note.tonycrane.cc/cs/tcs/toc/)
     - [咸鱼暄前辈的笔记](https://xuan-insr.github.io/other_courses/theory_of_computation)
     - [Xecades 大佬的笔记](https://note.xecades.xyz/cs/tcs)
