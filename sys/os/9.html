@@ -1203,7 +1203,7 @@
 </a>
 <h1 id="main-memory">Main Memory<a class="headerlink" href="#main-memory" title="Permanent link">⚓︎</a></h1>
 <div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
-<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>6449<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>32<span class="heti-spacing"> </span></span>分钟</p>
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>6866<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>34<span class="heti-spacing"> </span></span>分钟</p>
 </div>
 <details class="abstract">
 <summary>核心知识</summary>
@@ -1302,6 +1302,19 @@
 <details class="info">
 <summary>注</summary>
 <p>一些<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>仅支持<strong>静态链接</strong>(static linking)，此时系统库被视为一般的对象模块，并由加载器组合成二进制程序映像。此时每个程序在可执行映像中都包含库的副本，不仅增大体积还浪费内存。</p>
+</details>
+<details class="note">
+<summary>内存管理的功能</summary>
+<blockquote>
+<p>来自朋辈辅学课件</p>
+</blockquote>
+<ul>
+<li><strong>内存空间的分配与回收</strong>：由<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>负责内存空间的分配和管理，记录内存的空闲空间、内存的分配情况，并回收已结束进程所占用的内存空间</li>
+<li><strong>地址转换</strong>：由于程序的逻辑地址与内存中的物理地址不可能一致，因此存储管理必须提供地址变换功能，将逻辑地址转换成相应的物理地址</li>
+<li><strong>内存空间的扩充</strong>：利用虚拟存储技术从逻辑上扩充内存</li>
+<li><strong>内存共享</strong>：允许多个进程访问内存的同一部分，例如多个协作进程可能需要访问同一块数据，因此必须支持对内存共享区域进行受控访问</li>
+<li><strong>存储保护</strong>：保证各个进程在各自的存储空间内运行，互不干扰</li>
+</ul>
 </details>
 <h2 id="contiguous-memory-allocation">Contiguous Memory Allocation<a class="headerlink" href="#contiguous-memory-allocation" title="Permanent link">⚓︎</a></h2>
 <p>内存通常被划分为两部分，一块分给<span><span class="heti-spacing"> </span>OS</span>，另一块分给用户进程。在多数<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>中，给 <strong>OS</strong> 的内存一般都是<strong>高地址</strong>的。</p>
@@ -1514,6 +1527,49 @@
 </ul>
 </li>
 </ul>
+<details class="question" open="open">
+<summary>题目</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:1"><input checked="" id="__tabbed_1_1" name="__tabbed_1" type="radio"/><div class="tabbed-labels"><label for="__tabbed_1_1">问题<span><span class="heti-spacing"> </span>1</span></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="" id="__tabbed_2_1" name="__tabbed_2" type="radio"/><input id="__tabbed_2_2" name="__tabbed_2" type="radio"/><div class="tabbed-labels"><label for="__tabbed_2_1">题目</label><label for="__tabbed_2_2">解答</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>某计算机采用二级页表的分页存储管理方式，按字节编址，页大小为<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span><sup><span class="heti-skip"><span class="heti-spacing"> </span>10<span class="heti-spacing"> </span></span></sup>字节，页表项大小为<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>字节，逻辑地址结构为：</p>
+<div align="center" markdown="1">
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">页目录号</th>
+<th style="text-align: center;">页号</th>
+<th style="text-align: center;">页内偏移量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>逻辑地址空间大小为<span class="heti-skip"><span class="heti-spacing"> </span>216<span class="heti-spacing"> </span></span>页，则表示整个逻辑地址空间的页目录表中包含表项的个数至少是：</p>
+<p>A. 64     B. 128     C. 256     D. 512</p>
+</div>
+<div class="tabbed-block">
+<ul>
+<li>一个页表本身本身就要一个页的大小，即<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span><sup><span class="heti-skip"><span class="heti-spacing"> </span>10<span class="heti-spacing"> </span></span></sup>字节</li>
+<li>那么页表项至多为<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span><sup><span class="heti-skip"><span class="heti-spacing"> </span>10<span class="heti-spacing"> </span></span></sup><span class="heti-skip"><span class="heti-spacing"> </span>/ 2 = 512<span class="heti-spacing"> </span></span>项</li>
+<li>一共有<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span><sup><span class="heti-skip"><span class="heti-spacing"> </span>16<span class="heti-spacing"> </span></span></sup>页，那么每个页目录项包含的表项数就是<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span><sup><span class="heti-skip"><span class="heti-spacing"> </span>16<span class="heti-spacing"> </span></span></sup><span class="heti-skip"><span class="heti-spacing"> </span>/ 2<span class="heti-spacing"> </span></span><sup><span class="heti-skip"><span class="heti-spacing"> </span>9<span class="heti-spacing"> </span></span></sup><span class="heti-skip"><span class="heti-spacing"> </span>= 2<span class="heti-spacing"> </span></span><sup><span class="heti-skip"><span class="heti-spacing"> </span>7<span class="heti-spacing"> </span></span></sup><span class="heti-skip"><span class="heti-spacing"> </span>= 128<span class="heti-spacing"> </span></span>项，所以选<span><span class="heti-spacing"> </span>B</span></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</details>
 <h3 id="hashed-page-tables">Hashed Page Tables<a class="headerlink" href="#hashed-page-tables" title="Permanent link">⚓︎</a></h3>
 <p>一种替代方案是使用<strong>哈希页表</strong>(hashed page table)。</p>
 <ul>

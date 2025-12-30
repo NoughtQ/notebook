@@ -1507,13 +1507,50 @@
 </a>
 <h1 id="virtual-memory">Virtual Memory<a class="headerlink" href="#virtual-memory" title="Permanent link">⚓︎</a></h1>
 <div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
-<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>11082<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>55<span class="heti-spacing"> </span></span>分钟</p>
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>11323<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>57<span class="heti-spacing"> </span></span>分钟</p>
 </div>
+<details class="abstract">
+<summary>核心知识</summary>
+<ul>
+<li>按需分页<ul>
+<li>纯按需分页</li>
+<li>空闲帧列表</li>
+</ul>
+</li>
+<li>写时复制</li>
+<li>页替换：<ul>
+<li>FIFO</li>
+<li>OPT</li>
+<li>LRU</li>
+<li>近似<span><span class="heti-spacing"> </span>LRU</span>（额外引用位<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>第二次机会<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>增强第二次机会）</li>
+<li>基于计数的</li>
+</ul>
+</li>
+<li>帧分配<ul>
+<li>平等分配</li>
+<li>比例分配（进程大小<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>优先级）</li>
+<li>全局<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>局部替换</li>
+<li>考虑<span class="heti-skip"><span class="heti-spacing"> </span>NUMA<span class="heti-spacing"> </span></span>的情况</li>
+</ul>
+</li>
+<li>抖动<ul>
+<li>原因</li>
+<li>工作集模型</li>
+</ul>
+</li>
+<li>内存压缩</li>
+<li>内核内存分配<ul>
+<li>伙伴系统</li>
+<li>板分配</li>
+</ul>
+</li>
+</ul>
+</details>
 <p><strong>虚拟内存</strong><span>(virtual memory)<span class="heti-spacing"> </span></span>是一种让进程的执行可以不完全在内存中的技术。该技术的一个主要优点是可以让程序比物理内存还大，因为虚拟内存将主存抽象为一个非常大且统一的存储数组。</p>
 <h2 id="background">Background<a class="headerlink" href="#background" title="Permanent link">⚓︎</a></h2>
 <p>我们不必把整个程序都放在内存中执行，比如对于以下情况：</p>
 <ul>
-<li>程序中用于处理不常见的错误条件的代码</li>
+<li>程序中用于处理不常见错误的代码</li>
 <li>数组、列表等数据结构通常被分配到比它们实际需要的更大的内存</li>
 <li>程序中的部分选项或功能用得很少</li>
 </ul>
@@ -1530,14 +1567,11 @@
 <p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C10/2.png"><img align="right" alt="" src="images/C10/2.png" width="20%"/></a></p>
 <p>进程的<strong>虚拟地址空间</strong><span>(virtual address space)<span class="heti-spacing"> </span></span>是指进程在内存中存储的逻辑（或虚拟）视图。</p>
 <ul>
-<li>堆空间向上增长，用于动态内存分配</li>
-<li>栈空间向下增长，用于连续的函数调用</li>
-<li>堆和栈之间有一块很大的空间（或洞<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，因而虚拟地址空间是一种<strong>稀疏的</strong><span>(sparse)<span class="heti-spacing"> </span></span>地址空间<ul>
-<li>这一特点是有益的，因为当栈或堆段增长时，洞可以被填充；并且这个洞在程序执行期间可用来存放动态链接库（或可能其他共享对象）</li>
+<li><strong>堆</strong>空间向上增长，用于动态内存分配</li>
+<li><strong>栈</strong>空间向下增长，用于连续的函数调用</li>
+<li>堆和栈之间有一块很大的空间（或洞<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，因而虚拟地址空间是一种<strong>稀疏的</strong><span>(sparse)<span class="heti-spacing"> </span></span>地址空间；这一特点是有益的，因为当栈或堆段增长时，洞可以被填充；并且这个洞在程序执行期间可用来存放动态链接库（或可能其他共享对象）</li>
 </ul>
-</li>
-</ul>
-<p>除了分离逻辑内存和物理内存外，虚拟内存允许文件和内存能被多个进程共享。这能带来以下好处：</p>
+<p>除了分离逻辑内存和物理内存外，虚拟内存允许文件和内存能被多个进程<strong>共享</strong>。这能带来以下好处：</p>
 <ul>
 <li>
 <p>像标准<span class="heti-skip"><span class="heti-spacing"> </span>C<span class="heti-spacing"> </span></span>库等系统库可以通过将共享对象映射到虚拟地址空间中，实现多个进程共享</p>
@@ -1568,34 +1602,46 @@
 </ol>
 <p><strong>纯按需换页</strong>(pure demand paging)：除非有要求，否则不会将页放到内存中。</p>
 <ul>
-<li>所以进程执行一开始没有任何页，可能会不断触发页错误，然后逐渐加载所需的页到内存中</li>
+<li>所以进程刚执行时没有任何页，可能会不断触发页错误，然后才会将所需的页逐渐加载到内存中</li>
 </ul>
-<p>理论上，一些程序可能在每次指令执行时访问几页新的内存（指令一页，数据多页<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，可能每条指令都会导致多次页错误，这显然严重损害了系统的性能。不过实践表明，这种行为很少发生，因为程序往往有<strong>引用局部性</strong><span>(locality of reference)<span class="heti-spacing"> </span></span>的特性。</p>
-<p>支持按需分页的硬件为：</p>
+<p>理论上，一些程序可能在每次指令执行时访问几页新的内存（指令一页，数据多页<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，所以有可能每条指令都会导致多次页错误，这样显然严重损害了系统的性能。不过实践表明，这种行为很少发生，因为程序往往有<strong>引用局部性</strong><span>(locality of reference)<span class="heti-spacing"> </span></span>的特性。</p>
+<details class="note">
+<summary>回顾：局部性原理</summary>
+<blockquote>
+<p>来自朋辈辅学。</p>
+</blockquote>
+<p><strong>局部性原理</strong>指程序在执行过程中的一个较短时期，所执行的指令地址和指令的操作数地址，分别局限于一定区域。</p>
+<ul>
+<li><strong>时间</strong>局部性：一条指令的一次执行和下次执行，一个数据的一次访问和下次访问都集中在一个较短时期内</li>
+<li><strong>空间</strong>局部性：当前指令和邻近的几条指令，当前访问的数据和邻近的数据都集中在一个较小区域内</li>
+</ul>
+</details>
+<p>支持按需分页的硬件有：</p>
 <ul>
 <li><strong>页表</strong>：每一项能通过合法位或保护位的特殊值来标记页的有效<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>无效状态</li>
 <li><strong>二级内存</strong>：持有不在主存中的页的内存，通常是高速磁盘或<span class="heti-skip"><span class="heti-spacing"> </span>NVM<span class="heti-spacing"> </span></span>设备；其中用于交换的部分即为<strong>交换空间</strong>(swap space)</li>
 </ul>
-<p>按需分页的一个关键要求是<strong>在页错误后重启指令</strong>的能力。因为在页错误发生时保存了被中断进程的状态，所以必须能在相同位置、相同状态下重启该进程。</p>
-<p>多数情况下，该要求很容易被满足。一个主要的困难在于一条指令可能修改了多个位置的值。比如<span class="heti-skip"><span class="heti-spacing"> </span>IBM System 360/370<span class="heti-spacing"> </span></span>的<code>MVC</code>（移动字符）指令，它可以将最多<span class="heti-skip"><span class="heti-spacing"> </span>256<span class="heti-spacing"> </span></span>字节从一个位置移动到另一个（可能重叠的）位置。如果任一块（源或目标）跨越了页面边界，则在移动部分完成后可能会发生页错误。此外，如果源和目标块重叠，则源块可能已被修改，在这种情况下，我们不能简单地重新启动该指令。</p>
+<p>按需分页的一个关键要求是<strong>在页错误后重启指令</strong>的能力。因为在页错误发生时保存了被中断进程的状态，所以必须能在相同位置、相同状态下重启该进程。多数情况下，该要求很容易被满足。一个主要的困难在于一条指令可能修改了多个位置的值。</p>
+<ul>
+<li>比如<span class="heti-skip"><span class="heti-spacing"> </span>IBM System 360/370<span class="heti-spacing"> </span></span>的<code>MVC</code>（移动字符）指令，它可以将最多<span class="heti-skip"><span class="heti-spacing"> </span>256<span class="heti-spacing"> </span></span>字节从一个位置移动到另一个（可能重叠的）位置</li>
+<li>如果任一块（源或目标）跨越了页边界，则在移动部分完成后可能会发生页错误</li>
+<li>此外，如果源和目标块重叠，则源块可能已被修改，此时就不能简单地重新启动该指令</li>
+</ul>
 <p>这个问题的解决方案有：</p>
 <ul>
-<li>微码计算并尝试访问两个块的两端；如果将要发生页面错误，它将在此步骤中发生，在任何内容被修改之前</li>
+<li>微码<span class="heti-skip"><span class="heti-spacing"> </span>(microcode)<span class="heti-spacing"> </span></span>计算并尝试访问两个块的两端；如果将要发生页错误，它将在此步骤中发生（在任何内容被修改之前）</li>
 <li>使用临时寄存器存储要被覆写处的值，若发生页错误，所有旧值将在陷阱发生之前写回内存</li>
 </ul>
 <h3 id="free-frame-list">Free-Frame List<a class="headerlink" href="#free-frame-list" title="Permanent link">⚓︎</a></h3>
-<ul>
-<li>为解决页错误，<span>OS<span class="heti-spacing"> </span></span>会维护一张<strong>空闲帧列表</strong>(free-frame list)，存放所有空闲的帧（也会用在栈段和堆段的扩张中）</li>
-<li><span>OS<span class="heti-spacing"> </span></span>通常采用一种叫作<strong>按需零填充</strong><span>(zero-fill-on-demand)<span class="heti-spacing"> </span></span>的技术来分配空闲帧，即在分配前清空帧内原有的内容</li>
-</ul>
+<p>为解决页错误，<span>OS<span class="heti-spacing"> </span></span>会维护一张<strong>空闲帧列表</strong>(free-frame list)，存放所有空闲的帧（也会用在栈段和堆段的扩张中<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。并且<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>通常采用一种叫作<strong>按需零填充</strong><span>(zero-fill-on-demand)<span class="heti-spacing"> </span></span>的技术来分配空闲帧，即在分配前清空帧内原有的内容。</p>
 <div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C10/5.png"><img src="images/C10/5.png" width="50%"/></a>
 </div>
 <h3 id="performance">Performance<a class="headerlink" href="#performance" title="Permanent link">⚓︎</a></h3>
 <p>按需分页极大影响了计算机系统的性能。要理解这点，首先来计算一下按需分页所需的<strong>有效访问时间</strong>(effective access time)。令<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(ma\)</span><span class="heti-spacing"> </span></span>为内存访问时间，<span><span class="arithmatex">\(p\)</span><span class="heti-spacing"> </span></span>为页错误发生的概率（<span class="arithmatex">\(0 \le p \le 1\)</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，那么有效访问时间为：</p>
-<div align="center">
-<p>effective access time = (1 − <span class="arithmatex">\(p\)</span>) × <span class="arithmatex">\(ma\)</span> + <span class="arithmatex">\(p\)</span> × page fault time</p>
-</div>
+<div class="arithmatex">\[
+\text{effective access time} = (1 − p) \times ma + p \times \text{page fault time}
+\]</div>
 <p>所以我们还得知道处理页错误所需的时间，以下是影响该时间的主要组成部分：</p>
 <ul>
 <li>页错误中断处理</li>
@@ -1603,14 +1649,14 @@
 <li>重启进程</li>
 </ul>
 <p>第一和第三点可以通过仔细写代码减少至几百条指令。关键在于第二点，这个和存储设备有很大的关系（这里不考虑排队等待使用设备的时间<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。假如<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(ma\)</span><span class="heti-spacing"> </span></span>是纳秒级的，而磁盘访问时间是毫秒级的，那么很明显有效访问时间将会和<strong>页错误率</strong><span>(page-fault rate)<span class="heti-spacing"> </span></span>成正比。因此在按需分页中，降低页错误率是相当重要的。</p>
-<p>按需分页中，额外需要考虑的是<strong>交换空间</strong>的处理和整体使用。</p>
+<p>另外还要考虑<strong>交换空间</strong>的处理和整体使用。</p>
 <ul>
 <li>对交换空间的输入<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>输出通常比对文件系统的输入<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>输出更快</li>
 <li>一种提升分页吞吐量的方法是在进程启动时将整个文件映像复制到交换空间，然后从交换空间执行按需分页<ul>
-<li>显然拷贝成本太大了</li>
+<li>显然复制成本太大了</li>
 </ul>
 </li>
-<li>另一种实际被应用的方法是是一开始从文件系统按需分页，而在页被替换时将其写入交换空间</li>
+<li>实际被应用的方法是是一开始对文件系统按需分页，而在页被替换时将其写入交换空间</li>
 <li>一些系统试图通过对二进制可执行文件的按需分页来限制使用的交换空间量<ul>
 <li>但当页替换发生时，这些帧就会被直接覆写</li>
 <li>使用这种方法后，使得文件系统看起来就像是后备存储</li>
@@ -1619,7 +1665,7 @@
 </li>
 </ul>
 <h2 id="copy-on-write">Copy-on-Write<a class="headerlink" href="#copy-on-write" title="Permanent link">⚓︎</a></h2>
-<p>使用 <code>fork()</code> 系统调用的进程创建一开始可能通过使用类似于页共享的技术来绕过按需分页的需要。该技术提供了快速的进程创建，并且最小化必须分配给新进程的页数。这种技术就叫做<strong>写时复制</strong>(copy-on-write)，能让<u>父进程和子进程共享相同的页</u>。这些共享的，且需要修改的页被标记为<strong>写时复制页</strong>；进程向这种页写入时创建这个共享页的拷贝，写操作仅发生这个拷贝上。这一过程如下所示：</p>
+<p>使用 <code>fork()</code> 系统调用的进程创建一开始可能通过使用类似于页共享的技术来绕过按需分页的需要。该技术提供了快速的进程创建，并且最小化必须分配给新进程的页数。这种技术就叫做<strong>写时复制</strong>(copy-on-write)，能让父进程和子进程共享相同的页。这些共享的，且需要修改的页被标记为<strong>写时复制页</strong>；进程向这种页写入时<u>创建这个共享页的拷贝，写操作仅发生这个拷贝上</u>。这一过程如下所示：</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="" id="__tabbed_1_1" name="__tabbed_1" type="radio"/><input id="__tabbed_1_2" name="__tabbed_1" type="radio"/><div class="tabbed-labels"><label for="__tabbed_1_1">进程<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>修改页<span class="heti-skip"><span class="heti-spacing"> </span>C<span class="heti-spacing"> </span></span>前</label><label for="__tabbed_1_2">进程<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>修改页<span class="heti-skip"><span class="heti-spacing"> </span>C<span class="heti-spacing"> </span></span>后</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -1675,7 +1721,7 @@
 </li>
 </ul>
 <p>该方案能显著降低处理页错误所需的时间，因为在页没有被修改时能够减少一半<span class="heti-skip"><span class="heti-spacing"> </span>I/O<span class="heti-spacing"> </span></span>时间。</p>
-<p>在挑选替换算法时，我们通常希望得到最低的页错误率。一种评估方法是让算法运行在一串特定的内存引用序列并计算页错误的发生次数。这串序列被称为<strong>引用串</strong>(reference string)。引用串既可人工生成（使用随机数生成器等<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，也可通过追踪具体系统并记录每次内存引用的地址得到。</p>
+<p>在挑选替换算法时，我们通常希望得到<strong>最低的页错误率</strong>。一种评估方法是让算法在一串特定的内存引用序列运行，计算页错误的发生次数。这串序列被称为<strong>引用串</strong>(reference string)。引用串既可人工生成（使用随机数生成器等<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，也可通过追踪具体系统并记录每次内存引用的地址得到。</p>
 <p>但后者通常会产生大量数据。为减小数据量，我们利用两个事实：</p>
 <ul>
 <li>对于给定的页大小，我们只考虑页编号而非完整的地址</li>
@@ -1701,7 +1747,7 @@
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C10/9.png"><img src="images/C10/9.png" width="50%"/></a>
 </div>
 <h3 id="fifo">FIFO<a class="headerlink" href="#fifo" title="Permanent link">⚓︎</a></h3>
-<p>最简单的页替换算法是<strong>先进先出</strong>(first-in, first-out, <strong>FIFO</strong><span>)<span class="heti-spacing"> </span></span>算法。</p>
+<p>最简单的页替换算法是<strong>先进先出</strong>(first-in, first-out, <strong>FIFO</strong><span>)<span class="heti-spacing"> </span></span>算法。实现方法有：</p>
 <ul>
 <li>为每个页<strong>计时</strong>；需要替换某个页时，挑选其中最旧的页</li>
 <li>其实没必要为每个页计时的，可以创建一个 <strong><span>FIFO<span class="heti-spacing"> </span></span>队列</strong>来维护内存中的页<ul>
@@ -1727,7 +1773,7 @@
 </details>
 </details>
 <p>可以看到，尽管该算法理解和实现起来都很容易，但是表现不佳，因为该算法很可能会把一个很早前就初始化，但要过好久会重度使用的变量给踢出去。</p>
-<p>注意到，即便仅在被活跃使用的页上使用该页替换算法，仍然能够正确运行。但错误的替换选择会增加页错误率，并减慢进程的执行速度；不过这不会导致不正确的执行。假如有以下引用串：</p>
+<p>假如有以下引用串：</p>
 <div align="center">
 1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5
 </div>
@@ -1735,9 +1781,9 @@
 <div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C10/11.png"><img src="images/C10/11.png" width="50%"/></a>
 </div>
-<p>可以看到，当帧数<span class="heti-skip"><span class="heti-spacing"> </span>= 4<span class="heti-spacing"> </span></span>时，页错误数竟然比帧数<span class="heti-skip"><span class="heti-spacing"> </span>= 3<span class="heti-spacing"> </span></span>时还高。这种意料之外的结果被称为 <a href="https://en.wikipedia.org/wiki/B%C3%A9l%C3%A1dy%27s_anomaly"><strong><span>Belady<span class="heti-spacing"> </span></span>异常</strong></a>(anormaly)：对于某些页替换算法，当分配帧数上升时，页错误数反而会增加。</p>
+<p>可以看到，当帧数<span class="heti-skip"><span class="heti-spacing"> </span>= 4<span class="heti-spacing"> </span></span>时，页错误数竟然比帧数<span class="heti-skip"><span class="heti-spacing"> </span>= 3<span class="heti-spacing"> </span></span>时还高。像这种当分配帧数上升时，页错误数反而会增加的意外情况被称为 <a href="https://en.wikipedia.org/wiki/B%C3%A9l%C3%A1dy%27s_anomaly"><strong><span>Belady<span class="heti-spacing"> </span></span>异常</strong></a>(Belady anormaly)。</p>
 <h3 id="optimal">Optimal<a class="headerlink" href="#optimal" title="Permanent link">⚓︎</a></h3>
-<p>能够实现最低页错误率，且永远不会出现<span class="heti-skip"><span class="heti-spacing"> </span>Belady<span class="heti-spacing"> </span></span>异常的算法就是<strong>最优页替换算法</strong>，称为<span class="heti-skip"><span class="heti-spacing"> </span>OPT<span class="heti-spacing"> </span></span>或<span><span class="heti-spacing"> </span>MIN</span>。这样的算法确实存在，它的思路是：<strong>替换将最长时间不使用的页</strong>。</p>
+<p>能够实现最低页错误率，且永远不会出现<span class="heti-skip"><span class="heti-spacing"> </span>Belady<span class="heti-spacing"> </span></span>异常的算法就是<strong>最优页替换算法</strong>，称为<span class="heti-skip"><span class="heti-spacing"> </span>OPT<span class="heti-spacing"> </span></span>或<span><span class="heti-spacing"> </span>MIN</span>，其思路是：<strong>替换将最长时间不使用的页</strong>。</p>
 <details class="example">
 <summary>例子</summary>
 <p>还是引用串：</p>
@@ -1750,14 +1796,9 @@
 </div><p></p>
 <p>一共发生了<span class="heti-skip"><span class="heti-spacing"> </span>9<span class="heti-spacing"> </span></span>次页错误。</p>
 </details>
-<p>很可惜，这种算法很难实现，因为需要知道引用串的未来信息。因此该算法只用于比较研究。</p>
-<p><span>FIFO<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>OPT<span class="heti-spacing"> </span></span>算法的区别在于</p>
-<ul>
-<li><span>FIFO<span class="heti-spacing"> </span></span>使用的是页进入内存的时间</li>
-<li><span>OPT<span class="heti-spacing"> </span></span>使用的是页将会被使用的时间</li>
-</ul>
+<p>很可惜，这种算法很难实现，因为实践中无法提前得知引用串的未来信息。因此该算法只用于比较研究。</p>
 <h3 id="lru">LRU<a class="headerlink" href="#lru" title="Permanent link">⚓︎</a></h3>
-<p>如果将最近过去<span class="heti-skip"><span class="heti-spacing"> </span>(recent past)<span class="heti-spacing"> </span></span>作为近期未来<span class="heti-skip"><span class="heti-spacing"> </span>(near future)<span class="heti-spacing"> </span></span>的近似值，那么就可以替换掉最长时间未被使用的那一页。该方法就是<strong>最少最近使用算法</strong>(least recently used (<strong>LRU</strong>) algorithm)。</p>
+<p>如果将最近过去<span class="heti-skip"><span class="heti-spacing"> </span>(recent past)<span class="heti-spacing"> </span></span>作为近期未来<span class="heti-skip"><span class="heti-spacing"> </span>(near future)<span class="heti-spacing"> </span></span>的近似值，那么就可以替换掉最长时间未被使用的那一页。该方法就是<strong>最少最近使用</strong>(least recently used, <strong>LRU</strong><span>)<span class="heti-spacing"> </span></span>算法。</p>
 <details class="example">
 <summary>例子</summary>
 <p>依旧引用串：</p>
@@ -1770,15 +1811,15 @@
 </div><p></p>
 <p>一共发生了<span class="heti-skip"><span class="heti-spacing"> </span>11<span class="heti-spacing"> </span></span>次页错误。</p>
 </details>
-<p><span>LRU<span class="heti-spacing"> </span></span>策略是一种常用的页替换算法，并且表现不错。<span>LRU<span class="heti-spacing"> </span></span>替换的主要问题是如何实现。它可能需要巨大的硬件支持，需要确定按上一次使用时间排序的帧的顺序。有以下两种可行的实现方式：</p>
+<p><span>LRU<span class="heti-spacing"> </span></span>策略是一种常用的页替换算法，并且表现不错。<span>LRU<span class="heti-spacing"> </span></span>替换的主要问题是如何实现：它可能需要巨大的硬件支持，需要确定按上一次使用时间排序的帧的顺序。有以下两种可行的实现方式：</p>
 <ul>
 <li>
 <p><strong>计数器</strong>(counter)</p>
 <ul>
-<li>为每个页表项关联一个<strong>使用时间</strong><span>(time-of-use)<span class="heti-spacing"> </span></span>字段，并向<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>添加一个逻辑时钟或计数器，该时钟会在每次内存引用时递增</li>
-<li>每当对某个页进行引用时，时钟寄存器的内容会被复制到该页面的页表项中的使用时间字段中</li>
-<li>通过这种方式，我们始终可以获得对每个页面的最后一次引用的“时间”</li>
-<li>被替换的页将是时间值最小的页</li>
+<li>为每个页表项关联一个<strong>使用时间</strong><span>(time-of-use)<span class="heti-spacing"> </span></span>字段，并向<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>添加一个逻辑时钟或计数器，该时钟会在每次内存引用时<strong>递增</strong></li>
+<li>每当对某个页进行引用时，时钟寄存器的内容会被复制到该页的页表项中的使用时间字段中</li>
+<li>通过这种方式，我们始终可以获得对每个页的最后一次引用的“时间”</li>
+<li>被替换的页将是<strong>时间值最小的页</strong></li>
 <li>该方案需要搜索页表，以找到<span class="heti-skip"><span class="heti-spacing"> </span>LRU<span class="heti-spacing"> </span></span>页，并在每次内存访问时写入内存（到页表中的使用时间字段）</li>
 <li>当（由于<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>调度）更改页表时，也必须维护这些时间</li>
 <li>同时还必须考虑时钟溢出的问题</li>
@@ -1789,7 +1830,7 @@
 <ul>
 <li>保持一个记录页编号的栈，每当引用一个页时，它会从栈中移除并放到顶部</li>
 <li>
-<p>通过这种方式，<strong>最近使用的页总是在栈顶，而最少使用的页面则总是在底部</strong>，如下所示：</p>
+<p>通过这种方式，<strong>最近使用的页总是在栈顶，而最少使用的页则总是在底部</strong>，如下所示：</p>
 <p></p><div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C10/14.png"><img src="images/C10/14.png" width="40%"/></a>
 </div><p></p>
@@ -1797,7 +1838,7 @@
 <li>
 <p>由于条目必须从栈中间移除，因此最好通过使用带有头指针和尾指针的<strong>双向链表</strong>来实现</p>
 <ul>
-<li>最坏情况下，移除一个页并将其放到栈顶需要更改六个指针</li>
+<li>最坏情况下，移除一个页<span class="heti-skip"><span class="heti-spacing"> </span>X<span class="heti-spacing"> </span></span>并将其放到栈顶需要更改六个指针（<span>X<span class="heti-spacing"> </span></span>的两个指针，<span>X<span class="heti-spacing"> </span></span>前后页各一个指针，原栈顶页的一个指针和头指针）</li>
 <li>每次更新的成本稍微大一些，但不需要搜索</li>
 <li>尾指针指向栈底，即<span class="heti-skip"><span class="heti-spacing"> </span>LRU<span class="heti-spacing"> </span></span>页</li>
 </ul>
@@ -1808,24 +1849,58 @@
 </ul>
 </li>
 </ul>
-<p><span>LRU<span class="heti-spacing"> </span></span>替换不会出现<span class="heti-skip"><span class="heti-spacing"> </span>Belady<span class="heti-spacing"> </span></span>异常。它和最优页替换算法同属于<strong>栈算法</strong>(stack algorithm)，即可以证明对于<span class="heti-skip"><span class="heti-spacing"> </span>n<span class="heti-spacing"> </span></span>个帧的内存页集合，始终是具有<span class="heti-skip"><span class="heti-spacing"> </span>n + 1<span class="heti-spacing"> </span></span>个帧时内存中页集合的子集。</p>
-<h3 id="lru-approximation">LRU-Approximation<a class="headerlink" href="#lru-approximation" title="Permanent link">⚓︎</a></h3>
-<p>很少会有计算机系统提供真正的<span class="heti-skip"><span class="heti-spacing"> </span>LRU<span class="heti-spacing"> </span></span>页替换算法。但大多数系统会提供一个<strong>引用位</strong>(reference bit)，一开始会被清零；当页被引用时该位就会被硬件设置。引用位的使用可用来实现近似的<span class="heti-skip"><span class="heti-spacing"> </span>LRU<span class="heti-spacing"> </span></span>算法。</p>
-<h4 id="additional-reference-bits-algorithm">Additional-Reference-Bits Algorithm<a class="headerlink" href="#additional-reference-bits-algorithm" title="Permanent link">⚓︎</a></h4>
-<p>我们可以通过定期记录引用位来获得额外的页信息。</p>
+<p><span>LRU<span class="heti-spacing"> </span></span>替换不会出现<span class="heti-skip"><span class="heti-spacing"> </span>Belady<span class="heti-spacing"> </span></span>异常。它和最优页替换算法同属于<strong>栈算法</strong>(stack algorithm)，即可以证明：<span>n<span class="heti-spacing"> </span></span>个帧的内存页集合始终是具有<span class="heti-skip"><span class="heti-spacing"> </span>n + 1<span class="heti-spacing"> </span></span>个帧时内存中页集合的子集（因此帧的数量增加时仍然能保留原本在内存中的页，因此不会增加页错误数<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
+<details class="example">
+<summary>题目</summary>
+<blockquote>
+<p>来自朋辈辅学</p>
+</blockquote>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="" id="__tabbed_2_1" name="__tabbed_2" type="radio"/><input id="__tabbed_2_2" name="__tabbed_2" type="radio"/><div class="tabbed-labels"><label for="__tabbed_2_1">问题</label><label for="__tabbed_2_2">解答</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C10/25.png"><img src="images/C10/25.png" width="70%"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="" id="__tabbed_3_1" name="__tabbed_3" type="radio"/><input id="__tabbed_3_2" name="__tabbed_3" type="radio"/><div class="tabbed-labels"><label for="__tabbed_3_1">1）</label><label for="__tabbed_3_2">2）</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
 <ul>
-<li>为每个页面保留一个<span class="heti-skip"><span class="heti-spacing"> </span>8<span class="heti-spacing"> </span></span>位字节</li>
-<li>在固定的时间间隔后，一个定时器中断将控制权转移给<span><span class="heti-spacing"> </span>OS</span>；<span>OS<span class="heti-spacing"> </span></span>将每个页的引用位放在其<span class="heti-skip"><span class="heti-spacing"> </span>8<span class="heti-spacing"> </span></span>位字节的最高位，将其他位向右移动<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>位，并丢弃低位</li>
-<li>移位寄存器的<span class="heti-skip"><span class="heti-spacing"> </span>8<span class="heti-spacing"> </span></span>位包含了过去<span class="heti-skip"><span class="heti-spacing"> </span>8<span class="heti-spacing"> </span></span>个时间段内页面使用的历史<ul>
+<li>2362H：10（TLB）+ 100（页表）+ 100（取数据）= 210ns</li>
+<li>1565H：10（TLB）+ 100（页表）+ 10<sup>8</sup>（页错误）+ 10（TLB，命中）+ 100（取数据）= 100,000,220ns<ul>
+<li>注意驻留集大小为<span><span class="heti-spacing"> </span>2</span>，根据<span class="heti-skip"><span class="heti-spacing"> </span>LRU<span class="heti-spacing"> </span></span>算法需替换页号<span><span class="heti-spacing"> </span>0</span>，页帧号不变</li>
+</ul>
+</li>
+<li>25A5H：10（TLB，命中）+ 100（取数据）= 110ns</li>
+</ul>
+</div>
+<div class="tabbed-block">
+<p>101565H（101H * 1000H + 565H）</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</details>
+<h3 id="lru-approximation">LRU-Approximation<a class="headerlink" href="#lru-approximation" title="Permanent link">⚓︎</a></h3>
+<p>通过上述分析，不难看出实现<span class="heti-skip"><span class="heti-spacing"> </span>LRU<span class="heti-spacing"> </span></span>的开销很大，因此很少会有计算机系统提供真正的<span class="heti-skip"><span class="heti-spacing"> </span>LRU<span class="heti-spacing"> </span></span>页替换算法。但大多数系统会提供一个<strong>引用位</strong>(reference bit)：初始化时被清零；当页被引用时该位就会被硬件设置。我们可凭借引用位来实现近似的<span class="heti-skip"><span class="heti-spacing"> </span>LRU<span class="heti-spacing"> </span></span>算法。</p>
+<h4 id="additional-reference-bits-algorithm">Additional-Reference-Bits Algorithm<a class="headerlink" href="#additional-reference-bits-algorithm" title="Permanent link">⚓︎</a></h4>
+<p>我们可以通过<strong>定期记录引用位</strong>来获得额外的页信息。</p>
+<ul>
+<li>为每个页保留一个字节（<span>8<span class="heti-spacing"> </span></span>位）</li>
+<li>在固定的时间间隔后，一个定时器中断将控制权转移给<span><span class="heti-spacing"> </span>OS</span>；<span>OS<span class="heti-spacing"> </span></span>将每个页的引用位放在其<span class="heti-skip"><span class="heti-spacing"> </span>8<span class="heti-spacing"> </span></span>位字节的最高位，将其他位向右移动<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>位，并丢弃最低位</li>
+<li>移位寄存器的<span class="heti-skip"><span class="heti-spacing"> </span>8<span class="heti-spacing"> </span></span>位数字了代表过去<span class="heti-skip"><span class="heti-spacing"> </span>8<span class="heti-spacing"> </span></span>个时间段内页使用的历史<ul>
 <li>移位寄存器为<span><span class="heti-spacing"> </span>00000000</span>，表示该页在八个时间段内没有被使用</li>
 <li>在每个周期至少使用过一次的页，其移位寄存器的值为<span><span class="heti-spacing"> </span>11111111</span></li>
 </ul>
 </li>
-<li>若将这些<span class="heti-skip"><span class="heti-spacing"> </span>8<span class="heti-spacing"> </span></span>位字节解释为无符号整数，<strong>数字最小</strong>（意味着最近<span class="heti-skip"><span class="heti-spacing"> </span>8<span class="heti-spacing"> </span></span>个时间段内用的最少）的页就是 <strong><span>LRU<span class="heti-spacing"> </span></span>页</strong>，可以被替换</li>
+<li>若将该字节解释为一个无符号整数，那么<strong>数字最小</strong>（意味着最近<span class="heti-skip"><span class="heti-spacing"> </span>8<span class="heti-spacing"> </span></span>个时间段内用的最少）的页就是可以被替换的 <strong><span>LRU<span class="heti-spacing"> </span></span>页</strong></li>
 <li>注意：这些数字并不保证是唯一的，若出现多个最小值，既可以替换所有具有最小值的页，也可以采用<span class="heti-skip"><span class="heti-spacing"> </span>FIFO<span class="heti-spacing"> </span></span>方法从中选择</li>
 </ul>
 <h4 id="second-chance-algorithm">Second-Chance Algorithm<a class="headerlink" href="#second-chance-algorithm" title="Permanent link">⚓︎</a></h4>
-<p><strong>第二次机会替换算法</strong><span>(second-chance replacement algorithm)<span class="heti-spacing"> </span></span>是一种<span class="heti-skip"><span class="heti-spacing"> </span>FIFO<span class="heti-spacing"> </span></span>替换算法。</p>
+<p><strong>第二次机会替换算法</strong><span>(second-chance replacement algorithm)<span class="heti-spacing"> </span></span>是一种 <strong>FIFO</strong> 替换算法。</p>
 <ul>
 <li>
 <p>当选择一个页时，我们会检查它的引用位</p>
@@ -1839,17 +1914,18 @@
 </li>
 <li>因此，一个获得第二次机会的页在所有其他页都被替换（或给予第二次机会）之前不会被替换</li>
 <li>此外，如果一个页使用得足够频繁以保持其引用位设置，它将永远不会被替换</li>
-<li>实现该算法的一种方法（有时称为<strong>时钟</strong><span>(clock)<span class="heti-spacing"> </span></span>算法）是使用<strong>循环队列</strong><ul>
+<li>
+<p>实现该算法的一种方法（有时称为<strong>时钟</strong><span>(clock)<span class="heti-spacing"> </span></span>算法）是使用<strong>循环队列</strong></p>
+<ul>
 <li>指针指向下一个要被替换的页</li>
-<li>当需要帧时，指针向前移动，直到找到具有<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>引用位的页</li>
-<li>在此过程中，它会清除引用位</li>
-<li>一旦找到受害页，该页将被替换，新页将在该位置插入到循环队列中</li>
-<li>请注意，在最坏情况下，当所有比特都设置为<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>时，指针会遍历整个队列，为每个页面提供第二次机会<ul>
-<li>在选择下一个要替换的页面之前，它会清除所有引用位</li>
-<li>如果所有比特都置<span><span class="heti-spacing"> </span>1</span>，则二次机会替换退化为<span class="heti-skip"><span class="heti-spacing"> </span>FIFO<span class="heti-spacing"> </span></span>替换</li>
+<li>当需要帧时，指针向前移动，直到找到引用位为<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>的页</li>
+<li>在此过程中，它会将扫描到的引用位清<span><span class="heti-spacing"> </span>0</span> </li>
+<li>一旦找到满足要求的页，该页将被替换；新页被插入到循环队列中原受害页的位置</li>
+<li>在最坏情况下，当所有比特都设置为<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>时，指针会遍历整个队列，为每个页提供第二次机会，此时该算法退化为<span class="heti-skip"><span class="heti-spacing"> </span>FIFO<span class="heti-spacing"> </span></span>替换</li>
 </ul>
-</li>
-</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C10/24.png"><img src="images/C10/24.png" width="60%"/></a>
+</div><p></p>
 </li>
 </ul>
 <h4 id="enhanced-second-chance-algorithm">Enhanced Second-Chance Algorithm<a class="headerlink" href="#enhanced-second-chance-algorithm" title="Permanent link">⚓︎</a></h4>
@@ -1863,16 +1939,16 @@
 <hr/>
 <ul>
 <li>每一页属于这四个类别之一</li>
-<li>当需要调用页替换时，我们使用与时钟算法相同的方案，但此时检查的是该页所属的类别</li>
+<li>当需要调用页替换时，我们使用与<strong>时钟算法</strong>相同的方案，但此时检查的是该页所属的类别</li>
 <li>我们在<strong>最低的非空类别中替换遇到的第一个页</strong>；可能需要多次扫描环形队列才能找到一个要替换的页</li>
-<li>这个算法与更简单的时钟算法的主要区别在于，我们<strong>优先考虑那些已被修改的页</strong>，以减少所需的<span class="heti-skip"><span class="heti-spacing"> </span>I/O<span class="heti-spacing"> </span></span>次数</li>
+<li>这个算法与更简单的时钟算法的主要区别在于<strong>优先考虑到那些已被修改的页</strong>，以减少所需的<span class="heti-skip"><span class="heti-spacing"> </span>I/O<span class="heti-spacing"> </span></span>次数</li>
 </ul>
 <h3 id="counting-based">Counting-Based<a class="headerlink" href="#counting-based" title="Permanent link">⚓︎</a></h3>
-<p>还有许多其他算法可以用于页替换，比如可以用一个计数器记录对每个页的引用次数。基于此，我们有以下方案：</p>
+<p>我们还可以利用一个<strong>计数器</strong>记录对每个页的引用次数来实现页替换：</p>
 <ul>
 <li><strong>最少使用</strong>(least frequently used, <strong>LFU</strong><span>)<span class="heti-spacing"> </span></span>页替换算法：替换引用次数最少的页<ul>
 <li>选择这种页的原因是，一个被活跃使用的页应该有较大的引用计数</li>
-<li>然而，当一个页面在进程初始阶段被大量使用，但之后再也不被使用时，就会出现问题：由于它曾经被大量使用，因此它具有较大的计数，即使不再需要，它仍然留在内存中</li>
+<li>然而，当一个页在进程初始阶段被大量使用，但之后再也不被使用时，就会出现问题：由于它曾经被大量使用，因此它具有较大的计数，即使不再需要，它仍然留在内存中</li>
 <li>一种解决方案是在定期间隔内将计数右移<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>位，从而形成指数衰减的平均使用计数</li>
 </ul>
 </li>
@@ -1881,26 +1957,26 @@
 </ul>
 </li>
 </ul>
-<p>这两种替换都不是常见方法，因为实现成本高，且并不能很好地近似<span class="heti-skip"><span class="heti-spacing"> </span>OPT<span class="heti-spacing"> </span></span>替换</p>
+<p>但这两种替换都不是常见方法，因为实现成本高，且并不能很好地近似<span class="heti-skip"><span class="heti-spacing"> </span>OPT<span class="heti-spacing"> </span></span>替换。</p>
 <h3 id="page-buffering">Page-Buffering<a class="headerlink" href="#page-buffering" title="Permanent link">⚓︎</a></h3>
 <ul>
 <li>
-<p>系统通常保持一个<strong>空闲帧池</strong>。当发生页错误时，会像以前一样选择一个受害帧。</p>
+<p>系统通常会保留一个<strong>空闲帧池</strong>；当发生页错误时，会像以前一样选择一个受害帧</p>
 <ul>
-<li>然而，在写出受害页之前，从池中将所需页面读入一个空闲帧</li>
+<li>然而，在写出受害页之前，从池中将所需页读入一个空闲帧</li>
 <li>这个过程允许进程尽快重新启动，而无需等待受害页被写出</li>
 <li>当受害页稍后被写出时，它的帧会被添加到空闲帧池中</li>
 </ul>
 </li>
 <li>
-<p>这一想法的扩展是<strong>维护一个已修改页面的列表</strong>。</p>
+<p>这一想法的扩展是<strong>维护一个已修改页的列表</strong></p>
 <ul>
 <li>每当分页设备处于空闲状态时，就选择一个已修改的页并将其写入二级存储，然后重置其修改位</li>
 <li>这种方案增加了在选择替换页时，该页为清空状态而不需要被写出的概率</li>
 </ul>
 </li>
 <li>
-<p>另一种修改是<strong>保持一组空闲帧，但记住每个帧的所在页</strong>。</p>
+<p>另一种修改是<strong>保持一组空闲帧，但记住每个帧的所在页</strong></p>
 <ul>
 <li>由于在将某个帧写入二级存储时，其内容不会被修改，因此如果在该帧再次使用之前需要旧页，可以直接从空闲帧池中重用它，此时不需要进行<span><span class="heti-spacing"> </span>I/O</span></li>
 <li>当发生页错误时，首先检查所需的页是否在空闲帧池中；若不在，则必须选择一个空闲帧并将其读进来</li>
@@ -1908,11 +1984,11 @@
 </li>
 </ul>
 <h3 id="applications">Applications<a class="headerlink" href="#applications" title="Permanent link">⚓︎</a></h3>
-<p>在某些情况下，通过<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>的虚拟内存访问数据的应用程序表现得比<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>根本不提供缓冲区时更差。</p>
+<p>在某些情况下，通过<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>的虚拟内存访问数据的应用程序表现得比<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>不提供缓冲区时更差。</p>
 <ul>
 <li>一个典型的例子是<strong>数据库</strong>，它自己提供内存管理和<span class="heti-skip"><span class="heti-spacing"> </span>I/O<span class="heti-spacing"> </span></span>缓冲区</li>
 <li>另一个例子是，数据仓库通常执行大规模顺序存储读取，然后进行计算和写入<ul>
-<li><span>LRU<span class="heti-spacing"> </span></span>算法将删除旧页面并保留新页面，而应用程序更可能读取较旧而非较新的页面（因为它再次开始顺序读取）</li>
+<li><span>LRU<span class="heti-spacing"> </span></span>算法将删除旧页并保留新页，而应用程序更可能读取较旧而非较新的页（因为它再次开始顺序读取）</li>
 <li>此时<span class="heti-skip"><span class="heti-spacing"> </span>MFU<span class="heti-spacing"> </span></span>实际上会比<span class="heti-skip"><span class="heti-spacing"> </span>LRU<span class="heti-spacing"> </span></span>更有效。</li>
 </ul>
 </li>
@@ -1936,13 +2012,13 @@ $$</p>
 <p>需要确保<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(a_i\)</span><span class="heti-spacing"> </span></span>为大于指令集要求的最小帧数的整数，且不超过<span><span class="heti-spacing"> </span><span class="arithmatex">\(m\)</span></span>。</p>
 <p>在前两种分配算法中，具体的分配还会随多道程序设计的程度发生变化。并且无论哪种算法，高优先级和低优先级的进程会被一视同仁，但显然我们希望高优先级的进程能分配到更多内存，以加快执行。一种解决方法是：在比例分配中，帧的比例不再取决于进程大小，而是基于进程的<strong>优先级</strong>，或者为两者的结合。</p>
 <h3 id="global-vs-local-allocation">Global v.s. Local Allocation<a class="headerlink" href="#global-vs-local-allocation" title="Permanent link">⚓︎</a></h3>
-<p>另一个影响帧分配的因素是页替换。我们可将页替换分成两大类：</p>
+<p>另一个影响帧分配的因素是<strong>页替换</strong>。我们可将页替换分成两大类：</p>
 <ul>
-<li><strong>全局替换</strong>(global replacement)：允许进程从所有帧中选择一个替换帧，即便该帧当前被分配到其他进程上，也就是说一个进程可以夺取另一个进程的帧</li>
+<li><strong>全局替换</strong>(global replacement)：允许进程从所有帧中选择一个替换帧，即便该帧当前被分配到其他进程上，也就是说一个进程可以抢占其他进程的帧</li>
 <li><strong>局部替换</strong>(local replacement)：每个进程仅能从自己的一组帧中选择</li>
 </ul>
-<p>全局替换算法的一个问题是进程的内存页不仅取决于该进程的分页行为，还取决于其他进程的分页行为。因此即便是相同的进程也可以有不同的执行结果。而局部替换算法不存在这种问题，但它可能会阻碍一个进程，因为它没有为其提供其他不常用的内存页。因此<strong>全局替换</strong>通常有<strong>更高的吞吐量</strong>，于是成为<strong>最常用</strong>的方法。</p>
-<p>接下来我们仅考虑全局页替换策略。该方法能满足来自空闲帧列表的所有内存请求，但不是在空闲内存降至零之前开始选择替换页面，而是在降至某个阈值以下时触发页替换，以确保始终有足够的空闲内存来满足新的请求。该过程如下所示：</p>
+<p>全局替换算法的一个问题是进程的内存页不仅取决于该进程的分页行为，还取决于其他进程的分页行为。因此即便是相同的进程也可以有不同的执行结果。而局部替换算法不存在这种问题，但它可能会阻塞一个进程，因为它没有为其提供其他不常用的内存页。因此<strong>全局替换</strong>通常有<strong>更高的吞吐量</strong>，于是成为<strong>最常用</strong>的方法。</p>
+<p>接下来我们仅考虑全局页替换策略。该方法能满足来自空闲帧列表的所有内存请求，但不是在空闲内存降至零之前开始选择替换页，而是在<strong>降至某个阈值以下时触发页替换</strong>，以确保始终有足够的空闲内存来满足新的请求。该过程如下所示：</p>
 <div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C10/15.png"><img src="images/C10/15.png" width="40%"/></a>
 </div>
@@ -1953,7 +2029,7 @@ $$</p>
 </li>
 <li>当空闲内存量到达最大阈值时，收割者进程就会<strong>挂起</strong>(suspend)，仅在空闲内存降至最小阈值时继续</li>
 </ul>
-<p>在<span class="heti-skip"><span class="heti-spacing"> </span>Linux<span class="heti-spacing"> </span></span>中，如果空闲内存量变得很低很低时，一个叫做“<strong>内存不足杀手</strong>(out-of-memory(OOM) killer)”的例程就会选择一个进程终止，从而释放其内存。</p>
+<p>在<span class="heti-skip"><span class="heti-spacing"> </span>Linux<span class="heti-spacing"> </span></span>中，如果空闲内存量变得很低很低时，一个叫做“<strong>内存不足杀手</strong>”<span>(out-of-memory(OOM) killer)<span class="heti-spacing"> </span></span>的例程就会选择一个进程终止，从而释放其内存。</p>
 <ul>
 <li>每个进程都有一个<span class="heti-skip"><span class="heti-spacing"> </span>OOM<span class="heti-spacing"> </span></span>分数，分数越高意味着该进程越有可能被内存不足杀手给终止</li>
 <li><span>OOM<span class="heti-spacing"> </span></span>分数通过进程正在使用的内存比例来计算，比例越高，分数越高</li>
@@ -1978,14 +2054,14 @@ $$</p>
 <ul>
 <li>如果<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>利用率太低，我们希望增加多道程序设计的程度，那么就会向系统引入新的进程</li>
 <li>假设采用全局页替换算法</li>
-<li>若进程在执行过程中需要更多的页，那么该进程就会发生页错误，需要从别的进程中获取一些页</li>
+<li>若进程在执行过程中需要更多的页，这有可能会发生页错误，那就需要从别的进程中获取一些页</li>
 <li>这么一来，别的进程也会发生页错误，也会用到分页设备</li>
 <li>当进程排队使用分页设备时，<span>CPU<span class="heti-spacing"> </span></span>利用率又下降了，那么<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>调度器又会尝试提高多道程序设计的程度，这意味着上述情况还会重复发生</li>
 </ul>
-<p>这就是发生<strong>抖动</strong>的一个案例。要想增加<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>利用率并停止抖动，就必须降低多道程序设计的程度。于是我们采用<strong>局部替换算法</strong>(local replacement algorithm)（<strong>或优先级替换算法</strong>(priority replacement algorithm)<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。此时，若一个进程发生抖动，它不会从别的进程中窃取页，从而避免其他进程发生抖动。</p>
+<p>这就是发生抖动的一个案例。要想增加<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>利用率并停止抖动，就必须降低多道程序设计的程度。于是我们采用<strong>局部替换算法</strong>(local replacement algorithm)（或<strong>优先级替换算法</strong>(priority replacement algorithm)<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。此时，若一个进程发生抖动，它不会从别的进程中窃取页，从而避免其他进程发生抖动。</p>
 <p>但这还没完，要想阻止抖动，必须向进程提供足够多的帧。一种策略是定义一个进程执行时的<strong>局部性模型</strong>(locality model)。</p>
 <ul>
-<li>一个「<strong>局部性</strong>」是指一组被一起被活跃使用的页，其定义同时来自程序结构和数据结构</li>
+<li>一个「<strong>局部性</strong>」是指一组被活跃使用的页，由程序结构和数据结构定义</li>
 <li>一个运行中的程序通常由多个不同的局部性构成，并且这些局部性可能会重叠</li>
 <li>比如一次函数调用就会创建一个局部性</li>
 </ul>
@@ -1998,7 +2074,7 @@ $$</p>
 <li>若没有分配足够的帧来容纳当前局部性的大小，该进程将会出现频繁的页错误，因为无法在内存中保持所有正在使用的页</li>
 </ul>
 <h3 id="working-set-model">Working-Set Model<a class="headerlink" href="#working-set-model" title="Permanent link">⚓︎</a></h3>
-<p><strong>工作集模型</strong><span>(working-set model)<span class="heti-spacing"> </span></span>基于局部性的假设。我们用参数<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\Delta\)</span><span class="heti-spacing"> </span></span>定义<strong>工作集窗口</strong>(working-set window)（的大小<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，以检测最近<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\Delta\)</span><span class="heti-spacing"> </span></span>份页的引用；而这些页就是<strong>工作集</strong><span>(working-set)<span class="heti-spacing"> </span></span>了，说明这些页正在被积极使用。因此，工作集是对局部性的近似表示。</p>
+<p><strong>工作集模型</strong><span>(working-set model)<span class="heti-spacing"> </span></span>基于局部性的假设。我们用参数<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\Delta\)</span><span class="heti-spacing"> </span></span>定义<strong>工作集窗口</strong>(working-set window)（的大小<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，以检测最近<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\Delta\)</span><span class="heti-spacing"> </span></span>份页的引用；而这些页就是<strong>工作集</strong><span>(working-set)<span class="heti-spacing"> </span></span>了，说明这些页正在被活跃使用。因此，工作集是对局部性的近似表示。</p>
 <p>对于下图的例子，<span><span class="arithmatex">\(t_1\)</span><span class="heti-spacing"> </span></span>时刻的工作集为<span><span class="heti-spacing"> </span><span class="arithmatex">\(\{1, 2, 5, 6, 7\}\)</span></span>，<span><span class="arithmatex">\(t_2\)</span><span class="heti-spacing"> </span></span>时刻的工作集为<span><span class="heti-spacing"> </span><span class="arithmatex">\(\{3, 4\}\)</span></span>。</p>
 <div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C10/18.png"><img src="images/C10/18.png" width="60%"/></a>
@@ -2009,7 +2085,7 @@ $$</p>
 <li>若<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\Delta\)</span><span class="heti-spacing"> </span></span>太大，则可能会让多个局部性重叠</li>
 </ul>
 <p>工作集最重要的性质是它的大小。假设每个进程的工作集大小为<span><span class="heti-spacing"> </span><span class="arithmatex">\(WSS_i\)</span></span>，那么<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(D = \sum WSS_i\)</span><span class="heti-spacing"> </span></span>就是总共需要的帧。若<span><span class="heti-spacing"> </span><span class="arithmatex">\(D &gt; m\)</span></span>（可用帧的总数<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，那么抖动就会发生。</p>
-<p>一旦确定<span><span class="heti-spacing"> </span><span class="arithmatex">\(\Delta\)</span></span>，工作集模型就很简单了。</p>
+<p>一旦确定<span><span class="heti-spacing"> </span><span class="arithmatex">\(\Delta\)</span></span>，使用工作集模型就很简单了。</p>
 <ul>
 <li><span>OS<span class="heti-spacing"> </span></span>监控每个进程的工作集，并为工作集提供足够多的帧，以满足其工作集大小</li>
 <li>若存在足够多的额外的帧，那么就能发起别的进程了</li>
@@ -2019,7 +2095,7 @@ $$</p>
 <p>该模型的难点在于追踪工作集。我们可以用一个<strong>固定间隔的定时器中断</strong>和一个<strong>引用位</strong>来近似表示工作集模型。</p>
 <ul>
 <li>假设<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\Delta\)</span> = 10000<span class="heti-spacing"> </span></span>次引用，那么可以让定时器中断每隔<span class="heti-skip"><span class="heti-spacing"> </span>5000<span class="heti-spacing"> </span></span>次引用触发</li>
-<li>当中断发生时，拷贝和清空每个页的引用位</li>
+<li>当中断发生时，拷贝并清空每个页的引用位</li>
 <li>因此当页错误发生时，可以检验当前的引用位以及两个在内存的位<span><span class="heti-spacing"> </span>(in-memory bits)</span>，以确定哪个页在最近<span class="heti-skip"><span class="heti-spacing"> </span>5000<span class="heti-spacing"> </span></span>次引用中被用到过</li>
 <li>如果某个页有被用到过，那么至少有一个位是被置位的，说明它在工作集中；若没被用过，所有位都没有被设置</li>
 </ul>
@@ -2043,7 +2119,8 @@ $$</p>
 <p>分页的一种替代方案是<strong>内存压缩</strong>(memory compression)。采用该方法时，系统不是将修改过的页交换到交换空间中，而是<strong>将多个页压缩成一个单一的页</strong>，从而使系统能够减少内存使用，而无需进行页交换。</p>
 <details class="example" open="open">
 <summary>例子</summary>
-<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="" id="__tabbed_2_1" name="__tabbed_2" type="radio"/><input id="__tabbed_2_2" name="__tabbed_2" type="radio"/><div class="tabbed-labels"><label for="__tabbed_2_1">压缩前</label><label for="__tabbed_2_2">压缩后</label></div>
+<p>笔者没看懂这个例子，所以表述很乱<span><span class="heti-spacing"> </span>...</span></p>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="" id="__tabbed_4_1" name="__tabbed_4" type="radio"/><input id="__tabbed_4_2" name="__tabbed_4" type="radio"/><div class="tabbed-labels"><label for="__tabbed_4_1">压缩前</label><label for="__tabbed_4_2">压缩后</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p></p><div style="text-align: center">
@@ -2071,16 +2148,16 @@ $$</p>
 </div>
 </details>
 <p>由于<strong>移动设备</strong>通常不支持分页，因此内存压缩是大多数移动操作系统的内存管理的重要部分。</p>
-<p>尽管内存压缩确实需要分配空闲帧来保存压缩页，但从压缩算法的结果看，这一做法确实可以显著节省内存的使用。不过无论哪种形式的数据压缩，压缩算法的速度和压缩实现的减小量（即<strong>压缩比</strong>(compression ratio)）之间始终存在一种竞争。另外，多核有助于让压缩算法并行执行。</p>
+<p>尽管内存压缩确实需要分配空闲帧来保存压缩页，但从压缩算法的结果看，这一做法确实可以显著节省内存的使用。不过无论哪种形式的数据压缩，压缩算法的速度和压缩实现的减小量（即<strong>压缩比</strong>(compression ratio)）之间始终存在一种竞争关系。另外，<strong>多核</strong>有助于让压缩算法并行执行。</p>
 <h2 id="allocating-kernel-memory">Allocating Kernel Memory<a class="headerlink" href="#allocating-kernel-memory" title="Permanent link">⚓︎</a></h2>
-<p>通常从不同于用于满足一般用户进程的空闲内存池中分配<strong>内核内存</strong>，这是因为：</p>
+<p>通常<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>会从不同于满足一般用户进程的空闲内存池中分配<strong>内核内存</strong>，这是因为：</p>
 <ul>
-<li>内核请求不同大小的数据结构内存，其中一些小于单个页的大小。因此，内核必须谨慎使用内存，并尝试最小化由于碎片造成的浪费。这十分重要，因为许多操作系统不对内核代码或数据进行分页系统处理。</li>
+<li>内核请求不同大小的数据结构内存，其中一些大小可能不足单个页。因此，内核必须谨慎使用内存，并尝试最小化由于碎片造成的浪费。这十分重要，因为许多操作系统不对内核代码或数据进行分页系统处理。</li>
 <li>某些硬件设备会直接与物理内存交互，因此可能需要存在于物理连续页中的内存</li>
 </ul>
 <p>下面将介绍用于管理分配给内核进程的空闲内存的一些策略。</p>
 <h3 id="buddy-system">Buddy System<a class="headerlink" href="#buddy-system" title="Permanent link">⚓︎</a></h3>
-<p><strong>伙伴系统</strong><span>(buddy system)<span class="heti-spacing"> </span></span>从由物理连续页组成的固定大小段中分配内存。使用 <strong><span>2<span class="heti-spacing"> </span></span>的幂次方分配器</strong><span>(power-of-2 allocator)<span class="heti-spacing"> </span></span>从这个段中分配内存，该分配器以<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>的幂次方大小（4 KB、8 KB、<span>16 KB<span class="heti-spacing"> </span></span>等等）为单位满足请求。对于不适当尺寸的请求，向上取整到下一个最高的<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>的幂次方。</p>
+<p><strong>伙伴系统</strong><span>(buddy system)<span class="heti-spacing"> </span></span>从由物理连续页组成的固定大小段中分配内存。使用 <strong><span>2<span class="heti-spacing"> </span></span>的幂次方分配器</strong><span>(power-of-2 allocator)<span class="heti-spacing"> </span></span>从这个段中分配内存，该分配器以<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>的幂次方大小（4 KB、8 KB、<span>16 KB<span class="heti-spacing"> </span></span>等等）为单位满足请求。对于更大内存的请求，它将向上取整到下一个最高的<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>的幂次方。</p>
 <details class="example" open="open">
 <summary>例子</summary>
 <ul>
@@ -2109,10 +2186,9 @@ $$</p>
 <div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C10/23.png"><img src="images/C10/23.png" width="50%"/></a>
 </div>
-<p>板分配算法使用缓存来存储内核对象。</p>
 <ul>
-<li>当创建一个缓存时，会分配一些初始标记为自由的对象到该缓存中</li>
-<li>缓存中的对象数量取决于相关的板的大小</li>
+<li>当创建一个缓存时，会分配一些初始标记为空闲的对象到该缓存中</li>
+<li>缓存中的对象数量取决于关联的板的大小</li>
 <li>一开始，缓存中的所有对象都被标记为空闲</li>
 <li>当需要一个新的内核数据结构对象时，分配器可以从缓存中分配任何空闲对象以满足请求；从缓存中分配的对象被标记为已使用（<code>used</code>）</li>
 </ul>
