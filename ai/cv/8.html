@@ -1146,28 +1146,54 @@
 </a>
 <h1 id="depth-estimation-and-3d-reconstruction">Depth Estimation and 3D Reconstruction<a class="headerlink" href="#depth-estimation-and-3d-reconstruction" title="Permanent link">⚓︎</a></h1>
 <div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
-<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>2237<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>11<span class="heti-spacing"> </span></span>分钟</p>
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>2541<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>13<span class="heti-spacing"> </span></span>分钟</p>
 </div>
+<details class="abstract">
+<summary>核心知识</summary>
+<ul>
+<li>
+<p>深度估计：计算深度图</p>
+<ul>
+<li>立体匹配</li>
+<li>立体重建步骤：校准相机<span class="heti-skip"><span class="heti-spacing"> </span>-&gt;<span class="heti-spacing"> </span></span>矫正图像<span class="heti-skip"><span class="heti-spacing"> </span>-&gt;<span class="heti-spacing"> </span></span>计算视差<span class="heti-skip"><span class="heti-spacing"> </span>-&gt;<span class="heti-spacing"> </span></span>估计深度</li>
+<li>多视图立体（MVS）<ul>
+<li>块匹配</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>三维重建</p>
+<ul>
+<li>深度图（前面算过了）</li>
+<li>三维表面：泊松重建<span class="heti-skip"><span class="heti-spacing"> </span>+<span class="heti-spacing"> </span></span>行进立方体</li>
+<li>纹理映射（不考，因为课上没讲过）</li>
+</ul>
+</li>
+</ul>
+</details>
 <h2 id="depth-estimation">Depth estimation<a class="headerlink" href="#depth-estimation" title="Permanent link">⚓︎</a></h2>
 <h3 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">⚓︎</a></h3>
-<p>计算<strong>深度图</strong>(depth map)：</p>
+<p>深度估计任务的目标是计算<strong>深度图</strong>(depth map)：</p>
 <div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/1.png"><img src="images/lec8/1.png" width="50%"/></a>
 </div>
-<p>对于很多<span class="heti-skip"><span class="heti-spacing"> </span>CV<span class="heti-spacing"> </span></span>应用，<strong>深度</strong><span>(depth)<span class="heti-spacing"> </span></span>是一个关键线索，涉及到以下领域：</p>
+<p>这一任务很重要，因为对于很多<span class="heti-skip"><span class="heti-spacing"> </span>CV<span class="heti-spacing"> </span></span>应用而言，<strong>深度</strong><span>(depth)<span class="heti-spacing"> </span></span>是一个关键线索，包括：</p>
 <div style="text-align: center">
-<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/2.png"><img src="images/lec8/2.png" width="60%"/></a>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/2.png"><img src="images/lec8/2.png" width="70%"/></a>
 </div>
 <p><strong>深度感知</strong><span>(depth sensing)<span class="heti-spacing"> </span></span>分为：</p>
-<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/3.png"><img align="right" alt="" src="images/lec8/3.png" width="30%"/></a></p>
 <ul>
 <li>
-<p><strong>主动深度感知</strong>(active depth sensing)：通过扰动被感知环境来感受深度，有以下应用：</p>
+<p><strong>主动深度感知</strong>(active depth sensing)：通过向被感知环境主动发起信号来感知深度</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/3.png"><img src="images/lec8/3.png" width="30%"/></a>
+</div><p></p>
 <ul>
 <li>
-<p>LiDAR（光探测与测距<span><span class="heti-spacing"> </span>(Light Detection And Ranging)</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>（比如<span><span class="heti-spacing"> </span>Velodyne</span>）</p>
+<p>LiDAR（<strong>激光雷达</strong><span>/<span class="heti-spacing"> </span></span>光探测与测距<span><span class="heti-spacing"> </span>(Light Detection And Ranging)</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>（例子：Velodyne）</p>
 <ul>
-<li>基于飞行时间<span><span class="heti-spacing"> </span>(time of flight, ToF)</span></li>
+<li>基于<strong>飞行时间</strong>(time of flight, <strong>ToF</strong>)</li>
 <li>开销大</li>
 <li>能获取极其精确的深度信息</li>
 <li>高分辨率</li>
@@ -1178,9 +1204,9 @@
 </div><p></p>
 </li>
 <li>
-<p>结构化光<span><span class="heti-spacing"> </span>(structured light)</span>（比如<span><span class="heti-spacing"> </span>Kinect 1</span>）</p>
+<p><strong>结构光</strong>(structured light)（例子：Kinect 1）</p>
 </li>
-<li>主动立体<span><span class="heti-spacing"> </span>(active stereo)</span>（比如<span><span class="heti-spacing"> </span>Intel RealSense</span>）</li>
+<li>主动立体<span><span class="heti-spacing"> </span>(active stereo)</span>（例子：Intel RealSense）</li>
 </ul>
 </li>
 <li>
@@ -1194,20 +1220,20 @@
 <h4 id="stereo-vision">Stereo Vision<a class="headerlink" href="#stereo-vision" title="Permanent link">⚓︎</a></h4>
 <p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/6.png"><img align="right" alt="" src="images/lec8/6.png" width="20%"/></a></p>
 <ul>
-<li>一个物体点将投影到图像中的某个点</li>
+<li>物体上的某个点可被投影到图像上一点</li>
 <li>该图像点对应于世界中的某条射线</li>
-<li>两条射线在单个点上相交，因此若要在三维空间中定位点，就需要两只眼睛</li>
+<li>两条射线相交于一点；因此若要在三维空间中定位点，就需要两只眼睛</li>
 </ul>
-<p>假设给定相对的相机位姿，计算图像中每个点的深度的方式有：</p>
-<ul>
-<li>找到<span class="heti-skip"><span class="heti-spacing"> </span>2D-2D<span class="heti-spacing"> </span></span>点对点的对应关系</li>
-<li>三角剖分<span><span class="heti-spacing"> </span>(triangulate)</span></li>
-</ul>
-<p><strong>立体匹配</strong><span>(stereo matching)<span class="heti-spacing"> </span></span>的目标是高效匹配所有的像素。</p>
+<p><strong>立体视觉</strong><span>(stereo vision)<span class="heti-spacing"> </span></span>的问题是指假设给定相对的相机位姿，计算图像中<strong>每个点</strong>的深度。具体步骤为：</p>
+<ol>
+<li>找到<span class="heti-skip"><span class="heti-spacing"> </span>2D-2D<span class="heti-spacing"> </span></span>点对点的对应关系（两张图的匹配）</li>
+<li>三角化<span><span class="heti-spacing"> </span>(triangulate)</span></li>
+</ol>
+<p>要想高效匹配所有的像素，我们可以采用<strong>立体匹配</strong><span>(stereo matching)<span class="heti-spacing"> </span></span>方法。</p>
 <details class="info">
-<summary>极线几何<span><span class="heti-spacing"> </span>(epipolar geometry)</span></summary>
+<summary>对极几何<span><span class="heti-spacing"> </span>(epipolar geometry)</span></summary>
 <blockquote>
-<p>其实<a href="7.html#epipolar-geometry">上节课</a>介绍过了，这里只是简单回顾一下。</p>
+<p>这块知识<a href="7.html#epipolar-geometry">上节课</a>刚介绍过，这里只是简单回顾一下。</p>
 </blockquote>
 <p></p><div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/7.png"><img src="images/lec8/7.png" width="50%"/></a>
@@ -1235,33 +1261,41 @@
 <p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/10.png"><img align="right" alt="" src="images/lec8/10.png" width="20%"/></a></p>
 <p>在最简单的情况下，极线是<strong>水平的扫描线</strong>，此时</p>
 <ul>
-<li>相机的像平面相互平行，并且也和基线平行</li>
-<li>两台相机中心的高度也相等</li>
-<li>焦距也是相等的</li>
+<li>相机的<strong>像平面相互平行</strong>，并且也和基线平行</li>
+<li>两台相机中心的<strong>高度相等</strong></li>
+<li>焦距相等</li>
 <li>因而极线落在像之间的水平扫描线上</li>
 </ul>
+<blockquote>
+<p>注：双目相机一定满足这种情况。</p>
+</blockquote>
 <h4 id="depth-from-disparity">Depth from Disparity<a class="headerlink" href="#depth-from-disparity" title="Permanent link">⚓︎</a></h4>
-<p>由纯水平平移相机捕获的两幅图像（校正立体对<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
+<p>对于满足这一简单情况的两张图像，左图中的某个像素<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\((x_1, y_1)\)</span><span class="heti-spacing"> </span></span>的<strong>视差</strong><span>(disparity)<span class="heti-spacing"> </span></span>为<span><span class="heti-spacing"> </span><span class="arithmatex">\(x_2 - x_1\)</span></span>。</p>
 <div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/11.png"><img src="images/lec8/11.png" width="40%"/></a>
 </div>
-<p><span><span class="arithmatex">\(x_2 - x_1\)</span> = <span class="arithmatex">\((x_1, y_1)\)</span><span class="heti-spacing"> </span></span>的像素<strong>视差</strong>(disparity)</p>
-<p>原理图如下：</p>
+<p>接下来就可以利用视差计算深度了：</p>
 <div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/12.png"><img src="images/lec8/12.png" width="30%"/></a>
 </div>
-<div class="arithmatex">\[
-disparity = x - x' = \dfrac{B \cdot f}{z}
-\]</div>
-<p>也就是说视差与深度成<strong>反比</strong>。</p>
 <blockquote>
-<p>注意，<span><span class="arithmatex">\(x\)</span><span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x'\)</span><span class="heti-spacing"> </span></span>分别是相对于图像中心的图像坐标。</p>
+<p>注：图中标红的线段相加即为视差。</p>
 </blockquote>
+<div class="arithmatex">\[
+\text{disparity} = x - x' = \dfrac{B \cdot f}{z}
+\]</div>
+<p>其中 </p>
+<ul>
+<li><span><span class="arithmatex">\(x\)</span><span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x'\)</span><span class="heti-spacing"> </span></span>分别是相对于图像中心的图像坐标</li>
+<li><span class="arithmatex">\(B\)</span>：<strong>基线</strong><span>(baseline)<span class="heti-spacing"> </span></span>长度（即两台相机的间距）</li>
+<li><span class="arithmatex">\(f\)</span>：焦距</li>
+<li><span class="arithmatex">\(z\)</span>：深度</li>
+</ul>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/13.png"><img align="right" alt="" src="images/lec8/13.png" width="25%"/></a></p>
+<p>不难发现相机视差与深度成<strong>反比</strong>。</p>
 <h4 id="stereo-image-rectification">Stereo Image Rectification<a class="headerlink" href="#stereo-image-rectification" title="Permanent link">⚓︎</a></h4>
-<p>假如极线不是扫描线，那么需要将图像平面重新投影到一个与相机中心之间的线平行的公共平面上；这一操作需要两个单应性（3x3）变换，每个变换对应一个输入图像重投影操作。</p>
-<div style="text-align: center">
-<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/13.png"><img src="images/lec8/13.png" width="30%"/></a>
-</div>
+<p>假如极线不是扫描线，那么需要进行<strong>立体图像矫正</strong>(stereo image rectification)，即将图像平面重新投影到一个与相机中心之间的线平行的公共平面上。这一操作需要<strong>两个<a href="6.html#projective-transformation">单应变换</a></strong>（3x3<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，每个变换对应一个输入图像重投影操作。</p>
+<p><br/></p>
 <details class="example" open="open">
 <summary>例子</summary>
 <p></p><div style="text-align: center">
@@ -1270,11 +1304,11 @@ disparity = x - x' = \dfrac{B \cdot f}{z}
 </details>
 <h4 id="stereo-matching-algorithms">Stereo Matching Algorithms<a class="headerlink" href="#stereo-matching-algorithms" title="Permanent link">⚓︎</a></h4>
 <p>立体匹配算法的思路是：在共轭<span class="heti-skip"><span class="heti-spacing"> </span>(conjugate)<span class="heti-spacing"> </span></span>极线中匹配像素（假设亮度恒定<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。这是一个具有挑战性的问题。目前已提出了数百种方法；这个链接给出了一项相关调查和评估：<a href="http://www.vision.middlebury.edu/stereo/">http://www.vision.middlebury.edu/stereo/</a>。</p>
-<p>基础的立体匹配算法就是找到能够最小化差异的最佳匹配。</p>
+<p>基础的立体匹配算法就是找到能够最小化差异<span class="heti-skip"><span class="heti-spacing"> </span>(dissimilarity)<span class="heti-spacing"> </span></span>的最佳匹配。</p>
 <div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/15.png"><img src="images/lec8/15.png" width="50%"/></a>
 </div>
-<p>一些比较流行的匹配分数：</p>
+<p>常用的匹配分数有：</p>
 <ul>
 <li><strong>SSD</strong>（平方差之和<span><span class="heti-spacing"> </span>(sum of squared differences)</span>）<span class="arithmatex">\(\sum\limits_{x,y}|W_1(x,y)-W_2(x,y)|^2=\)</span></li>
 <li><strong>SAD</strong>（绝对差之和<span><span class="heti-spacing"> </span>(sum of absolute differences)</span>）<span class="arithmatex">\(\sum\limits_{x, y}|W_1(x,y)-W_2(x,y)|\)</span></li>
@@ -1292,7 +1326,7 @@ disparity = x - x' = \dfrac{B \cdot f}{z}
 <div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/17.png"><img src="images/lec8/17.png" width="50%"/></a>
 </div>
-<p>存在更好的方法（基于图割的方法<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
+<p>存在更好的方法（基于图割<span class="heti-skip"><span class="heti-spacing"> </span>(graph cuts)<span class="heti-spacing"> </span></span>的方法<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
 <div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/18.png"><img src="images/lec8/18.png" width="50%"/></a>
 </div>
@@ -1303,10 +1337,7 @@ E(d)=E_d(d)+\lambda E_s(d)
 <ul>
 <li>变量：每个像素的视差<span><span class="heti-spacing"> </span><span class="arithmatex">\(d\)</span></span></li>
 <li>
-<p><span class="arithmatex">\(E_d(d)\)</span>：<strong>匹配</strong>（希望每个像素能在另一张图像上找到良好匹配）成本</p>
-<ul>
-<li>比如<span><span class="heti-spacing"> </span>SSD, SAD, ZNCC</span></li>
-</ul>
+<p><span class="arithmatex">\(E_d(d)\)</span>：<strong>匹配</strong>（希望每个像素能在另一张图像上找到良好匹配）成本，可以用前面介绍的各种匹配分数计算</p>
 <div class="arithmatex">\[
 E_d(d)=\sum_{(x,y)\in I}C(x,y,d(x,y))
 \]</div>
@@ -1320,7 +1351,7 @@ E_s(d)=\sum_{(p,q)\in\mathcal{E}}V(d_p,d_q)
 <li>
 <p><span class="arithmatex">\(\mathcal{E}\)</span>：邻近像素的集合</p>
 <p></p><div style="text-align: center">
-<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/19.png"><img src="images/lec8/19.png" width="20%"/></a>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/19.png"><img src="images/lec8/19.png" width="30%"/></a>
 </div><p></p>
 </li>
 </ul>
@@ -1335,41 +1366,36 @@ E_s(d)=\sum_{(p,q)\in\mathcal{E}}V(d_p,d_q)
 </li>
 </ul>
 <h3 id="stereo-reconstruction-pipeline">Stereo Reconstruction Pipeline<a class="headerlink" href="#stereo-reconstruction-pipeline" title="Permanent link">⚓︎</a></h3>
-<p>步骤：</p>
+<p>完整的立体重建步骤如下：</p>
 <ol>
 <li>
-<p>校准相机</p>
-<ul>
-<li>
-<p>选择立体基线</p>
+<p><strong>校准相机</strong>：选择立体基线</p>
 <ul>
 <li>太大会导致较大的深度误差</li>
-<li>太小则让搜素问题变得困难</li>
+<li>太小则让搜索问题变得困难</li>
 </ul>
 <p></p><div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/21.png"><img src="images/lec8/21.png" width="40%"/></a>
 </div><p></p>
 </li>
-</ul>
-</li>
 <li>
-<p>校正图像</p>
+<p><strong>矫正图像</strong></p>
 </li>
-<li>计算视差</li>
-<li>估计深度</li>
+<li><strong>计算视差</strong></li>
+<li><strong>估计深度</strong></li>
 </ol>
 <p>误差的来源包括：</p>
 <ul>
 <li>相机校准误差</li>
-<li>图像解析度低</li>
+<li>图像分辨率低</li>
 <li>遮挡</li>
 <li>亮度不恒定（镜面反射）</li>
 <li>无纹理区域</li>
 </ul>
 <h4 id="active-stereo-with-structured-light">Active Stereo with Structured Light<a class="headerlink" href="#active-stereo-with-structured-light" title="Permanent link">⚓︎</a></h4>
-<p>将<strong>“结构化”的红外光模式</strong><span>("structured" infared light pattern)<span class="heti-spacing"> </span></span>投射到物体上</p>
+<p>将<strong>结构红外光模式</strong><span>("structured" infared light pattern)<span class="heti-spacing"> </span></span>投射到物体上</p>
 <ul>
-<li>简化了（点对点的）对应问题</li>
+<li>简化了图像点的对应问题</li>
 <li>是一些设备上（如<span class="heti-skip"><span class="heti-spacing"> </span>Kinect<span class="heti-spacing"> </span></span>和<span><span class="heti-spacing"> </span>iPhone X</span>（使用红外<span><span class="heti-spacing"> </span>(IR)</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>）的主动深度传感器<span class="heti-skip"><span class="heti-spacing"> </span>(active depth sensors)<span class="heti-spacing"> </span></span>的基础</li>
 </ul>
 <details class="example" open="open">
@@ -1382,19 +1408,13 @@ E_s(d)=\sum_{(p,q)\in\mathcal{E}}V(d_p,d_q)
 </div><p></p>
 </details>
 <h3 id="multi-view-stereo">Multi-View Stereo<a class="headerlink" href="#multi-view-stereo" title="Permanent link">⚓︎</a></h3>
-<details class="example" open="open">
-<summary>例子</summary>
-<p></p><div style="text-align: center">
-<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/24.png"><img src="images/lec8/24.png" width="60%"/></a>
-</div><p></p>
-</details>
-<p><strong>多视角立体</strong><span>(multi-view stereo)<span class="heti-spacing"> </span></span>的优势：</p>
+<p>之前我们只基于两张图像实现立体匹配，但实际上可以参考多个视图下的图像，即<strong>多视图立体</strong>(multi-view stereo, <strong>MVS</strong>)。它的优势在于：</p>
 <ul>
 <li>可以使用多个邻居来匹配窗口，提供<strong>更强的约束</strong></li>
 <li>如果有很多潜在邻居，可以<strong>选择</strong>每个参考图像的<strong>最佳邻居子集</strong>进行匹配</li>
 <li>可以为每个参考帧重建深度图，并合并成一个<strong>完整的<span class="heti-skip"><span class="heti-spacing"> </span>3D<span class="heti-spacing"> </span></span>模型</strong></li>
 </ul>
-<p>基本思路：</p>
+<p>基本思路如下：</p>
 <ul>
 <li>
 <p>正确的深度能给出一致的投影</p>
@@ -1409,18 +1429,24 @@ E_s(d)=\sum_{(p,q)\in\mathcal{E}}V(d_p,d_q)
 </div><p></p>
 </li>
 <li>
-<p>计算参考图像中每个点的每个深度值的误差，寻找给出最小误差的深度值</p>
+<p>计算参考图像中每个点的每个深度值的误差，寻找能给出最小误差的深度值</p>
 <p></p><div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/27.png"><img src="images/lec8/27.png" width="50%"/></a>
 </div><p></p>
 </li>
 </ul>
+<details class="example" open="open">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/24.png"><img src="images/lec8/24.png" width="60%"/></a>
+</div><p></p>
+</details>
 <h4 id="patchmatch">PatchMatch<a class="headerlink" href="#patchmatch" title="Permanent link">⚓︎</a></h4>
 <p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/28.png"><img align="right" alt="" src="images/lec8/28.png" width="20%"/></a></p>
-<p><strong>块匹配</strong><span>(PatchMatch)<span class="heti-spacing"> </span></span>一个用于解决对应问题的有效算法。假设：</p>
+<p><strong>块匹配</strong><span>(PatchMatch)<span class="heti-spacing"> </span></span>一个用于<strong>解决对应问题</strong>的有效算法。假设：</p>
 <ul>
 <li>大量随机采样将产生一些好的猜测</li>
-<li>邻居具有相似的偏移</li>
+<li>邻居具有相似的偏移<span><span class="heti-spacing"> </span>(offset)</span></li>
 </ul>
 <p>步骤：</p>
 <div style="text-align: center">
@@ -1428,7 +1454,7 @@ E_s(d)=\sum_{(p,q)\in\mathcal{E}}V(d_p,d_q)
 </div>
 <ol>
 <li><strong>随机初始化</strong>(random intialization)：每个像素都被赋予一个随机的块偏移量，作为初始化</li>
-<li><strong>传播</strong>(propagation)：每个像素检查邻近块的偏移量是否提供了更好的匹配块；如果是，则采用邻居的块偏移量</li>
+<li><strong>传播</strong>(propagation)：每个像素检查采用邻近块的偏移量后是否能得到更好的匹配块（损失更小<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，若是则采用该偏移量</li>
 <li><strong>局部搜索</strong>(local search)：<ul>
 <li>每个像素在当前偏移量周围的同心半径内搜索更好的块偏移量</li>
 <li>搜索半径从图像大小开始，每次减半，直到达到<span><span class="heti-spacing"> </span>1</span></li>
@@ -1436,16 +1462,16 @@ E_s(d)=\sum_{(p,q)\in\mathcal{E}}V(d_p,d_q)
 </li>
 <li>回到步骤<span><span class="heti-spacing"> </span>2</span>，直至收敛</li>
 </ol>
-<p>在<span><span class="heti-spacing"> </span>MVS</span>（多视角立体）中，将上述算法中的块偏移量替换为<strong>深度值</strong>。</p>
+<p>在<span class="heti-skip"><span class="heti-spacing"> </span>MVS<span class="heti-spacing"> </span></span>中，将上述算法中的块偏移量替换为<strong>深度值</strong>。</p>
 <h2 id="3d-reconstruction">3D Reconstruction<a class="headerlink" href="#3d-reconstruction" title="Permanent link">⚓︎</a></h2>
-<p><strong>三维重构</strong><span>(3D reconstruction)<span class="heti-spacing"> </span></span>的管线：</p>
+<p><strong>三维重建</strong><span>(3D reconstruction)<span class="heti-spacing"> </span></span>的步骤（管线<span><span class="heti-spacing"> </span>(pipeline)</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
 <ol>
-<li>为每张图像计算深度图</li>
-<li>将深度图融合成三维表面</li>
-<li>纹理映射</li>
+<li>为每张图像计算<strong>深度图</strong></li>
+<li>将深度图融合成<strong>三维表面</strong></li>
+<li><strong>纹理映射</strong></li>
 </ol>
 <h3 id="3d-representation">3D Representation<a class="headerlink" href="#3d-representation" title="Permanent link">⚓︎</a></h3>
-<p>有多种三维表示方式，如下所示：</p>
+<p>常见的三维结构表示方式有：</p>
 <div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/30.png"><img src="images/lec8/30.png" width="60%"/></a>
 </div>
@@ -1460,85 +1486,64 @@ E_s(d)=\sum_{(p,q)\in\mathcal{E}}V(d_p,d_q)
 <p><strong>体</strong>(volume)</p>
 <ul>
 <li>
-<p><strong>占用体</strong>(occupancy volume)：一个包含每个体素<span class="heti-skip"><span class="heti-spacing"> </span>(voxel)<span class="heti-spacing"> </span></span>的三维体</p>
+<p><strong>占用体</strong>(occupancy volume)：由<strong>体素</strong><span>(voxel)<span class="heti-spacing"> </span></span>构成的三维体</p>
 <div class="arithmatex">\[
 V_{ijk} = \begin{cases}1 &amp; \text{if occupied} \\ 0 &amp; \text{if empty}\end{cases}
 \]</div>
 <p></p><div style="text-align: center">
-<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/32.png"><img src="images/lec8/32.png" width="60%"/></a>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/32.png"><img src="images/lec8/32.png" width="70%"/></a>
 </div><p></p>
 </li>
-</ul>
-<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/33.png"><img align="right" alt="" src="images/lec8/33.png" width="30%"/></a></p>
-<ul>
 <li>
 <p><strong><span>SDF<span class="heti-spacing"> </span></span>体</strong></p>
 <ul>
-<li>
-<p><strong>符号距离函数</strong>(signed distance function, <strong>SDF</strong>)：点到<strong>形状边界</strong>的距离</p>
-<ul>
-<li>距离由度量定义，通常是欧几里得距离</li>
+<li><strong>符号距离函数</strong>(signed distance function, <strong>SDF</strong>)：点到<strong>形状边界</strong>的距离（通常用欧几里得距离度量）</li>
+<li><strong>截断符号距离函数</strong>(truncated signed distance function, <strong>TSDF</strong>)：将<span class="heti-skip"><span class="heti-spacing"> </span>SDF<span class="heti-spacing"> </span></span>值限制在<span><span class="heti-spacing"> </span>[-1, 1]</span></li>
 </ul>
-</li>
-<li>
-<p><strong>截断符号距离函数</strong>(truncated signed distance function, <strong>TSDF</strong>)：将<span class="heti-skip"><span class="heti-spacing"> </span>SDF<span class="heti-spacing"> </span></span>值限制在<span><span class="heti-spacing"> </span>[-1, 1]</span></p>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<p><strong>网格</strong>(mesh)：有顶点和边的多边形网格</p>
-<ul>
-<li>
-<p>通常是三角形</p>
 <p></p><div style="text-align: center">
-<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/34.png"><img src="images/lec8/34.png" width="60%"/></a>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/33.png"><img src="images/lec8/33.png" width="60%"/></a>
 </div><p></p>
 </li>
 </ul>
 </li>
+<li>
+<p><strong>网格</strong>(mesh)：由顶点和边组成的多边形网格，网格形状通常是<strong>三角形</strong></p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/34.png"><img src="images/lec8/34.png" width="50%"/></a>
+</div><p></p>
+</li>
 </ul>
 <h3 id="3d-surface-reconstruction">3D Surface Reconstruction<a class="headerlink" href="#3d-surface-reconstruction" title="Permanent link">⚓︎</a></h3>
-<p>将深度图融合成完整的三维网格的方法：</p>
+<p>将深度图融合成完整的三维网格的步骤：</p>
 <ol>
-<li>
-<p>深度图<span class="heti-skip"><span class="heti-spacing"> </span>-&gt;<span class="heti-spacing"> </span></span>占位体</p>
-<ul>
-<li>泊松重构<span><span class="heti-spacing"> </span>(Poisson reconstruction)</span></li>
-</ul>
-</li>
-<li>
-<p>占位体<span class="heti-skip"><span class="heti-spacing"> </span>-&gt;<span class="heti-spacing"> </span></span>网格</p>
-<ul>
-<li>行进立方体<span><span class="heti-spacing"> </span>(marching cube)</span></li>
-</ul>
-</li>
+<li>深度图<span class="heti-skip"><span class="heti-spacing"> </span>-&gt;<span class="heti-spacing"> </span></span>占用体：<strong>泊松重建</strong>(Poisson reconstruction)</li>
+<li>占用体<span class="heti-skip"><span class="heti-spacing"> </span>-&gt;<span class="heti-spacing"> </span></span>网格：<strong>行进立方体</strong>(marching cube)</li>
 </ol>
-<p>之所以有构建占位体这一中间步骤，是因为：</p>
-<ul>
-<li>便于转换为网格</li>
-<li>适合去噪</li>
-</ul>
+<p>之所以加入构建占用体这一中间步骤，是因为这样做<strong>转换网格更容易</strong>，并且占用体更适合<strong>去噪</strong>。</p>
 <h4 id="poisson-reconstruction">Poisson Reconstruction<a class="headerlink" href="#poisson-reconstruction" title="Permanent link">⚓︎</a></h4>
-<ul>
+<p>泊松重建的步骤：</p>
+<ol>
 <li>
 <p>将深度图转换为点云</p>
 <p></p><div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/35.png"><img src="images/lec8/35.png" width="60%"/></a>
 </div><p></p>
 </li>
-</ul>
-<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/36.png"><img align="right" alt="" src="images/lec8/36.png" width="20%"/></a>
-- 计算每个点的法向量
-- 通过<strong>指示（占用）函数</strong><span>(indicator(occupancy) function)<span class="heti-spacing"> </span></span>表示表面</p>
-<div class="language-text highlight"><pre><span></span><code>![](images/lec8/37.png){ align=right width=15% }
-
-$$
+<li>
+<p>计算每个点的法向量</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/36.png"><img src="images/lec8/36.png" width="30%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>通过<strong>指示（占用）函数</strong><span>(indicator(occupancy) function) <span class="arithmatex">\(\chi_M\)</span><span class="heti-spacing"> </span></span>表示表面</p>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/37.png"><img align="right" alt="" src="images/lec8/37.png" width="15%"/></a></p>
+<div class="arithmatex">\[
 \chi_M(p)=\begin{cases}1&amp;\mathrm{if~}p\in M\\0&amp;\mathrm{if~}p\notin M&amp;\end{cases}
-$$
-</code></pre></div>
-<p>构建指示函数的关键——梯度关系<span><span class="heti-spacing"> </span>(gradient relationship)</span></p>
+\]</div>
+</li>
+</ol>
+<p>构建指示函数的关键在于梯度关系：</p>
 <ul>
 <li>点的<strong>法线</strong>与指示函数的<strong>梯度</strong>之间存在关系</li>
 <li>用<strong>向量场</strong><span>(vector field) <span class="arithmatex">\(\overrightarrow{V}\)</span><span class="heti-spacing"> </span></span>表示有向点</li>
@@ -1549,7 +1554,7 @@ $$
 \]</div>
 </li>
 <li>
-<p>用泊松方程求解</p>
+<p>用<a href="https://en.wikipedia.org/wiki/Poisson%27s_equation?useskin=vector">泊松方程</a>求解</p>
 </li>
 </ul>
 <h4 id="marching-cubes">Marching Cubes<a class="headerlink" href="#marching-cubes" title="Permanent link">⚓︎</a></h4>
@@ -1561,13 +1566,15 @@ $$
 <li>使用预先计算好的<strong>查找表</strong>(look-up table)</li>
 </ul>
 </li>
-<li>顶点的位置可以通过<span><span class="heti-spacing"> </span>SDF</span>（符号距离函数）值的线性插值来确定</li>
+<li>顶点的位置可以通过 <strong>SDF</strong>（符号距离函数）值的<strong>线性插值</strong>来确定</li>
 </ul>
 <div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/38.png"><img src="images/lec8/38.png" width="20%"/></a>
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/39.png"><img src="images/lec8/39.png" width="20%"/></a>
 </div>
-<hr/>
+<blockquote>
+<p>注：图中白色顶点表示在表面内（1<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，黑色顶点表示在表面外（0<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
+</blockquote>
 <p>回到三维的情况——对于每个有符号变化的网格单元：</p>
 <ul>
 <li>在每个网格边缘创建一个具有符号变化的顶点</li>
@@ -1583,20 +1590,15 @@ $$
 </div><p></p>
 </li>
 </ul>
-<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/42.png"><img align="right" alt="" src="images/lec8/42.png" width="20%"/></a></p>
+<p><strong>查找表</strong>：</p>
 <ul>
-<li>
-<p><strong>查找表</strong></p>
-<ul>
-<li><span>2<span class="heti-spacing"> </span></span><sup><span>8<span class="heti-spacing"> </span></span></sup><span>= 256<span class="heti-spacing"> </span></span>个符号配置</li>
-<li>对于每个符号配置，它存储了构成三角形的顶点所对应的网格边的索引</li>
-<li>总共有<span class="heti-skip"><span class="heti-spacing"> </span>15<span class="heti-spacing"> </span></span>个配置（考虑对称）</li>
+<li><span>2<span class="heti-spacing"> </span></span><sup><span>8<span class="heti-spacing"> </span></span></sup><span>= 256<span class="heti-spacing"> </span></span>种符号配置；对于每个符号配置，它存储了构成三角形的顶点所对应的网格边的索引</li>
+<li>考虑到对称的话，实际上只需考虑以下 <strong><span>15<span class="heti-spacing"> </span></span>种配置</strong></li>
 </ul>
-<p></p><div style="text-align: center">
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/42.png"><img src="images/lec8/42.png" width="20%"/></a>
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/43.png"><img src="images/lec8/43.png" width="60%"/></a>
-</div><p></p>
-</li>
-</ul>
+</div>
 <details class="example" open="open">
 <summary>示例：表面提取结果</summary>
 <p></p><div style="text-align: center">
