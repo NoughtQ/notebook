@@ -663,6 +663,15 @@
 </a>
 </li>
 <li class="md-nav__item">
+<a class="md-nav__link" href="#sstf">
+<span class="md-ellipsis">
+      
+        SSTF
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="#scan">
 <span class="md-ellipsis">
       
@@ -1108,6 +1117,15 @@
 </a>
 </li>
 <li class="md-nav__item">
+<a class="md-nav__link" href="#sstf">
+<span class="md-ellipsis">
+      
+        SSTF
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="#scan">
 <span class="md-ellipsis">
       
@@ -1373,11 +1391,30 @@
 </a>
 <h1 id="mass-storage-structure">Mass-Storage Structure<a class="headerlink" href="#mass-storage-structure" title="Permanent link">⚓︎</a></h1>
 <div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
-<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>9217<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>46<span class="heti-spacing"> </span></span>分钟</p>
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>9394<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>47<span class="heti-spacing"> </span></span>分钟</p>
 </div>
+<details class="abstract">
+<summary>核心知识</summary>
+<ul>
+<li>HDD<ul>
+<li>构成</li>
+<li><strong>调度算法</strong>：FCFS、SSTF、SCAN、C-SCAN、C-LOOK</li>
+</ul>
+</li>
+<li>NVM</li>
+<li>存储设备管理<ul>
+<li>磁盘格式化、分区、卷</li>
+<li>启动块</li>
+<li>坏块</li>
+</ul>
+</li>
+<li>交换空间管理（仅需简单了解）</li>
+<li><strong>RAID</strong>：了解各等级<span class="heti-skip"><span class="heti-spacing"> </span>RAID<span class="heti-spacing"> </span></span>的特点</li>
+</ul>
+</details>
 <p>本章将介绍如何构建<strong>大容量存储</strong>(mass storage)，即计算机上的非易失存储系统。</p>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">⚓︎</a></h2>
-<p>主要的大容量存储为<strong>二级存储</strong>(secondary storage)，通常由<strong>硬盘驱动器</strong>(hard disk drive, <strong>HDD</strong><span>)<span class="heti-spacing"> </span></span>和非易失内存<span><span class="heti-spacing"> </span>(nonvolatile memory,</span> <strong>NVM</strong><span>)<span class="heti-spacing"> </span></span>设备提供。下面将解释其基本机制。</p>
+<p>主要的大容量存储为<strong>二级存储</strong>(secondary storage)，通常由<strong>硬盘驱动器</strong>(hard disk drive, <strong>HDD</strong><span>)<span class="heti-spacing"> </span></span>和非易失性内存<span><span class="heti-spacing"> </span>(nonvolatile memory,</span> <strong>NVM</strong><span>)<span class="heti-spacing"> </span></span>设备提供。下面将解释其基本机制。</p>
 <h3 id="hard-disk-drives">Hard Disk Drives<a class="headerlink" href="#hard-disk-drives" title="Permanent link">⚓︎</a></h3>
 <p><span>HDD<span class="heti-spacing"> </span></span>的示意图如下：</p>
 <div style="text-align: center">
@@ -1385,7 +1422,7 @@
 </div>
 <ul>
 <li>磁盘包含多个形如<span class="heti-skip"><span class="heti-spacing"> </span>CD<span class="heti-spacing"> </span></span>的<strong>盘片</strong>(platter)，其表面覆盖磁性材料，用于存储和读取信息</li>
-<li><strong>读写头</strong><span>(read-write head)<span class="heti-spacing"> </span></span>会在每个盘片的上表面移动；它与<strong>磁盘臂</strong><span>(disk arm)<span class="heti-spacing"> </span></span>连接，后者带动前者移动</li>
+<li><strong>读写头</strong><span>(read-write head)<span class="heti-spacing"> </span></span>会在每个盘片的表面上移动；它与<strong>磁盘臂</strong><span>(disk arm)<span class="heti-spacing"> </span></span>连接，后者带动前者移动</li>
 <li>从逻辑上看，盘片被划分为多个圆形的<strong>磁道</strong>(tracks)，而每个磁道又被划分为一个个<strong>扇区</strong>(sectors)</li>
 <li>同一磁盘臂位置上的一组磁道构成了一个<strong>磁柱</strong>(cylinder)</li>
 <li>磁盘驱动马达高速旋转，旋转速度单位为转每分<span><span class="heti-spacing"> </span>(rotation per minute,</span> <strong>RPM</strong>)</li>
@@ -1399,10 +1436,7 @@
 <li><span>HDD<span class="heti-spacing"> </span></span>的性能可通过磁盘控制器内的<span class="heti-skip"><span class="heti-spacing"> </span>DRAM<span class="heti-spacing"> </span></span>缓冲区进一步提升</li>
 </ul>
 </li>
-<li>尽管磁盘盘片上覆盖了一层薄的保护层，读写头有时仍然可能会破坏盘片的磁性表面，从而导致<strong>头故障</strong><span>(head crash)<span class="heti-spacing"> </span></span>的发生<ul>
-<li>一般头故障无法被修复</li>
-</ul>
-</li>
+<li>尽管磁盘盘片上覆盖了一层薄的保护层，有时读写头仍然可能会破坏盘片的磁性表面，从而导致<strong>头故障</strong><span>(head crash)<span class="heti-spacing"> </span></span>的发生；一般头故障无法被修复</li>
 <li><span>HDD<span class="heti-spacing"> </span></span>是密封单元，一些容纳<span class="heti-skip"><span class="heti-spacing"> </span>HDD<span class="heti-spacing"> </span></span>的机箱允许在不关闭系统或存储机箱的情况下拆卸它们</li>
 </ul>
 <p>下图是<span class="heti-skip"><span class="heti-spacing"> </span>HDD<span class="heti-spacing"> </span></span>实际的样子：</p>
@@ -1410,7 +1444,7 @@
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C11/2.png"><img src="images/C11/2.png" width="50%"/></a>
 </div>
 <h3 id="nonvolatile-memory-devices">Nonvolatile Memory Devices<a class="headerlink" href="#nonvolatile-memory-devices" title="Permanent link">⚓︎</a></h3>
-<p>常见的非易失内存（NVM）设备是由一个控制器以及闪存<span class="heti-skip"><span class="heti-spacing"> </span>NAND<span class="heti-spacing"> </span></span>半导体芯片组成，包括<strong>固态硬盘</strong>(solid state disk, <strong>SSD</strong>)、<strong><span>USB<span class="heti-spacing"> </span></span>驱动</strong>等。</p>
+<p>常见的非易失性内存（NVM）设备是由一个控制器以及闪存<span class="heti-skip"><span class="heti-spacing"> </span>NAND<span class="heti-spacing"> </span></span>半导体芯片组成，比如<strong>固态硬盘</strong>(solid state disk, <strong>SSD</strong>)、<strong><span>USB<span class="heti-spacing"> </span></span>驱动</strong>等。</p>
 <p>相比<span><span class="heti-spacing"> </span>HDD</span>，<span>NVM<span class="heti-spacing"> </span></span>更可靠，因为<span class="heti-skip"><span class="heti-spacing"> </span>NVM<span class="heti-spacing"> </span></span>是电子结构而非机械机构，无需考虑寻道时间和旋转时延。另外<span class="heti-skip"><span class="heti-spacing"> </span>NVM<span class="heti-spacing"> </span></span>更省电。但<span class="heti-skip"><span class="heti-spacing"> </span>NVM<span class="heti-spacing"> </span></span>的缺点是更贵，且比大型<span class="heti-skip"><span class="heti-spacing"> </span>HDD<span class="heti-spacing"> </span></span>的容量更少。但是这几年<span class="heti-skip"><span class="heti-spacing"> </span>NVM<span class="heti-spacing"> </span></span>容量增长速度更快，且价格也在下降，所以<span class="heti-skip"><span class="heti-spacing"> </span>NVM<span class="heti-spacing"> </span></span>的优势会更明显。</p>
 <p>由于<span class="heti-skip"><span class="heti-spacing"> </span>NVM<span class="heti-spacing"> </span></span>设备更快，因此<strong>标准总线接口</strong><span>(standard bus interface)<span class="heti-spacing"> </span></span>将成为吞吐量的主要限制。为解决该问题，一些<span class="heti-skip"><span class="heti-spacing"> </span>NVM<span class="heti-spacing"> </span></span>设备可以直接连接到系统总线上（比如 <strong>PCIe</strong><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。该技术也改变了计算机设计的其他方面。</p>
 <p><span>NVM<span class="heti-spacing"> </span></span>还有以下一些特点：</p>
@@ -1418,7 +1452,7 @@
 <li>能够以<strong>“页”增量</strong><span>("page" increment)<span class="heti-spacing"> </span></span>形式（类似<span><span class="heti-spacing"> </span>HDD</span> “扇区”的概念）对其<strong>读</strong>和<strong>写</strong>，但数据无法被覆写，写之前必须先擦除原来的内容</li>
 <li>而<strong>擦除</strong>操作发生在<strong>“块”增量</strong><span>("block" increment)<span class="heti-spacing"> </span></span>下，即一次要擦除多个页，所以该操作相比一次读<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>写花费更多时间</li>
 <li>解决方法是：<span>NVM<span class="heti-spacing"> </span></span>设备由多个芯片<span class="heti-skip"><span class="heti-spacing"> </span>(die)<span class="heti-spacing"> </span></span>组成，并且在其中布置<strong>多个数据通路</strong>，因此操作可以<strong>并行</strong>进行（每个操作使用一个数据通路）</li>
-<li>每次擦除都会磨损<span class="heti-skip"><span class="heti-spacing"> </span>NVM<span class="heti-spacing"> </span></span>设备；当某个单元被擦出一定次数后就无法再用于存储数据了</li>
+<li>每次擦除都会磨损<span class="heti-skip"><span class="heti-spacing"> </span>NVM<span class="heti-spacing"> </span></span>设备；当某个单元的擦除次数超过一定次数后就无法再用于存储数据了</li>
 <li><span>NAND NVM<span class="heti-spacing"> </span></span>的生命周期用<strong>每天驱动器写</strong><span>(drive writes per day, DWPD)<span class="heti-spacing"> </span></span>来测量，用于表示驱动器在故障之前每天可以写入的容量次数</li>
 </ul>
 <p>由于<span class="heti-skip"><span class="heti-spacing"> </span>NVM<span class="heti-spacing"> </span></span>的内容无法被覆写，因此通常会存在一些包含无效数据的页。</p>
@@ -1426,7 +1460,7 @@
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C11/3.png"><img src="images/C11/3.png" width="40%"/></a>
 </div>
 <p>为追踪哪个逻辑块包含有效数据，<span>NVM<span class="heti-spacing"> </span></span>控制器维护了一个<strong>闪存转换层</strong>(flash translation layer, <strong>FTL</strong>)，用于映射当前包含有效逻辑块的物理页，并且会追踪物理块的状态。</p>
-<p>假如向已被填满的<span class="heti-skip"><span class="heti-spacing"> </span>SSD<span class="heti-spacing"> </span></span>发起一个待处理的<span class="heti-skip"><span class="heti-spacing"> </span>(pending)<span class="heti-spacing"> </span></span>写请求。虽说“已被填满”，但其中可能会包含一些包含无效数据的块，而这些块就可以被擦除，从而满足待处理的写请求。此时发生了<strong>垃圾回收</strong>(garbage collection)：好的数据被拷贝到其他位置上，释放能够被擦除的块，随后能够接收写请求。</p>
+<p>假如向已被填满的<span class="heti-skip"><span class="heti-spacing"> </span>SSD<span class="heti-spacing"> </span></span>发起一个待处理的<span class="heti-skip"><span class="heti-spacing"> </span>(pending)<span class="heti-spacing"> </span></span>写请求。虽说“已被填满”，但可能会包含一些包含无效数据的块，因此可通过擦除这些块来满足待处理的写请求。这是一种<strong>垃圾回收</strong>(garbage collection)：好的数据被拷贝到其他位置上，释放能够被擦除的块，随后能够接收写请求。</p>
 <p>但“好的数据”应该要被放到哪里呢？<span>NVM<span class="heti-spacing"> </span></span>采用<strong>超额分配</strong><span>(over-provisioning)<span class="heti-spacing"> </span></span>的技术：</p>
 <ul>
 <li>预留了一定数量的页面（通常为总数的<span><span class="heti-spacing"> </span>20%</span>）作为始终可写入的区域</li>
@@ -1508,6 +1542,14 @@
 </div><p></p>
 <p>其中最影响性能的两步是<span><span class="heti-spacing"> </span>122 -&gt; 14 -&gt; 124</span>，因为这两步几乎相当于从头到尾来回一趟了！</p>
 </details>
+<h3 id="sstf">SSTF<a class="headerlink" href="#sstf" title="Permanent link">⚓︎</a></h3>
+<p><strong>最短寻道时间优先</strong><span>(shortest-seek-time-first, SSTF)<span class="heti-spacing"> </span></span>算法选择对当前头位置而言寻道时间最小的请求。它和在<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>调度一讲中介绍的<a href="5.html#shortest-job-first-scheduling"><span class="heti-skip"><span class="heti-spacing"> </span>SJF<span class="heti-spacing"> </span></span>算法</a>很像。该算法的一个问题是可能导致一些请求进入<strong>饥饿</strong>状态，所以它并<strong>不</strong>像<span class="heti-skip"><span class="heti-spacing"> </span>SJF<span class="heti-spacing"> </span></span>那样<strong>是最优算法</strong>。</p>
+<details class="example" open="open">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C11/12.png"><img src="images/C11/12.png" width="50%"/></a>
+</div><p></p>
+</details>
 <h3 id="scan">SCAN<a class="headerlink" href="#scan" title="Permanent link">⚓︎</a></h3>
 <p>在 <strong><span>SCAN<span class="heti-spacing"> </span></span>算法</strong>中</p>
 <ul>
@@ -1536,12 +1578,25 @@
 <li>然而，当读写头到达另一端时，它会<strong>立即回到磁盘的起点</strong>，而不再服务返回沿途的请求</li>
 <li>所以<span class="heti-skip"><span class="heti-spacing"> </span>C-SCAN<span class="heti-spacing"> </span></span>会将磁盘上的磁柱（物理块）看作一个首尾相接的循环列表</li>
 </ul>
+<blockquote>
+<p>换句话说，<span>C-SCAN<span class="heti-spacing"> </span></span>仅支持单向扫描请求。</p>
+</blockquote>
 <details class="example" open="open">
 <summary>例子</summary>
 <p>依然针对同一个例子，下面是用<span class="heti-skip"><span class="heti-spacing"> </span>C-SCAN<span class="heti-spacing"> </span></span>调度算法的结果：</p>
 <p></p><div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C11/6.png"><img src="images/C11/6.png" width="50%"/></a>
 </div><p></p>
+</details>
+<details class="note" open="open">
+<summary>变体：<strong>C-LOOK</strong></summary>
+<p><span>C-LOOK<span class="heti-spacing"> </span></span>与<span class="heti-skip"><span class="heti-spacing"> </span>C-SCAN<span class="heti-spacing"> </span></span>的区别是不会走到底，而是到达最靠近边界的请求后就掉头。</p>
+<details class="example" open="open">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C11/13.png"><img src="images/C11/13.png" width="50%"/></a>
+</div><p></p>
+</details>
 </details>
 <h3 id="selection-of-a-disk-scheduling-algorithm">Selection of a Disk-Scheduling Algorithm<a class="headerlink" href="#selection-of-a-disk-scheduling-algorithm" title="Permanent link">⚓︎</a></h3>
 <p>虽然还有很多磁盘调度算法没有被介绍，但它们也很少被用到。</p>
@@ -1608,7 +1663,9 @@
 <p>用更大的扇区大小格式化磁盘意味着每个磁道上的扇区数更少，但也意味着更少的被写入磁道的头部和尾部信息，以及更多的为用户数据提供的可用空间。</p>
 <p><span>OS<span class="heti-spacing"> </span></span>在使用磁盘存文件前，需要先将自己的数据结构存储下来，具体分为以下三步：</p>
 <ol>
-<li>将设备划分为多个块或页构成的一个或多个组（<strong>分区</strong>(partition)）<ul>
+<li>
+<p>将设备划分为多个块或页构成的一个或多个组（<strong>分区</strong>(partition)）</p>
+<ul>
 <li><span>OS<span class="heti-spacing"> </span></span>将每个分区看作单独的设备</li>
 <li>比如一个分区存储包含<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>可执行代码副本的文件系统，一个分区存储交换空间，一个分区存储包含用户文件的文件系统等</li>
 <li>一些<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>和文件系统在整个设备都由文件系统管理时自动执行分区操作</li>
@@ -1617,22 +1674,30 @@
 <li><strong>挂载</strong><span>(mounting)<span class="heti-spacing"> </span></span>一个文件系统意味着让这个文件系统对系统中所有用户可用</li>
 </ul>
 </li>
-<li><strong>卷</strong><span>(volume)<span class="heti-spacing"> </span></span>的创建和管理<ul>
-<li>该步骤既有隐式的，也有显式的<ul>
+<li>
+<p><strong>卷</strong><span>(volume)<span class="heti-spacing"> </span></span>的创建和管理</p>
+<ul>
+<li>
+<p>该步骤既有隐式的，也有显式的</p>
+<ul>
 <li>隐式：文件系统直接被放在一个分区内，那么相应的卷已经准备好挂载和使用了</li>
 <li>显式：比如在多个分区或设备一起被使用，作为<span class="heti-skip"><span class="heti-spacing"> </span>RAID<span class="heti-spacing"> </span></span>集，并且一个或多个文件系统横跨多个设备时</li>
-<li><span>Linux<span class="heti-spacing"> </span></span>的卷管理器为 <code>lvm2</code></li>
+</ul>
+</li>
+<li>
+<p><span>Linux<span class="heti-spacing"> </span></span>的卷管理器为 <code>lvm2</code></p>
+</li>
 <li>「卷」也可以表示任何可挂载的文件系统，即便是一个包含文件系统的文件也算，比如<span class="heti-skip"><span class="heti-spacing"> </span>CD<span class="heti-spacing"> </span></span>映像文件</li>
 </ul>
 </li>
-</ul>
-</li>
-<li><strong>逻辑格式化</strong>(logical formatting)（或文件系统的创建）<ul>
+<li>
+<p><strong>逻辑格式化</strong>(logical formatting)（或文件系统的创建）</p>
+<ul>
 <li><span>OS<span class="heti-spacing"> </span></span>存储初始文件系统数据结构到设备上，这些数据结构包含了空闲和分配空间的映射、初始空目录等</li>
 </ul>
 </li>
 </ol>
-<p>分区信息还指示一个分区是否包含<strong>可引导的文件系统</strong>(bootable file system)（包含<span><span class="heti-spacing"> </span>OS</span> <heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。标记为引导的分区用于建立文件系统的<strong>根</strong>。一旦它被挂载，所有其他设备及其分区的链接可以被创建。一般来说，计算机的文件系统包含了所有挂载的卷。</p>
+<p>分区信息还指示一个分区是否包含<strong>可引导的文件系统</strong>(bootable file system)（包含<span><span class="heti-spacing"> </span>OS</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。标记为引导的分区用于建立文件系统的<strong>根</strong>。一旦它被挂载，所有其他设备及其分区的链接可以被创建。一般来说，计算机的文件系统包含了所有挂载的卷。</p>
 <p>下图展示了<span class="heti-skip"><span class="heti-spacing"> </span>Windows 11<span class="heti-spacing"> </span></span>的磁盘管理工具，可以在里面查看设备、分区、卷和文件系统（<del>和教材<span class="heti-skip"><span class="heti-spacing"> </span>Win 7<span class="heti-spacing"> </span></span>的也差不多，连图标都没变，不愧是五世同堂的系统</del><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
 <div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C11/7.png"><img src="images/C11/7.png" width="70%"/></a>
@@ -1640,12 +1705,12 @@
 <p>为提高效率，多数文件系统将块<span class="heti-skip"><span class="heti-spacing"> </span>(block)<span class="heti-spacing"> </span></span>组合成更大的块<span><span class="heti-spacing"> </span>(chunk)</span>，称为<strong>簇</strong>(cluster)。设备<span class="heti-skip"><span class="heti-spacing"> </span>I/O<span class="heti-spacing"> </span></span>通过块完成，而文件系统通过簇完成，有效确保<span class="heti-skip"><span class="heti-spacing"> </span>I/O<span class="heti-spacing"> </span></span>有更多的顺序访问，以及更少的随机访问特征。</p>
 <h3 id="boot-block">Boot Block<a class="headerlink" href="#boot-block" title="Permanent link">⚓︎</a></h3>
 <ul>
-<li>为了让计算机开始运行，必须有一个初始<strong>引导</strong>(bootstrap)<strong>加载程序</strong>来运行</li>
+<li>为了让计算机开始运行，必须有一个初始<strong>引导加载程序</strong>来运行</li>
 <li>该程序通常很简单，存储在系统主板上的<span class="heti-skip"><span class="heti-spacing"> </span>NVM<span class="heti-spacing"> </span></span>闪存固件中，并映射到已知的内存位置</li>
 <li>产品制造商可以根据需要更新它；但病毒也可以对其进行写入，从而感染系统</li>
-<li>引导程序初始化系统的方方面面，包括从<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>寄存器到设备控制器以及主内存的内容登</li>
+<li>引导程序初始化系统的方方面面，包括从<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>寄存器到设备控制器以及主存的内容登</li>
 <li>引导程序可以从二级存储中导入完整的引导程序；完整的引导程序存储在设备上一个固定位置的“引导块”中，它会从设备上的非固定位置加载并启动整个<span><span class="heti-spacing"> </span>OS</span></li>
-<li>默认的<span class="heti-skip"><span class="heti-spacing"> </span>Linux<span class="heti-spacing"> </span></span>引导加载程序是<span><span class="heti-spacing"> </span>grub2</span></li>
+<li>默认的<span class="heti-skip"><span class="heti-spacing"> </span>Linux<span class="heti-spacing"> </span></span>引导加载程序是 <code>grub2</code></li>
 <li>具有启动分区的设备称为<strong>启动磁盘</strong><span>(boot disk)<span class="heti-spacing"> </span></span>或<strong>系统磁盘</strong>(system disk)</li>
 </ul>
 <h3 id="bad-blocks">Bad Blocks<a class="headerlink" href="#bad-blocks" title="Permanent link">⚓︎</a></h3>
@@ -1667,7 +1732,7 @@
 <li>
 <p>更精密的方法——<strong>扇区备份</strong><span>(sector sparsing)<span class="heti-spacing"> </span></span>或<strong>转发</strong>(forwaring)</p>
 <ul>
-<li>控制器维护着磁盘上坏块的列表，该列表在出厂时进行低级格式化时初始化，并在磁盘使用期间不断更新</li>
+<li>控制器维护着磁盘上坏块的列表，该列表在出厂时进行<strong>低级格式化</strong>时初始化，并在磁盘使用期间不断更新</li>
 <li>低级格式化还会预留出<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>不可见的备用扇区。可以指示控制器用其中一个备用扇区逻辑地替换每个坏扇区</li>
 <li>这类重定向可能会使<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>的磁盘调度算法的优化失效，因此大多数磁盘都格式化为在每个磁柱中提供一些备用扇区，以及一个备用磁柱；当重映射坏块时<heti-adjacent class="heti-adjacent-half">，</heti-adjacent>（若可能）控制器会使用同一磁柱中的备用扇区</li>
 <li>另一种替代方案是通过<strong>扇区滑动</strong><span>(sector slipping)<span class="heti-spacing"> </span></span>替换坏块</li>
@@ -1685,7 +1750,7 @@
 <h2 id="swap-space-management">Swap-Space Management<a class="headerlink" href="#swap-space-management" title="Permanent link">⚓︎</a></h2>
 <p><strong>交换空间管理</strong><span>(swap-space management)<span class="heti-spacing"> </span></span>是<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>的一个低级任务。</p>
 <ul>
-<li>虚拟内存使用二级存储空间作为主内存的扩展</li>
+<li>虚拟内存使用二级存储空间作为主存的扩展</li>
 <li>由于驱动器访问速度远慢于内存访问，使用交换空间会<strong>显著降低系统性能</strong></li>
 <li>设计和实现交换空间的主要目标是为虚拟内存系统提供最佳<strong>吞吐量</strong></li>
 </ul>
@@ -1694,7 +1759,7 @@
 <p>交换空间的使用具体取决于所采用的内存管理算法。</p>
 <ul>
 <li>实现交换的系统可能会使用交换空间来保存整个进程映像，包括代码段和数据段</li>
-<li>分页系统可能仅仅存储已被推出主内存的页面</li>
+<li>分页系统可能仅仅存储已被推出主存的页面</li>
 </ul>
 <p>因此，一个系统所需的交换空间量可以从几兆字节到几个千兆字节不等，这取决于物理内存的大小、虚拟内存的大小以及虚拟内存的使用方式。</p>
 <p><strong>高估</strong>所需的交换空间可能比低估<strong>更安全</strong>，因为</p>
@@ -1706,15 +1771,12 @@
 <h3 id="swap-space-location">Swap-Space Location<a class="headerlink" href="#swap-space-location" title="Permanent link">⚓︎</a></h3>
 <p>交换空间存在于以下两个位置之一：</p>
 <ul>
-<li>从正常的文件系统中划分出来<ul>
-<li>如果交换空间只是文件系统中的一个大文件，则可以使用正常的文件系统例程来创建它、命名它并分配其空间</li>
-</ul>
-</li>
+<li>如果交换空间只是文件系统中的一个大文件，则可以使用正常的<strong>文件系统</strong>例程来创建、命名，并为它分配空间</li>
 <li>在一个单独的<strong>原始分区</strong><span>(raw partition)<span class="heti-spacing"> </span></span>中<ul>
 <li>使用一个单独的交换空间存储管理器来从原始分区中分配和释放块</li>
 <li>该管理器使用针对<strong>速度</strong>优化的算法，而不是针对存储效率，因为交换空间在使用时比文件系统更频繁地被访问</li>
-<li>内部碎片可能会增加，但这种权衡是可以接受的，因为交换空间中的数据生命周期通常远短于文件系统中的文件；由于在启动时重新初始化交换空间，因此任何碎片都是短暂的</li>
-<li>这种原始分区方法在磁盘分区期间创建固定数量的交换空间；所以若想增加交换空间大小，要么对设备重新分区，要么在其他地方添加一个交换空间</li>
+<li><strong>内部碎片</strong>可能会增加，但这种权衡是可以接受的，因为交换空间中的数据生命周期通常远短于文件系统中的文件；由于在启动时重新初始化交换空间，因此任何碎片都是短暂的</li>
+<li>这种原始分区方法在磁盘分区期间创建<strong>固定数量</strong>的交换空间；所以若想增加交换空间大小，要么对设备重新分区，要么在其他地方添加一个交换空间</li>
 </ul>
 </li>
 </ul>
@@ -1798,14 +1860,14 @@
 <p>另一种更常用的条带化形式是<strong>块级条带化</strong>(block-level stripping)</p>
 <ul>
 <li>比如一个文件的块会横跨多个磁盘进行条带化</li>
-<li>如果有<span class="heti-skip"><span class="heti-spacing"> </span>n<span class="heti-spacing"> </span></span>个驱动器，文件的第<span class="heti-skip"><span class="heti-spacing"> </span>i<span class="heti-spacing"> </span></span>块将分配给<span class="heti-skip"><span class="heti-spacing"> </span>(i mod n)+ 1<span class="heti-spacing"> </span></span>号磁盘上</li>
+<li>如果有<span class="heti-skip"><span class="heti-spacing"> </span>n<span class="heti-spacing"> </span></span>个驱动器，文件的第<span class="heti-skip"><span class="heti-spacing"> </span>i<span class="heti-spacing"> </span></span>块将分配给<span class="heti-skip"><span class="heti-spacing"> </span>(i mod n) + 1<span class="heti-spacing"> </span></span>号磁盘上</li>
 </ul>
 </li>
 </ul>
 <p>存储系统的并行有两个主要目标：</p>
 <ul>
-<li>通过负载均衡增加多个小访问（即页访问）的吞吐量</li>
-<li>减少大访问的响应时间</li>
+<li>通过负载均衡增加多个小访问（即页访问）的<strong>吞吐量</strong></li>
+<li>减少大访问的<strong>响应时间</strong></li>
 </ul>
 <h3 id="raid-levels">RAID Levels<a class="headerlink" href="#raid-levels" title="Permanent link">⚓︎</a></h3>
 <p>下面列出最常见的一些 <strong><span>RAID<span class="heti-spacing"> </span></span>级别</strong>(RAID levels)：</p>
@@ -1821,8 +1883,8 @@
 <li>
 <p><span>RAID<span class="heti-spacing"> </span></span>级别<span><span class="heti-spacing"> </span>4</span>：<strong>内存式纠错码组织</strong>(memory-style error-correction-code organization)</p>
 <ul>
-<li><strong>ECC</strong> 的思路可以通过在磁盘之间对块进行条带化，直接应用于存储阵列中</li>
-<li>纠错计算结果放在第<span class="heti-skip"><span class="heti-spacing"> </span>N+1<span class="heti-spacing"> </span></span>个磁盘中，图中标有<span class="heti-skip"><span class="heti-spacing"> </span>P<span class="heti-spacing"> </span></span>的磁盘存储了纠错块</li>
+<li>通过在磁盘之间对块进行条带化，<strong>ECC</strong> 的思路可以直接应用于存储阵列中</li>
+<li>纠错计算结果放在第<span class="heti-skip"><span class="heti-spacing"> </span>N+1<span class="heti-spacing"> </span></span>个磁盘中，即图中标注了<span class="heti-skip"><span class="heti-spacing"> </span>P<span class="heti-spacing"> </span></span>的磁盘</li>
 <li>当其中一个磁盘发生故障时，纠错码会通过重新计算而检测出该故障，阻止相应数据传给请求进程并抛出错误</li>
 <li>磁盘控制器能检测扇区是否被正确读取，所以单个奇偶校验块能用于纠正和检测错误</li>
 <li>
