@@ -1189,33 +1189,67 @@
 </a>
 <h1 id="file-system-interface">File-System Interface<a class="headerlink" href="#file-system-interface" title="Permanent link">⚓︎</a></h1>
 <div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
-<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>8601<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>43<span class="heti-spacing"> </span></span>分钟</p>
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>8882<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>44<span class="heti-spacing"> </span></span>分钟</p>
 </div>
+<details class="abstract">
+<summary>核心知识</summary>
+<ul>
+<li>文件基本概念<ul>
+<li>文件属性</li>
+<li>文件操作</li>
+<li>文件类型</li>
+<li>文件结构</li>
+</ul>
+</li>
+<li>访问方法<ul>
+<li>顺序访问</li>
+<li>直接访问</li>
+<li>...</li>
+</ul>
+</li>
+<li>目录结构<ul>
+<li>单级目录</li>
+<li>二级目录</li>
+<li>树状目录</li>
+<li>无环图目录</li>
+<li>通用图目录</li>
+</ul>
+</li>
+<li>保护<ul>
+<li>访问控制：<ul>
+<li>ACL</li>
+<li><span>3<span class="heti-spacing"> </span></span>个类别的用户<span class="heti-skip"><span class="heti-spacing"> </span>+ 3<span class="heti-spacing"> </span></span>个权限位</li>
+</ul>
+</li>
+<li>...</li>
+</ul>
+</li>
+<li>内存映射文件</li>
+</ul>
+</details>
 <h2 id="file-concepts">File Concepts<a class="headerlink" href="#file-concepts" title="Permanent link">⚓︎</a></h2>
 <ul>
-<li><strong>文件</strong><span>(files)<span class="heti-spacing"> </span></span>是一个记录在二级存储上的具名相关信息集合</li>
-<li>从用户视角看，文件是逻辑二级存储的最小分配分配单元<span><span class="heti-spacing"> </span>(allotment)</span>；也就是说，数据除非写在文件内，否则就无法写入二级存储中。文件通常表示程序和数据</li>
+<li><strong>文件</strong><span>(files)<span class="heti-spacing"> </span></span>是一个记录在二级存储上的具名相关信息集合，通常表示程序和数据</li>
+<li>从用户视角看，文件是逻辑二级存储的最小分配单元<span><span class="heti-spacing"> </span>(allotment)</span>；也就是说，数据除非写在文件内，否则就无法写入二级存储中</li>
 <li>文件的形式可以是自由的，也可以是严格格式化的</li>
-<li>一般来说，文件就是一个关于位<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>字节<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>行<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>记录的序列，其意义由文件创建者和用户定义<ul>
-<li>因为文件有各种类型，比如文本文件、源文件、可执行文件等</li>
+<li>
+<p>一般来说，文件就是一个关于位<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>字节<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>行<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>记录的序列，其意义由文件创建者和用户定义</p>
+<ul>
+<li>因此就有了各种类型的文件，比如文本文件、源文件、可执行文件等</li>
 </ul>
 </li>
-<li>因为文件是用户和应用程序用来存储和检索数据的方法，再加上它们的通用性，因此其使用已经超出了最初的范围<ul>
-<li>比如<span class="heti-skip"><span class="heti-spacing"> </span>UNIX<span class="heti-spacing"> </span></span>系统的 <code>proc</code> 文件系统提供了访问系统信息的接口。</li>
-</ul>
+<li>
+<p>当文件被命名后，它将独立于进程、用户以及创建该文件的系统存在</p>
 </li>
+<li>除非提供共享和同步方法，否则文件的副本将独立于原始文件存在</li>
 </ul>
 <h3 id="file-attributes">File Attributes<a class="headerlink" href="#file-attributes" title="Permanent link">⚓︎</a></h3>
-<ul>
-<li>当文件被命名后，它将独立于进程、用户以及创建该文件的系统存在</li>
-<li>除非提供共享和同步方法，否则文件的拷贝将独立于被拷贝的文件存在，即可以单独改变文件的内容</li>
-</ul>
 <p>文件属性因<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>而异，但通常包含以下内容：</p>
 <ul>
 <li><strong>名称</strong>：唯一以人类可读形式保存的信息</li>
-<li><strong>标识符</strong>：用于识别文件系统内的文件的唯一标签，通常用数字表示；它是文件的不为人类可读的名称</li>
+<li><strong>标识符</strong>：用于识别文件系统内的文件的唯一标签，通常用数字表示，可看作一种不为人类可读的文件名称</li>
 <li><strong>类型</strong></li>
-<li><strong>位置</strong>：包含一个指向设备和文件在该设备位置的指针</li>
+<li><strong>位置</strong>：包含一个指向设备以及文件在该设备的位置的指针</li>
 <li><strong>大小</strong>：当前文件大小，也可能包含最大允许大小的信息</li>
 <li><strong>保护</strong>：访问控制信息，决定谁能读取<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>写入<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>执行该文件</li>
 <li><strong>时间戳</strong>和<strong>用户标识</strong>：保存了创建、最近修改和最近使用信息</li>
@@ -1231,14 +1265,14 @@
 </figure><p></p>
 </details>
 <h3 id="file-operations">File Operations<a class="headerlink" href="#file-operations" title="Permanent link">⚓︎</a></h3>
-<p><span>OS<span class="heti-spacing"> </span></span>提供系统调用来实现各类文件操作，包括：</p>
+<p><span>OS<span class="heti-spacing"> </span></span>提供<strong>系统调用</strong>来实现各类文件操作，包括：</p>
 <ul>
 <li><strong>创建</strong>文件：在文件系统中为文件找到空间<span class="heti-skip"><span class="heti-spacing"> </span>-&gt;<span class="heti-spacing"> </span></span>在目录中创建关于新文件的条目</li>
-<li><strong>打开</strong>文件：除创建和删除外的文件操作都要先调用 <code>open()</code>，若调用成功，则返回一个作为其他调用的参数的<strong>文件句柄</strong>(file handle)</li>
+<li><strong>打开</strong>文件：除创建和删除外的文件操作都要先调用 <code>open()</code>；若调用成功，则返回一个作为其他调用的参数的<strong>文件句柄</strong>(file handle)</li>
 <li><strong>写入</strong>文件：系统必须保留一个指向文件内下一次写发生时的位置的<strong>写指针</strong>（若为顺序访问<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，并且在写操作发生时更新写指针</li>
 <li><strong>读取</strong>文件：<ul>
 <li>系统必须保留一个指向文件内下一次读发生时的位置的<strong>读指针</strong>（若为顺序访问<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，并且在读操作发生时更新读指针</li>
-<li>由于进程经常有同时有读取和写入的需求，所以每个进程可都用一个<strong>当前文件位置指针</strong>(current-file-position pointer)，读写操作均用该指针，这样可以节省空间并降低系统复杂度</li>
+<li>由于进程经常有同时有读取和写入的需求，所以进程可以采用一个<strong>当前文件位置指针</strong>(current-file-position pointer)；读写操作均用该指针，这样可以节省空间并降低系统复杂度</li>
 </ul>
 </li>
 <li>文件内<strong>重定位</strong>(reposition)：<ul>
@@ -1302,15 +1336,75 @@
 <li>强制性锁：一旦一个进程获取独占锁，<span>OS<span class="heti-spacing"> </span></span>会阻止其他进程访问被锁住的文件，确保锁的完整性</li>
 <li>建议性锁：不阻止其他进程访问被锁住的文件，但要在访问文件前手动获取锁；由软件开发者确保锁的合适获取和释放</li>
 </ul>
-<p>文件锁的使用需要与普通进程同步相同的预防措施。</p>
+<p>文件锁的使用需要采取与普通进程同步相同的预防措施。</p>
 <ul>
 <li>在具有<strong>强制性锁</strong>的系统上开发的程序员必须小心：仅在访问文件时保持独占文件锁，否则将阻止其他进程访问该文件</li>
 <li>还必须采取一些措施，以确保两个或多个进程在尝试获取文件锁时不会陷入<strong>死锁</strong></li>
 </ul>
 <h3 id="file-types">File Types<a class="headerlink" href="#file-types" title="Permanent link">⚓︎</a></h3>
 <p>一种常见的实现文件类型的技术是<u>将类型作为文件名的一部分</u>，因此文件名包含两部分：名称和<strong>扩展名</strong>(extension)，中间用点号<span class="heti-skip"><span class="heti-spacing"> </span>(period)<span class="heti-spacing"> </span></span>间隔。下面列举了一些常见的文件类型：</p>
-<div style="text-align: center">
-<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C13/2.png"><img src="images/C13/2.png" width="50%"/></a>
+<div align="center">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">文件类型</th>
+<th style="text-align: left;">常见扩展名</th>
+<th style="text-align: left;">功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">可执行文件<span><span class="heti-spacing"> </span>(executable)</span></td>
+<td style="text-align: left;"><code>exe</code><span>,<span class="heti-spacing"> </span></span><code>com</code><span>,<span class="heti-spacing"> </span></span><code>bin</code>或无扩展名</td>
+<td style="text-align: left;">就绪的可运行机器语言程序</td>
+</tr>
+<tr>
+<td style="text-align: left;">目标文件<span><span class="heti-spacing"> </span>(object)</span></td>
+<td style="text-align: left;"><code>obj</code>, <code>o</code></td>
+<td style="text-align: left;">已编译的机器语言，尚未链接</td>
+</tr>
+<tr>
+<td style="text-align: left;">源代码<span><span class="heti-spacing"> </span>(source)</span></td>
+<td style="text-align: left;"><code>c</code>, <code>cc</code>, <code>java</code>, <code>perl</code>, <code>asm</code></td>
+<td style="text-align: left;">各种语言编写的源代码</td>
+</tr>
+<tr>
+<td style="text-align: left;">批处理文件<span><span class="heti-spacing"> </span>(batch)</span></td>
+<td style="text-align: left;"><code>bat</code>, <code>sh</code></td>
+<td style="text-align: left;">发送给命令解释器的命令集合</td>
+</tr>
+<tr>
+<td style="text-align: left;">标记文件<span><span class="heti-spacing"> </span>(markup)</span></td>
+<td style="text-align: left;"><code>xml</code>, <code>html</code>, <code>tex</code></td>
+<td style="text-align: left;">文本数据、文档</td>
+</tr>
+<tr>
+<td style="text-align: left;">文字处理文件<span><span class="heti-spacing"> </span>(word processor)</span></td>
+<td style="text-align: left;"><code>xml</code>, <code>rtf</code>, <code>docx</code></td>
+<td style="text-align: left;">各种文字处理器格式</td>
+</tr>
+<tr>
+<td style="text-align: left;">库文件<span><span class="heti-spacing"> </span>(library)</span></td>
+<td style="text-align: left;"><code>lib</code>, <code>a</code>, <code>so</code>, <code>dll</code></td>
+<td style="text-align: left;">供程序员使用的程序例程库</td>
+</tr>
+<tr>
+<td style="text-align: left;">打印或查看文件<span><span class="heti-spacing"> </span>(print or view)</span></td>
+<td style="text-align: left;"><code>gif</code>, <code>pdf</code>, <code>jpg</code></td>
+<td style="text-align: left;">用于打印或查看的<span class="heti-skip"><span class="heti-spacing"> </span>ASCII<span class="heti-spacing"> </span></span>或二进制文件</td>
+</tr>
+<tr>
+<td style="text-align: left;">归档文件<span><span class="heti-spacing"> </span>(archive)</span></td>
+<td style="text-align: left;"><code>rar</code>, <code>zip</code>, <code>tar</code></td>
+<td style="text-align: left;">组合成单个文件的相关文件，有时经过压缩，用于归档或存储</td>
+</tr>
+<tr>
+<td style="text-align: left;">多媒体文件<span><span class="heti-spacing"> </span>(multimedia)</span></td>
+<td style="text-align: left;"><code>mpeg</code>, <code>mov</code>, <code>mp3</code>, <code>mp4</code>, <code>avi</code></td>
+<td style="text-align: left;">包含音频或音视频信息的二进制文件</td>
+</tr>
+</tbody>
+</table>
 </div>
 <p>扩展名并不是必需的，所以用户可以指定一个没有扩展名的文件，此时应用程序将查找具有给定名称和预期扩展名的文件。我们可以将扩展名视为对处理它们的应用程序的一种“提示”。</p>
 <p>每个文件都有一个创建者属性，包含了创建该文件的程序名，由 <code>create()</code> 调用设置。</p>
@@ -1320,11 +1414,11 @@
 <li>文件类型能够指示文件的内部结构</li>
 <li><span>OS<span class="heti-spacing"> </span></span>支持多文件结构的一个缺点是让<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>变得大而笨拙</li>
 <li>
-<p>一些操作系统强制（并支持）最少数量的文件结构。这种方法已在<span><span class="heti-spacing"> </span>UNIX</span>、<span>Windows<span class="heti-spacing"> </span></span>等系统中采用</p>
+<p>一些<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>强制（并支持）最少数量的文件结构，这种方法已在<span><span class="heti-spacing"> </span>UNIX</span>、<span>Windows<span class="heti-spacing"> </span></span>等系统中采用</p>
 <ul>
-<li><span>UNIX<span class="heti-spacing"> </span></span>将每个文件视为一系列<span class="heti-skip"><span class="heti-spacing"> </span>8<span class="heti-spacing"> </span></span>位字节；操作系统不会对这些位进行任何解释</li>
-<li>该方案提供了最大的灵活性，但支持较少</li>
-<li>每个应用程序必须包含自己的代码，以根据适当的结构解释输入文件</li>
+<li><span>UNIX<span class="heti-spacing"> </span></span>将每个文件视为一系列<span class="heti-skip"><span class="heti-spacing"> </span>8<span class="heti-spacing"> </span></span>位字节，<span>OS<span class="heti-spacing"> </span></span>不会对这些位进行任何解释</li>
+<li>该方案提供了最大的灵活性，但提供的支持较少</li>
+<li>因此每个应用程序必须包含能够解释输入文件的代码</li>
 </ul>
 </li>
 <li>
@@ -1339,23 +1433,23 @@
 <li>物理记录大小不太可能与所需逻辑记录的长度完全匹配，甚至逻辑记录的长度不一定相同</li>
 </ul>
 <p><strong>将多个逻辑记录打包到物理块中</strong>是解决此问题的一种常见方法。比如<span class="heti-skip"><span class="heti-spacing"> </span>UNIX<span class="heti-spacing"> </span></span>将所有文件定义为简单的字节流；每个字节都可以通过其相对于文件开头（或结尾）的偏移量单独寻址。</p>
-<p>逻辑记录大小、物理块大小和打包技术决定了每个物理块中包含多少个逻辑记录。<strong>打包</strong>可以由用户的应用程序或操作系统完成；无论哪种情况，文件都可以被视为一系列的块。</p>
+<p>逻辑记录大小、物理块大小和打包技术决定了每个物理块中包含多少个逻辑记录。<strong>打包</strong>可以由用户的应用程序或<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>完成；无论哪种情况，文件都可以被视为一系列的块。</p>
 <p>将所有内容保持在块（而不是字节）单位中所产生的浪费称为<strong>内部碎片</strong>。所有文件系统都受到内部碎片的影响；块大小越大，内部碎片就越严重。</p>
 <h2 id="access-methods">Access Methods<a class="headerlink" href="#access-methods" title="Permanent link">⚓︎</a></h2>
 <h3 id="sequential-access">Sequential Access<a class="headerlink" href="#sequential-access" title="Permanent link">⚓︎</a></h3>
 <p>最简单、最常用的访问方法是<strong>顺序访问</strong>(sequential access)：按顺序（一个记录一个记录地）处理文件内的信息。</p>
 <ul>
 <li>
-<p>读和写构成了文件操作的主体部分</p>
+<p><strong>读</strong>和<strong>写</strong>构成了文件操作的主体部分</p>
 <ul>
 <li><code>read_next()</code>：读取文件的下一部分，并自动移动跟踪<span class="heti-skip"><span class="heti-spacing"> </span>I/O<span class="heti-spacing"> </span></span>位置的文件指针</li>
 <li><code>write_next()</code>：追加到文件末尾，并移动指针到新写入数据的末尾（新的文件末尾）</li>
 </ul>
 </li>
 <li>
-<p>文件可以重置到开始处，并且在某些系统上，程序可以向前或向后跳过<span><span class="heti-spacing"> </span>n</span>（整数）条记录</p>
+<p>文件可以<strong>重置</strong>到开始处，并且在某些系统上，程序可以向前或向后跳过<span><span class="heti-spacing"> </span>n</span>（整数）条记录</p>
 </li>
-<li>顺序访问基于文件的磁带模型，在顺序访问设备和随机访问设备上都能良好运作</li>
+<li>顺序访问基于文件的<strong>磁带模型</strong>，在顺序访问设备和随机访问设备上都能良好运作</li>
 </ul>
 <div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C13/3.png"><img src="images/C13/3.png" width="60%"/></a>
@@ -1364,7 +1458,7 @@
 <p>第二种访问方法是<strong>直接访问</strong>(direct access)（或<strong>相对访问</strong>(relative access)<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
 <ul>
 <li>此时文件由定长的逻辑记录组成，允许文件不以特定顺序在记录上读和写</li>
-<li>直接访问方法基于文件的磁盘模型，因为磁盘允许随机访问任意文件块</li>
+<li>直接访问方法基于文件的<strong>磁盘模型</strong>，因为磁盘允许<strong>随机访问</strong>任意文件块</li>
 <li>文件被看作带编号的记录或块序列</li>
 <li>常用于大量信息的即时访问，比如数据库查询</li>
 <li>
@@ -1389,6 +1483,9 @@
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C13/5.png"><img src="images/C13/5.png" width="50%"/></a>
 </div>
 <p>对于大文件，索引文件本身可能变得太大而无法保存在内存中。一个解决方案是<strong>为索引文件创建一个索引</strong>。<strong>主索引</strong><span>(primary index)<span class="heti-spacing"> </span></span>文件包含指向次索引文件的指针，而<strong>次索引</strong><span>(secondary index)<span class="heti-spacing"> </span></span>文件则指向实际的数据项。</p>
+<blockquote>
+<p>这个方法和内存管理中的<a href="9.html#hierarchical-paging">多级页表</a>很像。</p>
+</blockquote>
 <h2 id="directory-structure">Directory Structure<a class="headerlink" href="#directory-structure" title="Permanent link">⚓︎</a></h2>
 <p><strong>目录</strong><span>(directory)<span class="heti-spacing"> </span></span>可以被视为一个<strong>符号表</strong>，它将文件名转换为它们的文件控制块。目录本身可以以多种方式组织，因此本节将研究几种定义目录系统逻辑结构的方案。</p>
 <p>在正式介绍这些方案前，先来了解一下关于目录的一些操作：</p>
@@ -1414,7 +1511,7 @@
 <div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C13/6.png"><img src="images/C13/6.png" width="60%"/></a>
 </div>
-<p>单级目录有很大的局限，尤其是在文件数量激增时：因为要求每个文件名都是唯一的，所以大量的文件就会产生大量的文件名；要想记住所有的文件名是一件很困难的事。</p>
+<p>单级目录有很大的局限，尤其是在文件数量激增时；因为要求每个文件名都是唯一的，所以大量的文件就会产生大量的文件名。要想记住所有的文件名是一件很困难的事。</p>
 <h3 id="two-level-directory">Two-Level Directory<a class="headerlink" href="#two-level-directory" title="Permanent link">⚓︎</a></h3>
 <p>在<strong>两级目录</strong><span>(two-level directory)<span class="heti-spacing"> </span></span>结构中，</p>
 <div style="text-align: center">
@@ -1435,8 +1532,8 @@
 </li>
 </ul>
 <p>当用户引用某个文件时，只会在自己的<span class="heti-skip"><span class="heti-spacing"> </span>UFD<span class="heti-spacing"> </span></span>中搜索；因此不同用户可以有名称相同的文件。</p>
-<p>一个特殊的系统程序负责创建一个新的<span><span class="heti-spacing"> </span>UFD</span>，并在<span class="heti-skip"><span class="heti-spacing"> </span>MFD<span class="heti-spacing"> </span></span>中添加一个对应的条目，从而实现用户目录本身的创建和删除；此程序的执行可能仅限于系统管理员。</p>
-<p>虽然两级目录结构解决了名称冲突问题，但它仍然有缺点：该结构有效地将一个用户与另一个用户<strong>隔离</strong>开来。</p>
+<p>一个特殊的系统程序负责创建一个新的<span><span class="heti-spacing"> </span>UFD</span>，并在<span class="heti-skip"><span class="heti-spacing"> </span>MFD<span class="heti-spacing"> </span></span>中添加一个对应的条目，从而实现用户目录本身的创建和删除。此程序的执行可能仅限于系统管理员。</p>
+<p>虽然两级目录结构解决了名称冲突问题，但它仍然有缺点：由于该结构有效地将一个用户与另一个用户<strong>隔离</strong>开来，</p>
 <ul>
 <li>当用户完全独立时，隔离是一种优势（一些系统不允许其他用户访问本地用户文件）</li>
 <li>但当用户希望在某项任务上合作并访问彼此的文件时，这就是一种劣势</li>
@@ -1453,32 +1550,31 @@
 </ul>
 </li>
 <li>
-<p>指定用户名和文件名定义了从根（MFD）到叶子（指定文件）的路径，因此用户名和文件名定义了<strong>路径名称</strong>(path name)</p>
-<ul>
-<li>为了唯一地命名一个文件，用户必须知道所需文件的路径名称</li>
-</ul>
+<p>指定用户名和文件名定义了从根（MFD）到叶子（指定文件）的路径，因此用户名和文件名定义了<strong>路径名称</strong>(path name)；为了唯一地命名一个文件，用户必须知道所需文件的路径名称</p>
 </li>
 </ul>
 <p>需要额外的语法来指定文件所在的<strong>卷</strong>。不过<span class="heti-skip"><span class="heti-spacing"> </span>UNIX<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>Linux<span class="heti-spacing"> </span></span>简单地将卷名作为目录名的一部分。</p>
-<p>这种情况的一个特殊实例出现在<strong>系统文件</strong>上。<strong>程序</strong>通常被定义为文件。当向<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>发出适当命令时，这些文件会被加载器读取并执行。许多命令解释器简单地将这样的命令视为要加载和执行的文件名。在上述定义的目录系统中，该文件名将在当前的<span class="heti-skip"><span class="heti-spacing"> </span>UFD<span class="heti-spacing"> </span></span>中进行搜索。</p>
+<p>考虑一种刚和<strong>系统文件</strong>相关的特殊情况：</p>
 <ul>
-<li>
-<p>一种解决方案是将系统文件复制到每个用户文件目录中</p>
-<ul>
-<li>但复制所有系统文件会浪费大量空间</li>
+<li><strong>程序</strong>通常被定义为文件；当向<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>发出适当命令时，这些文件会被加载程序读取并执行</li>
+<li>许多命令解释器简单地将这样的命令视为要加载和执行的文件名</li>
+<li>在上述定义的目录系统中，该文件名将在当前的<span class="heti-skip"><span class="heti-spacing"> </span>UFD<span class="heti-spacing"> </span></span>中进行搜索</li>
+<li>可能的解决方案：<ul>
+<li>将系统文件复制到每个用户文件目录中；但复制所有系统文件会浪费大量空间</li>
+<li>标准的解决方案是稍微复杂化搜索过程：定义一个包含系统文件的<strong>特殊用户目录</strong><ul>
+<li>每当给定要加载的文件名时，<span>OS<span class="heti-spacing"> </span></span>首先搜索本地<span><span class="heti-spacing"> </span>UFD</span></li>
+<li>如果找到该文件，则使用它；如果未找到，该系统会自动搜索包含系统文件的特殊用户目录<blockquote>
+<p><span>Linux<span class="heti-spacing"> </span></span>的 <code>PATH</code> 环境变量应该就是一种特殊用户目录</p>
+</blockquote>
+</li>
 </ul>
 </li>
-<li>
-<p>标准的解决方案是稍微复杂化搜索过程：定义一个包含系统文件的<strong>特殊用户目录</strong>。</p>
-<ul>
-<li>每当给定要加载的文件名时，<span>OS<span class="heti-spacing"> </span></span>首先搜索本地<span><span class="heti-spacing"> </span>UFD</span></li>
-<li>如果找到该文件，则使用它；如果未找到，该系统会自动搜索包含系统文件的特殊用户目录</li>
 </ul>
 </li>
 </ul>
 <p>当命名一个文件时，被搜索的目录序列称为<strong>搜索路径</strong>(search path)。我们可以扩展搜索路径，以包含在给定命令名称时要搜索的无限列表目录。这种方法是在<span class="heti-skip"><span class="heti-spacing"> </span>UNIX<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>Windows<span class="heti-spacing"> </span></span>中最常用的方法。</p>
 <h3 id="tree-structured-directories">Tree-Structured Directories<a class="headerlink" href="#tree-structured-directories" title="Permanent link">⚓︎</a></h3>
-<p>接下来我们将目录结构扩展为<strong>任意高度的树</strong>（如下图所示<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，使得用户创建自己的子目录并相应地组织他们的文件；这是最常见的目录结构。</p>
+<p>接下来我们将目录结构扩展为<strong>任意高度的树</strong>（如下图所示<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，使得用户创建自己的子目录并相应地组织他们的文件。这也是最常见的目录结构。其结构如下图所示：</p>
 <div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C13/8.png"><img src="images/C13/8.png" width="60%"/></a>
 </div>
@@ -1487,7 +1583,6 @@
 <li>目录（或子目录）包含一组文件或子目录</li>
 <li>在许多实现中，目录也被视作文件，但是经特殊方式处理</li>
 <li>每个目录项中的有一位用来定义该项是文件（0）还是子目录（1）</li>
-<li>通过特殊系统调用来创建和删除目录</li>
 <li>
 <p>每个进程都有一个<strong>当前目录</strong>(current directory)，包含了大多数与该进程当前相关的文件</p>
 <ul>
@@ -1499,7 +1594,7 @@
 <p>要<strong>更改目录</strong>，可以提供一个系统调用，该调用以目录名称作为参数，并用它来重新定义当前目录</p>
 </li>
 <li>
-<p>用户登录<span class="heti-skip"><span class="heti-spacing"> </span>shell<span class="heti-spacing"> </span></span>时的<strong>初始当前目录</strong>在用户作业开始或用户登录时指定</p>
+<p>用户登录<span class="heti-skip"><span class="heti-spacing"> </span>shell<span class="heti-spacing"> </span></span>时的<strong>初始当前目录</strong><span>(initial current directory)<span class="heti-spacing"> </span></span>在用户作业开始或用户登录时指定</p>
 <ul>
 <li><span>OS<span class="heti-spacing"> </span></span>会搜索<strong>记账文件</strong>(accounting file)，以查找该用户的条目</li>
 <li>在记账文件中有一个指向（或该）用户初始目录的指针，这个指针被复制到一个本地变量中，指定了用户的初始当前目录</li>
@@ -1522,27 +1617,24 @@
 <li>
 <p>一个值得探讨的策略决策：如何处理目录的<strong>删除</strong></p>
 <ul>
-<li>如果一个目录是空的，可以直接删除目录条目</li>
+<li>如果一个目录是空的，可以直接删除目录条目（<code>rmdir</code> 命令）</li>
 <li>
 <p>但假设要删除的目录不是空的，而是包含多个文件或子目录，可以采取两种方法之一：</p>
 <ul>
 <li>一些系统不会删除非空目录<ul>
 <li>因此要删除一个目录，用户必须首先删除该目录中的所有文件</li>
-<li>如果存在任何子目录，则必须递归地对其应用此过程，从而删除子目录</li>
-<li>但这种方法的<span class="heti-skip"><span class="heti-spacing"> </span>workload<span class="heti-spacing"> </span></span>太大</li>
+<li>如果存在任何子目录，则必须<strong>递归</strong>地对其应用此过程，从而删除子目录（<code>rm</code> 命令的 <code>-r</code> 选项）</li>
+<li>但这种方法的工作量太大</li>
 </ul>
 </li>
 <li>提供一个选项：当请求删除一个目录时，该目录下所有文件和子目录也将被删除<ul>
-<li><span>UNIX<span class="heti-spacing"> </span></span><code>rm</code>命令正是这么做的</li>
+<li><span>UNIX<span class="heti-spacing"> </span></span>的 <code>rm</code> 命令正是这么做的</li>
 </ul>
 </li>
 </ul>
 </li>
 <li>
-<p>这两种方法都相对容易实现，但后一种策略更方便，但也更危险，因为整个目录结构可以通过一条命令被移除</p>
-<ul>
-<li>如果该命令错误地发出，将需要恢复大量文件和目录（假设存在备份）</li>
-</ul>
+<p>这两种方法都相对容易实现，但后一种策略更方便，但也更危险，因为整个目录结构可以通过一条命令被移除；如果该命令错误地发出，将需要恢复大量文件和目录（假设存在备份）</p>
 </li>
 </ul>
 </li>
@@ -1642,7 +1734,7 @@
 </ul>
 <p>显然无环图结构更容易处理，但问题在于在向结构添加新链接时需要避免产生环。</p>
 <ul>
-<li>一种解决方案是采用<strong>检测</strong>环的算法，确定何时因新的链接导致环的出现。但这些算法计算开销很大，尤其是在图存储在磁盘上时</li>
+<li>一种解决方案是采用<strong>检测</strong>环的算法，确定何时因新的链接导致环的出现；但这些算法计算开销很大，尤其是在图存储在磁盘上时</li>
 <li>在目录和链接的特殊情况下，一个更简单的算法是<strong>在目录遍历过程中绕过链接</strong>，这样可以避免产生循环，并且不会增加额外的开销</li>
 </ul>
 <h2 id="protection">Protection<a class="headerlink" href="#protection" title="Permanent link">⚓︎</a></h2>
@@ -1702,9 +1794,9 @@
 </li>
 <li><strong>其他</strong>(other)：系统中其他所有用户</li>
 </ul>
-<p>最近最常见的方法是将<span class="heti-skip"><span class="heti-spacing"> </span>ACL<span class="heti-spacing"> </span></span>与上述访问控制方案（<span>3<span class="heti-spacing"> </span></span>个类别）相结合。在更有限的保护分类中，仅需要<span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span>个字段来定义保护。通常，每个字段对应一组位，每个位分别表示允许或阻止某一种访问。例如，<span>UNIX<span class="heti-spacing"> </span></span>系统定义了<span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span>个各由<span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span>个位组成的字段 <code>rwx</code>，其中 <code>r</code> 控制<strong>读</strong>访问，<code>w</code> 控制<strong>写</strong>访问，<code>x</code> 控制<strong>执行</strong>（因此每个文件需要<span class="heti-skip"><span class="heti-spacing"> </span>9<span class="heti-spacing"> </span></span>个位来记录保护信息<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
+<p>目前最常见的方法是将<span class="heti-skip"><span class="heti-spacing"> </span>ACL<span class="heti-spacing"> </span></span>与上述访问控制方案（<span>3<span class="heti-spacing"> </span></span>个类别）相结合。在更有限的保护分类中，仅需要<span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span>个字段来定义保护。通常，每个字段对应一组位，每个位分别表示允许或阻止某一种访问。例如，<span>UNIX<span class="heti-spacing"> </span></span>系统定义了<span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span>个各由<span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span>个位组成的字段 <code>rwx</code>，其中 <code>r</code> 控制<strong>读</strong>访问，<code>w</code> 控制<strong>写</strong>访问，<code>x</code> 控制<strong>执行</strong>（因此每个文件需要<span class="heti-skip"><span class="heti-spacing"> </span>9<span class="heti-spacing"> </span></span>个位来记录保护信息<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
 <details class="example" open="open">
-<summary>在<span class="heti-skip"><span class="heti-spacing"> </span>UNIX<span class="heti-spacing"> </span></span>或<span class="heti-skip"><span class="heti-spacing"> </span>Linux<span class="heti-spacing"> </span></span>上 可用 <code>ls -l</code> 查看这些位</summary>
+<summary>在<span class="heti-skip"><span class="heti-spacing"> </span>UNIX<span class="heti-spacing"> </span></span>或<span class="heti-skip"><span class="heti-spacing"> </span>Linux<span class="heti-spacing"> </span></span>上可用 <code>ls -l</code> 查看这些位</summary>
 <p></p><div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C13/11.png"><img src="images/C13/11.png" width="50%"/></a>
 </div><p></p>
