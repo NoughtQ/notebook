@@ -9,17 +9,19 @@
 
 !!! abstract "目录"
 
+    《计算机视觉导论》需要复习的内容用箭头 <- 指出。
+
     - [x] [Introduction](1.md)
     - Basics
-        - [x] [Image Formation](2.md)
-        - [x] [Image Processing](3.md)
-        - [x] [Model Fitting and Optimization](4.md)
+        - [x] [Image Formation](2.md) <-
+        - [x] [Image Processing](3.md) <-
+        - [x] [Model Fitting and Optimization](4.md) <-
     - Reconstruction
-        - [x] [Image Matching and Motion Estimation](5.md)
-        - [x] [Image Stitching](6.md)
-        - [x] [Structure from Motion](7.md)
-        - [x] [Depth Estimation and 3D Reconstruction](8.md)
-    - Deep Learning Basics
+        - [x] [Image Matching and Motion Estimation](5.md) <-
+        - [x] [Image Stitching](6.md) <-
+        - [x] [Structure from Motion](7.md) <-
+        - [x] [Depth Estimation and 3D Reconstruction](8.md) <-
+    - [Deep Learning Basics](dl.md)（~~期末复习特供版~~）<-
         - [x] [Image Classification with Linear Classifiers](9.md)
         - [x] [Regularization and Optimization](10.md)
         - [x] [Neural Networks and Backpropagation](11.md)
@@ -28,15 +30,15 @@
         - [x] [CNN Architectures](13.md)
         - [x] [Recurrent Neural Networks](14.md)
         - [x] [Attention and Transformers](15.md)
-        - [x] [Recognition](16.md)
+        - [x] [Recognition](16.md) <-
         - [x] [Video Understanding](17.md)
         - [x] [Large Scale Distributed Training](18.md)
         - [x] [Self-supervised Learning](19.md)
         - [x] [Generative Models](20.md)
-        - [x] [3D Deep Learning](21.md)
+        - [x] [3D Deep Learning](21.md) <-
         - [ ] [Multi-Modal Foundation Models](22.md)
         - [ ] [Robot Learning](23.md)
-        - [x] [Computational Photography](24.md)
+        - [x] [Computational Photography](24.md) <-
     
 !!! warning "复习注意事项"
 
