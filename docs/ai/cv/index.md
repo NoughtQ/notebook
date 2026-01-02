@@ -35,15 +35,16 @@
         - [x] [Large Scale Distributed Training](18.md)
         - [x] [Self-supervised Learning](19.md)
         - [x] [Generative Models](20.md)
-        - [x] [3D Deep Learning](21.md) <-
+        - [x] [3D Deep Learning](21.md)
         - [ ] [Multi-Modal Foundation Models](22.md)
         - [ ] [Robot Learning](23.md)
         - [x] [Computational Photography](24.md) <-
     
-!!! warning "复习注意事项"
+!!! warning "复习注意事项（仅适用于 25-26 秋冬学期）"
 
     - 不用死记硬背各种数值和复杂公式，重在理解概念
     - 题型：（不定项）选择、判断、填空（偶尔涉及简单的计算）、简答（描述性）
+    - 3D Deep Learning 不考（不是笔者漏标了）
 
 
 !!! recommend "参考资料"
