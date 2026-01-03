@@ -1197,10 +1197,61 @@
 </a>
 <h1 id="file-system-implementation">File-System Implementation<a class="headerlink" href="#file-system-implementation" title="Permanent link">⚓︎</a></h1>
 <div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
-<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>10001<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>50<span class="heti-spacing"> </span></span>分钟</p>
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>9852<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>49<span class="heti-spacing"> </span></span>分钟</p>
 </div>
+<details class="abstract">
+<summary>核心知识</summary>
+<ul>
+<li>文件系统结构（分层设计）</li>
+<li>文件系统操作<ul>
+<li>在存储器<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>内存中的文件系统包含的信息</li>
+<li>创建、打开和关闭文件的细节</li>
+</ul>
+</li>
+<li>目录实现<ul>
+<li>线性表</li>
+<li>哈希表</li>
+</ul>
+</li>
+<li>分配方法<ul>
+<li>连续分配</li>
+<li>链接分配</li>
+<li>索引分配</li>
+</ul>
+</li>
+<li>空闲空间管理<ul>
+<li>位向量（位图）</li>
+<li>链表</li>
+<li>分组</li>
+<li>计数</li>
+</ul>
+</li>
+<li>
+<ul>
+<li>缓冲区缓存、页缓存<span class="heti-skip"><span class="heti-spacing"> </span>-&gt;<span class="heti-spacing"> </span></span>统一缓冲区缓存</li>
+<li>顺序访问优化<ul>
+<li>后释放</li>
+<li>先读</li>
+</ul>
+</li>
+</ul>
+<p>效率和性能</p>
+<ul>
+<li>...</li>
+</ul>
+</li>
+<li>
+<p>恢复</p>
+<ul>
+<li>一致性检查</li>
+<li>日志</li>
+<li>备份</li>
+</ul>
+</li>
+</ul>
+</details>
 <h2 id="file-system-structure">File-System Structure<a class="headerlink" href="#file-system-structure" title="Permanent link">⚓︎</a></h2>
-<p>以下两个特点让磁盘成为维护文件系统的二级存储中的多数：</p>
+<p>以下两个特点让磁盘成为维护文件系统的二级存储中的主要设备：</p>
 <ul>
 <li>磁盘可就地重写，因此可以在相同块上进行读<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>写<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>修改操作</li>
 <li>磁盘可直接访问任意包含信息的块，这意味着无论顺序还是随机访问都很简单</li>
@@ -1211,7 +1262,7 @@
 <li>定义用户视角下的文件系统，包括定义文件及其属性、在文件上允许的操作和组织文件的目录结构等</li>
 <li>创建将逻辑文件系统映射到物理二级存储设备的算法和数据结构</li>
 </ul>
-<p>文件系统通常采用<strong>分层设计</strong>：其中最底层的是设备，最顶层的是应用，剩余部分自底向上依次是</p>
+<p>文件系统通常采用<strong>分层设计</strong>：其中最底层的是<strong>设备</strong>，最顶层的是<strong>应用</strong>，剩余部分自底向上依次是</p>
 <ul>
 <li><strong><span>I/O<span class="heti-spacing"> </span></span>控制</strong>：<ul>
 <li>由设备驱动程序和中断处理程序组成，用于在主存和文件系统间传输信息</li>
@@ -1233,7 +1284,7 @@
 <ul>
 <li>管理元数据信息；元数据包含了除真实数据外的文件系统结构中的全部</li>
 <li>
-<p>通过<strong>文件控制块</strong>(file control block, <strong>FCB</strong>)（在<span class="heti-skip"><span class="heti-spacing"> </span>UNIX<span class="heti-spacing"> </span></span>文件系统中是一个索引节点<span><span class="heti-spacing"> </span>(inode)</span>）维护文件结构</p>
+<p>通过<strong>文件控制块</strong>(file control block, <strong>FCB</strong>)（在<span class="heti-skip"><span class="heti-spacing"> </span>UNIX<span class="heti-spacing"> </span></span>文件系统中是一个 <strong>inode</strong>（索引节点<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>）维护文件结构</p>
 <ul>
 <li><span>FCB<span class="heti-spacing"> </span></span>包含以下信息：文件权限、文件日期（创建<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>访问<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>写入<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>、文件所有者<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>组<span><span class="heti-spacing"> </span>/ACL</span>、文件大小、文件数据块或指向文件数据块的指针</li>
 </ul>
@@ -1244,7 +1295,7 @@
 </ul>
 </li>
 </ul>
-<p>这种分层设计的实现能让代码重复最小化。<span>I/O<span class="heti-spacing"> </span></span>控制，以及（有时）基本文件系统能被多个文件系统使用；而每个文件系统有自己的文件组织模块和逻辑文件系统。这种分层设计的缺陷是引入更多<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>开销，从而会损害性能。</p>
+<p>这种分层设计的实现能让代码重复最小化。<span>I/O<span class="heti-spacing"> </span></span>控制，以及（有时）基本文件系统能被多个文件系统使用；而每个文件系统有自己的文件组织模块和逻辑文件系统。这种分层设计的缺陷是引入更多<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>开销，从而损害性能。</p>
 <h2 id="file-system-operations">File-System Operations<a class="headerlink" href="#file-system-operations" title="Permanent link">⚓︎</a></h2>
 <p><strong>在存储器上</strong><span>(on-storage)<span class="heti-spacing"> </span></span>的文件系统包含以下信息：</p>
 <ul>
@@ -1284,7 +1335,7 @@
 <p>文件必须能被<strong>打开</strong>，这通过 <code>open()</code> 系统调用实现（传递文件名为参数）</p>
 <ul>
 <li>首先在<strong>系统级打开文件表</strong>中搜索，以查看该文件是否已被其他进程使用</li>
-<li>如果是，则会创建一个每个进程的打开文件表条目，指向现有的系统范围打开文件表</li>
+<li>若是，则会创建一个进程级打开文件表条目，指向现有的系统级打开文件表</li>
 <li>
 <p>如果该文件尚未打开，则会在目录结构中搜索给定的文件名</p>
 <ul>
@@ -1297,25 +1348,18 @@
 </li>
 <li>这种算法可以节省大量开销</li>
 <li>
-<p>接下来要在进程级打开文件表中创建一个项，指向系统级打开文件表中的项以及一些其他字段</p>
+<p>接下来要在<strong>进程级打开文件表</strong>中创建一个项，指向系统级打开文件表中的项以及一些其他字段</p>
 <ul>
 <li>其他字段可能包括指向文件中当前位置的指针（用于后续 <code>read()</code> 或 <code>write()</code> 操作）以及打开文件的访问模式</li>
 </ul>
 </li>
 <li>
-<p>该调用返回一个指向每个进程级文件系统表中适当项的指针，所有文件操作随后通过该指针执行</p>
+<p>该调用返回一个指向进程级文件系统表中适当项的指针，所有文件操作随后通过该指针执行</p>
 </li>
-<li>
-<p>文件名可能不是开放文件表的一部分，因为一旦在磁盘上找到适当的<span><span class="heti-spacing"> </span>FCB</span>，系统就不再需要它</p>
-<ul>
-<li>不过，它可以被缓存，以节省后续打开同一文件时的时间</li>
-</ul>
-</li>
-<li>
-<p>给打开文件表中的项的命名方式各不相同</p>
-<ul>
-<li><span>UNIX<span class="heti-spacing"> </span></span>系统称其为<strong>文件描述符</strong>(file descriptor)</li>
-<li><span>Windows<span class="heti-spacing"> </span></span>称其为<strong>文件句柄</strong>(file handler)</li>
+<li>文件名可能不是打开文件表的一部分，因为一旦在磁盘上找到适当的<span><span class="heti-spacing"> </span>FCB</span>，系统就不再需要它；不过它也可以被缓存，以节省后续打开同一文件时的时间</li>
+<li>打开文件表项的称呼：<ul>
+<li>UNIX：<strong>文件描述符</strong>(file descriptor)</li>
+<li>Windows：<strong>文件句柄</strong>(file handler)</li>
 </ul>
 </li>
 </ul>
@@ -1406,7 +1450,7 @@
 <li>尽管一些系统支持这三种方法，但通常一个系统会对同一文件系统类型中的所有文件仅采用一种方法</li>
 </ul>
 <h3 id="contiguous-allocation">Contiguous Allocation<a class="headerlink" href="#contiguous-allocation" title="Permanent link">⚓︎</a></h3>
-<p><strong>连续分配</strong><span>(contiguous allocation)<span class="heti-spacing"> </span></span>要求每个文件占用设备上一组连续的块</p>
+<p><strong>连续分配</strong><span>(contiguous allocation)<span class="heti-spacing"> </span></span>要求每个文件占用设备上一组连续的块。</p>
 <ul>
 <li>鉴于<span class="heti-skip"><span class="heti-spacing"> </span>HDD<span class="heti-spacing"> </span></span>的特性，访问连续分配文件所需的磁盘寻址次数是最小的（假设逻辑地址相近的块在物理上也相近）</li>
 <li>
@@ -1428,31 +1472,16 @@
 <li>直接访问：若知道块<span class="heti-skip"><span class="heti-spacing"> </span>b<span class="heti-spacing"> </span></span>开始的文件中的第<span class="heti-skip"><span class="heti-spacing"> </span>i<span class="heti-spacing"> </span></span>个块，可以立即访问块<span><span class="heti-spacing"> </span>b + i</span></li>
 </ul>
 </li>
-<li>
-<p>连续分配的问题：</p>
+</ul>
+<details class="bug" open="open">
+<summary>问题</summary>
 <ul>
 <li>
 <p><strong>为新文件找到空间</strong></p>
 <ul>
-<li>用于管理空闲空间的系统决定了如何完成这一任务</li>
-<li>可以使用任何管理系统，但需要考虑速度的差异</li>
-<li>
-<p>可将该问题看作是一般的<a href="9.html#memory-allocation"><strong>动态存储分配问题</strong></a>的一个特定应用，即如何从一系列空闲的洞中满足大小为<span class="heti-skip"><span class="heti-spacing"> </span>n<span class="heti-spacing"> </span></span>的请求</p>
-<ul>
-<li><strong>首次适配</strong><span>(first fit)<span class="heti-spacing"> </span></span>和<strong>最佳适配</strong><span>(best fit)<span class="heti-spacing"> </span></span>是用于从可用动集合中选择空闲孔的最常见策略</li>
-<li>在存储利用率方面，首次适配和最佳适配都没有明显优于对方，但<strong>首次适配通常更快</strong></li>
-</ul>
-</li>
-<li>
-<p>不过它们都存在<strong>外部碎片</strong>的问题：当文件被分配和删除时，空闲存储空间被打破成小块</p>
-<ul>
-<li>当最大的连续块不足以满足请求时，它就成为一个问题：存储被分割成多个孔洞，而这些孔洞都不足以存储数据</li>
-<li>根据磁盘存储的总量和平均文件大小不同，外部碎片问题可大可小</li>
-</ul>
-</li>
-<li>
-<p>一种解决策略是将整个文件系统复制到另一个设备上，然后原始设备被完全释放，从而创建一个大的连续空闲空间；接着通过从这个大洞中分配连续空间，将文件复制回原始设备</p>
-<ul>
+<li>可将该问题看作是一般的<a href="9.html#memory-allocation"><strong>动态存储分配问题</strong></a>的一个特定应用，即如何从一系列空闲的洞中满足大小为<span class="heti-skip"><span class="heti-spacing"> </span>n<span class="heti-spacing"> </span></span>的请求（可点击链接回顾）        </li>
+<li>无论采取何种策略，都存在<strong>外部碎片</strong>的问题</li>
+<li>一种解决方法是：将整个文件系统复制到另一个设备上，然后原始设备被完全释放，从而创建一个大的连续空闲空间；接着通过从这个大洞中分配连续空间，将文件复制回原始设备<ul>
 <li>这种方案有效地将所有空闲空间<strong>压缩</strong><span>(compacts)<span class="heti-spacing"> </span></span>成一个连续的空间，从而解决了碎片问题</li>
 <li>代价是时间，并且对于大型存储设备来说，成本可能特别高</li>
 <li>因此有些系统要求此功能在<strong>离线</strong><span>(off-line)<span class="heti-spacing"> </span></span>状态下（即文件系统未挂载）完成，此时通常不允许正常的系统操作，因此在生产机器上尽量避免这种压缩</li>
@@ -1490,7 +1519,7 @@
 </ul>
 </li>
 <li>
-<p>即便提前知道文件所需的空间量，这种预分配<span class="heti-skip"><span class="heti-spacing"> </span>(preallocation)<span class="heti-spacing"> </span></span>操作可能还是很低效</p>
+<p>即便提前知道文件所需的空间量，这种<strong>预分配</strong><span>(preallocation)<span class="heti-spacing"> </span></span>操作可能还是很低效</p>
 <ul>
 <li>因为一个文件的大小会随时间缓慢增长，所以必须为其最终大小分配足够的空间，尽管其中大部分空间在长时间内将未被使用</li>
 <li>因此该文件具有大量的<strong>内部碎片</strong></li>
@@ -1511,8 +1540,7 @@
 </ul>
 </li>
 </ul>
-</li>
-</ul>
+</details>
 <h3 id="linked-allocation">Linked Allocation<a class="headerlink" href="#linked-allocation" title="Permanent link">⚓︎</a></h3>
 <p><strong>链接分配</strong><span>(linked allocation)<span class="heti-spacing"> </span></span>解决了连续分配的所有问题。</p>
 <ul>
@@ -1530,24 +1558,20 @@
 </ul>
 </li>
 <li>
-<p>创建新文件时，只需在目录中创建一个新的项。</p>
-<ul>
-<li>其中指向文件第一个块的指针初始化为 <code>null</code>（链表末尾指针值<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，以表示空文件；大小字段也设置为<span><span class="heti-spacing"> </span>0</span></li>
-</ul>
+<p>创建新文件时，只需在目录中创建一个新的项；其中指向文件第一个块的指针初始化为 <code>null</code>（链表末尾指针值，表示空文件<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，大小字段也设置为<span><span class="heti-spacing"> </span>0</span></p>
 </li>
 <li>
 <p>写入文件时，空闲空间管理系统会找到一个空闲块，并将这个新块写入并链接到文件的末尾</p>
 </li>
 <li>读取文件时，只需顺着指针遍历找到所需的块</li>
-<li>
-<p>链接分配<strong>不会导致外部碎片</strong>，任何空闲空间列表上的空闲块都可以用来满足请求</p>
-<ul>
+<li>链接分配<strong>不会导致外部碎片</strong>，任何空闲空间列表上的空闲块都可以用来满足请求<ul>
 <li>在创建文件时不需要声明文件的大小</li>
 <li>只要有可用的空闲块，文件就可以继续增长，因此无需压缩操作</li>
 </ul>
 </li>
-<li>
-<p>缺点：</p>
+</ul>
+<details class="bug" open="open">
+<summary>缺点</summary>
 <ul>
 <li>
 <p>主要问题是仅在<strong>顺序访问</strong>文件中表现高效</p>
@@ -1556,21 +1580,20 @@
 </ul>
 </li>
 <li>
-<p>指针需要空间，解决方法：</p>
+<p>指针会占据一定空间</p>
 <ul>
-<li>将块收集成多个称为<strong>簇</strong><span>(cluster)<span class="heti-spacing"> </span></span>的单位，并分配簇而不是块</li>
-<li>比如文件系统可以将一个簇定义为四个块，并仅以簇为单位在辅助存储设备上操作</li>
-<li>因此指针在文件空间中的占比更小了</li>
-<li>这种方法使逻辑到物理块的映射保持简单，但提高了硬盘驱动器的吞吐量（因为所需的磁头寻道次数减少）并减少了用于块分配和空闲列表管理所需的空间</li>
+<li>解决（缓减）该问题的方法是：将多个块合并为<strong>簇</strong>(cluster)，为文件分配空间时将以簇为单位而非块</li>
+<li>这能减小指针在文件空间中的占比（一个簇一个指针，也就是多个块共用一个指针）</li>
+<li>不仅使逻辑到物理块的映射保持简单，还提高了硬盘驱动器的吞吐量（因为所需的磁头寻道次数减少<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，并减少了用于块分配和空闲列表管理所需的空间</li>
 <li>
 <p>但代价是</p>
 <ul>
-<li>内部碎片的增加，因为当一个簇部分满时浪费了更多空间</li>
-<li>随机<span class="heti-skip"><span class="heti-spacing"> </span>I/O<span class="heti-spacing"> </span></span>性能也会受到影响，因为请求少量数据会传输大量数据</li>
+<li><strong>内部碎片</strong>的增加，因为当一个簇部分满时浪费了更多空间</li>
+<li><strong>随机<span class="heti-skip"><span class="heti-spacing"> </span>I/O<span class="heti-spacing"> </span></span>性能</strong>也会受到影响，因为请求少量数据会传输大量数据</li>
 </ul>
 </li>
 <li>
-<p>簇还可以用于改善许多其他算法的磁盘访问时间，因此它们在大多数文件系统中被使用</p>
+<p>大多数文件系统都会采用该方法</p>
 </li>
 </ul>
 </li>
@@ -1582,11 +1605,11 @@
 </ul>
 </li>
 </ul>
-</li>
-</ul>
+</details>
+<hr/>
 <p>链接分配的一种重要变体是使用<strong>文件分配表</strong>(file allocation table, <strong>FAT</strong>)</p>
 <ul>
-<li>每个卷的开头预留了一部分存储空间来包含该表，该表为每个块设置一个条目，并按块号进行索引</li>
+<li>每个卷的开头预留了一部分存储空间来包含该表，该表为每个块设置一个条目，并按<strong>块号</strong>进行索引</li>
 <li>
 <p>使用方式与链表非常相似：</p>
 <ul>
@@ -1628,9 +1651,7 @@
 </li>
 <li>当第<span class="heti-skip"><span class="heti-spacing"> </span>i<span class="heti-spacing"> </span></span>个块首次写入时，从空闲空间管理器获取一个块，并将其地址放入第<span class="heti-skip"><span class="heti-spacing"> </span>i<span class="heti-spacing"> </span></span>个索引块项中</li>
 <li>索引分配支持<strong>直接访问</strong>，不会受到外部碎片的影响，因为存储设备上的任何空闲块都可以满足对更多空间的请求</li>
-<li>
-<p>然而，索引分配存在<strong>空间浪费</strong>的问题：索引块的指针开销通常大于链接分配的指针开销</p>
-<ul>
+<li>然而，索引分配存在<strong>空间浪费</strong>的问题：索引块的指针开销通常大于链接分配的指针开销<ul>
 <li>假如有一个只有<span class="heti-skip"><span class="heti-spacing"> </span>1-2<span class="heti-spacing"> </span></span>个块的文件<ul>
 <li>在链接分配中，每个块只损失<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>个指针所占用的空间</li>
 <li>在索引分配中，即使只有<span class="heti-skip"><span class="heti-spacing"> </span>1-2<span class="heti-spacing"> </span></span>个指针是非空，也必须分配整个索引块</li>
@@ -1638,7 +1659,7 @@
 </li>
 </ul>
 </li>
-<li>
+</ul>
 <p>这反映了确定索引块大小的问题：索引块应尽可能小，但是又不能太小，否则就没法为大文件保存足够多的指针；下面给出处理这一问题的一些机制：</p>
 <ul>
 <li>
@@ -1657,33 +1678,28 @@
 </ul>
 </li>
 <li>
-<p><strong>结合方案</strong>(combined scheme)：</p>
+<p><span>UNIX<span class="heti-spacing"> </span></span>的文件系统采用的是一种<strong>结合方案</strong>(combined scheme)：</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C14/6.png"><img src="images/C14/6.png" width="60%"/></a>
+</div><p></p>
 <ul>
-<li>将索引块的前<span class="heti-skip"><span class="heti-spacing"> </span>15<span class="heti-spacing"> </span></span>个指针保存在文件的索引节点中</li>
-<li>前<span class="heti-skip"><span class="heti-spacing"> </span>12<span class="heti-spacing"> </span></span>个指针指向直接块，也就是说它们包含存储文件数据的块地址</li>
+<li>将索引块的前<span class="heti-skip"><span class="heti-spacing"> </span>15<span class="heti-spacing"> </span></span>个指针保存在文件的<span class="heti-skip"><span class="heti-spacing"> </span>inode<span class="heti-spacing"> </span></span>中</li>
+<li>前<span class="heti-skip"><span class="heti-spacing"> </span>12<span class="heti-spacing"> </span></span>个指针指向<strong>直接块</strong>，也就是说它们直接包含存储文件数据的块地址</li>
 <li>因此，对于小文件（不超过<span class="heti-skip"><span class="heti-spacing"> </span>12<span class="heti-spacing"> </span></span>个块<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，不需要单独的索引块</li>
 <li>
 <p>其余<span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span>个指针指向<strong>间接块</strong>(indirect blocks)</p>
 <ul>
-<li>第一个指针指向一个<strong>单重间接块</strong>(single indirect block)：一个包含持有数据的块的地址的索引块</li>
-<li>第二个指针指向一个<strong>双重间接块</strong>(double indirect block)：包含单冲间接块的地址</li>
-<li>最后一个指针指向一个<strong>三重间接块</strong>(triple indirect block)</li>
-</ul>
-</li>
-<li>
-<p>这种方案在基于<span class="heti-skip"><span class="heti-spacing"> </span>UNIX<span class="heti-spacing"> </span></span>的文件系统中使用，如图所示：</p>
-<p></p><div style="text-align: center">
-<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C14/6.png"><img src="images/C14/6.png" width="60%"/></a>
-</div><p></p>
-</li>
-</ul>
-</li>
+<li>第一个指针指向一个<strong>单间接块</strong>(single indirect block)：一个包含数据块地址的索引块</li>
+<li>第二个指针指向一个<strong>双间接块</strong>(double indirect block)：一个包含数据块地址的块的地址的索引块</li>
+<li>最后一个指针指向一个<strong>三间接块</strong>(triple indirect block)</li>
 </ul>
 </li>
 <li>
 <p>该方案同样会遇到性能问题</p>
 </li>
 <li>索引块可被缓存在内存中，但数据块可能会散布在整个卷中</li>
+</ul>
+</li>
 </ul>
 <h2 id="free-space-management">Free-Space Management<a class="headerlink" href="#free-space-management" title="Permanent link">⚓︎</a></h2>
 <p>由于存储空间有限，若有可能，我们需要让新文件复用已删除文件的空间。为了跟踪空闲的磁盘空间，系统维护了一个<strong>空闲空间列表</strong>(free-space list)，记录所有未分配给某个文件或目录的设备块。</p>
@@ -1699,34 +1715,37 @@
 <li>如果块是空闲的，则对应位置<span><span class="heti-spacing"> </span>1</span>；如果块已分配，则对应位清<span><span class="heti-spacing"> </span>0</span></li>
 </ul>
 <p>这种方法的主要优点是相对简单，并且在寻找磁盘上第<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>个空闲块或<span class="heti-skip"><span class="heti-spacing"> </span>n<span class="heti-spacing"> </span></span>个连续空闲块时效率很高。</p>
-<p>块号的计算公式<heti-adjacent class="heti-adjacent-half">：</heti-adjacent>（每个字的位数）<span class="arithmatex">\(\times\)</span>（<span>0<span class="heti-spacing"> </span></span>值字的个数）<span>+<span class="heti-spacing"> </span></span>第<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>个置为<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>的位偏移量</p>
+<p>第一个空闲块号的计算公式<heti-adjacent class="heti-adjacent-half">：</heti-adjacent>（每个字的位数）<span class="arithmatex">\(\times\)</span>（<span>0<span class="heti-spacing"> </span></span>值字的个数）<span>+<span class="heti-spacing"> </span></span>第<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>个置为<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>的位偏移量</p>
 <p>但这个方法的缺点是：除非将整个向量保存在主存中，否则效率低下；但如果文件很大，向量就会在内存中占据过多空间。</p>
 <h3 id="linked-list">Linked List<a class="headerlink" href="#linked-list" title="Permanent link">⚓︎</a></h3>
-<p>第二种空闲空间管理的方法是将所有空闲块链接在一起；在文件系统的一个特殊位置中保持指向第一个空闲块的指针，并将其缓存到内存中。</p>
+<p>第二种方法是将所有空闲块链接在一起；在文件系统的一个特殊位置中保持指向第一个空闲块的指针，并将其缓存到内存中。</p>
 <div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C14/7.png"><img src="images/C14/7.png" width="40%"/></a>
 </div>
-<p>这个方案效率不高，因为要遍历列表，就必须读取每个块，这需要大量的<span class="heti-skip"><span class="heti-spacing"> </span>I/O<span class="heti-spacing"> </span></span>时间。但好在遍历空闲列表并不是一个频繁的操作。通常，<span>OS<span class="heti-spacing"> </span></span>只需要一个空闲块，因此只使用空闲列表中的第一个块。</p>
+<p>这个方案效率不高，因为要遍历列表，就必须读取每个块，这需要大量的<span class="heti-skip"><span class="heti-spacing"> </span>I/O<span class="heti-spacing"> </span></span>时间。但实际上遍历空闲列表并不是一个频繁的操作；通常<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>只需要一个空闲块，因此只使用空闲列表中的第一个块。</p>
 <h3 id="grouping">Grouping<a class="headerlink" href="#grouping" title="Permanent link">⚓︎</a></h3>
 <ul>
 <li>将<span class="heti-skip"><span class="heti-spacing"> </span>n<span class="heti-spacing"> </span></span>个空闲块的地址存储在第一个空闲块中</li>
 <li>这些块中的前<span><span class="heti-spacing"> </span>n</span>−<span>1<span class="heti-spacing"> </span></span>块实际上是空闲的，最后一个块包含另<span class="heti-skip"><span class="heti-spacing"> </span>n<span class="heti-spacing"> </span></span>个空闲块的地址，依此类推</li>
 <li>通过该方法可以快速找到大量空闲块的地址</li>
 </ul>
+<blockquote>
+<p>感觉和文件空间<a href="#linked-allocation">链接分配</a>中的簇方法很像<span><span class="heti-spacing"> </span>...</span></p>
+</blockquote>
 <h3 id="counting">Counting<a class="headerlink" href="#counting" title="Permanent link">⚓︎</a></h3>
 <ul>
-<li><strong>计数</strong><span>(counting)<span class="heti-spacing"> </span></span>方法的实现基于这样一个事实：通常可以同时分配或释放多个连续的块，特别是在使用连续分配算法或通过簇进行空间分配的时候</li>
-<li>因此，我们可以保留第一个空闲块的地址和跟随第一个块的空闲连续块数量（n<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，而不是保持<span class="heti-skip"><span class="heti-spacing"> </span>n<span class="heti-spacing"> </span></span>个空闲块地址列表</li>
-<li>空闲空间列表中的每一项都由设备地址和计数组成</li>
-<li>尽管每个项所需的空间比简单磁盘地址要多，但整体列表更短（计数<span><span class="heti-spacing"> </span>&gt; 1</span>）</li>
-<li>这种跟踪空闲空间的方法类似于分配块的区间<span class="heti-skip"><span class="heti-spacing"> </span>(extent)<span class="heti-spacing"> </span></span>方法</li>
-<li>项可以存储在平衡树中，以便高效查找、插入和删除</li>
+<li><strong>计数</strong><span>(counting)<span class="heti-spacing"> </span></span>方法的实现基于这样一个事实：通常可以同时分配或释放多个连续的块，特别是在使用<strong>连续分配</strong>算法或通过<strong>簇</strong>进行空间分配的时候</li>
+<li>因此可以保留第一个空闲块的地址和跟随第一个块的空闲连续块数量（n<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，而不是保持<span class="heti-skip"><span class="heti-spacing"> </span>n<span class="heti-spacing"> </span></span>个空闲块地址列表</li>
+<li>对应地，空闲空间列表中的每一项都由设备地址和计数组成</li>
+<li>尽管每个项所需的空间比简单磁盘地址要多，但整体列表更短（当计数<span class="heti-skip"><span class="heti-spacing"> </span>&gt; 1<span class="heti-spacing"> </span></span>时）</li>
+<li>这种跟踪空闲空间的方法类似于分配块的区段<span class="heti-skip"><span class="heti-spacing"> </span>(extent)<span class="heti-spacing"> </span></span>方法</li>
+<li>项可以存储在<strong>平衡树</strong>中，以便高效查找、插入和删除</li>
 </ul>
 <h2 id="efficiency-and-performance">Efficiency and Performance<a class="headerlink" href="#efficiency-and-performance" title="Permanent link">⚓︎</a></h2>
 <p>现在进一步考虑上述块分配和目录管理的方法对性能和高效存储使用的影响。磁盘往往是系统性能的主要瓶颈，即使是<span class="heti-skip"><span class="heti-spacing"> </span>NVM<span class="heti-spacing"> </span></span>设备，与<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>和主存相比也是很慢的，因此有必要优化它们的性能。本节中，我们讨论了一些用于提高二级存储效率和性能的技术。</p>
 <h3 id="efficiency">Efficiency<a class="headerlink" href="#efficiency" title="Permanent link">⚓︎</a></h3>
-<p>存储设备空间的高效使用在很大程度上依赖于所使用的<strong>分配和目录算法</strong>。比如<span class="heti-skip"><span class="heti-spacing"> </span>UNIX<span class="heti-spacing"> </span></span>的索引节点在卷上是预分配的；即使是空磁盘，也有一部分空间被索引节点占用，但这样做可以提高文件系统的性能。</p>
-<p>文件目录（或索引节点）项中通常保留的<strong>数据类型</strong>也需要考虑。</p>
+<p>存储设备空间的高效使用在很大程度上依赖于所使用的<strong>分配和目录算法</strong>。比如<span class="heti-skip"><span class="heti-spacing"> </span>UNIX<span class="heti-spacing"> </span></span>的<span class="heti-skip"><span class="heti-spacing"> </span>inode<span class="heti-spacing"> </span></span>在卷上是预分配的；即使是空磁盘，也有一部分空间被<span class="heti-skip"><span class="heti-spacing"> </span>inode<span class="heti-spacing"> </span></span>占用，但这样做可以提高文件系统的性能。</p>
+<p>文件目录（或<span><span class="heti-spacing"> </span>inode</span>）项中通常保留的<strong>数据类型</strong>也需要考虑。</p>
 <ul>
 <li>通常会记录一个“最后写入日期”，以向用户提供信息并确定文件是否需要备份；一些系统还会保留“最后访问日期”，以便用户可以确定文件的最后读取时间</li>
 <li>这么做会导致每当读取文件时，必须向目录结构写入这些字段；因此，每次打开文件进行读取时，其<span class="heti-skip"><span class="heti-spacing"> </span>FCB<span class="heti-spacing"> </span></span>也必须被读取和写入</li>
@@ -1735,17 +1754,16 @@
 <p><strong>指针大小</strong>也会影响访问数据的效率。大多数系统使用<span class="heti-skip"><span class="heti-spacing"> </span>32<span class="heti-spacing"> </span></span>位或<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位指针。</p>
 <ul>
 <li>使用<span class="heti-skip"><span class="heti-spacing"> </span>32<span class="heti-spacing"> </span></span>位指针将文件大小限制为<span><span class="heti-spacing"> </span>2</span><sup><span><span class="heti-spacing"> </span>32</span></sup><span><span class="heti-spacing"> </span>B</span>，即<span><span class="heti-spacing"> </span>4GB</span></li>
-<li>使用<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位指针允许非常大的文件大小，但<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位指针需要更多空间来存储</li>
+<li>使用<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位指针允许非常大的文件大小，但<span class="heti-skip"><span class="heti-spacing"> </span>64<span class="heti-spacing"> </span></span>位指针需要更多空间来存储，因此分配和空闲空间管理方法（链表、索引等）会占用更多存储空间</li>
 </ul>
-<p>因此，分配和空闲空间管理方法（链表、索引等）会占用更多存储空间。</p>
 <p>选择合适指针大小的困难之处在于要应对持续变化的技术。</p>
 <h3 id="performance">Performance<a class="headerlink" href="#performance" title="Permanent link">⚓︎</a></h3>
-<p>即使选定了基本的文件系统算法，仍然可以通过几种方式来提高性能。</p>
+<p>即使选定了基本的文件系统算法，我们仍然可以通过几种方式来提高性能。</p>
 <ul>
 <li>
-<p>存储设备控制器包括本地内存，以形成一个足够大的板载缓存<span><span class="heti-spacing"> </span>(on-board cache)</span>，可以一次存储整个轨道或块</p>
+<p>存储设备控制器包括本地内存，以形成一个足够大的<strong>板载缓存</strong>(on-board cache)，可以一次存储整个磁道或块数据</p>
 <ul>
-<li>在硬盘驱动器上，一旦执行寻道操作，轨道就会从磁头下方的扇区开始读取到磁盘缓存中（减少时延）</li>
+<li>在硬盘驱动器上，一旦执行寻道操作，磁道就会从磁头下方的扇区开始读取到磁盘缓存中（减少时延）</li>
 <li>然后，磁盘控制器将任何扇区请求传输给<span><span class="heti-spacing"> </span>OS</span></li>
 <li>一旦块从磁盘控制器进入主存，<span>OS<span class="heti-spacing"> </span></span>可能会在其中缓存这些块</li>
 </ul>
@@ -1753,7 +1771,7 @@
 <li>
 <p>一些系统为<strong>缓冲区缓存</strong><span>(buffer cache)<span class="heti-spacing"> </span></span>维护一个单独的主存区域</p>
 <ul>
-<li>在该区域中，数据块被保留，因为我们假设它们会很快会被再次使用</li>
+<li>在该区域中，数据块被保留，因为我们假设它们会很快会被再次使用（时间局部性）</li>
 </ul>
 </li>
 <li>
@@ -1793,14 +1811,14 @@
 </ul>
 </li>
 <li>
-<p>无论是缓存存储块还是页（或两者兼有<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，<strong>LRU</strong> 似乎是一个合理且通用的块或页替换算法</p>
+<p>无论是对于缓存存储块还是页（或两者兼有<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，<strong>LRU</strong> 是一种合理且通用的块或页替换算法</p>
 </li>
 <li>
 <p>另一个可能影响<span class="heti-skip"><span class="heti-spacing"> </span>I/O<span class="heti-spacing"> </span></span>性能的问题是<strong>写入</strong>文件系统的操作是<strong>同步</strong>进行还是<strong>异步</strong>进行</p>
 <ul>
 <li>同步写入按照存储子系统接收数据的顺序发生，且这些写入不会被缓存，因此调用例程必须等待数据到达驱动器后才能继续</li>
 <li>而在异步写入中，数据存储在缓存中，控制权返回给调用者</li>
-<li>大多数写入都是异步的，但包括元数据写入在内的一些操作可以是同步的</li>
+<li><strong>大多数写入都是异步的</strong>，但包括元数据写入在内的一些操作可以是同步的</li>
 <li><span>OS<span class="heti-spacing"> </span></span>通常在打开系统调用中包含一个<strong>标志</strong>，以允许进程请求以<strong>同步</strong>方式执行写入<ul>
 <li>比如数据库使用此功能进行原子事务，以确保数据按要求的顺序达到稳定存储</li>
 </ul>
@@ -1811,9 +1829,9 @@
 <p>一些系统通过使用不同的替换算法来优化其页缓存，具体取决于文件的访问类型</p>
 <ul>
 <li>顺序读取或写入的文件不应按照<span class="heti-skip"><span class="heti-spacing"> </span>LRU<span class="heti-spacing"> </span></span>顺序替换其页，因为最近使用的页最后会被使用，或者可能再也不会被使用</li>
-<li>可以通过称为“后备释放”和“预读”的技术来优化顺序访问<ul>
-<li><strong>后备释放</strong>(free-behind)：在请求下一个页面时立即从缓冲区中移除一个页面，因为之前的页面不太可能再次被使用，并且浪费了缓冲空间</li>
-<li><strong>预读</strong>(read-ahead)：请求页和几个后续页会被读取并缓存，因为这些页在处理当前页后很可能会被请求，所以从磁盘一次性检索这些数据并进行缓存可以节省大量时间</li>
+<li>优化<strong>顺序访问</strong>的技术：<ul>
+<li><strong>后释放</strong>(free-behind)：在请求下一个页时立即从缓冲区中移除一个页，因为之前的页不太可能再次被使用，并且浪费了缓冲空间</li>
+<li><strong>先读</strong>(read-ahead)：请求页及其后面的一些页会被读取并缓存，因为这些页在处理当前页后很可能会被请求，所以从磁盘一次性检索这些数据并进行缓存可以节省大量时间</li>
 </ul>
 </li>
 </ul>
@@ -1845,8 +1863,8 @@
 <li>
 <p>例子：</p>
 <ul>
-<li>链接分配：任何块都有指向其下一个块的链接，因此整个文件可以从数据块中重建，目录结构也可以被重新创建</li>
-<li>索引分配：丢失一个目录条目可能是灾难性的，因为数据块彼此不了解</li>
+<li><a href="#linked-allocation">链接分配</a>：任何块都有指向其下一个块的链接，因此整个文件可以从数据块中重建，目录结构也可以被重新创建</li>
+<li><a href="#indexed-allocation">索引分配</a>：丢失一个目录条目可能是灾难性的，因为数据块之间彼此不了解</li>
 </ul>
 </li>
 <li>
@@ -1873,13 +1891,19 @@
 <h3 id="log-structured-file-systems">Log-Structured File Systems<a class="headerlink" href="#log-structured-file-systems" title="Permanent link">⚓︎</a></h3>
 <p>我们可以将数据库中基于日志的恢复算法迁移到文件系统上，得到一种叫做<strong>基于日志的面向事务的</strong><span>(log-based transaction-oriented)<span class="heti-spacing"> </span></span>文件系统。</p>
 <ul>
-<li>所有元数据更改都是顺序写入日志的</li>
+<li>所有元数据更改都是<strong>顺序写入</strong>日志的</li>
 <li>每组执行特定任务的操作称为一个<strong>事务</strong>(transaction)</li>
-<li>一旦更改被写入此日志，它们就被视为<strong>已提交</strong>(committed)，并且系统调用可以返回给用户进程，使其继续执行</li>
-<li>同时，这些日志项会在实际文件系统结构中重放<span><span class="heti-spacing"> </span>(replay)</span></li>
+<li>一旦更改被写入日志，它们就被视为<strong>已提交</strong>(committed)；随后通过系统调用返回到用户进程，使其继续执行</li>
+<li>
+<p>同时，这些日志项会在实际文件系统结构中重放<span><span class="heti-spacing"> </span>(replay)</span></p>
+<ul>
 <li>当进行更改时，会更新一个指针以指示哪些操作已完成，哪些仍未完成</li>
 <li>当整个已提交的事务完成时，日志中会记录一个相应的项</li>
-<li>日志文件实际上是一个<strong>循环缓冲区</strong>(circular buffer)：将数据写入其空间末尾，然后从开头继续，覆盖旧值</li>
+</ul>
+</li>
+<li>
+<p>日志文件实际上是一个<strong>循环缓冲区</strong>(circular buffer)：将数据写入其空间末尾，然后从开头继续，覆盖旧值</p>
+</li>
 <li>日志可能位于文件系统中单独的部分，甚至在单独的存储设备上</li>
 <li>
 <p>系统崩溃时，日志文件可能包含零个或多个事务</p>
@@ -1901,8 +1925,8 @@
 </li>
 </ul>
 <h3 id="backup-and-restore">Backup and Restore<a class="headerlink" href="#backup-and-restore" title="Permanent link">⚓︎</a></h3>
-<p>存储设备有时会发生故障，因此必须小心确保在这种故障中丢失的数据不会永远丢失。为此可以使用系统程序，将数据从一个存储设备<strong>备份</strong><span>(backup)<span class="heti-spacing"> </span></span>到另一个存储设备。要想从单个文件或整个设备的损坏中恢复，只需从备份中<strong>恢复</strong><span>(restore)<span class="heti-spacing"> </span></span>数据即可。</p>
-<p>为了最小化所需的复制，我们可以使用每个文件目录项的信息。例如，如果备份程序知道某个文件的最后一次备份时间，并且该文件在目录中的最后写入日期表明自那时以来文件没有更改，那么该文件就不需要再次复制。</p>
+<p>避免数据丢失另一种做法是将数据从一个存储设备<strong>备份</strong><span>(backup)<span class="heti-spacing"> </span></span>到另一个存储设备。之后要想从单个文件或整个设备的损坏中恢复，只需从备份中<strong>恢复</strong><span>(restore)<span class="heti-spacing"> </span></span>数据即可。</p>
+<p>为了最小化所需的复制操作，我们可以利用文件目录项的信息。例如，如果备份程序知道某个文件的最后一次备份时间，并且该文件在目录中的最后写入日期表明自那时以来文件没有更改，那么该文件就不需要再次复制。</p>
 <p>一个可能的备份计划可能如下所示：</p>
 <ul>
 <li>第一天，将文件系统中的所有文件复制到备份介质上，这称为<strong>完整备份</strong>(full backup)</li>
@@ -1912,7 +1936,7 @@
 <li>第<span class="heti-skip"><span class="heti-spacing"> </span>N<span class="heti-spacing"> </span></span>天，将自第<span><span class="heti-spacing"> </span>N</span>−<span>1<span class="heti-spacing"> </span></span>天以来更改的所有文件复制到另一个介质上，然后回到第一天</li>
 </ul>
 <p><span>N<span class="heti-spacing"> </span></span>的值越大，完成恢复所需读取的介质数量就越多。这种方法的一个额外优势在于：可以通过从前一天的备份中检索被意外删除的文件，来恢复在此周期内意外删除的任何文件。</p>
-<p><strong>周期长度</strong>是在所需备份量和恢复覆盖的天数之间的折衷。</p>
+<p><strong>周期长度</strong>是在所需备份量和恢复覆盖的天数之间的折中。</p>
 <ul>
 <li>为了减少在进行恢复时必须读取的磁带数量，一个选项是执行<strong>完整备份</strong>，然后每天备份自上次完整备份以来所有已更改的文件</li>
 <li>通过这种方式，可以通过最近一次增量备份和完整备份进行恢复，而不需要其他增量备份</li>
