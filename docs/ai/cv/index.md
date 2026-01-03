@@ -36,7 +36,7 @@
         - [x] [Self-supervised Learning](19.md)
         - [x] [Generative Models](20.md)
         - [x] [3D Deep Learning](21.md)
-        - [ ] [Multi-Modal Foundation Models](22.md)
+        - [x] [Multi-Modal Foundation Models](22.md)
         - [ ] [Robot Learning](23.md)
         - [x] [Computational Photography](24.md) <-
     
