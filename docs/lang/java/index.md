@@ -23,18 +23,13 @@
 
 !!! abstract "目录"
 
+    >目前正基于下面列出的参考资料大修中🚧
+
     - [x] [Introduction](1.md)
     - [x] [Basic Java](2.md)
-    - [x] [Inheritance, Polymorphism and Classes of Other Kinds](3.md)
-    - [x] [Containers and Generic](4.md)
-    - [x] [Stream and Exception](5.md)
-    - [x] [Optional and I/O](6.md)
-    - [x] [Threads](7.md)
-    - [x] [Synchronization and Locks](8.md)
-    - [x] [Thread Coordination and Parallel Streams](9.md)
-    - [x] [Future and Asynchronous Programming](10.md)
-    - [x] [JMM and Troubleshooting](11.md)
-    - [x] [Virtual Thread and Reactive](12.md)
+    - [x] [Oriented-Object Programming](3.md)
+    - [x] [Advanced Features](4.md)
+
 
 !!! recommend "参考资料"
 
