@@ -1644,97 +1644,124 @@
 </ul>
 </li>
 </ul>
-<p>如果内存地址为非规范形式，则会产生<strong>一般保护异常</strong>(general-protection exception)（#GP<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。通过检查规范地址格式，系统能够防止软件利用指针未使用的高位进行其他用途。另外，在特定处理器实现上遵循规范地址格式的软件，可以在支持更大虚拟地址空间的长模式实现中无需修改直接运行。</p>
-<p><span>??? info AT&amp;T vs Intel<span class="heti-spacing"> </span></span>语法</p>
-<div class="language-text highlight"><pre><span></span><code>**AT&amp;T** 与 **Intel** 各有一套 x86 汇编语言语法，不过它们最终会生成相同的机器码，并且可以相互转换。一些显著的区别在于：
-
-- 操作数方向
-    - AT&amp;T：数据流从左向右（`#!asm movl $1, %eax  # 1-&gt; eax`）
-    - Intel：数据流从右向左（`#!asm mov eax, 1  ; eax &lt;- 1`）
-- 前缀
-    - AT&amp;T：
-        - 寄存器前加 `%`
-        - 立即数前加 `$`
-        - 例子：`#!asm movl $1, %eax`
-    - Intel：寄存器和立即数前没有前缀（`#!asm mov eax, 1`）
-- 内存寻址
-    - AT&amp;T：`disp(base, index, scale)`（`#!asm subl 20(%ebx, %ecx, 4), %eax`）
-    - Intel：`[base + index * scale + disp]`（`#!asm sub eax, [ebx + ecx * 4 + 20]`）
-- 操作数大小
-    - AT&amp;T：后缀 `b`、`w`、`l` 和 `q` 分别指定字节、字、双字和四字的内存引用（`#!asm movl $0x7FFF, (%eax)`）
-    - Intel：使用 `byte ptr`、`word ptr`、`dword ptr`、`qword ptr` 作为内存操作数前缀（`#!asm mov dword ptr [eax], 7FFFh`）
-- 数字格式
-    - AT&amp;T：
-        - 二进制(BIN)：`0b100`
-        - 八进制(OCT)：`04`
-        - 十进制(DEC)：`4`
-        - 十六进制(HEX)：`0x4`
-    - Intel：
-        - 二进制(BIN)：`100b`
-        - 八进制(OCT)：`4o`
-        - 十进制(DEC)：`4`
-        - 十六进制(HEX)：`4h`
-
-??? example "例子"
-
-    对于以下 C 程序：
-
-    ```c
-    int sum(int * buf, int index) {
-        return (buf[index]+10);
-    }
-    ```
-
-    &lt;div class="grid" markdown&gt;
-
-    ```asm title="AT&amp;T Syntex"
-    sum:
-        movl 4(%esp), %eax
-        movl 8(%esp), %edx
-        movl (%eax,%edx,4), %eax
-        addl $10, %eax
-        ret
-    ```
-
-    ```asm title="Intel Syntax"
-    sum:
-        mov eax, [esp+4]
-        mov edx, [esp+8]
-        mov eax, [eax+edx*4]
-        add eax, 10
-        ret
-    ```
-
-    &lt;/div&gt;
-
-    GCC 和 Clang++ 使用选项 `masm=intel` 来生成采用 Intel 语法的汇编代码。
-
-对各家语法的评价：
-
-- AT&amp;T 语法
-    - 语法冗余与复杂
-        - 操作数类别明确（`$1`, `%eax`）
-        - 操作数大小明确（`#!asm movl`, `#!asm addl`）
-        - 减少出错的可能性
-        - 编码时需要输入更多字符
-    - 某种程度上反直觉
-        - 操作数的方向（`#!asm movl %ebx, %eax # ebx -&gt; eax`）
-        - 内存寻址方式（`disp(base, index, scale)`）
-
-- Intel 语法
-    - 看起来简洁
-        - 但操作数的大小和类型是隐含的
-        - 当处理立即数和内存时，需要指明操作数的大小（例如：`#!asm byte ptr`, `#!asm word ptr` 等）
-    - 更直观
-        - 操作数的方向（`#!asm mov eax, ebx ;eax &lt;- eax`）
-        - 内存寻址方式（`[base + index * scale + disp]`）
-    - 被多种汇编器和反汇编器支持
-        - MASM、NASM、FASM、TASM、YASM
-        - GAS 配合 .intel_syntax 使用
-        - IDA Pro
-
-&gt;所以我们学的都是遵循 Intel 语法的汇编语言。
-</code></pre></div>
+<p>如果内存地址为<strong>非规范形式</strong>，则会产生<strong>一般保护异常</strong>(general-protection exception)（#GP<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。通过检查规范地址格式，系统能够防止软件利用指针未使用的高位进行其他用途。另外，在特定处理器实现上遵循规范地址格式的软件，可以在支持更大虚拟地址空间的长模式实现中无需修改直接运行。</p>
+<details class="info">
+<summary><span>AT&amp;T vs Intel<span class="heti-spacing"> </span></span>语法</summary>
+<p><strong>AT&amp;T</strong> 与 <strong>Intel</strong> 各有一套<span class="heti-skip"><span class="heti-spacing"> </span>x86<span class="heti-spacing"> </span></span>汇编语言语法，不过它们最终会生成相同的机器码，并且可以相互转换。一些显著的区别在于：</p>
+<ul>
+<li>操作数方向<ul>
+<li>AT&amp;T：数据流从左向右（<code class="language-asm highlight"><span class="nf">movl</span><span class="w"> </span><span class="no">$1</span><span class="p">,</span><span class="w"> </span><span class="nv">%eax</span><span class="w"> </span><span class="c1"># 1-&gt; eax</span></code>）</li>
+<li>Intel：数据流从右向左（<code class="language-asm highlight"><span class="nf">mov</span><span class="w"> </span><span class="no">eax</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="c1">; eax &lt;- 1</span></code>）</li>
+</ul>
+</li>
+<li>前缀<ul>
+<li>AT&amp;T：<ul>
+<li>寄存器前加 <code>%</code></li>
+<li>立即数前加 <code>$</code></li>
+<li>例子：<code class="language-asm highlight"><span class="nf">movl</span><span class="w"> </span><span class="no">$1</span><span class="p">,</span><span class="w"> </span><span class="nv">%eax</span></code></li>
+</ul>
+</li>
+<li>Intel：寄存器和立即数前没有前缀（<code class="language-asm highlight"><span class="nf">mov</span><span class="w"> </span><span class="no">eax</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span></code>）</li>
+</ul>
+</li>
+<li>内存寻址<ul>
+<li>AT&amp;T<heti-adjacent class="heti-adjacent-half">：</heti-adjacent><code>disp(base, index, scale)</code>（<code class="language-asm highlight"><span class="nf">subl</span><span class="w"> </span><span class="mi">20</span><span class="p">(</span><span class="nv">%ebx</span><span class="p">,</span><span class="w"> </span><span class="nv">%ecx</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">),</span><span class="w"> </span><span class="nv">%eax</span></code>）</li>
+<li>Intel<heti-adjacent class="heti-adjacent-half">：</heti-adjacent><code>[base + index * scale + disp]</code>（<code class="language-asm highlight"><span class="nf">sub</span><span class="w"> </span><span class="no">eax</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="no">ebx</span><span class="w"> </span><span class="err">+</span><span class="w"> </span><span class="no">ecx</span><span class="w"> </span><span class="p">*</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="err">+</span><span class="w"> </span><span class="mi">20</span><span class="p">]</span></code>）</li>
+</ul>
+</li>
+<li>操作数大小<ul>
+<li>AT&amp;T：后缀 <code>b</code>、<code>w</code>、<code>l</code> 和 <code>q</code> 分别指定字节、字、双字和四字的内存引用（<code class="language-asm highlight"><span class="nf">movl</span><span class="w"> </span><span class="no">$0x7FFF</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nv">%eax</span><span class="p">)</span></code>）</li>
+<li>Intel：使用 <code>byte ptr</code>、<code>word ptr</code>、<code>dword ptr</code>、<code>qword ptr</code> 作为内存操作数前缀（<code class="language-asm highlight"><span class="nf">mov</span><span class="w"> </span><span class="no">dword</span><span class="w"> </span><span class="no">ptr</span><span class="w"> </span><span class="p">[</span><span class="no">eax</span><span class="p">],</span><span class="w"> </span><span class="mi">7</span><span class="no">FFFh</span></code>）</li>
+</ul>
+</li>
+<li>数字格式<ul>
+<li>AT&amp;T：<ul>
+<li>二进制<span><span class="heti-spacing"> </span>(BIN)</span>：<code>0b100</code></li>
+<li>八进制<span><span class="heti-spacing"> </span>(OCT)</span>：<code>04</code></li>
+<li>十进制<span><span class="heti-spacing"> </span>(DEC)</span>：<code>4</code></li>
+<li>十六进制<span><span class="heti-spacing"> </span>(HEX)</span>：<code>0x4</code></li>
+</ul>
+</li>
+<li>Intel：<ul>
+<li>二进制<span><span class="heti-spacing"> </span>(BIN)</span>：<code>100b</code></li>
+<li>八进制<span><span class="heti-spacing"> </span>(OCT)</span>：<code>4o</code></li>
+<li>十进制<span><span class="heti-spacing"> </span>(DEC)</span>：<code>4</code></li>
+<li>十六进制<span><span class="heti-spacing"> </span>(HEX)</span>：<code>4h</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<details class="example">
+<summary>例子</summary>
+<p>对于以下<span class="heti-skip"><span class="heti-spacing"> </span>C<span class="heti-spacing"> </span></span>程序：</p>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-4-1"><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="kt">int</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">index</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-2"><a href="#__codelineno-4-2" id="__codelineno-4-2" name="__codelineno-4-2"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="n">buf</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">+</span><span class="mi">10</span><span class="p">);</span>
+</span><span id="__span-4-3"><a href="#__codelineno-4-3" id="__codelineno-4-3" name="__codelineno-4-3"></a><span class="p">}</span>
+</span></code></pre></div>
+<div class="grid" markdown="">
+<div class="language-asm highlight"><span class="filename">AT&amp;T Syntex</span><pre><span></span><code><span id="__span-5-1"><a href="#__codelineno-5-1" id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="nl">sum:</span>
+</span><span id="__span-5-2"><a href="#__codelineno-5-2" id="__codelineno-5-2" name="__codelineno-5-2"></a><span class="w">    </span><span class="nf">movl</span><span class="w"> </span><span class="mi">4</span><span class="p">(</span><span class="nv">%esp</span><span class="p">),</span><span class="w"> </span><span class="nv">%eax</span>
+</span><span id="__span-5-3"><a href="#__codelineno-5-3" id="__codelineno-5-3" name="__codelineno-5-3"></a><span class="w">    </span><span class="nf">movl</span><span class="w"> </span><span class="mi">8</span><span class="p">(</span><span class="nv">%esp</span><span class="p">),</span><span class="w"> </span><span class="nv">%edx</span>
+</span><span id="__span-5-4"><a href="#__codelineno-5-4" id="__codelineno-5-4" name="__codelineno-5-4"></a><span class="w">    </span><span class="nf">movl</span><span class="w"> </span><span class="p">(</span><span class="nv">%eax</span><span class="p">,</span><span class="nv">%edx</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span><span class="w"> </span><span class="nv">%eax</span>
+</span><span id="__span-5-5"><a href="#__codelineno-5-5" id="__codelineno-5-5" name="__codelineno-5-5"></a><span class="w">    </span><span class="nf">addl</span><span class="w"> </span><span class="no">$10</span><span class="p">,</span><span class="w"> </span><span class="nv">%eax</span>
+</span><span id="__span-5-6"><a href="#__codelineno-5-6" id="__codelineno-5-6" name="__codelineno-5-6"></a><span class="w">    </span><span class="nf">ret</span>
+</span></code></pre></div>
+<div class="language-asm highlight"><span class="filename">Intel Syntax</span><pre><span></span><code><span id="__span-6-1"><a href="#__codelineno-6-1" id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="nl">sum:</span>
+</span><span id="__span-6-2"><a href="#__codelineno-6-2" id="__codelineno-6-2" name="__codelineno-6-2"></a><span class="w">    </span><span class="nf">mov</span><span class="w"> </span><span class="no">eax</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="no">esp</span><span class="err">+</span><span class="mi">4</span><span class="p">]</span>
+</span><span id="__span-6-3"><a href="#__codelineno-6-3" id="__codelineno-6-3" name="__codelineno-6-3"></a><span class="w">    </span><span class="nf">mov</span><span class="w"> </span><span class="no">edx</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="no">esp</span><span class="err">+</span><span class="mi">8</span><span class="p">]</span>
+</span><span id="__span-6-4"><a href="#__codelineno-6-4" id="__codelineno-6-4" name="__codelineno-6-4"></a><span class="w">    </span><span class="nf">mov</span><span class="w"> </span><span class="no">eax</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="no">eax</span><span class="err">+</span><span class="no">edx</span><span class="p">*</span><span class="mi">4</span><span class="p">]</span>
+</span><span id="__span-6-5"><a href="#__codelineno-6-5" id="__codelineno-6-5" name="__codelineno-6-5"></a><span class="w">    </span><span class="nf">add</span><span class="w"> </span><span class="no">eax</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span>
+</span><span id="__span-6-6"><a href="#__codelineno-6-6" id="__codelineno-6-6" name="__codelineno-6-6"></a><span class="w">    </span><span class="nf">ret</span>
+</span></code></pre></div>
+</div>
+<p><span>GCC<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>Clang++<span class="heti-spacing"> </span></span>使用选项 <code>masm=intel</code> 来生成采用<span class="heti-skip"><span class="heti-spacing"> </span>Intel<span class="heti-spacing"> </span></span>语法的汇编代码。</p>
+</details>
+<p>对各家语法的评价：</p>
+<ul>
+<li>
+<p><span>AT&amp;T<span class="heti-spacing"> </span></span>语法</p>
+<ul>
+<li>语法冗余与复杂<ul>
+<li>操作数类别明确（<code>$1</code>, <code>%eax</code>）</li>
+<li>操作数大小明确（<code class="language-asm highlight"><span class="nf">movl</span></code>, <code class="language-asm highlight"><span class="nf">addl</span></code>）</li>
+<li>减少出错的可能性</li>
+<li>编码时需要输入更多字符</li>
+</ul>
+</li>
+<li>某种程度上反直觉<ul>
+<li>操作数的方向（<code class="language-asm highlight"><span class="nf">movl</span><span class="w"> </span><span class="nv">%ebx</span><span class="p">,</span><span class="w"> </span><span class="nv">%eax</span><span class="w"> </span><span class="c1"># ebx -&gt; eax</span></code>）</li>
+<li>内存寻址方式（<code>disp(base, index, scale)</code>）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><span>Intel<span class="heti-spacing"> </span></span>语法</p>
+<ul>
+<li>看起来简洁<ul>
+<li>但操作数的大小和类型是隐含的</li>
+<li>当处理立即数和内存时，需要指明操作数的大小（例如：<code class="language-asm highlight"><span class="nf">byte</span><span class="w"> </span><span class="no">ptr</span></code><span>,<span class="heti-spacing"> </span></span><code class="language-asm highlight"><span class="nf">word</span><span class="w"> </span><span class="no">ptr</span></code>等）</li>
+</ul>
+</li>
+<li>更直观<ul>
+<li>操作数的方向（<code class="language-asm highlight"><span class="nf">mov</span><span class="w"> </span><span class="no">eax</span><span class="p">,</span><span class="w"> </span><span class="no">ebx</span><span class="w"> </span><span class="c1">;eax &lt;- eax</span></code>）</li>
+<li>内存寻址方式（<code>[base + index * scale + disp]</code>）</li>
+</ul>
+</li>
+<li>被多种汇编器和反汇编器支持<ul>
+<li>MASM、NASM、FASM、TASM、YASM</li>
+<li><span>GAS<span class="heti-spacing"> </span></span>配合<span class="heti-skip"><span class="heti-spacing"> </span>.intel_syntax<span class="heti-spacing"> </span></span>使用</li>
+<li>IDA Pro</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>所以我们学的都是遵循<span class="heti-skip"><span class="heti-spacing"> </span>Intel<span class="heti-spacing"> </span></span>语法的汇编语言。</p>
+</blockquote>
+</details>
 <details class="abstract" open="open">
 <summary>总结</summary>
 <div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="" id="__tabbed_4_1" name="__tabbed_4" type="radio"/><input id="__tabbed_4_2" name="__tabbed_4" type="radio"/><div class="tabbed-labels"><label for="__tabbed_4_1">指令操作数</label><label for="__tabbed_4_2">内存寻址模式</label></div>
