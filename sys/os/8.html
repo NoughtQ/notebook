@@ -1513,7 +1513,7 @@
 <p>若不存在这样的 <code>i</code>，直接来到步骤<span><span class="heti-spacing"> </span>4</span></p>
 </li>
 <li>
-<p><code>Work = Work + Allocation[i]</code>，<code>Finish[i] = true</code>，跳转到步骤<span><span class="heti-spacing"> </span>2</span></p>
+<p><code>Work += Allocation[i]</code>，<code>Finish[i] = true</code>，跳转到步骤<span><span class="heti-spacing"> </span>2</span></p>
 </li>
 <li>若对所有 <code>i</code>，<code>Finish[i] == true</code>，那么系统处于安全状态</li>
 </ol>
@@ -1523,9 +1523,9 @@
 <li>若 <code>Request[i] &lt;= Available</code>，跳转到步骤<span><span class="heti-spacing"> </span>3</span>，否则<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(T_i\)</span><span class="heti-spacing"> </span></span>必须等待，因为资源不可用</li>
 <li>
 <p>让系统假装已经将请求的资源分配给线程<span><span class="heti-spacing"> </span><span class="arithmatex">\(T_i\)</span></span>，通过如下方式修改状态：</p>
-<div class="language-py highlight"><pre><span></span><code><span id="__span-2-1"><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="n">Available</span> <span class="o">=</span> <span class="n">Available</span> <span class="err">–</span> <span class="n">Request</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-</span><span id="__span-2-2"><a href="#__codelineno-2-2" id="__codelineno-2-2" name="__codelineno-2-2"></a><span class="n">Allocation</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">Allocation</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">Request</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-</span><span id="__span-2-3"><a href="#__codelineno-2-3" id="__codelineno-2-3" name="__codelineno-2-3"></a><span class="n">Need</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">Need</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="err">–</span> <span class="n">Request</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-2-1"><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="n">Available</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="n">Request</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+</span><span id="__span-2-2"><a href="#__codelineno-2-2" id="__codelineno-2-2" name="__codelineno-2-2"></a><span class="n">Allocation</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">Request</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+</span><span id="__span-2-3"><a href="#__codelineno-2-3" id="__codelineno-2-3" name="__codelineno-2-3"></a><span class="n">Need</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="n">Request</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
 </span></code></pre></div>
 <p>若结果的资源分配状态是安全的，那么<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(T_i\)</span><span class="heti-spacing"> </span></span>就能被分配到资源；否则<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(T_i\)</span><span class="heti-spacing"> </span></span>必须等待 <code>Request[i]</code>，并恢复原来的资源分配状态</p>
 </li>
@@ -1687,7 +1687,7 @@ T_4 &amp; 0\ 0\ 2
 <span class="md-icon" title="最后更新">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"></path></svg>
 </span>
-<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2025年12月29日 22:20:09 CST">2025年12月29日 22:20:09</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2026年1月10日 21:55:44 CST">2026年1月10日 21:55:44</span>
 </span>
 <span class="md-source-file__fact">
 <span class="md-icon" title="创建日期">
