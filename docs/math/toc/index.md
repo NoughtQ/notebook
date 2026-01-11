@@ -28,10 +28,10 @@
     - [Xecades 大佬的笔记](https://note.xecades.xyz/cs/tcs)
     - [shrike-505 大佬的笔记](https://nest.shrike505.cc/notes/ComputerScience/TCS/)
     - [2025 秋冬朋辈辅学资料](https://codeberg.org/LoctStrider/ZJU-2025AW-Theory-of-Computation-Peer-Tutoring)
-    - Twilight Sirens 整理的笔记（多位大佬集思广益的产出，以钉钉文档形式呈现，但貌似只有 ZJUer 可访问...）
+    - Twilight Sirens 整理的笔记（多位大佬集思广益的产出，以钉钉文档形式呈现；但貌似只有 ZJUer 可访问...）
         - [Ch2](https://alidocs.dingtalk.com/i/nodes/dpYLaezmVNLOXxveTgaAElDy8rMqPxX6?utm_scene=team_space)
         - [Ch3](https://alidocs.dingtalk.com/i/nodes/gvNG4YZ7JneM10GPCEy319wgV2LD0oRE?utm_scene=team_space)
-        - [Ch4](https://alidocs.dingtalk.com/i/nodes/r1R7q3QmWe7MoBdeUzwZMwxwJxkXOEP2?utm_scene=team_space)
+        - [Ch4](https://alidocs.dingtalk.com/i/nodes/r1R7q3QmWe7MoBdeUzwZMwxwJxkXOEP2?utm_scene=team_space)（缺少「数值函数」的介绍）
         - [Ch5](https://alidocs.dingtalk.com/i/nodes/YndMj49yWjPvoBGXT2j9g3rvJ3pmz5aA?utm_scene=team_space)
 
     - [GeeksforGeeks 的 TOC 教程](https://www.geeksforgeeks.org/theory-of-computation/theory-of-computation-automata-tutorials/)
