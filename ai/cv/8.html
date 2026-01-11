@@ -1146,15 +1146,22 @@
 </a>
 <h1 id="depth-estimation-and-3d-reconstruction">Depth Estimation and 3D Reconstruction<a class="headerlink" href="#depth-estimation-and-3d-reconstruction" title="Permanent link">⚓︎</a></h1>
 <div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
-<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>2541<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>13<span class="heti-spacing"> </span></span>分钟</p>
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>2628<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>13<span class="heti-spacing"> </span></span>分钟</p>
 </div>
 <details class="abstract">
 <summary>核心知识</summary>
 <ul>
 <li>
+<ul>
+<li>立体匹配<ul>
+<li>简单情况：极线水平时计算视差（和深度成反比）</li>
+<li>非水平情况可通过矫正（单应变换）变成水平的</li>
+<li>不考：通过能量最小化寻找最佳立体匹配</li>
+</ul>
+</li>
+</ul>
 <p>深度估计：计算深度图</p>
 <ul>
-<li>立体匹配</li>
 <li>立体重建步骤：校准相机<span class="heti-skip"><span class="heti-spacing"> </span>-&gt;<span class="heti-spacing"> </span></span>矫正图像<span class="heti-skip"><span class="heti-spacing"> </span>-&gt;<span class="heti-spacing"> </span></span>计算视差<span class="heti-skip"><span class="heti-spacing"> </span>-&gt;<span class="heti-spacing"> </span></span>估计深度</li>
 <li>多视图立体（MVS）<ul>
 <li>块匹配</li>
@@ -1210,7 +1217,7 @@
 </ul>
 </li>
 <li>
-<p><strong>被动深度感知</strong>(passive depth sensing)</p>
+<p><strong>被动深度感知</strong>(passive depth sensing)：通过<span class="heti-skip"><span class="heti-spacing"> </span>RGB<span class="heti-spacing"> </span></span>图像计算深度（<a href="#stereo-vision">立体视觉</a>）</p>
 <p></p><div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/5.png"><img src="images/lec8/5.png" width="50%"/></a>
 </div><p></p>
@@ -1294,7 +1301,7 @@
 <p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/13.png"><img align="right" alt="" src="images/lec8/13.png" width="25%"/></a></p>
 <p>不难发现相机视差与深度成<strong>反比</strong>。</p>
 <h4 id="stereo-image-rectification">Stereo Image Rectification<a class="headerlink" href="#stereo-image-rectification" title="Permanent link">⚓︎</a></h4>
-<p>假如极线不是扫描线，那么需要进行<strong>立体图像矫正</strong>(stereo image rectification)，即将图像平面重新投影到一个与相机中心之间的线平行的公共平面上。这一操作需要<strong>两个<a href="6.html#projective-transformation">单应变换</a></strong>（3x3<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，每个变换对应一个输入图像重投影操作。</p>
+<p>若极线不是水平的，那么需要进行<strong>立体图像矫正</strong>(stereo image rectification)，即将图像平面重新投影到一个与相机中心之间的线平行的公共平面上。这一操作需要<strong>两个<a href="6.html#projective-transformation">单应变换</a></strong>（3x3<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，每个变换对应一个输入图像重投影操作。</p>
 <p><br/></p>
 <details class="example" open="open">
 <summary>例子</summary>
@@ -1304,7 +1311,7 @@
 </details>
 <h4 id="stereo-matching-algorithms">Stereo Matching Algorithms<a class="headerlink" href="#stereo-matching-algorithms" title="Permanent link">⚓︎</a></h4>
 <p>立体匹配算法的思路是：在共轭<span class="heti-skip"><span class="heti-spacing"> </span>(conjugate)<span class="heti-spacing"> </span></span>极线中匹配像素（假设亮度恒定<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。这是一个具有挑战性的问题。目前已提出了数百种方法；这个链接给出了一项相关调查和评估：<a href="http://www.vision.middlebury.edu/stereo/">http://www.vision.middlebury.edu/stereo/</a>。</p>
-<p>基础的立体匹配算法就是找到能够最小化差异<span class="heti-skip"><span class="heti-spacing"> </span>(dissimilarity)<span class="heti-spacing"> </span></span>的最佳匹配。</p>
+<p>基础的立体匹配算法就是找到能够<strong>最小化差异</strong><span>(dissimilarity)<span class="heti-spacing"> </span></span>的最佳匹配。</p>
 <div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/15.png"><img src="images/lec8/15.png" width="50%"/></a>
 </div>
@@ -1326,7 +1333,7 @@
 <div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/17.png"><img src="images/lec8/17.png" width="50%"/></a>
 </div>
-<p>存在更好的方法（基于图割<span class="heti-skip"><span class="heti-spacing"> </span>(graph cuts)<span class="heti-spacing"> </span></span>的方法<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
+<p>存在更好的方法（基于<strong>图割</strong><span>(graph cuts)<span class="heti-spacing"> </span></span>的方法<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
 <div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/18.png"><img src="images/lec8/18.png" width="50%"/></a>
 </div>
@@ -1369,13 +1376,13 @@ E_s(d)=\sum_{(p,q)\in\mathcal{E}}V(d_p,d_q)
 <p>完整的立体重建步骤如下：</p>
 <ol>
 <li>
-<p><strong>校准相机</strong>：选择立体基线</p>
+<p><strong>校准相机</strong>：寻找最优的立体基线</p>
 <ul>
 <li>太小会导致较大的深度误差</li>
 <li>太大则让搜索问题变得困难</li>
 </ul>
 <p></p><div style="text-align: center">
-<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/21.png"><img src="images/lec8/21.png" width="40%"/></a>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/21.png"><img src="images/lec8/21.png" width="50%"/></a>
 </div><p></p>
 </li>
 <li>
@@ -1429,7 +1436,7 @@ E_s(d)=\sum_{(p,q)\in\mathcal{E}}V(d_p,d_q)
 </div><p></p>
 </li>
 <li>
-<p>计算参考图像中每个点的每个深度值的误差，寻找能给出最小误差的深度值</p>
+<p>计算参考图像中每个点深度值的误差，寻找能给出最小误差的深度值</p>
 <p></p><div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/27.png"><img src="images/lec8/27.png" width="50%"/></a>
 </div><p></p>
@@ -1545,8 +1552,15 @@ V_{ijk} = \begin{cases}1 &amp; \text{if occupied} \\ 0 &amp; \text{if empty}\end
 </ol>
 <p>构建指示函数的关键在于梯度关系：</p>
 <ul>
-<li>点的<strong>法线</strong>与指示函数的<strong>梯度</strong>之间存在关系</li>
-<li>用<strong>向量场</strong><span>(vector field) <span class="arithmatex">\(\overrightarrow{V}\)</span><span class="heti-spacing"> </span></span>表示有向点</li>
+<li>
+<p>通过下图看出，点的<strong>法线</strong>与指示函数的<strong>梯度</strong>之间存在密切联系</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/45.png"><img src="images/lec8/45.png" width="50%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>用<strong>向量场</strong><span>(vector field) <span class="arithmatex">\(\overrightarrow{V}\)</span><span class="heti-spacing"> </span></span>表示有向点</p>
+</li>
 <li>
 <p>通过对以下式子最小化，来寻找梯度最佳<strong>近似</strong> <span><span class="arithmatex">\(\overrightarrow{V}\)</span><span class="heti-spacing"> </span></span>的函数<span><span class="heti-spacing"> </span><span class="arithmatex">\(\chi\)</span></span>：</p>
 <div class="arithmatex">\[
@@ -1593,7 +1607,7 @@ V_{ijk} = \begin{cases}1 &amp; \text{if occupied} \\ 0 &amp; \text{if empty}\end
 <p><strong>查找表</strong>：</p>
 <ul>
 <li><span>2<span class="heti-spacing"> </span></span><sup><span>8<span class="heti-spacing"> </span></span></sup><span>= 256<span class="heti-spacing"> </span></span>种符号配置；对于每个符号配置，它存储了构成三角形的顶点所对应的网格边的索引</li>
-<li>考虑到对称的话，实际上只需考虑以下 <strong><span>15<span class="heti-spacing"> </span></span>种配置</strong></li>
+<li>考虑到对称的话，实际上只需考虑以下 <strong><span>15<span class="heti-spacing"> </span></span>种配置</strong>（右图黄点表示在表面内的点）</li>
 </ul>
 <div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/42.png"><img src="images/lec8/42.png" width="20%"/></a>
