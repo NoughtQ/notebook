@@ -1189,7 +1189,7 @@
 </a>
 <h1 id="file-system-interface">File-System Interface<a class="headerlink" href="#file-system-interface" title="Permanent link">⚓︎</a></h1>
 <div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
-<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>8882<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>44<span class="heti-spacing"> </span></span>分钟</p>
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>8854<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>44<span class="heti-spacing"> </span></span>分钟</p>
 </div>
 <details class="abstract">
 <summary>核心知识</summary>
@@ -1247,12 +1247,12 @@
 <p>文件属性因<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>而异，但通常包含以下内容：</p>
 <ul>
 <li><strong>名称</strong>：唯一以人类可读形式保存的信息</li>
-<li><strong>标识符</strong>：用于识别文件系统内的文件的唯一标签，通常用数字表示，可看作一种不为人类可读的文件名称</li>
+<li><strong>标识符</strong>(identifiers)：用于识别文件系统内的文件的唯一标签，通常用数字表示，可看作一种不为人类可读的文件名称</li>
 <li><strong>类型</strong></li>
 <li><strong>位置</strong>：包含一个指向设备以及文件在该设备的位置的指针</li>
 <li><strong>大小</strong>：当前文件大小，也可能包含最大允许大小的信息</li>
 <li><strong>保护</strong>：访问控制信息，决定谁能读取<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>写入<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>执行该文件</li>
-<li><strong>时间戳</strong>和<strong>用户标识</strong>：保存了创建、最近修改和最近使用信息</li>
+<li><strong>时间戳</strong><span>(timestamp)<span class="heti-spacing"> </span></span>和<strong>用户标识</strong>(user identification)：保存了创建、最近修改和最近使用信息</li>
 </ul>
 <p>一些最新的文件系统还支持<strong>扩展文件属性</strong>(extended file attributes)，包括文件的<strong>字符编码</strong><span>(character encoding)<span class="heti-spacing"> </span></span>和诸如<strong>校验和</strong><span>(checksum)<span class="heti-spacing"> </span></span>的安全功能等。</p>
 <p>所有文件的信息都被保存在<strong>目录</strong>结构中。通常一个目录项由文件名及其唯一标识符构成；标识符用于定位其他文件属性。</p>
@@ -1296,12 +1296,12 @@
 <hr/>
 <p>前面提到过，多数文件操作包含一个搜索关联具名文件的目录项的操作。为避免这一行为，很多系统要求在文件第一次使用时调用 <code>open()</code> 系统调用；<span>OS<span class="heti-spacing"> </span></span>保留一张<strong>打开文件表</strong>(open-file table)，包含所有打开文件的信息。</p>
 <ul>
-<li>当请求一个文件操作时，文件通过该表的索引指定，因此无需搜索</li>
-<li>当文件关闭时，<span>OS<span class="heti-spacing"> </span></span>将其从表中移除</li>
-<li><code>create()</code> 和 <code>delete()</code> 是在关闭而非打开文件上工作</li>
+<li>请求一个文件操作时，通过该表的索引指定文件，无需额外搜索</li>
+<li>关闭文件时，<span>OS<span class="heti-spacing"> </span></span>将其从表中移除</li>
+<li>注意 <code>create()</code> 和 <code>delete()</code> 只能在关闭的文件上工作</li>
 </ul>
 <p>某些系统在首次引用文件时会<strong>隐式</strong>打开该文件；当打开文件的作业或程序终止时，文件会自动关闭。然而，大多数系统要求程序员在使用文件之前，必须通过 <code>open()</code> 系统调用<strong>显式</strong>地打开该文件。<code>open()</code> 通常返回一个指向打开文件表中条目的指针。该指针用于所有<span class="heti-skip"><span class="heti-spacing"> </span>I/O<span class="heti-spacing"> </span></span>操作，避免了进一步的搜索，并简化了系统调用的接口。</p>
-<p>在多个进程可以同时打开同一文件的情况下，<code>open()</code> 和 <code>close()</code> 操作的实现更加复杂。通常<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>提供了两级内部表：</p>
+<p>在多个进程可以同时打开同一文件的情况下，通常<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>提供了两级表结构：</p>
 <ul>
 <li><strong>进程级表</strong>(per-process table)：追踪进程打开的所有文件</li>
 <li><strong>系统级表</strong>(system-wide table)：包含独立于进程的信息，比如文件在磁盘上的位置、访问日期、文件大小等</li>
@@ -1318,7 +1318,7 @@
 <ul>
 <li>当多个进程打开同一文件时，系统必须等待最后一个文件关闭后才能移除对应的打开文件表的条目</li>
 <li>文件打开计数即正在打开该文件的进程数；每次调用 <code>close()</code> 都会减少该计数</li>
-<li>当打开计数为<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>时，表明文件不再使用，并且该文件项将从打开文件表中移除</li>
+<li>当打开计数为<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>时，表明文件不再使用，此时从打开文件表中移除该文件项</li>
 </ul>
 </li>
 <li>
@@ -1330,7 +1330,7 @@
 <li><strong>访问权限</strong>(access rights)</li>
 </ul>
 <hr/>
-<p>一些<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>提供了<strong>锁住</strong>打开文件的功能。文件锁分为<strong>共享锁</strong><span>(shared lock)<span class="heti-spacing"> </span></span>和<strong>独占锁</strong>(exclusive lock)。需要注意的是不是所有<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>提供这两类锁——一些系统只提供了独占锁。</p>
+<p>一些<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>提供了为打开文件<strong>上锁</strong>的功能。文件锁分为<strong>共享锁</strong><span>(shared lock)<span class="heti-spacing"> </span></span>和<strong>独占锁</strong>(exclusive lock)。需要注意的是不是所有<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>提供这两类锁——一些系统只提供了独占锁。</p>
 <p>另外，锁机制分为<strong>强制性</strong><span>(mandatory)<span class="heti-spacing"> </span></span>和<strong>建议性</strong>(advisory)。</p>
 <ul>
 <li>强制性锁：一旦一个进程获取独占锁，<span>OS<span class="heti-spacing"> </span></span>会阻止其他进程访问被锁住的文件，确保锁的完整性</li>
@@ -1433,7 +1433,7 @@
 <li>物理记录大小不太可能与所需逻辑记录的长度完全匹配，甚至逻辑记录的长度不一定相同</li>
 </ul>
 <p><strong>将多个逻辑记录打包到物理块中</strong>是解决此问题的一种常见方法。比如<span class="heti-skip"><span class="heti-spacing"> </span>UNIX<span class="heti-spacing"> </span></span>将所有文件定义为简单的字节流；每个字节都可以通过其相对于文件开头（或结尾）的偏移量单独寻址。</p>
-<p>逻辑记录大小、物理块大小和打包技术决定了每个物理块中包含多少个逻辑记录。<strong>打包</strong>可以由用户的应用程序或<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>完成；无论哪种情况，文件都可以被视为一系列的块。</p>
+<p>逻辑记录大小、物理块大小和打包技术决定了每个物理块中包含多少个逻辑记录。<strong>打包</strong><span>(packing)<span class="heti-spacing"> </span></span>可以由用户的应用程序或<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>完成；无论哪种情况，文件都可以被视为一系列的块。</p>
 <p>将所有内容保持在块（而不是字节）单位中所产生的浪费称为<strong>内部碎片</strong>。所有文件系统都受到内部碎片的影响；块大小越大，内部碎片就越严重。</p>
 <h2 id="access-methods">Access Methods<a class="headerlink" href="#access-methods" title="Permanent link">⚓︎</a></h2>
 <h3 id="sequential-access">Sequential Access<a class="headerlink" href="#sequential-access" title="Permanent link">⚓︎</a></h3>
@@ -1457,9 +1457,8 @@
 <h3 id="direct-access">Direct Access<a class="headerlink" href="#direct-access" title="Permanent link">⚓︎</a></h3>
 <p>第二种访问方法是<strong>直接访问</strong>(direct access)（或<strong>相对访问</strong>(relative access)<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
 <ul>
-<li>此时文件由定长的逻辑记录组成，允许文件不以特定顺序在记录上读和写</li>
+<li>此时文件由定长带编号的逻辑记录组成，允许文件不以特定顺序在记录上读和写</li>
 <li>直接访问方法基于文件的<strong>磁盘模型</strong>，因为磁盘允许<strong>随机访问</strong>任意文件块</li>
-<li>文件被看作带编号的记录或块序列</li>
 <li>常用于大量信息的即时访问，比如数据库查询</li>
 <li>
 <p>文件操作需要将块编号 <code>n</code> 作为参数使用</p>
@@ -1470,7 +1469,7 @@
 </ul>
 </li>
 <li>
-<p>块编号通常为<strong>相对块编号</strong>(relative block number)，是一个相对于文件起始处的索引；它能让<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>决定文件的放置位置（称为<strong>分配问题</strong>(allocation problem)<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，并能阻止用户访问不属于当前文件的文件系统部分。</p>
+<p>块编号通常为<strong>相对块编号</strong>(relative block number)，是一个相对于文件起始处的索引；<span>OS<span class="heti-spacing"> </span></span>据此决定文件的放置位置，并能阻止用户访问不属于当前文件的文件系统部分</p>
 </li>
 </ul>
 <p>不是所有的<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>同时支持顺序访问和直接访问的。我们可以通过简单地保持一个定义当前位置信息的变量 <code>cp</code> 来轻松模拟直接访问文件上的顺序访问，如下图所示。然而，在顺序访问文件上模拟直接访问文件是非常低效且笨拙的。</p>
@@ -1554,7 +1553,7 @@
 </li>
 </ul>
 <p>需要额外的语法来指定文件所在的<strong>卷</strong>。不过<span class="heti-skip"><span class="heti-spacing"> </span>UNIX<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>Linux<span class="heti-spacing"> </span></span>简单地将卷名作为目录名的一部分。</p>
-<p>考虑一种刚和<strong>系统文件</strong>相关的特殊情况：</p>
+<p>考虑一种和<strong>系统文件</strong>相关的特殊情况：</p>
 <ul>
 <li><strong>程序</strong>通常被定义为文件；当向<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>发出适当命令时，这些文件会被加载程序读取并执行</li>
 <li>许多命令解释器简单地将这样的命令视为要加载和执行的文件名</li>
@@ -1579,7 +1578,7 @@
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C13/8.png"><img src="images/C13/8.png" width="60%"/></a>
 </div>
 <ul>
-<li>树有一个<strong>根目录</strong>，系统中的每个文件都有一个唯一的路径名</li>
+<li>树有一个<strong>根目录</strong>；系统中的每个文件都有一个唯一的路径名</li>
 <li>目录（或子目录）包含一组文件或子目录</li>
 <li>在许多实现中，目录也被视作文件，但是经特殊方式处理</li>
 <li>每个目录项中的有一位用来定义该项是文件（0）还是子目录（1）</li>
@@ -1654,7 +1653,7 @@
 </ul>
 </li>
 <li>
-<p>共享对子目录而言相当重要；一个人创建的新文件将自动出现在所有共享的子目录中</p>
+<p>共享对子目录而言相当重要；某一用户创建的新文件将自动出现在所有共享的子目录中</p>
 </li>
 <li>
 <p>共享文件和子目录可以通过多种方式实现</p>
@@ -1691,7 +1690,7 @@
 </ul>
 </li>
 <li>
-<p>在一个通过符号<strong>链接</strong>实现共享的系统中，这种情况相对更容易处理</p>
+<p>在一个通过<strong>符号链接</strong>(symbolic link)（又称<strong>软链接</strong>(soft link)）实现共享的系统中，这种情况相对更容易处理</p>
 <ul>
 <li>删除一个链接不必影响原始文件，因为只有链接被移除</li>
 <li>如果文件条目本身被删除，文件所占用的空间将被释放，留下悬挂的链接</li>
@@ -1727,7 +1726,7 @@
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C13/10.png"><img src="images/C13/10.png" width="50%"/></a>
 </div>
 <p>出于正确性和性能的考虑，如果允许在目录中存在环，我们同样希望避免重复搜索任何组件。一个设计不良的算法可能导致<strong>无限循环</strong>，不断在环中搜索而无法终止。一个解决方案是<strong>限制在搜索过程中将被访问的目录数量</strong>。</p>
-<p>另外，当存在循环时，即使不再可能引用某个目录或文件，引用计数也可能不是<span><span class="heti-spacing"> </span>0</span>，这是由于目录结构中<strong>自我引用</strong>（或环）的可能性导致的。此时，我们通常需要用<strong>垃圾回收</strong><span>(garbage collection)<span class="heti-spacing"> </span></span>方案来确定上次引用被删除，以及磁盘空间能够被重分配的时间。</p>
+<p>另外，当存在循环时，即使不再引用某个目录或文件，引用计数也可能不是<span><span class="heti-spacing"> </span>0</span>，这可能是因为目录结构中存在<strong>自引用</strong>现象。此时，我们通常需要通过<strong>垃圾回收</strong><span>(garbage collection)<span class="heti-spacing"> </span></span>来确定上次引用被删除，以及磁盘空间能够被重分配的时间。</p>
 <ul>
 <li>垃圾回收会遍历整个文件系统，标记所有可以访问的内容，随后通过第二次遍历将未标记的内容收集到空闲空间列表中</li>
 <li>但这种做法耗时太长，因此很少被采用</li>

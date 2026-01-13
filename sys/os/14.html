@@ -1197,7 +1197,7 @@
 </a>
 <h1 id="file-system-implementation">File-System Implementation<a class="headerlink" href="#file-system-implementation" title="Permanent link">⚓︎</a></h1>
 <div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
-<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>9852<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>49<span class="heti-spacing"> </span></span>分钟</p>
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>9807<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>49<span class="heti-spacing"> </span></span>分钟</p>
 </div>
 <details class="abstract">
 <summary>核心知识</summary>
@@ -1219,7 +1219,9 @@
 <li>索引分配</li>
 </ul>
 </li>
-<li>空闲空间管理<ul>
+<li>
+<p>空闲空间管理</p>
+<ul>
 <li>位向量（位图）</li>
 <li>链表</li>
 <li>分组</li>
@@ -1227,17 +1229,19 @@
 </ul>
 </li>
 <li>
+<p>效率和性能</p>
 <ul>
 <li>缓冲区缓存、页缓存<span class="heti-skip"><span class="heti-spacing"> </span>-&gt;<span class="heti-spacing"> </span></span>统一缓冲区缓存</li>
-<li>顺序访问优化<ul>
+<li>
+<p>顺序访问优化</p>
+<ul>
 <li>后释放</li>
 <li>先读</li>
 </ul>
 </li>
-</ul>
-<p>效率和性能</p>
-<ul>
-<li>...</li>
+<li>
+<p>...</p>
+</li>
 </ul>
 </li>
 <li>
@@ -1335,7 +1339,7 @@
 <p>文件必须能被<strong>打开</strong>，这通过 <code>open()</code> 系统调用实现（传递文件名为参数）</p>
 <ul>
 <li>首先在<strong>系统级打开文件表</strong>中搜索，以查看该文件是否已被其他进程使用</li>
-<li>若是，则会创建一个进程级打开文件表条目，指向现有的系统级打开文件表</li>
+<li>若是，则会创建一个进程级打开文件表条目，指向现有的系统级打开文件表，以及一些其他字段（可能包括指向文件中当前位置的指针（用于后续 <code>read()</code> 或 <code>write()</code> 操作）以及打开文件的访问模式）</li>
 <li>
 <p>如果该文件尚未打开，则会在目录结构中搜索给定的文件名</p>
 <ul>
@@ -1347,15 +1351,7 @@
 <p>此表不仅存储<span><span class="heti-spacing"> </span>FCB</span>，还跟踪有多少个进程正在打开该文件</p>
 </li>
 <li>这种算法可以节省大量开销</li>
-<li>
-<p>接下来要在<strong>进程级打开文件表</strong>中创建一个项，指向系统级打开文件表中的项以及一些其他字段</p>
-<ul>
-<li>其他字段可能包括指向文件中当前位置的指针（用于后续 <code>read()</code> 或 <code>write()</code> 操作）以及打开文件的访问模式</li>
-</ul>
-</li>
-<li>
-<p>该调用返回一个指向进程级文件系统表中适当项的指针，所有文件操作随后通过该指针执行</p>
-</li>
+<li>该调用返回一个指向进程级文件系统表中适当项的指针，之后所有的文件操作通过该指针执行</li>
 <li>文件名可能不是打开文件表的一部分，因为一旦在磁盘上找到适当的<span><span class="heti-spacing"> </span>FCB</span>，系统就不再需要它；不过它也可以被缓存，以节省后续打开同一文件时的时间</li>
 <li>打开文件表项的称呼：<ul>
 <li>UNIX：<strong>文件描述符</strong>(file descriptor)</li>
@@ -1367,7 +1363,7 @@
 <li>
 <p>当进程<strong>关闭</strong>文件时</p>
 <ul>
-<li>进程特定的表项被移除，并且系统范围内的条目的打开计数减少</li>
+<li>进程级表项被移除，并且系统级表项的打开计数减少</li>
 <li>当所有打开该文件的用户关闭它时，任何更新的元数据会被复制回基于磁盘的目录结构，并且系统级打开文件表中的对应项被移除</li>
 </ul>
 </li>
@@ -1384,8 +1380,8 @@
 <li>
 <p>方法简单但是执行耗时</p>
 <ul>
-<li>创建新文件时，首先必须搜索目录以确保没有现有文件与该名称相同，然后在目录末尾添加一个新条目</li>
-<li>删除文件时，在目录中搜索指定文件，然后释放其分配的空间</li>
+<li>创建新文件时，首先必须搜索目录以确保没有同名文件，然后在目录末尾添加一个新条目</li>
+<li>删除文件时，在目录中搜索指定文件，然后释放为其分配的空间</li>
 </ul>
 </li>
 <li>
@@ -1726,7 +1722,7 @@
 <h3 id="grouping">Grouping<a class="headerlink" href="#grouping" title="Permanent link">⚓︎</a></h3>
 <ul>
 <li>将<span class="heti-skip"><span class="heti-spacing"> </span>n<span class="heti-spacing"> </span></span>个空闲块的地址存储在第一个空闲块中</li>
-<li>这些块中的前<span><span class="heti-spacing"> </span>n</span>−<span>1<span class="heti-spacing"> </span></span>块实际上是空闲的，最后一个块包含另<span class="heti-skip"><span class="heti-spacing"> </span>n<span class="heti-spacing"> </span></span>个空闲块的地址，依此类推</li>
+<li>这些块中的前<span><span class="heti-spacing"> </span>n</span>−<span>1<span class="heti-spacing"> </span></span>块实际上是空闲的，最后一个块包含另<span class="heti-skip"><span class="heti-spacing"> </span>n<span class="heti-spacing"> </span></span>个空闲块的地址，以此类推</li>
 <li>通过该方法可以快速找到大量空闲块的地址</li>
 </ul>
 <blockquote>
