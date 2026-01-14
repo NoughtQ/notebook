@@ -19,7 +19,9 @@
 
 !!! recommend "参考资料"
 
-    - 课件（仅用于期末速成）
+    - 期末速成：
+        - xht 课件
+        - gy 课件
     - 经典学习资料：
         - [Stanford CS144](https://cs144.github.io/)
             - 由于每年都会变，而且前一年的不会归档，所以我把 [25 年](https://web.archive.org/web/20250917125027/https://cs144.github.io/)的用 Wayback Machine 保存起来了
