@@ -1,0 +1,2392 @@
+<!DOCTYPE html>
+<html class="no-js" lang="zh"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="NoughtQ的笔记本，主要记录一些 CS 相关的笔记" name="description"/>
+<meta content="NoughtQ" name="author"/>
+<link href="https://notebook.noughtq.top/software/ge/8.html" rel="canonical"/>
+<link href="7.html" rel="prev"/>
+<link href="9.html" rel="next"/>
+<link href="../../feed_rss_created.xml" rel="alternate" title="RSS 订阅" type="application/rss+xml"/>
+<link href="../../feed_rss_updated.xml" rel="alternate" title="已更新内容的 RSS 订阅" type="application/rss+xml"/>
+<link href="../../assets/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.1" name="generator"/>
+<title>Basics of Animation Technology - NoughtQ的笔记本</title>
+<link href="../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=JetBrains+Mono,+LXGW+WenKai+Screen+GB+Screen:300,300i,400,400i,700,700i%7CJetBrains+Mono,+Consolas:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"JetBrains Mono, LXGW WenKai Screen GB Screen";--md-code-font:"JetBrains Mono, Consolas"}</style>
+<link href="../../css/heti.css" rel="stylesheet"/>
+<link href="../../css/timeline.css" rel="stylesheet"/>
+<link href="../../css/card.css" rel="stylesheet"/>
+<link href="../../css/custom.css" rel="stylesheet"/>
+<link href="../../css/extra_changelog.css" rel="stylesheet"/>
+<link href="../../css/header.css" rel="stylesheet"/>
+<link href="../../css/sidebar.css" rel="stylesheet"/>
+<link href="../../css/neoteroi-css.css" rel="stylesheet"/>
+<link href="../../css/toc_extra.css" rel="stylesheet"/>
+<link href="https://unpkg.com/katex@0/dist/katex.min.css" rel="stylesheet"/>
+<link href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css" rel="stylesheet"/>
+<link href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.css" rel="stylesheet"/>
+<script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-43NH8CVRCJ"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-43NH8CVRCJ",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-43NH8CVRCJ",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+<script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+<link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+<body data-md-color-accent="indigo" data-md-color-primary="indigo" data-md-color-scheme="slate" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#basics-of-animation-technology">
+          跳转至
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header" data-md-component="header">
+<nav aria-label="页眉" class="md-header__inner md-grid">
+<a aria-label="NoughtQ的笔记本" class="md-header__button md-logo" data-md-component="logo" href="../.." title="NoughtQ的笔记本">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.05 9H7.06V6h1.99V4.03H7.06v-1c0-1.11.89-1.99 1.99-1.99h5.98V8l2.47-1.5L20 8V1.04h1c1.05 0 2 .96 2 1.99V17c0 1.03-.95 2-2 2H9.05c-1.05 0-1.99-.95-1.99-2v-1h1.99v-2H7.06v-3h1.99zM1 18h2v-3H1v-2h2v-3H1V8h2V5h2v3H3v2h2v3H3v2h2v3H3v2h2v1h16v2H5a2 2 0 0 1-2-2v-1H1z"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            NoughtQ的笔记本
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              Basics of Animation Technology
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="Dark Mode" class="md-option" data-md-color-accent="indigo" data-md-color-media="(prefer-color-scheme: dark)" data-md-color-primary="indigo" data-md-color-scheme="slate" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="Dark Mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"></path></svg>
+</label>
+<input aria-label="Light Mode" class="md-option" data-md-color-accent="indigo" data-md-color-media="(prefer-color-scheme: light)" data-md-color-primary="indigo" data-md-color-scheme="default" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="Light Mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="搜索" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="搜索" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 256 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path></svg>
+</label>
+<nav aria-label="查找" class="md-search__options">
+<a aria-label="分享" class="md-search__icon md-icon" data-clipboard="" data-clipboard-text="" data-md-component="search-share" href="javascript:void(0)" tabindex="-1" title="分享">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"></path></svg>
+</a>
+<button aria-label="清空当前内容" class="md-search__icon md-icon" tabindex="-1" title="清空当前内容" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header__source">
+<a class="md-source" data-md-component="source" href="https://github.com/noughtq/notebook" title="前往仓库">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    NoughtQ/Notebook
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<nav aria-label="标签" class="md-tabs" data-md-component="tabs">
+<div class="md-grid">
+<ul class="md-tabs__list">
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../index.html">
+          
+  
+  
+    
+  
+  🏫主页
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../lang/index.html">
+          
+  
+  
+    
+  
+  🔡编程语言
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../math/index.html">
+          
+  
+  
+    
+  
+  📊数学相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../algo/index.html">
+          
+  
+  
+    
+  
+  🧮算法相关
+
+        </a>
+</li>
+<li class="md-tabs__item md-tabs__item--active">
+<a class="md-tabs__link" href="../index.html">
+          
+  
+  
+    
+  
+  💾软件相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../sys/index.html">
+          
+  
+  
+    
+  
+  💻系统相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../web/index.html">
+          
+  
+  
+    
+  
+  🌏Web相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../sec/ctf-101/index.html">
+          
+  
+  
+    
+  
+  🛡️信息安全
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../ai/index.html">
+          
+  
+  
+    
+  
+  🤖人工智能
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../misc/index.html">
+          
+  
+  
+    
+  
+  🗃️杂项
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../tools/index.html">
+          
+  
+  
+    
+  
+  🛠️工具
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../papers/index.html">
+          
+  
+  
+    
+  
+  📑论文阅读
+
+        </a>
+</li>
+</ul>
+</div>
+</nav>
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="导航栏" class="md-nav md-nav--primary md-nav--lifted" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="NoughtQ的笔记本" class="md-nav__button md-logo" data-md-component="logo" href="../.." title="NoughtQ的笔记本">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.05 9H7.06V6h1.99V4.03H7.06v-1c0-1.11.89-1.99 1.99-1.99h5.98V8l2.47-1.5L20 8V1.04h1c1.05 0 2 .96 2 1.99V17c0 1.03-.95 2-2 2H9.05c-1.05 0-1.99-.95-1.99-2v-1h1.99v-2H7.06v-3h1.99zM1 18h2v-3H1v-2h2v-3H1V8h2V5h2v3H3v2h2v3H3v2h2v3H3v2h2v1h16v2H5a2 2 0 0 1-2-2v-1H1z"></path></svg>
+</a>
+    NoughtQ的笔记本
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-component="source" href="https://github.com/noughtq/notebook" title="前往仓库">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    NoughtQ/Notebook
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../index.html">
+<span class="md-ellipsis">
+    
+  
+    🏫主页
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../lang/index.html">
+<span class="md-ellipsis">
+    
+  
+    🔡编程语言
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../math/index.html">
+<span class="md-ellipsis">
+    
+  
+    📊数学相关
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../algo/index.html">
+<span class="md-ellipsis">
+    
+  
+    🧮算法相关
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_5" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../index.html">
+<span class="md-ellipsis">
+    
+  
+    💾软件相关
+  
+
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="true" aria-labelledby="__nav_5_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_5">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    💾软件相关
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../dip/index.html">
+<span class="md-ellipsis">
+    
+  
+    图像信息处理
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../cg/index.html">
+<span class="md-ellipsis">
+    
+  
+    计算机图形学
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_5_4" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="index.html">
+<span class="md-ellipsis">
+    
+  
+    游戏引擎
+  
+
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_5_4" id="__nav_5_4_label" tabindex="0">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="true" aria-labelledby="__nav_5_4_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_5_4">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    游戏引擎
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="1.html">
+<span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="2.html">
+<span class="md-ellipsis">
+    
+  
+    Layered Architecture of Game Engine
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="3.html">
+<span class="md-ellipsis">
+    
+  
+    How to Build a Game World
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="4.html">
+<span class="md-ellipsis">
+    
+  
+    Rendering
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_5_4_6" type="checkbox"/>
+<label class="md-nav__link" for="__nav_5_4_6" id="__nav_5_4_6_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Animation
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_5_4_6_label" class="md-nav" data-md-level="3">
+<label class="md-nav__title" for="__nav_5_4_6">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Animation
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    
+  
+    Basics of Animation Technology
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="8.html">
+<span class="md-ellipsis">
+    
+  
+    Basics of Animation Technology
+  
+
+    
+  </span>
+</a>
+<nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2d-animation">
+<span class="md-ellipsis">
+      
+        2D Animation
+      
+    </span>
+</a>
+<nav aria-label="2D Animation" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#sprite-animation">
+<span class="md-ellipsis">
+      
+        Sprite Animation
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#live-2d">
+<span class="md-ellipsis">
+      
+        Live 2D
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#3d-animation">
+<span class="md-ellipsis">
+      
+        3D Animation
+      
+    </span>
+</a>
+<nav aria-label="3D Animation" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#degrees-of-freedom-dof">
+<span class="md-ellipsis">
+      
+        Degrees of Freedom (DoF)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#rigid-hierarchical-animation">
+<span class="md-ellipsis">
+      
+        Rigid Hierarchical Animation
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#per-vertex-animation">
+<span class="md-ellipsis">
+      
+        Per-vertex Animation
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#morph-target-animation">
+<span class="md-ellipsis">
+      
+        Morph Target Animation
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#3d-skinned-animation">
+<span class="md-ellipsis">
+      
+        3D Skinned Animation
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2d-skinned-animation">
+<span class="md-ellipsis">
+      
+        2D Skinned Animation
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#physics-based-animation">
+<span class="md-ellipsis">
+      
+        Physics-based Animation
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#animation-content-creation">
+<span class="md-ellipsis">
+      
+        Animation Content Creation
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#skinned-animation-implementation">
+<span class="md-ellipsis">
+      
+        Skinned Animation Implementation
+      
+    </span>
+</a>
+<nav aria-label="Skinned Animation Implementation" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#math-of-3d-rotation">
+<span class="md-ellipsis">
+      
+        Math of 3D Rotation
+      
+    </span>
+</a>
+<nav aria-label="Math of 3D Rotation" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#euler-angles">
+<span class="md-ellipsis">
+      
+        Euler Angles
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#quaternion">
+<span class="md-ellipsis">
+      
+        Quaternion
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#joint-poses">
+<span class="md-ellipsis">
+      
+        Joint Poses
+      
+    </span>
+</a>
+<nav aria-label="Joint Poses" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#single-joint-skinning">
+<span class="md-ellipsis">
+      
+        Single Joint Skinning
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#weighted-skinning-with-multi-joints">
+<span class="md-ellipsis">
+      
+        Weighted Skinning with Multi-joints
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#interpolation">
+<span class="md-ellipsis">
+      
+        Interpolation
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#animation-compression">
+<span class="md-ellipsis">
+      
+        Animation Compression
+      
+    </span>
+</a>
+<nav aria-label="Animation Compression" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#dof-reduction">
+<span class="md-ellipsis">
+      
+        DoF Reduction
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#keyframe-extraction">
+<span class="md-ellipsis">
+      
+        Keyframe Extraction
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#catmull-rom-spline">
+<span class="md-ellipsis">
+      
+        Catmull-Rom Spline
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#float-quantization">
+<span class="md-ellipsis">
+      
+        Float Quantization
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#quaternion-quantization">
+<span class="md-ellipsis">
+      
+        Quaternion Quantization
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#error-compensation">
+<span class="md-ellipsis">
+      
+        Error Compensation
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#animation-dcc">
+<span class="md-ellipsis">
+      
+        Animation DCC
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="9.html">
+<span class="md-ellipsis">
+    
+  
+    Advanced Animation Technology
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../sys/index.html">
+<span class="md-ellipsis">
+    
+  
+    💻系统相关
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../web/index.html">
+<span class="md-ellipsis">
+    
+  
+    🌏Web相关
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../sec/ctf-101/index.html">
+<span class="md-ellipsis">
+    
+  
+    🛡️信息安全
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ai/index.html">
+<span class="md-ellipsis">
+    
+  
+    🤖人工智能
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../misc/index.html">
+<span class="md-ellipsis">
+    
+  
+    🗃️杂项
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../tools/index.html">
+<span class="md-ellipsis">
+    
+  
+    🛠️工具
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../papers/index.html">
+<span class="md-ellipsis">
+    
+  
+    📑论文阅读
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2d-animation">
+<span class="md-ellipsis">
+      
+        2D Animation
+      
+    </span>
+</a>
+<nav aria-label="2D Animation" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#sprite-animation">
+<span class="md-ellipsis">
+      
+        Sprite Animation
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#live-2d">
+<span class="md-ellipsis">
+      
+        Live 2D
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#3d-animation">
+<span class="md-ellipsis">
+      
+        3D Animation
+      
+    </span>
+</a>
+<nav aria-label="3D Animation" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#degrees-of-freedom-dof">
+<span class="md-ellipsis">
+      
+        Degrees of Freedom (DoF)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#rigid-hierarchical-animation">
+<span class="md-ellipsis">
+      
+        Rigid Hierarchical Animation
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#per-vertex-animation">
+<span class="md-ellipsis">
+      
+        Per-vertex Animation
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#morph-target-animation">
+<span class="md-ellipsis">
+      
+        Morph Target Animation
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#3d-skinned-animation">
+<span class="md-ellipsis">
+      
+        3D Skinned Animation
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2d-skinned-animation">
+<span class="md-ellipsis">
+      
+        2D Skinned Animation
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#physics-based-animation">
+<span class="md-ellipsis">
+      
+        Physics-based Animation
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#animation-content-creation">
+<span class="md-ellipsis">
+      
+        Animation Content Creation
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#skinned-animation-implementation">
+<span class="md-ellipsis">
+      
+        Skinned Animation Implementation
+      
+    </span>
+</a>
+<nav aria-label="Skinned Animation Implementation" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#math-of-3d-rotation">
+<span class="md-ellipsis">
+      
+        Math of 3D Rotation
+      
+    </span>
+</a>
+<nav aria-label="Math of 3D Rotation" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#euler-angles">
+<span class="md-ellipsis">
+      
+        Euler Angles
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#quaternion">
+<span class="md-ellipsis">
+      
+        Quaternion
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#joint-poses">
+<span class="md-ellipsis">
+      
+        Joint Poses
+      
+    </span>
+</a>
+<nav aria-label="Joint Poses" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#single-joint-skinning">
+<span class="md-ellipsis">
+      
+        Single Joint Skinning
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#weighted-skinning-with-multi-joints">
+<span class="md-ellipsis">
+      
+        Weighted Skinning with Multi-joints
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#interpolation">
+<span class="md-ellipsis">
+      
+        Interpolation
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#animation-compression">
+<span class="md-ellipsis">
+      
+        Animation Compression
+      
+    </span>
+</a>
+<nav aria-label="Animation Compression" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#dof-reduction">
+<span class="md-ellipsis">
+      
+        DoF Reduction
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#keyframe-extraction">
+<span class="md-ellipsis">
+      
+        Keyframe Extraction
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#catmull-rom-spline">
+<span class="md-ellipsis">
+      
+        Catmull-Rom Spline
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#float-quantization">
+<span class="md-ellipsis">
+      
+        Float Quantization
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#quaternion-quantization">
+<span class="md-ellipsis">
+      
+        Quaternion Quantization
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#error-compensation">
+<span class="md-ellipsis">
+      
+        Error Compensation
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#animation-dcc">
+<span class="md-ellipsis">
+      
+        Animation DCC
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<nav aria-label="导航栏" class="md-path">
+<ol class="md-path__list">
+<li class="md-path__item">
+<a class="md-path__link" href="../index.html">
+<span class="md-ellipsis">
+    💾软件相关
+  </span>
+</a>
+</li>
+<li class="md-path__item">
+<a class="md-path__link" href="index.html">
+<span class="md-ellipsis">
+    游戏引擎
+  </span>
+</a>
+</li>
+<li class="md-path__item">
+<a class="md-path__link" href="8.html">
+<span class="md-ellipsis">
+    Animation
+  </span>
+</a>
+</li>
+</ol>
+</nav>
+<article class="md-content__inner md-typeset">
+<a class="md-content__button md-icon" href="https://github.com/noughtq/notebook/edit/master/docs/software/ge/8.md" rel="edit" title="编辑此页">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"></path></svg>
+</a>
+<a class="md-content__button md-icon" href="https://github.com/noughtq/notebook/raw/master/docs/software/ge/8.md" title="查看本页的源代码">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"></path></svg>
+</a>
+<h1 id="basics-of-animation-technology">Basics of Animation Technology<a class="headerlink" href="#basics-of-animation-technology" title="Permanent link">⚓︎</a></h1>
+<div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>5232<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 576 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M360.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6m64.6 136.1c-12.5 12.5-12.5 32.8 0 45.3l73.4 73.4-73.4 73.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l96-96c12.5-12.5 12.5-32.8 0-45.3l-96-96c-12.5-12.5-32.8-12.5-45.3 0zm-274.7 0c-12.5-12.5-32.8-12.5-45.3 0l-96 96c-12.5 12.5-12.5 32.8 0 45.3l96 96c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l73.3-73.4c12.5-12.5 12.5-32.8 0-45.3z"></path></svg></span> <span>23<span class="heti-spacing"> </span></span>行代码 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>26<span class="heti-spacing"> </span></span>分钟</p>
+</div>
+<details class="info">
+<summary>背景知识</summary>
+<p>人类从很早开始就尝试表达运动中的物体，这一点从远古时代的壁画和陶器中可见一斑：</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/1.png"><img src="images/lec8/1.png" width="70%"/></a>
+</div><p></p>
+<p>后来，人们发现了视觉残留现象。这是所有显示设备的实现基础。</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/2.gif"><img src="images/lec8/2.gif" width="70%"/></a>
+</div><p></p>
+<p>在电影还没发明出来的年代，人们就通过一些小玩意实现了动画的效果。</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/3.gif"><img src="images/lec8/3.gif" width="70%"/></a>
+</div><p></p>
+<p>电影中的动画技术：</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/4.gif"><img src="images/lec8/4.gif" width="70%"/></a>
+</div><p></p>
+<p>动画制作技术的演进：</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/6.gif"><img src="images/lec8/6.gif" width="80%"/></a>
+</div><p></p>
+<p>游戏中的动画技术：</p>
+<ul>
+<li>
+<p><span>2D<span class="heti-spacing"> </span></span>游戏</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/7.gif"><img src="images/lec8/7.gif" width="80%"/></a>
+</div><p></p>
+<ul>
+<li>中间游戏的人物是制作人根据他弟弟的动作拍摄的照片绘制的（<del>古法动捕</del>）</li>
+<li><span>Doom<span class="heti-spacing"> </span></span>实际上是用<span class="heti-skip"><span class="heti-spacing"> </span>2D<span class="heti-spacing"> </span></span>图像制作的，却能达到<span class="heti-skip"><span class="heti-spacing"> </span>3D<span class="heti-spacing"> </span></span>的效果</li>
+</ul>
+</li>
+<li>
+<p><span>3D<span class="heti-spacing"> </span></span>游戏</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/8.gif"><img src="images/lec8/8.gif" width="80%"/></a>
+</div><p></p>
+</li>
+</ul>
+</details>
+<div class="admonition warning">
+<p class="admonition-title">游戏动画中会遇到的挑战</p>
+<ul>
+<li>
+<p><strong>交互</strong><span>(interactive)<span class="heti-spacing"> </span></span>和<strong>动态</strong><span>(dynamic)<span class="heti-spacing"> </span></span>的动画</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/9.png"><img src="images/lec8/9.png" width="70%"/></a>
+</div><p></p>
+<ul>
+<li>动画要随玩家的交互发生变化</li>
+<li>配合<span class="heti-skip"><span class="heti-spacing"> </span>Gameplay<span class="heti-spacing"> </span></span>系统</li>
+<li>在复杂环境下要做出适当的调整</li>
+</ul>
+</li>
+<li>
+<p><strong>实时性</strong>(real-time)</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/10.png"><img src="images/lec8/10.png" width="70%"/></a>
+</div><p></p>
+<ul>
+<li>每一帧内（&lt; 1/30s）都要做好动画的计算</li>
+<li>大量的动画数据（占据磁盘和内存）</li>
+</ul>
+</li>
+<li>
+<p><strong>真实感</strong>(realism)</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/11.gif"><img src="images/lec8/11.gif" width="80%"/></a>
+</div><p></p>
+<ul>
+<li>更生动的表情</li>
+<li>更真实的体验</li>
+</ul>
+</li>
+</ul>
+</div>
+<h2 id="2d-animation">2D Animation<a class="headerlink" href="#2d-animation" title="Permanent link">⚓︎</a></h2>
+<h3 id="sprite-animation">Sprite Animation<a class="headerlink" href="#sprite-animation" title="Permanent link">⚓︎</a></h3>
+<p><strong>精灵动画</strong><span>(sprite animation)<span class="heti-spacing"> </span></span>相当于电子游戏中的逐帧动画。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/12.gif"><img src="images/lec8/12.gif" width="80%"/></a>
+</div>
+<ul>
+<li><strong>精灵</strong>(sprite)：一种小型位图<span><span class="heti-spacing"> </span>(bitmap)</span>，可以叠加在背景图像上，并且不会干扰背景图像</li>
+<li>可以将帧序列设计得很流畅，即便无限重复也能保持丝滑的动画</li>
+</ul>
+<blockquote>
+<p>让我想到了小学玩的<span><span class="heti-spacing"> </span>Scratch...</span></p>
+</blockquote>
+<details class="example" open="open">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="" id="__tabbed_1_1" name="__tabbed_1" type="radio"/><input id="__tabbed_1_2" name="__tabbed_1" type="radio"/><div class="tabbed-labels"><label for="__tabbed_1_1">用于伪<span class="heti-skip"><span class="heti-spacing"> </span>3D<span class="heti-spacing"> </span></span>动画</label><label for="__tabbed_1_2">现代游戏</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/13.png"><img src="images/lec8/13.png" width="80%"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<ul>
+<li>
+<p><span>2D<span class="heti-spacing"> </span></span>角色</p>
+<ul>
+<li>用于<span class="heti-skip"><span class="heti-spacing"> </span>2D<span class="heti-spacing"> </span></span>背景图像上</li>
+<li>用于<span class="heti-skip"><span class="heti-spacing"> </span>3D<span class="heti-spacing"> </span></span>渲染环境中</li>
+</ul>
+</li>
+<li>
+<p>游戏效果：作为粒子效果的精灵贴图纹理</p>
+</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/14.png"><img src="images/lec8/14.png" width="80%"/></a>
+</div><p></p>
+</div>
+</div>
+</div>
+</details>
+<h3 id="live-2d">Live 2D<a class="headerlink" href="#live-2d" title="Permanent link">⚓︎</a></h3>
+<p><a href="https://www.live2d.com/zh-CHS/"><span>Live 2D<span class="heti-spacing"> </span></span></a>是一种不用<span class="heti-skip"><span class="heti-spacing"> </span>3D<span class="heti-spacing"> </span></span>模型生成<span class="heti-skip"><span class="heti-spacing"> </span>2D<span class="heti-spacing"> </span></span>动画的技术。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/18.png"><img src="images/lec8/18.png" width="80%"/></a>
+</div>
+<blockquote>
+<p>折纸大湿！</p>
+</blockquote>
+<ul>
+<li>通常指的是采用<span class="heti-skip"><span class="heti-spacing"> </span>Live2D Ltd.<span class="heti-spacing"> </span></span>创建的技术的同名软件系列</li>
+<li>常用于开发二次元风格的动态角色</li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/19.png"><img src="images/lec8/19.png" width="80%"/></a>
+</div>
+<ul>
+<li>通过对图像的不同部分和层应用平移、旋转和变换实现动画效果</li>
+<li>结合实时动作捕捉技术，因此被广泛用于虚拟主播（比如<a href="https://en.wikipedia.org/wiki/VTuber?useskin=vector"><span><span class="heti-spacing"> </span>vtuber</span></a>）中</li>
+<li>
+<p>制作<span class="heti-skip"><span class="heti-spacing"> </span>2D<span class="heti-spacing"> </span></span>动画的具体流程：</p>
+<ol>
+<li>
+<p>准备资源</p>
+<ul>
+<li>将原始角色图像划分为不同部位</li>
+<li>设置每个部位的绘制顺序，供后续使用</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/15.png"><img src="images/lec8/15.png" width="80%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>通过使用各部位的控制点变换图像</p>
+<ul>
+<li>为每个部分自动生成 <strong>ArtMesh</strong>，它由顶点、边和多边形组成</li>
+<li>控制点可用于辅助<span class="heti-skip"><span class="heti-spacing"> </span>ArtMesh<span class="heti-spacing"> </span></span>的变换</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/16.png"><img src="images/lec8/16.png" width="80%"/></a>
+</div> <p></p>
+</li>
+<li>
+<p>设置图像的关键帧<span><span class="heti-spacing"> </span>(keyframe)</span>：以辅助动画插值</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/17.png"><img src="images/lec8/17.png" width="80%"/></a>
+</div> <p></p>
+</li>
+</ol>
+</li>
+</ul>
+<h2 id="3d-animation">3D Animation<a class="headerlink" href="#3d-animation" title="Permanent link">⚓︎</a></h2>
+<h3 id="degrees-of-freedom-dof">Degrees of Freedom (DoF)<a class="headerlink" href="#degrees-of-freedom-dof" title="Permanent link">⚓︎</a></h3>
+<p><strong>自由度</strong>(degrees of freedom, <strong>DoF</strong><span>)<span class="heti-spacing"> </span></span>是指系统中独立变量或参数的个数。</p>
+<p>其中刚体的自由度为<span><span class="heti-spacing"> </span>6</span>（<span>xyz<span class="heti-spacing"> </span></span>平移<span class="heti-skip"><span class="heti-spacing"> </span>+ 3<span class="heti-spacing"> </span></span>种旋转<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/20.png"><img src="images/lec8/20.png" width="20%"/></a>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/21.png"><img src="images/lec8/21.png" width="60%"/></a>
+</div>
+<h3 id="rigid-hierarchical-animation">Rigid Hierarchical Animation<a class="headerlink" href="#rigid-hierarchical-animation" title="Permanent link">⚓︎</a></h3>
+<p><strong>刚体层级动画</strong><span>(rigid hierarchical animation)<span class="heti-spacing"> </span></span>是最早的<span class="heti-skip"><span class="heti-spacing"> </span>3D<span class="heti-spacing"> </span></span>角色动画方法。其中角色被建模为一组刚性的部件，它们以层级关系相互约束。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/22.png"><img src="images/lec8/22.png" width="70%"/></a>
+</div>
+<p>该方法的问题是刚体部件之间会穿模。</p>
+<h3 id="per-vertex-animation">Per-vertex Animation<a class="headerlink" href="#per-vertex-animation" title="Permanent link">⚓︎</a></h3>
+<p><strong>逐顶点动画</strong><span>(per-vertex animation)<span class="heti-spacing"> </span></span>是最灵活的方法（每个顶点<span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span>个自由度<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。它主要通过<strong>顶点动画纹理</strong><span>(vertex animation texture, VAT)<span class="heti-spacing"> </span></span>实现，适合复杂的变形，比如布料和流体的运动。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/23.png"><img src="images/lec8/23.png" width="70%"/></a>
+</div>
+<p>缺点是需要大量的数据。</p>
+<h3 id="morph-target-animation">Morph Target Animation<a class="headerlink" href="#morph-target-animation" title="Permanent link">⚓︎</a></h3>
+<p><strong>形态目标动画</strong><span>(morph target animation)<span class="heti-spacing"> </span></span>是前一种方法的变体。它利用带有线性插值（LERP）的关键帧而非序列帧（比如<span><span class="heti-spacing"> </span>30  fps</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，因此更适合用于面部表情。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/24.png"><img src="images/lec8/24.png" width="70%"/></a>
+</div>
+<h3 id="3d-skinned-animation">3D Skinned Animation<a class="headerlink" href="#3d-skinned-animation" title="Permanent link">⚓︎</a></h3>
+<p><strong><span>3D<span class="heti-spacing"> </span></span>蒙皮动画</strong><span>(skinned animation)<span class="heti-spacing"> </span></span>将网格（或皮肤）绑定到骨骼的关节上，其中每个顶点通过多个关节加权计算得到。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/25.png"><img src="images/lec8/25.png" width="70%"/></a>
+</div>
+<details class="recommend" open="open">
+<summary>优点</summary>
+<ul>
+<li>所需数据少于逐顶点动画</li>
+<li>网格的动画很自然（就像人的皮肤一样<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，不会遇到刚体动画中部位之间穿模的情况</li>
+</ul>
+</details>
+<h3 id="2d-skinned-animation">2D Skinned Animation<a class="headerlink" href="#2d-skinned-animation" title="Permanent link">⚓︎</a></h3>
+<p><strong><span>2D<span class="heti-spacing"> </span></span>蒙皮动画</strong>源自<span class="heti-skip"><span class="heti-spacing"> </span>3D<span class="heti-spacing"> </span></span>蒙皮动画：</p>
+<ul>
+<li>将角色分解为各个身体部位</li>
+<li>为身体部件创建网格，并将它们拼接在一起</li>
+<li>绑定<span><span class="heti-spacing"> </span>(rigging)</span>、蒙皮<span class="heti-skip"><span class="heti-spacing"> </span>(skinning)<span class="heti-spacing"> </span></span>和动画</li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/26.png"><img src="images/lec8/26.png" width="70%"/></a>
+</div>
+<h3 id="physics-based-animation">Physics-based Animation<a class="headerlink" href="#physics-based-animation" title="Permanent link">⚓︎</a></h3>
+<p>基于物理的动画技术有：</p>
+<ul>
+<li><strong>布娃娃</strong>(ragdoll)</li>
+<li><strong>布料</strong>和<strong>流体</strong>模拟</li>
+<li><strong>反向运动学</strong>(inverse kinematics, IK)</li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/27.png"><img src="images/lec8/27.png" width="80%"/></a>
+</div>
+<h3 id="animation-content-creation">Animation Content Creation<a class="headerlink" href="#animation-content-creation" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li>数字内容创作者<span class="heti-skip"><span class="heti-spacing"> </span>+<span class="heti-spacing"> </span></span>动画师<span><span class="heti-spacing"> </span>(animator)</span></li>
+<li><strong>动作捕捉</strong>(motion capture)</li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/28.png"><img src="images/lec8/28.png" width="80%"/></a>
+</div>
+<h2 id="skinned-animation-implementation">Skinned Animation Implementation<a class="headerlink" href="#skinned-animation-implementation" title="Permanent link">⚓︎</a></h2>
+<p>为网格添加动画的流程（看起来容易，但实现起来并不简单<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
+<ol>
+<li>为绑定姿态创建网格</li>
+<li>为网格创建绑定骨架<span><span class="heti-spacing"> </span>(skeleton)</span></li>
+<li>将每个顶点的蒙皮权重<span><span class="heti-spacing"> </span>(skinned weights)</span>“绘制<span><span class="heti-spacing"> </span>(paint)</span>”到相关骨架上</li>
+<li>将骨架调整至所需的姿态</li>
+<li>根据骨架和蒙皮权重对蒙皮顶点添加动画</li>
+</ol>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/29.png"><img src="images/lec8/29.png" width="70%"/></a>
+</div>
+<p>我们通常将空间划分为以下几类：</p>
+<ul>
+<li><strong>世界空间</strong>(world space)</li>
+<li><strong>模型空间</strong>(model space)</li>
+<li><strong>局部空间</strong>(local space)：针对每个骨骼而言</li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/30.png"><img src="images/lec8/30.png" width="50%"/></a>
+</div>
+<p>生物体的骨架是一种由称为<strong>关节</strong><span>(joints)<span class="heti-spacing"> </span></span>的刚性部件组成的层次结构。</p>
+<ul>
+<li>其中一个关节被选为<strong>根关节</strong></li>
+<li>除根关节外，每个关节都有一个<strong>父关节</strong></li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/31.png"><img src="images/lec8/31.png" width="80%"/></a>
+</div>
+<p>定义标准骨骼的原因：便于动画资源的复用。</p>
+<details class="abstract" open="open">
+<summary>概念区分：关节<span class="heti-skip"><span class="heti-spacing"> </span>vs<span class="heti-spacing"> </span></span>骨骼</summary>
+<ul>
+<li><strong>关节</strong><span>(joint)<span class="heti-spacing"> </span></span>是动画师直接可以操控的，用来控制运动的对象</li>
+<li><strong>骨骼</strong><span>(bone)<span class="heti-spacing"> </span></span>是关节之间的部位</li>
+</ul>
+<blockquote>
+<p>所以平时我们所说的「骨骼」可能更多地指代的是「关节<heti-adjacent class="heti-adjacent-half">」</heti-adjacent>。</p>
+</blockquote>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/32.png"><img src="images/lec8/32.png" width="50%"/></a>
+</div><p></p>
+</details>
+<p>在现实游戏的人体<span class="heti-skip"><span class="heti-spacing"> </span>(humaniod)<span class="heti-spacing"> </span></span>骨架中，关节数量大致为：</p>
+<ul>
+<li>正常情况：50～<span>100<span class="heti-spacing"> </span></span>个</li>
+<li>有些游戏还会设计<strong>面部</strong>关节和 <strong>gameplay</strong> 关节，因此有超过<span class="heti-skip"><span class="heti-spacing"> </span>300<span class="heti-spacing"> </span></span>个关节的情况</li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/33.png"><img src="images/lec8/33.png" width="50%"/></a>
+</div>
+<p>用于<span class="heti-skip"><span class="heti-spacing"> </span>gameplay<span class="heti-spacing"> </span></span>的关节是一种额外的关节，包括武器关节<span class="heti-skip"><span class="heti-spacing"> </span>(weapon joint)<span class="heti-spacing"> </span></span>和挂载关节<span class="heti-skip"><span class="heti-spacing"> </span>(mount joint)<span class="heti-spacing"> </span></span>等。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/34.png"><img src="images/lec8/34.png" width="80%"/></a>
+</div>
+<p>骨架的起点是<strong>根关节</strong>，一般位于两脚中间，与地面接触，这对于计算跳跃高度之类的任务就很方便。而<strong>骨盆关节</strong><span>(pelvis joint)<span class="heti-spacing"> </span></span>是根关节的第一个子关节，它正好将人体分为上下两部分。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/35.png"><img src="images/lec8/35.png" width="70%"/></a>
+</div>
+<p>像马这样的四足动物，其根关节和骨盆关节的位置也是类似的：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/36.png"><img src="images/lec8/36.png" width="60%"/></a>
+</div>
+<p>将两个模型骨架的<strong>绑定点</strong><span>(bind points)<span class="heti-spacing"> </span></span>连接<span class="heti-skip"><span class="heti-spacing"> </span>(attach)<span class="heti-spacing"> </span></span>起来，就能实现两者的绑定动画。比如对于人骑马的动画，将人和马的绑定点连接起来后，两者的坐标系完全对齐，包括朝向，就好像插槽之间正好卡住。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/37.png"><img src="images/lec8/37.png" width="70%"/></a>
+</div>
+<p><strong>绑定姿态</strong><span>(bind poses)<span class="heti-spacing"> </span></span>是指<span class="heti-skip"><span class="heti-spacing"> </span>3D<span class="heti-spacing"> </span></span>网格在绑定到骨骼之前的姿态</p>
+<ul>
+<li>保持四肢远离身体和彼此，便于将顶点绑定到关节</li>
+<li>通常接近自然姿态</li>
+<li>
+<p>分类：<strong><span>T-<span class="heti-spacing"> </span></span>姿态</strong>和 <strong><span>A-<span class="heti-spacing"> </span></span>姿态</strong></p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/38.png"><img src="images/lec8/38.png" width="60%"/></a>
+</div><p></p>
+<ul>
+<li><span>T-<span class="heti-spacing"> </span></span>姿态的问题是肩膀处精度不够</li>
+<li><span>A-<span class="heti-spacing"> </span></span>姿态中的肩膀更加放松，但更容易变形</li>
+</ul>
+</li>
+</ul>
+<p>而<strong>骨架姿态</strong><span>(skeleton poses)<span class="heti-spacing"> </span></span>是指通过变换绑定姿态中的关节来摆设骨架姿态。关节姿态有 <strong>9 DoFs</strong>：</p>
+<ul>
+<li><strong>朝向</strong>(orientation)（3 DoFs）</li>
+<li><strong>位置</strong>(position)（3 DoFs）</li>
+<li><strong>缩放</strong>(scale)（3 DoFs）</li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/39.png"><img src="images/lec8/39.png" width="70%"/></a>
+</div>
+<h3 id="math-of-3d-rotation">Math of 3D Rotation<a class="headerlink" href="#math-of-3d-rotation" title="Permanent link">⚓︎</a></h3>
+<h4 id="euler-angles">Euler Angles<a class="headerlink" href="#euler-angles" title="Permanent link">⚓︎</a></h4>
+<p><span>2D<span class="heti-spacing"> </span></span>旋转的计算：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/40.png"><img src="images/lec8/40.png" width="80%"/></a>
+</div>
+<p><span>3D<span class="heti-spacing"> </span></span>旋转的计算：<strong>欧拉角</strong>(Euler angle)</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/41.png"><img src="images/lec8/41.png" width="80%"/></a>
+</div>
+<p>欧拉角提供了对<span class="heti-skip"><span class="heti-spacing"> </span>3D<span class="heti-spacing"> </span></span>旋转的简短描述，并被广泛应用于很多领域。欧拉角又称为<strong>翻滚</strong>(roll)-<strong>俯仰</strong>(pitch)-<strong>偏航</strong><span>(yaw)<span class="heti-spacing"> </span></span>角，这也正是构成欧拉角的三种角度。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/42.png"><img src="images/lec8/42.png" width="60%"/></a>
+</div>
+<p>应用：<strong>万向节</strong>(gimbal)</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/44.png"><img src="images/lec8/44.png" width="70%"/></a>
+</div>
+<ul>
+<li>游戏引擎中常用万向节表达旋转（中间图）</li>
+<li>实际运用：相机稳定器、无人机、陀螺仪</li>
+</ul>
+<details class="bug" open="open">
+<summary>欧拉角的问题</summary>
+<ul>
+<li>
+<p><strong>顺序依赖性</strong>(order dependence)：按不同顺序旋转各个角时会导致截然不同的结果</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/43.png"><img src="images/lec8/43.png" width="70%"/></a>
+</div><p></p>
+</li>
+<li>
+<p><strong>万向节死锁</strong>(gimbal lock)（<strong>退化</strong>(degeneration)<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：沿<span class="heti-skip"><span class="heti-spacing"> </span>y<span class="heti-spacing"> </span></span>轴旋转<span class="heti-skip"><span class="heti-spacing"> </span>90°<span class="heti-spacing"> </span></span>后（即<span><span class="heti-spacing"> </span><span class="arithmatex">\(\beta = 90\degree\)</span></span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，沿<span class="heti-skip"><span class="heti-spacing"> </span>z<span class="heti-spacing"> </span></span>轴旋转和沿<span class="heti-skip"><span class="heti-spacing"> </span>x<span class="heti-spacing"> </span></span>轴旋转变得等效了，只有两者旋转角度的差值（<span class="arithmatex">\(t = \alpha - \gamma\)</span>）才有实际的数学意义，此时自由度降至<span><span class="heti-spacing"> </span>1</span></p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/43.png"><img src="images/lec8/43.png" width="70%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>由于<strong>奇异性</strong><span>(singularity)<span class="heti-spacing"> </span></span>问题，使得欧拉角难以插值</p>
+</li>
+<li>难以组合各种旋转（一般需要旋转矩阵）</li>
+<li>沿<span class="heti-skip"><span class="heti-spacing"> </span>x/y/z<span class="heti-spacing"> </span></span>轴旋转容易，但沿特定轴旋转困难</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/46.png"><img src="images/lec8/46.png" width="60%"/></a>
+</div><p></p>
+</details>
+<h4 id="quaternion">Quaternion<a class="headerlink" href="#quaternion" title="Permanent link">⚓︎</a></h4>
+<details class="info">
+<summary>背景知识：复数</summary>
+<ul>
+<li>定义：<span class="arithmatex">\(c = a + bi\ (a, b \in \mathbb{R}, i^2 = -1)\)</span></li>
+<li>向量形式：<span class="arithmatex">\(c = \begin{bmatrix}a \\ b\end{bmatrix}\)</span></li>
+<li>积：<span class="arithmatex">\(\begin{cases}c_1 = a + b i \\ c_2 = c + d i\end{cases} \Rightarrow c_1 c_2 = \begin{bmatrix}a &amp; -b \\ b &amp; a\end{bmatrix} \begin{bmatrix}c \\ d\end{bmatrix}\)</span></li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/47.png"><img src="images/lec8/47.png" width="50%"/></a>
+</div><p></p>
+</details>
+<p><strong>四元数</strong><span>(quaternion)<span class="heti-spacing"> </span></span>的发明者为<a href="https://zh.wikipedia.org/zh-sg/%E5%A8%81%E5%BB%89%C2%B7%E5%93%88%E5%AF%86%E9%A0%93?useskin=vector">哈密顿<span><span class="heti-spacing"> </span>(Hamilton)</span></a>。</p>
+<ul>
+<li>定义：<span class="arithmatex">\(q = a + bi + cj + dk\ (a, b, c, d \in \mathbb{R}, i^2 = j^2 = k^2 = ijk = -1)\)</span></li>
+<li>二元组表示：<span class="arithmatex">\(q = (a, v)\ (v = \begin{bmatrix}b \\ c \\ d\end{bmatrix}, a, b, c, d \in \mathbb{R})\)</span></li>
+<li>积：<span class="arithmatex">\(\begin{cases}q_1 = a + bi + cj + dk\\ q_2 = e + fi + gj + hk\end{cases} \Rightarrow q_1 q_2 = \begin{bmatrix}a &amp; -b &amp; -c &amp; -d \\ b &amp; a &amp; -d &amp; c \\ c &amp; d &amp; a &amp; -b \\ d &amp; -c &amp; b &amp; a\end{bmatrix} \begin{bmatrix}e \\ f \\ g \\ h\end{bmatrix}\)</span></li>
+<li>范数<span><span class="heti-spacing"> </span>(norm)</span>：<span class="arithmatex">\(\|q\| = \sqrt{a^2 + b^2 + c^2 + d^2}\)</span></li>
+<li>共轭<span><span class="heti-spacing"> </span>(conjugate)</span>：<span class="arithmatex">\(q^* = a - bi - cj - dk\)</span></li>
+<li>逆<span><span class="heti-spacing"> </span>(inverse)</span>：<span class="arithmatex">\(q^{-1}q = qq^{-1} = 1\)</span></li>
+</ul>
+<p>现在我们用四元数表示旋转：</p>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/48.png"><img align="right" alt="" src="images/lec8/48.png" width="20%"/></a></p>
+<div class="arithmatex">\[
+q = \begin{bmatrix} 1 &amp; i &amp; j &amp; k \end{bmatrix} \begin{bmatrix} 
+\cos(\gamma / 2)\cos(\beta / 2)\cos(\alpha / 2) + \sin(\gamma / 2)\sin(\beta / 2)\sin(\alpha / 2) \\ 
+\sin(\gamma / 2)\cos(\beta / 2)\cos(\alpha / 2) - \cos(\gamma / 2)\sin(\beta / 2)\sin(\alpha / 2) \\ 
+\cos(\gamma / 2)\sin(\beta / 2)\cos(\alpha / 2) + \sin(\gamma / 2)\cos(\beta / 2)\sin(\alpha / 2) \\ 
+\cos(\gamma / 2)\cos(\beta / 2)\sin(\alpha / 2) - \sin(\gamma / 2)\sin(\beta / 2)\cos(\alpha / 2) 
+\end{bmatrix}
+\]</div>
+<p>而一般的三维向量也可写成四元数形式：</p>
+<div class="arithmatex">\[
+v_q = (0, v) = bi + cj + dk \quad v = \begin{bmatrix}b \\ c \\ d\end{bmatrix}
+\]</div>
+<p>于是旋转后的向量为：
+$$
+v_q' = qv_qq^* = qv_qq^{-1}
+$$</p>
+<p>更一般地，已知<span><span class="heti-spacing"> </span><span class="arithmatex">\(q = (a, b, c, d), \|q\| = 1\)</span></span>，那么旋转后的向量可以这样计算出来：</p>
+<div class="arithmatex">\[
+v' = \begin{bmatrix} 
+1 - 2c^2 - 2d^2 &amp; 2bc - 2ad &amp; 2ac + 2bd \\ 
+2bc + 2ad &amp; 1 - 2b^2 - 2d^2 &amp; 2cd - 2ab \\ 
+2bd - 2ac &amp; 2ab + 2cd &amp; 1 - 2b^2 - 2c^2 
+\end{bmatrix} v
+\]</div>
+<p>通过四元数，我们可以表示更多样的旋转了：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/49.png"><img src="images/lec8/49.png" width="80%"/></a>
+</div>
+<ul>
+<li>逆的求解：<span class="arithmatex">\(q^{-1} = \dfrac{q^*}{\|q\|^2}\)</span></li>
+<li>
+<p>旋转组合：</p>
+<div class="arithmatex">\[
+\begin{aligned}
+q_1^* q_2^* &amp;= (q_2 q_1)^* \\
+v' &amp;= q_1 v q_1^* \\
+v'' &amp;= q_2 v' q_2^* \\
+&amp;= q_2 q_1 v q_1^* q_2^* \\
+&amp;= (q_2 q_1) v (q_2 q_1)^*
+\end{aligned}
+\]</div>
+</li>
+<li>
+<p>两个单位向量间的四元数：</p>
+<div class="arithmatex">\[
+\begin{aligned}
+w &amp;= u \times v \\
+q &amp;= [u \cdot v + \sqrt{(w \cdot w) + (u \cdot v)^2}, w] \\
+(\|u\| &amp;= \|v\| = 1)
+\end{aligned}
+\]</div>
+</li>
+</ul>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/50.png"><img align="right" alt="" src="images/lec8/50.png" width="30%"/></a></p>
+<p>对于向量<span><span class="heti-spacing"> </span><span class="arithmatex">\(v\)</span></span>，沿单位轴<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(u\)</span><span class="heti-spacing"> </span></span>旋转<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\theta\)</span><span class="heti-spacing"> </span></span>角度后的结果向量<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(v_q\)</span><span class="heti-spacing"> </span></span>为：</p>
+<div class="arithmatex">\[
+\begin{aligned}
+q &amp; = (\cos\left(\frac{\theta}{2}\right), \sin\left(\frac{\theta}{2}\right) x_u, \sin\left(\frac{\theta}{2}\right) y_u, \sin\left(\frac{\theta}{2}\right) z_u) \\
+u &amp; = \begin{bmatrix}x_u \\ y_u \\ z_u\end{bmatrix} \\
+v_q' &amp; = qv_qq^* = qv_qq^{-1}
+\end{aligned}
+\]</div>
+<h3 id="joint-poses">Joint Poses<a class="headerlink" href="#joint-poses" title="Permanent link">⚓︎</a></h3>
+<p>关节姿态的三个部分：</p>
+<ul>
+<li>
+<p><strong>朝向</strong>：</p>
+<ul>
+<li>通过旋转改变关节朝向</li>
+<li>大多数骨架姿态仅改变关节的朝向</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/51.png"><img src="images/lec8/51.png" width="70%"/></a>
+</div><p></p>
+</li>
+<li>
+<p><strong>位置</strong>：</p>
+<ul>
+<li>通过平移改变关节位置</li>
+<li>通过向量<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(T\)</span><span class="heti-spacing"> </span></span>将点<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(P\)</span><span class="heti-spacing"> </span></span>平移到<span><span class="heti-spacing"> </span><span class="arithmatex">\(P'\)</span></span></li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/52.png"><img src="images/lec8/52.png" width="70%"/></a>
+</div><p></p>
+<ul>
+<li>在人体骨架中通常不会改变，除了骨盆关节（角色移动<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>、面部关节（表情变化）和其他特殊关节（拉弓）</li>
+<li>通常用于拉伸模型</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/53.png"><img src="images/lec8/53.png" width="70%"/></a>
+</div><p></p>
+</li>
+<li>
+<p><strong>缩放</strong>：</p>
+<ul>
+<li>通过缩放改变模型大小</li>
+<li>均匀<span class="heti-skip"><span class="heti-spacing"> </span>(uniform)/<span class="heti-spacing"> </span></span>非均匀<span class="heti-skip"><span class="heti-spacing"> </span>(non-uniform)<span class="heti-spacing"> </span></span>缩放</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/54.png"><img src="images/lec8/54.png" width="70%"/></a>
+</div><p></p>
+<ul>
+<li>广泛用于面部动画中（捏脸）</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/55.png"><img src="images/lec8/55.png" width="60%"/></a>
+</div><p></p>
+</li>
+</ul>
+<p>关节姿态的旋转、平移和缩放可统一用一个<strong>仿射矩阵</strong>表示：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/56.png"><img src="images/lec8/56.png" width="70%"/></a>
+</div>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/57.png"><img align="right" alt="" src="images/lec8/57.png" width="25%"/></a></p>
+<p>对于蒙皮网格中的一个关节<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(j\)</span><span class="heti-spacing"> </span></span>会存储以下信息：</p>
+<ul>
+<li><span class="arithmatex">\(p(j)\)</span>：<span><span class="arithmatex">\(j\)</span><span class="heti-spacing"> </span></span>的父关节</li>
+<li><span class="arithmatex">\(M_{p(j)}^l\)</span>：<span><span class="arithmatex">\(j\)</span><span class="heti-spacing"> </span></span>的父关节在局部空间的姿态</li>
+</ul>
+<p>令<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(M_J^m\)</span><span class="heti-spacing"> </span></span>为关节<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(J\)</span><span class="heti-spacing"> </span></span>在模型空间的姿态，它就相当于从<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(J\)</span><span class="heti-spacing"> </span></span>到根关节的一系列姿态的累积，即：
+$$
+M_J^m = \sum_{j = J}^0 M_{p(j)}^l
+$$</p>
+<p>之所以记录的是<strong>局部空间</strong>而非模型空间的姿态，是因为：</p>
+<ul>
+<li>局部空间中每次变换所需数据更少，对<strong>插值</strong>或混合而言更方便（左图）</li>
+<li>模型空间中的插值结果不太正确（右图）</li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/58.png"><img src="images/lec8/58.png" width="60%"/></a>
+</div>
+<h4 id="single-joint-skinning">Single Joint Skinning<a class="headerlink" href="#single-joint-skinning" title="Permanent link">⚓︎</a></h4>
+<p>先考虑网格顶点仅和一根骨骼关联的简单情况。</p>
+<ul>
+<li>每个顶点可以被带权重参数的一个或多个关节绑定</li>
+<li>顶点在每个绑定关节的局部空间的位置是固定的</li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/59.gif"><img src="images/lec8/59.gif" width="40%"/></a>
+</div>
+<p>对于绑定到关节<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(J\)</span><span class="heti-spacing"> </span></span>的网格顶点<span><span class="heti-spacing"> </span><span class="arithmatex">\(V\)</span></span>：</p>
+<blockquote>
+<p><strong>绑定姿态</strong>(bind pose)：用于绑定的骨架姿态。</p>
+</blockquote>
+<ul>
+<li><span class="arithmatex">\(V_b^m\)</span>：在绑定姿态下，<span><span class="arithmatex">\(V\)</span><span class="heti-spacing"> </span></span>在模型空间的位置</li>
+<li><span class="arithmatex">\(V_b^l\)</span>：在绑定姿态下，<span><span class="arithmatex">\(V\)</span><span class="heti-spacing"> </span></span>在局部空间的位置</li>
+<li><span class="arithmatex">\(M_{b(J)}^m\)</span>：在绑定姿态下，<span><span class="arithmatex">\(J\)</span><span class="heti-spacing"> </span></span>在模型空间的姿态</li>
+</ul>
+<p>任意时刻<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(t\)</span><span class="heti-spacing"> </span></span>下，<span><span class="arithmatex">\(V\)</span><span class="heti-spacing"> </span></span>在局部空间的位置固定为：
+$$
+V^l(t) \equiv V_b^l = (M_{b(J)}<sup -1="-1">m)</sup> \cdot V_b^m
+$$</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/60.png"><img src="images/lec8/60.png" width="60%"/></a>
+</div>
+<p>结合之前介绍的公式，可以得到时刻<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(t\)</span><span class="heti-spacing"> </span></span>下<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(V\)</span><span class="heti-spacing"> </span></span>在模型空间的位置<span><span class="heti-spacing"> </span><span class="arithmatex">\(V^m(t)\)</span></span>：
+$$
+V^m(t) = M_J^m(t) \cdot V_J^l = \boxed{M_J^m (t) \cdot (M_{b(J)}<sup -1="-1">m)</sup> \cdot V_b^m
+$$}</p>
+<p>框出来的部分为<strong>蒙皮矩阵</strong>(skinning matrix)，记作<span><span class="heti-spacing"> </span><span class="arithmatex">\(K_J\)</span></span>。</p>
+<p>在内存中表示骨架：</p>
+<ul>
+<li>关节名称（字符串或<span class="heti-skip"><span class="heti-spacing"> </span>32<span class="heti-spacing"> </span></span>位长的哈希<span><span class="heti-spacing"> </span>id</span>）</li>
+<li>骨架内节点的父节点索引</li>
+<li>逆绑定矩阵变换是旋转、平移和缩放之积的逆</li>
+</ul>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="k">struct</span><span class="w"> </span><span class="nc">Joint</span>
+</span><span id="__span-0-2"><a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="p">{</span>
+</span><span id="__span-0-3"><a href="#__codelineno-0-3" id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">String</span><span class="w">    </span><span class="n">m_joint_name</span><span class="p">;</span><span class="w">                  </span><span class="c1">// the name of joint</span>
+</span><span id="__span-0-4"><a href="#__codelineno-0-4" id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="w">    </span><span class="n">UInt8</span><span class="w">           </span><span class="n">m_parent_joint_index</span><span class="p">;</span><span class="w">          </span><span class="c1">// the index of parent joint or 0xFF if root</span>
+</span><span id="__span-0-5"><a href="#__codelineno-0-5" id="__codelineno-0-5" name="__codelineno-0-5"></a><span class="w">    </span><span class="n">Translation</span><span class="w">     </span><span class="n">m_bind_pose_translation</span><span class="p">;</span><span class="w">       </span><span class="c1">// bind pose:translation</span>
+</span><span id="__span-0-6"><a href="#__codelineno-0-6" id="__codelineno-0-6" name="__codelineno-0-6"></a><span class="w">    </span><span class="n">Rotation</span><span class="w">        </span><span class="n">m_bind_pose_rotation</span><span class="p">;</span><span class="w">          </span><span class="c1">// bind pose:rotation</span>
+</span><span id="__span-0-7"><a href="#__codelineno-0-7" id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="w">    </span><span class="n">Scale</span><span class="w">           </span><span class="n">m_bind_pose_scale</span><span class="p">;</span><span class="w">             </span><span class="c1">// bind pose:scale</span>
+</span><span id="__span-0-8"><a href="#__codelineno-0-8" id="__codelineno-0-8" name="__codelineno-0-8"></a><span class="hll"><span class="w">    </span><span class="n">Matrix4X3</span><span class="w">       </span><span class="n">m_inverse_bind_pose_transform</span><span class="p">;</span><span class="w"> </span><span class="c1">// inverse bind pose matrix</span>
+</span></span><span id="__span-0-9"><a href="#__codelineno-0-9" id="__codelineno-0-9" name="__codelineno-0-9"></a><span class="p">};</span>
+</span><span id="__span-0-10"><a href="#__codelineno-0-10" id="__codelineno-0-10" name="__codelineno-0-10"></a>
+</span><span id="__span-0-11"><a href="#__codelineno-0-11" id="__codelineno-0-11" name="__codelineno-0-11"></a><span class="k">struct</span><span class="w"> </span><span class="nc">Skeleton</span>
+</span><span id="__span-0-12"><a href="#__codelineno-0-12" id="__codelineno-0-12" name="__codelineno-0-12"></a><span class="p">{</span>
+</span><span id="__span-0-13"><a href="#__codelineno-0-13" id="__codelineno-0-13" name="__codelineno-0-13"></a><span class="w">    </span><span class="n">UInt</span><span class="w">            </span><span class="n">m_joint_count</span><span class="p">;</span><span class="w">  </span><span class="c1">// number of joints</span>
+</span><span id="__span-0-14"><a href="#__codelineno-0-14" id="__codelineno-0-14" name="__codelineno-0-14"></a><span class="w">    </span><span class="n">Joint</span><span class="w">           </span><span class="n">m_joints</span><span class="p">[];</span><span class="w">     </span><span class="c1">// array of joints</span>
+</span><span id="__span-0-15"><a href="#__codelineno-0-15" id="__codelineno-0-15" name="__codelineno-0-15"></a><span class="p">};</span>
+</span></code></pre></div>
+<p><strong>蒙皮矩阵调色盘</strong><span>(palatte)<span class="heti-spacing"> </span></span>是由每个节点的蒙皮矩阵构成的数组，供<span class="heti-skip"><span class="heti-spacing"> </span>GPU<span class="heti-spacing"> </span></span>在着色器中使用。</p>
+<p>优化：将关于<strong>模型空间</strong>到<strong>世界空间</strong>的变换矩阵<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(M^w\)</span><span class="heti-spacing"> </span></span>考虑进来，那么优化后的关节<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(J\)</span><span class="heti-spacing"> </span></span>的蒙皮矩阵为：
+$$
+K_J' = M^w \cdot M_J^m (t) \cdot (M_{b(J)}<sup -1="-1">m)</sup>
+$$</p>
+<h4 id="weighted-skinning-with-multi-joints">Weighted Skinning with Multi-joints<a class="headerlink" href="#weighted-skinning-with-multi-joints" title="Permanent link">⚓︎</a></h4>
+<p>现在考虑将网格顶点<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(V\)</span><span class="heti-spacing"> </span></span>绑定到<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(N\)</span><span class="heti-spacing"> </span></span>个关节点的情况。我们会为每个节点赋予一个权重；记第<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(i\)</span><span class="heti-spacing"> </span></span>个关节的蒙皮权重为<span><span class="heti-spacing"> </span><span class="arithmatex">\(W_i\)</span></span>，要求权重总和为<span><span class="heti-spacing"> </span>1</span>，即<span><span class="heti-spacing"> </span><span class="arithmatex">\(\sum\limits_{i=0}^{N-1} W_i = 1\)</span></span></p>
+<blockquote>
+<p><span><span class="arithmatex">\(N\)</span><span class="heti-spacing"> </span></span>没有上限，但一般不超过<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>个。</p>
+</blockquote>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/61.png"><img src="images/lec8/61.png" width="70%"/></a>
+</div>
+<p>记<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(N\)</span><span class="heti-spacing"> </span></span>个关节分别为<span><span class="heti-spacing"> </span><span class="arithmatex">\(J_0, \dots, J_{N-1}\)</span></span>，并令<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(K_{J_i}(t)\)</span><span class="heti-spacing"> </span></span>为时刻<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(t\)</span><span class="heti-spacing"> </span></span>下关节<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(J_i\)</span><span class="heti-spacing"> </span></span>的蒙皮矩阵，那么：</p>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/62.gif"><img align="right" alt="" src="images/lec8/62.gif" width="30%"/></a></p>
+<ul>
+<li>
+<p>将关节<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(J_i\)</span><span class="heti-spacing"> </span></span>的位置从局部空间变换到模型空间</p>
+<div class="arithmatex">\[
+V_{J_i}^m(t) = K_{J_i}(t) \cdot V_{b(J_i)}^m
+\]</div>
+</li>
+<li>
+<p>因此<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(V\)</span><span class="heti-spacing"> </span></span>在模型空间的位置为：</p>
+<div class="arithmatex">\[
+V^m(t) = \sum_{i=0}^{N-1} W_i \cdot V_{J_i}^m(t)
+\]</div>
+</li>
+</ul>
+<h4 id="interpolation">Interpolation<a class="headerlink" href="#interpolation" title="Permanent link">⚓︎</a></h4>
+<p><strong>片段</strong>(clip)：骨架姿态序列。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/63.png"><img src="images/lec8/63.png" width="70%"/></a>
+</div>
+<p>现在要考虑的问题是在这些连续的姿态间进行插值，即计算关键姿态之间的姿态。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/64.png"><img src="images/lec8/64.png" width="60%"/></a>
+</div>
+<ul>
+<li>
+<p>平移和缩放可直接采用<strong>线性插值</strong>(linear interpolation, <strong>LERP</strong>)</p>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/65.png"><img align="right" alt="" src="images/lec8/65.png" width="30%"/></a></p>
+<div class="arithmatex">\[
+\begin{aligned}
+&amp; f(x) = (1 - \alpha) f(x_1) + \alpha f(x_2) \\
+&amp; \alpha = \frac{x - x_1}{x_2 - x_1}, x_1 &lt; x_2, x \in [x_1, x_2]
+\end{aligned}
+\]</div>
+<ul>
+<li>平移：<span class="arithmatex">\(T(t) = (1 - \alpha) T(t_1) + \alpha T(t_2)\)</span></li>
+<li>缩放：<span class="arithmatex">\(S(t) = (1 - \alpha) S(t_1) + \alpha S(t_2)\)</span></li>
+</ul>
+</li>
+<li>
+<p>旋转采用四元数的 <strong>NLERP</strong>（归一化的线性插值）</p>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/66.gif"><img align="right" alt="" src="images/lec8/66.gif" width="30%"/></a></p>
+<div class="arithmatex">\[
+q_t' = Nlerp(q_{t_1}, q_{t_2}, t) = \frac{(1 - \alpha) q_{t_1} + \alpha q_{t_2}}{\|(1 - \alpha) q_{t_1} + \alpha q_{t_2}\|}
+\]</div>
+<ul>
+<li>
+<p>最短路原则：两个四元数进行点乘，若结果小于<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>则需要反向插值</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/67.png"><img src="images/lec8/67.png" width="70%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>问题：角速度不均匀，中间慢两边快</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/68.png"><img src="images/lec8/68.png" width="40%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>解决方案是 <strong>SLERP</strong>，它做到了均匀的旋转插值</p>
+<div class="arithmatex">\[
+\begin{aligned}
+q_t &amp; = Slerp(q_{t_1}, q_{t_2}, t) = \dfrac{\sin((1 - t)\theta)}{\sin(\theta)} q_{t_1} + \dfrac{\sin(t\theta)}{\sin(\theta)} q_{t_2} \\
+\theta &amp; = \arccos (q_{t_1} \cdot q_{t_2})
+\end{aligned}
+\]</div>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/69.png"><img src="images/lec8/69.png" width="70%"/></a>
+</div><p></p>
+<ul>
+<li>问题：<ul>
+<li>三角函数计算成本大（需提前算好）</li>
+<li>当<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\theta\)</span><span class="heti-spacing"> </span></span>很小时，作为分母的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\sin \theta\)</span><span class="heti-spacing"> </span></span>也很小，导致结果不稳定</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>实践中的做法是将<span class="heti-skip"><span class="heti-spacing"> </span>NLERP<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>SLERP<span class="heti-spacing"> </span></span>结合起来（常用于<span class="heti-skip"><span class="heti-spacing"> </span>3A<span class="heti-spacing"> </span></span>游戏开发中<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：<span><span class="arithmatex">\(\theta\)</span><span class="heti-spacing"> </span></span>大时用<span><span class="heti-spacing"> </span>SLERP</span>，<span><span class="arithmatex">\(\theta\)</span><span class="heti-spacing"> </span></span>小时用<span><span class="heti-spacing"> </span>NLERP</span></p>
+</li>
+</ul>
+</li>
+</ul>
+<hr/>
+<details class="abstract" open="open">
+<summary>简单的动画运行时流水线</summary>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/70.png"><img src="images/lec8/70.png" width="80%"/></a>
+</div><p></p>
+</details>
+<h2 id="animation-compression">Animation Compression<a class="headerlink" href="#animation-compression" title="Permanent link">⚓︎</a></h2>
+<p>存储动画片段时，通常将其分割为多段有关关节姿态的序列，而这些序列会被进一步分割为单独的平移、旋转和缩放轨道。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/71.png"><img src="images/lec8/71.png" width="60%"/></a>
+</div>
+<p>单个动画片段大小估算：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/72.png"><img src="images/lec8/72.png" width="70%"/></a>
+</div>
+<p>由此可见，即便是一小段动画，如果不经过任何压缩，其数据量将是无法容忍的。因此动画压缩是游戏中常用的一种技术。</p>
+<p>一些观察：</p>
+<ul>
+<li>
+<p>动画轨道：对于相同关节，旋转、平移和缩放改变量的差别很大</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/73.png"><img src="images/lec8/73.png" width="70%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>关节：不同关节的运动差别也很大</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/74.png"><img src="images/lec8/74.png" width="70%"/></a>
+</div><p></p>
+</li>
+</ul>
+<h3 id="dof-reduction">DoF Reduction<a class="headerlink" href="#dof-reduction" title="Permanent link">⚓︎</a></h3>
+<p>一种简单的压缩方法是减少部分<span><span class="heti-spacing"> </span>DoF</span>，比如变化量不怎么大的平移和缩放：</p>
+<ul>
+<li>缩放：直接丢掉缩放轨道（除面部关节外，通常不会在人体骨架中改变）</li>
+<li>平移：直接丢掉平移轨道（除骨盆关节、面部关节和其他特殊关节外，通常不会在人体骨架中改变）</li>
+</ul>
+<h3 id="keyframe-extraction">Keyframe Extraction<a class="headerlink" href="#keyframe-extraction" title="Permanent link">⚓︎</a></h3>
+<details class="info" open="open">
+<summary>关键帧</summary>
+<p>动画和电影制作中的<strong>关键帧</strong><span>(keyframes)<span class="heti-spacing"> </span></span>是指定义了任何平滑过渡的起始点和结束点的画面或镜头。</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/75.png"><img src="images/lec8/75.png" width="70%"/></a>
+</div><p></p>
+</details>
+<p>第二种压缩技术是<strong>关键帧提取</strong>(keyframe extraction)，反过来说就是剔除那些可以通过线性插值或相邻帧拟合得到的帧。下面给出伪代码：</p>
+<div class="language-lua highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="nv">KeyFrame</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{}</span>
+</span><span id="__span-1-2"><a href="#__codelineno-1-2" id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="kr">for</span><span class="w"> </span><span class="nv">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="nv">to</span><span class="w"> </span><span class="nv">n</span><span class="o">-</span><span class="mi">1</span><span class="w"> </span><span class="kr">do</span>
+</span><span id="__span-1-3"><a href="#__codelineno-1-3" id="__codelineno-1-3" name="__codelineno-1-3"></a><span class="w">    </span><span class="nv">frame_interp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">Lerp</span><span class="p">(</span><span class="nv">frame</span><span class="p">[</span><span class="nv">i</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="nv">frame</span><span class="p">[</span><span class="nv">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+</span><span id="__span-1-4"><a href="#__codelineno-1-4" id="__codelineno-1-4" name="__codelineno-1-4"></a><span class="w">    </span><span class="nb">error</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">Diff</span><span class="p">(</span><span class="nv">frame</span><span class="p">[</span><span class="nv">i</span><span class="p">],</span><span class="w"> </span><span class="nv">frame_interp</span><span class="p">)</span>
+</span><span id="__span-1-5"><a href="#__codelineno-1-5" id="__codelineno-1-5" name="__codelineno-1-5"></a><span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="nf">isNotAcceptable</span><span class="p">(</span><span class="nb">error</span><span class="p">)</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-1-6"><a href="#__codelineno-1-6" id="__codelineno-1-6" name="__codelineno-1-6"></a><span class="w">        </span><span class="nv">KeyFrame</span><span class="p">.</span><span class="nf">insert</span><span class="p">(</span><span class="nv">frame</span><span class="p">[</span><span class="nv">i</span><span class="p">])</span>
+</span><span id="__span-1-7"><a href="#__codelineno-1-7" id="__codelineno-1-7" name="__codelineno-1-7"></a><span class="w">    </span><span class="kr">end</span>
+</span><span id="__span-1-8"><a href="#__codelineno-1-8" id="__codelineno-1-8" name="__codelineno-1-8"></a><span class="kr">end</span>
+</span></code></pre></div>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/76.png"><img src="images/lec8/76.png" width="70%"/></a>
+</div>
+<h3 id="catmull-rom-spline">Catmull-Rom Spline<a class="headerlink" href="#catmull-rom-spline" title="Permanent link">⚓︎</a></h3>
+<p>为了实现更好的插值效果，实际我们会采用 <strong><span>Catmull-Rom<span class="heti-spacing"> </span></span>样条</strong><span>(spline)<span class="heti-spacing"> </span></span>插值而非<span><span class="heti-spacing"> </span>LERP</span>。</p>
+<ul>
+<li>通过<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>个控制点<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(P_0, \dots, P_3\)</span><span class="heti-spacing"> </span></span>绘制从<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(P_1\)</span><span class="heti-spacing"> </span></span>到<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(P_2\)</span><span class="heti-spacing"> </span></span>的曲线</li>
+<li>
+<p>参数：</p>
+<ul>
+<li><span class="arithmatex">\(\alpha\)</span>（锐度<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：影响曲线在控制点的弯曲程度（通常取<span><span class="heti-spacing"> </span><span class="arithmatex">\(\alpha = 0.5\)</span></span>）</li>
+<li><span class="arithmatex">\(t\)</span>：插值系数</li>
+</ul>
+</li>
+<li>
+<p>在曲线上进行插值（<span><span class="arithmatex">\(t\)</span><span class="heti-spacing"> </span></span>的范围为<span><span class="heti-spacing"> </span><span class="arithmatex">\((0, 1)\)</span></span>）</p>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/77.png"><img align="right" alt="" src="images/lec8/77.png" width="30%"/></a></p>
+<div class="arithmatex">\[
+P(t) = \begin{bmatrix} 1 &amp; t &amp; t^2 &amp; t^3 \end{bmatrix} \begin{bmatrix} 0 &amp; 1 &amp; 0 &amp; 0 \\ -\alpha &amp; 0 &amp; \alpha &amp; 0 \\ 2\alpha &amp; \alpha-3 &amp; 3-2\alpha &amp; -\alpha \\ -\alpha &amp; 2-\alpha &amp; \alpha-2 &amp; \alpha \end{bmatrix} \begin{bmatrix} P_0 \\ P_1 \\ P_2 \\ P_3 \end{bmatrix}
+\]</div>
+</li>
+<li>
+<p>拟合步骤：</p>
+<ol>
+<li>绘制一条<span class="heti-skip"><span class="heti-spacing"> </span>Catmull-Rom<span class="heti-spacing"> </span></span>样条曲线，该曲线中间的两个控制点为原来曲线的两个端点</li>
+<li>像二分搜索一样迭代添加控制点</li>
+<li>通过最接近的<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>个点计算内曲线</li>
+<li>重复上述步骤，直到每帧的误差低于阈值</li>
+</ol>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/78.gif"><img src="images/lec8/78.gif" width="70%"/></a>
+</div><p></p>
+</li>
+</ul>
+<h3 id="float-quantization">Float Quantization<a class="headerlink" href="#float-quantization" title="Permanent link">⚓︎</a></h3>
+<p>下一种压缩方法是使用位数更少的整数来表示有限范围和精度的浮点数。所需位数的计算公式为：
+$$
+DesiredBits = \left\lceil \log_2 \frac{Range}{Accuracy} \right\rceil
+$$</p>
+<p>一般来说，<span>16<span class="heti-spacing"> </span></span>位可以满足游戏引擎中姿态的浮点数范围和精度要求。</p>
+<details class="example">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="" id="__tabbed_2_1" name="__tabbed_2" type="radio"/><input id="__tabbed_2_2" name="__tabbed_2" type="radio"/><div class="tabbed-labels"><label for="__tabbed_2_1">例<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span></label><label for="__tabbed_2_2">例<span><span class="heti-spacing"> </span>2</span></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>平移范围<span><span class="heti-spacing"> </span><span class="arithmatex">\([0, 10]\)</span></span>，精度<span><span class="heti-spacing"> </span><span class="arithmatex">\(0.001\text{m}\)</span></span>：
+$$
+DesiredBits = \left\lceil \log_2 \frac{10}{0.001} \right\rceil = 14 \text{ bits}
+$$</p>
+</div>
+<div class="tabbed-block">
+<p>将<span class="heti-skip"><span class="heti-spacing"> </span>32<span class="heti-spacing"> </span></span>位浮点数线性量化为<span class="heti-skip"><span class="heti-spacing"> </span>16<span class="heti-spacing"> </span></span>位无符号整数：</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/79.png"><img src="images/lec8/79.png" width="70%"/></a>
+</div><p></p>
+</div>
+</div>
+</div>
+</details>
+<h3 id="quaternion-quantization">Quaternion Quantization<a class="headerlink" href="#quaternion-quantization" title="Permanent link">⚓︎</a></h3>
+<p>最后一种压缩技术是四元数量化：</p>
+<ul>
+<li><span>3<span class="heti-spacing"> </span></span>个数足以表示一个<strong>单位四元数</strong>(unit quaternion) <span class="arithmatex">\(q = (a, b, c, \sqrt{1 - (a^2 + b^2 + c^2)})\)</span></li>
+<li>若总能省略绝对值最大的数，这<span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span>个数的范围可限制在<span><span class="heti-spacing"> </span><span class="arithmatex">\([-\dfrac{1}{\sqrt{2}}, \dfrac{1}{\sqrt{2}}]\)</span></span></li>
+</ul>
+<div class="arithmatex">\[
+\begin{aligned}
+a^2 + b^2 + c^2 + d^2 &amp;= 1, |a| \geq \max(|b|, |c|, |d|) \\
+2b^2 &lt; a^2 + b^2 &amp;&lt; a^2 + b^2 + c^2 + d^2 = 1 \\
+b^2 \leq \frac{1}{2} &amp;\Rightarrow -\frac{1}{\sqrt{2}} \leq b \leq \frac{1}{\sqrt{2}} \\
+\text{Similarly, } -\frac{1}{\sqrt{2}} \leq c &amp;\leq \frac{1}{\sqrt{2}} \text{ and } -\frac{1}{\sqrt{2}} \leq d \leq \frac{1}{\sqrt{2}}
+\end{aligned}
+\]</div>
+<p>具体做法：</p>
+<ul>
+<li>使用<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>位表示被抛弃的数</li>
+<li>剩余<span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span>个数每个用<span class="heti-skip"><span class="heti-spacing"> </span>15<span class="heti-spacing"> </span></span>位表示，范围为<span><span class="heti-spacing"> </span><span class="arithmatex">\([-\dfrac{1}{\sqrt{2}}, \dfrac{1}{\sqrt{2}}]\)</span></span>，精度为<span><span class="heti-spacing"> </span><span class="arithmatex">\(\dfrac{\sqrt{2}}{32767} \approx 0.000043\)</span></span></li>
+<li>因此一个四元数的存储大小从<span class="heti-skip"><span class="heti-spacing"> </span>128<span class="heti-spacing"> </span></span>位降至<span class="heti-skip"><span class="heti-spacing"> </span>48<span class="heti-spacing"> </span></span>位</li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/80.png"><img src="images/lec8/80.png" width="80%"/></a>
+</div>
+<hr/>
+<p>无论是浮点数的量化还是四元数的量化，量化的关键点在于找到合适的误差阈值，同时尽可能使用更少的存储位。关键帧提取和量化方法可同时使用，以获得更好的压缩比。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/81.png"><img src="images/lec8/81.png" width="50%"/></a>
+</div>
+<h3 id="error-compensation">Error Compensation<a class="headerlink" href="#error-compensation" title="Permanent link">⚓︎</a></h3>
+<p>动画数据的压缩导致的误差会随骨骼<span class="heti-skip"><span class="heti-spacing"> </span>(bones)<span class="heti-spacing"> </span></span>累积：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/82.png"><img src="images/lec8/82.png" width="40%"/></a>
+</div>
+<p>而一些特殊部位需要较高精度的动画：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/83.png"><img src="images/lec8/83.png" width="70%"/></a>
+</div>
+<p>精度的测量：</p>
+<ul>
+<li>
+<p><strong>数据</strong>误差：计算插值变换数据与原始数据之间的差值误差</p>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/84.png"><img align="right" alt="" src="images/lec8/84.png" width="40%"/></a></p>
+<ul>
+<li>平移误差：<span class="arithmatex">\(\|T_1 - T_2\|\)</span></li>
+<li>旋转误差：<span class="arithmatex">\(\|R_1 - R_2\|\)</span></li>
+<li>缩放误差：<span class="arithmatex">\(\|S_1 - S_2\|\)</span></li>
+</ul>
+</li>
+</ul>
+<p><br/></p>
+<ul>
+<li>
+<p><strong>视觉</strong>误差：计算插值顶点与期望顶点之间的差值误差</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/85.png"><img src="images/lec8/85.png" width="60%"/></a>
+</div><p></p>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/86.png"><img align="right" alt="" src="images/lec8/86.png" width="30%"/></a></p>
+<ul>
+<li>由于计算量太大，难以为每个顶点计算视觉误差</li>
+<li>估计视觉误差：<strong>假顶点距离近似</strong>(fake vertex distance approximation)<ul>
+<li><strong>假顶点</strong>：两个与关节固定距离的垂直虚拟顶点（不与关节旋转轴共线）</li>
+<li>角色骨骼<span><span class="heti-spacing"> </span>2~10 cm</span></li>
+<li>大型动画物体<span><span class="heti-spacing"> </span>1~10 cm</span></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>误差的补偿方法有：</p>
+<ul>
+<li>
+<p><strong>自适应误差边界</strong>(adaptive error margins)：对于从末端到根部的不同关节使用不同的精度阈值，以减少由父关节引起的误差</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/87.png"><img src="images/lec8/87.png" width="70%"/></a>
+</div><p></p>
+</li>
+<li>
+<p><strong>就地校正</strong>(in place correction)</p>
+<ul>
+<li>
+<p>过程</p>
+<ul>
+<li>除根骨骼外在每个骨骼上选择一个点</li>
+<li>计算从根骨骼到每个压缩骨骼的旋转，使标记点最接近其在模型空间中的实际位置</li>
+<li>将旋转添加到压缩数据的变换中</li>
+</ul>
+</li>
+<li>
+<p>优点：解压期间没有额外开销，因为所有数据在压缩时已计算完成</p>
+</li>
+<li>缺点 <ul>
+<li>可能会因为对常量轨道的修改而产生内存开销 </li>
+<li>可能会因为直接更改关键帧数据而产生噪声轨道</li>
+<li>可能需要更多时间压缩</li>
+</ul>
+</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/88.png"><img src="images/lec8/88.png" width="80%"/></a>
+</div><p></p>
+</li>
+</ul>
+<h2 id="animation-dcc">Animation DCC<a class="headerlink" href="#animation-dcc" title="Permanent link">⚓︎</a></h2>
+<p>一般来说，动画 <strong>DCC</strong>（数字内容创建<span><span class="heti-spacing"> </span>(digital content creation)</span>）的流程包括：</p>
+<ul>
+<li>
+<p><strong>网格</strong></p>
+<ul>
+<li>
+<p>构建：</p>
+<ul>
+<li><strong>阻挡</strong><span>(blockout)<span class="heti-spacing"> </span></span>阶段：创建角色的粗略轮廓</li>
+<li><strong>高细节</strong><span>(highpoly)<span class="heti-spacing"> </span></span>阶段：提高建模精度</li>
+<li><strong>低细节</strong><span>(lowpoly)<span class="heti-spacing"> </span></span>阶段：将表面划分为网格</li>
+<li><strong>纹理</strong><span>(texture)<span class="heti-spacing"> </span></span>阶段：为角色添加纹理</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/89.png"><img src="images/lec8/89.png" width="80%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>针对动画调整：</p>
+<ul>
+<li>网格划分对动画创建至关重要，因为网格定义了皮肤的曲线</li>
+<li>如果网格过于稀疏，动画会变得奇怪</li>
+<li>但网格越密集，性能开销越大</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/90.png"><img src="images/lec8/90.png" width="70%"/></a>
+</div><p></p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>骨骼绑定</strong></p>
+<ul>
+<li>
+<p>现代游戏引擎通常会提供现成的骨架，所以只需要从工具箱中拉出一个骨架，和现有模型匹配即可</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/91.gif"><img src="images/lec8/91.gif" width="70%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>添加<span class="heti-skip"><span class="heti-spacing"> </span>gameplay<span class="heti-spacing"> </span></span>关节</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/92.gif"><img src="images/lec8/92.gif" width="70%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>添加根关节</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/93.gif"><img src="images/lec8/93.gif" width="70%"/></a>
+</div><p></p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>皮肤绑定</strong>（<strong>蒙皮</strong>）</p>
+<ul>
+<li>
+<p>自动计算</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/94.gif"><img src="images/lec8/94.gif" width="70%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>手动修正</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/95.gif"><img src="images/lec8/95.gif" width="70%"/></a>
+</div><p></p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>动画制作</strong></p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/96.gif"><img src="images/lec8/96.gif" width="70%"/></a>
+</div><p></p>
+</li>
+<li>
+<p><strong>导出</strong></p>
+<ul>
+<li>一般导出文件格式为 <strong>FBX</strong>，它是由<span class="heti-skip"><span class="heti-spacing"> </span>Autodesk<span class="heti-spacing"> </span></span>开发的专有格式，是游戏行业标准的<span class="heti-skip"><span class="heti-spacing"> </span>3D<span class="heti-spacing"> </span></span>资产交换文件格式</li>
+<li><span>FBX<span class="heti-spacing"> </span></span>包括了模型网格、骨架、蒙皮数据和动画片段</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec8/97.png"><img src="images/lec8/97.png" width="40%"/></a>
+</div><p></p>
+</li>
+</ul>
+<aside class="md-source-file">
+<span class="md-source-file__fact">
+<span class="md-icon" title="最后更新">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"></path></svg>
+</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2026年1月21日 18:21:22 CST">2026年1月21日 18:21:22</span>
+</span>
+<span class="md-source-file__fact">
+<span class="md-icon" title="创建日期">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"></path></svg>
+</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2026年1月21日 18:21:22 CST">2026年1月21日 18:21:22</span>
+</span>
+</aside>
+<p style="font-size: 30px; font-weight: 600">评论区</p>
+<div>
+    如果大家有什么问题或想法，欢迎在下方留言~
+  </div>
+<!-- Insert generated snippet here -->
+<script async="" crossorigin="anonymous" data-category="Announcements" data-category-id="DIC_kwDOMAb9Zs4CfmpP" data-emit-metadata="0" data-input-position="bottom" data-lang="zh-CN" data-mapping="pathname" data-reactions-enabled="1" data-repo="noughtq/notebook" data-repo-id="R_kgDOMAb9Zg" data-strict="0" data-theme="preferred_color_scheme" src="https://giscus.app/client.js">
+</script>
+<!-- Synchronize Giscus theme with palette -->
+<script>
+    var giscus = document.querySelector("script[src*=giscus]")
+
+    // Set palette on initial load
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object") {
+      var theme = palette.color.scheme === "slate"
+        ? "transparent_dark"
+        : "light"
+
+      // Instruct Giscus to set theme
+      giscus.setAttribute("data-theme", theme) 
+    }
+
+    // Register event handlers after documented loaded
+    document.addEventListener("DOMContentLoaded", function() {
+      var ref = document.querySelector("[data-md-component=palette]")
+      ref.addEventListener("change", function() {
+        var palette = __md_get("__palette")
+        if (palette && typeof palette.color === "object") {
+          var theme = palette.color.scheme === "slate"
+            ? "dark"
+            : "light"
+
+          // Instruct Giscus to change theme
+          var frame = document.querySelector(".giscus-frame")
+          frame.contentWindow.postMessage(
+            { giscus: { setConfig: { theme } } },
+            "https://giscus.app"
+          )
+        }
+      })
+    })
+  </script>
+<!-- 标题计数器 -->
+<link href="/css/counter.css" rel="stylesheet"/>
+<!-- 主页个性化 -->
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+<button class="md-top md-icon" data-md-component="top" hidden="" type="button">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  回到页面顶部
+</button>
+</main>
+<footer class="md-footer">
+<nav aria-label="页脚" class="md-footer__inner md-grid">
+<a aria-label="上一页: Render Pipeline, Post-process and Everything" class="md-footer__link md-footer__link--prev" href="7.html">
+<div class="md-footer__button md-icon">
+<svg viewbox="0 0 256 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path></svg>
+</div>
+<div class="md-footer__title">
+<span class="md-footer__direction">
+                上一页
+              </span>
+<div class="md-ellipsis">
+                Render Pipeline, Post-process and Everything
+              </div>
+</div>
+</a>
+<a aria-label="下一页: Advanced Animation Technology" class="md-footer__link md-footer__link--next" href="9.html">
+<div class="md-footer__title">
+<span class="md-footer__direction">
+                下一页
+              </span>
+<div class="md-ellipsis">
+                Advanced Animation Technology
+              </div>
+</div>
+<div class="md-footer__button md-icon">
+<svg viewbox="0 0 256 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M247.1 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L179.2 256 41.9 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"></path></svg>
+</div>
+</a>
+</nav>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright" style="margin-left: 33.5%">
+<div class="md-copyright__highlight" style="text-align: center">
+        Copyright © 2024-2026 <a href="https://github.com/NoughtQ">NoughtQ</a>
+</div>
+    
+    
+      Powered by
+      <a href="https://www.mkdocs.org/" rel="noopener" target="_blank">
+        MkDocs
+      </a>
+      with theme
+      <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+        Material
+      </a>
+      modified by
+      <a href="https://github.com/NoughtQ" rel="noopener" target="_blank">
+        NoughtQ
+      </a>
+<!-- <br> -->
+<div style="text-align: center;">
+<a href="https://icp.gov.moe/?keyword=20252357" target="_blank">萌ICP备20252357号</a>
+</div>
+</div>
+<div class="md-social">
+<a class="md-social__link" href="https://noughtq.top" rel="noopener" target="_blank" title="noughtq.top">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M277.8 8.6c-12.3-11.4-31.3-11.4-43.5 0l-224 208c-9.6 9-12.8 22.9-8 35.1S18.8 272 32 272h16v176c0 35.3 28.7 64 64 64h288c35.3 0 64-28.7 64-64V272h16c13.2 0 25-8.1 29.8-20.3s1.6-26.2-8-35.1zM240 320h32c26.5 0 48 21.5 48 48v96H192v-96c0-26.5 21.5-48 48-48"></path></svg>
+</a>
+<a class="md-social__link" href="https://blog.noughtq.top" rel="noopener" target="_blank" title="blog.noughtq.top">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M224 24c0-13.3 10.7-24 24-24 145.8 0 264 118.2 264 264 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-119.3-96.7-216-216-216-13.3 0-24-10.7-24-24M80 96c26.5 0 48 21.5 48 48v224c0 26.5 21.5 48 48 48s48-21.5 48-48-21.5-48-48-48c-8.8 0-16-7.2-16-16v-64c0-8.8 7.2-16 16-16 79.5 0 144 64.5 144 144s-64.5 144-144 144S32 447.5 32 368V144c0-26.5 21.5-48 48-48m168 0c92.8 0 168 75.2 168 168 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-66.3-53.7-120-120-120-13.3 0-24-10.7-24-24s10.7-24 24-24"></path></svg>
+</a>
+<a class="md-social__link" href="https://github.com/noughtq" rel="noopener" target="_blank" title="github.com">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"></path></svg>
+</a>
+<a class="md-social__link" href="mailto:noughtq666@gmail.com" rel="noopener" target="_blank" title="">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m20 8-8 5-8-5V6l8 5 8-5m0-2H4c-1.11 0-2 .89-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2"></path></svg>
+</a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["content.action.edit", "content.action.view", "content.code.copy", "content.code.annotate", "content.footnote.tooltips", "navigation.footer", "navigation.indexes", "navigation.path", "navigation.prune", "navigation.tabs", "navigation.top", "navigation.tracking", "search.share"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+<script src="../../js/anchor.js"></script>
+<script src="../../js/katex.js"></script>
+<script src="../../js/toc.js"></script>
+<script src="../../js/typed.js"></script>
+<script src="../../js/custom.js"></script>
+<script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+<script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.js"></script>
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>
