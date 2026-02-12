@@ -1,0 +1,1807 @@
+<!DOCTYPE html>
+<html class="no-js" lang="zh"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="NoughtQ的笔记本，主要记录一些 CS 相关的笔记" name="description"/>
+<meta content="NoughtQ" name="author"/>
+<link href="https://notebook.noughtq.top/software/ge/15.html" rel="canonical"/>
+<link href="14.html" rel="prev"/>
+<link href="16.html" rel="next"/>
+<link href="../../feed_rss_created.xml" rel="alternate" title="RSS 订阅" type="application/rss+xml"/>
+<link href="../../feed_rss_updated.xml" rel="alternate" title="已更新内容的 RSS 订阅" type="application/rss+xml"/>
+<link href="../../assets/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.1" name="generator"/>
+<title>Gameplay Complexity and Building Blocks - NoughtQ的笔记本</title>
+<link href="../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=JetBrains+Mono,+LXGW+WenKai+Screen+GB+Screen:300,300i,400,400i,700,700i%7CJetBrains+Mono,+Consolas:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"JetBrains Mono, LXGW WenKai Screen GB Screen";--md-code-font:"JetBrains Mono, Consolas"}</style>
+<link href="../../css/heti.css" rel="stylesheet"/>
+<link href="../../css/timeline.css" rel="stylesheet"/>
+<link href="../../css/card.css" rel="stylesheet"/>
+<link href="../../css/custom.css" rel="stylesheet"/>
+<link href="../../css/extra_changelog.css" rel="stylesheet"/>
+<link href="../../css/header.css" rel="stylesheet"/>
+<link href="../../css/sidebar.css" rel="stylesheet"/>
+<link href="../../css/neoteroi-css.css" rel="stylesheet"/>
+<link href="../../css/toc_extra.css" rel="stylesheet"/>
+<link href="https://unpkg.com/katex@0/dist/katex.min.css" rel="stylesheet"/>
+<link href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css" rel="stylesheet"/>
+<link href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.css" rel="stylesheet"/>
+<script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-43NH8CVRCJ"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-43NH8CVRCJ",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-43NH8CVRCJ",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+<script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+<link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+<body data-md-color-accent="indigo" data-md-color-primary="indigo" data-md-color-scheme="slate" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#gameplay-complexity-and-building-blocks">
+          跳转至
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header" data-md-component="header">
+<nav aria-label="页眉" class="md-header__inner md-grid">
+<a aria-label="NoughtQ的笔记本" class="md-header__button md-logo" data-md-component="logo" href="../.." title="NoughtQ的笔记本">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.05 9H7.06V6h1.99V4.03H7.06v-1c0-1.11.89-1.99 1.99-1.99h5.98V8l2.47-1.5L20 8V1.04h1c1.05 0 2 .96 2 1.99V17c0 1.03-.95 2-2 2H9.05c-1.05 0-1.99-.95-1.99-2v-1h1.99v-2H7.06v-3h1.99zM1 18h2v-3H1v-2h2v-3H1V8h2V5h2v3H3v2h2v3H3v2h2v3H3v2h2v1h16v2H5a2 2 0 0 1-2-2v-1H1z"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            NoughtQ的笔记本
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              Gameplay Complexity and Building Blocks
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="Dark Mode" class="md-option" data-md-color-accent="indigo" data-md-color-media="(prefer-color-scheme: dark)" data-md-color-primary="indigo" data-md-color-scheme="slate" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="Dark Mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"></path></svg>
+</label>
+<input aria-label="Light Mode" class="md-option" data-md-color-accent="indigo" data-md-color-media="(prefer-color-scheme: light)" data-md-color-primary="indigo" data-md-color-scheme="default" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="Light Mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="搜索" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="搜索" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 256 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path></svg>
+</label>
+<nav aria-label="查找" class="md-search__options">
+<a aria-label="分享" class="md-search__icon md-icon" data-clipboard="" data-clipboard-text="" data-md-component="search-share" href="javascript:void(0)" tabindex="-1" title="分享">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"></path></svg>
+</a>
+<button aria-label="清空当前内容" class="md-search__icon md-icon" tabindex="-1" title="清空当前内容" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header__source">
+<a class="md-source" data-md-component="source" href="https://github.com/noughtq/notebook" title="前往仓库">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    NoughtQ/Notebook
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<nav aria-label="标签" class="md-tabs" data-md-component="tabs">
+<div class="md-grid">
+<ul class="md-tabs__list">
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../index.html">
+          
+  
+  
+    
+  
+  🏫主页
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../lang/index.html">
+          
+  
+  
+    
+  
+  🔡编程语言
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../math/index.html">
+          
+  
+  
+    
+  
+  📊数学相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../algo/index.html">
+          
+  
+  
+    
+  
+  🧮算法相关
+
+        </a>
+</li>
+<li class="md-tabs__item md-tabs__item--active">
+<a class="md-tabs__link" href="../index.html">
+          
+  
+  
+    
+  
+  💾软件相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../sys/index.html">
+          
+  
+  
+    
+  
+  💻系统相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../web/index.html">
+          
+  
+  
+    
+  
+  🌏Web相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../sec/ctf-101/index.html">
+          
+  
+  
+    
+  
+  🛡️信息安全
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../ai/index.html">
+          
+  
+  
+    
+  
+  🤖人工智能
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../misc/index.html">
+          
+  
+  
+    
+  
+  🗃️杂项
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../tools/index.html">
+          
+  
+  
+    
+  
+  🛠️工具
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../papers/index.html">
+          
+  
+  
+    
+  
+  📑论文阅读
+
+        </a>
+</li>
+</ul>
+</div>
+</nav>
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="导航栏" class="md-nav md-nav--primary md-nav--lifted" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="NoughtQ的笔记本" class="md-nav__button md-logo" data-md-component="logo" href="../.." title="NoughtQ的笔记本">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.05 9H7.06V6h1.99V4.03H7.06v-1c0-1.11.89-1.99 1.99-1.99h5.98V8l2.47-1.5L20 8V1.04h1c1.05 0 2 .96 2 1.99V17c0 1.03-.95 2-2 2H9.05c-1.05 0-1.99-.95-1.99-2v-1h1.99v-2H7.06v-3h1.99zM1 18h2v-3H1v-2h2v-3H1V8h2V5h2v3H3v2h2v3H3v2h2v3H3v2h2v1h16v2H5a2 2 0 0 1-2-2v-1H1z"></path></svg>
+</a>
+    NoughtQ的笔记本
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-component="source" href="https://github.com/noughtq/notebook" title="前往仓库">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    NoughtQ/Notebook
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../index.html">
+<span class="md-ellipsis">
+    
+  
+    🏫主页
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../lang/index.html">
+<span class="md-ellipsis">
+    
+  
+    🔡编程语言
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../math/index.html">
+<span class="md-ellipsis">
+    
+  
+    📊数学相关
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../algo/index.html">
+<span class="md-ellipsis">
+    
+  
+    🧮算法相关
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_5" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../index.html">
+<span class="md-ellipsis">
+    
+  
+    💾软件相关
+  
+
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="true" aria-labelledby="__nav_5_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_5">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    💾软件相关
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../dip/index.html">
+<span class="md-ellipsis">
+    
+  
+    图像信息处理
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../se/index.html">
+<span class="md-ellipsis">
+    
+  
+    软件工程
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../mt/index.html">
+<span class="md-ellipsis">
+    
+  
+    多媒体技术
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../cg/index.html">
+<span class="md-ellipsis">
+    
+  
+    计算机图形学
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_5_6" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="index.html">
+<span class="md-ellipsis">
+    
+  
+    游戏引擎
+  
+
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_5_6" id="__nav_5_6_label" tabindex="0">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="true" aria-labelledby="__nav_5_6_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_5_6">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    游戏引擎
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="1.html">
+<span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="2.html">
+<span class="md-ellipsis">
+    
+  
+    Layered Architecture of Game Engine
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="3.html">
+<span class="md-ellipsis">
+    
+  
+    How to Build a Game World
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="4.html">
+<span class="md-ellipsis">
+    
+  
+    Rendering
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="8.html">
+<span class="md-ellipsis">
+    
+  
+    Animation
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="10.html">
+<span class="md-ellipsis">
+    
+  
+    Physics
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="12.html">
+<span class="md-ellipsis">
+    
+  
+    Effects
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="13.html">
+<span class="md-ellipsis">
+    
+  
+    Tool Chains
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_5_6_10" type="checkbox"/>
+<label class="md-nav__link" for="__nav_5_6_10" id="__nav_5_6_10_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Gameplay
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_5_6_10_label" class="md-nav" data-md-level="3">
+<label class="md-nav__title" for="__nav_5_6_10">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Gameplay
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    
+  
+    Gameplay Complexity and Building Blocks
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="15.html">
+<span class="md-ellipsis">
+    
+  
+    Gameplay Complexity and Building Blocks
+  
+
+    
+  </span>
+</a>
+<nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#event-mechanism">
+<span class="md-ellipsis">
+      
+        Event Mechanism
+      
+    </span>
+</a>
+<nav aria-label="Event Mechanism" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#event-definition">
+<span class="md-ellipsis">
+      
+        Event Definition
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#callback-registration">
+<span class="md-ellipsis">
+      
+        Callback Registration
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#event-dispatching">
+<span class="md-ellipsis">
+      
+        Event Dispatching
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#script-system">
+<span class="md-ellipsis">
+      
+        Script System
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#visual-scripts">
+<span class="md-ellipsis">
+      
+        Visual Scripts
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#3c">
+<span class="md-ellipsis">
+      
+        3C
+      
+    </span>
+</a>
+<nav aria-label="3C" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#character">
+<span class="md-ellipsis">
+      
+        Character
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#control">
+<span class="md-ellipsis">
+      
+        Control
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#camera">
+<span class="md-ellipsis">
+      
+        Camera
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="16.html">
+<span class="md-ellipsis">
+    
+  
+    Basic Artificial Intelligence
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="17.html">
+<span class="md-ellipsis">
+    
+  
+    Advanced Artificial Intelligence
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../sys/index.html">
+<span class="md-ellipsis">
+    
+  
+    💻系统相关
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../web/index.html">
+<span class="md-ellipsis">
+    
+  
+    🌏Web相关
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../sec/ctf-101/index.html">
+<span class="md-ellipsis">
+    
+  
+    🛡️信息安全
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ai/index.html">
+<span class="md-ellipsis">
+    
+  
+    🤖人工智能
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../misc/index.html">
+<span class="md-ellipsis">
+    
+  
+    🗃️杂项
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../tools/index.html">
+<span class="md-ellipsis">
+    
+  
+    🛠️工具
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../papers/index.html">
+<span class="md-ellipsis">
+    
+  
+    📑论文阅读
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#event-mechanism">
+<span class="md-ellipsis">
+      
+        Event Mechanism
+      
+    </span>
+</a>
+<nav aria-label="Event Mechanism" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#event-definition">
+<span class="md-ellipsis">
+      
+        Event Definition
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#callback-registration">
+<span class="md-ellipsis">
+      
+        Callback Registration
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#event-dispatching">
+<span class="md-ellipsis">
+      
+        Event Dispatching
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#script-system">
+<span class="md-ellipsis">
+      
+        Script System
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#visual-scripts">
+<span class="md-ellipsis">
+      
+        Visual Scripts
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#3c">
+<span class="md-ellipsis">
+      
+        3C
+      
+    </span>
+</a>
+<nav aria-label="3C" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#character">
+<span class="md-ellipsis">
+      
+        Character
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#control">
+<span class="md-ellipsis">
+      
+        Control
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#camera">
+<span class="md-ellipsis">
+      
+        Camera
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<nav aria-label="导航栏" class="md-path">
+<ol class="md-path__list">
+<li class="md-path__item">
+<a class="md-path__link" href="../index.html">
+<span class="md-ellipsis">
+    💾软件相关
+  </span>
+</a>
+</li>
+<li class="md-path__item">
+<a class="md-path__link" href="index.html">
+<span class="md-ellipsis">
+    游戏引擎
+  </span>
+</a>
+</li>
+<li class="md-path__item">
+<a class="md-path__link" href="15.html">
+<span class="md-ellipsis">
+    Gameplay
+  </span>
+</a>
+</li>
+</ol>
+</nav>
+<article class="md-content__inner md-typeset">
+<a class="md-content__button md-icon" href="https://github.com/noughtq/notebook/edit/master/docs/software/ge/15.md" rel="edit" title="编辑此页">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"></path></svg>
+</a>
+<a class="md-content__button md-icon" href="https://github.com/noughtq/notebook/raw/master/docs/software/ge/15.md" title="查看本页的源代码">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"></path></svg>
+</a>
+<h1 id="gameplay-complexity-and-building-blocks">Gameplay Complexity and Building Blocks<a class="headerlink" href="#gameplay-complexity-and-building-blocks" title="Permanent link">⚓︎</a></h1>
+<div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>3740<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 576 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M360.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6m64.6 136.1c-12.5 12.5-12.5 32.8 0 45.3l73.4 73.4-73.4 73.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l96-96c12.5-12.5 12.5-32.8 0-45.3l-96-96c-12.5-12.5-32.8-12.5-45.3 0zm-274.7 0c-12.5-12.5-32.8-12.5-45.3 0l-96 96c-12.5 12.5-12.5 32.8 0 45.3l96 96c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l73.3-73.4c12.5-12.5 12.5-32.8 0-45.3z"></path></svg></span> <span>33<span class="heti-spacing"> </span></span>行代码 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>19<span class="heti-spacing"> </span></span>分钟</p>
+</div>
+<details class="warning" open="open">
+<summary>游戏玩法的挑战</summary>
+<ul>
+<li>
+<p>多系统之间的协作</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/1.png"><img src="images/lec15/1.png" width="70%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>即便在同一游戏中，可能也有多个游戏玩法</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/2.png"><img src="images/lec15/2.png" width="70%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>快速迭代</p>
+<ul>
+<li>例子：<span>Epic<span class="heti-spacing"> </span></span>称他们借助《堡垒之夜》的基本框架，在大约两个月内迅速开发出一个大逃杀模式</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/3.png"><img src="images/lec15/3.png" width="70%"/></a>
+</div><p></p>
+</li>
+</ul>
+</details>
+<h2 id="event-mechanism">Event Mechanism<a class="headerlink" href="#event-mechanism" title="Permanent link">⚓︎</a></h2>
+<p>我们早在<a href="3.html#events">第三讲</a>就已经介绍过事件的大致原理。若有遗忘，建议先点击链接回顾后再继续往下阅读，下面将不再赘述。</p>
+<p>更进一步，在游戏引擎中常用的一种设计模式是<strong>发布<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>订阅模式</strong>(publish-subscribe pattern)。</p>
+<ul>
+<li><strong>发布者</strong><span>(publisher)<span class="heti-spacing"> </span></span>将发布的消息（事件）分类</li>
+<li><strong>订阅者</strong><span>(subscriber)<span class="heti-spacing"> </span></span>只接收感兴趣的消息（事件<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，无需知道这些消息来自哪些发布者</li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/4.png"><img src="images/lec15/4.png" width="80%"/></a>
+</div>
+<p>发布<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>订阅模式由三部分组成：</p>
+<ul>
+<li><strong>事件定义</strong>(event definition)</li>
+<li><strong>回调注册</strong>(callback registration)</li>
+<li><strong>事件分发</strong>(event dispatching)</li>
+</ul>
+<h3 id="event-definition">Event Definition<a class="headerlink" href="#event-definition" title="Permanent link">⚓︎</a></h3>
+<p>事件的定义包括：</p>
+<ul>
+<li><strong>事件类型</strong>(type)</li>
+<li><strong>事件参数</strong>(argument)</li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/5.png"><img src="images/lec15/5.png" width="70%"/></a>
+</div>
+<p>由于玩法是随时变化的，所以利用硬编码实现事件的定义是不太现实的。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/6.png"><img src="images/lec15/6.png" width="80%"/></a>
+</div>
+<p>而在<span class="heti-skip"><span class="heti-spacing"> </span>UE<span class="heti-spacing"> </span></span>中，事件定义可通过上一讲介绍的<a href="14.html#reflection-and-gameplay">反射</a>机制和代码生成器，以可视化的方式很容易地得到实现。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/7.png"><img src="images/lec15/7.png" width="70%"/></a>
+</div>
+<p>但我们还得考虑一个问题：如果设计师每对某个事件做修改，那么所有代码就得重新编译一遍，这样看起来很麻烦啊。仍然以<span class="heti-skip"><span class="heti-spacing"> </span>UE<span class="heti-spacing"> </span></span>为例，它的做法是：通过上述方法定义的事件本质上还是<span class="heti-skip"><span class="heti-spacing"> </span>C++<span class="heti-spacing"> </span></span>代码，如果对事件做了修改，那么仅需重新编译对应的代码，在引擎运行时将其看作一段<span class="heti-skip"><span class="heti-spacing"> </span>DLL<span class="heti-spacing"> </span></span>注入进去。其他引擎也有各自的解决方案，比如通过别的脚本语言定义事件，这里就不展开了。</p>
+<h3 id="callback-registration">Callback Registration<a class="headerlink" href="#callback-registration" title="Permanent link">⚓︎</a></h3>
+<p><strong>回调</strong><span>(callback)<span class="heti-spacing"> </span></span>函数是一种任何作为其他代码参数传递的可执行代码引用。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/8.png"><img src="images/lec15/8.png" width="70%"/></a>
+</div>
+<p>回调函数的注册和执行的时间点是不同的。正常的时间顺序都是先注册后执行的。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/9.png"><img src="images/lec15/9.png" width="80%"/></a>
+</div>
+<p>引擎中一个很容易出现的问题是对象的生命周期和回调函数安全性。比如一个对象已经被删掉了，但由于代码设计缺陷，在这之后仍然调用了一个和该对象相关的回调函数。此时原本表示该对象的变量是一个野指针，因此调用回调函数后程序就很有可能崩溃掉。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/10.png"><img src="images/lec15/10.png" width="70%"/></a>
+</div>
+<p>解决方案有：</p>
+<ul>
+<li>
+<p><strong>强引用</strong>(strong reference)：确保在删除对象之前注销回调函数，以避免内存泄漏问题</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/11.png"><img src="images/lec15/11.png" width="70%"/></a>
+</div><p></p>
+<ul>
+<li>问题：要求过于严格，导致留在内存中的东西越来越多，所以现在很少这么做了</li>
+</ul>
+</li>
+<li>
+<p><strong>弱引用</strong>(weak reference)：允许直接删除对象，但每次调用回调函数前会先检查其依赖的对象是否存在
+    &gt;很像 C++ 的智能指针</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/12.png"><img src="images/lec15/12.png" width="70%"/></a>
+</div><p></p>
+</li>
+</ul>
+<h3 id="event-dispatching">Event Dispatching<a class="headerlink" href="#event-dispatching" title="Permanent link">⚓︎</a></h3>
+<p><strong>事件分发</strong>是指向合适的目的地发送事件的功能。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/13.png"><img src="images/lec15/13.png" width="60%"/></a>
+</div>
+<p>分发的实现方法有：</p>
+<ul>
+<li>
+<p><strong>即时</strong><span>(immediate)<span class="heti-spacing"> </span></span>分发：父函数在回调函数返回后立即返回</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/14.png"><img src="images/lec15/14.png" width="60%"/></a>
+</div><p></p>
+<ul>
+<li>
+<p>问题：</p>
+<ul>
+<li>
+<p>假如一枚炸弹爆炸了（一个事件<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，那它会引爆周围所有的炸弹，以此类推，这样回调函数的调用栈会变得相当深</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/15.png"><img src="images/lec15/15.png" width="70%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>被其他函数阻塞：假如子弹击中角色，这引发的一个事件是流血效果，但这个粒子效果无法瞬间完成，因此会阻塞后续函数的进行，从而导致游戏帧率不稳定</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/16.png"><img src="images/lec15/16.png" width="80%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>难以并行化：函数调用是一层套一层的，很难将这些运算并行化</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/17.png"><img src="images/lec15/17.png" width="80%"/></a>
+</div><p></p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>事件队列</strong>(event queue)</p>
+<ul>
+<li>
+<p>基本实现：将事件存储在队列中，以便在未来任意时间中处理</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/18.png"><img src="images/lec15/18.png" width="60%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>通过事件<strong>序列化</strong>和<strong>反序列化</strong>（借助反射机制）来存储不同类型的事件</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/19.png"><img src="images/lec15/19.png" width="70%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>具体方式：</p>
+<ul>
+<li>
+<p><strong>环形</strong>缓冲区（循环队列）</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/20.gif"><img src="images/lec15/20.gif" width="50%"/></a>
+</div><p></p>
+</li>
+<li>
+<p><strong>批处理</strong>(batching)：对事件分类，按不同类别划分多个队列，便于调试</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/21.png"><img src="images/lec15/21.png" width="80%"/></a>
+</div><p></p>
+</li>
+</ul>
+</li>
+<li>
+<p>问题：</p>
+<ul>
+<li>
+<p>时间线无法由发布者决定，也就是说无法保证事件的执行顺序</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/22.png"><img src="images/lec15/22.png" width="80%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>单帧延迟：由于事件触发的连锁反应，后面的事件可能来不及在同一帧中表现出来，得到下一帧再发生，这样的表现效果可能会怪怪的</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/23.png"><img src="images/lec15/23.png" width="90%"/></a>
+</div><p></p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="script-system">Script System<a class="headerlink" href="#script-system" title="Permanent link">⚓︎</a></h2>
+<p>早期游戏中，游戏逻辑的编程通常采用的是<strong>编译型语言</strong>(compiled language)，且大多为<span><span class="heti-spacing"> </span>C/C++</span>。因为这类语言不仅相比汇编语言更易使用，而且编译成机器码后执行效率也很高。</p>
+<details class="example">
+<summary>例子</summary>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">Player::tick</span><span class="p">(</span><span class="n">Float</span><span class="w"> </span><span class="n">delta</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-2"><a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="w">    </span><span class="n">updateDirection</span><span class="p">();</span>
+</span><span id="__span-0-3"><a href="#__codelineno-0-3" id="__codelineno-0-3" name="__codelineno-0-3"></a>
+</span><span id="__span-0-4"><a href="#__codelineno-0-4" id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">isKeyPressed</span><span class="p">(</span><span class="n">MOUSE_LEFT</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-5"><a href="#__codelineno-0-5" id="__codelineno-0-5" name="__codelineno-0-5"></a><span class="w">        </span><span class="n">fire</span><span class="p">();</span>
+</span><span id="__span-0-6"><a href="#__codelineno-0-6" id="__codelineno-0-6" name="__codelineno-0-6"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-0-7"><a href="#__codelineno-0-7" id="__codelineno-0-7" name="__codelineno-0-7"></a>
+</span><span id="__span-0-8"><a href="#__codelineno-0-8" id="__codelineno-0-8" name="__codelineno-0-8"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">isKeyDown</span><span class="p">(</span><span class="n">KEY_W</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-9"><a href="#__codelineno-0-9" id="__codelineno-0-9" name="__codelineno-0-9"></a><span class="w">        </span><span class="n">moveForward</span><span class="p">(</span><span class="n">delta</span><span class="p">);</span>
+</span><span id="__span-0-10"><a href="#__codelineno-0-10" id="__codelineno-0-10" name="__codelineno-0-10"></a><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">isKeyDown</span><span class="p">(</span><span class="n">KEY_S</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-11"><a href="#__codelineno-0-11" id="__codelineno-0-11" name="__codelineno-0-11"></a><span class="w">        </span><span class="n">moveBackward</span><span class="p">(</span><span class="n">delta</span><span class="p">);</span>
+</span><span id="__span-0-12"><a href="#__codelineno-0-12" id="__codelineno-0-12" name="__codelineno-0-12"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-0-13"><a href="#__codelineno-0-13" id="__codelineno-0-13" name="__codelineno-0-13"></a>
+</span><span id="__span-0-14"><a href="#__codelineno-0-14" id="__codelineno-0-14" name="__codelineno-0-14"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">isKeyDown</span><span class="p">(</span><span class="n">KEY_A</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-15"><a href="#__codelineno-0-15" id="__codelineno-0-15" name="__codelineno-0-15"></a><span class="w">        </span><span class="n">moveLeftward</span><span class="p">(</span><span class="n">delta</span><span class="p">);</span>
+</span><span id="__span-0-16"><a href="#__codelineno-0-16" id="__codelineno-0-16" name="__codelineno-0-16"></a><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">isKeyDown</span><span class="p">(</span><span class="n">KEY_D</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-17"><a href="#__codelineno-0-17" id="__codelineno-0-17" name="__codelineno-0-17"></a><span class="w">        </span><span class="n">moveRightward</span><span class="p">(</span><span class="n">delta</span><span class="p">);</span>
+</span><span id="__span-0-18"><a href="#__codelineno-0-18" id="__codelineno-0-18" name="__codelineno-0-18"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-0-19"><a href="#__codelineno-0-19" id="__codelineno-0-19" name="__codelineno-0-19"></a>
+</span><span id="__span-0-20"><a href="#__codelineno-0-20" id="__codelineno-0-20" name="__codelineno-0-20"></a><span class="w">    </span><span class="p">...</span>
+</span><span id="__span-0-21"><a href="#__codelineno-0-21" id="__codelineno-0-21" name="__codelineno-0-21"></a><span class="p">}</span>
+</span></code></pre></div>
+</details>
+<p>但随着硬件进步，游戏需求也变得愈加复杂，要求游戏逻辑能够做到快速迭代，这边暴露出编译型语言的种种弊端：</p>
+<ul>
+<li>即便稍作修改也要重新编译整个程序</li>
+<li>若代码不正确，程序很容易就崩溃</li>
+<li>设计师也是游戏逻辑的开发者，虽然他们的代码基础不多，但是他们需要对游戏逻辑进行直接控制；另外艺术家也有在运行时环境下快速调整资产内容的需求</li>
+</ul>
+<p>因此现代游戏开发中主要由<strong>脚本语言</strong><span>(script language)<span class="heti-spacing"> </span></span>负责游戏逻辑的编写，因为这类语言具备以下特点：</p>
+<ul>
+<li>支持快速迭代</li>
+<li>易学易写</li>
+<li>支持<strong>热更新</strong>(hot update)</li>
+<li>由于在<strong>沙箱</strong><span>(sandbox)<span class="heti-spacing"> </span></span>环境中运行，因此更稳定且崩溃更少</li>
+</ul>
+<details class="example">
+<summary>例子</summary>
+<div class="language-lua highlight"><span class="filename">Lua Script</span><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="kr">function</span><span class="w"> </span><span class="nf">tick</span><span class="p">(</span><span class="nv">delta</span><span class="p">)</span>
+</span><span id="__span-1-2"><a href="#__codelineno-1-2" id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="nv">input_system</span><span class="p">.</span><span class="nf">isKeyDown</span><span class="p">(</span><span class="nv">KeyCode</span><span class="p">.</span><span class="py">W</span><span class="p">)</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-1-3"><a href="#__codelineno-1-3" id="__codelineno-1-3" name="__codelineno-1-3"></a><span class="w">        </span><span class="nv">self</span><span class="p">:</span><span class="nf">moveForward</span><span class="p">(</span><span class="nv">delta</span><span class="p">)</span>
+</span><span id="__span-1-4"><a href="#__codelineno-1-4" id="__codelineno-1-4" name="__codelineno-1-4"></a><span class="w">    </span><span class="kr">elseif</span><span class="w"> </span><span class="nv">input_system</span><span class="p">.</span><span class="nf">isKeyDown</span><span class="p">(</span><span class="nv">KeyCode</span><span class="p">.</span><span class="py">S</span><span class="p">)</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-1-5"><a href="#__codelineno-1-5" id="__codelineno-1-5" name="__codelineno-1-5"></a><span class="w">        </span><span class="nv">self</span><span class="p">:</span><span class="nf">moveBackward</span><span class="p">(</span><span class="nv">delta</span><span class="p">)</span>
+</span><span id="__span-1-6"><a href="#__codelineno-1-6" id="__codelineno-1-6" name="__codelineno-1-6"></a><span class="w">    </span><span class="kr">end</span>
+</span><span id="__span-1-7"><a href="#__codelineno-1-7" id="__codelineno-1-7" name="__codelineno-1-7"></a>
+</span><span id="__span-1-8"><a href="#__codelineno-1-8" id="__codelineno-1-8" name="__codelineno-1-8"></a><span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="nv">input_system</span><span class="p">.</span><span class="nf">isKeyDown</span><span class="p">(</span><span class="nv">KeyCode</span><span class="p">.</span><span class="py">MouseLeft</span><span class="p">)</span><span class="w"> </span><span class="kr">then</span>
+</span><span id="__span-1-9"><a href="#__codelineno-1-9" id="__codelineno-1-9" name="__codelineno-1-9"></a><span class="w">        </span><span class="nv">self</span><span class="p">:</span><span class="nf">fire</span><span class="p">(</span><span class="nv">delta</span><span class="p">)</span>
+</span><span id="__span-1-10"><a href="#__codelineno-1-10" id="__codelineno-1-10" name="__codelineno-1-10"></a><span class="w">    </span><span class="kr">end</span>
+</span><span id="__span-1-11"><a href="#__codelineno-1-11" id="__codelineno-1-11" name="__codelineno-1-11"></a><span class="w">    </span><span class="p">...</span>
+</span><span id="__span-1-12"><a href="#__codelineno-1-12" id="__codelineno-1-12" name="__codelineno-1-12"></a><span class="kr">end</span>
+</span></code></pre></div>
+</details>
+<p>脚本先通过编译器被转换为<strong>字节码</strong>(bytecode)，然后在<strong>虚拟机</strong><span>(virtual machine)<span class="heti-spacing"> </span></span>上运行。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/25.png"><img src="images/lec15/25.png" width="80%"/></a>
+</div>
+<details class="note" open="open">
+<summary>脚本和引擎中的对象生命周期管理</summary>
+<ul>
+<li>
+<ul>
+<li>需提供对象生命周期管理机制</li>
+<li>脚本使用原生对象时不太安全（因为可能会被析构）</li>
+</ul>
+<p><strong>原生引擎代码</strong>(native engine code)</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/26.png"><img src="images/lec15/26.png" width="50%"/></a>
+</div><p></p>
+</li>
+<li>
+<p><strong>脚本</strong></p>
+<ul>
+<li>对象生命周期由脚本的 <strong>GC</strong>（垃圾回收）自动管理</li>
+<li>对象被释放的时间是无法控制的（因为是由<span class="heti-skip"><span class="heti-spacing"> </span>GC<span class="heti-spacing"> </span></span>控制的）</li>
+<li>如果脚本中的引用关系过于复杂，很容易会出现内存泄漏问题<blockquote>
+<p>注：由于<span class="heti-skip"><span class="heti-spacing"> </span>GC<span class="heti-spacing"> </span></span>算法效率并不是很高，所以可能会影响到性能，因此需做好权衡</p>
+</blockquote>
+</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/27.png"><img src="images/lec15/27.png" width="50%"/></a>
+</div><p></p>
+</li>
+</ul>
+</details>
+<details class="note" open="open">
+<summary>适用于脚本系统的架构</summary>
+<ul>
+<li>
+<ul>
+<li>多数游戏逻辑位于原生代码中</li>
+<li>脚本扩展原生代码的功能</li>
+<li>由编译型语言带来的高性能</li>
+</ul>
+<p><strong>原生语言</strong>主导</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/28.png"><img src="images/lec15/28.png" width="50%"/></a>
+</div><p></p>
+</li>
+<li>
+<p><strong>脚本语言</strong>主导</p>
+<ul>
+<li>多数游戏逻辑位于脚本中</li>
+<li>原生引擎代码为脚本提供必要的功能</li>
+<li>由脚本语言带来的快速迭代能力</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/29.png"><img src="images/lec15/29.png" width="50%"/></a>
+</div><p></p>
+</li>
+</ul>
+</details>
+<p>现在关注脚本的另一个功能：<strong>热更新</strong></p>
+<ul>
+<li>
+<p>允许在游戏运行时修改逻辑</p>
+<ul>
+<li>可对特定逻辑进行快速迭代</li>
+<li>允许在线游戏修复脚本中的错误</li>
+</ul>
+</li>
+<li>
+<p>问题：所有引用旧函数的变量也要更新</p>
+</li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/30.png"><img src="images/lec15/30.png" width="40%"/></a>
+</div>
+<details class="bug" open="open">
+<summary>脚本语言的问题</summary>
+<ul>
+<li>
+<p>性能通常比编译型语言低</p>
+<ul>
+<li><strong>弱类型语言</strong><span>(weakly typed language)<span class="heti-spacing"> </span></span>通常难以在编译时优化</li>
+<li>需要虚拟机运行字节码</li>
+<li><strong>JIT</strong>（即时编译）是其中一种优化方案</li>
+</ul>
+</li>
+<li>
+<p>弱类型语言通常难以重构<span><span class="heti-spacing"> </span>(refactor)</span></p>
+</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/31.png"><img src="images/lec15/31.png" width="60%"/></a>
+</div><p></p>
+</details>
+<p>因此，采用脚本语言时需考虑：</p>
+<ul>
+<li>语言性能</li>
+<li>内建功能（比如<span class="heti-skip"><span class="heti-spacing"> </span>OOP<span class="heti-spacing"> </span></span>支持）</li>
+<li>选择合适的架构（原生引擎代码<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>脚本）<ul>
+<li>由谁负责对象生命周期的管理</li>
+<li>由谁主导游戏逻辑的编写</li>
+</ul>
+</li>
+</ul>
+<details class="info" open="open">
+<summary>流行的脚本语言</summary>
+<ul>
+<li>
+<p>Lua（用于《魔兽世界<heti-adjacent class="heti-adjacent-half">》</heti-adjacent>《文明<span><span class="heti-spacing"> </span>V</span>》等）</p>
+<ul>
+<li>健壮且成熟</li>
+<li>优秀的运行时性能</li>
+<li>轻量级，高扩展性</li>
+</ul>
+</li>
+<li>
+<p>Python（用于《模拟人生<span><span class="heti-spacing"> </span>4</span><heti-adjacent class="heti-adjacent-half">》</heti-adjacent>《EVE Online<heti-adjacent class="heti-adjacent-half">》</heti-adjacent>）</p>
+<ul>
+<li>支持反射</li>
+<li>内建<span class="heti-skip"><span class="heti-spacing"> </span>OOP<span class="heti-spacing"> </span></span>支持</li>
+<li>丰富的标准库和第三方模块</li>
+</ul>
+</li>
+<li>
+<p>C#（用于<span><span class="heti-spacing"> </span>Unity</span>）</p>
+<ul>
+<li>学习曲线低，易读易理解</li>
+<li>内建<span class="heti-skip"><span class="heti-spacing"> </span>OOP<span class="heti-spacing"> </span></span>支持</li>
+<li>有很多活跃的开发者的优秀社区</li>
+</ul>
+</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/32.png"><img src="images/lec15/32.png" width="70%"/></a>
+</div><p></p>
+</details>
+<h2 id="visual-scripts">Visual Scripts<a class="headerlink" href="#visual-scripts" title="Permanent link">⚓︎</a></h2>
+<details class="question" open="open">
+<summary>为何需要视觉脚本系统</summary>
+<ul>
+<li>对非程序员友好，尤其是设计师和艺术家</li>
+<li>拖放操作相比写代码更不易出错</li>
+</ul>
+</details>
+<details class="example" open="open">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/33.png"><img src="images/lec15/33.png" width="80%"/></a>
+</div><p></p>
+</details>
+<p>不过视觉脚本依然是一种编程语言，因为它通常需要：</p>
+<ul>
+<li>
+<p><strong>变量</strong>：用于保留被处理和输出的数据</p>
+<ul>
+<li>类型：基本类型（整数、浮点数等<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>、复杂类型（结构体等）</li>
+<li>作用域：局部变量、成员变量<span><span class="heti-spacing"> </span>...</span></li>
+<li>可视化：通过<strong>数据引脚</strong><span>(pin)<span class="heti-spacing"> </span></span>和<strong>连线</strong><span>(wire)<span class="heti-spacing"> </span></span>传递变量（每个数据类型对应唯一的引脚颜色）</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/34.png"><img src="images/lec15/34.png" width="80%"/></a>
+</div><p></p>
+</li>
+<li>
+<p><strong>语句</strong>和<strong>表达式</strong>:：控制数据的处理</p>
+<ul>
+<li>语句：表达需要执行的行动，包括赋值语句、函数语句等</li>
+<li>表达式：经求解后返回一个具体的值，包括函数表达式、数学表达式等</li>
+<li>可视化：使用<strong>节点</strong>(nodes)</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/35.png"><img src="images/lec15/35.png" width="70%"/></a>
+</div><p></p>
+</li>
+<li>
+<p><strong>控制流</strong>：控制语句执行的顺序</p>
+<ul>
+<li><strong>顺序</strong><span>(sequence)<span class="heti-spacing"> </span></span>语句：默认顺序，一条接一条地执行语句</li>
+<li><strong>条件</strong><span>(conditional)<span class="heti-spacing"> </span></span>语句：下一条要执行的语句由条件决定</li>
+<li><strong>循环</strong><span>(loop)<span class="heti-spacing"> </span></span>语句：迭代执行语句，直到条件不为真</li>
+<li>可视化：通过<strong>执行引脚</strong><span>(pin)<span class="heti-spacing"> </span></span>和<strong>连线</strong><span>(wire)<span class="heti-spacing"> </span></span>确定语句顺序，并使用控制语句节点来构建不同的控制流</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/36.png"><img src="images/lec15/36.png" width="70%"/></a>
+</div><p></p>
+</li>
+<li>
+<p><strong>函数</strong>：接收并处理数据，最后返回结果的逻辑模块，由输入参数、函数体和返回值三部分构成</p>
+<ul>
+<li>可视化：用带有多个连接节点的<strong>图</strong><span>(graph)<span class="heti-spacing"> </span></span>来表示一个函数</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/37.png"><img src="images/lec15/37.png" width="70%"/></a>
+</div><p></p>
+</li>
+<li>
+<p><strong>类</strong>（<span>OOP<span class="heti-spacing"> </span></span>语言<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：某类对象的原型</p>
+<ul>
+<li><strong>成员变量</strong>：其生命周期由对象实例管理</li>
+<li><strong>成员函数</strong>：可以直接访问成员变量，可被派生类<span class="heti-skip"><span class="heti-spacing"> </span>(derived classes)<span class="heti-spacing"> </span></span>重写<span><span class="heti-spacing"> </span>(override)</span></li>
+<li>可视化：通过<strong>蓝图</strong><span>(blueprint)<span class="heti-spacing"> </span></span>定义一个继承自原生类的类，包括了<strong>事件回调函数</strong>、成员函数和成员变量等</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/38.png"><img src="images/lec15/38.png" width="50%"/></a>
+</div><p></p>
+</li>
+</ul>
+<p>为了对用户更加友好，视觉脚本还提供了以下功能：</p>
+<ul>
+<li>
+<p><strong>模糊查找</strong>(fuzzy finding)</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/39.gif"><img src="images/lec15/39.gif" width="40%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>根据类型提供精确建议</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/40.gif"><img src="images/lec15/40.gif" width="40%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>视觉脚本<strong>调试器</strong>(debugger)</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/41.gif"><img src="images/lec15/41.gif" width="40%"/></a>
+</div><p></p>
+</li>
+</ul>
+<details class="bug" open="open">
+<summary>脚本语言的问题</summary>
+<ul>
+<li>
+<ul>
+<li>通常将视觉脚本存储为二进制文件</li>
+<li>手动重新排序脚本图既不高效又容易出错，即使采用合并工具也是如此</li>
+</ul>
+<p>在团队工作中，视觉脚本难以合并</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/42.png"><img src="images/lec15/42.png" width="80%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>若逻辑过于复杂，那么图将会变得一团糟</p>
+<ul>
+<li>因此在团队工作中，需要有统一的图布局规则</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/43.png"><img src="images/lec15/43.png" width="80%"/></a>
+</div><p></p>
+</li>
+</ul>
+</details>
+<p>正如其字面意思，视觉脚本可以用等价的脚本语言描述。现在的游戏引擎通过图编译器，直接将脚本图转换为二进制的字节码。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/44.png"><img src="images/lec15/44.png" width="70%"/></a>
+</div>
+<h2 id="3c">3C<a class="headerlink" href="#3c" title="Permanent link">⚓︎</a></h2>
+<p>游戏中常说的<span class="heti-skip"><span class="heti-spacing"> </span>"3C"<span class="heti-spacing"> </span></span>分别指代<strong>角色</strong>(character)、<strong>控制</strong><span>(control)<span class="heti-spacing"> </span></span>和<strong>相机</strong>(camera)，它们是构成游戏玩法的三大基本要素。</p>
+<details class="example" open="open">
+<summary>例子<heti-adjacent class="heti-adjacent-half">：</heti-adjacent>《双人成行》</summary>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/45.png"><img src="images/lec15/45.png" width="80%"/></a>
+</div><p></p>
+<blockquote>
+<p>从左往右的三列图片分别对应角色、控制和相机。</p>
+<p>后面也会大量采用这个游戏中的例子，因为它的<span class="heti-skip"><span class="heti-spacing"> </span>3C<span class="heti-spacing"> </span></span>做得很好。</p>
+</blockquote>
+</details>
+<h3 id="character">Character<a class="headerlink" href="#character" title="Permanent link">⚓︎</a></h3>
+<p>在游戏中，<strong>玩家</strong><span>(player)<span class="heti-spacing"> </span></span>和 <strong>NPC</strong> 都属于角色，并且包括移动、战斗、生命值、魔法值<span><span class="heti-spacing"> </span>(mana)</span>、拥有的技能和天赋等都属于角色的一部分。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/46.png"><img src="images/lec15/46.png" width="50%"/></a>
+</div>
+<p>下面我们重点关注其中最基本的要素之一：<strong>移动</strong>(movement)。移动这一操作看起来简单，但想要做好却十分困难。在<span class="heti-skip"><span class="heti-spacing"> </span>3A<span class="heti-spacing"> </span></span>游戏中，即便是一个基本的动作状态，也要被划分为多个详细的小状态。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/47.gif"><img src="images/lec15/47.gif" width="80%"/></a>
+</div>
+<details class="info">
+<summary>表示移动的状态机</summary>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/51.png"><img src="images/lec15/51.png" width="80%"/></a>
+</div><p></p>
+<blockquote>
+<p>吓哭了😭</p>
+</blockquote>
+</details>
+<p>在更一般的情况下，还得考虑角色与<strong>环境</strong>的互动，因而发展出更加复杂和多样的状态。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/48.png"><img src="images/lec15/48.png" width="70%"/></a>
+</div>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/49.png"><img src="images/lec15/49.png" width="70%"/></a>
+</div>
+<p>并且还得考虑和其他游戏子系统的互动，包括各种<strong>特效</strong>、<strong>声音</strong>等等。</p>
+<p>要想让运动更加真实，还可以考虑各种<strong>物理</strong>因素，比如气流<span><span class="heti-spacing"> </span>(airflow)</span>、惯性张量<span><span class="heti-spacing"> </span>(inertia tensor)</span>、扭矩<span class="heti-skip"><span class="heti-spacing"> </span>(torque)<span class="heti-spacing"> </span></span>等等。</p>
+<details class="example">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/50.gif"><img src="images/lec15/50.gif" width="40%"/></a>
+</div><p></p>
+</details>
+<h3 id="control">Control<a class="headerlink" href="#control" title="Permanent link">⚓︎</a></h3>
+<p>简答来说，<strong>控制</strong>就是将来自不同输入设备的输入转换为游戏中的操作。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/52.png"><img src="images/lec15/52.png" width="80%"/></a>
+</div>
+<details class="example" open="open">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/53.gif"><img src="images/lec15/53.gif" width="40%"/></a>
+</div><p></p>
+</details>
+<p>对于上面的例子，在实际操作中，鼠标右键对应瞄准操作，而鼠标左键对应发射操作。无论采用什么样的鼠标，这一操作都能得到精确执行。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/54.png"><img src="images/lec15/54.png" width="70%"/></a>
+</div>
+<p>此外，游戏还提供以下表现提升了游玩体验：</p>
+<ul>
+<li>画面缩放：瞄准时相机对准准心，并且视场缩小，便于瞄准</li>
+<li>
+<p>辅助瞄准：提供吸附效果，提升了手感</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/55.png"><img src="images/lec15/55.png" width="50%"/></a>
+</div><p></p>
+</li>
+</ul>
+<p>另外，使用手柄的玩家还能感受到手柄震动带来的反馈。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/56.png"><img src="images/lec15/56.png" width="60%"/></a>
+</div>
+<p>还有一个容易被大家忽视的一点是：即便按下相同的输入按钮，在不同游戏情境下也应该产生不同的效果，这就是<strong>上下文敏感的控制</strong>(context-sensitive control)。</p>
+<details class="example" open="open">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/57.gif"><img src="images/lec15/57.gif" width="80%"/></a>
+</div><p></p>
+</details>
+<p>最后介绍一下常见于动作游戏的控制：</p>
+<ul>
+<li><strong>组合技</strong>(chord)：同时按下某些特定按键时产生的独特动作</li>
+<li><strong>按键序列</strong>(key sequence)：通常通过记录玩家执行的<span><span class="heti-spacing"> </span>HID</span>（人机交互设备）行动的简短历史来实现姿势检测<span><span class="heti-spacing"> </span>(gesture detection)</span></li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/58.png"><img src="images/lec15/58.png" width="50%"/></a>
+</div>
+<h3 id="camera">Camera<a class="headerlink" href="#camera" title="Permanent link">⚓︎</a></h3>
+<details class="example">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/59.gif"><img src="images/lec15/59.gif" width="80%"/></a>
+</div><p></p>
+</details>
+<p>相机系统的基本要素：</p>
+<ul>
+<li><strong>视点</strong>(point of view, <strong>POV</strong>)：确定玩家的观察位置</li>
+<li><strong>视场</strong>(field of view, <strong>FOV</strong>)：确定玩家的视角大小</li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/60.png"><img src="images/lec15/60.png" width="30%"/></a>
+</div>
+<p>相机往往和角色绑定在一起。但相机离角色的相对位置不是定死的——根据视角的远近，相机的距离远近也会随之改变。</p>
+<p>另外还有以下在相机控制中经常出现的概念：</p>
+<ul>
+<li>
+<p><strong>弹簧臂</strong>(spring arm)：尽量保证相机不会穿墙</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/61.gif"><img src="images/lec15/61.gif" width="50%"/></a>
+</div><p></p>
+</li>
+<li>
+<p><strong>聚焦</strong>(focusing)：改变相机的<span><span class="heti-spacing"> </span>FOV</span></p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/62.gif"><img src="images/lec15/62.gif" width="50%"/></a>
+</div><p></p>
+</li>
+</ul>
+<p>相机系统中一个著名的技术叫做<strong>相机轨道</strong>(camera track)，即设计师根据角色状态设置相机参数，以表达游戏带给人的各种主观感受。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/63.gif"><img src="images/lec15/63.gif" width="70%"/></a>
+</div>
+<p>相机系统还包括相机之外的一些效果，比如<strong>滤镜</strong><span>(filter)<span class="heti-spacing"> </span></span>和<strong>抖屏</strong><span>(shake)<span class="heti-spacing"> </span></span>等。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/64.gif"><img src="images/lec15/64.gif" width="70%"/></a>
+</div>
+<p>有些游戏中涉及到多台相机，玩家可在这些相机间来回切换，并且需要有一个<strong>相机管理器</strong><span>(camera manager)<span class="heti-spacing"> </span></span>来管理这些相机。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/65.gif"><img src="images/lec15/65.gif" width="50%"/></a>
+</div>
+<p>正如前面所述，相机的一大重要作用是表达游戏带给人的各种<strong>主观感受</strong>(subjective feelings)。通常需通过多种基本的调整来达到复杂的效果。可以这样调整：</p>
+<ul>
+<li>
+<p>表现速度：</p>
+<ul>
+<li>沿运动方向添加线条</li>
+<li>角色后倾</li>
+<li>动态模糊</li>
+<li>放大<span><span class="heti-spacing"> </span>FOV</span>（以体现屏幕内容变化之迅速）</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/66.gif"><img src="images/lec15/66.gif" width="30%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>表现松弛感：舒缓的相机移动</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/67.gif"><img src="images/lec15/67.gif" width="50%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>表现电影感：滤镜、运动、声音、叙述者、模型、动画、相机移动<span><span class="heti-spacing"> </span>...</span></p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/68.png"><img src="images/lec15/68.png" width="50%"/></a>
+</div><p></p>
+</li>
+</ul>
+<p>在游戏引擎中，艺术家和设计师要想优化效果，需利用：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec15/69.png"><img src="images/lec15/69.png" width="80%"/></a>
+</div>
+<ul>
+<li>可继承的类</li>
+<li>能被蓝图处理的函数</li>
+<li>可调整的参数</li>
+</ul>
+<aside class="md-source-file">
+<span class="md-source-file__fact">
+<span class="md-icon" title="最后更新">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"></path></svg>
+</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2026年2月12日 17:29:03 CST">2026年2月12日 17:29:03</span>
+</span>
+<span class="md-source-file__fact">
+<span class="md-icon" title="创建日期">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"></path></svg>
+</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2026年2月12日 17:29:03 CST">2026年2月12日 17:29:03</span>
+</span>
+</aside>
+<p style="font-size: 30px; font-weight: 600">评论区</p>
+<div>
+    如果大家有什么问题或想法，欢迎在下方留言~
+  </div>
+<!-- Insert generated snippet here -->
+<script async="" crossorigin="anonymous" data-category="Announcements" data-category-id="DIC_kwDOMAb9Zs4CfmpP" data-emit-metadata="0" data-input-position="bottom" data-lang="zh-CN" data-mapping="pathname" data-reactions-enabled="1" data-repo="noughtq/notebook" data-repo-id="R_kgDOMAb9Zg" data-strict="0" data-theme="preferred_color_scheme" src="https://giscus.app/client.js">
+</script>
+<!-- Synchronize Giscus theme with palette -->
+<script>
+    var giscus = document.querySelector("script[src*=giscus]")
+
+    // Set palette on initial load
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object") {
+      var theme = palette.color.scheme === "slate"
+        ? "transparent_dark"
+        : "light"
+
+      // Instruct Giscus to set theme
+      giscus.setAttribute("data-theme", theme) 
+    }
+
+    // Register event handlers after documented loaded
+    document.addEventListener("DOMContentLoaded", function() {
+      var ref = document.querySelector("[data-md-component=palette]")
+      ref.addEventListener("change", function() {
+        var palette = __md_get("__palette")
+        if (palette && typeof palette.color === "object") {
+          var theme = palette.color.scheme === "slate"
+            ? "dark"
+            : "light"
+
+          // Instruct Giscus to change theme
+          var frame = document.querySelector(".giscus-frame")
+          frame.contentWindow.postMessage(
+            { giscus: { setConfig: { theme } } },
+            "https://giscus.app"
+          )
+        }
+      })
+    })
+  </script>
+<!-- 标题计数器 -->
+<link href="/css/counter.css" rel="stylesheet"/>
+<!-- 主页个性化 -->
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+<button class="md-top md-icon" data-md-component="top" hidden="" type="button">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  回到页面顶部
+</button>
+</main>
+<footer class="md-footer">
+<nav aria-label="页脚" class="md-footer__inner md-grid">
+<a aria-label="上一页: Applications &amp;amp; Advanced Topic of Tool Chains" class="md-footer__link md-footer__link--prev" href="14.html">
+<div class="md-footer__button md-icon">
+<svg viewbox="0 0 256 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path></svg>
+</div>
+<div class="md-footer__title">
+<span class="md-footer__direction">
+                上一页
+              </span>
+<div class="md-ellipsis">
+                Applications &amp; Advanced Topic of Tool Chains
+              </div>
+</div>
+</a>
+<a aria-label="下一页: Basic Artificial Intelligence" class="md-footer__link md-footer__link--next" href="16.html">
+<div class="md-footer__title">
+<span class="md-footer__direction">
+                下一页
+              </span>
+<div class="md-ellipsis">
+                Basic Artificial Intelligence
+              </div>
+</div>
+<div class="md-footer__button md-icon">
+<svg viewbox="0 0 256 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M247.1 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L179.2 256 41.9 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"></path></svg>
+</div>
+</a>
+</nav>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright" style="margin-left: 33.5%">
+<div class="md-copyright__highlight" style="text-align: center">
+        Copyright © 2024-2026 <a href="https://github.com/NoughtQ">NoughtQ</a>
+</div>
+    
+    
+      Powered by
+      <a href="https://www.mkdocs.org/" rel="noopener" target="_blank">
+        MkDocs
+      </a>
+      with theme
+      <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+        Material
+      </a>
+      modified by
+      <a href="https://github.com/NoughtQ" rel="noopener" target="_blank">
+        NoughtQ
+      </a>
+<!-- <br> -->
+<div style="text-align: center;">
+<a href="https://icp.gov.moe/?keyword=20252357" target="_blank">萌ICP备20252357号</a>
+</div>
+</div>
+<div class="md-social">
+<a class="md-social__link" href="https://noughtq.top" rel="noopener" target="_blank" title="noughtq.top">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M277.8 8.6c-12.3-11.4-31.3-11.4-43.5 0l-224 208c-9.6 9-12.8 22.9-8 35.1S18.8 272 32 272h16v176c0 35.3 28.7 64 64 64h288c35.3 0 64-28.7 64-64V272h16c13.2 0 25-8.1 29.8-20.3s1.6-26.2-8-35.1zM240 320h32c26.5 0 48 21.5 48 48v96H192v-96c0-26.5 21.5-48 48-48"></path></svg>
+</a>
+<a class="md-social__link" href="https://blog.noughtq.top" rel="noopener" target="_blank" title="blog.noughtq.top">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M224 24c0-13.3 10.7-24 24-24 145.8 0 264 118.2 264 264 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-119.3-96.7-216-216-216-13.3 0-24-10.7-24-24M80 96c26.5 0 48 21.5 48 48v224c0 26.5 21.5 48 48 48s48-21.5 48-48-21.5-48-48-48c-8.8 0-16-7.2-16-16v-64c0-8.8 7.2-16 16-16 79.5 0 144 64.5 144 144s-64.5 144-144 144S32 447.5 32 368V144c0-26.5 21.5-48 48-48m168 0c92.8 0 168 75.2 168 168 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-66.3-53.7-120-120-120-13.3 0-24-10.7-24-24s10.7-24 24-24"></path></svg>
+</a>
+<a class="md-social__link" href="https://github.com/noughtq" rel="noopener" target="_blank" title="github.com">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"></path></svg>
+</a>
+<a class="md-social__link" href="mailto:noughtq666@gmail.com" rel="noopener" target="_blank" title="">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m20 8-8 5-8-5V6l8 5 8-5m0-2H4c-1.11 0-2 .89-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2"></path></svg>
+</a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["content.action.edit", "content.action.view", "content.code.copy", "content.code.annotate", "content.footnote.tooltips", "navigation.footer", "navigation.indexes", "navigation.path", "navigation.prune", "navigation.tabs", "navigation.top", "navigation.tracking", "search.share"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+<script src="../../js/anchor.js"></script>
+<script src="../../js/katex.js"></script>
+<script src="../../js/toc.js"></script>
+<script src="../../js/typed.js"></script>
+<script src="../../js/custom.js"></script>
+<script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+<script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.js"></script>
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>
