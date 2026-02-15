@@ -28,7 +28,7 @@
     <div class="file-title">A4 Cheatsheet</div>
     <div class="file-meta">5.7 MB / 2 P / 2025-06-18</div>
     </div>
-    <a class="down-button" target="_blank" href="https://courses.noughtq.top/CA-D2CX/CA_A4_NoughtQ.pdf" markdown="1">:fontawesome-solid-download: 下载</a>
+    <a class="down-button" target="_blank" href="https://github.com/NoughtQ/ZJU-Courses-Resources/blob/main/CA-D2CX/CA_A4_NoughtQ.pdf" markdown="1">:fontawesome-solid-download: 下载</a>
     </div>
 
 ??? info "一些有用的公式（来自教材）"

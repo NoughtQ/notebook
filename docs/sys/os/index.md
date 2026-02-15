@@ -30,7 +30,14 @@
         - [x] [File-System Implementation](14.md)
         - [x] [File-System Internals](15.md)
 
-    >注：sld 的讲课会先跳过同步部分，等讲完内存部分后再回过头来学同步，这样的编排和 OSTEP 很像。
+    <div class="card file-block" markdown="1">
+    <div class="file-icon"><img src="/assets/pdf.svg" style="height: 3em;"></div>
+    <div class="file-body">
+    <div class="file-title">A4 Cheatsheet</div>
+    <div class="file-meta">5.5 MB / 6 P / 2026-01-17</div>
+    </div>
+    <a class="down-button" target="_blank" href="https://github.com/NoughtQ/ZJU-Courses-Resources/blob/main/OS-D3QD/A4-cheatsheets/A4-by-noughtq.pdf" markdown="1">:fontawesome-solid-download: 下载</a>
+    </div>
     
 !!! recommend "参考资料"
 

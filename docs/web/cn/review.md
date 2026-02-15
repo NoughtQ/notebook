@@ -310,14 +310,14 @@ TCP/IP 体系结构：
 
 专业术语：
 
-- **实体**：解决通过应用进程的交互来实现特定网络应用的问题
+- **实体**(entity)：解决通过应用进程的交互来实现特定网络应用的问题
     - **对等实体**：通信双方相同层次中的实体
 
     <div align=center>
         <img src="images/24.png" width=60% />
     </div>
 
-- **协议**：控制两个对等实体在“水平方向” 进行“逻辑通信”的规则的集合
+- **协议**(protocol)：控制两个对等实体在“水平方向” 进行“逻辑通信”的规则的集合
     - 协议三要素：
         - 语法：定义所交换信息的**格式**
         - 语义：定义通信双方所要完成的**操作**
@@ -325,7 +325,7 @@ TCP/IP 体系结构：
     
     - 对等层次之间传送的数据包称为该层的**协议数据单元**(protocol data unit，**PDU**)
 
-- **服务**：
+- **服务**(service)：
 
     <div align=center>
         <img src="images/25.png" width=80% />
@@ -860,7 +860,7 @@ TCP/IP 体系结构：
 
             1. 构造被除数：待发送数据后面添加生成多项式最高次数个 0 
             2. 构造除数：生成多项式各项系数构成的比特串作为除数
-            3. 做二进制模 2 除法：相当于对应位进行逻辑异或运算
+            3. 做二进制模 2 除法：相当于对应位进行逻辑**异或**运算
             4. 检查余数：余数的位数应与生成多项式最高次数相同，如果位数不够，则在余数前补 0 来凑足位数
 
         - 接收方收到数据和冗余码后，通过 $G(X)$ 来计算收到的数据和冗余码是否产生了误码
@@ -1232,6 +1232,7 @@ $$
     - 实现了传统以太网不能提供的身份验证、加密，以及压缩等功能
     - 实现基于用户的访问控制、计费、业务类型分类等，运营商广泛支持
     - PPPoE 使用 C/S 模型，服务器通常是接入服务器
+    
     - 组网方式：
         - 方式 1：
             - 设备之间建立 PPP 会话，所有主机通过同一个 PPP 会话传送数据，主机上不用安装 PPPoE 客户端拨号软件，一般是一个机构共用一个账号
@@ -1389,7 +1390,7 @@ MAC 地址发送顺序：
 
                     === "题目"
 
-                    A group of N stations share a 56-kbps pure ALOHA channel. Each station outputs a 1000-bit frame on an average of once every 100 sec, even if the previous one has not yet been sent (e.g., the stations can buffer outgoing frames). What is the maximum value of N?
+                        A group of N stations share a 56-kbps pure ALOHA channel. Each station outputs a 1000-bit frame on an average of once every 100 sec, even if the previous one has not yet been sent (e.g., the stations can buffer outgoing frames). What is the maximum value of N?
 
                     === "解答"
 
@@ -1595,7 +1596,7 @@ MAC 地址发送顺序：
 
         - Host B's range: After 3 collisions ($k=3$), host B selects a random slot from $0$ to $2^3 - 1$
         - Host A's range: Host A is malicious and restricts itself to $\{0, 1\}$
-        - Total scenarios: There are $8 times 2 = 16$ possible combinations
+        - Total scenarios: There are $8 \times 2 = 16$ possible combinations
         - Outcomes:
             - Collisions: 2 cases (A=0, B=0) and (A=1, B=1)
             - Successes: 14 cases (16 - 2)
@@ -3641,8 +3642,8 @@ TCP/IP 体系结构的传输层使用**端口号**来标识和区分应用层的
 
         1. `socket()` -> 创建套接字
         2. `bind()` -> 绑定地址和端口
-        3. `listen()` -> 开始监听（设置队列大小，非阻塞）
-        4. `accept()` -> 从已连接队列中取出一个已建立的连接，并为该连接创建一个新的套接字；如果队列为空，则阻塞调用者，直到有新的连接到达
+        3. `listen()` -> 开始监听（设置队列大小，**非阻塞**）
+        4. `accept()` -> 从已连接队列中取出一个已建立的连接，并为该连接创建一个新的套接字；如果队列为空，则**阻塞调用者**，直到有新的连接到达
         5. 使用返回的新套接字与客户端通信
 
 
@@ -4306,6 +4307,9 @@ SACK 相关文档并没有指明发送方应当怎样响应 SACK，因此大多�
         - **SSH**（安全外壳(secure shell)）
         - **Telnet**（网络电传(teletype over the network)）
 
+    - **RTP**（实时传输协议(realtime transmission protocol)）：用于传送实时数据，如音频或视频
+        - 所以是基于 UDP 协议的
+
 !!! note "[常用端口号大全](https://zjucomp.net/notes/protocals#%E7%AB%AF%E5%8F%A3%E5%8F%B7%E9%80%9F%E8%AE%B0)（考前建议背诵）"
 
 
@@ -4500,6 +4504,42 @@ DHCP 中继代理：
 <div align=center>
     <img src="images/303.png" width=60% />
 </div>
+
+??? question "例题"
+
+    >lkj 100 -- Q83
+
+    === "题目"
+
+        Assume that all domain name servers use iterative query for domain name resolution. When H4 attempts to access the website www.abc.xyz.com and the domain name resolution is completed, the possible minimum and maximum number of DNS queries issued by the domain name server 201.1.1.1 are ______.
+
+        A. 0, 3 &nbsp; B. 1, 3 &nbsp; C. 0, 4 &nbsp; D. 1, 4
+
+    === "解答"
+
+        >从[这里](https://alidocs.dingtalk.com/i/nodes/Gl6Pm2Db8D3mKkP4t7agGQzbJxLq0Ee4)搬运的题解
+
+        答案：C
+
+        - 0：缓存命中
+        - 4：根 -> .com -> xyz.com -> abc.xyz.com
+            - 注意 abc.xyz.com 的权威域名服务器管理的是 *.abc.xyz.com，可以直接查到 www.abc.xyz.com，不会再去 www.abc.xyz.com 这一级
+
+
+???+ abstract "DNS **资源记录**(resource records, RR)"
+
+    | 类型代码 | 描述 | 功能 |
+    | :--- | :--- | :--- |
+    | **SOA**(start of authority) | **权威记录**的起始 | 指定有关 DNS 区域的权威性信息，包含主要名字服务器、域名管理员的电邮地址、域名的流水式编号、和几个有关刷新区域的定时器 |
+    | **A**(address) | **IP 地址**记录 | 传回一个 32 比特的 IPv4 地址 |
+    | **AAAA** | I**Pv6 地址**记录 | 传回一个 128 比特的 IPv6 地址 |
+    | **MX**(mail exchanger) | **电子邮件**交互记录 | 引导域名到该域名的邮件传输代理(message transfer agents, MTA)列表 |
+    | **CNAME**(canonical name) | **规范名称**记录 | 主机名字的别名：域名系统将会继续尝试查找新的名字 |
+    | **PTR**(pointer) | **指针**记录 | 引导至一个规范名称，最常用用来运行反向 DNS 查找 |
+    | **NS**(name server) | **名称服务器**记录 | 用于说明这个区域有哪些 DNS 服务器负责解析 |
+    | **SPF**(sender policy framework) | SPF 记录 | 让一个域把邮件服务信息进行编码，即域内哪台机器负责把邮件发送到 Internet 其余地方，有助于接收机器检查邮件是否有效 |
+    | **SRV**(service) | 服务定位器 | 把主机标识为域内的一种给定服务，例如 cs.washington.edu 的 web 服务器可以标识成 cockatoo.cs.washington.edu |
+    | **TXT**(text) | **文本**记录 | 最初用于允许域以任意方式标识自己，如今通常被编码成机器可读信息，一般是 SPF 信息 |
 
 
 ### 文件传输协议

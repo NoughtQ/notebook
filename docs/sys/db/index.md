@@ -30,7 +30,7 @@
     <div class="file-title">A4 Cheatsheet</div>
     <div class="file-meta">5.8 MB / 2 P / 2025-06-14</div>
     </div>
-    <a class="down-button" target="_blank" href="https://courses.noughtq.top/DB-D2CX/DB_A4_NoughtQ.pdf" markdown="1">:fontawesome-solid-download: 下载</a>
+    <a class="down-button" target="_blank" href="https://github.com/NoughtQ/ZJU-Courses-Resources/blob/main/DB-D2CX/DB_A4_NoughtQ.pdf" markdown="1">:fontawesome-solid-download: 下载</a>
     </div>
 
 !!! recommend "参考资料"

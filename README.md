@@ -1,4 +1,4 @@
-# NoughtQ的笔记本~
+# NoughtQ 的笔记本~
 
 >一位 CS 专业的学生在学习过程中的一些留痕。
 
@@ -14,31 +14,19 @@
 - 笔者自己开发了一个“笔记漫游”的插件：[mkdocs-random_walk-plugin](https://github.com/noughtq/mkdocs-random_walk-plugin)，实现了类似 Obsidian 的同名功能，感兴趣的小伙伴们可以玩玩看~
 
 
-## Plans
-
-预计在今年暑假完成以下计划：
-
-- [ ] ~~提供本地构建的步骤（需整理出 requirements.txt 文件）~~
-- [x] 提供贡献指南（笔者可能不再维护一年以上的，与笔者研究领域关系不大的笔记，所以需要大家的帮助🥺）
-- [x] （本来应该在寒假完成的；仅针对桌面端）自动隐藏两侧边栏，实现更加沉浸的阅读体验
-
-
 ## Contribution Guide
 
-由于目前也没什么人参与贡献，笔者也没想清楚该制定什么样的规则。所以笔者暂时不会制定硬性的规则。但还是有一个限制：
+由于目前也没什么人参与贡献，笔者也没想清楚该制定什么样的规则，所以暂时不会制定硬性的规则。但还是有一个限制：
 
-- 笔者正处于「大三上学期」，所以除了以下正在或即将开工的笔记外，之前的笔记若存在较多纰漏可直接发起 PR
+- 笔者正处于「大三春夏学期」，所以除了以下正在或即将开工的笔记外，**之前的笔记若存在较多纰漏可直接发起 PR**
   - 自学笔记：
-    - [机器学习](https://note.noughtq.top/ai/ml/)
-    - [生成式人工智能](https://note.noughtq.top/ai/genai/)
+    - [游戏引擎](https://note.noughtq.top/software/ge)
   - 课内笔记：
-    - [操作系统](https://note.noughtq.top/sys/os/)
-    - [计算理论](https://note.noughtq.top/math/toc/)
-    - [计算机网络](https://note.noughtq.top/web/cn/)
-    - [计算机视觉导论](https://note.noughtq.top/ai/cv/)
-    - [量子计算理论基础与软件系统](https://note.noughtq.top/misc/qc/)
+    - [编译原理](https://note.noughtq.top/sys/poc)
+    - [软件工程](https://note.noughtq.top/software/se)
+    - [多媒体技术](https://note.noughtq.top/software/mt)
 
-欢迎各位积极贡献🎉
+欢迎各位的贡献🎉
 
 
 ## Support the Author 
