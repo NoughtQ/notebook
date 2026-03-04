@@ -37,6 +37,9 @@
     - Gameplay
         - [x] [Gameplay Complexity and Building Blocks](15.md)
         - [x] [Basic Artificial Intelligence](16.md)
-        - [ ] [Advanced Artificial Intelligence](17.md)
+        - [x] [Advanced Artificial Intelligence](17.md)
+    - Online Gaming Architecture
+        - [ ] [Fundamentals of OGA](18.md)
+        - [ ] [Advanced Topics of OGA](19.md)
 
     TBD
