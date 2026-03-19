@@ -13,3 +13,4 @@
 - [数据库系统(DB)](db/index.md)
 - [操作系统(OS)](os/index.md)
 - [汇编与接口(AAI)](aai/index.md)
+- [编译原理(POC)](poc/index.md)

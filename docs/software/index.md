@@ -7,5 +7,9 @@
 ## Table of Contents
 
 - [图像信息处理](dip/index.md)
-- [计算机图形学](cg/index.md)
-- [游戏引擎](ge/index.md)
+- [软件工程](se/index.md)
+- [多媒体技术](mt/index.md)
+
+!!! warning "注意"
+
+    游戏开发相关的笔记已迁移至[另一个笔记网站](https://game.noughtq.top)中。

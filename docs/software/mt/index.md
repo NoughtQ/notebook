@@ -4,11 +4,13 @@
 
     - 学分：2.0
     - 教师：肖俊
-    - 教材：未知
+    - 教材：*Fundamentals of Multimedia*, 2nd Edition
 
 !!! abstract "目录"
 
-    TBD
+    - [x] [Graphics and Image Data Representation](1.md)
+    - [x] [Color in Image and Video](2.md)
+    - [x] [Fundamental Concepts in Video](3.md)
 
 !!! recommend "参考资料"
 
