@@ -25,8 +25,7 @@
 由于目前也没什么人参与贡献，笔者也没想清楚该制定什么样的规则，所以暂时不会制定硬性的规则。但还是有一个限制：
 
 - 笔者正处于「大三春夏学期」，所以除了以下正在或即将开工的笔记外，**之前的笔记若存在较多纰漏可直接发起 PR**
-  - 自学笔记：
-    - [游戏引擎](https://note.noughtq.top/software/ge)
+  - 游戏开发相关的笔记已迁移至[另一个笔记网站](https://game.noughtq.top)中
   - 课内笔记：
     - [编译原理](https://note.noughtq.top/sys/poc)
     - [软件工程](https://note.noughtq.top/software/se)

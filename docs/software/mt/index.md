@@ -11,6 +11,12 @@
     - [x] [Graphics and Image Data Representation](1.md)
     - [x] [Color in Image and Video](2.md)
     - [x] [Fundamental Concepts in Video](3.md)
+    - [x] [Basics of Digital Audio](4.md)
+    - [x] [Lossless Compression Algorithms](5.md)
+    - [x] [Lossy Compression Algorithms](6.md)
+    - [x] [Image Compression Standards](7.md)
+    - [x] [Basic Video Compression Techniques](8.md)
+    - [x] [MPEG Video Coding](9.md)
 
 !!! recommend "参考资料"
 

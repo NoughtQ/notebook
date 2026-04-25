@@ -12,9 +12,9 @@
     - Fundamentals
         - [x] [Introduction](1.md)
         - [x] [Lexical Analysis](2.md)
-        - [ ] [Parsing](3.md)
-        - [ ] [Abstract Syntax](4.md)
-        - [ ] [Semantic Analysis](5.md)
+        - [x] [Parsing](3.md)
+        - [x] [Abstract Syntax](4.md)
+        - [x] [Semantic Analysis](5.md)
         - [ ] [Activation Records](6.md)
         - [ ] [Translation to Intermediate Code](7.md)
         - [ ] [Basic Blocks and Traces](8.md)
