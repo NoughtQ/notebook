@@ -15,7 +15,7 @@
         - [x] [Parsing](3.md)
         - [x] [Abstract Syntax](4.md)
         - [x] [Semantic Analysis](5.md)
-        - [ ] [Activation Records](6.md)
+        - [x] [Activation Records](6.md)
         - [ ] [Translation to Intermediate Code](7.md)
         - [ ] [Basic Blocks and Traces](8.md)
         - [ ] [Instruction Selection](9.md)
