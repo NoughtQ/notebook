@@ -9,12 +9,13 @@
 {{ BEGIN_TOC }}
 - CS 相关:
     - 量子计算理论基础与软件系统: qc
+    - 数据要素市场: dem
 - 其他课程:
     - 大学物理（乙）: physics
     - 创业启程: entrepreneurship
 {{ END_TOC }}
 
-    <!-- - 数据要素市场: dem -->
+    
 
 <!-- - 心理学相关:
     - 心理学导论: psychology/intro

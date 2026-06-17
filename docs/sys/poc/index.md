@@ -9,6 +9,12 @@
 
 !!! abstract "目录"
 
+    !!! warning "注意"
+    
+        虽然每章内容大体上完成了，但实际上只是整理了 cms 老师的 PPT 上的内容，没有被我好好消化过，所以肯定有不少地方没被我讲明白（~~因为我自己还没完全搞懂hh~~）。目前处在期末复习阶段，我终于能腾出些时间好好整理一下这些笔记。因此最近几天笔记内容可能会有不小的改动，尽力做到把每个知识点都能讲清楚。还是老样子，如果有任何不懂的地方欢迎提出，我应该能保证在 12h 内给予回复。
+
+        当前进度：完成第 1-3 章的重构（26.06.17）
+
     - Fundamentals
         - [x] [Introduction](1.md)
         - [x] [Lexical Analysis](2.md)
@@ -23,8 +29,8 @@
         - [x] [Register Allocation](11.md)
     - Advanced Topics
         - [x] [Garbage Collection](13.md)
-        - [ ] [Object-Oriented Languages](14.md)
-        - [ ] [Loop Optimizations](18.md)
+        - [x] [Object-Oriented Languages](14.md)
+        - [x] [Loop Optimizations](18.md)
 
     ??? abstract "各章内容关系图"
 
