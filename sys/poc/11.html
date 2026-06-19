@@ -1061,15 +1061,22 @@
 <p>如果此函数中存在寄存器压力（即对寄存器的高需求<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，则 <code>t231</code> 将会溢出；否则，<code>t231</code> 将与 <code>r7</code> 合并，并且 <code>MOVE</code> 指令将被消除。</p>
 <details class="info" open="open">
 <summary>调用者<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>被调用者保存的寄存器</summary>
-<p><code>c line_nums="1"
-foo() {
-    t = ...
-    ... = ... t ...
-    s = ...
-    f()
-    g()
-    ... = ... s ...
-}</code></p>
+<div class="language-c highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1">1</a></span>
+<span class="normal"><a href="#__codelineno-0-2">2</a></span>
+<span class="normal"><a href="#__codelineno-0-3">3</a></span>
+<span class="normal"><a href="#__codelineno-0-4">4</a></span>
+<span class="normal"><a href="#__codelineno-0-5">5</a></span>
+<span class="normal"><a href="#__codelineno-0-6">6</a></span>
+<span class="normal"><a href="#__codelineno-0-7">7</a></span>
+<span class="normal"><a href="#__codelineno-0-8">8</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="n">foo</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="w">    </span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">...</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="w">    </span><span class="p">...</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="p">...</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="w">    </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">...</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5"></a><span class="w">    </span><span class="n">f</span><span class="p">()</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6"></a><span class="w">    </span><span class="n">g</span><span class="p">()</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="w">    </span><span class="p">...</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="p">...</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8"></a><span class="p">}</span>
+</span></code></pre></div></td></tr></tbody></table></div>
 <ul>
 <li>局部变量或编译器临时变量，如果在任何过程调用中都不活跃，通常应分配给<strong>调用者保存的寄存器</strong>(caller-saved registers)（行<span><span class="heti-spacing"> </span>2-3</span>）</li>
 <li>任何跨多个过程调用保持活跃的变量都应存放在<strong>被调用者保存的寄存器</strong><span>(callee-saved registers)<span class="heti-spacing"> </span></span>中（行<span><span class="heti-spacing"> </span>4, 7</span>）</li>

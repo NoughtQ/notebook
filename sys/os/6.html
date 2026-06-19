@@ -1609,13 +1609,18 @@
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">
-<p><code>py line_nums="1"
-signal(P1_done)
-wait(P1_done)
-signal(P2_done)
-wait(P2_done)
-signal(P3_done)
-wait(P3_done)</code></p>
+<div class="language-py highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-25-1">1</a></span>
+<span class="normal"><a href="#__codelineno-25-2">2</a></span>
+<span class="normal"><a href="#__codelineno-25-3">3</a></span>
+<span class="normal"><a href="#__codelineno-25-4">4</a></span>
+<span class="normal"><a href="#__codelineno-25-5">5</a></span>
+<span class="normal"><a href="#__codelineno-25-6">6</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1"></a><span class="n">signal</span><span class="p">(</span><span class="n">P1_done</span><span class="p">)</span>
+</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2"></a><span class="n">wait</span><span class="p">(</span><span class="n">P1_done</span><span class="p">)</span>
+</span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3"></a><span class="n">signal</span><span class="p">(</span><span class="n">P2_done</span><span class="p">)</span>
+</span><span id="__span-25-4"><a id="__codelineno-25-4" name="__codelineno-25-4"></a><span class="n">wait</span><span class="p">(</span><span class="n">P2_done</span><span class="p">)</span>
+</span><span id="__span-25-5"><a id="__codelineno-25-5" name="__codelineno-25-5"></a><span class="n">signal</span><span class="p">(</span><span class="n">P3_done</span><span class="p">)</span>
+</span><span id="__span-25-6"><a id="__codelineno-25-6" name="__codelineno-25-6"></a><span class="n">wait</span><span class="p">(</span><span class="n">P3_done</span><span class="p">)</span>
+</span></code></pre></div></td></tr></tbody></table></div>
 <blockquote>
 <p>题目很简单（<del>但不要像笔者那样把它们看作一段完整的程序</del>，实际上每个注释下的代码段对应一个进程要执行的程序）</p>
 </blockquote>
@@ -1630,30 +1635,30 @@ wait(P3_done)</code></p>
 <li>当其他进程执行 <code>signal()</code> 操作后，先前被挂起的进程就应该要<strong>重启</strong>了，此时该进程从等待状态变为就绪状态，并进入<strong>就绪队列</strong>中。</li>
 </ul>
 <p>要实现上述定义，首先按以下方式定义信号量：</p>
-<div class="language-c highlight"><pre><span></span><code><span id="__span-25-1"><a href="#__codelineno-25-1" id="__codelineno-25-1" name="__codelineno-25-1"></a><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-25-2"><a href="#__codelineno-25-2" id="__codelineno-25-2" name="__codelineno-25-2"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">;</span>
-</span><span id="__span-25-3"><a href="#__codelineno-25-3" id="__codelineno-25-3" name="__codelineno-25-3"></a><span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">process</span><span class="w"> </span><span class="o">*</span><span class="n">list</span><span class="p">;</span>
-</span><span id="__span-25-4"><a href="#__codelineno-25-4" id="__codelineno-25-4" name="__codelineno-25-4"></a><span class="p">}</span><span class="w"> </span><span class="n">semaphore</span><span class="p">;</span>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-26-1"><a href="#__codelineno-26-1" id="__codelineno-26-1" name="__codelineno-26-1"></a><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-26-2"><a href="#__codelineno-26-2" id="__codelineno-26-2" name="__codelineno-26-2"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">;</span>
+</span><span id="__span-26-3"><a href="#__codelineno-26-3" id="__codelineno-26-3" name="__codelineno-26-3"></a><span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">process</span><span class="w"> </span><span class="o">*</span><span class="n">list</span><span class="p">;</span>
+</span><span id="__span-26-4"><a href="#__codelineno-26-4" id="__codelineno-26-4" name="__codelineno-26-4"></a><span class="p">}</span><span class="w"> </span><span class="n">semaphore</span><span class="p">;</span>
 </span></code></pre></div>
 <ul>
 <li><code>list</code> 可通过<span class="heti-skip"><span class="heti-spacing"> </span>PCB<span class="heti-spacing"> </span></span>的一个链接字段轻松实现；可以是<span class="heti-skip"><span class="heti-spacing"> </span>FIFO<span class="heti-spacing"> </span></span>队列，也可以是任何其他队列（反正不影响信号量的正确使用）</li>
 </ul>
 <p>接着修改 <code>wait()</code> 和 <code>signal()</code> 的定义：</p>
-<div class="language-c highlight"><pre><span></span><code><span id="__span-26-1"><a href="#__codelineno-26-1" id="__codelineno-26-1" name="__codelineno-26-1"></a><span class="n">wait</span><span class="p">(</span><span class="n">semaphore</span><span class="w"> </span><span class="o">*</span><span class="n">S</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-26-2"><a href="#__codelineno-26-2" id="__codelineno-26-2" name="__codelineno-26-2"></a><span class="w">    </span><span class="n">S</span><span class="o">-&gt;</span><span class="n">value</span><span class="o">--</span><span class="p">;</span>
-</span><span id="__span-26-3"><a href="#__codelineno-26-3" id="__codelineno-26-3" name="__codelineno-26-3"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">S</span><span class="o">-&gt;</span><span class="n">value</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-26-4"><a href="#__codelineno-26-4" id="__codelineno-26-4" name="__codelineno-26-4"></a><span class="w">        </span><span class="n">add</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="n">process</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">S</span><span class="o">-&gt;</span><span class="n">list</span><span class="p">;</span>
-</span><span id="__span-26-5"><a href="#__codelineno-26-5" id="__codelineno-26-5" name="__codelineno-26-5"></a><span class="w">        </span><span class="n">sleep</span><span class="p">();</span>
-</span><span id="__span-26-6"><a href="#__codelineno-26-6" id="__codelineno-26-6" name="__codelineno-26-6"></a><span class="w">    </span><span class="p">}</span>
-</span><span id="__span-26-7"><a href="#__codelineno-26-7" id="__codelineno-26-7" name="__codelineno-26-7"></a><span class="p">}</span>
-</span><span id="__span-26-8"><a href="#__codelineno-26-8" id="__codelineno-26-8" name="__codelineno-26-8"></a>
-</span><span id="__span-26-9"><a href="#__codelineno-26-9" id="__codelineno-26-9" name="__codelineno-26-9"></a><span class="n">signal</span><span class="p">(</span><span class="n">semaphore</span><span class="w"> </span><span class="o">*</span><span class="n">S</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-26-10"><a href="#__codelineno-26-10" id="__codelineno-26-10" name="__codelineno-26-10"></a><span class="w">    </span><span class="n">S</span><span class="o">-&gt;</span><span class="n">value</span><span class="o">++</span><span class="p">;</span>
-</span><span id="__span-26-11"><a href="#__codelineno-26-11" id="__codelineno-26-11" name="__codelineno-26-11"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">S</span><span class="o">-&gt;</span><span class="n">value</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-26-12"><a href="#__codelineno-26-12" id="__codelineno-26-12" name="__codelineno-26-12"></a><span class="w">        </span><span class="n">remove</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">process</span><span class="w"> </span><span class="n">P</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="n">S</span><span class="o">-&gt;</span><span class="n">list</span><span class="p">;</span>
-</span><span id="__span-26-13"><a href="#__codelineno-26-13" id="__codelineno-26-13" name="__codelineno-26-13"></a><span class="w">        </span><span class="n">wakeup</span><span class="p">(</span><span class="n">P</span><span class="p">);</span>
-</span><span id="__span-26-14"><a href="#__codelineno-26-14" id="__codelineno-26-14" name="__codelineno-26-14"></a><span class="w">    </span><span class="p">}</span>
-</span><span id="__span-26-15"><a href="#__codelineno-26-15" id="__codelineno-26-15" name="__codelineno-26-15"></a><span class="p">}</span>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-27-1"><a href="#__codelineno-27-1" id="__codelineno-27-1" name="__codelineno-27-1"></a><span class="n">wait</span><span class="p">(</span><span class="n">semaphore</span><span class="w"> </span><span class="o">*</span><span class="n">S</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-27-2"><a href="#__codelineno-27-2" id="__codelineno-27-2" name="__codelineno-27-2"></a><span class="w">    </span><span class="n">S</span><span class="o">-&gt;</span><span class="n">value</span><span class="o">--</span><span class="p">;</span>
+</span><span id="__span-27-3"><a href="#__codelineno-27-3" id="__codelineno-27-3" name="__codelineno-27-3"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">S</span><span class="o">-&gt;</span><span class="n">value</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-27-4"><a href="#__codelineno-27-4" id="__codelineno-27-4" name="__codelineno-27-4"></a><span class="w">        </span><span class="n">add</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="n">process</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">S</span><span class="o">-&gt;</span><span class="n">list</span><span class="p">;</span>
+</span><span id="__span-27-5"><a href="#__codelineno-27-5" id="__codelineno-27-5" name="__codelineno-27-5"></a><span class="w">        </span><span class="n">sleep</span><span class="p">();</span>
+</span><span id="__span-27-6"><a href="#__codelineno-27-6" id="__codelineno-27-6" name="__codelineno-27-6"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-27-7"><a href="#__codelineno-27-7" id="__codelineno-27-7" name="__codelineno-27-7"></a><span class="p">}</span>
+</span><span id="__span-27-8"><a href="#__codelineno-27-8" id="__codelineno-27-8" name="__codelineno-27-8"></a>
+</span><span id="__span-27-9"><a href="#__codelineno-27-9" id="__codelineno-27-9" name="__codelineno-27-9"></a><span class="n">signal</span><span class="p">(</span><span class="n">semaphore</span><span class="w"> </span><span class="o">*</span><span class="n">S</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-27-10"><a href="#__codelineno-27-10" id="__codelineno-27-10" name="__codelineno-27-10"></a><span class="w">    </span><span class="n">S</span><span class="o">-&gt;</span><span class="n">value</span><span class="o">++</span><span class="p">;</span>
+</span><span id="__span-27-11"><a href="#__codelineno-27-11" id="__codelineno-27-11" name="__codelineno-27-11"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">S</span><span class="o">-&gt;</span><span class="n">value</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-27-12"><a href="#__codelineno-27-12" id="__codelineno-27-12" name="__codelineno-27-12"></a><span class="w">        </span><span class="n">remove</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">process</span><span class="w"> </span><span class="n">P</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="n">S</span><span class="o">-&gt;</span><span class="n">list</span><span class="p">;</span>
+</span><span id="__span-27-13"><a href="#__codelineno-27-13" id="__codelineno-27-13" name="__codelineno-27-13"></a><span class="w">        </span><span class="n">wakeup</span><span class="p">(</span><span class="n">P</span><span class="p">);</span>
+</span><span id="__span-27-14"><a href="#__codelineno-27-14" id="__codelineno-27-14" name="__codelineno-27-14"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-27-15"><a href="#__codelineno-27-15" id="__codelineno-27-15" name="__codelineno-27-15"></a><span class="p">}</span>
 </span></code></pre></div>
 <ul>
 <li><code>sleep()</code> 操作会挂起调用该函数的进程，而 <code>wakeup(P)</code> 会继续执行被挂起的进程 <code>P</code>，它们都是<span class="heti-skip"><span class="heti-spacing"> </span>OS<span class="heti-spacing"> </span></span>的基本系统调用</li>
@@ -1680,21 +1685,21 @@ wait(P3_done)</code></p>
 <ul>
 <li>
 <p>假如程序交换了 <code>wait()</code> 和 <code>signal()</code> 的顺序，即</p>
-<div class="language-c highlight"><pre><span></span><code><span id="__span-27-1"><a href="#__codelineno-27-1" id="__codelineno-27-1" name="__codelineno-27-1"></a><span class="n">signal</span><span class="p">(</span><span class="n">mutex</span><span class="p">);</span>
-</span><span id="__span-27-2"><a href="#__codelineno-27-2" id="__codelineno-27-2" name="__codelineno-27-2"></a><span class="w">    </span><span class="c1">// ...</span>
-</span><span id="__span-27-3"><a href="#__codelineno-27-3" id="__codelineno-27-3" name="__codelineno-27-3"></a><span class="w">    </span><span class="c1">// critical section</span>
-</span><span id="__span-27-4"><a href="#__codelineno-27-4" id="__codelineno-27-4" name="__codelineno-27-4"></a><span class="w">    </span><span class="c1">// ...</span>
-</span><span id="__span-27-5"><a href="#__codelineno-27-5" id="__codelineno-27-5" name="__codelineno-27-5"></a><span class="n">wait</span><span class="p">(</span><span class="n">mutex</span><span class="p">);</span>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-28-1"><a href="#__codelineno-28-1" id="__codelineno-28-1" name="__codelineno-28-1"></a><span class="n">signal</span><span class="p">(</span><span class="n">mutex</span><span class="p">);</span>
+</span><span id="__span-28-2"><a href="#__codelineno-28-2" id="__codelineno-28-2" name="__codelineno-28-2"></a><span class="w">    </span><span class="c1">// ...</span>
+</span><span id="__span-28-3"><a href="#__codelineno-28-3" id="__codelineno-28-3" name="__codelineno-28-3"></a><span class="w">    </span><span class="c1">// critical section</span>
+</span><span id="__span-28-4"><a href="#__codelineno-28-4" id="__codelineno-28-4" name="__codelineno-28-4"></a><span class="w">    </span><span class="c1">// ...</span>
+</span><span id="__span-28-5"><a href="#__codelineno-28-5" id="__codelineno-28-5" name="__codelineno-28-5"></a><span class="n">wait</span><span class="p">(</span><span class="n">mutex</span><span class="p">);</span>
 </span></code></pre></div>
 <p>此时一些进程可能同时在各自的临界区执行，从而违背了互斥要求。注意这一问题不会总是复现。</p>
 </li>
 <li>
 <p>假如程序用 <code>wait(mutex)</code> 替代 <code>signal(mutex)</code>，即</p>
-<div class="language-c highlight"><pre><span></span><code><span id="__span-28-1"><a href="#__codelineno-28-1" id="__codelineno-28-1" name="__codelineno-28-1"></a><span class="n">wait</span><span class="p">(</span><span class="n">mutex</span><span class="p">);</span>
-</span><span id="__span-28-2"><a href="#__codelineno-28-2" id="__codelineno-28-2" name="__codelineno-28-2"></a><span class="w">    </span><span class="c1">// ...</span>
-</span><span id="__span-28-3"><a href="#__codelineno-28-3" id="__codelineno-28-3" name="__codelineno-28-3"></a><span class="w">    </span><span class="c1">// critical section</span>
-</span><span id="__span-28-4"><a href="#__codelineno-28-4" id="__codelineno-28-4" name="__codelineno-28-4"></a><span class="w">    </span><span class="c1">// ...</span>
-</span><span id="__span-28-5"><a href="#__codelineno-28-5" id="__codelineno-28-5" name="__codelineno-28-5"></a><span class="n">wait</span><span class="p">(</span><span class="n">mutex</span><span class="p">);</span>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-29-1"><a href="#__codelineno-29-1" id="__codelineno-29-1" name="__codelineno-29-1"></a><span class="n">wait</span><span class="p">(</span><span class="n">mutex</span><span class="p">);</span>
+</span><span id="__span-29-2"><a href="#__codelineno-29-2" id="__codelineno-29-2" name="__codelineno-29-2"></a><span class="w">    </span><span class="c1">// ...</span>
+</span><span id="__span-29-3"><a href="#__codelineno-29-3" id="__codelineno-29-3" name="__codelineno-29-3"></a><span class="w">    </span><span class="c1">// critical section</span>
+</span><span id="__span-29-4"><a href="#__codelineno-29-4" id="__codelineno-29-4" name="__codelineno-29-4"></a><span class="w">    </span><span class="c1">// ...</span>
+</span><span id="__span-29-5"><a href="#__codelineno-29-5" id="__codelineno-29-5" name="__codelineno-29-5"></a><span class="n">wait</span><span class="p">(</span><span class="n">mutex</span><span class="p">);</span>
 </span></code></pre></div>
 <p>因为信号量不可用，此时进程会被一直阻塞在第二个 <code>wait()</code> 调用上。</p>
 </li>
@@ -1706,26 +1711,26 @@ wait(P3_done)</code></p>
 <p>一种解决上述错误的策略是将简单的同步工具作为高级语言结构来整合。下面将介绍其中一种基础的高级同步构造——<strong>管程</strong><span>(monitor)<span class="heti-spacing"> </span></span>类型。</p>
 <h3 id="usage_1">Usage<a class="headerlink" href="#usage_1" title="Permanent link">⚓︎</a></h3>
 <p><strong>管程类型</strong>是一种抽象数据类型（ADT<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，包括了一组程序员定义的操作，这些操作在管程内部提供互斥机制；并声明了类型实例状态的变量，以及在这些变量上操作的函数体。伪代码语法如下：</p>
-<div class="language-c highlight"><pre><span></span><code><span id="__span-29-1"><a href="#__codelineno-29-1" id="__codelineno-29-1" name="__codelineno-29-1"></a><span class="n">monitor</span><span class="w"> </span><span class="n">monitor_name</span>
-</span><span id="__span-29-2"><a href="#__codelineno-29-2" id="__codelineno-29-2" name="__codelineno-29-2"></a><span class="p">{</span>
-</span><span id="__span-29-3"><a href="#__codelineno-29-3" id="__codelineno-29-3" name="__codelineno-29-3"></a><span class="w">    </span><span class="cm">/* shared variable declarations */</span>
-</span><span id="__span-29-4"><a href="#__codelineno-29-4" id="__codelineno-29-4" name="__codelineno-29-4"></a><span class="w">    </span><span class="n">function</span><span class="w"> </span><span class="nf">P1</span><span class="p">(...)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-29-5"><a href="#__codelineno-29-5" id="__codelineno-29-5" name="__codelineno-29-5"></a><span class="w">        </span><span class="c1">// ...</span>
-</span><span id="__span-29-6"><a href="#__codelineno-29-6" id="__codelineno-29-6" name="__codelineno-29-6"></a><span class="w">    </span><span class="p">}</span>
-</span><span id="__span-29-7"><a href="#__codelineno-29-7" id="__codelineno-29-7" name="__codelineno-29-7"></a><span class="w">    </span><span class="n">function</span><span class="w"> </span><span class="nf">P2</span><span class="p">(...)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-29-8"><a href="#__codelineno-29-8" id="__codelineno-29-8" name="__codelineno-29-8"></a><span class="w">        </span><span class="c1">// ...</span>
-</span><span id="__span-29-9"><a href="#__codelineno-29-9" id="__codelineno-29-9" name="__codelineno-29-9"></a><span class="w">    </span><span class="p">}</span>
-</span><span id="__span-29-10"><a href="#__codelineno-29-10" id="__codelineno-29-10" name="__codelineno-29-10"></a>
-</span><span id="__span-29-11"><a href="#__codelineno-29-11" id="__codelineno-29-11" name="__codelineno-29-11"></a><span class="w">    </span><span class="c1">// ...</span>
-</span><span id="__span-29-12"><a href="#__codelineno-29-12" id="__codelineno-29-12" name="__codelineno-29-12"></a>
-</span><span id="__span-29-13"><a href="#__codelineno-29-13" id="__codelineno-29-13" name="__codelineno-29-13"></a><span class="w">    </span><span class="n">function</span><span class="w"> </span><span class="nf">Pn</span><span class="p">(...)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-29-14"><a href="#__codelineno-29-14" id="__codelineno-29-14" name="__codelineno-29-14"></a><span class="w">        </span><span class="c1">/// ...</span>
-</span><span id="__span-29-15"><a href="#__codelineno-29-15" id="__codelineno-29-15" name="__codelineno-29-15"></a><span class="w">    </span><span class="p">}</span>
-</span><span id="__span-29-16"><a href="#__codelineno-29-16" id="__codelineno-29-16" name="__codelineno-29-16"></a>
-</span><span id="__span-29-17"><a href="#__codelineno-29-17" id="__codelineno-29-17" name="__codelineno-29-17"></a><span class="w">    </span><span class="n">initialization_code</span><span class="p">(...)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-29-18"><a href="#__codelineno-29-18" id="__codelineno-29-18" name="__codelineno-29-18"></a><span class="w">        </span><span class="c1">// ...</span>
-</span><span id="__span-29-19"><a href="#__codelineno-29-19" id="__codelineno-29-19" name="__codelineno-29-19"></a><span class="w">    </span><span class="p">}</span>
-</span><span id="__span-29-20"><a href="#__codelineno-29-20" id="__codelineno-29-20" name="__codelineno-29-20"></a><span class="p">}</span>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-30-1"><a href="#__codelineno-30-1" id="__codelineno-30-1" name="__codelineno-30-1"></a><span class="n">monitor</span><span class="w"> </span><span class="n">monitor_name</span>
+</span><span id="__span-30-2"><a href="#__codelineno-30-2" id="__codelineno-30-2" name="__codelineno-30-2"></a><span class="p">{</span>
+</span><span id="__span-30-3"><a href="#__codelineno-30-3" id="__codelineno-30-3" name="__codelineno-30-3"></a><span class="w">    </span><span class="cm">/* shared variable declarations */</span>
+</span><span id="__span-30-4"><a href="#__codelineno-30-4" id="__codelineno-30-4" name="__codelineno-30-4"></a><span class="w">    </span><span class="n">function</span><span class="w"> </span><span class="nf">P1</span><span class="p">(...)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-30-5"><a href="#__codelineno-30-5" id="__codelineno-30-5" name="__codelineno-30-5"></a><span class="w">        </span><span class="c1">// ...</span>
+</span><span id="__span-30-6"><a href="#__codelineno-30-6" id="__codelineno-30-6" name="__codelineno-30-6"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-30-7"><a href="#__codelineno-30-7" id="__codelineno-30-7" name="__codelineno-30-7"></a><span class="w">    </span><span class="n">function</span><span class="w"> </span><span class="nf">P2</span><span class="p">(...)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-30-8"><a href="#__codelineno-30-8" id="__codelineno-30-8" name="__codelineno-30-8"></a><span class="w">        </span><span class="c1">// ...</span>
+</span><span id="__span-30-9"><a href="#__codelineno-30-9" id="__codelineno-30-9" name="__codelineno-30-9"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-30-10"><a href="#__codelineno-30-10" id="__codelineno-30-10" name="__codelineno-30-10"></a>
+</span><span id="__span-30-11"><a href="#__codelineno-30-11" id="__codelineno-30-11" name="__codelineno-30-11"></a><span class="w">    </span><span class="c1">// ...</span>
+</span><span id="__span-30-12"><a href="#__codelineno-30-12" id="__codelineno-30-12" name="__codelineno-30-12"></a>
+</span><span id="__span-30-13"><a href="#__codelineno-30-13" id="__codelineno-30-13" name="__codelineno-30-13"></a><span class="w">    </span><span class="n">function</span><span class="w"> </span><span class="nf">Pn</span><span class="p">(...)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-30-14"><a href="#__codelineno-30-14" id="__codelineno-30-14" name="__codelineno-30-14"></a><span class="w">        </span><span class="c1">/// ...</span>
+</span><span id="__span-30-15"><a href="#__codelineno-30-15" id="__codelineno-30-15" name="__codelineno-30-15"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-30-16"><a href="#__codelineno-30-16" id="__codelineno-30-16" name="__codelineno-30-16"></a>
+</span><span id="__span-30-17"><a href="#__codelineno-30-17" id="__codelineno-30-17" name="__codelineno-30-17"></a><span class="w">    </span><span class="n">initialization_code</span><span class="p">(...)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-30-18"><a href="#__codelineno-30-18" id="__codelineno-30-18" name="__codelineno-30-18"></a><span class="w">        </span><span class="c1">// ...</span>
+</span><span id="__span-30-19"><a href="#__codelineno-30-19" id="__codelineno-30-19" name="__codelineno-30-19"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-30-20"><a href="#__codelineno-30-20" id="__codelineno-30-20" name="__codelineno-30-20"></a><span class="p">}</span>
 </span></code></pre></div>
 <p>管程能确保同一时间内管程内只有一个活跃进程，因此程序员无需显式编写同步约束。</p>
 <p>不过目前定义的管程还不够强大，因此需要定义额外的同步机制，这些机制由 <code>condition</code> 类型提供。希望编写量身定制的同步模式的程序员可以定义一个或多个 <code>condition</code> 类型的变量（比如 <code class="language-c highlight"><span class="n">condition</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">;</span></code><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。这些条件变量唯一能调用的操作是 <code>wait()</code> 和 <code>signal()</code>，其作用和信号量的同名操作大致一样，不过有一个不同之处是：如果没有挂起的进程，这里的 <code>signal()</code> 没有影响（而信号量的那个总是会改变信号量的状态<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
@@ -1739,36 +1744,36 @@ wait(P3_done)</code></p>
 </ul>
 <h3 id="implementating-a-monitor-using-semaphores">Implementating a Monitor Using Semaphores<a class="headerlink" href="#implementating-a-monitor-using-semaphores" title="Permanent link">⚓︎</a></h3>
 <p>下面考虑用（二元）信号量实现管程。这里采用<strong>发信号并等待</strong>的模式，此时需要一个额外的二元信号量 <code>next</code>（初始化为<span><span class="heti-spacing"> </span>0</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>（发信号的进程可用 <code>next</code> 挂起自己<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，并且提供一个记录因 <code>next</code> 挂起的进程数 <code>next_count</code>。因此每个外部函数 <code>F</code> 被改写为：</p>
-<div class="language-c highlight"><pre><span></span><code><span id="__span-30-1"><a href="#__codelineno-30-1" id="__codelineno-30-1" name="__codelineno-30-1"></a><span class="n">wait</span><span class="p">(</span><span class="n">mutex</span><span class="p">);</span>
-</span><span id="__span-30-2"><a href="#__codelineno-30-2" id="__codelineno-30-2" name="__codelineno-30-2"></a><span class="w">    </span><span class="c1">// ...</span>
-</span><span id="__span-30-3"><a href="#__codelineno-30-3" id="__codelineno-30-3" name="__codelineno-30-3"></a><span class="w">    </span><span class="c1">// body of F</span>
-</span><span id="__span-30-4"><a href="#__codelineno-30-4" id="__codelineno-30-4" name="__codelineno-30-4"></a><span class="w">    </span><span class="c1">// ...</span>
-</span><span id="__span-30-5"><a href="#__codelineno-30-5" id="__codelineno-30-5" name="__codelineno-30-5"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">next_count</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
-</span><span id="__span-30-6"><a href="#__codelineno-30-6" id="__codelineno-30-6" name="__codelineno-30-6"></a><span class="w">    </span><span class="n">signal</span><span class="p">(</span><span class="n">next</span><span class="p">);</span>
-</span><span id="__span-30-7"><a href="#__codelineno-30-7" id="__codelineno-30-7" name="__codelineno-30-7"></a><span class="k">else</span>
-</span><span id="__span-30-8"><a href="#__codelineno-30-8" id="__codelineno-30-8" name="__codelineno-30-8"></a><span class="w">    </span><span class="n">signal</span><span class="p">(</span><span class="n">mutex</span><span class="p">);</span>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-31-1"><a href="#__codelineno-31-1" id="__codelineno-31-1" name="__codelineno-31-1"></a><span class="n">wait</span><span class="p">(</span><span class="n">mutex</span><span class="p">);</span>
+</span><span id="__span-31-2"><a href="#__codelineno-31-2" id="__codelineno-31-2" name="__codelineno-31-2"></a><span class="w">    </span><span class="c1">// ...</span>
+</span><span id="__span-31-3"><a href="#__codelineno-31-3" id="__codelineno-31-3" name="__codelineno-31-3"></a><span class="w">    </span><span class="c1">// body of F</span>
+</span><span id="__span-31-4"><a href="#__codelineno-31-4" id="__codelineno-31-4" name="__codelineno-31-4"></a><span class="w">    </span><span class="c1">// ...</span>
+</span><span id="__span-31-5"><a href="#__codelineno-31-5" id="__codelineno-31-5" name="__codelineno-31-5"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">next_count</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+</span><span id="__span-31-6"><a href="#__codelineno-31-6" id="__codelineno-31-6" name="__codelineno-31-6"></a><span class="w">    </span><span class="n">signal</span><span class="p">(</span><span class="n">next</span><span class="p">);</span>
+</span><span id="__span-31-7"><a href="#__codelineno-31-7" id="__codelineno-31-7" name="__codelineno-31-7"></a><span class="k">else</span>
+</span><span id="__span-31-8"><a href="#__codelineno-31-8" id="__codelineno-31-8" name="__codelineno-31-8"></a><span class="w">    </span><span class="n">signal</span><span class="p">(</span><span class="n">mutex</span><span class="p">);</span>
 </span></code></pre></div>
 <p>此时管程内的互斥得以保证。下面考虑实现条件变量：对于每个条件 <code>x</code>，引入一个二元信号量 <code>x_sem</code> 和整数变量 <code>x_count</code>（均初始化为<span><span class="heti-spacing"> </span>0</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。<code>x.wait()</code> 和 <code>x.signal()</code> 的实现分别如下：</p>
-<div class="language-c highlight"><pre><span></span><code><span id="__span-31-1"><a href="#__codelineno-31-1" id="__codelineno-31-1" name="__codelineno-31-1"></a><span class="c1">// x.wait()</span>
-</span><span id="__span-31-2"><a href="#__codelineno-31-2" id="__codelineno-31-2" name="__codelineno-31-2"></a><span class="n">x_count</span><span class="o">++</span><span class="p">;</span>
-</span><span id="__span-31-3"><a href="#__codelineno-31-3" id="__codelineno-31-3" name="__codelineno-31-3"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">next_count</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
-</span><span id="__span-31-4"><a href="#__codelineno-31-4" id="__codelineno-31-4" name="__codelineno-31-4"></a><span class="w">    </span><span class="n">signal</span><span class="p">(</span><span class="n">next</span><span class="p">);</span>
-</span><span id="__span-31-5"><a href="#__codelineno-31-5" id="__codelineno-31-5" name="__codelineno-31-5"></a><span class="k">else</span>
-</span><span id="__span-31-6"><a href="#__codelineno-31-6" id="__codelineno-31-6" name="__codelineno-31-6"></a><span class="w">    </span><span class="n">signal</span><span class="p">(</span><span class="n">mutex</span><span class="p">);</span>
-</span><span id="__span-31-7"><a href="#__codelineno-31-7" id="__codelineno-31-7" name="__codelineno-31-7"></a><span class="n">wait</span><span class="p">(</span><span class="n">x_sem</span><span class="p">);</span>
-</span><span id="__span-31-8"><a href="#__codelineno-31-8" id="__codelineno-31-8" name="__codelineno-31-8"></a><span class="n">x_count</span><span class="o">--</span><span class="p">;</span>
-</span><span id="__span-31-9"><a href="#__codelineno-31-9" id="__codelineno-31-9" name="__codelineno-31-9"></a>
-</span><span id="__span-31-10"><a href="#__codelineno-31-10" id="__codelineno-31-10" name="__codelineno-31-10"></a><span class="c1">// x.signal()</span>
-</span><span id="__span-31-11"><a href="#__codelineno-31-11" id="__codelineno-31-11" name="__codelineno-31-11"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">x_count</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-31-12"><a href="#__codelineno-31-12" id="__codelineno-31-12" name="__codelineno-31-12"></a><span class="w">    </span><span class="n">next_count</span><span class="o">++</span><span class="p">;</span>
-</span><span id="__span-31-13"><a href="#__codelineno-31-13" id="__codelineno-31-13" name="__codelineno-31-13"></a><span class="w">    </span><span class="n">signal</span><span class="p">(</span><span class="n">x_sem</span><span class="p">);</span>
-</span><span id="__span-31-14"><a href="#__codelineno-31-14" id="__codelineno-31-14" name="__codelineno-31-14"></a><span class="w">    </span><span class="n">wait</span><span class="p">(</span><span class="n">next</span><span class="p">);</span>
-</span><span id="__span-31-15"><a href="#__codelineno-31-15" id="__codelineno-31-15" name="__codelineno-31-15"></a><span class="w">    </span><span class="n">next_count</span><span class="o">--</span><span class="p">;</span>
-</span><span id="__span-31-16"><a href="#__codelineno-31-16" id="__codelineno-31-16" name="__codelineno-31-16"></a><span class="p">}</span>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-32-1"><a href="#__codelineno-32-1" id="__codelineno-32-1" name="__codelineno-32-1"></a><span class="c1">// x.wait()</span>
+</span><span id="__span-32-2"><a href="#__codelineno-32-2" id="__codelineno-32-2" name="__codelineno-32-2"></a><span class="n">x_count</span><span class="o">++</span><span class="p">;</span>
+</span><span id="__span-32-3"><a href="#__codelineno-32-3" id="__codelineno-32-3" name="__codelineno-32-3"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">next_count</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+</span><span id="__span-32-4"><a href="#__codelineno-32-4" id="__codelineno-32-4" name="__codelineno-32-4"></a><span class="w">    </span><span class="n">signal</span><span class="p">(</span><span class="n">next</span><span class="p">);</span>
+</span><span id="__span-32-5"><a href="#__codelineno-32-5" id="__codelineno-32-5" name="__codelineno-32-5"></a><span class="k">else</span>
+</span><span id="__span-32-6"><a href="#__codelineno-32-6" id="__codelineno-32-6" name="__codelineno-32-6"></a><span class="w">    </span><span class="n">signal</span><span class="p">(</span><span class="n">mutex</span><span class="p">);</span>
+</span><span id="__span-32-7"><a href="#__codelineno-32-7" id="__codelineno-32-7" name="__codelineno-32-7"></a><span class="n">wait</span><span class="p">(</span><span class="n">x_sem</span><span class="p">);</span>
+</span><span id="__span-32-8"><a href="#__codelineno-32-8" id="__codelineno-32-8" name="__codelineno-32-8"></a><span class="n">x_count</span><span class="o">--</span><span class="p">;</span>
+</span><span id="__span-32-9"><a href="#__codelineno-32-9" id="__codelineno-32-9" name="__codelineno-32-9"></a>
+</span><span id="__span-32-10"><a href="#__codelineno-32-10" id="__codelineno-32-10" name="__codelineno-32-10"></a><span class="c1">// x.signal()</span>
+</span><span id="__span-32-11"><a href="#__codelineno-32-11" id="__codelineno-32-11" name="__codelineno-32-11"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">x_count</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-32-12"><a href="#__codelineno-32-12" id="__codelineno-32-12" name="__codelineno-32-12"></a><span class="w">    </span><span class="n">next_count</span><span class="o">++</span><span class="p">;</span>
+</span><span id="__span-32-13"><a href="#__codelineno-32-13" id="__codelineno-32-13" name="__codelineno-32-13"></a><span class="w">    </span><span class="n">signal</span><span class="p">(</span><span class="n">x_sem</span><span class="p">);</span>
+</span><span id="__span-32-14"><a href="#__codelineno-32-14" id="__codelineno-32-14" name="__codelineno-32-14"></a><span class="w">    </span><span class="n">wait</span><span class="p">(</span><span class="n">next</span><span class="p">);</span>
+</span><span id="__span-32-15"><a href="#__codelineno-32-15" id="__codelineno-32-15" name="__codelineno-32-15"></a><span class="w">    </span><span class="n">next_count</span><span class="o">--</span><span class="p">;</span>
+</span><span id="__span-32-16"><a href="#__codelineno-32-16" id="__codelineno-32-16" name="__codelineno-32-16"></a><span class="p">}</span>
 </span></code></pre></div>
 <h3 id="resuming-processes-with-a-monitor">Resuming Processes with a Monitor<a class="headerlink" href="#resuming-processes-with-a-monitor" title="Permanent link">⚓︎</a></h3>
 <p>下面考虑管程内进程继续的顺序。一种方案是使用<span class="heti-skip"><span class="heti-spacing"> </span>FCFS<span class="heti-spacing"> </span></span>顺序，但多数情况下这种简单方法是不够的。通常会用的方法是<strong>条件等待</strong><span>(conditional wait)<span class="heti-spacing"> </span></span>构造，其形式如下：</p>
-<div class="language-c highlight"><pre><span></span><code><span id="__span-32-1"><a href="#__codelineno-32-1" id="__codelineno-32-1" name="__codelineno-32-1"></a><span class="n">x</span><span class="p">.</span><span class="n">wait</span><span class="p">(</span><span class="n">c</span><span class="p">);</span>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-33-1"><a href="#__codelineno-33-1" id="__codelineno-33-1" name="__codelineno-33-1"></a><span class="n">x</span><span class="p">.</span><span class="n">wait</span><span class="p">(</span><span class="n">c</span><span class="p">);</span>
 </span></code></pre></div>
 <p>其中 <code>c</code>（可以是一个整数表达式）的值为<strong>优先级数</strong>(priority number)，它会和被挂起进程的名字一起存储起来。当执行 <code>x.signal()</code> 时，优先级数最小的进程将会继续执行。</p>
 <p>然而管程无法保证能观察到先前访问的进程，因此某个进程可能存在以下问题：</p>
