@@ -13,7 +13,7 @@
     
         虽然每章内容大体上完成了，但实际上只是整理了 cms 老师的 PPT 上的内容，没有被我好好消化过，所以肯定有不少地方没被我讲明白（~~因为我自己还没完全搞懂hh~~）。目前处在期末复习阶段，我终于能腾出些时间好好整理一下这些笔记。因此最近几天笔记内容可能会有不小的改动，尽力做到把每个知识点都能讲清楚。还是老样子，如果有任何不懂的地方欢迎提出，我应该能保证在 12h 内给予回复。
 
-        当前进度：完成第 1-3 章的重构（26.06.17）
+        当前进度：完成第 1-11 章的重构（26.06.19）
 
     - Fundamentals
         - [x] [Introduction](1.md)
@@ -44,10 +44,12 @@
     - 教材：
         - 虎书
         - Engineering a Compiler
+        - 龙书（CS143 参考教材）
 
+    - [Stanford CS143](http://web.stanford.edu/class/cs143/)：笔记中稍微插入了一些课堂上没讲，但这里讲解较多的内容作为补充，但还是以虎书为主（当前还是从功利角度考虑）
     - 笔记：
-        - [咸鱼暄前辈的笔记](https://xuan-insr.github.io/compile_principle/)
-        - [CubicY 前辈的速通笔记](https://cubicy.icu/compiler-construction-principles/)
+        - [咸鱼暄前辈的笔记](https://xuan-insr.github.io/compile_principle/)：讲得很细👍；但由于讲解顺序更贴合 CS143 的授课顺序，更适合平时细嚼慢咽
+        - [CubicY 前辈的速通笔记](https://cubicy.icu/compiler-construction-principles/)：建议期末复习时再看，便于抓重点
         - [Howjul 前辈的笔记](https://www.yuque.com/howjul/rt9ms6/qyhhptbubm5spvta)
         - [25cp-note](https://compiler-note-7908cb.pages.zjusct.io/)（不知道是谁写的，需校内网访问）
         - [Tian42Chen 前辈的笔记](https://github.com/Tian42chen/Transcription-Malfunctioned/blob/main/_Finalized_Notes/CP.pdf)
