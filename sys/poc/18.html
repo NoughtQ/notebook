@@ -967,8 +967,18 @@
 </a>
 <h1 id="loop-optimizations">Loop Optimizations<a class="headerlink" href="#loop-optimizations" title="Permanent link">⚓︎</a></h1>
 <div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
-<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>2095<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>10<span class="heti-spacing"> </span></span>分钟</p>
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>2147<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>11<span class="heti-spacing"> </span></span>分钟</p>
 </div>
+<details class="abstract">
+<summary>核心知识</summary>
+<ul>
+<li>基本概念：支配节点、支配树、自然循环、嵌套循环</li>
+<li>提取循环不变量到循环前导部分</li>
+<li>归纳变量：检测、强度减少<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>消除<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>重写程序</li>
+<li>数组边界检查</li>
+<li>循环展开</li>
+</ul>
+</details>
 <p><strong>循环</strong>(loop)（依据《韦氏词典》定义<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：一系列重复执行的指令，直至达到终止条件。</p>
 <p>在控制流图中，循环是指一个包含头节点<span class="heti-skip"><span class="heti-spacing"> </span>h<span class="heti-spacing"> </span></span>的节点集合<span><span class="heti-spacing"> </span>S</span>，并满足以下性质：</p>
 <ul>
@@ -1019,18 +1029,18 @@ D[n] = \{n\} \cup \left( \bigcap_{p \in \operatorname{pred}[n]} D[p] \right)
 <p>我们关心一个循环是否只有一个入口节点：如果是<span class="heti-skip"><span class="heti-spacing"> </span>=&gt;<span class="heti-spacing"> </span></span>在<strong>每次迭代</strong>开始时保持<strong>某些初始条件</strong> <span>=&gt;<span class="heti-spacing"> </span></span>简化优化。这一机会促使了对自然循环定义的需求。</p>
 <ul>
 <li><strong>回边</strong>(back edge)：流图中从节点<span class="heti-skip"><span class="heti-spacing"> </span>n<span class="heti-spacing"> </span></span>到支配<span class="heti-skip"><span class="heti-spacing"> </span>n<span class="heti-spacing"> </span></span>的节点<span class="heti-skip"><span class="heti-spacing"> </span>h<span class="heti-spacing"> </span></span>的一条边</li>
-<li>回边<span><span class="heti-spacing"> </span>n</span> → <span>h<span class="heti-spacing"> </span></span>的<strong>自然循环</strong><span>(natural loop)<span class="heti-spacing"> </span></span>是节点<span class="heti-skip"><span class="heti-spacing"> </span>x<span class="heti-spacing"> </span></span>的集合，其中<span class="heti-skip"><span class="heti-spacing"> </span>h<span class="heti-spacing"> </span></span>支配<span><span class="heti-spacing"> </span>x</span>，并且存在一条从<span class="heti-skip"><span class="heti-spacing"> </span>x<span class="heti-spacing"> </span></span>到<span class="heti-skip"><span class="heti-spacing"> </span>n<span class="heti-spacing"> </span></span>的不包含<span class="heti-skip"><span class="heti-spacing"> </span>h<span class="heti-spacing"> </span></span>的路径；该循环的头部将是<span><span class="heti-spacing"> </span>h</span></li>
+<li>回边<span class="heti-skip"><span class="heti-spacing"> </span>n -&gt; h<span class="heti-spacing"> </span></span>的<strong>自然循环</strong><span>(natural loop)<span class="heti-spacing"> </span></span>是节点<span class="heti-skip"><span class="heti-spacing"> </span>x<span class="heti-spacing"> </span></span>的集合，其中<span class="heti-skip"><span class="heti-spacing"> </span>h<span class="heti-spacing"> </span></span>支配<span><span class="heti-spacing"> </span>x</span>，并且存在一条从<span class="heti-skip"><span class="heti-spacing"> </span>x<span class="heti-spacing"> </span></span>到<span class="heti-skip"><span class="heti-spacing"> </span>n<span class="heti-spacing"> </span></span>的不包含<span class="heti-skip"><span class="heti-spacing"> </span>h<span class="heti-spacing"> </span></span>的路径；该循环的头部将是<span><span class="heti-spacing"> </span>h</span></li>
 </ul>
 <details class="example" open="open">
 <summary>例子</summary>
 <p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C18/3.png"><img align="right" alt="" src="images/C18/3.png" width="30%"/></a></p>
 <ul>
-<li>回边<span class="heti-skip"><span class="heti-spacing"> </span>10-&gt;5<span class="heti-spacing"> </span></span>的自然循环包括节点<span><span class="heti-spacing"> </span>5</span>、8、9、10，并且内部嵌套了循环<span><span class="heti-spacing"> </span>8</span>、9</li>
+<li>回边<span class="heti-skip"><span class="heti-spacing"> </span>10 -&gt; 5<span class="heti-spacing"> </span></span>的自然循环包括节点<span><span class="heti-spacing"> </span>5</span>、8、9、10，并且内部嵌套了循环<span><span class="heti-spacing"> </span>8</span>、9</li>
 <li>
 <p>一个节点<span class="heti-skip"><span class="heti-spacing"> </span>h<span class="heti-spacing"> </span></span>可以是多个自然循环的头节点</p>
 <ul>
 <li>3-&gt;2 =&gt; {2, 3}</li>
-<li>44-&gt;2 =&gt; {2, 4}</li>
+<li>4-&gt;2 =&gt; {2, 4}</li>
 </ul>
 </li>
 <li>
@@ -1079,8 +1089,8 @@ D[n] = \{n\} \cup \left( \bigcap_{p \in \operatorname{pred}[n]} D[p] \right)
 <p>将<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(d: t \leftarrow a \oplus b\)</span><span class="heti-spacing"> </span></span>提升到循环前导的条件：</p>
 <ul>
 <li><span><span class="arithmatex">\(d\)</span><span class="heti-spacing"> </span></span>支配所有<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(t\)</span><span class="heti-spacing"> </span></span>活跃输出的循环出口<span><span class="heti-spacing"> </span>=&gt; (b)</span> ❌</li>
-<li>并且循环中仅有一个<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(t\)</span><span class="heti-spacing"> </span></span>的定义<span><span class="heti-spacing"> </span>=&gt; (c)</span> ❌</li>
-<li>且<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(t\)</span><span class="heti-spacing"> </span></span>在循环前导中不活跃输出<span><span class="heti-spacing"> </span>(live-out) =&gt; (d)</span> ❌</li>
+<li>循环中仅有一个<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(t\)</span><span class="heti-spacing"> </span></span>的定义<span><span class="heti-spacing"> </span>=&gt; (c)</span> ❌</li>
+<li>且<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(t\)</span><span class="heti-spacing"> </span></span>不是循环前导的传出变量<span><span class="heti-spacing"> </span>(live-out) =&gt; (d)</span> ❌</li>
 </ul>
 <div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C18/7.png"><img src="images/C18/7.png" width="80%"/></a>
@@ -1133,9 +1143,9 @@ D[n] = \{n\} \cup \left( \bigcap_{p \in \operatorname{pred}[n]} D[p] \right)
 <ul>
 <li><strong>基本归纳变量</strong>：变量<span class="heti-skip"><span class="heti-spacing"> </span>i<span class="heti-spacing"> </span></span>是循环<span class="heti-skip"><span class="heti-spacing"> </span>L<span class="heti-spacing"> </span></span>中的一个基本归纳变量，其中<span class="heti-skip"><span class="heti-spacing"> </span>L<span class="heti-spacing"> </span></span>的头节点为<span><span class="heti-spacing"> </span>h</span>，当且仅当<span class="heti-skip"><span class="heti-spacing"> </span>i<span class="heti-spacing"> </span></span>在<span class="heti-skip"><span class="heti-spacing"> </span>L<span class="heti-spacing"> </span></span>中的唯一定义形式为为<span class="heti-skip"><span class="heti-spacing"> </span>i &lt;- i + c<span class="heti-spacing"> </span></span>或<span><span class="heti-spacing"> </span>i &lt;- i</span> − c，其中<span class="heti-skip"><span class="heti-spacing"> </span>c<span class="heti-spacing"> </span></span>是循环不变的。</li>
 <li><strong>派生归纳变量</strong>：变量<span class="heti-skip"><span class="heti-spacing"> </span>k<span class="heti-spacing"> </span></span>是循环<span class="heti-skip"><span class="heti-spacing"> </span>L<span class="heti-spacing"> </span></span>中的一个派生归纳变量，如果满足以下条件：<ol>
-<li>在<span class="heti-skip"><span class="heti-spacing"> </span>L<span class="heti-spacing"> </span></span>中<span class="heti-skip"><span class="heti-spacing"> </span>k<span class="heti-spacing"> </span></span>只有一个定义，形式为<span><span class="heti-spacing"> </span>k</span> ← <span>j * c<span class="heti-spacing"> </span></span>或<span><span class="heti-spacing"> </span>k</span> ← j + d，其中<span class="heti-skip"><span class="heti-spacing"> </span>j<span class="heti-spacing"> </span></span>是一个归纳变量，<span>c<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>d<span class="heti-spacing"> </span></span>是循环不变的</li>
+<li>在<span class="heti-skip"><span class="heti-spacing"> </span>L<span class="heti-spacing"> </span></span>中<span class="heti-skip"><span class="heti-spacing"> </span>k<span class="heti-spacing"> </span></span>只有一个定义，形式为<span class="heti-skip"><span class="heti-spacing"> </span>k &lt;- j * c<span class="heti-spacing"> </span></span>或<span><span class="heti-spacing"> </span>k &lt;- j + d</span>，其中<span class="heti-skip"><span class="heti-spacing"> </span>j<span class="heti-spacing"> </span></span>是一个归纳变量，<span>c<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>d<span class="heti-spacing"> </span></span>是循环不变的</li>
 <li>如果<span class="heti-skip"><span class="heti-spacing"> </span>j<span class="heti-spacing"> </span></span>是<span class="heti-skip"><span class="heti-spacing"> </span>i<span class="heti-spacing"> </span></span>族中的派生归纳变量，则：<ul>
-<li>能够到达<span class="heti-skip"><span class="heti-spacing"> </span>k<span class="heti-spacing"> </span></span>的<span class="heti-skip"><span class="heti-spacing"> </span>j<span class="heti-spacing"> </span></span>的唯一定义是在循环中的那个定义。</li>
+<li>能够到达<span class="heti-skip"><span class="heti-spacing"> </span>k<span class="heti-spacing"> </span></span>的<span class="heti-skip"><span class="heti-spacing"> </span>j<span class="heti-spacing"> </span></span>的唯一定义是在循环中的那个定义</li>
 <li>并且在<span class="heti-skip"><span class="heti-spacing"> </span>j<span class="heti-spacing"> </span></span>的定义和<span class="heti-skip"><span class="heti-spacing"> </span>k<span class="heti-spacing"> </span></span>的定义之间的任何路径上都没有<span class="heti-skip"><span class="heti-spacing"> </span>i<span class="heti-spacing"> </span></span>的定义</li>
 </ul>
 </li>
@@ -1146,9 +1156,9 @@ D[n] = \{n\} \cup \left( \bigcap_{p \in \operatorname{pred}[n]} D[p] \right)
 <p>乘法比加法开销更大，因此我们希望对每个形如<span class="heti-skip"><span class="heti-spacing"> </span>j &lt;- i * c<span class="heti-spacing"> </span></span>的定义的派生归纳变量进行替换，改用加法实现。对于每个三元组为<span class="heti-skip"><span class="heti-spacing"> </span>(i, a, b)<span class="heti-spacing"> </span></span>的派生归纳变量<span><span class="heti-spacing"> </span>j</span>，即<span><span class="heti-spacing"> </span>j &lt;- a + i * b</span>：</p>
 <ul>
 <li>创建一个新变量<span><span class="heti-spacing"> </span>j'</span></li>
-<li>在每次赋值<span class="heti-skip"><span class="heti-spacing"> </span>i &lt;- i + c<span class="heti-spacing"> </span></span>之后，添加赋值<span><span class="heti-spacing"> </span>j' &lt;- j' + c * b</span>，其中<span class="heti-skip"><span class="heti-spacing"> </span>c * b<span class="heti-spacing"> </span></span>是一个循环不变表达式，可在循环前序头部计算；如果<span class="heti-skip"><span class="heti-spacing"> </span>c<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>b<span class="heti-spacing"> </span></span>均为常量，则乘法可在编译时完成。</li>
+<li>在循环前导的末尾，将<span class="heti-skip"><span class="heti-spacing"> </span>j'<span class="heti-spacing"> </span></span>初始化为<span><span class="heti-spacing"> </span>j' &lt;- a + i *</span></li>
+<li>在每次赋值<span class="heti-skip"><span class="heti-spacing"> </span>i &lt;- i + c<span class="heti-spacing"> </span></span>之后，添加赋值<span><span class="heti-spacing"> </span>j' &lt;- j' + c * b</span>，其中<span class="heti-skip"><span class="heti-spacing"> </span>c * b<span class="heti-spacing"> </span></span>是一个循环不变表达式，可在循环前导计算；如果<span class="heti-skip"><span class="heti-spacing"> </span>c<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>b<span class="heti-spacing"> </span></span>均为常量，则乘法可在编译时完成</li>
 <li>将<span class="heti-skip"><span class="heti-spacing"> </span>j<span class="heti-spacing"> </span></span>的（唯一）赋值替换为<span><span class="heti-spacing"> </span>j &lt;- j'</span>（执行死代码消除）</li>
-<li>在循环前序头部的末尾，将<span class="heti-skip"><span class="heti-spacing"> </span>j'<span class="heti-spacing"> </span></span>初始化为<span><span class="heti-spacing"> </span>j' &lt;- a + i · b</span></li>
 </ul>
 <details class="example" open="open">
 <summary>例子</summary>
@@ -1174,7 +1184,7 @@ D[n] = \{n\} \cup \left( \bigcap_{p \in \operatorname{pred}[n]} D[p] \right)
 </ul>
 </details>
 <h3 id="elimination">Elimination<a class="headerlink" href="#elimination" title="Permanent link">⚓︎</a></h3>
-<p>经过强度降低后，部分归纳变量在循环中完全<strong>未被使用</strong>，另一些<strong>仅用于</strong>与循环不变量的<strong>比较</strong>。而这些归纳变量可以被删除。</p>
+<p>经过强度降低后，部分归纳变量在循环中完全<strong>未被使用</strong>，另一些<strong>仅用于</strong>与循环不变量的<strong>比较</strong>。这样的归纳变量可以被删除。</p>
 <p>如果一个变量在循环<span class="heti-skip"><span class="heti-spacing"> </span>L<span class="heti-spacing"> </span></span>的所有出口处均无效，并且其唯一用途是用于自身的定义，则该变量在循环<span class="heti-skip"><span class="heti-spacing"> </span>L<span class="heti-spacing"> </span></span>中是无用的。所有对无用变量的定义均可被删除。</p>
 <details class="example">
 <summary>例子</summary>
@@ -1204,12 +1214,12 @@ D[n] = \{n\} \cup \left( \bigcap_{p \in \operatorname{pred}[n]} D[p] \right)
 <p>某些编程语言会在每次下标操作时自动插入<strong>数组边界检查</strong>(array-bounds checks)。我们希望编译器能移除一些冗余的检查，但移除所有冗余的边界检查在计算上是不可行的。</p>
 <ul>
 <li>许多数组下标的形式是<span><span class="heti-spacing"> </span>a[i]</span>，其中<span class="heti-skip"><span class="heti-spacing"> </span>i<span class="heti-spacing"> </span></span>是一个归纳变量；编译器通常能够充分理解以进行优化</li>
-<li>数组的边界通常形式为<span><span class="heti-spacing"> </span>0 &lt;= i</span> ∧ i &lt; N</li>
-<li>从循环<span class="heti-skip"><span class="heti-spacing"> </span>L<span class="heti-spacing"> </span></span>中消除边界检查的标准实际上相当复杂，具体请参考教科书</li>
+<li>数组的边界通常形式为<span class="heti-skip"><span class="heti-spacing"> </span>i &gt;= 0<span class="heti-spacing"> </span></span>且<span><span class="heti-spacing"> </span>i &lt; N</span></li>
+<li>从循环<span class="heti-skip"><span class="heti-spacing"> </span>L<span class="heti-spacing"> </span></span>中消除边界检查的标准实际上相当复杂，具体请参考教材</li>
 </ul>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C18/17.png"><img align="right" alt="" src="images/C18/17.png" width="18%"/></a></p>
 <h2 id="loop-unrolling">Loop Unrolling<a class="headerlink" href="#loop-unrolling" title="Permanent link">⚓︎</a></h2>
-<p>某些循环的循环体非常小，以至于大部分时间都花在递增循环计数器变量和测试循环退出条件上。  </p>
-<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C18/17.png"><img align="right" alt="" src="images/C18/17.png" width="20%"/></a></p>
+<p>某些循环的循环体非常小，以至于大部分时间都花在递增循环计数器变量和测试循环退出条件上。</p>
 <p><strong>展开</strong>(unrolling)：将循环体的两个或更多副本连续排列。</p>
 <p>给定一个循环<span><span class="heti-spacing"> </span>L</span>，其头节点为<span><span class="heti-spacing"> </span>h</span>，回边为<span><span class="heti-spacing"> </span>si -&gt; h</span>，我们可以按如下方式展开该循环：  </p>
 <ul>
@@ -1227,18 +1237,15 @@ D[n] = \{n\} \cup \left( \bigcap_{p \in \operatorname{pred}[n]} D[p] \right)
 <p>我们需要一个归纳变量，使得每个增量<span class="heti-skip"><span class="heti-spacing"> </span>i &lt;- i + Δ<span class="heti-spacing"> </span></span>支配循环的每个回边。</p>
 <ul>
 <li>
-<p>将增量与循环退出测试聚合起来<span class="heti-skip"><span class="heti-spacing"> </span>=&gt;<span class="heti-spacing"> </span></span>脆弱</p>
-<ul>
-<li>但只能处理偶数次迭代</li>
-</ul>
+<p>将增量与循环退出测试聚合起来，但只能处理偶数次迭代</p>
 <p></p><div style="text-align: center">
 <a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C18/19.png"><img src="images/C18/19.png" width="80%"/></a>
 </div><p></p>
 </li>
 <li>
-<p>在尾部<span class="heti-skip"><span class="heti-spacing"> </span>(epilogue)<span class="heti-spacing"> </span></span>中执行奇数次迭代<span class="heti-skip"><span class="heti-spacing"> </span>=&gt;<span class="heti-spacing"> </span></span>健壮</p>
+<p>在<strong>尾部</strong><span>(epilogue)<span class="heti-spacing"> </span></span>中执行奇数次迭代</p>
 <p></p><div style="text-align: center">
-<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C18/20.png"><img src="images/C18/20.png" width="50%"/></a>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C18/20.png"><img src="images/C18/20.png" width="40%"/></a>
 </div><p></p>
 </li>
 </ul>
