@@ -1,0 +1,1688 @@
+<!DOCTYPE html>
+<html class="no-js" lang="zh"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="NoughtQ的笔记本，主要记录一些 CS 相关的笔记" name="description"/>
+<meta content="NoughtQ" name="author"/>
+<link href="https://notebook.noughtq.top/software/se/requirements.html" rel="canonical"/>
+<link href="basics.html" rel="prev"/>
+<link href="design.html" rel="next"/>
+<link href="../../feed_rss_created.xml" rel="alternate" title="RSS 订阅" type="application/rss+xml"/>
+<link href="../../feed_rss_updated.xml" rel="alternate" title="已更新内容的 RSS 订阅" type="application/rss+xml"/>
+<link href="../../assets/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.1" name="generator"/>
+<title>Requirements - NoughtQ的笔记本</title>
+<link href="../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=JetBrains+Mono,+LXGW+WenKai+Screen+GB+Screen:300,300i,400,400i,700,700i%7CJetBrains+Mono,+Consolas:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"JetBrains Mono, LXGW WenKai Screen GB Screen";--md-code-font:"JetBrains Mono, Consolas"}</style>
+<link href="../../css/heti.css" rel="stylesheet"/>
+<link href="../../css/timeline.css" rel="stylesheet"/>
+<link href="../../css/card.css" rel="stylesheet"/>
+<link href="../../css/custom.css" rel="stylesheet"/>
+<link href="../../css/extra_changelog.css" rel="stylesheet"/>
+<link href="../../css/header.css" rel="stylesheet"/>
+<link href="../../css/sidebar.css" rel="stylesheet"/>
+<link href="../../css/neoteroi-css.css" rel="stylesheet"/>
+<link href="../../css/toc_extra.css" rel="stylesheet"/>
+<link href="https://unpkg.com/katex@0/dist/katex.min.css" rel="stylesheet"/>
+<link href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css" rel="stylesheet"/>
+<link href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.css" rel="stylesheet"/>
+<script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-43NH8CVRCJ"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-43NH8CVRCJ",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-43NH8CVRCJ",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+<script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+<link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+<body data-md-color-accent="indigo" data-md-color-primary="indigo" data-md-color-scheme="slate" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#requirements">
+          跳转至
+        </a>
+</div>
+<div data-md-component="announce">
+<aside class="md-banner">
+<div class="md-banner__inner md-grid md-typeset">
+<button aria-label="不再显示此消息" class="md-banner__button md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+<!-- Add announcement here, including arbitrary HTML -->
+    游戏开发相关的笔记（包括计算机图形学、游戏引擎等）迁移至我的<a href="https://game.noughtq.top" target="_blank">全新笔记网站</a>，欢迎大家前来阅读🎉
+
+          </div>
+<script>var el=document.querySelector("[data-md-component=announce]");if(el){var content=el.querySelector(".md-typeset");__md_hash(content.innerHTML)===__md_get("__announce")&&(el.hidden=!0)}</script>
+</aside>
+</div>
+<header class="md-header" data-md-component="header">
+<nav aria-label="页眉" class="md-header__inner md-grid">
+<a aria-label="NoughtQ的笔记本" class="md-header__button md-logo" data-md-component="logo" href="../.." title="NoughtQ的笔记本">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.05 9H7.06V6h1.99V4.03H7.06v-1c0-1.11.89-1.99 1.99-1.99h5.98V8l2.47-1.5L20 8V1.04h1c1.05 0 2 .96 2 1.99V17c0 1.03-.95 2-2 2H9.05c-1.05 0-1.99-.95-1.99-2v-1h1.99v-2H7.06v-3h1.99zM1 18h2v-3H1v-2h2v-3H1V8h2V5h2v3H3v2h2v3H3v2h2v3H3v2h2v1h16v2H5a2 2 0 0 1-2-2v-1H1z"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            NoughtQ的笔记本
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              Requirements
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="Dark Mode" class="md-option" data-md-color-accent="indigo" data-md-color-media="(prefer-color-scheme: dark)" data-md-color-primary="indigo" data-md-color-scheme="slate" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="Dark Mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"></path></svg>
+</label>
+<input aria-label="Light Mode" class="md-option" data-md-color-accent="indigo" data-md-color-media="(prefer-color-scheme: light)" data-md-color-primary="indigo" data-md-color-scheme="default" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="Light Mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="搜索" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="搜索" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 256 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path></svg>
+</label>
+<nav aria-label="查找" class="md-search__options">
+<a aria-label="分享" class="md-search__icon md-icon" data-clipboard="" data-clipboard-text="" data-md-component="search-share" href="javascript:void(0)" tabindex="-1" title="分享">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"></path></svg>
+</a>
+<button aria-label="清空当前内容" class="md-search__icon md-icon" tabindex="-1" title="清空当前内容" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header__source">
+<a class="md-source" data-md-component="source" href="https://github.com/noughtq/notebook" title="前往仓库">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    NoughtQ/Notebook
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<nav aria-label="标签" class="md-tabs" data-md-component="tabs">
+<div class="md-grid">
+<ul class="md-tabs__list">
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../index.html">
+          
+  
+  
+    
+  
+  🏫主页
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../lang/index.html">
+          
+  
+  
+    
+  
+  🔡编程语言
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../math/index.html">
+          
+  
+  
+    
+  
+  📊数学相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../algo/index.html">
+          
+  
+  
+    
+  
+  🧮算法相关
+
+        </a>
+</li>
+<li class="md-tabs__item md-tabs__item--active">
+<a class="md-tabs__link" href="../index.html">
+          
+  
+  
+    
+  
+  💾软件相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../sys/index.html">
+          
+  
+  
+    
+  
+  💻系统相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../web/index.html">
+          
+  
+  
+    
+  
+  🌏Web相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../ai/index.html">
+          
+  
+  
+    
+  
+  🤖人工智能
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../misc/index.html">
+          
+  
+  
+    
+  
+  🗃️杂项
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../tools/index.html">
+          
+  
+  
+    
+  
+  🛠️工具
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../papers/index.html">
+          
+  
+  
+    
+  
+  📑论文阅读
+
+        </a>
+</li>
+</ul>
+</div>
+</nav>
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="导航栏" class="md-nav md-nav--primary md-nav--lifted" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="NoughtQ的笔记本" class="md-nav__button md-logo" data-md-component="logo" href="../.." title="NoughtQ的笔记本">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.05 9H7.06V6h1.99V4.03H7.06v-1c0-1.11.89-1.99 1.99-1.99h5.98V8l2.47-1.5L20 8V1.04h1c1.05 0 2 .96 2 1.99V17c0 1.03-.95 2-2 2H9.05c-1.05 0-1.99-.95-1.99-2v-1h1.99v-2H7.06v-3h1.99zM1 18h2v-3H1v-2h2v-3H1V8h2V5h2v3H3v2h2v3H3v2h2v3H3v2h2v1h16v2H5a2 2 0 0 1-2-2v-1H1z"></path></svg>
+</a>
+    NoughtQ的笔记本
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-component="source" href="https://github.com/noughtq/notebook" title="前往仓库">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    NoughtQ/Notebook
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../index.html">
+<span class="md-ellipsis">
+    
+  
+    🏫主页
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../lang/index.html">
+<span class="md-ellipsis">
+    
+  
+    🔡编程语言
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../math/index.html">
+<span class="md-ellipsis">
+    
+  
+    📊数学相关
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../algo/index.html">
+<span class="md-ellipsis">
+    
+  
+    🧮算法相关
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_5" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../index.html">
+<span class="md-ellipsis">
+    
+  
+    💾软件相关
+  
+
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="true" aria-labelledby="__nav_5_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_5">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    💾软件相关
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../dip/index.html">
+<span class="md-ellipsis">
+    
+  
+    图像信息处理
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_5_3" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="index.html">
+<span class="md-ellipsis">
+    
+  
+    软件工程
+  
+
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_5_3" id="__nav_5_3_label" tabindex="0">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="true" aria-labelledby="__nav_5_3_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_5_3">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    软件工程
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="basics.html">
+<span class="md-ellipsis">
+    
+  
+    Basics
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    
+  
+    Requirements
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="requirements.html">
+<span class="md-ellipsis">
+    
+  
+    Requirements
+  
+
+    
+  </span>
+</a>
+<nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#scenario-based-methods">
+<span class="md-ellipsis">
+      
+        Scenario-Based Methods
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#class-based-methods">
+<span class="md-ellipsis">
+      
+        Class-Based Methods
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#behavior-patterns-and-webmobile-apps">
+<span class="md-ellipsis">
+      
+        Behavior, Patterns, and Web/Mobile Apps
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="design.html">
+<span class="md-ellipsis">
+    
+  
+    Design
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../mt/index.html">
+<span class="md-ellipsis">
+    
+  
+    多媒体技术
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../sys/index.html">
+<span class="md-ellipsis">
+    
+  
+    💻系统相关
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../web/index.html">
+<span class="md-ellipsis">
+    
+  
+    🌏Web相关
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ai/index.html">
+<span class="md-ellipsis">
+    
+  
+    🤖人工智能
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../misc/index.html">
+<span class="md-ellipsis">
+    
+  
+    🗃️杂项
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../tools/index.html">
+<span class="md-ellipsis">
+    
+  
+    🛠️工具
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../papers/index.html">
+<span class="md-ellipsis">
+    
+  
+    📑论文阅读
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#scenario-based-methods">
+<span class="md-ellipsis">
+      
+        Scenario-Based Methods
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#class-based-methods">
+<span class="md-ellipsis">
+      
+        Class-Based Methods
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#behavior-patterns-and-webmobile-apps">
+<span class="md-ellipsis">
+      
+        Behavior, Patterns, and Web/Mobile Apps
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<nav aria-label="导航栏" class="md-path">
+<ol class="md-path__list">
+<li class="md-path__item">
+<a class="md-path__link" href="../index.html">
+<span class="md-ellipsis">
+    💾软件相关
+  </span>
+</a>
+</li>
+<li class="md-path__item">
+<a class="md-path__link" href="index.html">
+<span class="md-ellipsis">
+    软件工程
+  </span>
+</a>
+</li>
+</ol>
+</nav>
+<article class="md-content__inner md-typeset">
+<a class="md-content__button md-icon" href="https://github.com/noughtq/notebook/edit/master/docs/software/se/requirements.md" rel="edit" title="编辑此页">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"></path></svg>
+</a>
+<a class="md-content__button md-icon" href="https://github.com/noughtq/notebook/raw/master/docs/software/se/requirements.md" title="查看本页的源代码">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"></path></svg>
+</a>
+<h1 id="requirements">Requirements<a class="headerlink" href="#requirements" title="Permanent link">⚓︎</a></h1>
+<div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>7287<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>36<span class="heti-spacing"> </span></span>分钟</p>
+</div>
+<p><strong>需求工程</strong><span>(requirements engineering)<span class="heti-spacing"> </span></span>包括：</p>
+<ol>
+<li>
+<p><strong>启动</strong>(inception)：</p>
+<ul>
+<li>
+<p>提出一系列问题，以建立</p>
+<ul>
+<li>对<strong>问题</strong>的基本理解</li>
+<li>需要解决方案的<strong>人员</strong></li>
+<li>所需解决方案的<strong>性质</strong>，以及</li>
+<li>客户与开发者之间初步<strong>沟通</strong>与协作的有效性</li>
+</ul>
+</li>
+<li>
+<p>识别<strong>利益相关者</strong>：用户、维护人员、管理者，甚至第三方系统都是利益相关者</p>
+</li>
+<li>识别多种观点</li>
+<li>致力于<strong>协作</strong></li>
+<li>第一组<strong>上下文无关问题</strong>(context-free questions)<ul>
+<li>这项工作请求的背后是谁？</li>
+<li>谁将使用解决方案？</li>
+<li>成功的解决方案将带来什么经济效益？</li>
+<li>你需要的解决方案是否有其他来源？</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>获取</strong>(elicitation)：从所有利益相关者中获取需求</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/se/15.png"><img src="images/se/15.png" width="70%"/></a>
+</div><p></p>
+<ul>
+<li>会议由<strong>软件工程师</strong>和<strong>客户</strong>共同进行并参与</li>
+<li>制定了准备和参与的规则</li>
+<li>提出议程<span><span class="heti-spacing"> </span>(agenda)</span></li>
+<li><strong>协调人</strong>(facilitator)（可以是客户、开发人员或外部人员）<strong>控制会议</strong></li>
+<li>采用<strong>定义机制</strong>(definition mechanism)：可以是工作表、翻转图、墙贴、电子公告板、聊天室或虚拟论坛</li>
+<li>
+<p>目标：</p>
+<ul>
+<li>识别问题</li>
+<li>提出解决方案的要素</li>
+<li>协商不同的方法，以及</li>
+<li>明确一套初步的解决方案要求</li>
+</ul>
+</li>
+<li>
+<p>构建软件系统最困难的部分是决定要构建什么</p>
+<ul>
+<li><strong>范围</strong><span>(scope)<span class="heti-spacing"> </span></span>问题</li>
+<li><strong>理解</strong><span>(understanding)<span class="heti-spacing"> </span></span>问题</li>
+<li><strong>易变性</strong><span>(volatility)<span class="heti-spacing"> </span></span>问题</li>
+</ul>
+</li>
+<li>
+<p><strong>工作成果</strong>(work product)：</p>
+<ul>
+<li>一份关于<strong>需求</strong>与<strong>可行性</strong>的说明</li>
+<li>系统或产品的<strong>范围界定</strong>说明</li>
+<li>参与需求获取的<strong>客户</strong>、<strong>用户</strong>及其他<strong>利益相关者</strong>名单</li>
+<li><strong>系统技术环境</strong>的描述</li>
+<li><strong>需求列表</strong>（最好按功能组织）以及每项需求适用的<strong>领域约束</strong></li>
+<li>一组<strong>使用场景</strong>，用以展示系统或产品在不同操作条件下的使用情况</li>
+<li>为更好定义需求而开发的任何<strong>原型</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>细化</strong>(elaboration)：创建分析模型，识别数据、功能和行为需求</p>
+<ul>
+<li>
+<p><strong>分析模型</strong><span>(analysis model)<span class="heti-spacing"> </span></span>的元素：</p>
+<ul>
+<li>
+<p>基于<strong>场景</strong>的元素  </p>
+<ul>
+<li>用例图和用户用例图  </li>
+<li>特定上下文中的活动序列  </li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/se/16.png"><img src="images/se/16.png" width="50%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>基于<strong>类</strong>的元素</p>
+<ul>
+<li>类图  </li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/se/17.png"><img src="images/se/17.png" width="25%"/></a>
+</div><p></p>
+</li>
+<li>
+<p><strong>行为</strong>元素  </p>
+<ul>
+<li>状态图  </li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/se/18.png"><img src="images/se/18.png" width="50%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>面向<strong>流</strong>的元素  </p>
+<ul>
+<li>数据流图</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>分析模式</strong><span>(analysis patterns)<span class="heti-spacing"> </span></span>通过为常见问题提供可靠的解决方案，促进了分析模型向设计模型的转化；其组成部分包括：</p>
+<ul>
+<li><strong>模式名称</strong>(pattern name)：一个捕捉模式本质的描述符</li>
+<li><strong>意图</strong>(intent)：描述模式完成或代表的内容，可以理解为一句话总结，是整个模式最核心的部分</li>
+<li><strong>动机</strong>(motivation)：一个说明如何利用该模式解决问题的场景</li>
+<li><strong>力量和背景</strong>(forces and context)：描述可能影响模式使用的外部问题（力量<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，以及应用模式后将解决的外部问题</li>
+<li><strong>解决方案</strong>(solution)：描述如何应用模式解决问题，重点强调结构和行为方面的问题</li>
+<li><strong>后果</strong>(consequence)：说明应用该模式时会发生什么，以及在应用过程中存在哪些权衡</li>
+<li><strong>设计</strong>(design)：讨论如何通过使用已知的设计模式来实现分析模式</li>
+<li><strong>已知用途</strong>(known uses)：在实际系统中的使用示例</li>
+<li><strong>相关模式</strong>(related patterns)：与命名模式相关的一个或多个分析模式，原因<ul>
+<li>常与该命名模式一起使用</li>
+<li>结构上与该命名模式相似</li>
+<li>是该命名模式的一个变体</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>协商</strong>(negotiation)：就一个对开发者和客户都切实可行的可交付系统达成一致</p>
+<ul>
+<li>识别关键利益相关者：这些是将参与谈判的人员</li>
+<li>确定每个利益相关者的获胜条件：获胜条件未必显而易见</li>
+<li>进行谈判：努力达成一套能够实现<strong>双赢</strong><span>(win-win)<span class="heti-spacing"> </span></span>的诉求<ul>
+<li>如果不同的客户<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>用户无法就需求达成一致，失败的<strong>风险</strong>非常高</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>规范</strong>(specification)：本质上是让需求变得清晰、可沟通、可共享；可以是以下任意一项（或多项）</p>
+<ul>
+<li>书面<strong>文档</strong> </li>
+<li><strong>模型</strong>集合</li>
+<li>形式化数学描述  </li>
+<li>用户场景（用例）集合  </li>
+<li><strong>原型</strong>(prototype)</li>
+</ul>
+</li>
+<li>
+<p><strong>验证</strong>(validation)：检查</p>
+<ul>
+<li>每个需求是否与系统<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>产品的总体目标<strong>一致</strong>？</li>
+<li>所有需求是否在适当的<strong>抽象层级</strong>上指定？也就是说，是否存在一些需求在现阶段提供了不恰当的技术细节？</li>
+<li>该需求是否真的<strong>必要</strong>，还是它代表了可能对系统目标并非必不可少的附加功能？</li>
+<li>每个需求是否明确且<strong>无歧义</strong>(unambiguous)？</li>
+<li>每个需求是否有<strong>归属</strong>(attribution)？即每个需求是否有明确的来源（通常是指定个人<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>？</li>
+<li>是否存在需求之间相互<strong>冲突</strong>的情况？</li>
+<li>在容纳系统或产品的技术环境中，每个需求是否<strong>可实现</strong>？</li>
+<li>每个需求在实现后是否<strong>可测试</strong>(testable)？</li>
+<li>需求模型是否<strong>正确</strong>反映了待构建系统的信息、功能和行为？</li>
+<li>需求模型是否以逐层揭示系统更详细信息的方式进行<strong>划分</strong>？</li>
+<li>是否使用了需求<strong>模式</strong>来简化需求模型？所有模式是否都已正确验证？所有模式是否与客户需求保持一致？</li>
+</ul>
+</li>
+<li>
+<p><strong>需求管理</strong>(requirements management/monitoring)：核心是跟踪需求的变化，并保证系统始终与需求保持一致（尤其在增量开发中需要）</p>
+<ul>
+<li><strong>分布式调试</strong>(distributed debugging)：发现错误并确定其成因</li>
+<li><strong>运行时验证</strong>(run-time verification)：判断软件是否符合其规范</li>
+<li><strong>运行时确认</strong>(run-time validation)：评估演进中的软件是否满足用户目标</li>
+<li><strong>业务活动监控</strong>(business activity monitoring)：评估系统是否满足业务目标</li>
+<li><strong>演进与协同设计</strong>(evolution and codesgin)：在系统演进过程中向利益相关者提供信息</li>
+</ul>
+</li>
+</ol>
+<div class="admonition warning">
+<p class="admonition-title">注意</p>
+<p>这些阶段并不是严格按顺序一次走完的。在实际项目中，我们往往是不断来回迭代的。比如，在细化需求时发现理解有误，就要回到需求获取阶段重新沟通。</p>
+</div>
+<p><strong>质量功能部署</strong>(quality function deployment, <strong>QFD</strong>)：</p>
+<ul>
+<li><strong>功能部署</strong>决定了系统所需每个功能的价值（从客户角度看）  </li>
+<li><strong>信息部署</strong>识别数据对象和事件</li>
+<li><strong>任务部署</strong>分析系统的行为</li>
+<li><strong>价值分析</strong>确定需求的相对优先级</li>
+<li>识别三种类型的需求：  <ul>
+<li><strong>常规</strong><span>(normal)<span class="heti-spacing"> </span></span>需求  </li>
+<li><strong>期望</strong><span>(expected)<span class="heti-spacing"> </span></span>需求  </li>
+<li><strong>兴奋</strong><span>(exiting)<span class="heti-spacing"> </span></span>需求</li>
+</ul>
+</li>
+</ul>
+<p><strong>非功能性需求</strong>(non-functional requirement, <strong>NFR</strong>)：质量属性、性能属性、安全属性或一般系统约束。通过两阶段流程来确定哪些<span class="heti-skip"><span class="heti-spacing"> </span>NFR<span class="heti-spacing"> </span></span>是兼容的：</p>
+<ol>
+<li>创建一个矩阵，将每个<span class="heti-skip"><span class="heti-spacing"> </span>NFR<span class="heti-spacing"> </span></span>作为列标题，系统<span class="heti-skip"><span class="heti-spacing"> </span>SE<span class="heti-spacing"> </span></span>指南作为行标签。</li>
+<li>由团队使用一组决策规则对每个<span class="heti-skip"><span class="heti-spacing"> </span>NFR<span class="heti-spacing"> </span></span>进行优先级排序，通过将每个<span class="heti-skip"><span class="heti-spacing"> </span>NFR<span class="heti-spacing"> </span></span>和指南对分类为互补、重叠、冲突或独立，来决定实施哪些<span><span class="heti-spacing"> </span>NFR</span></li>
+</ol>
+<p><strong>用例</strong>(use-cases)：一组描述系统使用流程的<strong>用户场景</strong><span>(user scenarios)<span class="heti-spacing"> </span></span>的集合。</p>
+<ul>
+<li>每个场景从一个<strong>参与者</strong>(actor)（即以某种方式与软件交互的人员或设备）的角度进行描述</li>
+<li>每个场景回答以下问题：  <ul>
+<li>谁是主要<strong>参与者</strong>，谁是次要参与者？  </li>
+<li>参与者的<strong>目标</strong>是什么？  </li>
+<li>故事开始前应满足哪些<strong>前提条件</strong>？  </li>
+<li>参与者执行哪些主要<strong>任务</strong>或功能？</li>
+<li>故事描述中可能考虑哪些<strong>扩展</strong>？</li>
+<li>参与者的互动可能有哪些<strong>变化</strong>？</li>
+<li>参与者将获取、产生或改变哪些系统<strong>信息</strong>？</li>
+<li>参与者是否需要将外部环境的变化通知系统？</li>
+<li>参与者希望从系统中获取什么信息？</li>
+<li>参与者是否希望被告知意外的变化？</li>
+</ul>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">注：在敏捷过程模型中，需求工程和设计活动是交错进行的</p>
+</div>
+<p><strong>需求分析</strong><span>(requirement analysis)<span class="heti-spacing"> </span></span>的目标：</p>
+<ul>
+<li>描述客户的需求  </li>
+<li>为软件设计创建奠定<strong>基础</strong> </li>
+<li>定义一套<strong>可验证的</strong>需求</li>
+</ul>
+<p>需求分析使软件工程师（在此角色中称为分析师或建模师）能够：  </p>
+<ul>
+<li><strong>详细阐述</strong>在前期需求工程任务中确立的基本需求  </li>
+<li>构建模型，描绘用户场景、功能活动、问题类及其关系、系统与类的行为、数据转换时的流向、以及软件必须满足的<strong>约束条件</strong></li>
+</ul>
+<p><strong>分析模型</strong><span>(analysis model)<span class="heti-spacing"> </span></span>是连接「需求」和「设计」的一座桥梁，把模糊的需求，转化为结构化、可分析、可推理的模型表达。经验法则：</p>
+<ul>
+<li>模型应聚焦于问题或业务领域中可见的需求，<strong>抽象层次应相对较高</strong></li>
+<li>分析模型的每个元素都应有助于<strong>整体理解软件需求</strong>，并深入洞察系统的信息领域、功能及行为</li>
+<li>基础设施及其他非功能模型的考量应<strong>推迟至设计阶段</strong></li>
+<li>尽可能<strong>降低</strong>整个系统的<strong>耦合度</strong></li>
+<li>确保分析模型对所有利益相关者都具有价值</li>
+<li>让模型保持尽可能<strong>简单</strong></li>
+</ul>
+<p><strong>领域分析</strong><span>(domain analysis)<span class="heti-spacing"> </span></span>的目标：软件领域分析是指从特定应用领域识别、分析和规范通用需求的过程，通常为了在该应用领域的多个项目中<strong>复用</strong>。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/se/19.png"><img src="images/se/19.png" width="70%"/></a>
+</div>
+<p>需求建模策略：</p>
+<ul>
+<li>
+<p><strong>结构化分析</strong>(structured analysis)：将数据以及转换数据的过程视为独立的实体</p>
+<ul>
+<li><strong>数据对象</strong>通过定义其属性和关系的方式进行建模</li>
+<li>操作数据对象的<strong>过程</strong>则通过展示数据对象在系统中流动时如何转换数据的方式来建模</li>
+</ul>
+</li>
+<li>
+<p><strong>面向对象分析</strong>(object-oriented analysis)：具体见「<a href="#requirements-modeling-class-based-methods">基于类的方法</a>」一节。</p>
+</li>
+</ul>
+<h2 id="scenario-based-methods">Scenario-Based Methods<a class="headerlink" href="#scenario-based-methods" title="Permanent link">⚓︎</a></h2>
+<p><strong>用例</strong><span>(use-cases)<span class="heti-spacing"> </span></span>描述系统“使用线索”的场景  </p>
+<ul>
+<li><strong>参与者</strong>(actors)：人或设备在系统运行时所扮演的角色  </li>
+<li><strong>用户</strong>可以在特定场景中扮演多种不同的角色</li>
+</ul>
+<p>用例仅仅是帮助定义系统外部存在什么（参与者）以及系统应该执行什么的一种辅助手段。相关问题：</p>
+<ul>
+<li>我们应该写些什么？  </li>
+<li>我们应该写多少？  </li>
+<li>我们的描述应该详细到什么程度？  </li>
+<li>我们应该如何组织描述？</li>
+</ul>
+<p>开发用例时需考虑的问题：</p>
+<ul>
+<li>参与者执行的<strong>主要任务或功能</strong>是什么？</li>
+<li>参与者将获取、产生或更改哪些系统信息？</li>
+<li>参与者是否需要将<strong>外部</strong>环境的变化告知系统？</li>
+<li>参与者希望从系统获得哪些信息？</li>
+<li>参与者是否希望被告知<strong>意外</strong>变化？</li>
+</ul>
+<p>审阅用例：</p>
+<ul>
+<li>用例首先以叙述<span class="heti-skip"><span class="heti-spacing"> </span>(narrative)<span class="heti-spacing"> </span></span>形式编写，如果需要正式性，则映射到模板</li>
+<li>每个主要场景都<strong>应进行进行审查和细化</strong>(refined)，以查看是否存在其他可能的交互方式<ul>
+<li>参与者此时能否采取<strong>其他行动</strong>？</li>
+<li>参与者是否可能在某个时刻遇到<strong>错误情况</strong>？如果是，是什么？</li>
+<li>参与者是否可能在某个时刻遇到<strong>其他行为</strong>？如果是，是什么？</li>
+</ul>
+</li>
+</ul>
+<p>记录<span class="heti-skip"><span class="heti-spacing"> </span>(document)<span class="heti-spacing"> </span></span>用例：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/se/20.png"><img src="images/se/20.png" width="70%"/></a>
+</div>
+<ul>
+<li>上下文中的<strong>目标</strong>：用例的整体范围</li>
+<li><strong>前置条件</strong>(pre-condition)：在用例启动前已知为真的情况</li>
+<li><strong>触发器</strong>(trigger)<heti-adjacent class="heti-adjacent-quarter">：</heti-adjacent>“启动用例”的事件或条件</li>
+<li><strong>场景</strong>(scenario)：参与者所需执行的具体操作以及相应的系统响应</li>
+<li><strong>异常</strong>：在初步用例细化过程中发现的情况</li>
+</ul>
+<p>图表示方法：</p>
+<ul>
+<li>
+<p><strong>用例图</strong>(use-case diagram)：概览用途，不做细节描述</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/se/21.png"><img src="images/se/21.png" width="60%"/></a>
+</div><p></p>
+<ul>
+<li><strong>参与者</strong>：一般用一个小人来表示，代表的是和系统发生交互的外部角色，比如用户、管理员，或者其他系统</li>
+<li><strong>用例</strong>：通常用一个椭圆表示，每一个椭圆对应一个使用场景</li>
+<li><strong>系统边界</strong>(system boundary)：通常用一个大矩形框表示，区分系统内外部</li>
+</ul>
+</li>
+<li>
+<p><strong>活动图</strong>(activity diagram)：通过提供流程的图形化表示来补充用例</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/se/22.png"><img src="images/se/22.png" width="70%"/></a>
+</div><p></p>
+<ul>
+<li><strong>流程</strong>非常清晰，每一步怎么走一目了然</li>
+<li>分支、异常、循环结构被显式表达出来，不会遗漏</li>
+</ul>
+</li>
+<li>
+<p><strong>泳道图</strong>(swim lane diagram)：允许建模者表示用例所描述的活动流程，同时指出哪个参与者（如果特定用例涉及多个参与者）或分析类对活动矩形所描述的动作负责</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/se/23.png"><img src="images/se/23.png" width="70%"/></a>
+</div><p></p>
+<ul>
+<li><strong>职责划分</strong>非常清晰：用户、系统、设备各自做什么一目了然</li>
+<li>接口关系清楚：哪些步骤涉及跨系统交互</li>
+<li>有助于系统设计：比如可以直接映射到模块划分、服务边界</li>
+</ul>
+</li>
+</ul>
+<h2 id="class-based-methods">Class-Based Methods<a class="headerlink" href="#class-based-methods" title="Permanent link">⚓︎</a></h2>
+<p>面向对象分析的重点在于：</p>
+<ul>
+<li>
+<p><strong>类</strong>的定义，包括<strong>模板</strong>(template)（一类对象应该具有什么样的属性和行为<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>、<strong>广义描述</strong>(generalized description)（一类具有共同特征的对象）和<strong>描述一组相似事物</strong>(item)（对现实世界中一类事物的抽象）</p>
+<ul>
+<li><strong>元类</strong>(metaclass)（也称为<strong>超类</strong>(superclass)）建立了类的层次结构</li>
+<li>一旦定义了某个项的类，就可以识别出该类的一个具体实例</li>
+</ul>
+</li>
+<li>
+<p>类之间相互<strong>协作</strong>以实现客户需求的方式</p>
+</li>
+<li>
+<p>关键概念：</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/se/24.png"><img src="images/se/24.png" width="50%"/></a>
+</div><p></p>
+<ul>
+<li><strong>类</strong>和<strong>对象</strong></li>
+<li>
+<p><strong>属性</strong><span>(attribute)<span class="heti-spacing"> </span></span>和<strong>操作</strong>(operation)</p>
+<ul>
+<li><strong>方法</strong>(methods)：也称为<strong>操作</strong>或<strong>服务</strong>，是一种封装在类中的可执行过程，旨在对一个或多个定义为类一部分的数据属性进行操作；通过<strong>消息传递</strong><span>(message passing)<span class="heti-spacing"> </span></span>来调用方法</li>
+</ul>
+</li>
+<li>
+<p><strong>封装</strong><span>(encapsulation)<span class="heti-spacing"> </span></span>和<strong>实例化</strong>(instantiation)</p>
+<ul>
+<li>封装：把数据和操作这些数据的方法放在一起，对外只暴露接口，而隐藏内部实现细节</li>
+</ul>
+</li>
+<li>
+<p><strong>继承</strong></p>
+</li>
+</ul>
+</li>
+<li>
+<p>任务</p>
+<ul>
+<li>必须识别<strong>类</strong>（属性和方法）  </li>
+<li>
+<p>定义类的<strong>层次结构</strong></p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/se/25.png"><img src="images/se/25.png" width="50%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>对象<strong>关系</strong>应被表示</p>
+</li>
+<li>对象<strong>行为</strong>必须被建模</li>
+<li>上述任务需<strong>迭代</strong>应用</li>
+</ul>
+</li>
+</ul>
+<hr/>
+<p><strong>基于类的建模</strong><span>(class-based modeling)<span class="heti-spacing"> </span></span>表示：</p>
+<ul>
+<li>系统将操作的<strong>对象</strong></li>
+<li>应用于对象以实现操作的<strong>操作</strong></li>
+<li>对象之间的<strong>关系</strong>（有些是层次化的）</li>
+<li>所定义的类之间发生的<strong>协作</strong></li>
+</ul>
+<p>步骤：</p>
+<ul>
+<li>通过检查问题陈述来识别<strong>分析类</strong></li>
+<li>
+<p>使用语法解析<span class="heti-skip"><span class="heti-spacing"> </span>(grammatical parse)<span class="heti-spacing"> </span></span>来分离<strong>潜在类</strong></p>
+<ul>
+<li><strong>保留信息</strong>：只有当系统为了正常运行而必须记住关于潜在类的信息时，该潜在类在分析过程中才具有实用价值</li>
+<li><strong>所需服务</strong>：潜在类必须拥有可识别的操作集，这些操作能够以某种方式改变其属性的值</li>
+<li><strong>多重属性</strong>：在需求分析阶段，应重点关注主要信息；仅包含单一属性的类在设计阶段可能有用，但在分析活动中，最好将其表示为另一个类的属性</li>
+<li><strong>公共属性</strong>：可以为潜在类定义一组属性，这些属性适用于该类的所有实例</li>
+<li><strong>公共操作</strong>：可以为潜在类定义一组操作，这些操作适用于该类的所有实例</li>
+<li><strong>基本需求</strong>：问题空间中出现的、对系统任何解决方案的运行产生或消耗关键信息的外部实体，几乎总是会被定义为需求模型中的类</li>
+</ul>
+</li>
+<li>
+<p>识别每个类的<strong>属性</strong></p>
+</li>
+<li>识别操作这些属性的<strong>操作</strong></li>
+</ul>
+<p><strong>类图</strong>(class diagram)：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/se/26.png"><img src="images/se/26.png" width="50%"/></a>
+</div>
+<p>将多个类组织起来：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/se/27.png"><img src="images/se/27.png" width="70%"/></a>
+</div>
+<p><strong>CRC</strong>（类<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>职责<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>协作者<span><span class="heti-spacing"> </span>(class-responsability-collaborator)</span>）建模：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/se/28.png"><img src="images/se/28.png" width="70%"/></a>
+</div>
+<ul>
+<li><strong>职责</strong>：类所封装的属性和操作</li>
+<li><strong>协作者</strong>：需要为某个类提供完成职责所需信息的类；通常协作意味着请求信息获请求执行某些操作</li>
+</ul>
+<p>类的类型：</p>
+<ul>
+<li><strong>实体类</strong>(entity class)：也称模型类或业务类，直接从问题陈述中提取而来</li>
+<li><strong>边界类</strong>(boundary class)：用于创建用户在使用软件时所看到并与之交互的界面（例如交互式屏幕或打印报告）</li>
+<li><strong>控制类</strong>(control class)：管理从开始到结束的工作单元，即用于管理：<ul>
+<li>实体对象的创建或更新</li>
+<li>边界对象在从实体对象获取信息时的实例化</li>
+<li>对象集合之间的<strong>复杂通信</strong></li>
+<li>对象之间或用户与应用程序之间通信数据的<strong>验证</strong></li>
+</ul>
+</li>
+</ul>
+<p>分配<strong>职责</strong>的原则：</p>
+<ul>
+<li>系统功能应<strong>分布</strong>到各类中，以最好地满足问题的需求</li>
+<li>每项职责应尽可能<strong>一般性地</strong>陈述</li>
+<li>信息及其<strong>相关</strong>行为应位于同一个类中</li>
+<li>关于某事物的<strong>信息</strong>应<strong>局部化</strong>于一个单独的类，而非分布在多个类中</li>
+<li>适当时，<strong>职责</strong>应在相关类之间<strong>共享</strong></li>
+</ul>
+<p>类通过以下两种方式之一履行其职责：</p>
+<ul>
+<li>类可以使用<strong>自身</strong>的操作来操作自身的属性，从而履行特定的职责</li>
+<li>类可以与<strong>其他</strong>类协作</li>
+</ul>
+<p><strong>协作</strong>识别了类之间的关系：</p>
+<ul>
+<li>「<strong>部分<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>整体</strong>」<span>(is-part-of)<span class="heti-spacing"> </span></span>关系：一个类是另一个类的组成部分</li>
+<li>「<strong>知晓</strong>」<span>(has-knowledge-of)<span class="heti-spacing"> </span></span>关系：一个类需要知道另一个类的存在或持有关于另一个类的信息，才能完成自己的职责</li>
+<li>「<strong>依赖</strong>」<span>(depends-upon)<span class="heti-spacing"> </span></span>关系：一个类为了完成某项功能，需要依赖另一个类提供服务</li>
+</ul>
+<p><strong>组合</strong>(composite)/<strong>聚合</strong><span>(aggregate)<span class="heti-spacing"> </span></span>类：一个类由多个“部件类”组成，也就是典型的 <strong><span>has-a<span class="heti-spacing"> </span></span>关系</strong></p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/se/29.png"><img src="images/se/29.png" width="50%"/></a>
+</div>
+<ul>
+<li>组合：表示<strong>强拥有关系</strong>，即整体对象负责部件对象的生命周期；部件依赖整体生命周期，整体没了，部件也没了</li>
+<li>聚合：表示<strong>弱拥有关系</strong>，即整体使用部件，但不一定负责它们的生命周期；部件可以独立存在，整体只是引用或使用它</li>
+</ul>
+<p><strong>关联</strong><span>(association)<span class="heti-spacing"> </span></span>和<strong>依赖</strong>(dependency)</p>
+<ul>
+<li>
+<p>关联：一个类与另一个类之间存在某种结构性的连接</p>
+<ul>
+<li>强调的是“有关系”，是一种比较稳定的连接</li>
+<li>可以通过指示<strong>多重性</strong>(multiplicity)（在数据建模中叫做「<strong>基数</strong>」(cardinality)）来细化</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/se/30.png"><img src="images/se/30.png" width="50%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>依赖：一个类在某些操作中需要使用另一个类的功能</p>
+<ul>
+<li>强调的是“用到”，是一种功能上的依赖</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/se/31.png"><img src="images/se/31.png" width="50%"/></a>
+</div><p></p>
+</li>
+</ul>
+<details class="abstract" open="open">
+<summary>总结</summary>
+<div align="center" markdown="">
+<table>
+<thead>
+<tr>
+<th>关系</th>
+<th>强度</th>
+<th>生命周期</th>
+<th>是否持有对象</th>
+<th>是否共享</th>
+<th>典型位置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>组合</td>
+<td>☆☆☆☆☆</td>
+<td>绑定</td>
+<td>是</td>
+<td>否</td>
+<td>成员变量</td>
+</tr>
+<tr>
+<td>聚合</td>
+<td>☆☆☆☆</td>
+<td>独立</td>
+<td>是</td>
+<td>是</td>
+<td>成员变量</td>
+</tr>
+<tr>
+<td>关联</td>
+<td>☆☆</td>
+<td>独立</td>
+<td>是</td>
+<td>是</td>
+<td>成员变量</td>
+</tr>
+<tr>
+<td>依赖</td>
+<td>☆</td>
+<td>短暂</td>
+<td>否</td>
+<td>-</td>
+<td>方法内部</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>关系</th>
+<th>表示</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>组合</td>
+<td>◆——（实心菱形）</td>
+</tr>
+<tr>
+<td>聚合</td>
+<td>◇——（空心菱形）</td>
+</tr>
+<tr>
+<td>关联</td>
+<td>——（普通线）</td>
+</tr>
+<tr>
+<td>依赖</td>
+<td>- - -&gt;（虚线箭头）</td>
+</tr>
+</tbody>
+</table>
+</div>
+</details>
+<p>评审<span class="heti-skip"><span class="heti-spacing"> </span>CRC<span class="heti-spacing"> </span></span>模型：</p>
+<ul>
+<li>参与<span class="heti-skip"><span class="heti-spacing"> </span>CRC<span class="heti-spacing"> </span></span>模型评审的所有人员都会获得该模型索引卡的一个子集；协作的卡片应<strong>分开</strong>放置（即任何评审人员都不应同时持有两张相互协作的卡片）</li>
+<li>所有用例场景（及相应的用例图）应按类别进行组织。</li>
+<li>评审负责人有意识地阅读用例；当评审负责人提到某个已命名的对象时，她将 <strong>token</strong> 传递给持有相应类索引卡的人员</li>
+<li>当<span class="heti-skip"><span class="heti-spacing"> </span>token<span class="heti-spacing"> </span></span>传递时，持有类卡的人员需描述卡片上标注的职责；团队需判断其中一个（或多个）职责是否满足用例需求</li>
+<li>若索引卡片上记录的职责与协作关系<strong>无法</strong>支持该用例，则需对卡片进行修改，可能包括定义新类（及对应的<span class="heti-skip"><span class="heti-spacing"> </span>CRC<span class="heti-spacing"> </span></span>索引卡片<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，或对现有卡片上的职责或协作关系进行新增或修订</li>
+</ul>
+<p><strong>分析包</strong>(analysis packet)</p>
+<ul>
+<li>分析模型的各种元素（例如用例、分析类）以一种方式<strong>分类</strong>(categorized)，将其打包为分组<span><span class="heti-spacing"> </span>(grouping)</span></li>
+<li>每个包中分析类名称前可能会有一个符号<ul>
+<li><strong>加号</strong>：具有公共可见性，可以被其他包访问（<code class="language-java highlight"><span class="kd">public</span></code>）</li>
+<li><strong>减号</strong>：对其他所有包隐藏（<code class="language-java highlight"><span class="kd">private</span></code>）</li>
+<li><strong><span>#<span class="heti-spacing"> </span></span>号</strong>：仅对给定包内的类可访问（<code class="language-java highlight"><span class="kd">protected</span></code>）</li>
+</ul>
+</li>
+</ul>
+<details class="example" open="open">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/se/32.png"><img src="images/se/32.png" width="60%"/></a>
+</div><p></p>
+</details>
+<h2 id="behavior-patterns-and-webmobile-apps">Behavior, Patterns, and Web/Mobile Apps<a class="headerlink" href="#behavior-patterns-and-webmobile-apps" title="Permanent link">⚓︎</a></h2>
+<p><strong>行为模型</strong><span>(behavior model)<span class="heti-spacing"> </span></span>指示软件如何响应外部事件或刺激。为创建该模型，分析师必须执行以下步骤：</p>
+<ol>
+<li>评估所有用例，以充分理解系统内部的<strong>交互顺序</strong></li>
+<li>识别驱动交互序列的<strong>事件</strong>，并理解这些事件与特定对象之间的关系</li>
+<li>为每个用例创建一个<strong>序列</strong>(sequence)</li>
+<li>
+<p>为系统构建一个<strong>状态图</strong></p>
+<details class="example" open="open">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/se/33.png"><img src="images/se/33.png" width="70%"/></a>
+</div><p></p>
+</details>
+</li>
+<li>
+<p>审查行为模型，以验证其准确性和一致性</p>
+</li>
+</ol>
+<p>状态系统的组成：</p>
+<ul>
+<li><strong>状态</strong>(state)：在给定时间点表征系统行为的一组可观测情况</li>
+<li><strong>状态转换</strong>(state transition)：从一个状态到另一个状态的变迁，描述系统对外部事件的反应</li>
+<li><strong>事件</strong>(event)：导致系统表现出某种可预测行为形式的发生，发生在系统与参与者交换信息的时候</li>
+<li><strong>动作</strong>(action)：作为转换结果而发生的过程</li>
+</ul>
+<p>在行为建模的语境中，必须考虑两种不同的状态表征：</p>
+<ul>
+<li>系统执行其功能时<strong>每个类的状态</strong></li>
+<li>系统执行其功能时从外部观察到的<strong>系统状态</strong></li>
+</ul>
+<details class="example" open="open">
+<summary>例子</summary>
+<p>状态图：</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/se/33.png"><img src="images/se/33.png" width="70%"/></a>
+</div><p></p>
+<p><strong>顺序图</strong>(sequence diagram)：描述对象之间的交互过程和时间顺序，关注消息是如何在对象之间传递的</p>
+<ul>
+<li>对象：一般排列在图的上方，每个对象下面有一条竖线，表示它在时间轴上的存在</li>
+<li>消息：也就是对象之间的调用关系，用箭头表示，比如一个对象调用另一个对象的方法</li>
+<li>时间顺序：从上到下展开，清晰地展示了整个交互流程的先后关系</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/se/34.png"><img src="images/se/34.png" width="70%"/></a>
+</div><p></p>
+</details>
+<hr/>
+<p><strong>数据建模</strong>(data modeling)：</p>
+<ul>
+<li>独立于过程检查数据对象  </li>
+<li>将注意力集中在数据领域  </li>
+<li>在客户的抽象层次上创建模型  </li>
+<li>指示数据对象之间的相互关系</li>
+</ul>
+<p>一个<strong>数据对象</strong>包含一组属性，这些属性作为该对象的方面、特性、特征或描述符。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/se/35.png"><img src="images/se/35.png" width="30%"/></a>
+</div>
+<p>不同数据对象之间可以被关联起来，形成<strong>关系</strong>(relationship)。通常用 <strong><span>ER<span class="heti-spacing"> </span></span>图</strong>表示。</p>
+<ul>
+<li>基数<span><span class="heti-spacing"> </span>(cardinality)</span>：一对一、一对多、多对多  </li>
+<li>模态<span><span class="heti-spacing"> </span>(modularity)</span>：强制性<span><span class="heti-spacing"> </span>(mandatory)</span>、可选性<span><span class="heti-spacing"> </span>(optional)</span></li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/se/36.png"><img src="images/se/36.png" width="60%"/></a>
+</div>
+<details class="example" open="open">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/se/37.png"><img src="images/se/37.png" width="70%"/></a>
+</div><p></p>
+</details>
+<hr/>
+<p>基于流的模型表示数据对象在系统中移动时如何被转换。其中<strong>数据流图</strong>(data flow diagram, <strong>DFD</strong><span>)<span class="heti-spacing"> </span></span>是用于这种表示的图表形式。</p>
+<ul>
+<li>每个基于计算机的系统都是一个<strong>信息转换</strong><span>(information transform)<span class="heti-spacing"> </span></span>系统</li>
+<li>描绘了信息流以及数据从输入到输出过程中所应用的转换</li>
+<li>用于表示任何抽象层次上的系统或软件</li>
+</ul>
+<p>相关记号：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/se/38.png"><img src="images/se/38.png" width="60%"/></a>
+</div>
+<ul>
+<li>
+<p><strong>外部实体</strong>(external entity)：数据的生产者或消费者</p>
+<ul>
+<li>数据必须始终起源于某处，并且必须始终发送到某处</li>
+</ul>
+</li>
+<li>
+<p><strong>过程</strong>(process)：数据转换器（将输入转换为输出）</p>
+<ul>
+<li>数据必须始终以某种方式进行处理，以实现系统功能</li>
+</ul>
+</li>
+<li>
+<p><strong>数据流</strong>(data flow)：数据流经系统，从输入开始，然后转化为输出</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/se/39.png"><img src="images/se/39.png" width="40%"/></a>
+</div><p></p>
+</li>
+<li>
+<p><strong>数据存储</strong>(data storage)：数据经常被存储以供日后使用</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/se/40.png"><img src="images/se/40.png" width="60%"/></a>
+</div><p></p>
+</li>
+</ul>
+<p><span>DFD<span class="heti-spacing"> </span></span>分层：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/se/41.png"><img src="images/se/41.png" width="70%"/></a>
+</div>
+<p><span>DFD<span class="heti-spacing"> </span></span>指南：</p>
+<ul>
+<li>始终<strong>标记</strong>数据流<strong>箭头</strong>，所有图标都必须使用有意义的名称进行标注</li>
+<li>始终从<strong>上下文</strong>级别图（也称为<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>级图）开始，并在<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>级图上展示<strong>外部实体</strong></li>
+<li><strong>不要</strong>表示过程<strong>逻辑</strong></li>
+<li><span>DFD<span class="heti-spacing"> </span></span>通过多个详细级别逐步演化，并且必须保持<strong>信息流的连续性</strong></li>
+</ul>
+<p><strong>过程规范</strong>(process specification, <strong>PSPEC</strong><span>)<span class="heti-spacing"> </span></span>对<span class="heti-skip"><span class="heti-spacing"> </span>DFD<span class="heti-spacing"> </span></span>中某一个处理的内部逻辑进行精细化描述。它可以有多种表达形式，比如：</p>
+<ul>
+<li>自然语言描述<span><span class="heti-spacing"> </span>(narrative)</span>：用文字说明处理逻辑 </li>
+<li>伪代码<span><span class="heti-spacing"> </span>(pseudocode / PDL)</span>：用接近程序的方式表达 </li>
+<li>公式<span><span class="heti-spacing"> </span>(equations)</span>：适用于计算类处理 </li>
+<li>表格<span><span class="heti-spacing"> </span>(tables)</span>：适用于规则较多的情况 </li>
+<li>图表<span><span class="heti-spacing"> </span>(diagrams)</span>：辅助说明复杂逻辑 </li>
+</ul>
+<p>构建<span><span class="heti-spacing"> </span>DFD</span>：</p>
+<ul>
+<li>审查数据模型以隔离数据对象，并通过语法解析确定操作</li>
+<li>确定外部实体（数据的生产者和消费者）</li>
+<li>创建<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>级数据流图</li>
+<li>编写描述变换的叙述  </li>
+<li>解析以确定下一级变换  </li>
+<li>「平衡」流程以保持数据流连续性  </li>
+<li>开发<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>级数据流图  </li>
+<li>使用大约<span class="heti-skip"><span class="heti-spacing"> </span>1:5<span class="heti-spacing"> </span></span>的扩展比例</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">注</p>
+<ul>
+<li>每个过程被细化直到只做一件事  </li>
+<li>随着层级数量的增加，扩展比例会降低  </li>
+<li>大多数系统需要<span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span>到<span class="heti-skip"><span class="heti-spacing"> </span>7<span class="heti-spacing"> </span></span>个层级才能形成合适的流模型  </li>
+<li>单个数据流项（箭头）可随层级增加而扩展（数据字典提供相关信息）</li>
+</ul>
+</div>
+<hr/>
+<p>软件<strong>模式</strong><span>(patterns)<span class="heti-spacing"> </span></span>是一种捕捉领域知识的机制，使得在遇到新问题时可以重新应用这些知识。</p>
+<ul>
+<li>领域知识可以在同一应用领域内应用到新问题上</li>
+<li>模式所捕捉的领域知识可以通过类比应用到完全不同的应用领域</li>
+</ul>
+<p>分析模式的原始作者并非创”该模式，而是在进行需求工程工作时<strong>发现</strong>它。一旦发现模式，就会将其记录下来。</p>
+<p>描述需求模型的最基本元素是用例。一组连贯的用例可作为发现一个或多个分析模式的基础。</p>
+<p><strong>语义分析模式</strong>(semantic analysis pattern, <strong>SAP</strong><span>)<span class="heti-spacing"> </span></span>是一种描述一小套连贯用例的模式，这些用例共同描述了一个基本通用的应用。</p>
+<p>为<span class="heti-skip"><span class="heti-spacing"> </span>WebApps<span class="heti-spacing"> </span></span>的需求建模：</p>
+<ul>
+<li>
+<p><strong>内容</strong>分析：明确<span class="heti-skip"><span class="heti-spacing"> </span>WebApp<span class="heti-spacing"> </span></span>将提供的全部内容，包括文本、图形和图像、视频以及音频数据；可采用数据建模来识别和描述每个数据对象</p>
+<ul>
+<li>从用例中提取<strong>内容对象</strong>，检查场景描述中直接和间接引用的内容</li>
+<li>识别每个内容对象的<strong>属性</strong></li>
+<li>
+<p>内容对象之间的<strong>关系</strong>和<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>或<span class="heti-skip"><span class="heti-spacing"> </span>WebApp<span class="heti-spacing"> </span></span>维护的内容层次结构</p>
+<ul>
+<li>关系—实体关系图或<span><span class="heti-spacing"> </span>UML</span></li>
+<li>层次结构—数据树或<span><span class="heti-spacing"> </span>UML</span></li>
+</ul>
+</li>
+<li>
+<p>表现形式：数据树</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/se/42.png"><img src="images/se/42.png" width="70%"/></a>
+</div><p></p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>交互</strong>分析：详细描述用户与<span class="heti-skip"><span class="heti-spacing"> </span>WebApp<span class="heti-spacing"> </span></span>交互的方式；可开发用例来提供这种交互的详细描述</p>
+<ul>
+<li>
+<p>由四个元素组成：</p>
+<ul>
+<li><strong>用例</strong></li>
+<li><strong>顺序图</strong></li>
+<li><strong>状态图</strong></li>
+<li><strong>用户界面原型</strong></li>
+</ul>
+</li>
+<li>
+<p>每个元素都是重要的<span class="heti-skip"><span class="heti-spacing"> </span>UML<span class="heti-spacing"> </span></span>表示法</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>功能</strong>分析：作为交互分析的一部分而创建的使用场景（用例）定义了将应用于<span class="heti-skip"><span class="heti-spacing"> </span>WebApp<span class="heti-spacing"> </span></span>内容的操作，并隐含了其他处理功能；所有操作和功能均需详细描述</p>
+<ul>
+<li>
+<p>处理<span class="heti-skip"><span class="heti-spacing"> </span>WebApp<span class="heti-spacing"> </span></span>的两个处理元素：</p>
+<ul>
+<li><span>WebApp<span class="heti-spacing"> </span></span>向最终用户提供的<strong>用户可观测功能</strong></li>
+<li><strong>分析类中包含的操作</strong>，这些操作实现了与该类相关的行为</li>
+</ul>
+</li>
+<li>
+<p><strong>活动图</strong>可用于表示处理流程</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>配置</strong>分析：详细描述<span class="heti-skip"><span class="heti-spacing"> </span>WebApp<span class="heti-spacing"> </span></span>运行的环境和基础设施</p>
+<ul>
+<li>
+<p><strong>服务端</strong> </p>
+<ul>
+<li>必须指定服务器硬件和操作系统环境  </li>
+<li>必须考虑服务端的互操作性考量  </li>
+<li>必须指定适当的接口、通信协议及相关协作信息  </li>
+</ul>
+</li>
+<li>
+<p><strong>客户端</strong> </p>
+<ul>
+<li>必须确定浏览器配置问题  </li>
+<li>应定义测试需求</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>导航</strong>分析：网页链接的组织结构</p>
+<ul>
+<li>某些元素是否应该比其他元素更容易访问（需要更少的导航步骤<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>？展示的<strong>优先级</strong>是什么？</li>
+<li>是否应该<strong>强调</strong>某些元素，以强制用户朝它们的方向导航？</li>
+<li>应如何处理导航<strong>错误</strong>？</li>
+<li>是否应优先导航到相关元素组而非导航到特定元素？</li>
+<li>导航应通过链接、基于搜索的访问还是其他方式<strong>实现</strong>？</li>
+<li>是否应根据先前导航操作的<strong>上下文</strong>向用户呈现某些元素？</li>
+<li>是否应为用户维护导航<strong>日志</strong>？</li>
+<li>在用户交互的每个节点，是否应提供<strong>完整的导航地图或菜单</strong>（而非单一的“返回”链接或定向指针<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>？</li>
+<li>导航<strong>设计</strong>应以用户最常见的行为模式为导向，还是基于<span class="heti-skip"><span class="heti-spacing"> </span>WebApp<span class="heti-spacing"> </span></span>元素被感知的重要性？</li>
+<li>用户能否<strong>存储</strong>其在<span class="heti-skip"><span class="heti-spacing"> </span>WebApp<span class="heti-spacing"> </span></span>中的先前导航路径，以加快未来使用效率？</li>
+<li>应为哪类用户群体设计<strong>最优导航</strong>？</li>
+<li>应如何处理指向<span><span class="heti-spacing"> </span>WebApp</span> <strong>外部的链接</strong>？覆盖现有浏览器窗口、打开新浏览器窗口，还是使用独立框架？</li>
+</ul>
+</li>
+</ul>
+<p>在某些<span class="heti-skip"><span class="heti-spacing"> </span>Web /<span class="heti-spacing"> </span></span>移动应用场景中，分析与设计是合并的。然而，当以下情况出现时，<strong>显式的分析活动</strong>会发生</p>
+<ul>
+<li>待构建的网页或移动应用规模庞大且<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>或复杂度高</li>
+<li>利益相关者数量众多</li>
+<li>开发人员数量众多</li>
+<li>开发团队成员此前未曾合作过</li>
+<li>应用的成功将对业务成功产生重大影响</li>
+</ul>
+<aside class="md-source-file">
+<span class="md-source-file__fact">
+<span class="md-icon" title="最后更新">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"></path></svg>
+</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2026年6月22日 21:16:09 CST">2026年6月22日 21:16:09</span>
+</span>
+<span class="md-source-file__fact">
+<span class="md-icon" title="创建日期">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"></path></svg>
+</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2026年6月22日 21:16:09 CST">2026年6月22日 21:16:09</span>
+</span>
+</aside>
+<p style="font-size: 30px; font-weight: 600">评论区</p>
+<div>
+    如果大家有什么问题或想法，欢迎在下方留言~
+  </div>
+<!-- Insert generated snippet here -->
+<script async="" crossorigin="anonymous" data-category="Announcements" data-category-id="DIC_kwDOMAb9Zs4CfmpP" data-emit-metadata="0" data-input-position="bottom" data-lang="zh-CN" data-mapping="pathname" data-reactions-enabled="1" data-repo="noughtq/notebook" data-repo-id="R_kgDOMAb9Zg" data-strict="0" data-theme="preferred_color_scheme" src="https://giscus.app/client.js">
+</script>
+<!-- Synchronize Giscus theme with palette -->
+<script>
+    var giscus = document.querySelector("script[src*=giscus]")
+
+    // Set palette on initial load
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object") {
+      var theme = palette.color.scheme === "slate"
+        ? "transparent_dark"
+        : "light"
+
+      // Instruct Giscus to set theme
+      giscus.setAttribute("data-theme", theme) 
+    }
+
+    // Register event handlers after documented loaded
+    document.addEventListener("DOMContentLoaded", function() {
+      var ref = document.querySelector("[data-md-component=palette]")
+      ref.addEventListener("change", function() {
+        var palette = __md_get("__palette")
+        if (palette && typeof palette.color === "object") {
+          var theme = palette.color.scheme === "slate"
+            ? "dark"
+            : "light"
+
+          // Instruct Giscus to change theme
+          var frame = document.querySelector(".giscus-frame")
+          frame.contentWindow.postMessage(
+            { giscus: { setConfig: { theme } } },
+            "https://giscus.app"
+          )
+        }
+      })
+    })
+  </script>
+<!-- 标题计数器 -->
+<link href="/css/counter.css" rel="stylesheet"/>
+<!-- 主页个性化 -->
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+<button class="md-top md-icon" data-md-component="top" hidden="" type="button">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  回到页面顶部
+</button>
+</main>
+<footer class="md-footer">
+<nav aria-label="页脚" class="md-footer__inner md-grid">
+<a aria-label="上一页: Basics" class="md-footer__link md-footer__link--prev" href="basics.html">
+<div class="md-footer__button md-icon">
+<svg viewbox="0 0 256 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path></svg>
+</div>
+<div class="md-footer__title">
+<span class="md-footer__direction">
+                上一页
+              </span>
+<div class="md-ellipsis">
+                Basics
+              </div>
+</div>
+</a>
+<a aria-label="下一页: Design" class="md-footer__link md-footer__link--next" href="design.html">
+<div class="md-footer__title">
+<span class="md-footer__direction">
+                下一页
+              </span>
+<div class="md-ellipsis">
+                Design
+              </div>
+</div>
+<div class="md-footer__button md-icon">
+<svg viewbox="0 0 256 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M247.1 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L179.2 256 41.9 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"></path></svg>
+</div>
+</a>
+</nav>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright" style="margin-left: 33.5%">
+<div class="md-copyright__highlight" style="text-align: center">
+        Copyright © 2024-2026 <a href="https://github.com/NoughtQ">NoughtQ</a>
+</div>
+    
+    
+      Powered by
+      <a href="https://www.mkdocs.org/" rel="noopener" target="_blank">
+        MkDocs
+      </a>
+      with theme
+      <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+        Material
+      </a>
+      modified by
+      <a href="https://github.com/NoughtQ" rel="noopener" target="_blank">
+        NoughtQ
+      </a>
+<!-- <br> -->
+<div style="text-align: center;">
+<a href="https://icp.gov.moe/?keyword=20252357" target="_blank">萌ICP备20252357号</a>
+</div>
+</div>
+<div class="md-social">
+<a class="md-social__link" href="https://noughtq.top" rel="noopener" target="_blank" title="noughtq.top">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M277.8 8.6c-12.3-11.4-31.3-11.4-43.5 0l-224 208c-9.6 9-12.8 22.9-8 35.1S18.8 272 32 272h16v176c0 35.3 28.7 64 64 64h288c35.3 0 64-28.7 64-64V272h16c13.2 0 25-8.1 29.8-20.3s1.6-26.2-8-35.1zM240 320h32c26.5 0 48 21.5 48 48v96H192v-96c0-26.5 21.5-48 48-48"></path></svg>
+</a>
+<a class="md-social__link" href="https://game.noughtq.top" rel="noopener" target="_blank" title="game.noughtq.top">
+<svg viewbox="0 0 640 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M448 64c106 0 192 86 192 192s-86 192-192 192H192C86 448 0 362 0 256S86 64 192 64zM192 176c-13.3 0-24 10.7-24 24v32h-32c-13.3 0-24 10.7-24 24s10.7 24 24 24h32v32c0 13.3 10.7 24 24 24s24-10.7 24-24v-32h32c13.3 0 24-10.7 24-24s-10.7-24-24-24h-32v-32c0-13.3-10.7-24-24-24m240 96a32 32 0 1 0 0 64 32 32 0 1 0 0-64m64-96a32 32 0 1 0 0 64 32 32 0 1 0 0-64"></path></svg>
+</a>
+<a class="md-social__link" href="https://blog.noughtq.top" rel="noopener" target="_blank" title="blog.noughtq.top">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M224 24c0-13.3 10.7-24 24-24 145.8 0 264 118.2 264 264 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-119.3-96.7-216-216-216-13.3 0-24-10.7-24-24M80 96c26.5 0 48 21.5 48 48v224c0 26.5 21.5 48 48 48s48-21.5 48-48-21.5-48-48-48c-8.8 0-16-7.2-16-16v-64c0-8.8 7.2-16 16-16 79.5 0 144 64.5 144 144s-64.5 144-144 144S32 447.5 32 368V144c0-26.5 21.5-48 48-48m168 0c92.8 0 168 75.2 168 168 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-66.3-53.7-120-120-120-13.3 0-24-10.7-24-24s10.7-24 24-24"></path></svg>
+</a>
+<a class="md-social__link" href="https://github.com/noughtq" rel="noopener" target="_blank" title="github.com">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"></path></svg>
+</a>
+<a class="md-social__link" href="mailto:noughtq666@gmail.com" rel="noopener" target="_blank" title="">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m20 8-8 5-8-5V6l8 5 8-5m0-2H4c-1.11 0-2 .89-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2"></path></svg>
+</a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["announce.dismiss", "content.action.edit", "content.action.view", "content.code.copy", "content.code.annotate", "content.footnote.tooltips", "navigation.footer", "navigation.indexes", "navigation.path", "navigation.prune", "navigation.tabs", "navigation.top", "navigation.tracking", "search.share"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+<script src="../../js/anchor.js"></script>
+<script src="../../js/katex.js"></script>
+<script src="../../js/toc.js"></script>
+<script src="../../js/typed.js"></script>
+<script src="../../js/custom.js"></script>
+<script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+<script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.js"></script>
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>
