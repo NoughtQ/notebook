@@ -16,7 +16,9 @@
 
     - [x] [基础知识](basics.md)
     - [x] [需求](requirements.md)
-    - [ ] [设计](design.md)
+    - [x] [设计](design.md)
+    - [x] [质量](quality.md)
+    - [x] [测试](testing.md)
 
     TBD
 

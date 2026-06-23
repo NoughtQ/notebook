@@ -26,7 +26,7 @@
     <div class="file-title">笔记（打印版）</div>
     <div class="file-meta">27 MB / 105 P / 2025-06-20</div>
     </div>
-    <a class="down-button" target="_blank" href="https://courses.noughtq.top/NA-D2CX/note_print_version.pdf" markdown="1">:fontawesome-solid-download: 下载</a>
+    <a class="down-button" target="_blank" href="https://github.com/NoughtQ/ZJU-Courses-Resources/blob/main/NA-D2CX/note_print_version.pdf" markdown="1">:fontawesome-solid-download: 下载</a>
     </div>
 
     剩下三章不会介绍，但这里还是列一下标题：
