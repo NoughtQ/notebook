@@ -219,6 +219,8 @@ counter: true
     - 描述符形式的部署图展示计算环境，但不指明配置细节
     - 实例形式的部署图标识具体的命名硬件配置，在设计后期阶段制定
 
+**功能组件表示**(functional component representation)、**质量评估指导**(quality assessment guidelines)、**细化的启发式方法**(refinement heuristics)是各种设计方法**普遍具备的特征**。配置管理指对软件变更进行控制和管理，并不是所有设计方法必需具备的特征，更偏向于过程和项目管理。
+
 
 ## Architecal Design
 
@@ -605,7 +607,6 @@ CBSE 活动：
     - 设计为与屏幕上出现的对象**直接交互**
 
 - **减少用户的记忆负担**(reduce the user’s memory load)
-    - 减少对短期记忆的依赖
     - 建立有意义的**默认值**
     - 定义直观的**快捷方式**(shortcuts)
     - 界面的视觉布局应基于现实世界的隐喻

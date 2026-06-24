@@ -124,17 +124,55 @@ counter: true
 
 ???+ example "例子"
 
-    === "无评审"
+    === "例1"
 
-        <div style="text-align: center">
-            <img src="images/se/75.png" width=80%>
-        </div>
+        === "无评审"
 
-    === "有评审"
+            <div style="text-align: center">
+                <img src="images/se/75.png" width=80%>
+            </div>
 
-        <div style="text-align: center">
-            <img src="images/se/76.png" width=80%>
-        </div>
+        === "有评审"
+
+            <div style="text-align: center">
+                <img src="images/se/76.png" width=80%>
+            </div>
+
+    === "例2"
+
+        >来自 22-23 期末
+
+        === "题目"
+
+            Formal technical review(FTR) is very important for uncovering software errors before the software is released to the end users since errors can be amplified in the latter steps if they cannot be found in the former phase, as shown in the following defect amplification models:
+
+            Suppose: (1) the newly generated errors are 20, 60, 60 for the preliminary design, detail design and code/unit test respectively; (2) the errors passing through and that whose being amplified are the same between preliminary and detail design and between detail design and code/unit test; (3) the value of x, which is also the same for detail design and code/unit test, is 3.
+
+            If the values of percent efficiency for the whole process without FTR (Formal Technical Review) and with FTR are 0 and 50% respectively, please illustrate the defect amplification process for preliminary design, detail design and code/unit test, and calculate the final errors after code/unit test respectively.
+
+        === "解答"
+
+            >由 GPT-5.5 生成
+
+            === "没有 FTR"
+
+                | 阶段                 | 传入错误 |               放大错误 | 新产生错误 | 本阶段总错误 | 检出错误 | 传到下一阶段 |
+                | ------------------ | ---: | -----------------: | ----: | -----: | ---: | -----: |
+                | Preliminary design |    0 |                  0 |    20 |     20 |    0 |     20 |
+                | Detail design      |   20 |   20 * 3 = 60 |    60 |    140 |    0 |    140 |
+                | Code / unit test   |  140 | 140 * 3 = 420 |    60 |    620 |    0 |    620 |
+
+                错误成本 = 620
+
+            === "有 FTR"
+
+                | 阶段                 | 传入错误 |              放大错误 | 新产生错误 | 本阶段总错误 | 检出错误 | 传到下一阶段 |
+                | ------------------ | ---: | ----------------: | ----: | -----: | ---: | -----: |
+                | Preliminary design |    0 |                 0 |    20 |     20 |   10 |     10 |
+                | Detail design      |   10 |  10 * 3 = 30 |    60 |    100 |   50 |     50 |
+                | Code / unit test   |   50 | 50 * 3 = 150 |    60 |    260 |  130 |    130 |
+
+                错误成本 = 130
 
 总评审工作量和发现的总错误数定义为：
     
