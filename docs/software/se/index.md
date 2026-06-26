@@ -18,11 +18,12 @@
     - [x] [质量](quality.md)
     - [x] [测试](testing.md)
     - [x] [杂项](misc.md)：安全工程、形式模型与验证、配置管理、项目度量/管理/调度、风险分析、维护...
-    <!-- - [x] [大模型驱动下的软工](llm.md)：需求与设计 -> 编码与评审 -> 测试与安全 -> 运行与维护 -->
+    - [x] [大模型驱动下的软工](llm.md)：需求与设计 -> 编码与评审 -> 测试与安全 -> 运行与维护（由于该领域发展太快，所以笔记的时效性很是个问题...）
 
 !!! recommend "参考资料"
 
     - PPT（可参考每页 PPT 下面的注释（~~但看下来给笔者的感觉是老师在备课前用 AI 写的讲稿~~））
+    - [mem 的笔记](https://alidocs.dingtalk.com/i/nodes/r1R7q3QmWe7MoBdeUxr2P2wDJxkXOEP2?cid=75200886071&iframeQuery=utm_medium%3Dim_card%26utm_source%3Dim&corpId=ding2c6bcab1e41b0242)：强烈推荐，更适合考前快速突击！
     - 客观题题库（[mem 整理的版本](https://file.cc98.org/v4-upload/d/2025/0610/1ggkegnn.pdf)；但原答案就存在一些错误，需仔细甄别）
     - 历年卷（重点看画图题 + 简答题）
 
