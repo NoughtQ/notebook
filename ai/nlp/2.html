@@ -1,0 +1,1581 @@
+<!DOCTYPE html>
+<html class="no-js" lang="zh"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="NoughtQ的笔记本，主要记录一些 CS 相关的笔记" name="description"/>
+<meta content="NoughtQ" name="author"/>
+<link href="https://notebook.noughtq.top/ai/nlp/2.html" rel="canonical"/>
+<link href="1.html" rel="prev"/>
+<link href="3.html" rel="next"/>
+<link href="../../feed_rss_created.xml" rel="alternate" title="RSS 订阅" type="application/rss+xml"/>
+<link href="../../feed_rss_updated.xml" rel="alternate" title="已更新内容的 RSS 订阅" type="application/rss+xml"/>
+<link href="../../assets/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.1" name="generator"/>
+<title>Word Vectors - NoughtQ的笔记本</title>
+<link href="../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=JetBrains+Mono,+LXGW+WenKai+Screen+GB+Screen:300,300i,400,400i,700,700i%7CJetBrains+Mono,+Consolas:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"JetBrains Mono, LXGW WenKai Screen GB Screen";--md-code-font:"JetBrains Mono, Consolas"}</style>
+<link href="../../css/heti.css" rel="stylesheet"/>
+<link href="../../css/timeline.css" rel="stylesheet"/>
+<link href="../../css/card.css" rel="stylesheet"/>
+<link href="../../css/custom.css" rel="stylesheet"/>
+<link href="../../css/extra_changelog.css" rel="stylesheet"/>
+<link href="../../css/header.css" rel="stylesheet"/>
+<link href="../../css/sidebar.css" rel="stylesheet"/>
+<link href="../../css/settings.css" rel="stylesheet"/>
+<link href="../../css/neoteroi-css.css" rel="stylesheet"/>
+<link href="../../css/toc_extra.css" rel="stylesheet"/>
+<link href="https://unpkg.com/katex@0/dist/katex.min.css" rel="stylesheet"/>
+<link href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css" rel="stylesheet"/>
+<link href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.css" rel="stylesheet"/>
+<script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-43NH8CVRCJ"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-43NH8CVRCJ",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-43NH8CVRCJ",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+<script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+<link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+<body data-md-color-accent="indigo" data-md-color-primary="indigo" data-md-color-scheme="slate" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#word-vectors">
+          跳转至
+        </a>
+</div>
+<div data-md-component="announce">
+<aside class="md-banner">
+<div class="md-banner__inner md-grid md-typeset">
+<button aria-label="不再显示此消息" class="md-banner__button md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+<!-- Add announcement here, including arbitrary HTML -->
+    游戏开发相关的笔记（包括计算机图形学、游戏引擎等）迁移至我的<a href="https://game.noughtq.top" target="_blank">全新笔记网站</a>，欢迎大家前来阅读🎉
+
+          </div>
+<script>var el=document.querySelector("[data-md-component=announce]");if(el){var content=el.querySelector(".md-typeset");__md_hash(content.innerHTML)===__md_get("__announce")&&(el.hidden=!0)}</script>
+</aside>
+</div>
+<header class="md-header" data-md-component="header">
+<nav aria-label="页眉" class="md-header__inner md-grid">
+<a aria-label="NoughtQ的笔记本" class="md-header__button md-logo" data-md-component="logo" href="../.." title="NoughtQ的笔记本">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.05 9H7.06V6h1.99V4.03H7.06v-1c0-1.11.89-1.99 1.99-1.99h5.98V8l2.47-1.5L20 8V1.04h1c1.05 0 2 .96 2 1.99V17c0 1.03-.95 2-2 2H9.05c-1.05 0-1.99-.95-1.99-2v-1h1.99v-2H7.06v-3h1.99zM1 18h2v-3H1v-2h2v-3H1V8h2V5h2v3H3v2h2v3H3v2h2v3H3v2h2v1h16v2H5a2 2 0 0 1-2-2v-1H1z"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            NoughtQ的笔记本
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              Word Vectors
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="Dark Mode" class="md-option" data-md-color-accent="indigo" data-md-color-media="(prefer-color-scheme: dark)" data-md-color-primary="indigo" data-md-color-scheme="slate" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="Dark Mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"></path></svg>
+</label>
+<input aria-label="Light Mode" class="md-option" data-md-color-accent="indigo" data-md-color-media="(prefer-color-scheme: light)" data-md-color-primary="indigo" data-md-color-scheme="default" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="Light Mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="搜索" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="搜索" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 256 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path></svg>
+</label>
+<nav aria-label="查找" class="md-search__options">
+<a aria-label="分享" class="md-search__icon md-icon" data-clipboard="" data-clipboard-text="" data-md-component="search-share" href="javascript:void(0)" tabindex="-1" title="分享">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"></path></svg>
+</a>
+<button aria-label="清空当前内容" class="md-search__icon md-icon" tabindex="-1" title="清空当前内容" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header__source">
+<a class="md-source" data-md-component="source" href="https://github.com/noughtq/notebook" title="前往仓库">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    NoughtQ/Notebook
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<nav aria-label="标签" class="md-tabs" data-md-component="tabs">
+<div class="md-grid">
+<ul class="md-tabs__list">
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../index.html">
+          
+  
+  
+    
+  
+  🏫主页
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../lang/index.html">
+          
+  
+  
+    
+  
+  🔡编程语言
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../math/index.html">
+          
+  
+  
+    
+  
+  📊数学相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../algo/index.html">
+          
+  
+  
+    
+  
+  🧮算法相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../software/index.html">
+          
+  
+  
+    
+  
+  💾软件相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../sys/index.html">
+          
+  
+  
+    
+  
+  💻系统相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../web/index.html">
+          
+  
+  
+    
+  
+  🌏Web相关
+
+        </a>
+</li>
+<li class="md-tabs__item md-tabs__item--active">
+<a class="md-tabs__link" href="../index.html">
+          
+  
+  
+    
+  
+  🤖人工智能
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../misc/index.html">
+          
+  
+  
+    
+  
+  🗃️杂项
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../tools/index.html">
+          
+  
+  
+    
+  
+  🛠️工具
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../papers/index.html">
+          
+  
+  
+    
+  
+  📑论文阅读
+
+        </a>
+</li>
+</ul>
+</div>
+</nav>
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="导航栏" class="md-nav md-nav--primary md-nav--lifted" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="NoughtQ的笔记本" class="md-nav__button md-logo" data-md-component="logo" href="../.." title="NoughtQ的笔记本">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.05 9H7.06V6h1.99V4.03H7.06v-1c0-1.11.89-1.99 1.99-1.99h5.98V8l2.47-1.5L20 8V1.04h1c1.05 0 2 .96 2 1.99V17c0 1.03-.95 2-2 2H9.05c-1.05 0-1.99-.95-1.99-2v-1h1.99v-2H7.06v-3h1.99zM1 18h2v-3H1v-2h2v-3H1V8h2V5h2v3H3v2h2v3H3v2h2v3H3v2h2v1h16v2H5a2 2 0 0 1-2-2v-1H1z"></path></svg>
+</a>
+    NoughtQ的笔记本
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-component="source" href="https://github.com/noughtq/notebook" title="前往仓库">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    NoughtQ/Notebook
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../index.html">
+<span class="md-ellipsis">
+    
+  
+    🏫主页
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../lang/index.html">
+<span class="md-ellipsis">
+    
+  
+    🔡编程语言
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../math/index.html">
+<span class="md-ellipsis">
+    
+  
+    📊数学相关
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../algo/index.html">
+<span class="md-ellipsis">
+    
+  
+    🧮算法相关
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../software/index.html">
+<span class="md-ellipsis">
+    
+  
+    💾软件相关
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../sys/index.html">
+<span class="md-ellipsis">
+    
+  
+    💻系统相关
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../web/index.html">
+<span class="md-ellipsis">
+    
+  
+    🌏Web相关
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_8" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../index.html">
+<span class="md-ellipsis">
+    
+  
+    🤖人工智能
+  
+
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="true" aria-labelledby="__nav_8_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_8">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    🤖人工智能
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../ml/index.html">
+<span class="md-ellipsis">
+    
+  
+    机器学习
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../genai/index.html">
+<span class="md-ellipsis">
+    
+  
+    生成式人工智能
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../cv/index.html">
+<span class="md-ellipsis">
+    
+  
+    计算机视觉
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_8_5" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="index.html">
+<span class="md-ellipsis">
+    
+  
+    自然语言处理
+  
+
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_8_5" id="__nav_8_5_label" tabindex="0">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="true" aria-labelledby="__nav_8_5_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_8_5">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    自然语言处理
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="1.html">
+<span class="md-ellipsis">
+    
+  
+    Intro &amp; History
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    
+  
+    Word Vectors
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="2.html">
+<span class="md-ellipsis">
+    
+  
+    Word Vectors
+  
+
+    
+  </span>
+</a>
+<nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#representing-the-meaning-of-a-word">
+<span class="md-ellipsis">
+      
+        Representing the Meaning of a Word
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#word2vec">
+<span class="md-ellipsis">
+      
+        Word2Vec
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#optimization">
+<span class="md-ellipsis">
+      
+        Optimization
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#co-occurrence">
+<span class="md-ellipsis">
+      
+        Co-occurrence
+      
+    </span>
+</a>
+<nav aria-label="Co-occurrence" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#glove">
+<span class="md-ellipsis">
+      
+        GLoVe
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#evaluation">
+<span class="md-ellipsis">
+      
+        Evaluation
+      
+    </span>
+</a>
+<nav aria-label="Evaluation" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#intrisic-evaluation">
+<span class="md-ellipsis">
+      
+        Intrisic Evaluation
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#extrinsic-evaluation">
+<span class="md-ellipsis">
+      
+        Extrinsic Evaluation
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="3.html">
+<span class="md-ellipsis">
+    
+  
+    Backpropagation and Neural Network Basics
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="4.html">
+<span class="md-ellipsis">
+    
+  
+    Language Models and RNNs
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="5.html">
+<span class="md-ellipsis">
+    
+  
+    Transformers
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="6.html">
+<span class="md-ellipsis">
+    
+  
+    Pretraining (Scaling, Systems, Data)
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="7.html">
+<span class="md-ellipsis">
+    
+  
+    Post-training (RLHF, SFT, DPO)
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="8.html">
+<span class="md-ellipsis">
+    
+  
+    Efficient Adaptation (Prompting + PEFT)
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="9.html">
+<span class="md-ellipsis">
+    
+  
+    Agents, Tool Use, and RAG
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="10.html">
+<span class="md-ellipsis">
+    
+  
+    Benchmarking and Evaluation
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="11.html">
+<span class="md-ellipsis">
+    
+  
+    Reasoning
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="12.html">
+<span class="md-ellipsis">
+    
+  
+    Tokenization and Multilinguality
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../toolbox/index.html">
+<span class="md-ellipsis">
+    
+  
+    工具箱
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../misc/index.html">
+<span class="md-ellipsis">
+    
+  
+    🗃️杂项
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../tools/index.html">
+<span class="md-ellipsis">
+    
+  
+    🛠️工具
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../papers/index.html">
+<span class="md-ellipsis">
+    
+  
+    📑论文阅读
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#representing-the-meaning-of-a-word">
+<span class="md-ellipsis">
+      
+        Representing the Meaning of a Word
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#word2vec">
+<span class="md-ellipsis">
+      
+        Word2Vec
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#optimization">
+<span class="md-ellipsis">
+      
+        Optimization
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#co-occurrence">
+<span class="md-ellipsis">
+      
+        Co-occurrence
+      
+    </span>
+</a>
+<nav aria-label="Co-occurrence" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#glove">
+<span class="md-ellipsis">
+      
+        GLoVe
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#evaluation">
+<span class="md-ellipsis">
+      
+        Evaluation
+      
+    </span>
+</a>
+<nav aria-label="Evaluation" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#intrisic-evaluation">
+<span class="md-ellipsis">
+      
+        Intrisic Evaluation
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#extrinsic-evaluation">
+<span class="md-ellipsis">
+      
+        Extrinsic Evaluation
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<nav aria-label="导航栏" class="md-path">
+<ol class="md-path__list">
+<li class="md-path__item">
+<a class="md-path__link" href="../index.html">
+<span class="md-ellipsis">
+    🤖人工智能
+  </span>
+</a>
+</li>
+<li class="md-path__item">
+<a class="md-path__link" href="index.html">
+<span class="md-ellipsis">
+    自然语言处理
+  </span>
+</a>
+</li>
+</ol>
+</nav>
+<article class="md-content__inner md-typeset">
+<a class="md-content__button md-icon" href="https://github.com/noughtq/notebook/edit/master/docs/ai/nlp/2.md" rel="edit" title="编辑此页">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"></path></svg>
+</a>
+<a class="md-content__button md-icon" href="https://github.com/noughtq/notebook/raw/master/docs/ai/nlp/2.md" title="查看本页的源代码">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"></path></svg>
+</a>
+<h1 id="word-vectors">Word Vectors<a class="headerlink" href="#word-vectors" title="Permanent link">⚓︎</a></h1>
+<div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>3401<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 576 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M360.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6m64.6 136.1c-12.5 12.5-12.5 32.8 0 45.3l73.4 73.4-73.4 73.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l96-96c12.5-12.5 12.5-32.8 0-45.3l-96-96c-12.5-12.5-32.8-12.5-45.3 0zm-274.7 0c-12.5-12.5-32.8-12.5-45.3 0l-96 96c-12.5 12.5-12.5 32.8 0 45.3l96 96c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l73.3-73.4c12.5-12.5 12.5-32.8 0-45.3z"></path></svg></span> <span>7<span class="heti-spacing"> </span></span>行代码 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>17<span class="heti-spacing"> </span></span>分钟</p>
+</div>
+<h2 id="representing-the-meaning-of-a-word">Representing the Meaning of a Word<a class="headerlink" href="#representing-the-meaning-of-a-word" title="Permanent link">⚓︎</a></h2>
+<p>韦氏词典对<span class="heti-skip"><span class="heti-spacing"> </span>"meaning"<span class="heti-spacing"> </span></span>一词的解释：</p>
+<ul>
+<li>由一个词、短语等所表示的意思<span><span class="heti-spacing"> </span>(idea)</span></li>
+<li>一个人通过使用词语、符号等想要表达的意思</li>
+<li>在文字作品、艺术作品等中所表达的意思</li>
+</ul>
+<p>可以看出，语言学上对该词最常见的思考：能指<span><span class="heti-spacing"> </span>(signifier)</span>（符号）<span>&lt;=&gt;<span class="heti-spacing"> </span></span>所指<span><span class="heti-spacing"> </span>(signified)</span>（观念或事物<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，即指称语义<span><span class="heti-spacing"> </span>(denotational semantics)</span>。比如：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec2/1.png"><img src="images/lec2/1.png" width="50%/"/></a>
+</div>
+<p>在<span class="heti-skip"><span class="heti-spacing"> </span>NLP<span class="heti-spacing"> </span></span>领域中，以往最常见的解决方案是使用诸如 <strong>WordNet</strong> 这样包含同义词集<span class="heti-skip"><span class="heti-spacing"> </span>(synonym sets)<span class="heti-spacing"> </span></span>和上位词<span><span class="heti-spacing"> </span>(hypernyms)</span>（<span>"is-a"<span class="heti-spacing"> </span></span>关系）列表的词典。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec2/2.png"><img src="images/lec2/2.png" width="90%/"/></a>
+</div>
+<p>像<span class="heti-skip"><span class="heti-spacing"> </span>WordNet<span class="heti-spacing"> </span></span>这样的资源存在以下问题：</p>
+<ul>
+<li>缺乏细微差别</li>
+<li>例如<span class="heti-skip"><span class="heti-spacing"> </span>"proficient"<span class="heti-spacing"> </span></span>被列为<span class="heti-skip"><span class="heti-spacing"> </span>"good"<span class="heti-spacing"> </span></span>的同义词，但这只在某些语境下正确</li>
+<li>在某些同义词集中列出了冒犯性的同义词，而没有涵盖这些词的内涵或适用性</li>
+<li>缺少词语的新义，例如<span><span class="heti-spacing"> </span>wicked</span>、badass、nifty、wizard、genius、ninja、bombest</li>
+<li>较为主观</li>
+<li>需要人力创建和调整</li>
+<li>无法用于准确计算词语相似度</li>
+</ul>
+<p>在传统<span class="heti-skip"><span class="heti-spacing"> </span>NLP<span class="heti-spacing"> </span></span>中，我们将词视为<strong>离散的符号</strong>(discrete symbols<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，这些符号可以用一个<strong>独热</strong>向量<span><span class="heti-spacing"> </span>(one-hot vector)</span>（只有一个元素是<span><span class="heti-spacing"> </span>1</span>，其余元素都是<span><span class="heti-spacing"> </span>0</span>）表示，而向量的维度<span class="heti-skip"><span class="heti-spacing"> </span>=<span class="heti-spacing"> </span></span>语料库中词的总数。但这种表示方法显然存在一个问题：语义相近的两个词，它们对应的向量是<strong>正交的</strong>(orthogonal)（点积<span><span class="heti-spacing"> </span>= 0</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，也就是说无法通过向量表达它们之间的<strong>相似性</strong>(similarity)。一种可能的解决方案是借助<span class="heti-skip"><span class="heti-spacing"> </span>WordNet<span class="heti-spacing"> </span></span>的同义词表来获取相似度，但不会成功，因为会遇到不完整等问题。相反，我们应该将相似度直接编码到向量本身。</p>
+<p>在介绍正确的解决方案前，先来了解一些概念：</p>
+<ul>
+<li><strong>分布式语义</strong><span>(distributional semantics)<span class="heti-spacing"> </span></span>是指一个词的意义由经常出现在其附近的词给出，这是现代统计<span class="heti-skip"><span class="heti-spacing"> </span>NLP<span class="heti-spacing"> </span></span>中最成功的思想之一</li>
+<li>当词<span class="heti-skip"><span class="heti-spacing"> </span>w<span class="heti-spacing"> </span></span>出现在文本中时，它的<strong>上下文</strong><span>(context)<span class="heti-spacing"> </span></span>是出现在附近（固定大小的窗口内）的词的集合</li>
+</ul>
+<p>于是我们用<span class="heti-skip"><span class="heti-spacing"> </span>w<span class="heti-spacing"> </span></span>的众多上下文来构建其表示。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec2/3.png"><img src="images/lec2/3.png" width="70%/"/></a>
+</div>
+<p>我们将为每个词构建一个稠密向量，选择使得它与出现在相似上下文中的词的向量相似，并用<strong>点</strong>（标量）<strong>积</strong>来度量相似性。</p>
+<div class="arithmatex">\[
+\textit{banking} = \begin{pmatrix} 0.286 \\ 0.792 \\ -0.177 \\ -0.107 \\ 0.109 \\ -0.542 \\ 0.349 \\ 0.271 \end{pmatrix} \qquad \textit{monetary} = \begin{pmatrix} 0.413 \\ 0.582 \\ -0.007 \\ 0.247 \\ 0.216 \\ -0.718 \\ 0.147 \\ 0.051 \end{pmatrix}
+\]</div>
+<p><strong>词向量</strong><span>(word vector)<span class="heti-spacing"> </span></span>也被称为<strong>（词）嵌入</strong><span>(embeddings)<span class="heti-spacing"> </span></span>或<strong>（神经）词表示</strong>(word representations)，它们是一种<strong>分布式</strong>表示。</p>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec2/4.png"><img align="right" alt="Word2Vec" src="images/lec2/4.png" width="30%"/></a></p>
+<h2 id="word2vec">Word2Vec<a class="headerlink" href="#word2vec" title="Permanent link">⚓︎</a></h2>
+<p><strong>Word2Vec</strong> 是一种学习词向量的框架（<span>Mikolov<span class="heti-spacing"> </span></span>等，2013<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，其思路包括：</p>
+<ul>
+<li>有一个大型语料库<span><span class="heti-spacing"> </span>(corpus of text)</span>（“主体”<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，即一长串单词</li>
+<li>固定词汇表中的每个单词都对应一个<strong>向量</strong></li>
+<li>遍历文本中的每个位置<span><span class="heti-spacing"> </span>t</span>，该位置有一个中心词<span class="heti-skip"><span class="heti-spacing"> </span>c<span class="heti-spacing"> </span></span>和上下文（“外部”）词<span><span class="heti-spacing"> </span>o</span></li>
+<li>利用<span class="heti-skip"><span class="heti-spacing"> </span>c<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>o<span class="heti-spacing"> </span></span>的<strong>词向量相似度</strong>来计算给定<span class="heti-skip"><span class="heti-spacing"> </span>c<span class="heti-spacing"> </span></span>时<span class="heti-skip"><span class="heti-spacing"> </span>o<span class="heti-spacing"> </span></span>的概率（或反之）</li>
+<li><strong>不断调整词向量</strong>以最大化这个概率</li>
+</ul>
+<details class="example" open="open">
+<summary>例子：计算<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(P(w_{t+j}\ |\ w_j)\)</span><span class="heti-spacing"> </span></span>时的窗口和过程</summary>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec2/5.png"><img src="images/lec2/5.png" width="70%/"/></a>
+</div><p></p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec2/6.png"><img src="images/lec2/6.png" width="70%/"/></a>
+</div><p></p>
+</details>
+<p>对于每个位置<span><span class="heti-spacing"> </span><span class="arithmatex">\(t = 1, \dots , T\)</span></span>，预测以中心词<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w_t\)</span><span class="heti-spacing"> </span></span>为中心的固定大小<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(m\)</span><span class="heti-spacing"> </span></span>的窗口内的上下文词，数据似然<span class="heti-skip"><span class="heti-spacing"> </span>(likelihood)<span class="heti-spacing"> </span></span>为：</p>
+<div class="arithmatex">\[
+\text{likelihood} = L(\theta) = \prod_{t=1}^{T} \prod_{\substack{-m \le j \le m \\ j \ne 0}} P(w_{t+j}\ |\ w_j;\ \theta)
+\]</div>
+<p><strong>目标函数</strong>(objective function)（有时称为<strong>成本</strong>或<strong>损失</strong><span>(loss)<span class="heti-spacing"> </span></span>函数） <span><span class="arithmatex">\(J(\theta)\)</span><span class="heti-spacing"> </span></span>是（<strong>平均</strong>）<strong>负</strong>对数似然。最小化目标函数等价于最大化预测精度。</p>
+<div class="arithmatex">\[
+J(\theta) = -\frac{1}{T} \log L(\theta) = \color{teal}{-\frac{1}{T}} \sum_{t=1}^{T} \sum_{\substack{-m \le j \le m \\ j \ne 0}} \log P(w_{t+j}\ |\ w_j;\ \theta)
+\]</div>
+<blockquote>
+<p><span class="arithmatex">\(\theta\)</span>：所有可用于优化的变量</p>
+</blockquote>
+<p>要计算<span><span class="heti-spacing"> </span><span class="arithmatex">\(P(w_{t+j}\ |\ w_j;\ \theta)\)</span></span>，需用到词<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w\)</span><span class="heti-spacing"> </span></span>的两个向量：</p>
+<ul>
+<li><span class="arithmatex">\(v_w\)</span>：中心词<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w\)</span><span class="heti-spacing"> </span></span>的词向量</li>
+<li><span class="arithmatex">\(u_w\)</span>：上下文词<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(w\)</span><span class="heti-spacing"> </span></span>的词向量</li>
+</ul>
+<p>对于中心词<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(c\)</span><span class="heti-spacing"> </span></span>和上下文词<span><span class="heti-spacing"> </span><span class="arithmatex">\(o\)</span></span>，有：</p>
+<div class="arithmatex">\[
+P(o\ |\ c) = \frac{\exp(u_o^T \cdot v_c)}{\sum_{w \in V} \exp(u_w^T \cdot v_c)}
+\]</div>
+<details class="example">
+<summary>例子</summary>
+<p><span><span class="arithmatex">\(P(problems\ |\ into;\ u_{problems}, v_{into}, \theta)\)</span><span class="heti-spacing"> </span></span>简记为<span><span class="heti-spacing"> </span><span class="arithmatex">\(P(u_{problems}\ |\ v_{into})\)</span></span></p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec2/7.png"><img src="images/lec2/7.png" width="70%/"/></a>
+</div><p></p>
+</details>
+<p>对于上述公式：</p>
+<ul>
+<li>分子部分的点积比较了<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(o, c\)</span><span class="heti-spacing"> </span></span>的相似度，更大的点积意味着更大的概率</li>
+<li>指数计算的结果始终为正</li>
+<li>分母的计算实现了整个语料库的归一化，从而得到概率分布</li>
+</ul>
+<p>这是 <strong><span>softmax<span class="heti-spacing"> </span></span>函数</strong>（<span class="arithmatex">\(\mathbb{R}^n \rightarrow (0, 1)^n\)</span>）的一个例子，它将任意值<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x_i\)</span><span class="heti-spacing"> </span></span>映射到概率<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(p_i\)</span><span class="heti-spacing"> </span></span>上</p>
+<div class="arithmatex">\[
+\text{softmax}(x_i) = \frac{\exp(x_i)}{\sum_{j=1}^n \exp(x_j)} = p_i
+\]</div>
+<ul>
+<li>"max"：放大了最大的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x_i\)</span><span class="heti-spacing"> </span></span>对应的概率</li>
+<li>"soft"：仍然为较小的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x_i\)</span><span class="heti-spacing"> </span></span>分配一些概率</li>
+</ul>
+<p><span>softmax<span class="heti-spacing"> </span></span>函数在深度学习中被广泛使用。</p>
+<p>训练模型就是通过调整参数值来最小化损失。</p>
+<ul>
+<li><span><span class="arithmatex">\(\theta\)</span><span class="heti-spacing"> </span></span>表示<strong>所有</strong>模型参数，用一个长向量表示</li>
+<li>
+<p>假如向量是<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(d\)</span><span class="heti-spacing"> </span></span>维的，且语料库中有<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(V\)</span><span class="heti-spacing"> </span></span>个词，那么</p>
+<div class="arithmatex">\[
+\theta = \begin{bmatrix}
+    v_{aardvark} \\
+    \vdots \\
+    v_{zebra} \\
+    u_{aardvark} \\
+    \vdots \\
+    u_{zebra}
+\end{bmatrix} \in \mathbb{R}^{2dV}
+\]</div>
+</li>
+<li>
+<p>注意：每个词有两个向量</p>
+</li>
+<li>
+<p>我们通过沿梯度方向下降来优化参数，因此需计算<strong>所有</strong>向量梯度</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec2/8.png"><img src="images/lec2/8.png" width="50%/"/></a>
+</div><p></p>
+</li>
+</ul>
+<h2 id="optimization">Optimization<a class="headerlink" href="#optimization" title="Permanent link">⚓︎</a></h2>
+<p>现在我们想要最小化成本函数<span><span class="heti-spacing"> </span><span class="arithmatex">\(J(\theta)\)</span></span>，一般的做法是利用<strong>梯度下降</strong><span>(gradient descent)<span class="heti-spacing"> </span></span>算法来实现。思路为：对于当前值<span><span class="heti-spacing"> </span><span class="arithmatex">\(\theta\)</span></span>，计算<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(J(\theta)\)</span><span class="heti-spacing"> </span></span>的梯度，然后沿负梯度方向小步前进；重复这一过程。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec2/9.png"><img src="images/lec2/9.png" width="60%/"/></a>
+</div>
+<blockquote>
+<p>注：虽然目标函数并不总是像上图那样是凸函数，但在大多数情况下都是<span class="heti-skip"><span class="heti-spacing"> </span>OK<span class="heti-spacing"> </span></span>的。</p>
+</blockquote>
+<p>梯度下降法的更新方程：</p>
+<ul>
+<li>矩阵形式：<span class="arithmatex">\(\theta^{\text{new}} = \theta^{\text{old}} - \alpha \nabla_\theta J(\theta)\)</span></li>
+<li>单个参数：<span class="arithmatex">\(\theta_j^{\text{new}} = \theta_j^{\text{old}} - \alpha \frac{\partial)}{\partial \theta_j^{\text{old}}} J(\theta)\)</span></li>
+</ul>
+<p>算法实现如下：</p>
+<div class="language-py highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+</span><span id="__span-0-2"><a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a>    <span class="n">theta_grad</span> <span class="o">=</span> <span class="n">evaluate_gradient</span><span class="p">(</span><span class="n">J</span><span class="p">,</span> <span class="n">corpus</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
+</span><span id="__span-0-3"><a href="#__codelineno-0-3" id="__codelineno-0-3" name="__codelineno-0-3"></a>    <span class="n">theta</span> <span class="o">=</span> <span class="n">theta</span> <span class="o">-</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">theta_grad</span>
+</span></code></pre></div>
+<p>但这样做的问题是<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(J(\theta)\)</span><span class="heti-spacing"> </span></span>是针对语料库中所有词（可能有数十亿个）的一个函数，因此<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\nabla_\theta J(\theta)\)</span><span class="heti-spacing"> </span></span>的计算非常昂贵，一次更新就要等很久。所以对于众多神经网络而言，这是极其糟糕的思路。解决方案是采用<strong>随机梯度下降</strong>(stochastic gradient descent, <strong>SGD</strong>)：重复采样窗口，并在每次采样后更新（一种小批量<span class="heti-skip"><span class="heti-spacing"> </span>(mini batch)<span class="heti-spacing"> </span></span>的梯度下降<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。算法实现如下：</p>
+<div class="language-py highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+</span><span id="__span-1-2"><a href="#__codelineno-1-2" id="__codelineno-1-2" name="__codelineno-1-2"></a>    <span class="n">window</span> <span class="o">=</span> <span class="n">sample_window</span><span class="p">(</span><span class="n">corpus</span><span class="p">)</span>
+</span><span id="__span-1-3"><a href="#__codelineno-1-3" id="__codelineno-1-3" name="__codelineno-1-3"></a>    <span class="n">theta_grad</span> <span class="o">=</span> <span class="n">evaluate_gradient</span><span class="p">(</span><span class="n">J</span><span class="p">,</span> <span class="n">window</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
+</span><span id="__span-1-4"><a href="#__codelineno-1-4" id="__codelineno-1-4" name="__codelineno-1-4"></a>    <span class="n">theta</span> <span class="o">=</span> <span class="n">theta</span> <span class="o">-</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">theta_grad</span>
+</span></code></pre></div>
+<p><span>Word2vec<span class="heti-spacing"> </span></span>通过让相似词在空间中相近来最大化目标函数。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec2/10.png"><img src="images/lec2/10.png" width="80%/"/></a>
+</div>
+<p>算法之所以用到两类向量，是因为这样做便于优化（可以在最后一起算均值<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。但也可以让每个词只对应一个向量来实现算法，这也会起作用。于是有以下两类变体：</p>
+<ul>
+<li>
+<p><strong>跳元</strong>(skip-gram, <strong>SG</strong>)：给定中心词，预测上下文（“外部”）词（位置无关）
+    &gt;这便是前面介绍过的模型</p>
+</li>
+<li>
+<p><strong>连续词袋</strong>(continuous bag of words, <strong>CBOW</strong>)：从（词袋中的）上下文词预测中心词词</p>
+</li>
+</ul>
+<p>训练用的损失函数有以下几类：</p>
+<ul>
+<li>
+<p>朴素<span><span class="heti-spacing"> </span>(naive) softmax</span>：简单但成本高（当输出类别很多时）
+    &gt;目前只介绍过这种</p>
+</li>
+<li>
+<p>更优化的变体，如层级<span><span class="heti-spacing"> </span>(hierarchical) softmax</span></p>
+</li>
+<li>负采样<span><span class="heti-spacing"> </span>(negative sampling)</span></li>
+</ul>
+<p>由于归一化项计算成本高（概率的分母部分<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，因此标准的<span class="heti-skip"><span class="heti-spacing"> </span>word2vec<span class="heti-spacing"> </span></span>实现采用<strong>负采样</strong>训练得到的<span class="heti-skip"><span class="heti-spacing"> </span>SG<span class="heti-spacing"> </span></span>模型。主要思想是：训练二元逻辑回归，以区分真<span class="heti-skip"><span class="heti-spacing"> </span>(true)<span class="heti-spacing"> </span></span>配对（中心词及其上下文窗口中的词）和多个“噪声”配对（中心词与随机词的配对<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
+<ul>
+<li>取<span class="heti-skip"><span class="heti-spacing"> </span>k<span class="heti-spacing"> </span></span>个负样本（采用词概率）</li>
+<li>最大化真实外部单词出现的概率，并最小化随机单词出现在中心词周围的概率</li>
+<li>
+<p>最小化</p>
+<div class="arithmatex">\[
+J_{\text{neg-sample}}(\bm{u}_o, \bm{v}_c, U) = -\log \sigma(\bm{u}_o^T \bm{v}_c) - \sum_{k \in \{K \text{ sampled indices}\}} \log \sigma(-\bm{u}_k^T \bm{v}_c)
+\]</div>
+<ul>
+<li>其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\sigma\)</span><span class="heti-spacing"> </span></span>是<span class="heti-skip"><span class="heti-spacing"> </span>sigmoid<span class="heti-spacing"> </span></span>函数而非<span><span class="heti-spacing"> </span>softmax</span></li>
+</ul>
+</li>
+<li>
+<p><span>logistic/sigmoid<span class="heti-spacing"> </span></span>函数<span><span class="heti-spacing"> </span><span class="arithmatex">\(\sigma(x) = \frac{1}{1 + e^{-x}}\)</span></span></p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec2/11.png"><img src="images/lec2/11.png" width="40%/"/></a>
+</div><p></p>
+</li>
+<li>
+<p>按<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(P(w) = U(w)^{3/4} / Z\)</span><span class="heti-spacing"> </span></span>进行采样，其中一元分布<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(U(w)\)</span><span class="heti-spacing"> </span></span>取<span class="heti-skip"><span class="heti-spacing"> </span>3/4<span class="heti-spacing"> </span></span>次幂（使得出现次数少的词被更频繁地采样到）</p>
+</li>
+</ul>
+<details class="info">
+<summary>补充：采用负采样的<span><span class="heti-spacing"> </span>SGD</span></summary>
+<p>在<span class="heti-skip"><span class="heti-spacing"> </span>SGD<span class="heti-spacing"> </span></span>中，我们迭代地在每个窗口计算梯度。而在每个窗口中，最多只有<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(2m＋1\)</span><span class="heti-spacing"> </span></span>个词，加上通过负采样得到的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(2km\)</span><span class="heti-spacing"> </span></span>个负样本词，因此<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\nabla_{\theta} J_t(\theta)\)</span><span class="heti-spacing"> </span></span>非常稀疏。</p>
+<div class="arithmatex">\[
+\nabla_\theta J_t(\theta) = \begin{bmatrix} 0 \\ \vdots \\ \nabla_{v_{like}} \\ \vdots \\ 0 \\ \nabla_{u_I} \\ \vdots \\ \nabla_{u_{learning}} \\ \vdots \end{bmatrix} \in \mathbb{R}^{2dV}
+\]</div>
+<p>实际上只需更新实际出现的词向量就行。所以解决方案为：使用稀疏矩阵更新操作，仅更新完整嵌入矩阵<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(U\)</span><span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(V\)</span><span class="heti-spacing"> </span></span>的某些<strong>行</strong>（在真实的<span class="heti-skip"><span class="heti-spacing"> </span>DL<span class="heti-spacing"> </span></span>包中，是行而非列<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>；或者需要为词向量保留一个哈希表。若有数百万个词向量并进行分布式计算，避免来回传输巨大的更新就显得非常重要。</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec2/12.png"><img src="images/lec2/12.png" width="30%/"/></a>
+</div><p></p>
+</details>
+<h2 id="co-occurrence">Co-occurrence<a class="headerlink" href="#co-occurrence" title="Permanent link">⚓︎</a></h2>
+<p>有些读者可能会想为什么要遍历整个（或多次）语料库呢？为什么不直接累积所有关于哪些词彼此相邻出现的统计数据呢？</p>
+<p>于是尝试构建共现矩阵<span><span class="heti-spacing"> </span>(co-occurance matrix) <span class="arithmatex">\(X\)</span></span>。具体实现上有<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>种选择：窗口或整篇文档</p>
+<ul>
+<li>窗口：类似于<span><span class="heti-spacing"> </span>word2vec</span>，使用每个词周围的窗口来捕获一些句法和语义信息（<strong>词空间</strong>）</li>
+<li>文档：共现矩阵会给出一般主题（所有体育术语都会有相似的条目<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，从而引出「潜在语义分析」(latent semantic analysis)（<strong>文档空间</strong>）</li>
+</ul>
+<details class="example" open="open">
+<summary>例子：基于共现矩阵的窗口</summary>
+<ul>
+<li>窗口的长度为<span><span class="heti-spacing"> </span>1</span></li>
+<li>对称</li>
+<li>示例语料库：<ul>
+<li>I like deep learning</li>
+<li>I like NLP</li>
+<li>I enjoy flying</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>counts</th>
+<th>I</th>
+<th>like</th>
+<th>enjoy</th>
+<th>deep</th>
+<th>learning</th>
+<th>NLP</th>
+<th>flying</th>
+<th>.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>I</td>
+<td>0</td>
+<td>2</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>like</td>
+<td>2</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>enjoy</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>deep</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>learning</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>NLP</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>flying</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>.</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+</details>
+<p>对于简单的共现计数向量：</p>
+<ul>
+<li>向量大小随词表增大而增大</li>
+<li>因此其维度非常之高，需要大量存储空间（尽管是稀疏的）</li>
+<li>后续的分类模型存在稀疏性问题会导致模型不够鲁棒</li>
+</ul>
+<p>所以得考虑低维向量，其思路是将大部分重要信息存储在固定的、较少维度的空间中（一个稠密向量<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>；通常为<span><span class="heti-spacing"> </span>25</span>–<span>1000<span class="heti-spacing"> </span></span>维，类似于<span><span class="heti-spacing"> </span>word2vec</span>。维度下降<span class="heti-skip"><span class="heti-spacing"> </span>(dimensionality reduction)<span class="heti-spacing"> </span></span>的思路是：对共现矩阵<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(X\)</span><span class="heti-spacing"> </span></span>的奇异值分解（<strong>SVD</strong><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，即将<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(X\)</span><span class="heti-spacing"> </span></span>分解为<span><span class="heti-spacing"> </span><span class="arithmatex">\(U\Sigma V^\top\)</span></span>，其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(U\)</span><span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(V\)</span><span class="heti-spacing"> </span></span>是正交归一的（单位向量且正交<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec2/13.png"><img src="images/lec2/13.png" width="70%/"/></a>
+</div>
+<ul>
+<li>仅保留<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(k\)</span><span class="heti-spacing"> </span></span>个奇异值，以便进行泛化</li>
+<li><span><span class="arithmatex">\(\hat{X}\)</span><span class="heti-spacing"> </span></span>是<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(X\)</span><span class="heti-spacing"> </span></span>在最小二乘意义上的最佳秩<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(k\)</span><span class="heti-spacing"> </span></span>近似</li>
+<li>这是经典的线性代数结果，对于大型矩阵而言计算成本高</li>
+</ul>
+<p>由于直接对原始计数进行<span class="heti-skip"><span class="heti-spacing"> </span>SVD<span class="heti-spacing"> </span></span>的效果不好，所以</p>
+<ul>
+<li>
+<p>对矩阵单元中的计数进行<strong>缩放</strong>(scale)。但这会使得功能词（the、he、has）出现得太频繁，从而对句法产生过大影响。修复方法有：</p>
+<ul>
+<li>对频率取对数</li>
+<li><span class="arithmatex">\(\min(X, t)\)</span>，其中<span><span class="heti-spacing"> </span><span class="arithmatex">\(t \approx 100\)</span></span></li>
+<li>忽略功能词</li>
+</ul>
+</li>
+<li>
+<p>斜坡式窗口：对较近的词比较远的词赋予更高计数权重</p>
+</li>
+<li>使用相关性而非计数，然后将负值设为<span><span class="heti-spacing"> </span>0</span></li>
+<li>等等<span><span class="heti-spacing"> </span>...</span></li>
+</ul>
+<p>如下图所示，在缩放向量中出现了有趣的语义模式：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec2/14.png"><img src="images/lec2/14.png" width="50%/"/></a>
+</div>
+<blockquote>
+<p>COALS model from Rohde et al. ms., 2005. An Improved Model of Semantic Similarity Based on Lexical Co-Occurrence</p>
+</blockquote>
+<h3 id="glove">GLoVe<a class="headerlink" href="#glove" title="Permanent link">⚓︎</a></h3>
+<p><strong>GLoVe</strong>（[Pennington, Socher, and Manning, EMNLP 2014]）在向量差异中编码（线性的）语义成分。</p>
+<ul>
+<li>对数双线性模型：<span class="arithmatex">\(w_i \cdot w_j = \log P(i|j)\)</span></li>
+<li>向量差异：<span class="arithmatex">\(w_x \cdot (w_a - w_b) = \log \dfrac{P(x|a)}{P(x|b)}\)</span></li>
+<li>
+<p>损失函数：<span class="arithmatex">\(J = \sum_{i, j = 1}^V f(X_{ij}) (w_i^T \hat{w_j} + b_i + \tilde{b_j} - \log X_{ij})^2\)</span></p>
+<ul>
+<li>
+<p>函数<span><span class="heti-spacing"> </span><span class="arithmatex">\(f\)</span></span>：</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec2/15.png"><img src="images/lec2/15.png" width="40%/"/></a>
+</div><p></p>
+</li>
+<li>
+<p>训练更快</p>
+</li>
+<li>在大语料库中可缩放</li>
+</ul>
+</li>
+</ul>
+<h2 id="evaluation">Evaluation<a class="headerlink" href="#evaluation" title="Permanent link">⚓︎</a></h2>
+<p>关于<span class="heti-skip"><span class="heti-spacing"> </span>NLP<span class="heti-spacing"> </span></span>的一般评估分为内在评估和外在评估：</p>
+<ul>
+<li>
+<p><strong>内在</strong><span>(intrisic)<span class="heti-spacing"> </span></span>评估：</p>
+<ul>
+<li>在特定<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>中间子任务上进行评估</li>
+<li>计算速度快</li>
+<li>有助于理解该系统</li>
+<li>除非已建立与实际任务的相关性，否则不清楚是否有用</li>
+</ul>
+</li>
+<li>
+<p><strong>外在</strong><span>(extrinsic)<span class="heti-spacing"> </span></span>评估：</p>
+<ul>
+<li>在实际任务上进行评估</li>
+<li>计算准确率可能需要很长时间</li>
+<li>不清楚问题是出在子系统本身、其交互还是其他子系统</li>
+<li>如果仅将其中一个子系统替换为另一个子系统而准确率提高<span class="heti-skip"><span class="heti-spacing"> </span>-&gt;<span class="heti-spacing"> </span></span>获胜！</li>
+</ul>
+</li>
+</ul>
+<h3 id="intrisic-evaluation">Intrisic Evaluation<a class="headerlink" href="#intrisic-evaluation" title="Permanent link">⚓︎</a></h3>
+<p>词向量类比<span><span class="heti-spacing"> </span>(analogies)</span>：对于 <code>a:b :: c:?</code>（<code>a</code> 之于 <code>b</code>，正如 <code>c</code> 之于什么<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
+<ul>
+<li>
+<p>通过词向量相加后的<strong>余弦距离</strong>在捕捉直观的语义和句法类比问题方面的表现来评估词向量</p>
+<div class="arithmatex">\[
+d = \arg \max_{i} \frac{(x_b - x_a + x_c)^\top x_i}{\|x_b - x_a + x_c\|}
+\]</div>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec2/16.png"><img src="images/lec2/16.png" width="40%/"/></a>
+</div><p></p>
+</li>
+<li>
+<p>从搜索中丢弃输入词</p>
+</li>
+</ul>
+<!-- - 若信息存在但不是线性 -->
+<details class="example" open="open">
+<summary><span>GLoVe<span class="heti-spacing"> </span></span>可视化结果</summary>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec2/17.png"><img src="images/lec2/17.png" width="70%/"/></a>
+</div><p></p>
+</details>
+<p>另一种内在词向量评估方式是<strong>意义相似度</strong>(meaning similarity)，即词向量距离及其与人类判断的相关性。</p>
+<p>示例数据集：<a href="http://www.cs.technion.ac.il/~gabr/resources/data/wordsim353/">WordSim353</a></p>
+<table>
+<thead>
+<tr>
+<th>Word 1</th>
+<th>Word 2</th>
+<th>Human (mean)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>tiger</td>
+<td>cat</td>
+<td>7.35</td>
+</tr>
+<tr>
+<td>tiger</td>
+<td>tiger</td>
+<td>10</td>
+</tr>
+<tr>
+<td>book</td>
+<td>paper</td>
+<td>7.46</td>
+</tr>
+<tr>
+<td>computer</td>
+<td>internet</td>
+<td>7.58</td>
+</tr>
+<tr>
+<td>plane</td>
+<td>car</td>
+<td>5.77</td>
+</tr>
+<tr>
+<td>professor</td>
+<td>doctor</td>
+<td>6.62</td>
+</tr>
+<tr>
+<td>stock</td>
+<td>phone</td>
+<td>1.62</td>
+</tr>
+<tr>
+<td>stock</td>
+<td>CD</td>
+<td>1.31</td>
+</tr>
+<tr>
+<td>stock</td>
+<td>jaguar</td>
+<td>0.92</td>
+</tr>
+</tbody>
+</table>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec2/18.png"><img src="images/lec2/18.png" width="60%/"/></a>
+</div>
+<h3 id="extrinsic-evaluation">Extrinsic Evaluation<a class="headerlink" href="#extrinsic-evaluation" title="Permanent link">⚓︎</a></h3>
+<p>一个好的词向量应该能直接提供帮助的一个例子是<strong>命名实体识别</strong>(named entity recognition)：识别对人物、组织或地点的引用。例如：<span>Chris Manning<span class="heti-spacing"> </span></span>住在帕洛阿尔托。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/lec2/19.png"><img src="images/lec2/19.png" width="50%/"/></a>
+</div>
+<aside class="md-source-file">
+<span class="md-source-file__fact">
+<span class="md-icon" title="最后更新">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"></path></svg>
+</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2026年8月2日 20:37:44 CST">2026年8月2日 20:37:44</span>
+</span>
+<span class="md-source-file__fact">
+<span class="md-icon" title="创建日期">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"></path></svg>
+</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2026年8月2日 20:37:44 CST">2026年8月2日 20:37:44</span>
+</span>
+</aside>
+<p style="font-size: 30px; font-weight: 600">评论区</p>
+<div>
+    如果大家有什么问题或想法，欢迎在下方留言~
+  </div>
+<!-- Insert generated snippet here -->
+<script async="" crossorigin="anonymous" data-category="Announcements" data-category-id="DIC_kwDOMAb9Zs4CfmpP" data-emit-metadata="0" data-input-position="bottom" data-lang="zh-CN" data-mapping="pathname" data-reactions-enabled="1" data-repo="noughtq/notebook" data-repo-id="R_kgDOMAb9Zg" data-strict="0" data-theme="preferred_color_scheme" src="https://giscus.app/client.js">
+</script>
+<!-- Synchronize Giscus theme with palette -->
+<script>
+    var giscus = document.querySelector("script[src*=giscus]")
+
+    // Set palette on initial load
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object") {
+      var theme = palette.color.scheme === "slate"
+        ? "transparent_dark"
+        : "light"
+
+      // Instruct Giscus to set theme
+      giscus.setAttribute("data-theme", theme) 
+    }
+
+    // Register event handlers after documented loaded
+    document.addEventListener("DOMContentLoaded", function() {
+      var ref = document.querySelector("[data-md-component=palette]")
+      ref.addEventListener("change", function() {
+        var palette = __md_get("__palette")
+        if (palette && typeof palette.color === "object") {
+          var theme = palette.color.scheme === "slate"
+            ? "dark"
+            : "light"
+
+          // Instruct Giscus to change theme
+          var frame = document.querySelector(".giscus-frame")
+          frame.contentWindow.postMessage(
+            { giscus: { setConfig: { theme } } },
+            "https://giscus.app"
+          )
+        }
+      })
+    })
+  </script>
+<!-- 标题计数器 -->
+<link href="/css/counter.css" rel="stylesheet"/>
+<!-- 主页个性化 -->
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+<button class="md-top md-icon" data-md-component="top" hidden="" type="button">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  回到页面顶部
+</button>
+</main>
+<footer class="md-footer">
+<nav aria-label="页脚" class="md-footer__inner md-grid">
+<a aria-label="上一页: Intro &amp;amp; History" class="md-footer__link md-footer__link--prev" href="1.html">
+<div class="md-footer__button md-icon">
+<svg viewbox="0 0 256 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path></svg>
+</div>
+<div class="md-footer__title">
+<span class="md-footer__direction">
+                上一页
+              </span>
+<div class="md-ellipsis">
+                Intro &amp; History
+              </div>
+</div>
+</a>
+<a aria-label="下一页: Backpropagation and Neural Network Basics" class="md-footer__link md-footer__link--next" href="3.html">
+<div class="md-footer__title">
+<span class="md-footer__direction">
+                下一页
+              </span>
+<div class="md-ellipsis">
+                Backpropagation and Neural Network Basics
+              </div>
+</div>
+<div class="md-footer__button md-icon">
+<svg viewbox="0 0 256 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M247.1 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L179.2 256 41.9 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"></path></svg>
+</div>
+</a>
+</nav>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright" style="margin-left: 33.5%">
+<div class="md-copyright__highlight" style="text-align: center">
+        Copyright © 2024-2026 <a href="https://github.com/NoughtQ">NoughtQ</a>
+</div>
+    
+    
+      Powered by
+      <a href="https://www.mkdocs.org/" rel="noopener" target="_blank">
+        MkDocs
+      </a>
+      with theme
+      <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+        Material
+      </a>
+      modified by
+      <a href="https://github.com/NoughtQ" rel="noopener" target="_blank">
+        NoughtQ
+      </a>
+<!-- <br> -->
+<div style="text-align: center;">
+<a href="https://icp.gov.moe/?keyword=20252357" target="_blank">萌ICP备20252357号</a>
+</div>
+</div>
+<div class="md-social">
+<a class="md-social__link" href="https://noughtq.top" rel="noopener" target="_blank" title="noughtq.top">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M277.8 8.6c-12.3-11.4-31.3-11.4-43.5 0l-224 208c-9.6 9-12.8 22.9-8 35.1S18.8 272 32 272h16v176c0 35.3 28.7 64 64 64h288c35.3 0 64-28.7 64-64V272h16c13.2 0 25-8.1 29.8-20.3s1.6-26.2-8-35.1zM240 320h32c26.5 0 48 21.5 48 48v96H192v-96c0-26.5 21.5-48 48-48"></path></svg>
+</a>
+<a class="md-social__link" href="https://game.noughtq.top" rel="noopener" target="_blank" title="game.noughtq.top">
+<svg viewbox="0 0 640 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M448 64c106 0 192 86 192 192s-86 192-192 192H192C86 448 0 362 0 256S86 64 192 64zM192 176c-13.3 0-24 10.7-24 24v32h-32c-13.3 0-24 10.7-24 24s10.7 24 24 24h32v32c0 13.3 10.7 24 24 24s24-10.7 24-24v-32h32c13.3 0 24-10.7 24-24s-10.7-24-24-24h-32v-32c0-13.3-10.7-24-24-24m240 96a32 32 0 1 0 0 64 32 32 0 1 0 0-64m64-96a32 32 0 1 0 0 64 32 32 0 1 0 0-64"></path></svg>
+</a>
+<a class="md-social__link" href="https://blog.noughtq.top" rel="noopener" target="_blank" title="blog.noughtq.top">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M224 24c0-13.3 10.7-24 24-24 145.8 0 264 118.2 264 264 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-119.3-96.7-216-216-216-13.3 0-24-10.7-24-24M80 96c26.5 0 48 21.5 48 48v224c0 26.5 21.5 48 48 48s48-21.5 48-48-21.5-48-48-48c-8.8 0-16-7.2-16-16v-64c0-8.8 7.2-16 16-16 79.5 0 144 64.5 144 144s-64.5 144-144 144S32 447.5 32 368V144c0-26.5 21.5-48 48-48m168 0c92.8 0 168 75.2 168 168 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-66.3-53.7-120-120-120-13.3 0-24-10.7-24-24s10.7-24 24-24"></path></svg>
+</a>
+<a class="md-social__link" href="https://github.com/noughtq" rel="noopener" target="_blank" title="github.com">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"></path></svg>
+</a>
+<a class="md-social__link" href="mailto:noughtq666@gmail.com" rel="noopener" target="_blank" title="">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m20 8-8 5-8-5V6l8 5 8-5m0-2H4c-1.11 0-2 .89-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2"></path></svg>
+</a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["announce.dismiss", "content.action.edit", "content.action.view", "content.code.copy", "content.code.annotate", "content.footnote.tooltips", "navigation.footer", "navigation.indexes", "navigation.path", "navigation.prune", "navigation.tabs", "navigation.top", "navigation.tracking", "search.share"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+<script src="../../js/anchor.js"></script>
+<script src="../../js/katex.js"></script>
+<script src="../../js/toc.js"></script>
+<script src="../../js/typed.js"></script>
+<script src="../../js/custom.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script src="../../js/settings.js"></script>
+<script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+<script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.js"></script>
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>
