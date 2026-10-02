@@ -1,0 +1,67 @@
+name: Notebook live deploy verification
+
+on:
+  push:
+    branches: [codex/notebook-assistant]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: notebook-deploy-live-verification
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: github.ref == 'refs/heads/codex/notebook-assistant'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r bot/requirements/site.txt
+      - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends texlive-xetex texlive-latex-extra texlive-pictures dvisvgm
+      - run: git fetch origin main --depth=1 && git checkout --detach FETCH_HEAD
+      - name: Prepare complete site
+        env:
+          NOTEBOOK_PASSWORDS_YML: ${{ secrets.NOTEBOOK_PASSWORDS_YML }}
+        run: |
+          test -n "$NOTEBOOK_PASSWORDS_YML"
+          password_file=$(mktemp)
+          trap 'rm -f "$password_file"' EXIT
+          printf '%s' "$NOTEBOOK_PASSWORDS_YML" > "$password_file"
+          cp "$password_file" passwords.yml
+          : > .ignored-commits
+          python - <<'PY'
+          import datetime, json, subprocess
+          from pathlib import Path
+          marker = {'source_sha': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+                    'built_at': datetime.datetime.now(datetime.timezone.utc).isoformat()}
+          Path('docs/bot-deploy.json').write_text(json.dumps(marker) + '\n')
+          PY
+      - id: app
+        uses: actions/create-github-app-token@v3
+        with:
+          app-id: ${{ secrets.NOTE_BOT_APP_ID }}
+          private-key: ${{ secrets.NOTE_BOT_APP_PRIVATE_KEY }}
+      - name: Build and deploy to gh-pages
+        env:
+          APP_TOKEN: ${{ steps.app.outputs.token }}
+          GH_TOKEN: ${{ steps.app.outputs.token }}
+          APP_BOT_LOGIN: ${{ steps.app.outputs.app-slug }}[bot]
+          NOTE_BOT_LOGIN: ${{ vars.NOTE_BOT_LOGIN }}
+        run: |
+          test "$NOTE_BOT_LOGIN" = "$APP_BOT_LOGIN"
+          bot_id=$(gh api "users/$APP_BOT_LOGIN" --jq .id)
+          export GIT_CONFIG_COUNT=1
+          export GIT_CONFIG_KEY_0=http.https://github.com/.extraheader
+          export GIT_CONFIG_VALUE_0="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$APP_TOKEN" | base64 | tr -d '\n')"
+          export GIT_AUTHOR_NAME="$APP_BOT_LOGIN"
+          export GIT_AUTHOR_EMAIL="$bot_id+$APP_BOT_LOGIN@users.noreply.github.com"
+          export GIT_COMMITTER_NAME="$GIT_AUTHOR_NAME"
+          export GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
+          mkdocs gh-deploy --force --remote-branch gh-pages

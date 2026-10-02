@@ -1,0 +1,52 @@
+name: Notebook correction check
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    if: vars.NOTE_BOT_LOGIN != '' && startsWith(github.head_ref, 'bot/fix-') && github.event.pull_request.user.login == vars.NOTE_BOT_LOGIN && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+          persist-credentials: false
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          path: candidate
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Copy only approved note changes into trusted checkout
+        env:
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          python - <<'PY'
+          import json, os, shutil, subprocess
+          from pathlib import Path
+          root, candidate = Path.cwd(), Path.cwd() / 'candidate'
+          base = os.environ['PR_BASE_SHA']
+          lines = subprocess.check_output(['git', '-C', str(candidate), 'diff', '--name-status', base, 'HEAD'], text=True).splitlines()
+          allowed = set(json.loads((root / 'bot/data/config.json').read_text())['public_paths'])
+          changes = [line.split('\t', 1) for line in lines]
+          if not changes or len(changes) > 2 or any(status != 'M' or path not in allowed for status, path in changes):
+              raise SystemExit('PR contains an unapproved file change')
+          stats = subprocess.check_output(['git', '-C', str(candidate), 'diff', '--numstat', base, 'HEAD'], text=True).splitlines()
+          if sum(int(n) for line in stats for n in line.split('\t')[:2]) > 80:
+              raise SystemExit('PR exceeds 80 changed lines')
+          for _, name in changes:
+              source = candidate / name
+              if source.is_symlink() or not source.is_file():
+                  raise SystemExit('PR contains an unsafe file')
+              shutil.copyfile(source, root / name)
+          PY
+      - run: git diff --check
