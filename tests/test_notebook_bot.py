@@ -2,13 +2,16 @@ import unittest
 import tempfile
 import copy
 import json
+import hashlib
+import os
 from datetime import datetime, timezone
 from pathlib import Path
 from types import SimpleNamespace
+from unittest.mock import patch
 
 from notebook_bot.run import load_config, validate_config, admit, verify
 from notebook_bot.context import resolve_note, build_context
-from notebook_bot.github import read_event, read_thread, save_state, discover_events
+from notebook_bot.github import read_event, read_thread, save_state, discover_events, publish
 from notebook_bot.model import generate, validate_result
 from notebook_bot.patch import validate_edits, apply_edits
 
@@ -95,7 +98,7 @@ class ContextTests(unittest.TestCase):
         def api(method, path, body):
             self.assertEqual((method, path), ("POST", "/graphql"))
             return {"data": {"repository": {"discussion": {"comments": pages.pop(0)}}}}
-        event = {"discussion_number": 131, "thread_root_id": "REPLY"}
+        event = {"discussion_number": 131, "comment_id": "REPLY", "thread_root_id": "REPLY"}
         thread = read_thread(event, api)
         self.assertEqual((event["thread_root_id"], [item["id"] for item in thread]),
                          ("ROOT", ["ROOT", "REPLY"]))
@@ -307,6 +310,111 @@ class PatchTests(unittest.TestCase):
         result = verify(candidate, self.root, {"public_paths": list(self.allowed)})
         self.assertEqual(result["diff_stats"], {"files": 0, "lines": 0})
         self.assertEqual(self.note.read_text(), "---\ntitle: Test\n---\nA or B\n")
+
+
+class PublishingTests(unittest.TestCase):
+    def setUp(self):
+        self.config = {"mode": "auto", "model": "test", "enabled_at": "2026-10-01T00:00:00Z",
+                       "public_paths": ["docs/math/toc/1.md"], "bot_login": "notebook-helper[bot]"}
+        self.event = {"key": "comment:C1", "discussion_id": "D1", "discussion_number": 1,
+                      "comment_id": "C1", "thread_root_id": "C1", "body": "Is this right?",
+                      "body_sha256": hashlib.sha256(b"Is this right?").hexdigest(), "actor": "reader", "created_at": "2026-10-02T00:00:00Z"}
+        self.reservation = {"key": "comment:C1", "reservation_id": "R1", "event": self.event}
+        self.state = {"events": {"comment:C1": {"status": "reserved", "reservation_id": "R1", "attempts": 1}}}
+        self.verified = {"key": "comment:C1", "base_sha": "BASE", "body_sha256": self.event["body_sha256"],
+                         "allowed_paths": ["docs/math/toc/1.md"], "result": {"action": "answer",
+                         "answer_md": "是的，定义成立。", "sources": [{"id": "note-1", "url": "https://note.noughtq.top/math/toc/1",
+                         "title": "笔记", "excerpt": "定义"}], "claims": [], "edits": [], "reason": "", "verification": "pass"}}
+        self.verified["result_sha256"] = hashlib.sha256(
+            json.dumps(self.verified["result"], ensure_ascii=False, sort_keys=True).encode()).hexdigest()
+
+    def fake_api(self, *, stale=False, timeout_after_post=False, forged=False):
+        comments = [{"id": "C1", "body": "Is this right?", "author": {"login": "reader"},
+                     "createdAt": "2026-10-02T00:00:00Z", "replies": {"nodes": []}}]
+        if forged:
+            comments[0]["replies"]["nodes"].append({"id": "fake", "body": "<!-- notebook-bot:comment:C1 -->",
+                                                      "author": {"login": "reader"}, "createdAt": "2026-10-02T00:01:00Z"})
+        posts = []
+        def api(method, path, body):
+            if method == "GET" and path.endswith("/git/ref/heads/main"):
+                return {"object": {"sha": "OTHER" if stale else "BASE"}}
+            if path == "/graphql" and "node(id:" in body.get("query", ""):
+                return {"data": {"node": {"id": "C1", "body": "Is this right?", "createdAt": "2026-10-02T00:00:00Z",
+                                          "author": {"login": "reader"}, "discussion": {"id": "D1", "number": 1,
+                                          "body": "https://note.noughtq.top/math/toc/1", "category": {"id": "DIC_kwDOMAb9Zs4CfmpP"}}}}}
+            if path == "/graphql" and "discussion(number:" in body.get("query", ""):
+                return {"data": {"repository": {"discussion": {"comments": {"nodes": comments,
+                    "pageInfo": {"hasNextPage": False, "endCursor": None}}}}}}
+            if path == "/graphql" and "addDiscussionComment" in body.get("query", ""):
+                node = {"id": "BOT1", "body": body["variables"]["body"],
+                        "author": {"login": "notebook-helper[bot]"}, "createdAt": "2026-10-02T00:02:00Z"}
+                comments[0]["replies"]["nodes"].append(node)
+                posts.append(node)
+                if timeout_after_post and len(posts) == 1:
+                    raise TimeoutError("response lost")
+                return {"data": {"addDiscussionComment": {"comment": {"id": "BOT1"}}}}
+            raise AssertionError((method, path))
+        return api, posts
+
+    def test_post_timeout_recovers_from_real_bot_reply(self):
+        api, posts = self.fake_api(timeout_after_post=True, forged=True)
+        with self.assertRaises(TimeoutError):
+            publish(self.verified, self.reservation, self.state, api, self.config)
+        recovered = publish(self.verified, self.reservation, self.state, api, self.config)
+        self.assertEqual(len(posts), 1)
+        self.assertEqual(recovered["events"]["comment:C1"]["reply_id"], "BOT1")
+
+    def test_stale_source_prevents_post(self):
+        api, posts = self.fake_api(stale=True)
+        with self.assertRaises(ValueError):
+            publish(self.verified, self.reservation, self.state, api, self.config)
+        self.assertEqual(posts, [])
+
+    def test_modified_artifact_cannot_publish(self):
+        api, posts = self.fake_api()
+        changed = {**self.verified, "result": {**self.verified["result"], "answer_md": "tampered"}}
+        with self.assertRaises(ValueError):
+            publish(changed, self.reservation, self.state, api, self.config)
+        self.assertEqual(posts, [])
+
+    def test_correction_opens_draft_pr_and_reuses_it_after_retry(self):
+        with tempfile.TemporaryDirectory() as tmp, patch.dict(os.environ, {"GITHUB_WORKSPACE": tmp}):
+            note = Path(tmp) / "docs/math/toc/1.md"
+            note.parent.mkdir(parents=True)
+            note.write_text("# Claim\nA or B\n", encoding="utf-8")
+            api_base, posts = self.fake_api()
+            branches, prs = {}, []
+            def api(method, path, body):
+                if "/pulls?" in path:
+                    return prs
+                if path.endswith("/git/refs") and method == "POST":
+                    branches[body["ref"]] = "A or B"
+                    return {"ref": body["ref"]}
+                if "/contents/docs/math/toc/1.md" in path:
+                    if method == "GET":
+                        content = "A or B" if path.endswith("ref=main") else branches[next(iter(branches))]
+                        original = note.read_text() if path.endswith("ref=main") else note.read_text().replace("A or B", content)
+                        return {"sha": "blob", "content": __import__("base64").b64encode(original.encode()).decode()}
+                    branches[next(iter(branches))] = "A and B"
+                    return {"content": {"sha": "new"}}
+                if path.endswith("/pulls") and method == "POST":
+                    pr = {"number": 7, "state": "open", "body": body["body"],
+                          "user": {"login": "notebook-helper[bot]"}}
+                    prs.append(pr)
+                    self.assertTrue(body["draft"])
+                    return pr
+                return api_base(method, path, body)
+            result = {**self.verified["result"], "action": "correction", "reason": "逻辑符号写错",
+                      "edits": [{"path": "docs/math/toc/1.md", "old": "A or B", "new": "A and B"}]}
+            verified = {**self.verified, "result": result, "build_status": "passed",
+                        "diff_stats": {"files": 1, "lines": 2}}
+            verified["result_sha256"] = hashlib.sha256(
+                json.dumps(result, ensure_ascii=False, sort_keys=True).encode()).hexdigest()
+            first = publish(verified, self.reservation, self.state, api, self.config)
+            again = publish(verified, self.reservation, self.state, api, self.config)
+            self.assertEqual((first["events"]["comment:C1"]["pr_number"], len(prs), len(posts)), (7, 1, 1))
+            self.assertEqual(again["events"]["comment:C1"]["pr_number"], 7)
+            self.assertEqual(note.read_text(), "# Claim\nA or B\n")
 
 
 if __name__ == "__main__":

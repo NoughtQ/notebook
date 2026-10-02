@@ -1,0 +1,25 @@
+name: Notebook correction check
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    if: startsWith(github.head_ref, 'bot/fix-')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements-bot.txt -r requirements-site.txt
+      - run: python -m unittest discover -s tests -v
+      - run: git diff --check
+      - run: bash scripts/build-notes.sh public /tmp/notebook-public-build

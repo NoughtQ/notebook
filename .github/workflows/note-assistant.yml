@@ -1,0 +1,137 @@
+name: Notebook assistant
+
+on:
+  discussion:
+    types: [created]
+  discussion_comment:
+    types: [created]
+  workflow_dispatch:
+  schedule:
+    - cron: '17 * * * *'
+
+permissions:
+  contents: read
+  discussions: read
+
+concurrency:
+  group: notebook-assistant
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    if: vars.NOTE_BOT_MODE != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      ready: ${{ steps.prepare.outputs.ready }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements-bot.txt
+      - id: app
+        if: vars.NOTE_BOT_MODE == 'auto' || vars.NOTE_BOT_MODE == 'mention'
+        uses: actions/create-github-app-token@v3
+        with:
+          app-id: ${{ secrets.NOTE_BOT_APP_ID }}
+          private-key: ${{ secrets.NOTE_BOT_APP_PRIVATE_KEY }}
+      - id: prepare
+        env:
+          GITHUB_TOKEN: ${{ steps.app.outputs.token || github.token }}
+          NOTE_BOT_MODE: ${{ vars.NOTE_BOT_MODE }}
+          BOT_ENABLED_AT: ${{ vars.NOTE_BOT_ENABLED_AT }}
+          BOT_LOGIN: ${{ vars.NOTE_BOT_LOGIN }}
+          OPENAI_MODEL: ${{ vars.NOTE_BOT_MODEL }}
+        run: |
+          python -m notebook_bot.run prepare --input "$GITHUB_EVENT_PATH" --output prepare.json --publish
+          if jq -e '.skip == false' prepare.json >/dev/null; then echo 'ready=true' >> "$GITHUB_OUTPUT"; fi
+      - if: steps.prepare.outputs.ready == 'true'
+        uses: actions/upload-artifact@v7
+        with:
+          name: notebook-prepare-${{ github.run_id }}
+          path: prepare.json
+          retention-days: 7
+
+  generate:
+    needs: prepare
+    if: needs.prepare.outputs.ready == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements-bot.txt
+      - uses: actions/download-artifact@v8
+        with:
+          name: notebook-prepare-${{ github.run_id }}
+      - env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_MODEL: ${{ vars.NOTE_BOT_MODEL }}
+        run: python -m notebook_bot.run generate --input prepare.json --output candidate.json
+      - uses: actions/upload-artifact@v7
+        with:
+          name: notebook-candidate-${{ github.run_id }}
+          path: candidate.json
+          retention-days: 7
+
+  verify:
+    needs: generate
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements-bot.txt -r requirements-site.txt
+      - uses: actions/download-artifact@v8
+        with:
+          name: notebook-candidate-${{ github.run_id }}
+      - run: python -m notebook_bot.run verify --input candidate.json --output verified.json
+      - uses: actions/upload-artifact@v7
+        with:
+          name: notebook-verified-${{ github.run_id }}
+          path: verified.json
+          retention-days: 7
+
+  publish:
+    needs: verify
+    if: vars.NOTE_BOT_MODE == 'auto' || vars.NOTE_BOT_MODE == 'mention'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements-bot.txt
+      - uses: actions/download-artifact@v8
+        with:
+          name: notebook-verified-${{ github.run_id }}
+      - id: app
+        uses: actions/create-github-app-token@v3
+        with:
+          app-id: ${{ secrets.NOTE_BOT_APP_ID }}
+          private-key: ${{ secrets.NOTE_BOT_APP_PRIVATE_KEY }}
+      - env:
+          GITHUB_TOKEN: ${{ steps.app.outputs.token }}
+          NOTE_BOT_MODE: ${{ vars.NOTE_BOT_MODE }}
+          BOT_ENABLED_AT: ${{ vars.NOTE_BOT_ENABLED_AT }}
+          BOT_LOGIN: ${{ vars.NOTE_BOT_LOGIN }}
+          OPENAI_MODEL: ${{ vars.NOTE_BOT_MODEL }}
+        run: python -m notebook_bot.run publish --input verified.json --output published.json --publish
