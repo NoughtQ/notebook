@@ -4,12 +4,13 @@ import copy
 import json
 import hashlib
 import os
+import yaml
 from datetime import datetime, timezone
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
 
-from notebook_bot.run import load_config, validate_config, admit, verify, evaluate
+from notebook_bot.run import load_config, validate_config, admit, verify, evaluate, _prepare
 from notebook_bot.context import resolve_note, build_context
 from notebook_bot.github import read_event, read_thread, save_state, discover_events, publish, reconcile
 from notebook_bot.model import generate, validate_result
@@ -28,6 +29,11 @@ class ConfigTests(unittest.TestCase):
         config = load_config(Path("notebook_bot/config.json"))
         with self.assertRaises(ValueError):
             validate_config({**config, "model": "", "public_paths": []}, publish=True)
+
+    def test_workflow_jobs_declare_prepare_dependency_for_checkout_sha(self):
+        workflow = yaml.load(Path(".github/workflows/note-assistant.yml").read_text(), Loader=yaml.BaseLoader)
+        for job in ("generate", "verify", "publish"):
+            self.assertIn("prepare", workflow["jobs"][job]["needs"])
 
 
 class ContextTests(unittest.TestCase):
@@ -103,6 +109,24 @@ class ContextTests(unittest.TestCase):
         self.assertEqual((event["thread_root_id"], [item["id"] for item in thread]),
                          ("ROOT", ["ROOT", "REPLY"]))
 
+    def test_reply_pagination_reaches_comment_after_first_page(self):
+        calls = []
+        def api(method, path, body):
+            calls.append(body["query"])
+            if "discussion(number:" in body["query"]:
+                return {"data": {"repository": {"discussion": {"comments": {
+                    "nodes": [{"id": "ROOT", "body": "Question", "author": None,
+                               "replies": {"nodes": [{"id": "R1", "body": "Earlier"}],
+                                           "pageInfo": {"hasNextPage": True, "endCursor": "more"}}}],
+                    "pageInfo": {"hasNextPage": False, "endCursor": None}}}}}}
+            return {"data": {"node": {"replies": {"nodes": [{"id": "R101", "body": "Later"}],
+                                                   "pageInfo": {"hasNextPage": False, "endCursor": None}}}}}
+        event = {"discussion_number": 1, "comment_id": "R101", "thread_root_id": "R101"}
+        thread = read_thread(event, api)
+        self.assertEqual(event["thread_root_id"], "ROOT")
+        self.assertIn("R101", [item["id"] for item in thread])
+        self.assertEqual(len(calls), 2)
+
 
 class AdmissionTests(unittest.TestCase):
     def setUp(self):
@@ -157,6 +181,7 @@ class AdmissionTests(unittest.TestCase):
 
     def test_mention_requires_standalone_ask_command(self):
         config = {**self.config, "mode": "mention"}
+        self.assertIsNone(admit({**self.event, "body": ""}, {}, config, self.now)[1])
         self.assertIsNone(admit({**self.event, "body": "/asking about notes"}, {}, config, self.now)[1])
         self.assertIsNotNone(admit({**self.event, "body": "/ask\nWhat is this?"}, {}, config, self.now)[1])
 
@@ -204,6 +229,24 @@ class AdmissionTests(unittest.TestCase):
         with self.assertRaises(TimeoutError):
             discover_events(broken_api, state, self.config)
         self.assertEqual(state, {"events": {}, "scan_watermark": "old"})
+
+    def test_expired_publish_cache_reuses_verified_result_without_model(self):
+        import subprocess
+        head = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
+        cached = {"base_sha": head, "body_sha256": "digest", "result": {"action": "answer"}}
+        record = {"status": "reserved", "reservation_id": "R", "verified": cached,
+                  "reservation": {"key": "comment:C1", "reservation_id": "R"}}
+        event = {**self.event, "body_sha256": "digest", "page_path": "math/toc/1"}
+        state = {"events": {event["key"]: record}}
+        with patch("notebook_bot.run._load_state", return_value=(state, "sha")), \
+             patch("notebook_bot.github.read_event", return_value=None), \
+             patch("notebook_bot.github.discover_events", return_value=[event]), \
+             patch("notebook_bot.github.save_state") as save:
+            output = _prepare({}, Path.cwd(), {**self.config, "model": "test",
+                "public_paths": ["docs/math/toc/1.md"]}, lambda *args: None, True)
+        self.assertTrue(output["retry_publish"])
+        self.assertEqual(output["verified"], cached)
+        save.assert_called_once()
 
 
 class ModelTests(unittest.TestCase):
@@ -260,6 +303,19 @@ class ModelTests(unittest.TestCase):
         client = SimpleNamespace(responses=SimpleNamespace(create=lambda **kw: (calls.append(kw), responses.pop(0))[1]))
         generate(self.context, {"model": "test-model"}, client)
         self.assertGreater(len(json.loads(calls[1]["input"])["style_examples"]), 0)
+
+    def test_correction_verification_uses_fetched_source_text(self):
+        annotation = SimpleNamespace(type="url_citation", url=self.source["url"], title="Book")
+        search = SimpleNamespace(status="completed", output_text="Search summary",
+                                 output=[SimpleNamespace(content=[SimpleNamespace(annotations=[annotation])])])
+        answer = SimpleNamespace(status="completed", output_text=json.dumps(self.result), output=[])
+        verdict = SimpleNamespace(status="completed", output_text='{"verification":"pass","reason":"checked"}', output=[])
+        calls, responses = [], [search, answer, verdict]
+        client = SimpleNamespace(responses=SimpleNamespace(create=lambda **kw: (calls.append(kw), responses.pop(0))[1]))
+        with patch("notebook_bot.model._fetch_excerpt", return_value="Verified source content " * 20):
+            actual = generate(self.context, {"model": "test-model"}, client)
+        self.assertEqual(actual["action"], "correction")
+        self.assertIn("Verified source content", calls[2]["input"])
 
 
 class PatchTests(unittest.TestCase):
@@ -370,6 +426,16 @@ class PublishingTests(unittest.TestCase):
             publish(self.verified, self.reservation, self.state, api, self.config)
         self.assertEqual(posts, [])
 
+    def test_mode_switch_or_owner_pause_prevents_old_publish(self):
+        api, posts = self.fake_api()
+        with self.assertRaises(ValueError):
+            publish(self.verified, self.reservation, self.state, api,
+                    {**self.config, "mode": "mention"})
+        with self.assertRaises(ValueError):
+            publish(self.verified, self.reservation,
+                    {**self.state, "paused_threads": ["C1"]}, api, self.config)
+        self.assertEqual(posts, [])
+
     def test_modified_artifact_cannot_publish(self):
         api, posts = self.fake_api()
         changed = {**self.verified, "result": {**self.verified["result"], "answer_md": "tampered"}}
@@ -387,6 +453,12 @@ class PublishingTests(unittest.TestCase):
             def api(method, path, body):
                 if "/pulls?" in path:
                     return prs
+                if "/compare/" in path:
+                    names = ["docs/math/toc/1.md"] if next(iter(branches.values()), "A or B") != "A or B" else []
+                    if "extra" in branches:
+                        names.append(".github/workflows/evil.yml")
+                    return {"status": "ahead" if names else "identical",
+                            "files": [{"filename": name} for name in names]}
                 if path.endswith("/git/refs") and method == "POST":
                     branches[body["ref"]] = "A or B"
                     return {"ref": body["ref"]}
@@ -415,6 +487,9 @@ class PublishingTests(unittest.TestCase):
             self.assertEqual((first["events"]["comment:C1"]["pr_number"], len(prs), len(posts)), (7, 1, 1))
             self.assertEqual(again["events"]["comment:C1"]["pr_number"], 7)
             self.assertEqual(note.read_text(), "# Claim\nA or B\n")
+            branches["extra"] = "malicious"
+            with self.assertRaises(ValueError):
+                publish(verified, self.reservation, self.state, api, self.config)
 
 
 class LifecycleTests(unittest.TestCase):
@@ -422,8 +497,9 @@ class LifecycleTests(unittest.TestCase):
         self.posts = []
         self.state = {"events": {"comment:C1": {"status": "published", "pr_number": 7,
                        "discussion_id": "D1", "discussion_number": 1, "thread_root_id": "C1", "page_path": "math/toc/1",
-                       "expected_text": "A and B"}}, "pull_requests": {}}
-        self.config = {"bot_login": "notebook-helper[bot]", "site_url": "https://note.noughtq.top"}
+                       "expected_edits": [{"path": "docs/math/toc/1.md", "new": "A and B"}]}}, "pull_requests": {}}
+        self.config = {"bot_login": "notebook-helper[bot]", "site_url": "https://note.noughtq.top",
+                       "public_paths": ["docs/math/toc/1.md"]}
 
     def api(self, method, path, body):
         if path.endswith("/pulls/7"):
@@ -432,6 +508,8 @@ class LifecycleTests(unittest.TestCase):
                     "body": "<!-- notebook-fix:1234567890abcdef -->"}
         if "/compare/" in path:
             return {"status": self.compare_status}
+        if "/contents/docs/math/toc/1.md" in path:
+            return {"content": __import__("base64").b64encode(self.deployed_source.encode()).decode()}
         if path == "/graphql" and "discussion(number:" in body.get("query", ""):
             comment = {"id": "C1", "body": "Question", "author": {"login": "reader"},
                        "replies": {"nodes": [{"id": "BOT", "body": "Earlier bot answer",
@@ -446,27 +524,32 @@ class LifecycleTests(unittest.TestCase):
     def site_get(self, url):
         if url.endswith("bot-deploy.json"):
             return 200, json.dumps({"source_sha": self.deploy_sha})
+        self.assertTrue(url.endswith("/math/toc/1.html"))
         return self.page_status, self.page_body
 
     def test_closed_unmerged_and_failed_deploy_do_not_claim_live(self):
         self.pr_state, self.merged, self.compare_status = "closed", False, "behind"
         self.deploy_sha, self.page_status, self.page_body = "OLD", 200, "A and B"
+        self.deployed_source = "A and B"
         closed = reconcile(self.state, self.api, self.site_get, self.config)
         self.assertEqual(closed["pull_requests"]["7"]["status"], "rejected")
         self.pr_state, self.merged = "closed", True
         merged = reconcile(self.state, self.api, self.site_get, self.config)
         self.assertEqual(merged["pull_requests"]["7"]["status"], "pending_deploy")
-        self.assertEqual(self.posts, [])
+        self.assertEqual(len(self.posts), 1)
+        self.assertIn("已合并", self.posts[0])
+        self.assertNotIn("已上线", self.posts[0])
 
     def test_only_confirmed_site_change_gets_one_notice(self):
         self.pr_state, self.merged, self.compare_status = "closed", True, "ahead"
         self.deploy_sha, self.page_status, self.page_body = "DEPLOY", 200, "<p>A and B</p>"
+        self.deployed_source = "A and B"
         updated = reconcile(self.state, self.api, self.site_get, self.config)
         self.assertEqual(updated["pull_requests"]["7"]["status"], "deployed")
-        self.assertEqual(len(self.posts), 1)
-        self.assertIn("已上线", self.posts[0])
+        self.assertEqual(len(self.posts), 2)
+        self.assertIn("已上线", self.posts[1])
         reconcile(updated, self.api, self.site_get, self.config)
-        self.assertEqual(len(self.posts), 1)
+        self.assertEqual(len(self.posts), 2)
 
 
 class EvaluationTests(unittest.TestCase):

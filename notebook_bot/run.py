@@ -67,9 +67,9 @@ def admit(event: dict, state: dict, config: dict, now: datetime) -> tuple[dict, 
     if actor == config.get("bot_login", "").lower() or actor.endswith("[bot]") or root in state["paused_threads"]:
         return state, None
     body = event.get("body", "").strip()
-    if mode == "mention" and body.splitlines()[0].strip() != "/ask":
-        return state, None
     if not body or len(body) < 5:
+        return state, None
+    if mode == "mention" and body.splitlines()[0].strip() != "/ask":
         return state, None
     key = event["key"]
     prior = state["events"].get(key, {})
@@ -193,13 +193,19 @@ def evaluate(cases: list[dict], config: dict, output_dir: Path, client=None) -> 
         row = {"id": case["id"], "run_date": today, "model": config["model"],
                "source_sha": case["source_sha"], "action": result["action"],
                "expected_action": case["expected_action"], "answer_md": result["answer_md"],
-               "sources": result["sources"], "latency_seconds": round(time.monotonic() - started, 2),
-               "needs_human_review": True}
+               "expected_facts": case["expected_facts"], "evidence_urls": case["evidence_urls"],
+               "claims": result["claims"], "sources": result["sources"],
+               "usage": result.get("_meta", {}), "latency_seconds": round(time.monotonic() - started, 2),
+               "human_grade": None, "needs_human_review": True}
         with results_path.open("a", encoding="utf-8") as handle:
             handle.write(json.dumps(row, ensure_ascii=False) + "\n")
         prior.append(row)
     summary = {"total": 30, "evaluated": len(prior), "remaining": 30 - len(prior),
                "human_review_required": True, "model": config["model"],
+               "action_matches": sum(item["action"] == item["expected_action"] for item in prior),
+               "input_tokens": sum(item.get("usage", {}).get("input_tokens", 0) for item in prior),
+               "output_tokens": sum(item.get("usage", {}).get("output_tokens", 0) for item in prior),
+               "search_calls": sum(item.get("usage", {}).get("search_calls", 0) for item in prior),
                "openai_sdk_version": version("openai"),
                "source_sha": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip(),
                "prompt_sha256": hashlib.sha256(Path(__file__).with_name("prompt.md").read_bytes()).hexdigest()}
@@ -240,11 +246,31 @@ def _prepare(payload: dict, root: Path, config: dict, api, may_publish: bool) ->
         candidates[fresh["key"]] = fresh
     selected = None
     for event in sorted(candidates.values(), key=lambda item: (item["created_at"], item["key"])):
-        thread = read_thread(event, api)
+        record = state.get("events", {}).get(event["key"], {})
+        cached = record.get("verified")
+        if cached and record.get("reservation"):
+            current_sha = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
+            if cached["base_sha"] == current_sha and cached["body_sha256"] == event["body_sha256"]:
+                selected = {"skip": False, "retry_publish": True,
+                            "verified": cached, "reservation": record["reservation"]}
+                break
+            record.pop("verified", None)
+            record.pop("reservation", None)
+        thread = read_thread(event, api) if event.get("comment_id") else []
+        if event.get("comment_id") and not thread:
+            state.setdefault("events", {}).setdefault(event["key"], {})["status"] = "skipped"
+            continue
+        if event.get("comment_id"):
+            current = next((item for item in thread if item["id"] == event["comment_id"]), None)
+            thread = [thread[0], current] if current and current["id"] != thread[0]["id"] else thread[:1]
+        context = build_context(event, thread, root, config)
+        if not context["notes"]:
+            state.setdefault("events", {}).setdefault(event["key"], {})["status"] = "skipped"
+            continue
         state, reservation = admit(event, state, config, datetime.now(timezone.utc))
         if reservation:
             selected = {"skip": False, "event": event, "reservation": reservation,
-                        "context": build_context(event, thread, root, config)}
+                        "context": context}
             break
     if may_publish and config["mode"] in {"mention", "auto"}:
         if not sha:
@@ -271,22 +297,32 @@ def main() -> None:
         from .github import request
         output = _prepare(payload, root, config, request, args.publish)
     elif args.stage == "generate":
-        from openai import OpenAI
-        from .model import generate
-        if payload.get("skip"):
+        if payload.get("skip") or payload.get("retry_publish"):
             output = payload
         else:
+            from openai import OpenAI
+            from .model import generate
             client = OpenAI(max_retries=0, timeout=90)
             output = {**payload, "result": generate(payload["context"], config, client)}
     elif args.stage == "verify":
-        output = {"verified": verify(payload, root, config), "reservation": payload["reservation"]}
+        output = ({"verified": payload["verified"], "reservation": payload["reservation"]}
+                  if payload.get("retry_publish") else
+                  {"verified": verify(payload, root, config), "reservation": payload["reservation"]})
     elif args.stage == "publish":
         if not args.publish:
             raise ValueError("--publish required")
         from .github import request, publish, save_state
+        validate_config(config, publish=True)
+        if hashlib.sha256(json.dumps(payload["verified"]["result"], ensure_ascii=False, sort_keys=True).encode()).hexdigest() != payload["verified"]["result_sha256"]:
+            raise ValueError("verified answer was modified")
         state, sha = _load_state(request)
         if not sha:
             raise ValueError("bot-state is missing")
+        record = state["events"].get(payload["reservation"]["key"], {})
+        if record.get("status") == "reserved" and record.get("reservation_id") == payload["reservation"]["reservation_id"] and not record.get("verified"):
+            record["verified"] = payload["verified"]
+            record["reservation"] = payload["reservation"]
+            sha = save_state(request, state, sha)
         new_state = publish(payload["verified"], payload["reservation"], state, request, config)
         if new_state != state:
             save_state(request, new_state, sha)

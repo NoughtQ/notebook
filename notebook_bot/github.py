@@ -8,8 +8,6 @@ import re
 import copy
 import subprocess
 import tempfile
-from html import unescape
-from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import quote
 from urllib.error import HTTPError
@@ -49,22 +47,41 @@ def read_event(payload: dict, api) -> dict | None:
             "discussion_number": discussion["number"], "comment_id": comment.get("node_id") if comment else None,
             "thread_root_id": comment.get("node_id") if comment else discussion["node_id"],
             "key": ("comment:" if comment else "discussion:") + node,
-            "actor": source.get("user", {}).get("login", ""), "body": body,
+            "actor": (source.get("user") or {}).get("login", ""), "body": body,
             "body_sha256": hashlib.sha256(body.encode()).hexdigest(),
             "created_at": source.get("created_at", ""), "url": source.get("html_url", ""),
             "page_path": paths[0].strip("/").removesuffix(".html")}
 
 
+def _all_replies(comment: dict, api) -> list[dict]:
+    connection = comment["replies"]
+    replies = list(connection["nodes"])
+    cursor = connection.get("pageInfo", {})
+    query = """query($id:ID!,$after:String){node(id:$id){... on DiscussionComment{
+      replies(first:100,after:$after){pageInfo{hasNextPage endCursor}
+        nodes{id body author{login} createdAt url}}}}}"""
+    while cursor.get("hasNextPage"):
+        data = api("POST", "/graphql", {"query": query,
+                                         "variables": {"id": comment["id"], "after": cursor["endCursor"]}})
+        connection = data["data"]["node"]["replies"]
+        replies.extend(connection["nodes"])
+        cursor = connection["pageInfo"]
+    return replies
+
+
 def read_thread(event: dict, api) -> list[dict]:
     query = """query($number:Int!,$after:String){repository(owner:"NoughtQ",name:"notebook"){
       discussion(number:$number){comments(first:100,after:$after){pageInfo{hasNextPage endCursor}
-        nodes{id body author{login} createdAt replies(first:100){nodes{id body author{login} createdAt}}}}}}}"""
+        nodes{id body author{login} createdAt replies(first:100){pageInfo{hasNextPage endCursor}
+          nodes{id body author{login} createdAt url}}}}}}}"""
     after = None
     comments = []
     while True:
         data = api("POST", "/graphql", {"query": query, "variables": {"number": event["discussion_number"], "after": after}})
         connection = data["data"]["repository"]["discussion"]["comments"]
-        comments.extend(connection["nodes"])
+        for comment in connection["nodes"]:
+            comment["replies"]["nodes"] = _all_replies(comment, api)
+            comments.append(comment)
         if not connection["pageInfo"]["hasNextPage"]:
             break
         after = connection["pageInfo"]["endCursor"]
@@ -95,11 +112,13 @@ def discover_events(api, state: dict, config: dict) -> list[dict]:
         pageInfo{hasNextPage endCursor} nodes{id number body createdAt url author{login}
           category{id} comments(first:100){pageInfo{hasNextPage endCursor}
             nodes{id body createdAt url author{login}
-              replies(first:100){nodes{id body createdAt url author{login}}}}}}}}}}"""
+              replies(first:100){pageInfo{hasNextPage endCursor}
+                nodes{id body createdAt url author{login}}}}}}}}}"""
     more_comments = """query($number:Int!,$after:String){repository(owner:"NoughtQ",name:"notebook"){
       discussion(number:$number){comments(first:100,after:$after){pageInfo{hasNextPage endCursor}
         nodes{id body createdAt url author{login}
-          replies(first:100){nodes{id body createdAt url author{login}}}}}}}}}"""
+          replies(first:100){pageInfo{hasNextPage endCursor}
+            nodes{id body createdAt url author{login}}}}}}}}"""
     found = []
     after = None
     while True:
@@ -124,7 +143,7 @@ def discover_events(api, state: dict, config: dict) -> list[dict]:
                 nodes.extend(next_page["nodes"])
                 cursor = next_page["pageInfo"]
             for comment in nodes:
-                for item in [comment, *comment["replies"]["nodes"]]:
+                for item in [comment, *_all_replies(comment, api)]:
                     payload = {**base, "action": "created", "comment": {
                         "node_id": item["id"], "body": item["body"], "created_at": item["createdAt"],
                         "html_url": item["url"], "user": item["author"]}}
@@ -193,11 +212,13 @@ def _correction_pr(verified: dict, event: dict, api, config: dict) -> int:
     branch = f"bot/fix-{key}"
     marker = f"<!-- notebook-fix:{key} -->"
     prs = api("GET", "/repos/NoughtQ/notebook/pulls?state=all&head=" + quote("NoughtQ:" + branch), None)
+    existing_pr = None
     for pr in prs:
         if pr["user"]["login"].lower() == config["bot_login"].lower() and marker in pr.get("body", ""):
             if pr["state"] != "open":
                 raise ValueError("the previous correction PR was closed")
-            return pr["number"]
+            existing_pr = pr["number"]
+            break
     try:
         api("POST", "/repos/NoughtQ/notebook/git/refs", {"ref": "refs/heads/" + branch,
                                                           "sha": verified["base_sha"]})
@@ -207,6 +228,10 @@ def _correction_pr(verified: dict, event: dict, api, config: dict) -> int:
     grouped = {}
     for edit in edits:
         grouped.setdefault(edit["path"], []).append(edit)
+    comparison = api("GET", f"/repos/NoughtQ/notebook/compare/{verified['base_sha']}...{quote(branch)}", None)
+    if comparison["status"] not in {"identical", "ahead"} or any(
+        item["filename"] not in grouped for item in comparison["files"]):
+        raise ValueError("bot branch contains unapproved changes")
     for path, file_edits in grouped.items():
         main = api("GET", f"/repos/NoughtQ/notebook/contents/{quote(path)}?ref=main", None)
         current = api("GET", f"/repos/NoughtQ/notebook/contents/{quote(path)}?ref={quote(branch)}", None)
@@ -226,6 +251,8 @@ def _correction_pr(verified: dict, event: dict, api, config: dict) -> int:
         api("PUT", f"/repos/NoughtQ/notebook/contents/{quote(path)}", {
             "message": "fix: correct note from discussion", "branch": branch, "sha": current["sha"],
             "content": base64.b64encode(updated.encode()).decode()})
+    if existing_pr:
+        return existing_pr
     body = (f"来源：{event['url']}\n\n原因：{verified['result']['reason']}\n\n"
             f"证据：" + "、".join(source["url"] for source in verified["result"]["sources"]) +
             f"\n\n验证：public build passed; {verified['diff_stats']}\n\n{marker}")
@@ -248,20 +275,26 @@ def publish(verified: dict, reservation: dict, state: dict, api, config: dict) -
     record = state["events"].get(key, {})
     if record.get("status") == "published":
         return state
-    if record.get("reservation_id") != reservation["reservation_id"]:
+    if record.get("status") != "reserved" or record.get("reservation_id") != reservation["reservation_id"]:
         raise ValueError("reservation is no longer current")
     event = _fresh_event(reservation["event"], api)
+    if datetime.fromisoformat(event["created_at"].replace("Z", "+00:00")) < datetime.fromisoformat(config["enabled_at"].replace("Z", "+00:00")):
+        raise ValueError("question predates current start time")
+    if config["mode"] == "mention" and (event["body"].splitlines() or [""])[0].strip() != "/ask":
+        raise ValueError("question no longer qualifies for mention mode")
     if event["body_sha256"] != verified["body_sha256"]:
         raise ValueError("question was edited")
     if api("GET", "/repos/NoughtQ/notebook/git/ref/heads/main", None)["object"]["sha"] != verified["base_sha"]:
         raise ValueError("notes changed since generation")
     thread = read_thread(event, api)
-    if any(item.get("author", {}).get("login", "").lower() == "noughtq" and
+    if event["thread_root_id"] in state.get("paused_threads", []):
+        raise ValueError("owner paused this thread")
+    if any((item.get("author") or {}).get("login", "").lower() == "noughtq" and
            item.get("createdAt", "") > event["created_at"] for item in thread):
         raise ValueError("site owner took over this thread")
     marker = f"<!-- notebook-bot:{key} -->"
     bot = config["bot_login"].lower()
-    existing = next((item for item in thread if item.get("author", {}).get("login", "").lower() == bot
+    existing = next((item for item in thread if (item.get("author") or {}).get("login", "").lower() == bot
                      and marker in item.get("body", "")), None)
     pr_number = record.get("pr_number")
     result = verified["result"]
@@ -269,6 +302,8 @@ def publish(verified: dict, reservation: dict, state: dict, api, config: dict) -
         pr_number = _correction_pr(verified, event, api, config)
     if result["action"] == "skip":
         record["status"] = "skipped"
+        record.pop("verified", None)
+        record.pop("reservation", None)
         return state
     if existing is None:
         sources = "\n".join(f"- [{source['title']}]({source['url']})" for source in result.get("sources", []))
@@ -288,25 +323,20 @@ def publish(verified: dict, reservation: dict, state: dict, api, config: dict) -
     else:
         reply_id = existing["id"]
     record.update({"status": "published", "reply_id": reply_id, "pr_number": pr_number})
+    record.pop("verified", None)
+    record.pop("reservation", None)
     if pr_number:
         record.update({"discussion_id": event["discussion_id"],
                        "discussion_number": event["discussion_number"],
                        "thread_root_id": event["thread_root_id"],
                        "page_path": event["page_path"],
-                       "expected_text": result["edits"][0]["new"]})
+                       "expected_edits": [{"path": edit["path"], "new": edit["new"]}
+                                          for edit in result["edits"]]})
     return state
 
 
 def reconcile(state: dict, api, site_get, config: dict) -> dict:
     """Notify once only after a merged correction is visible on the public site."""
-    class Text(HTMLParser):
-        def __init__(self):
-            super().__init__()
-            self.parts = []
-
-        def handle_data(self, data):
-            self.parts.append(data)
-
     updated = copy.deepcopy(state)
     prs = updated.setdefault("pull_requests", {})
     for key, record in updated.get("events", {}).items():
@@ -324,38 +354,46 @@ def reconcile(state: dict, api, site_get, config: dict) -> dict:
             item["status"] = "review"
             continue
         item["status"] = "pending_deploy"
-        status, marker_text = site_get(config["site_url"].rstrip("/") + "/bot-deploy.json")
-        if status != 200:
-            continue
+        def notify(kind, message):
+            if kind in item.get("notified", []):
+                return
+            reply_to = record["thread_root_id"] if record["thread_root_id"] != record["discussion_id"] else None
+            thread = read_thread({"discussion_number": record["discussion_number"],
+                                  "comment_id": reply_to,
+                                  "thread_root_id": record["thread_root_id"]}, api)
+            marker = f"<!-- notebook-{kind}:{number} -->"
+            existing = next((comment for comment in thread if
+                             (comment.get("author") or {}).get("login", "").lower() == config["bot_login"].lower()
+                             and marker in comment.get("body", "")), None)
+            if existing is None:
+                query = """mutation($discussionId:ID!,$replyToId:ID,$body:String!){
+                  addDiscussionComment(input:{discussionId:$discussionId,replyToId:$replyToId,body:$body}){comment{id}}}"""
+                api("POST", "/graphql", {"query": query, "variables": {
+                    "discussionId": record["discussion_id"], "replyToId": reply_to,
+                    "body": message + "\n\n本回复由笔记助手自动生成。\n" + marker}})
+            item.setdefault("notified", []).append(kind)
+
+        notify("merge", f"纠错 PR #{number} 已合并，正在等待网站部署验证。")
+        live = False
         try:
-            deployed_sha = json.loads(marker_text)["source_sha"]
-        except (ValueError, KeyError, TypeError):
-            continue
-        if api("GET", f"/repos/NoughtQ/notebook/compare/{pr['merge_commit_sha']}...{deployed_sha}", None)["status"] not in {"ahead", "identical"}:
-            continue
-        if not re.fullmatch(r"[A-Za-z0-9_/-]+", record["page_path"]):
-            raise ValueError("invalid page path in state")
-        page_url = config["site_url"].rstrip("/") + "/" + record["page_path"].strip("/") + "/"
-        page_status, html = site_get(page_url)
-        parser = Text()
-        parser.feed(html)
-        visible = " ".join(unescape(" ".join(parser.parts)).split())
-        expected = " ".join(record["expected_text"].split())
-        if page_status != 200 or not expected or expected not in visible:
-            continue
-        event = {"discussion_number": record["discussion_number"], "comment_id": record["thread_root_id"],
-                 "thread_root_id": record["thread_root_id"]}
-        thread = read_thread(event, api)
-        marker = f"<!-- notebook-deploy:{number} -->"
-        existing = next((comment for comment in thread if
-                         comment.get("author", {}).get("login", "").lower() == config["bot_login"].lower()
-                         and marker in comment.get("body", "")), None)
-        if existing is None:
-            query = """mutation($discussionId:ID!,$replyToId:ID,$body:String!){
-              addDiscussionComment(input:{discussionId:$discussionId,replyToId:$replyToId,body:$body}){comment{id}}}"""
-            api("POST", "/graphql", {"query": query, "variables": {
-                "discussionId": record["discussion_id"], "replyToId": event["thread_root_id"],
-                "body": f"这处笔记修正已上线：{page_url}\n\n本回复由笔记助手自动生成。\n{marker}"}})
-        item["status"] = "deployed"
-        item["source_sha"] = deployed_sha
+            status, marker_text = site_get(config["site_url"].rstrip("/") + "/bot-deploy.json")
+            if status == 200:
+                deployed_sha = json.loads(marker_text)["source_sha"]
+                if api("GET", f"/repos/NoughtQ/notebook/compare/{pr['merge_commit_sha']}...{deployed_sha}", None)["status"] in {"ahead", "identical"}:
+                    if not re.fullmatch(r"[A-Za-z0-9_/-]+", record["page_path"]):
+                        raise ValueError("invalid page path in state")
+                    page_url = config["site_url"].rstrip("/") + "/" + record["page_path"].strip("/") + ".html"
+                    page_status, _ = site_get(page_url)
+                    live = page_status == 200 and bool(record.get("expected_edits"))
+                    for edit in record.get("expected_edits", []):
+                        if edit["path"] not in config["public_paths"]:
+                            raise ValueError("deployed edit path is not approved")
+                        source = api("GET", f"/repos/NoughtQ/notebook/contents/{quote(edit['path'])}?ref={deployed_sha}", None)
+                        live &= edit["new"] in base64.b64decode(source["content"]).decode("utf-8")
+        except (OSError, ValueError, KeyError, TypeError):
+            live = False
+        if live:
+            notify("deploy", f"这处笔记修正已上线：{page_url}")
+            item["status"] = "deployed"
+            item["source_sha"] = deployed_sha
     return updated

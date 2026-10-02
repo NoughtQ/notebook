@@ -2,6 +2,11 @@
 
 import json
 import re
+import ipaddress
+import socket
+import ssl
+from http.client import HTTPSConnection
+from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import urlparse
 
@@ -75,6 +80,62 @@ def _completed(response) -> str:
     return response.output_text
 
 
+def _fetch_excerpt(url: str) -> str:
+    """Read a small public HTTPS page without redirects or private-address targets."""
+    parsed = urlparse(url)
+    if parsed.scheme != "https" or not parsed.hostname or parsed.port not in {None, 443}:
+        raise ValueError("external citation is not a public HTTPS page")
+    addresses = {item[4][0] for item in socket.getaddrinfo(parsed.hostname, 443, type=socket.SOCK_STREAM)}
+    if not addresses or any(not ipaddress.ip_address(address).is_global for address in addresses):
+        raise ValueError("external citation resolves to a non-public address")
+
+    class PinnedHTTPSConnection(HTTPSConnection):
+        def connect(self):
+            raw = socket.create_connection((next(iter(addresses)), 443), self.timeout)
+            self.sock = self._context.wrap_socket(raw, server_hostname=self.host)
+
+    connection = PinnedHTTPSConnection(parsed.hostname, timeout=10, context=ssl.create_default_context())
+    try:
+        path = parsed.path or "/"
+        if parsed.query:
+            path += "?" + parsed.query
+        connection.request("GET", path, headers={"Host": parsed.hostname,
+                                                   "User-Agent": "NotebookAssistant/1.0"})
+        response = connection.getresponse()
+        if response.status != 200:
+            raise ValueError("citation did not return HTTP 200")
+        content_type = response.getheader("Content-Type", "").lower()
+        if content_type.split(";", 1)[0] not in {"text/html", "text/plain"}:
+            raise ValueError("citation is not a readable text page")
+        content = response.read(100_001)
+        if len(content) > 100_000:
+            raise ValueError("citation page exceeds fetch limit")
+        charset = re.search(r"charset=([\w-]+)", content_type)
+        text = content.decode(charset.group(1) if charset else "utf-8", errors="replace")
+    finally:
+        connection.close()
+    class PageText(HTMLParser):
+        def __init__(self):
+            super().__init__()
+            self.parts = []
+            self.hidden = 0
+        def handle_starttag(self, tag, attrs):
+            if tag in {"script", "style", "noscript"}:
+                self.hidden += 1
+        def handle_endtag(self, tag):
+            if tag in {"script", "style", "noscript"} and self.hidden:
+                self.hidden -= 1
+        def handle_data(self, data):
+            if not self.hidden:
+                self.parts.append(data)
+    parser = PageText()
+    parser.feed(text)
+    excerpt = " ".join(" ".join(parser.parts).split())[:3000]
+    if len(excerpt) < 100:
+        raise ValueError("citation page has too little readable text")
+    return excerpt
+
+
 def generate(context: dict, config: dict, client) -> dict:
     if len(json.dumps(context, ensure_ascii=False)) > 60000:
         raise ValueError("context exceeds request limit")
@@ -87,7 +148,7 @@ def generate(context: dict, config: dict, client) -> dict:
                                                          "limitations": context.get("limitations", [])}, ensure_ascii=False))
     research_text = _completed(research)
     sources = _sources(research)
-    note_sources = [{"id": f"note-{index + 1}", "url": "https://note.noughtq.top/" + note["path"][5:-3],
+    note_sources = [{"id": f"note-{index + 1}", "url": "https://note.noughtq.top/" + note["path"][5:-3] + ".html",
                      "title": note["path"], "excerpt": note["text"][:700]}
                     for index, note in enumerate(context["notes"])]
     observed = sources + note_sources
@@ -104,19 +165,46 @@ def generate(context: dict, config: dict, client) -> dict:
                                                       "strict": True, "schema": RESULT_SCHEMA}})
     result = json.loads(_completed(answer))
     validate_result(result, context, observed)
+    responses = [research, answer]
     if result["action"] == "correction":
+        try:
+            external = [source for source in result["sources"] if not source["id"].startswith("note-")]
+            if not external:
+                raise ValueError("correction needs an independent source")
+            for source in external[:2]:
+                excerpt = _fetch_excerpt(source["url"])
+                source["excerpt"] = excerpt
+                next(item for item in observed if item["id"] == source["id"])["excerpt"] = excerpt
+        except (OSError, ValueError) as exc:
+            result["action"] = "clarify"
+            result["edits"] = []
+            result["answer_md"] = "这处可能需要修正，但参考来源原文未能独立读取，暂不提交 PR。"
+            result["_meta"] = _usage(responses)
+            return result
+        verification_input = json.dumps({"result": result, "notes": context["notes"], "sources": observed}, ensure_ascii=False)
+        if len(verification_input) > 60000:
+            raise ValueError("verification context exceeds request limit")
         verification = client.responses.create(model=model, store=False, max_output_tokens=4096,
                                                instructions="独立核验纠错：比较笔记原文、题目假设和来源摘录。只输出 JSON：verification 为 pass/reject/uncertain，reason 为简短理由。证据不足选 uncertain。",
-                                               input=json.dumps({"result": result, "notes": context["notes"], "sources": observed}, ensure_ascii=False),
+                                               input=verification_input,
                                                text={"format": {"type": "json_schema", "name": "note_verification",
                                                                 "strict": True, "schema": {"type": "object", "additionalProperties": False,
                                                                                            "properties": {"verification": {"type": "string", "enum": ["pass", "reject", "uncertain"]},
                                                                                                           "reason": {"type": "string"}},
                                                                                            "required": ["verification", "reason"]}}})
         verdict = json.loads(_completed(verification))
+        responses.append(verification)
         result["verification"] = verdict["verification"]
         if verdict["verification"] != "pass":
             result["action"] = "clarify"
             result["edits"] = []
             result["answer_md"] = "这处可能需要修正，但目前证据不足以确认。" + verdict["reason"]
+    result["_meta"] = _usage(responses)
     return result
+
+
+def _usage(responses: list) -> dict:
+    return {"input_tokens": sum(getattr(getattr(response, "usage", None), "input_tokens", 0) or 0 for response in responses),
+            "output_tokens": sum(getattr(getattr(response, "usage", None), "output_tokens", 0) or 0 for response in responses),
+            "search_calls": sum(getattr(item, "type", "") == "web_search_call" for response in responses for item in response.output),
+            "response_calls": len(responses)}

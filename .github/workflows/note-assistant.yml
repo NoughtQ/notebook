@@ -91,7 +91,7 @@ jobs:
           retention-days: 7
 
   verify:
-    needs: generate
+    needs: [prepare, generate]
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -114,7 +114,7 @@ jobs:
           retention-days: 7
 
   publish:
-    needs: verify
+    needs: [prepare, verify]
     if: vars.NOTE_BOT_MODE == 'auto' || vars.NOTE_BOT_MODE == 'mention'
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -144,7 +144,8 @@ jobs:
         run: python -m notebook_bot.run publish --input verified.json --output published.json --publish
 
   reconcile:
-    if: vars.NOTE_BOT_MODE == 'auto' || vars.NOTE_BOT_MODE == 'mention'
+    needs: [prepare, publish]
+    if: always() && (vars.NOTE_BOT_MODE == 'auto' || vars.NOTE_BOT_MODE == 'mention')
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
