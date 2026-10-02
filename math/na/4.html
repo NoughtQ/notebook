@@ -1,0 +1,1656 @@
+<!DOCTYPE html>
+<html class="no-js" lang="zh"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="NoughtQ的笔记本，主要记录一些 CS 相关的笔记" name="description"/>
+<meta content="NoughtQ" name="author"/>
+<link href="https://notebook.noughtq.top/math/na/4.html" rel="canonical"/>
+<link href="3.html" rel="prev"/>
+<link href="5.html" rel="next"/>
+<link href="../../feed_rss_created.xml" rel="alternate" title="RSS 订阅" type="application/rss+xml"/>
+<link href="../../feed_rss_updated.xml" rel="alternate" title="已更新内容的 RSS 订阅" type="application/rss+xml"/>
+<link href="../../assets/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.1" name="generator"/>
+<title>Chap 4: Numerical Differentiation and Integration - NoughtQ的笔记本</title>
+<link href="../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=JetBrains+Mono,+LXGW+WenKai+Screen+GB+Screen:300,300i,400,400i,700,700i%7CJetBrains+Mono,+Consolas:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"JetBrains Mono, LXGW WenKai Screen GB Screen";--md-code-font:"JetBrains Mono, Consolas"}</style>
+<link href="../../css/heti.css" rel="stylesheet"/>
+<link href="../../css/timeline.css" rel="stylesheet"/>
+<link href="../../css/card.css" rel="stylesheet"/>
+<link href="../../css/custom.css" rel="stylesheet"/>
+<link href="../../css/extra_changelog.css" rel="stylesheet"/>
+<link href="../../css/header.css" rel="stylesheet"/>
+<link href="../../css/sidebar.css" rel="stylesheet"/>
+<link href="../../css/settings.css" rel="stylesheet"/>
+<link href="../../css/neoteroi-css.css" rel="stylesheet"/>
+<link href="../../css/toc_extra.css" rel="stylesheet"/>
+<link href="https://unpkg.com/katex@0/dist/katex.min.css" rel="stylesheet"/>
+<link href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css" rel="stylesheet"/>
+<link href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.css" rel="stylesheet"/>
+<script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-43NH8CVRCJ"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-43NH8CVRCJ",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-43NH8CVRCJ",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+<script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+<link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+<body data-md-color-accent="indigo" data-md-color-primary="indigo" data-md-color-scheme="slate" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#chap-4-numerical-differentiation-and-integration">
+          跳转至
+        </a>
+</div>
+<div data-md-component="announce">
+<aside class="md-banner">
+<div class="md-banner__inner md-grid md-typeset">
+<button aria-label="不再显示此消息" class="md-banner__button md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+<!-- Add announcement here, including arbitrary HTML -->
+    游戏开发相关的笔记（包括计算机图形学、游戏引擎等）迁移至我的<a href="https://game.noughtq.top" target="_blank">全新笔记网站</a>，欢迎大家前来阅读🎉
+
+          </div>
+<script>var el=document.querySelector("[data-md-component=announce]");if(el){var content=el.querySelector(".md-typeset");__md_hash(content.innerHTML)===__md_get("__announce")&&(el.hidden=!0)}</script>
+</aside>
+</div>
+<header class="md-header" data-md-component="header">
+<nav aria-label="页眉" class="md-header__inner md-grid">
+<a aria-label="NoughtQ的笔记本" class="md-header__button md-logo" data-md-component="logo" href="../.." title="NoughtQ的笔记本">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.05 9H7.06V6h1.99V4.03H7.06v-1c0-1.11.89-1.99 1.99-1.99h5.98V8l2.47-1.5L20 8V1.04h1c1.05 0 2 .96 2 1.99V17c0 1.03-.95 2-2 2H9.05c-1.05 0-1.99-.95-1.99-2v-1h1.99v-2H7.06v-3h1.99zM1 18h2v-3H1v-2h2v-3H1V8h2V5h2v3H3v2h2v3H3v2h2v3H3v2h2v1h16v2H5a2 2 0 0 1-2-2v-1H1z"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            NoughtQ的笔记本
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              Chap 4: Numerical Differentiation and Integration
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="Dark Mode" class="md-option" data-md-color-accent="indigo" data-md-color-media="(prefer-color-scheme: dark)" data-md-color-primary="indigo" data-md-color-scheme="slate" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="Dark Mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"></path></svg>
+</label>
+<input aria-label="Light Mode" class="md-option" data-md-color-accent="indigo" data-md-color-media="(prefer-color-scheme: light)" data-md-color-primary="indigo" data-md-color-scheme="default" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="Light Mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="搜索" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="搜索" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 256 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path></svg>
+</label>
+<nav aria-label="查找" class="md-search__options">
+<a aria-label="分享" class="md-search__icon md-icon" data-clipboard="" data-clipboard-text="" data-md-component="search-share" href="javascript:void(0)" tabindex="-1" title="分享">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"></path></svg>
+</a>
+<button aria-label="清空当前内容" class="md-search__icon md-icon" tabindex="-1" title="清空当前内容" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header__source">
+<a class="md-source" data-md-component="source" href="https://github.com/noughtq/notebook" title="前往仓库">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    NoughtQ/Notebook
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<nav aria-label="标签" class="md-tabs" data-md-component="tabs">
+<div class="md-grid">
+<ul class="md-tabs__list">
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../index.html">
+          
+  
+  
+    
+  
+  🏫主页
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../lang/index.html">
+          
+  
+  
+    
+  
+  🔡编程语言
+
+        </a>
+</li>
+<li class="md-tabs__item md-tabs__item--active">
+<a class="md-tabs__link" href="../index.html">
+          
+  
+  
+    
+  
+  📊数学相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../algo/index.html">
+          
+  
+  
+    
+  
+  🧮算法相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../software/index.html">
+          
+  
+  
+    
+  
+  💾软件相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../sys/index.html">
+          
+  
+  
+    
+  
+  💻系统相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../web/index.html">
+          
+  
+  
+    
+  
+  🌏Web相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../ai/index.html">
+          
+  
+  
+    
+  
+  🤖人工智能
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../misc/index.html">
+          
+  
+  
+    
+  
+  🗃️杂项
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../tools/index.html">
+          
+  
+  
+    
+  
+  🛠️工具
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../papers/index.html">
+          
+  
+  
+    
+  
+  📑论文阅读
+
+        </a>
+</li>
+</ul>
+</div>
+</nav>
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="导航栏" class="md-nav md-nav--primary md-nav--lifted" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="NoughtQ的笔记本" class="md-nav__button md-logo" data-md-component="logo" href="../.." title="NoughtQ的笔记本">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.05 9H7.06V6h1.99V4.03H7.06v-1c0-1.11.89-1.99 1.99-1.99h5.98V8l2.47-1.5L20 8V1.04h1c1.05 0 2 .96 2 1.99V17c0 1.03-.95 2-2 2H9.05c-1.05 0-1.99-.95-1.99-2v-1h1.99v-2H7.06v-3h1.99zM1 18h2v-3H1v-2h2v-3H1V8h2V5h2v3H3v2h2v3H3v2h2v3H3v2h2v1h16v2H5a2 2 0 0 1-2-2v-1H1z"></path></svg>
+</a>
+    NoughtQ的笔记本
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-component="source" href="https://github.com/noughtq/notebook" title="前往仓库">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    NoughtQ/Notebook
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../index.html">
+<span class="md-ellipsis">
+    
+  
+    🏫主页
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../lang/index.html">
+<span class="md-ellipsis">
+    
+  
+    🔡编程语言
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_3" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../index.html">
+<span class="md-ellipsis">
+    
+  
+    📊数学相关
+  
+
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="true" aria-labelledby="__nav_3_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_3">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    📊数学相关
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../calculus/index.html">
+<span class="md-ellipsis">
+    
+  
+    微积分（甲）
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../linear-algebra.html">
+<span class="md-ellipsis">
+    
+  
+    线性代数（甲）
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../dm/index.html">
+<span class="md-ellipsis">
+    
+  
+    离散数学及其应用
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../pro-sta/index.html">
+<span class="md-ellipsis">
+    
+  
+    概率论与数理统计
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_3_6" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="index.html">
+<span class="md-ellipsis">
+    
+  
+    数值分析
+  
+
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_3_6" id="__nav_3_6_label" tabindex="0">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="true" aria-labelledby="__nav_3_6_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_6">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    数值分析
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="1.html">
+<span class="md-ellipsis">
+    
+  
+    Chap 1: Mathematical Premiminaries
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="2.html">
+<span class="md-ellipsis">
+    
+  
+    Chap 2: Solutions of Equations in One Variable
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="3.html">
+<span class="md-ellipsis">
+    
+  
+    Chap 3: Interpolation and Polynomial Approximation
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    
+  
+    Chap 4: Numerical Differentiation and Integration
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="4.html">
+<span class="md-ellipsis">
+    
+  
+    Chap 4: Numerical Differentiation and Integration
+  
+
+    
+  </span>
+</a>
+<nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#numerical-differentiation">
+<span class="md-ellipsis">
+      
+        Numerical Differentiation
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#elements-of-numerical-integration">
+<span class="md-ellipsis">
+      
+        Elements of Numerical Integration
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compotsite-numerical-integration">
+<span class="md-ellipsis">
+      
+        Compotsite Numerical Integration
+      
+    </span>
+</a>
+<nav aria-label="Compotsite Numerical Integration" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#composite-trapezoidal-rule">
+<span class="md-ellipsis">
+      
+        Composite Trapezoidal Rule
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#composite-simpsons-rule">
+<span class="md-ellipsis">
+      
+        Composite Simpson's Rule
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#romberg-integration">
+<span class="md-ellipsis">
+      
+        Romberg Integration
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#richardsons-extrapolation">
+<span class="md-ellipsis">
+      
+        Richardson's Extrapolation
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#adaptive-quadrature-methods">
+<span class="md-ellipsis">
+      
+        Adaptive Quadrature Methods
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#gaussian-quadrature">
+<span class="md-ellipsis">
+      
+        Gaussian Quadrature
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="5.html">
+<span class="md-ellipsis">
+    
+  
+    Chap 5: Initial-Value Problems for Ordinary Differential Equations
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="6.html">
+<span class="md-ellipsis">
+    
+  
+    Chap 6: Direct Methods for Solving Linear Systems
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="7.html">
+<span class="md-ellipsis">
+    
+  
+    Chap 7: Iterative Techniques in Matrix Algebra
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="8.html">
+<span class="md-ellipsis">
+    
+  
+    Chap 8: Approximation Theory
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="9.html">
+<span class="md-ellipsis">
+    
+  
+    Chap 9: Approximating Eigenvalues
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="hw.html">
+<span class="md-ellipsis">
+    
+  
+    Homework
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="quizzes.html">
+<span class="md-ellipsis">
+    
+  
+    Quizzes
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../toc/index.html">
+<span class="md-ellipsis">
+    
+  
+    计算理论
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../algo/index.html">
+<span class="md-ellipsis">
+    
+  
+    🧮算法相关
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../software/index.html">
+<span class="md-ellipsis">
+    
+  
+    💾软件相关
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../sys/index.html">
+<span class="md-ellipsis">
+    
+  
+    💻系统相关
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../web/index.html">
+<span class="md-ellipsis">
+    
+  
+    🌏Web相关
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ai/index.html">
+<span class="md-ellipsis">
+    
+  
+    🤖人工智能
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../misc/index.html">
+<span class="md-ellipsis">
+    
+  
+    🗃️杂项
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../tools/index.html">
+<span class="md-ellipsis">
+    
+  
+    🛠️工具
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../papers/index.html">
+<span class="md-ellipsis">
+    
+  
+    📑论文阅读
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#numerical-differentiation">
+<span class="md-ellipsis">
+      
+        Numerical Differentiation
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#elements-of-numerical-integration">
+<span class="md-ellipsis">
+      
+        Elements of Numerical Integration
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compotsite-numerical-integration">
+<span class="md-ellipsis">
+      
+        Compotsite Numerical Integration
+      
+    </span>
+</a>
+<nav aria-label="Compotsite Numerical Integration" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#composite-trapezoidal-rule">
+<span class="md-ellipsis">
+      
+        Composite Trapezoidal Rule
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#composite-simpsons-rule">
+<span class="md-ellipsis">
+      
+        Composite Simpson's Rule
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#romberg-integration">
+<span class="md-ellipsis">
+      
+        Romberg Integration
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#richardsons-extrapolation">
+<span class="md-ellipsis">
+      
+        Richardson's Extrapolation
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#adaptive-quadrature-methods">
+<span class="md-ellipsis">
+      
+        Adaptive Quadrature Methods
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#gaussian-quadrature">
+<span class="md-ellipsis">
+      
+        Gaussian Quadrature
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<nav aria-label="导航栏" class="md-path">
+<ol class="md-path__list">
+<li class="md-path__item">
+<a class="md-path__link" href="../index.html">
+<span class="md-ellipsis">
+    📊数学相关
+  </span>
+</a>
+</li>
+<li class="md-path__item">
+<a class="md-path__link" href="index.html">
+<span class="md-ellipsis">
+    数值分析
+  </span>
+</a>
+</li>
+</ol>
+</nav>
+<article class="md-content__inner md-typeset">
+<a class="md-content__button md-icon" href="https://github.com/noughtq/notebook/edit/master/docs/math/na/4.md" rel="edit" title="编辑此页">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"></path></svg>
+</a>
+<a class="md-content__button md-icon" href="https://github.com/noughtq/notebook/raw/master/docs/math/na/4.md" title="查看本页的源代码">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"></path></svg>
+</a>
+<h1 id="chap-4-numerical-differentiation-and-integration">Chap 4: Numerical Differentiation and Integration<a class="headerlink" href="#chap-4-numerical-differentiation-and-integration" title="Permanent link">⚓︎</a></h1>
+<div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>3505<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 576 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M360.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6m64.6 136.1c-12.5 12.5-12.5 32.8 0 45.3l73.4 73.4-73.4 73.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l96-96c12.5-12.5 12.5-32.8 0-45.3l-96-96c-12.5-12.5-32.8-12.5-45.3 0zm-274.7 0c-12.5-12.5-32.8-12.5-45.3 0l-96 96c-12.5 12.5-12.5 32.8 0 45.3l96 96c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l73.3-73.4c12.5-12.5 12.5-32.8 0-45.3z"></path></svg></span> <span>13<span class="heti-spacing"> </span></span>行代码 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>18<span class="heti-spacing"> </span></span>分钟</p>
+</div>
+<details class="abstract">
+<summary>核心知识</summary>
+<ul>
+<li>数值微分</li>
+<li>数值积分<ul>
+<li>牛顿<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>科茨公式<ul>
+<li>梯形法则</li>
+<li>辛普森法则</li>
+</ul>
+</li>
+<li>复合数值积分<ul>
+<li>复合梯形法则</li>
+<li>复合辛普森法则</li>
+</ul>
+</li>
+<li><span>Romberg<span class="heti-spacing"> </span></span>积分</li>
+<li><span>Richardson<span class="heti-spacing"> </span></span>外推</li>
+<li>自适应求积方法</li>
+<li>高斯求积</li>
+</ul>
+</li>
+</ul>
+</details>
+<h2 id="numerical-differentiation">Numerical Differentiation<a class="headerlink" href="#numerical-differentiation" title="Permanent link">⚓︎</a></h2>
+<p>目标：对于给定的<span><span class="heti-spacing"> </span><span class="arithmatex">\(x_0\)</span></span>，近似计算<span><span class="heti-spacing"> </span><span class="arithmatex">\(f'(x_0)\)</span></span>（即<strong>数值微分</strong>(numerical differentiation)）</p>
+<p>微分计算公式：<span class="arithmatex">\(f'(x_0) = \lim\limits_{h \rightarrow 0} \dfrac{f(x_0 + h) - f(x_0)}{h}\)</span></p>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C4/2.png"><img align="right" alt="" src="images/C4/2.png" width="25%"/></a>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C4/1.png"><img align="right" alt="" src="images/C4/1.png" width="25%"/></a></p>
+<ul>
+<li>前向：<span class="arithmatex">\(f'(x_0) \approx \dfrac{f(x_0 + h) - f(x_0)}{h}\)</span></li>
+<li>后向：<span class="arithmatex">\(f'(x_0) \approx \dfrac{f(x_0) - f(x_0 - h)}{h}\)</span></li>
+</ul>
+<p><br/>
+<br/>
+<br/></p>
+<p>现在我们用<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f(x)\)</span><span class="heti-spacing"> </span></span>的带有插值点<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x_0, x_0 + h\)</span><span class="heti-spacing"> </span></span>的拉格朗日多项式来近似表示<span><span class="heti-spacing"> </span><span class="arithmatex">\(f(x)\)</span></span>：</p>
+<div class="arithmatex">\[
+\begin{align}
+f(x) &amp; = \dfrac{f(x_0)(x - x_0 - h)}{x_0 - x_0 - h} + \dfrac{f(x_0 + h)(x - x_0)}{x_0 + h - x_0} \notag \\
+&amp; + \dfrac{(x - x_0)(x - x_0 - h)}{2} f''(\xi_x) \notag \\
+f'(x) &amp; = \dfrac{f(x_0 + h) - f(x_0)}{h} + \dfrac{2(x - x_0) - h}{2} f''(\xi_x) \notag \\
+&amp; + \dfrac{(x - x_0)(x - x_0 - h)}{2} \cdot \dfrac{d}{dx} [f''(\xi_x)] \notag
+\end{align}
+\]</div>
+<p>因此<span><span class="heti-spacing"> </span><span class="arithmatex">\(f'(x_0) = \dfrac{f(x_0 + h) - f(x_0)}{h} - \dfrac{h}{2}f''(\xi)\)</span></span></p>
+<hr/>
+<p>接下来用插值点为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\{x_0, x_1, \dots, x_n\}\)</span><span class="heti-spacing"> </span></span>的拉格朗日多项式来近似表示<span><span class="heti-spacing"> </span><span class="arithmatex">\(f(x)\)</span></span></p>
+<div class="arithmatex">\[
+\begin{align}
+f(x) &amp; = \sum\limits_{k=0}^n f(x_k) L_k(x) + \dfrac{(x - x_0) \dots (x - x_n)}{(n+1)!} f^{(n+1)}(\xi_x) \notag \\
+f'(x_j) &amp; = \sum\limits_{k=0}^n f(x_k)L_k'(x_j) + \dfrac{f^{(n+1)}(\xi_j)}{(n+1)!} \prod\limits_{\substack{k = 0 \\ k \ne j}}^n (x_j - x_k) \notag
+\end{align}
+\]</div>
+<p>上述导数公式被称为近似<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f'(x_j)\)</span><span class="heti-spacing"> </span></span>的 <strong><span>n+1<span class="heti-spacing"> </span></span>点公式</strong>((n+1)-point formula)。</p>
+<div class="admonition note">
+<p class="admonition-title">注</p>
+<ul>
+<li>一般来说，更多的评估点（即这里的插值点）会带来更大的近似精度</li>
+<li>但另一方面，随着评估点的增加，舍入误差也在变大，因此数值微分是<strong>不稳定的</strong>！</li>
+</ul>
+</div>
+<details class="example">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="" id="__tabbed_1_1" name="__tabbed_1" type="radio"/><input id="__tabbed_1_2" name="__tabbed_1" type="radio"/><div class="tabbed-labels"><label for="__tabbed_1_1">例<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span></label><label for="__tabbed_1_2">例<span><span class="heti-spacing"> </span>2</span></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="" id="__tabbed_2_1" name="__tabbed_2" type="radio"/><input id="__tabbed_2_2" name="__tabbed_2" type="radio"/><div class="tabbed-labels"><label for="__tabbed_2_1">题目</label><label for="__tabbed_2_2">解答</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>给定三个点<span><span class="heti-spacing"> </span><span class="arithmatex">\(x_0, x_0 + h, x_0 + 2h\)</span></span>，请推到关于它们的三点公式，然后选出对于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f'(x)\)</span><span class="heti-spacing"> </span></span>而言最佳的三点公式。</p>
+</div>
+<div class="tabbed-block">
+<p>根据前面的<span class="heti-skip"><span class="heti-spacing"> </span>n+1<span class="heti-spacing"> </span></span>点公式，不难得到：</p>
+<div class="arithmatex">\[
+\begin{align}
+f'(x_j) = &amp; f(x_0) \Big[ \dfrac{2x_j - x_1 - x_2}{(x_0 - x_1)(x_0 - x_2)} \Big] + f(x_1) \Big[ \dfrac{2x_j - x_0 - x_2}{(x_1 - x_0)(x_1 - x_2)} \Big] \notag \\
+&amp; + f(x_2) \Big[ \dfrac{2x_j - x_0 - x_1}{(x_2 - x_0)(x_2 - x_1)} \Big] + \dfrac{1}{6}f^{(3)}(\xi_j) \prod_{\substack{k = 0 \\ k \ne j}}^2(x_j - x_k)\ (j = 0, 1, 2) \notag
+\end{align}
+\]</div>
+<p>将<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x_0, x_1 = x_0 + h, x_2 = x_0 + 2h\)</span><span class="heti-spacing"> </span></span>代入上述公式，得到以下公式：</p>
+<div class="arithmatex">\[
+\begin{align}
+f'(x_0) &amp; = \dfrac{1}{h}\Big[-\dfrac{3}{2} f(x_0) + 2f(x_0 + h) - \dfrac{1}{2}f(x_0 + 2h) \Big] + \dfrac{h^2}{3} f^{(3)}(\xi_0) \notag \\
+f'(x_0 + h) &amp; = \dfrac{1}{h} \Big[ -\dfrac{1}{2} f(x_0) + \dfrac{1}{2} f(x_0 + 2h) \Big] - \dfrac{h^2}{6} f^{(3)}(\xi_1) \notag \\
+f'(x_0 + 2h) &amp; = \dfrac{1}{h} \Big[ \dfrac{1}{2} f(x_0) - 2f(x_0 + h) + \dfrac{3}{2} f(x_0 + 2h) \Big] + \dfrac{h^2}{3} f^{(3)}(\xi_2) \notag
+\end{align}
+\]</div>
+<p>方便起见，对于后两个公式，我们用<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x_0\)</span><span class="heti-spacing"> </span></span>替代原来的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x_0 + h\)</span><span class="heti-spacing"> </span></span>和<span><span class="heti-spacing"> </span><span class="arithmatex">\(x_0 + 2h\)</span></span>，得到：</p>
+<div class="arithmatex">\[
+\begin{align}
+f'(x_0) &amp; = \dfrac{1}{h}\Big[-\dfrac{3}{2} f(x_0) + 2f(x_0 + h) - \dfrac{1}{2}f(x_0 + 2h) \Big] + \dfrac{h^2}{3} f^{(3)}(\xi_0) \notag \\
+f'(x_0) &amp; = \dfrac{1}{h} \Big[ -\dfrac{1}{2} f(x_0 - h) + \dfrac{1}{2} f(x_0 + h) \Big] - \dfrac{h^2}{6} f^{(3)}(\xi_1) \notag \\
+f'(x_0) &amp; = \dfrac{1}{h} \Big[ \dfrac{1}{2} f(x_0 - 2h) - 2f(x_0 - h) + \dfrac{3}{2} f(x_0) \Big] + \dfrac{h^2}{3} f^{(3)}(\xi_2) \notag
+\end{align}
+\]</div>
+<p>观察发现第<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>个和第<span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span>个式子唯一的区别仅在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(h\)</span><span class="heti-spacing"> </span></span>和<span><span class="heti-spacing"> </span><span class="arithmatex">\(-h\)</span></span>，所以实际上只剩下<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>个式子，它们就是我们要找的三点公式：</p>
+<div class="arithmatex">\[
+\begin{align}
+f'(x_0) &amp; = \dfrac{1}{h}\Big[-\dfrac{3}{2} f(x_0) + 2f(x_0 + h) - \dfrac{1}{2}f(x_0 + 2h) \Big] + \dfrac{h^2}{3} f^{(3)}(\xi_0)\ \xi_0 \in [x_0, x_0 + 2h] \notag \\
+f'(x_0) &amp; = \dfrac{1}{h} \Big[ -\dfrac{1}{2} f(x_0 - h) + \dfrac{1}{2} f(x_0 + h) \Big] - \dfrac{h^2}{6} f^{(3)}(\xi_1)\ xi_1 \in [x_0 - h, x_0 + h] \notag
+\end{align}
+\]</div>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C4/3.png"><img src="images/C4/3.png" width="30%/"/></a>
+</div><p></p>
+</div>
+</div>
+</div>
+</div>
+<div class="tabbed-block">
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="" id="__tabbed_3_1" name="__tabbed_3" type="radio"/><input id="__tabbed_3_2" name="__tabbed_3" type="radio"/><div class="tabbed-labels"><label for="__tabbed_3_1">题目</label><label for="__tabbed_3_2">解答</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>寻找近似计算<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f''(x_0)\)</span><span class="heti-spacing"> </span></span>的方式。</p>
+</div>
+<div class="tabbed-block">
+<p>考虑在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x_0\)</span><span class="heti-spacing"> </span></span>处的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f(x_0 + h), f(x_0 - h)\)</span><span class="heti-spacing"> </span></span>的泰勒展开式：</p>
+<div class="arithmatex">\[
+\begin{align}
+f(x_0 + h) &amp; = f(x_0) + f'(x_0) h + \dfrac{1}{2}f''(x_0)h^2 + \dfrac{1}{6} f'''(x_0) h^3 + \dfrac{1}{24} f^{(4)} (\xi_1) h^4 \notag \\
+f(x_0 - h) &amp; = f(x_0) - f'(x_0) h + \dfrac{1}{2}f''(x_0)h^2 - \dfrac{1}{6} f'''(x_0) h^3 + \dfrac{1}{24} f^{(4)} (\xi_{-1}) h^4 \notag
+\end{align}
+\]</div>
+<p>因此：<span class="arithmatex">\(f''(x_0) = \dfrac{1}{h^2} [f(x_0 - h) - 2f(x_0) + f(x_0 + h)] - \dfrac{h^2}{12} f^{(4)} (\xi)\)</span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</details>
+<h2 id="elements-of-numerical-integration">Elements of Numerical Integration<a class="headerlink" href="#elements-of-numerical-integration" title="Permanent link">⚓︎</a></h2>
+<p>目标：近似计算<span><span class="heti-spacing"> </span><span class="arithmatex">\(I = \int_a^b f(x) dx\)</span></span>（即<strong>数值求积</strong>(numerical quadrature)）</p>
+<p>思路：使用<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f(x)\)</span><span class="heti-spacing"> </span></span>的<strong>拉格朗日插值多项式</strong>——从区间<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\([a, b]\)</span><span class="heti-spacing"> </span></span>上选择一组不同的点<span><span class="heti-spacing"> </span><span class="arithmatex">\(a \le x_0 &lt; x_1 \dots &lt; x_n \le b\)</span></span>。拉格朗日多项式为<span><span class="heti-spacing"> </span><span class="arithmatex">\(P_n(x) = \sum\limits_{k=0}^n f(x_k) L_k(x)\)</span></span>，因此：</p>
+<div class="arithmatex">\[
+\int_a^b f(x) dx \approx \sum\limits_{k=0}^n f(x_k) \int_a^b L_k(x) dx
+\]</div>
+<p>令<span><span class="heti-spacing"> </span><span class="arithmatex">\(A_k = \int_a^b L_k(x) dx = \int_a^b \prod\limits_{j \ne k} \dfrac{x - x_j}{x_k - x_j} dx\)</span></span></p>
+<p>误差<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(R[f]\)</span><span class="heti-spacing"> </span></span>为：</p>
+<div class="arithmatex">\[
+\begin{align}
+&amp; R[f] \notag \\
+= &amp; \int_a^b f(x) dx - \sum\limits_{k=0}^n A_kf(x_k) \notag \\
+= &amp; \int_a^b [f(x) - P_n(x)] dx = \int_a^b R_n(x) dx \notag \\
+= &amp; \int_a^b \dfrac{f^{(n+1)}(\xi_x)}{(n+1)!} \prod\limits_{k=0}^n(x - x_k)dx \notag
+\end{align}
+\]</div>
+<div class="admonition definition">
+<p class="admonition-title">定义</p>
+<p>求积公式的<strong>精度</strong><span>(degree of accuracy/precision)<span class="heti-spacing"> </span></span>为最大的正整数<span><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span></span>，使得公式对于每个<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x^k(k = 0, 1, \dots, n)\)</span><span class="heti-spacing"> </span></span>都是精确的。</p>
+</div>
+<details class="example">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="" id="__tabbed_4_1" name="__tabbed_4" type="radio"/><input id="__tabbed_4_2" name="__tabbed_4" type="radio"/><div class="tabbed-labels"><label for="__tabbed_4_1">题目</label><label for="__tabbed_4_2">解答</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>考虑在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\([a, b]\)</span><span class="heti-spacing"> </span></span>上的线性插值，我们有<span><span class="heti-spacing"> </span><span class="arithmatex">\(P_1(x) = \dfrac{x - b}{a - b}f(a) + \dfrac{x - a}{b - a}f(b)\)</span></span>。可以得到：</p>
+<ul>
+<li><span class="arithmatex">\(A_1 = A_2 = \dfrac{b - a}{2}\)</span></li>
+<li><span class="arithmatex">\(\int_a^b f(x) dx \approx \dfrac{b - a}{2}[f(a) + f(b)]\)</span></li>
+</ul>
+<p>请计算上述公式的精度。</p>
+</div>
+<div class="tabbed-block">
+<p>考虑<span><span class="heti-spacing"> </span><span class="arithmatex">\(x^k(k = 0, 1, \dots)\)</span></span>：</p>
+<ul>
+<li><span class="arithmatex">\(x^0\)</span>：<span class="arithmatex">\(\int_a^b 1dx = b - a = \dfrac{b - a}{2}[1 + 1]\)</span></li>
+<li><span class="arithmatex">\(x^1\)</span>：<span class="arithmatex">\(\int_a^b xdx = \dfrac{b^2 - a^2}{2} = \dfrac{b - a}{2}[a + b]\)</span></li>
+<li><span class="arithmatex">\(x^2\)</span>：<span class="arithmatex">\(\int_a^b x^2dx = \dfrac{b^3 - a^3}{3} \ne \dfrac{b - a}{2}[a^2 + b^2]\)</span></li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C4/4.png"><img src="images/C4/4.png" width="40%/"/></a>
+</div><p></p>
+<p>因此精度阶数<span><span class="heti-spacing"> </span>= 1</span></p>
+</div>
+</div>
+</div>
+</details>
+<hr/>
+<p>对于等间距的节点<span><span class="heti-spacing"> </span><span class="arithmatex">\(x_i = a + ih, h = \dfrac{b - a}{n}, i = 0, 1, \dots, n\)</span></span></p>
+<div class="arithmatex">\[
+\begin{align}
+A_i &amp; = \int_{x_0}^{x_n} \prod\limits_{j \ne i} \dfrac{x - x_j}{x_i - x_j} dx \notag \\
+&amp; = \int_0^n \prod\limits_{i \ne j} \dfrac{(t - j)h}{(i - j)h} \times h dt = \dfrac{(b - a)\textcolor{green}{(-1)^{n-i}}}{\textcolor{green}{ni!(n - i)!}} \textcolor{green}{\int_0^n \prod\limits_{i \ne j} (t - j) dt} \notag 
+\end{align}
+\]</div>
+<p>其中标绿色的部分（<span class="arithmatex">\(\dfrac{(-1)^{n-i}}{ni!(n - i)!} \int_0^n \prod\limits_{i \ne j} (t - j) dt\)</span>）被称为<strong>科茨系数</strong>(Cotes coefficient)，记作<span><span class="heti-spacing"> </span><span class="arithmatex">\(C_i^{(n)}\)</span></span></p>
+<div class="admonition note">
+<p class="admonition-title">注</p>
+<p>可以看到，科茨系数不取决于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f(x)\)</span><span class="heti-spacing"> </span></span>或<span><span class="heti-spacing"> </span><span class="arithmatex">\([a, b]\)</span></span>，而仅由<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n, i\)</span><span class="heti-spacing"> </span></span>决定。因此我们可以从一张表中找出这些系数。上述公式称为<strong>牛顿<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>科茨公式</strong>(Newton-Cotes formula)</p>
+</div>
+<ul>
+<li><span class="arithmatex">\(n = 1\)</span><ul>
+<li><span class="arithmatex">\(C_0^{(1)} = C_1^{(1)} = \dfrac{1}{2}\)</span></li>
+<li><span class="arithmatex">\(\int_a^b f(x) dx \approx \dfrac{b - a}{2}[f(a) + f(b)]\)</span>（称为<strong>梯形法则</strong>(trapezoidal rule)）</li>
+<li><span class="arithmatex">\(R[f] = \int_a^b \dfrac{f''(\xi_x)}{2!}(x-a)(x-b) dx = -\dfrac{1}{12}h^3f''(\xi)\)</span></li>
+<li><span class="arithmatex">\(\xi \in [a, b], h = \dfrac{b - a}{1}\)</span></li>
+<li>精度<span><span class="heti-spacing"> </span>= 1</span></li>
+</ul>
+</li>
+<li><span class="arithmatex">\(n = 2\)</span><ul>
+<li><span class="arithmatex">\(C_0^{(2)} = \dfrac{1}{6}, C_1^{(2)} = \dfrac{2}{3}, C_2^{(2)} = \dfrac{1}{6}\)</span></li>
+<li><span class="arithmatex">\(\int_a^b f(x) dx \approx \dfrac{b - a}{6}[f(a) + 4f(\dfrac{a+b}{2}) + f(b)]\)</span>（称为<strong>辛普森法则</strong>(Simpson's rule)）</li>
+<li><span class="arithmatex">\(R[f] = -\dfrac{1}{90} h^5 f^{(4)}(\xi)\)</span></li>
+<li><span class="arithmatex">\(\xi \in (a, b), h = \dfrac{b - a}{2}\)</span></li>
+<li>精度<span><span class="heti-spacing"> </span>= 3</span></li>
+</ul>
+</li>
+<li><span class="arithmatex">\(n = 3\)</span>：<strong>辛普森<span class="heti-skip"><span class="heti-spacing"> </span>3/8<span class="heti-spacing"> </span></span>法则</strong>，精度<span><span class="heti-spacing"> </span>= 3</span>，<span class="arithmatex">\(R[f] = -\dfrac{3}{80}h^5 f^{(4)}(\xi)\)</span></li>
+<li><span class="arithmatex">\(n = 4\)</span>：<strong>科茨法则</strong>(Cotes' Rule)，精度<span><span class="heti-spacing"> </span>= 5</span>，<span class="arithmatex">\(R[f] = -\dfrac{8}{945}h^7 f^{(6)}(\xi)\)</span></li>
+</ul>
+<div class="admonition theorem">
+<p class="admonition-title">定理</p>
+<p>对于使用<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n+1\)</span><span class="heti-spacing"> </span></span>个点的牛顿<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>科茨公式，<span class="arithmatex">\(\exists \xi \in (a, b)\)</span>，使得：</p>
+<div class="arithmatex">\[
+\int_a^b f(x) dx = \sum\limits_{k=0}^n A_k f(x_k) + \dfrac{h^{n+3}f^{(n+2)}(\xi)}{(n+2)!} \int_0^n t^2(t - 1) \dots (t - n) dt
+\]</div>
+<ul>
+<li>如果<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span><span class="heti-spacing"> </span></span>为<strong>偶数</strong>，那么<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f \in C^{n+2}[a, b]\)</span><span class="heti-spacing"> </span></span>且<span><span class="heti-spacing"> </span><span class="arithmatex">\(\int_a^b f(x) dx = \sum\limits_{k=0}^n A_k f(x_k) + \dfrac{h^{n+2}f^{(n+1)}(\xi)}{(n+1)!} \int_0^n t(t - 1) \dots (t - n) dt\)</span></span></li>
+<li>如果<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span><span class="heti-spacing"> </span></span>为<strong>奇数</strong>，那么<span><span class="heti-spacing"> </span><span class="arithmatex">\(f \in C^{n+1}[a, b]\)</span></span></li>
+</ul>
+</div>
+<h2 id="compotsite-numerical-integration">Compotsite Numerical Integration<a class="headerlink" href="#compotsite-numerical-integration" title="Permanent link">⚓︎</a></h2>
+<p>由于高阶多项式容易发生振荡，所以我们用<strong>分段</strong><span>(piecewise)<span class="heti-spacing"> </span></span>插值的方式来近似<span><span class="heti-spacing"> </span><span class="arithmatex">\(f(x)\)</span></span>。这里用到了低阶的牛顿<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>科茨公式。</p>
+<h3 id="composite-trapezoidal-rule">Composite Trapezoidal Rule<a class="headerlink" href="#composite-trapezoidal-rule" title="Permanent link">⚓︎</a></h3>
+<p><strong>复合梯形法则</strong><span>(composite trapezoidal rule)<span class="heti-spacing"> </span></span>涉及到的变量有：<span class="arithmatex">\(h = \dfrac{b-a}{n}, x_k = a + kh\ (k=0, \dots, n)\)</span>。</p>
+<p>我们将梯形公式作用在每个区间<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\([x_{k-1}, x_k]\)</span><span class="heti-spacing"> </span></span>上，即：</p>
+<div class="arithmatex">\[
+\int_{x_{k-1}}^{x_k} f(x)dx \approx \dfrac{x_k - x_{k-1}}{2} [f(x_{k-1}) + f(x_k)], k = 1, \dots, n \Rightarrow \\
+\int_a^b f(x)dx \approx \sum\limits_{k=1}^n \dfrac{h}{2}[f(x_{k-1}) + f(x_k)] = \dfrac{h}{2}\Big[f(a) + 2\sum\limits_{k=1}^{n-1} f(x_k) + f(b) \Big] = \textcolor{cornflowerblue}{T_n} \\
+\begin{align}
+R[f] &amp; = \sum\limits_{k=1}^n \Big[-\dfrac{h^3}{12} f''(\xi_k)\Big] = -\dfrac{h^2}{12}(b-a) \dfrac{\sum\limits_{k=1}^n f''(\xi_k)}{n} \notag \\
+&amp; = -\dfrac{h^2}{12}(b-a) f''(\xi), \xi \in (a, b) \notag
+\end{align}
+\]</div>
+<blockquote>
+<p><span><span class="arithmatex">\(R[f]\)</span><span class="heti-spacing"> </span></span>的公式涉及到<strong>中值定理</strong>(MVT)。</p>
+</blockquote>
+<h3 id="composite-simpsons-rule">Composite Simpson's Rule<a class="headerlink" href="#composite-simpsons-rule" title="Permanent link">⚓︎</a></h3>
+<p><strong>复合辛普森法则</strong><span>(composite Simpson rule)<span class="heti-spacing"> </span></span>涉及到的变量和复合梯形公式一致：<span class="arithmatex">\(h = \dfrac{b-a}{n}, x_k = a + kh\ (k=0, \dots, n)\)</span>。</p>
+<p>我们将辛普森公式作用在每个区间<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\([x_{k-1}, x_k]\)</span><span class="heti-spacing"> </span></span>上，即：</p>
+<div class="arithmatex">\[
+\int_{x_{k-1}}^{x_k} f(x)dx \approx \dfrac{h}{6} [f(x_{k}) + 4 f(x_{k+\frac{1}{2}}) + f(x_{k+1})], k = 1, \dots, n \Rightarrow \\
+\int_a^b f(x)dx \approx \dfrac{h}{6}\Big[f(x_a) + 4\sum\limits_{k=0}^{n-1}f(x_{k+\frac{1}{2}}) + 2\sum\limits_{k=0}^{n-2}f(x_{k+1}) + f(x_b)\Big] = \textcolor{cornflowerblue}{S_n} \\
+R[f] = -\dfrac{b-a}{180} \Big(\dfrac{h}{2}\Big)^4 f^{(4)}(\xi)
+\]</div>
+<div class="admonition note">
+<p class="admonition-title">注</p>
+<p>为了简化记号，我们令<span><span class="heti-spacing"> </span><span class="arithmatex">\(n' = 2n\)</span></span>，那么<span><span class="heti-spacing"> </span><span class="arithmatex">\(h' = \dfrac{b-a}{n'} = \dfrac{h}{2}, x_k = a+kh'\)</span></span>，所以：</p>
+<div class="arithmatex">\[
+S_n = \dfrac{h'}{3}[f(a) + 4 \sum\limits_{odd\ k} f(x_k) + 2 \sum\limits_{even\ k} f(x_k) + f(b)]
+\]</div>
+</div>
+<hr/>
+<p>上述的复合方法都是<strong>稳定的</strong>。来看下面这个例子：</p>
+<details class="example" open="open">
+<summary>例子</summary>
+<p>考虑在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\([a, b]\)</span><span class="heti-spacing"> </span></span>上有<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span><span class="heti-spacing"> </span></span>个子区间的辛普森法则。假设<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f(x_i)\)</span><span class="heti-spacing"> </span></span>由<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f^*(x_i)\)</span><span class="heti-spacing"> </span></span>近似，满足<span><span class="heti-spacing"> </span><span class="arithmatex">\(f(x_i) = f^*(x_i) + \varepsilon_i\ (i = 0, \dots, n)\)</span></span>，那么累积误差为：</p>
+<div class="arithmatex">\[
+e(h) = \Big|\dfrac{h}{3}[\varepsilon_0 + 4 \sum\limits_{odd\ k} \varepsilon_k + 2 \sum\limits_{even\ k} \varepsilon_k + \varepsilon_n]\Big|
+\]</div>
+<p>若<span><span class="heti-spacing"> </span><span class="arithmatex">\(|\varepsilon_i| &lt; \varepsilon\ (i = 0, \dots, n)\)</span></span>，那么：</p>
+<div class="arithmatex">\[
+e(h) &lt; \dfrac{h}{3} [\varepsilon + 4(n/2)\varepsilon + 2(n/2-1)\varepsilon + \varepsilon] = nh\varepsilon = (b-a)\varepsilon
+\]</div>
+<p>可以看到，当我们修正分区，以确保准确性时，增加的计算量<strong>不会</strong>带来更多的舍入误差。</p>
+</details>
+<details class="question">
+<summary>讨论</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="5:2"><input checked="" id="__tabbed_5_1" name="__tabbed_5" type="radio"/><input id="__tabbed_5_2" name="__tabbed_5" type="radio"/><div class="tabbed-labels"><label for="__tabbed_5_1">题目</label><label for="__tabbed_5_2">答案</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>使用<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n=8\)</span><span class="heti-spacing"> </span></span>梯形法则和辛普森法则来近似<span><span class="heti-spacing"> </span><span class="arithmatex">\(\pi = \int_0^1 \dfrac{4}{1+x^2} dx\)</span></span>。</p>
+</div>
+<div class="tabbed-block">
+<div class="arithmatex">\[
+\begin{align}
+T_8 &amp; = \dfrac{1}{16}\Big[f(0) + 2\sum\limits_{k=1}^7f(x_k) + f(1)\Big] \quad \text{where } x_k = \dfrac{k}{8} \notag \\
+&amp; = \textcolor{green}{3.1}\textcolor{red}{383988494} \notag
+\end{align} \\
+\begin{align}
+S_4 &amp; = \dfrac{1}{24}\Big[f(0) + 4\sum\limits_{odd}f(x_k)+ 2\sum\limits_{even}f(x_k) + f(1)\Big] \quad \text{where } x_k = \dfrac{k}{8} \notag \\
+&amp; = \textcolor{green}{3.141592}\textcolor{red}{502} \notag
+\end{align}
+\]</div>
+<p>在编程的时候，我们通常会将一个子区间划分为两个均等宽度的更小的子区间。也就是说，令<span><span class="heti-spacing"> </span><span class="arithmatex">\(n = 2^k\ (k = 0, 1, \dots)\)</span></span></p>
+<p>当<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(k=9\)</span><span class="heti-spacing"> </span></span>时，<span class="arithmatex">\(T_{512} = \textcolor{green}{3.141592}\textcolor{red}{02}\)</span></p>
+<p><span class="arithmatex">\(\dfrac{4}{3}T_8 - \dfrac{1}{3}T_4 = \textcolor{green}{3.141592}\textcolor{red}{502} = S_4\)</span></p>
+</div>
+</div>
+</div>
+</details>
+<h2 id="romberg-integration">Romberg Integration<a class="headerlink" href="#romberg-integration" title="Permanent link">⚓︎</a></h2>
+<p>回顾一下梯形法则的误差公式：<span class="arithmatex">\(R_n[f] = -\dfrac{h^2}{12}(b-a)f''(\xi)\)</span>。当我们将每个子区间的长度缩减至原来的一半时，</p>
+<div class="arithmatex">\[
+R_{2n}[f] = -\Big(\dfrac{h}{2}\Big)^2 \dfrac{1}{12}(b-a)f''(\xi') \approx \dfrac{1}{4}R_n[f]
+\]</div>
+<p>从而得到：<span class="arithmatex">\(\dfrac{I - T_{2n}}{I - T_n} \approx \dfrac{1}{4}\)</span>，解得<span><span class="heti-spacing"> </span><span class="arithmatex">\(I \approx \dfrac{4T_{2n} - T_n}{4 - 1} = \dfrac{4}{3}T_{2n} - \dfrac{1}{3}T_n = S_n\)</span></span></p>
+<p>一般情况下：</p>
+<ul>
+<li><span class="arithmatex">\(\dfrac{4T_{2n} - T_n}{4 - 1} = S_n\)</span></li>
+<li><span class="arithmatex">\(\dfrac{4^2S_{2n} - S_n}{4^2 - 1} = C_n\)</span></li>
+<li><span class="arithmatex">\(\dfrac{4^3C_{2n} - C_n}{4^3 - 1} = R_n\)</span> -&gt; <strong><span>Romberg<span class="heti-spacing"> </span></span>序列</strong>(Romberg sequence)</li>
+</ul>
+<p><strong><span>Romberg<span class="heti-spacing"> </span></span>法</strong>如下所示：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C4/5.png"><img src="images/C4/5.png" width="80%/"/></a>
+</div>
+<p>可以看到，<span>Romberg<span class="heti-spacing"> </span></span>法通过不断将积分区间对分（涉及到接下来介绍的<a href="#richardsons-extrapolation"><span class="heti-skip"><span class="heti-spacing"> </span>Richardson<span class="heti-spacing"> </span></span>外推法</a><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，在这些子区间上作用<a href="#composite-trapezoidal-rule">（复合）梯形法则</a>，从而提高积分精度。</p>
+<p>其递推公式为：</p>
+<div class="arithmatex">\[
+R_{k, j} = R_{k, j-1} + \dfrac{1}{4^{j-1} - 1}(R_{k, j-1} - R_{k-1, j-1}) \quad k = j, j+1, \dots
+\]</div>
+<p>对应的表格为：</p>
+<div class="arithmatex">\[
+\begin{matrix}
+h &amp; R_{1, 1} \\
+\frac{h}{2} &amp; R_{2, 1} &amp; R_{2, 2} \\
+\frac{h}{4} &amp; R_{3, 1} &amp; R_{3, 2} &amp; R_{3, 3} \\
+\vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \ddots \\
+\frac{h}{2^{n-1}} &amp; R_{n, 1} &amp; R_{n, 2} &amp; R_{n, 3} &amp; \dots &amp; R_{n, n}
+\end{matrix}
+\]</div>
+<details class="code">
+<summary>算法：Romberg</summary>
+<p>近似积分<span><span class="heti-spacing"> </span><span class="arithmatex">\(I = \int_a^b f(x) dx\)</span></span>，选择整数<span><span class="heti-spacing"> </span><span class="arithmatex">\(n &gt; 0\)</span></span></p>
+<ul>
+<li>输入：端点<span><span class="heti-spacing"> </span><span class="arithmatex">\(a, b\)</span></span>；整数<span><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span></span></li>
+<li>输出：数组<span><span class="heti-spacing"> </span><span class="arithmatex">\(R\)</span></span>（按行计算<span><span class="heti-spacing"> </span><span class="arithmatex">\(R\)</span></span>；只保留<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>行（节省空间<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>）</li>
+</ul>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="n">Step</span><span class="w"> </span><span class="mi">1</span><span class="w">  </span><span class="n">Set</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">a</span><span class="p">;</span>
+</span><span id="__span-0-2"><a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="w">            </span><span class="n">R</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">f</span><span class="p">(</span><span class="n">b</span><span class="p">));</span>
+</span><span id="__span-0-3"><a href="#__codelineno-0-3" id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="n">Step</span><span class="w"> </span><span class="mi">2</span><span class="w">  </span><span class="n">Output</span><span class="p">(</span><span class="n">R</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]);</span>
+</span><span id="__span-0-4"><a href="#__codelineno-0-4" id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="n">Step</span><span class="w"> </span><span class="mi">3</span><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="p">...,</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="n">steps</span><span class="w"> </span><span class="mi">4-8</span><span class="o">:</span>
+</span><span id="__span-0-5"><a href="#__codelineno-0-5" id="__codelineno-0-5" name="__codelineno-0-5"></a><span class="w">    </span><span class="c1">// approximation from Trapezoidal method</span>
+</span><span id="__span-0-6"><a href="#__codelineno-0-6" id="__codelineno-0-6" name="__codelineno-0-6"></a><span class="w">    </span><span class="n">Step</span><span class="w"> </span><span class="mi">4</span><span class="w">  </span><span class="n">Set</span><span class="w"> </span><span class="n">R</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">[</span><span class="n">R</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">sum</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="mi">-2</span><span class="p">),</span><span class="w"> </span><span class="n">f</span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">k</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">0.5</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">h</span><span class="p">))];</span>
+</span><span id="__span-0-7"><a href="#__codelineno-0-7" id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="w">    </span><span class="n">Step</span><span class="w"> </span><span class="mi">5</span><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="p">...,</span><span class="w"> </span><span class="n">i</span><span class="o">:</span>
+</span><span id="__span-0-8"><a href="#__codelineno-0-8" id="__codelineno-0-8" name="__codelineno-0-8"></a><span class="w">                </span><span class="c1">// extrapolation</span>
+</span><span id="__span-0-9"><a href="#__codelineno-0-9" id="__codelineno-0-9" name="__codelineno-0-9"></a><span class="w">                </span><span class="n">set</span><span class="w"> </span><span class="n">R</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">R</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="n">j</span><span class="mi">-1</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">R</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="n">j</span><span class="mi">-1</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">R</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="mi">-1</span><span class="p">])</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="n">pow</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="mi">-1</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+</span><span id="__span-0-10"><a href="#__codelineno-0-10" id="__codelineno-0-10" name="__codelineno-0-10"></a><span class="w">    </span><span class="n">Step</span><span class="w"> </span><span class="mi">6</span><span class="w">  </span><span class="n">Output</span><span class="p">(</span><span class="n">R</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="p">...,</span><span class="w"> </span><span class="n">i</span><span class="p">);</span>
+</span><span id="__span-0-11"><a href="#__codelineno-0-11" id="__codelineno-0-11" name="__codelineno-0-11"></a><span class="w">    </span><span class="n">Step</span><span class="w"> </span><span class="mi">7</span><span class="w">  </span><span class="n">Set</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+</span><span id="__span-0-12"><a href="#__codelineno-0-12" id="__codelineno-0-12" name="__codelineno-0-12"></a><span class="w">    </span><span class="n">Step</span><span class="w"> </span><span class="mi">8</span><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="p">...,</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="n">set</span><span class="w"> </span><span class="n">R</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">R</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="n">j</span><span class="p">];</span><span class="w">    </span><span class="c1">// update row 1 of R</span>
+</span><span id="__span-0-13"><a href="#__codelineno-0-13" id="__codelineno-0-13" name="__codelineno-0-13"></a><span class="n">Step</span><span class="w"> </span><span class="mi">9</span><span class="w">  </span><span class="n">STOP</span><span class="p">.</span>
+</span></code></pre></div>
+</details>
+<h2 id="richardsons-extrapolation">Richardson's Extrapolation<a class="headerlink" href="#richardsons-extrapolation" title="Permanent link">⚓︎</a></h2>
+<p><strong><span>Richardson<span class="heti-spacing"> </span></span>外推法</strong><span>(Richardson's extrapolation)<span class="heti-spacing"> </span></span>实现的目标是：使用低阶公式获取高精度的结果。</p>
+<p>它的核心思想是：利用同一数值方法在不同步长下计算出的结果，通过线性组合来消除或减小近似解中的主要误差项，从而得到一个更高精度的估计值。</p>
+<blockquote>
+<p>这和求解一元方程的<a href="2.html#aitkens--method"><span class="heti-skip"><span class="heti-spacing"> </span>Aitken's <span class="arithmatex">\(\Delta^2\)</span><span class="heti-spacing"> </span></span>法</a>在思想上有共通之处。</p>
+</blockquote>
+<p>假设对于某些<span><span class="heti-spacing"> </span><span class="arithmatex">\(h \ne 0\)</span></span>，我们有公式<span><span class="heti-spacing"> </span><span class="arithmatex">\(T_0(h)\)</span></span>，用于近似未知量<span><span class="heti-spacing"> </span><span class="arithmatex">\(I\)</span></span>，并且其<strong>截断误差</strong>的形式为：</p>
+<div class="arithmatex">\[
+T_0(h) - I = \alpha_1 h + \alpha_2 h^2 + \alpha_3 h^3 + \dots
+\]</div>
+<p>用<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(h\)</span><span class="heti-spacing"> </span></span>一半的值替代自身，我们有：</p>
+<div class="arithmatex">\[
+T_0(h/2) - I = \alpha_1 (h/2) + \alpha_2 (h/2)^2 + \alpha_3 (h/2)^3 + \dots
+\]</div>
+<p>结合上述两个公式，我们就可以将精度从<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(O(h)\)</span><span class="heti-spacing"> </span></span>提升至<span><span class="heti-spacing"> </span><span class="arithmatex">\(O(h^2)\)</span></span>：</p>
+<div class="arithmatex">\[
+\dfrac{2T_0(\frac{h}{2}) - T_0(h)}{2 - 1} - I = -\dfrac{1}{2}\alpha_2 h^2 - \dfrac{3}{4} \alpha_3 h^3 - \dots
+\]</div>
+<p>令<span><span class="heti-spacing"> </span><span class="arithmatex">\(T_1 = \dfrac{2T_0(\frac{h}{2}) - T_0(h)}{2 - 1} = I + \beta_1 h^2 + \beta_2 h^3 + \dots\)</span></span>。类似地，我们可以将精度提升至<span><span class="heti-spacing"> </span><span class="arithmatex">\(O(h^3)\)</span></span>：</p>
+<div class="arithmatex">\[
+T_2 = \dfrac{2^2T_1(\frac{h}{2}) - T_1(h)}{2^2 - 1} = I + \gamma_1 h^3 + \gamma_2 h^4 + \dots
+\]</div>
+<p>以此类推，我们可以将精度可以提升到<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(m+1\)</span><span class="heti-spacing"> </span></span>阶：</p>
+<div class="arithmatex">\[
+T_m = \dfrac{2^mT_{m-1}(\frac{h}{2}) - T_{m-1}(h)}{2^m - 1} = I + \delta_1 h^{m+1} + \delta_2 h^{m+2} + \dots
+\]</div>
+<details class="example">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="6:2"><input checked="" id="__tabbed_6_1" name="__tabbed_6" type="radio"/><input id="__tabbed_6_2" name="__tabbed_6" type="radio"/><div class="tabbed-labels"><label for="__tabbed_6_1">题目</label><label for="__tabbed_6_2">解答</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C4/7.png"><img src="images/C4/7.png" width="80%/"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<p>由<span class="heti-skip"><span class="heti-spacing"> </span>Gemini 2.5 pro<span class="heti-spacing"> </span></span>作答，且通过笔者验证。</p>
+<ol>
+<li>
+<p>建立误差方程：</p>
+<p>令<span><span class="heti-spacing"> </span><span class="arithmatex">\(N(A) = \frac{f(x_0+A)-2f(x_0)+f(x_0-A)}{A^2}\)</span></span>。我们可以将真实值表示为：</p>
+<div class="arithmatex">\[f''(x_0) = N(A) + K_1A^2 + K_2A^4 + \dots\]</div>
+<p>其中<span><span class="heti-spacing"> </span><span class="arithmatex">\(K_1 = -\frac{f^{(4)}(x_0)}{12}\)</span></span>。</p>
+</li>
+<li>
+<p>使用两种步长：</p>
+<p>我们使用步长<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(A\)</span><span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(A/2\)</span><span class="heti-spacing"> </span></span>来计算近似值：</p>
+<ul>
+<li><strong>步长<span><span class="heti-spacing"> </span>A</span></strong>: <span class="arithmatex">\(f''(x_0) = N(A) + K_1A^2 + K_2A^4 + \dots\)</span>（式<span><span class="heti-spacing"> </span>1</span>）</li>
+<li><strong>步长<span><span class="heti-spacing"> </span>A/2</span></strong>: <span class="arithmatex">\(f''(x_0) = N(A/2) + K_1(A/2)^2 + K_2(A/2)^4 + \dots = N(A/2) + \frac{K_1}{4}A^2 + \frac{K_2}{16}A^4 + \dots\)</span>（式<span><span class="heti-spacing"> </span>2</span>）</li>
+</ul>
+</li>
+<li>
+<p>消除<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(O(A^2)\)</span><span class="heti-spacing"> </span></span>误差项：</p>
+<p>为了消除<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(K_1A^2\)</span><span class="heti-spacing"> </span></span>项，我们将（式<span><span class="heti-spacing"> </span>2</span>）乘以<span><span class="heti-spacing"> </span>4</span>，然后减去（式<span><span class="heti-spacing"> </span>1</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
+<ul>
+<li><span class="arithmatex">\(4f''(x_0) = 4N(A/2) + K_1A^2 + \frac{K_2}{4}A^4 + \dots\)</span></li>
+<li><span class="arithmatex">\(f''(x_0) = N(A) + K_1A^2 + K_2A^4 + \dots\)</span></li>
+</ul>
+<p>两式相减得到：</p>
+<p><span class="arithmatex">\(3f''(x_0) = 4N(A/2) - N(A) - \frac{3K_2}{4}A^4 + \dots\)</span></p>
+</li>
+<li>
+<p>导出新公式：</p>
+<p>整理上式，我们得到一个新的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f''(x_0)\)</span><span class="heti-spacing"> </span></span>的近似公式，其误差项为<span><span class="heti-spacing"> </span><span class="arithmatex">\(O(A^4)\)</span></span>：</p>
+<div class="arithmatex">\[f''(x_0) \approx \frac{4N(A/2) - N(A)}{3}\]</div>
+<p>这个公式的误差为<span><span class="heti-spacing"> </span><span class="arithmatex">\(O(A^4)\)</span></span>，比原来的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(O(A^2)\)</span><span class="heti-spacing"> </span></span>精度更高。</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</details>
+<h2 id="adaptive-quadrature-methods">Adaptive Quadrature Methods<a class="headerlink" href="#adaptive-quadrature-methods" title="Permanent link">⚓︎</a></h2>
+<p>目标：预测函数变化量，根据变化的需求调整步幅。</p>
+<p>前面介绍的复合积分方法的缺点是：对所有区间递归划分子区间，这样计算量太大，而且还有产生了许多不必要的计算，这很浪费。因此，我们采用一种仅对具有<strong>较大误差</strong><span>(large error)<span class="heti-spacing"> </span></span>的区间进行划分的方法，避免额外的计算。我们称这样的方法为<strong>自适应求积方法</strong>(adaptive quadrature methods)。</p>
+<p>那么什么算“较大误差”呢？一种简单的确定策略是使用<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\int_a^b f(x) dx\)</span><span class="heti-spacing"> </span></span>的总误差<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\varepsilon\)</span><span class="heti-spacing"> </span></span>来确定边界：在长度为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(h\)</span><span class="heti-spacing"> </span></span>的区间中，误差应该要小于<span><span class="heti-spacing"> </span><span class="arithmatex">\(h \dfrac{\varepsilon}{b - a}\)</span></span>。当误差超过这个值时，我们就认为是较大误差，需要继续划分该区间。</p>
+<p>接下来的问题就是如何估计一个区间的误差。这里我们暂时仅考虑辛普森法则下的误差估计——即如何估计：</p>
+<div class="arithmatex">\[
+\varepsilon(f, a, b) \approx \int_a^b f(x)dx - S(a, b) = \dfrac{h^5}{90} f^{(4)}(\xi)
+\]</div>
+<p>其中<span><span class="heti-spacing"> </span><span class="arithmatex">\(h = \dfrac{b-a}{2}, \xi \in [a, b]\)</span></span>。</p>
+<p>这个问题的答案在例<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>中给出。</p>
+<details class="example">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="7:2"><input checked="" id="__tabbed_7_1" name="__tabbed_7" type="radio"/><input id="__tabbed_7_2" name="__tabbed_7" type="radio"/><div class="tabbed-labels"><label for="__tabbed_7_1">例<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span></label><label for="__tabbed_7_2">例<span><span class="heti-spacing"> </span>2</span></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="admonition play">
+<p class="admonition-title">动画演示</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C4/6.gif"><img src="images/C4/6.gif" width="70%/"/></a>
+</div><p></p>
+</div>
+</div>
+<div class="tabbed-block">
+<p>考虑基于复合辛普森法则的自适应方法：</p>
+<div class="arithmatex">\[
+\int_a^b f(x)dx = S(a, b) - \dfrac{h^5}{90}f^{(4)}(\xi)
+\]</div>
+<p>其中<span><span class="heti-spacing"> </span><span class="arithmatex">\(S(a, b) = \dfrac{h}{3}[f(a) + 4f(a + h) + f(b)], h = \dfrac{b-a}{2}\)</span></span>。令：</p>
+<div class="arithmatex">\[
+\begin{align}
+S\Big(a, \dfrac{a+b}{2}\Big) = \dfrac{h}{6}[f(a) + 4f(a + h/2) + f(a + h)] \notag \\
+S\Big(\dfrac{a+b}{2}, b\Big) = \dfrac{h}{6}[f(a + h) + 4f(a + 3h/2) + f(b)] \notag
+\end{align}
+\]</div>
+<p>那么：</p>
+<div class="arithmatex">\[
+\int_a^b f(x) dx = S\Big(a, \dfrac{a+b}{2}\Big) + S\Big(\dfrac{a+b}{2}, b\Big) - \dfrac{1}{16} \times \dfrac{h^5}{90}f^{(4)}(\eta) \\
+\begin{align}
+&amp;\ \Big| \int_a^b f(x) dx - S\Big(a, \dfrac{a+b}{2}\Big) - S\Big(\dfrac{a+b}{2}, b\Big) \Big| \notag \\
+\approx &amp;\ \dfrac{1}{15} \Big|S(a, b) - S\Big(a, \dfrac{a+b}{2}\Big) - S\Big(\dfrac{a+b}{2}, b\Big) \Big| \notag \\
+&lt; &amp;\ \varepsilon \notag
+\end{align}
+\]</div>
+<p>可以看到，相比一般的辛普森法则，结合自适应方法后误差只有原来的<span><span class="heti-spacing"> </span><span class="arithmatex">\(\dfrac{1}{15}\)</span></span> 🎉</p>
+</div>
+</div>
+</div>
+</details>
+<h2 id="gaussian-quadrature">Gaussian Quadrature<a class="headerlink" href="#gaussian-quadrature" title="Permanent link">⚓︎</a></h2>
+<p>目标：构造一个公式<span><span class="heti-spacing"> </span><span class="arithmatex">\(\int_a^b w(x) f(x) dx \approx \sum\limits_{k=0}^n A_k f(x_k)\)</span></span>，对于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n+1\)</span><span class="heti-spacing"> </span></span>个点而言精度为<span><span class="heti-spacing"> </span><span class="arithmatex">\(2n+1\)</span></span>。</p>
+<p>思路：确定<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(2n+2\)</span><span class="heti-spacing"> </span></span>个未知量<span><span class="heti-spacing"> </span><span class="arithmatex">\(x_0, \dots, x_n;\ A_0, \dots, A_n\)</span></span>，使得公式在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f(x) = 1, x, x^2, \dots, x^{2n+1}\)</span><span class="heti-spacing"> </span></span>上都是精确的。点<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x_0, \dots, x_n\)</span><span class="heti-spacing"> </span></span>被称为<strong>高斯点</strong>(Gaussian points)，这个方法被称为<strong>高斯求积</strong>(Gaussian quadrature)</p>
+<details class="question">
+<summary>讨论</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="8:2"><input checked="" id="__tabbed_8_1" name="__tabbed_8" type="radio"/><input id="__tabbed_8_2" name="__tabbed_8" type="radio"/><div class="tabbed-labels"><label for="__tabbed_8_1">题目</label><label for="__tabbed_8_2">解答</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>使用<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n = 1\)</span><span class="heti-spacing"> </span></span>的高斯求积近似表示<span><span class="heti-spacing"> </span><span class="arithmatex">\(\int_0^1 \sqrt{x} f(x) dx\)</span></span>。</p>
+</div>
+<div class="tabbed-block">
+<p>假设<span><span class="heti-spacing"> </span><span class="arithmatex">\(\int_0^1 \sqrt{x} f(x) dx \approx A_0 f(x_0) + A_1 f(x_1)\)</span></span>。</p>
+<p>公式必须在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f(x) = 1, x, x^2, x^3\)</span><span class="heti-spacing"> </span></span>上精确表示。计算<span><span class="heti-spacing"> </span><span class="arithmatex">\(\begin{cases}\frac{2}{3} = A_0 + A_1 \\ \frac{2}{5} = A_0 x_0 + A_1 x_1 \\ \frac{2}{7} = A_0 x_0^2 + A_1 x_1^2 \\ \frac{2}{9} = A_0x_0^3 + A_1 x_1^3\end{cases}\)</span></span>，解得：<span class="arithmatex">\(\begin{cases}x_0 \approx 0.8212 \\ x_1 \approx 0.2899 \\ A_0 \approx 0.3891 \\ A_1 \approx 0.2776\end{cases}\)</span></p>
+</div>
+</div>
+</div>
+</details>
+<div class="admonition theorem">
+<p class="admonition-title">定理</p>
+<p>当且仅当<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(W(x) = \prod\limits_{k=0}^n(x - x_k)\)</span><span class="heti-spacing"> </span></span>与所有阶数不超过<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span><span class="heti-spacing"> </span></span>的多项式正交时，<span><span class="arithmatex">\(x_0, \dots, x_n\)</span><span class="heti-spacing"> </span></span>是<strong>高斯点</strong>。</p>
+<details class="proof">
+<summary>证明</summary>
+<ul>
+<li>
+<p>若<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x_0, \dots, x_n\)</span><span class="heti-spacing"> </span></span>是高斯点，则公式<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\int_a^b w(x) f(x) dx \approx \sum\limits_{k=0}^nA_kf(x_k)\)</span><span class="heti-spacing"> </span></span>的精度至少为<span><span class="heti-spacing"> </span><span class="arithmatex">\(2n+1\)</span></span>。那么对于任意多项式<span><span class="heti-spacing"> </span><span class="arithmatex">\(P_m(x)\ (m \le n)\)</span></span>，<span><span class="arithmatex">\(P_m(x) W(x)\)</span><span class="heti-spacing"> </span></span>的阶数不超过<span><span class="heti-spacing"> </span><span class="arithmatex">\(2n+1\)</span></span>。因此上述公式对于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(P_m(x) W(x)\)</span><span class="heti-spacing"> </span></span>而言是精确的，也就是说：</p>
+<div class="arithmatex">\[
+\int_a^b w(x) P_m(x) W(x) dx = \sum\limits_{k=0}^n A_k P_m(x_k) W(x_k) = 0
+\]</div>
+</li>
+<li>
+<p>要证明<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x_0, \dots, x_n\)</span><span class="heti-spacing"> </span></span>是高斯点，我们需要证明公式对任意多项式<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(P_m(x)\ (m \le 2n + 1)\)</span><span class="heti-spacing"> </span></span>是精确的。令<span><span class="heti-spacing"> </span><span class="arithmatex">\(P_m(x) = W(x) q(x) + r(x)\)</span></span>，那么 </p>
+<div class="arithmatex">\[
+\begin{align}
+\int_a^n w(x) P_m(x) dx &amp; = \int_a^n w(x) W(x) q(x) dx + \int_a^n w(x) r(x) dx = \sum\limits_{k=0}^n A_k r(x_k) \notag \\
+&amp; = \sum\limits_{k=0}^n A_k P_m(x_k) \notag
+\end{align}
+\]</div>
+</li>
+</ul>
+</details>
+</div>
+<p>正交多项式的集合<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\{\varphi_0, \varphi_1, \dots, \varphi_n, \dots\}\)</span><span class="heti-spacing"> </span></span>是线性独立的，且<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\varphi_{n+1}\)</span><span class="heti-spacing"> </span></span>和任何多项式<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(P_m(x)\ (m \le n)\)</span><span class="heti-spacing"> </span></span>正交。所以，如果我们拿<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\varphi_{n+1}\)</span><span class="heti-spacing"> </span></span>作为<span><span class="heti-spacing"> </span><span class="arithmatex">\(W(x)\)</span></span>，那么 <strong><span><span class="arithmatex">\(\varphi_{n+1}\)</span><span class="heti-spacing"> </span></span>的根</strong>就是高斯点了。</p>
+<details class="example">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="9:2"><input checked="" id="__tabbed_9_1" name="__tabbed_9" type="radio"/><input id="__tabbed_9_2" name="__tabbed_9" type="radio"/><div class="tabbed-labels"><label for="__tabbed_9_1">题目</label><label for="__tabbed_9_2">解答</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>使用高斯求积来近似计算<span><span class="heti-spacing"> </span><span class="arithmatex">\(\int_0^1 \sqrt{x} f(x) dx\)</span></span>，其中<span><span class="heti-spacing"> </span><span class="arithmatex">\(n = 1\)</span></span></p>
+</div>
+<div class="tabbed-block">
+<p>假设<span><span class="heti-spacing"> </span><span class="arithmatex">\(\int_0^1 \sqrt{x} f(x) dx \approx A_0 f(x_0) + A_1 f(x_1)\)</span></span>。</p>
+<ol>
+<li>
+<p>构造正交多项式<span><span class="heti-spacing"> </span><span class="arithmatex">\(\varphi_2\)</span></span>。令<span><span class="heti-spacing"> </span><span class="arithmatex">\(\varphi_0(x) = 1, \varphi_1(x) = x + a, \varphi_2(x) = x^2 + bx + c\)</span></span></p>
+<ul>
+<li><span class="arithmatex">\((\varphi_0, \varphi_1) = 0 \Rightarrow \int_0^1 \sqrt{x} (x + a) dx = 0 \Rightarrow a = - \dfrac{3}{5}\)</span></li>
+<li><span class="arithmatex">\((\varphi_0, \varphi_2) = 0 \Rightarrow \int_0^1 \sqrt{x} (x^2 + bx + c) dx = 0 \Rightarrow a = - \dfrac{10}{9}\)</span></li>
+<li><span class="arithmatex">\((\varphi_1, \varphi_2) = 0 \Rightarrow \int_0^1 \sqrt{x} (x - \dfrac{3}{5})(x + bx + c) dx = 0 \Rightarrow a = \dfrac{5}{21}\)</span></li>
+<li><span class="arithmatex">\(\therefore \varphi_2(x) = x^2 - \dfrac{10}{9}x + \dfrac{5}{21}\)</span></li>
+</ul>
+</li>
+<li>
+<p>找到<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\varphi_2\)</span><span class="heti-spacing"> </span></span>的两个根，作为高斯点<span><span class="heti-spacing"> </span><span class="arithmatex">\(x_0, x_1\)</span></span>：<span class="arithmatex">\(x_{0;1} = \dfrac{\frac{10}{9} \pm \sqrt{(\frac{10}{9})^2 - \frac{20}{21}}}{2}\)</span></p>
+</li>
+<li>
+<p>因为这个公式必须在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f(x) = 1, x\)</span><span class="heti-spacing"> </span></span>上是精确的，所以我们能比较容易地求解<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(A_0, A_1\)</span><span class="heti-spacing"> </span></span>的线性方程组（待定系数）</p>
+</li>
+</ol>
+<p>最终结果为：<span class="arithmatex">\(x_0 \approx 0.8212, x_1 \approx 0.2899, A_0 \approx 0.3891, A_1 \approx 0.2776\)</span></p>
+<p>现在使用上述结果来近似计算<span><span class="heti-spacing"> </span><span class="arithmatex">\(\int_0^1 \sqrt{x} e^x dx\)</span></span></p>
+<div class="arithmatex">\[
+\int_0^1 \sqrt{x} e^x dx \approx A_0 e^{x_0} + A_1 e^{x_1} = 0.3891 \times e^{0.8212} + 0.2776 \times e^{0.2899} \approx 1.2555
+\]</div>
+<p>而<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\int_0^1 \sqrt{x} (2x-1) dx = \dfrac{2}{15}\)</span><span class="heti-spacing"> </span></span>是精确的。</p>
+</div>
+</div>
+</div>
+</details>
+<p>一些特殊的正交多项式：</p>
+<ul>
+<li>
+<p><strong>勒让德多项式</strong>(Legendre polynomials)：定义在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\([-1, 1]\)</span><span class="heti-spacing"> </span></span>上且<span><span class="heti-spacing"> </span><span class="arithmatex">\(w(x) \equiv 1\)</span></span></p>
+<div class="arithmatex">\[
+P_k(x) = \dfrac{1}{2^k k!} \dfrac{d^k}{dx^k}(x^2 - 1)^k \quad \quad (P_k, P_l) = \begin{cases}0 &amp; k \ne l \\ \dfrac{2}{2k+1} &amp; k = l\end{cases}
+\]</div>
+<p><span class="arithmatex">\(P_0 = 1, P_1 = x, (k + 1)P_{k+1} = (2k + 1)xP_k - kP_{k-1}\)</span></p>
+<p>使用<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(P_{n+1}\)</span><span class="heti-spacing"> </span></span>的根的公式称为<strong>高斯<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>勒让德求积公式</strong>。</p>
+</li>
+<li>
+<p><strong>切比雪夫多项式</strong>(Chebyshev polynomials)：定义在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\([-1, 1]\)</span><span class="heti-spacing"> </span></span>上且<span><span class="heti-spacing"> </span><span class="arithmatex">\(w(x) = \dfrac{1}{\sqrt{1 - x^2}}\)</span></span></p>
+<div class="arithmatex">\[
+T_k(x) = \cos (k \times \arccos x)
+\]</div>
+<p><span><span class="arithmatex">\(T_{n+1}\)</span><span class="heti-spacing"> </span></span>的根为<span><span class="heti-spacing"> </span><span class="arithmatex">\(x_k = \cos \Big(\dfrac{2k + 1}{2n + 2} \pi \Big) \quad (k = 0, \dots, n)\)</span></span></p>
+<p>公式<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\int_{-1}^1 \dfrac{1}{\sqrt{1 - x^2}} f(x) dx = \sum\limits_{k=0}^n A_k f(x_k)\)</span><span class="heti-spacing"> </span></span>称为<strong>高斯<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>切比雪夫求积公式</strong>。</p>
+<ul>
+<li>注意到积分端点<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\pm 1\)</span><span class="heti-spacing"> </span></span>是积分上的<strong>奇点</strong>(singular points)，此时在等间距的点上使用牛顿<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>科茨公式会出现问题；而高斯积分能够避免这个问题。</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>对应的<a href="hw.html#chap-4-numerical-differentiation-and-integration">作业练习</a>📝</p>
+<p>对应<a href="quizzes.html">小测<span><span class="heti-spacing"> </span>11</span>、12</a>💯</p>
+</blockquote>
+<aside class="md-source-file">
+<span class="md-source-file__fact">
+<span class="md-icon" title="最后更新">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"></path></svg>
+</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2026年8月2日 20:39:17 CST">2026年8月2日 20:39:17</span>
+</span>
+<span class="md-source-file__fact">
+<span class="md-icon" title="创建日期">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"></path></svg>
+</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2026年8月2日 20:39:17 CST">2026年8月2日 20:39:17</span>
+</span>
+</aside>
+<p style="font-size: 30px; font-weight: 600">评论区</p>
+<div>
+    如果大家有什么问题或想法，欢迎在下方留言~
+  </div>
+<!-- Insert generated snippet here -->
+<script async="" crossorigin="anonymous" data-category="Announcements" data-category-id="DIC_kwDOMAb9Zs4CfmpP" data-emit-metadata="0" data-input-position="bottom" data-lang="zh-CN" data-mapping="pathname" data-reactions-enabled="1" data-repo="noughtq/notebook" data-repo-id="R_kgDOMAb9Zg" data-strict="0" data-theme="preferred_color_scheme" src="https://giscus.app/client.js">
+</script>
+<!-- Synchronize Giscus theme with palette -->
+<script>
+    var giscus = document.querySelector("script[src*=giscus]")
+
+    // Set palette on initial load
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object") {
+      var theme = palette.color.scheme === "slate"
+        ? "transparent_dark"
+        : "light"
+
+      // Instruct Giscus to set theme
+      giscus.setAttribute("data-theme", theme) 
+    }
+
+    // Register event handlers after documented loaded
+    document.addEventListener("DOMContentLoaded", function() {
+      var ref = document.querySelector("[data-md-component=palette]")
+      ref.addEventListener("change", function() {
+        var palette = __md_get("__palette")
+        if (palette && typeof palette.color === "object") {
+          var theme = palette.color.scheme === "slate"
+            ? "dark"
+            : "light"
+
+          // Instruct Giscus to change theme
+          var frame = document.querySelector(".giscus-frame")
+          frame.contentWindow.postMessage(
+            { giscus: { setConfig: { theme } } },
+            "https://giscus.app"
+          )
+        }
+      })
+    })
+  </script>
+<!-- 标题计数器 -->
+<link href="/css/counter.css" rel="stylesheet"/>
+<!-- 主页个性化 -->
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+<button class="md-top md-icon" data-md-component="top" hidden="" type="button">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  回到页面顶部
+</button>
+</main>
+<footer class="md-footer">
+<nav aria-label="页脚" class="md-footer__inner md-grid">
+<a aria-label="上一页: Chap 3: Interpolation and Polynomial Approximation" class="md-footer__link md-footer__link--prev" href="3.html">
+<div class="md-footer__button md-icon">
+<svg viewbox="0 0 256 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path></svg>
+</div>
+<div class="md-footer__title">
+<span class="md-footer__direction">
+                上一页
+              </span>
+<div class="md-ellipsis">
+                Chap 3: Interpolation and Polynomial Approximation
+              </div>
+</div>
+</a>
+<a aria-label="下一页: Chap 5: Initial-Value Problems for Ordinary Differential Equations" class="md-footer__link md-footer__link--next" href="5.html">
+<div class="md-footer__title">
+<span class="md-footer__direction">
+                下一页
+              </span>
+<div class="md-ellipsis">
+                Chap 5: Initial-Value Problems for Ordinary Differential Equations
+              </div>
+</div>
+<div class="md-footer__button md-icon">
+<svg viewbox="0 0 256 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M247.1 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L179.2 256 41.9 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"></path></svg>
+</div>
+</a>
+</nav>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright" style="margin-left: 33.5%">
+<div class="md-copyright__highlight" style="text-align: center">
+        Copyright © 2024-2026 <a href="https://github.com/NoughtQ">NoughtQ</a>
+</div>
+    
+    
+      Powered by
+      <a href="https://www.mkdocs.org/" rel="noopener" target="_blank">
+        MkDocs
+      </a>
+      with theme
+      <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+        Material
+      </a>
+      modified by
+      <a href="https://github.com/NoughtQ" rel="noopener" target="_blank">
+        NoughtQ
+      </a>
+<!-- <br> -->
+<div style="text-align: center;">
+<a href="https://icp.gov.moe/?keyword=20252357" target="_blank">萌ICP备20252357号</a>
+</div>
+</div>
+<div class="md-social">
+<a class="md-social__link" href="https://noughtq.top" rel="noopener" target="_blank" title="noughtq.top">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M277.8 8.6c-12.3-11.4-31.3-11.4-43.5 0l-224 208c-9.6 9-12.8 22.9-8 35.1S18.8 272 32 272h16v176c0 35.3 28.7 64 64 64h288c35.3 0 64-28.7 64-64V272h16c13.2 0 25-8.1 29.8-20.3s1.6-26.2-8-35.1zM240 320h32c26.5 0 48 21.5 48 48v96H192v-96c0-26.5 21.5-48 48-48"></path></svg>
+</a>
+<a class="md-social__link" href="https://game.noughtq.top" rel="noopener" target="_blank" title="game.noughtq.top">
+<svg viewbox="0 0 640 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M448 64c106 0 192 86 192 192s-86 192-192 192H192C86 448 0 362 0 256S86 64 192 64zM192 176c-13.3 0-24 10.7-24 24v32h-32c-13.3 0-24 10.7-24 24s10.7 24 24 24h32v32c0 13.3 10.7 24 24 24s24-10.7 24-24v-32h32c13.3 0 24-10.7 24-24s-10.7-24-24-24h-32v-32c0-13.3-10.7-24-24-24m240 96a32 32 0 1 0 0 64 32 32 0 1 0 0-64m64-96a32 32 0 1 0 0 64 32 32 0 1 0 0-64"></path></svg>
+</a>
+<a class="md-social__link" href="https://blog.noughtq.top" rel="noopener" target="_blank" title="blog.noughtq.top">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M224 24c0-13.3 10.7-24 24-24 145.8 0 264 118.2 264 264 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-119.3-96.7-216-216-216-13.3 0-24-10.7-24-24M80 96c26.5 0 48 21.5 48 48v224c0 26.5 21.5 48 48 48s48-21.5 48-48-21.5-48-48-48c-8.8 0-16-7.2-16-16v-64c0-8.8 7.2-16 16-16 79.5 0 144 64.5 144 144s-64.5 144-144 144S32 447.5 32 368V144c0-26.5 21.5-48 48-48m168 0c92.8 0 168 75.2 168 168 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-66.3-53.7-120-120-120-13.3 0-24-10.7-24-24s10.7-24 24-24"></path></svg>
+</a>
+<a class="md-social__link" href="https://github.com/noughtq" rel="noopener" target="_blank" title="github.com">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"></path></svg>
+</a>
+<a class="md-social__link" href="mailto:noughtq666@gmail.com" rel="noopener" target="_blank" title="">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m20 8-8 5-8-5V6l8 5 8-5m0-2H4c-1.11 0-2 .89-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2"></path></svg>
+</a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["announce.dismiss", "content.action.edit", "content.action.view", "content.code.copy", "content.code.annotate", "content.footnote.tooltips", "navigation.footer", "navigation.indexes", "navigation.path", "navigation.prune", "navigation.tabs", "navigation.top", "navigation.tracking", "search.share"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+<script src="../../js/anchor.js"></script>
+<script src="../../js/katex.js"></script>
+<script src="../../js/toc.js"></script>
+<script src="../../js/typed.js"></script>
+<script src="../../js/custom.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script src="../../js/settings.js"></script>
+<script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+<script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.js"></script>
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>

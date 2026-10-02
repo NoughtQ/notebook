@@ -1,0 +1,1814 @@
+<!DOCTYPE html>
+<html class="no-js" lang="zh"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="NoughtQ的笔记本，主要记录一些 CS 相关的笔记" name="description"/>
+<meta content="NoughtQ" name="author"/>
+<link href="https://notebook.noughtq.top/sys/poc/13.html" rel="canonical"/>
+<link href="11.html" rel="prev"/>
+<link href="14.html" rel="next"/>
+<link href="../../feed_rss_created.xml" rel="alternate" title="RSS 订阅" type="application/rss+xml"/>
+<link href="../../feed_rss_updated.xml" rel="alternate" title="已更新内容的 RSS 订阅" type="application/rss+xml"/>
+<link href="../../assets/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.1" name="generator"/>
+<title>Garbage Collection - NoughtQ的笔记本</title>
+<link href="../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=JetBrains+Mono,+LXGW+WenKai+Screen+GB+Screen:300,300i,400,400i,700,700i%7CJetBrains+Mono,+Consolas:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"JetBrains Mono, LXGW WenKai Screen GB Screen";--md-code-font:"JetBrains Mono, Consolas"}</style>
+<link href="../../css/heti.css" rel="stylesheet"/>
+<link href="../../css/timeline.css" rel="stylesheet"/>
+<link href="../../css/card.css" rel="stylesheet"/>
+<link href="../../css/custom.css" rel="stylesheet"/>
+<link href="../../css/extra_changelog.css" rel="stylesheet"/>
+<link href="../../css/header.css" rel="stylesheet"/>
+<link href="../../css/sidebar.css" rel="stylesheet"/>
+<link href="../../css/settings.css" rel="stylesheet"/>
+<link href="../../css/neoteroi-css.css" rel="stylesheet"/>
+<link href="../../css/toc_extra.css" rel="stylesheet"/>
+<link href="https://unpkg.com/katex@0/dist/katex.min.css" rel="stylesheet"/>
+<link href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css" rel="stylesheet"/>
+<link href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.css" rel="stylesheet"/>
+<script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-43NH8CVRCJ"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-43NH8CVRCJ",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-43NH8CVRCJ",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+<script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+<link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+<body data-md-color-accent="indigo" data-md-color-primary="indigo" data-md-color-scheme="slate" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#garbage-collection">
+          跳转至
+        </a>
+</div>
+<div data-md-component="announce">
+<aside class="md-banner">
+<div class="md-banner__inner md-grid md-typeset">
+<button aria-label="不再显示此消息" class="md-banner__button md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+<!-- Add announcement here, including arbitrary HTML -->
+    游戏开发相关的笔记（包括计算机图形学、游戏引擎等）迁移至我的<a href="https://game.noughtq.top" target="_blank">全新笔记网站</a>，欢迎大家前来阅读🎉
+
+          </div>
+<script>var el=document.querySelector("[data-md-component=announce]");if(el){var content=el.querySelector(".md-typeset");__md_hash(content.innerHTML)===__md_get("__announce")&&(el.hidden=!0)}</script>
+</aside>
+</div>
+<header class="md-header" data-md-component="header">
+<nav aria-label="页眉" class="md-header__inner md-grid">
+<a aria-label="NoughtQ的笔记本" class="md-header__button md-logo" data-md-component="logo" href="../.." title="NoughtQ的笔记本">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.05 9H7.06V6h1.99V4.03H7.06v-1c0-1.11.89-1.99 1.99-1.99h5.98V8l2.47-1.5L20 8V1.04h1c1.05 0 2 .96 2 1.99V17c0 1.03-.95 2-2 2H9.05c-1.05 0-1.99-.95-1.99-2v-1h1.99v-2H7.06v-3h1.99zM1 18h2v-3H1v-2h2v-3H1V8h2V5h2v3H3v2h2v3H3v2h2v3H3v2h2v1h16v2H5a2 2 0 0 1-2-2v-1H1z"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            NoughtQ的笔记本
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              Garbage Collection
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="Dark Mode" class="md-option" data-md-color-accent="indigo" data-md-color-media="(prefer-color-scheme: dark)" data-md-color-primary="indigo" data-md-color-scheme="slate" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="Dark Mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"></path></svg>
+</label>
+<input aria-label="Light Mode" class="md-option" data-md-color-accent="indigo" data-md-color-media="(prefer-color-scheme: light)" data-md-color-primary="indigo" data-md-color-scheme="default" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="Light Mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="搜索" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="搜索" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 256 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path></svg>
+</label>
+<nav aria-label="查找" class="md-search__options">
+<a aria-label="分享" class="md-search__icon md-icon" data-clipboard="" data-clipboard-text="" data-md-component="search-share" href="javascript:void(0)" tabindex="-1" title="分享">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"></path></svg>
+</a>
+<button aria-label="清空当前内容" class="md-search__icon md-icon" tabindex="-1" title="清空当前内容" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header__source">
+<a class="md-source" data-md-component="source" href="https://github.com/noughtq/notebook" title="前往仓库">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    NoughtQ/Notebook
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<nav aria-label="标签" class="md-tabs" data-md-component="tabs">
+<div class="md-grid">
+<ul class="md-tabs__list">
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../index.html">
+          
+  
+  
+    
+  
+  🏫主页
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../lang/index.html">
+          
+  
+  
+    
+  
+  🔡编程语言
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../math/index.html">
+          
+  
+  
+    
+  
+  📊数学相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../algo/index.html">
+          
+  
+  
+    
+  
+  🧮算法相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../software/index.html">
+          
+  
+  
+    
+  
+  💾软件相关
+
+        </a>
+</li>
+<li class="md-tabs__item md-tabs__item--active">
+<a class="md-tabs__link" href="../index.html">
+          
+  
+  
+    
+  
+  💻系统相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../web/index.html">
+          
+  
+  
+    
+  
+  🌏Web相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../ai/index.html">
+          
+  
+  
+    
+  
+  🤖人工智能
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../misc/index.html">
+          
+  
+  
+    
+  
+  🗃️杂项
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../tools/index.html">
+          
+  
+  
+    
+  
+  🛠️工具
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../papers/index.html">
+          
+  
+  
+    
+  
+  📑论文阅读
+
+        </a>
+</li>
+</ul>
+</div>
+</nav>
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="导航栏" class="md-nav md-nav--primary md-nav--lifted" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="NoughtQ的笔记本" class="md-nav__button md-logo" data-md-component="logo" href="../.." title="NoughtQ的笔记本">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.05 9H7.06V6h1.99V4.03H7.06v-1c0-1.11.89-1.99 1.99-1.99h5.98V8l2.47-1.5L20 8V1.04h1c1.05 0 2 .96 2 1.99V17c0 1.03-.95 2-2 2H9.05c-1.05 0-1.99-.95-1.99-2v-1h1.99v-2H7.06v-3h1.99zM1 18h2v-3H1v-2h2v-3H1V8h2V5h2v3H3v2h2v3H3v2h2v3H3v2h2v1h16v2H5a2 2 0 0 1-2-2v-1H1z"></path></svg>
+</a>
+    NoughtQ的笔记本
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-component="source" href="https://github.com/noughtq/notebook" title="前往仓库">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    NoughtQ/Notebook
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../index.html">
+<span class="md-ellipsis">
+    
+  
+    🏫主页
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../lang/index.html">
+<span class="md-ellipsis">
+    
+  
+    🔡编程语言
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../math/index.html">
+<span class="md-ellipsis">
+    
+  
+    📊数学相关
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../algo/index.html">
+<span class="md-ellipsis">
+    
+  
+    🧮算法相关
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../software/index.html">
+<span class="md-ellipsis">
+    
+  
+    💾软件相关
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_6" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../index.html">
+<span class="md-ellipsis">
+    
+  
+    💻系统相关
+  
+
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="true" aria-labelledby="__nav_6_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_6">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    💻系统相关
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../csapp/index.html">
+<span class="md-ellipsis">
+    
+  
+    CSAPP
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../dld/index.html">
+<span class="md-ellipsis">
+    
+  
+    数字逻辑设计
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../co/index.html">
+<span class="md-ellipsis">
+    
+  
+    计算机组成
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../ca/index.html">
+<span class="md-ellipsis">
+    
+  
+    计算机体系结构
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../db/index.html">
+<span class="md-ellipsis">
+    
+  
+    数据库系统
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../os/index.html">
+<span class="md-ellipsis">
+    
+  
+    操作系统
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../aai/index.html">
+<span class="md-ellipsis">
+    
+  
+    汇编与接口
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_6_9" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="index.html">
+<span class="md-ellipsis">
+    
+  
+    编译原理
+  
+
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_6_9" id="__nav_6_9_label" tabindex="0">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="true" aria-labelledby="__nav_6_9_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_6_9">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    编译原理
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="1.html">
+<span class="md-ellipsis">
+    
+  
+    Fundamentals
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_6_9_3" type="checkbox"/>
+<label class="md-nav__link" for="__nav_6_9_3" id="__nav_6_9_3_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Advanced Topics
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_6_9_3_label" class="md-nav" data-md-level="3">
+<label class="md-nav__title" for="__nav_6_9_3">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Advanced Topics
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    
+  
+    Garbage Collection
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="13.html">
+<span class="md-ellipsis">
+    
+  
+    Garbage Collection
+  
+
+    
+  </span>
+</a>
+<nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#mark-and-sweep-collection">
+<span class="md-ellipsis">
+      
+        Mark-and-Sweep Collection
+      
+    </span>
+</a>
+<nav aria-label="Mark-and-Sweep Collection" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#pointer-reversal">
+<span class="md-ellipsis">
+      
+        Pointer Reversal
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#reference-counts">
+<span class="md-ellipsis">
+      
+        Reference Counts
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#copying-collection">
+<span class="md-ellipsis">
+      
+        Copying Collection
+      
+    </span>
+</a>
+<nav aria-label="Copying Collection" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#locality-of-reference">
+<span class="md-ellipsis">
+      
+        Locality of Reference
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#a-hybrid-algorithm">
+<span class="md-ellipsis">
+      
+        A Hybrid Algorithm
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#interface-to-the-compiler">
+<span class="md-ellipsis">
+      
+        Interface to the Compiler
+      
+    </span>
+</a>
+<nav aria-label="Interface to the Compiler" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#fast-allocation">
+<span class="md-ellipsis">
+      
+        Fast Allocation
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#describing-data-layouts">
+<span class="md-ellipsis">
+      
+        Describing Data Layouts
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#pointer-map">
+<span class="md-ellipsis">
+      
+        Pointer Map
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#derived-pointers">
+<span class="md-ellipsis">
+      
+        Derived Pointers
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="14.html">
+<span class="md-ellipsis">
+    
+  
+    Object-Oriented Languages
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="18.html">
+<span class="md-ellipsis">
+    
+  
+    Loop Optimizations
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../web/index.html">
+<span class="md-ellipsis">
+    
+  
+    🌏Web相关
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ai/index.html">
+<span class="md-ellipsis">
+    
+  
+    🤖人工智能
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../misc/index.html">
+<span class="md-ellipsis">
+    
+  
+    🗃️杂项
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../tools/index.html">
+<span class="md-ellipsis">
+    
+  
+    🛠️工具
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../papers/index.html">
+<span class="md-ellipsis">
+    
+  
+    📑论文阅读
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#mark-and-sweep-collection">
+<span class="md-ellipsis">
+      
+        Mark-and-Sweep Collection
+      
+    </span>
+</a>
+<nav aria-label="Mark-and-Sweep Collection" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#pointer-reversal">
+<span class="md-ellipsis">
+      
+        Pointer Reversal
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#reference-counts">
+<span class="md-ellipsis">
+      
+        Reference Counts
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#copying-collection">
+<span class="md-ellipsis">
+      
+        Copying Collection
+      
+    </span>
+</a>
+<nav aria-label="Copying Collection" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#locality-of-reference">
+<span class="md-ellipsis">
+      
+        Locality of Reference
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#a-hybrid-algorithm">
+<span class="md-ellipsis">
+      
+        A Hybrid Algorithm
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#interface-to-the-compiler">
+<span class="md-ellipsis">
+      
+        Interface to the Compiler
+      
+    </span>
+</a>
+<nav aria-label="Interface to the Compiler" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#fast-allocation">
+<span class="md-ellipsis">
+      
+        Fast Allocation
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#describing-data-layouts">
+<span class="md-ellipsis">
+      
+        Describing Data Layouts
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#pointer-map">
+<span class="md-ellipsis">
+      
+        Pointer Map
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#derived-pointers">
+<span class="md-ellipsis">
+      
+        Derived Pointers
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<nav aria-label="导航栏" class="md-path">
+<ol class="md-path__list">
+<li class="md-path__item">
+<a class="md-path__link" href="../index.html">
+<span class="md-ellipsis">
+    💻系统相关
+  </span>
+</a>
+</li>
+<li class="md-path__item">
+<a class="md-path__link" href="index.html">
+<span class="md-ellipsis">
+    编译原理
+  </span>
+</a>
+</li>
+<li class="md-path__item">
+<a class="md-path__link" href="13.html">
+<span class="md-ellipsis">
+    Advanced Topics
+  </span>
+</a>
+</li>
+</ol>
+</nav>
+<article class="md-content__inner md-typeset">
+<a class="md-content__button md-icon" href="https://github.com/noughtq/notebook/edit/master/docs/sys/poc/13.md" rel="edit" title="编辑此页">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"></path></svg>
+</a>
+<a class="md-content__button md-icon" href="https://github.com/noughtq/notebook/raw/master/docs/sys/poc/13.md" title="查看本页的源代码">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"></path></svg>
+</a>
+<h1 id="garbage-collection">Garbage Collection<a class="headerlink" href="#garbage-collection" title="Permanent link">⚓︎</a></h1>
+<div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>3364<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 576 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M360.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6m64.6 136.1c-12.5 12.5-12.5 32.8 0 45.3l73.4 73.4-73.4 73.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l96-96c12.5-12.5 12.5-32.8 0-45.3l-96-96c-12.5-12.5-32.8-12.5-45.3 0zm-274.7 0c-12.5-12.5-32.8-12.5-45.3 0l-96 96c-12.5 12.5-12.5 32.8 0 45.3l96 96c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l73.3-73.4c12.5-12.5 12.5-32.8 0-45.3z"></path></svg></span> <span>6<span class="heti-spacing"> </span></span>行代码 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>17<span class="heti-spacing"> </span></span>分钟</p>
+</div>
+<details class="abstract">
+<summary>核心知识</summary>
+<ul>
+<li>
+<p>标记并清扫</p>
+<ul>
+<li>DFS</li>
+<li>显式栈</li>
+<li>指针反转</li>
+</ul>
+</li>
+<li>
+<p>引用计数</p>
+</li>
+<li>
+<p>复制收集</p>
+<ul>
+<li>转发</li>
+<li>切尼算法（BFS）</li>
+</ul>
+</li>
+<li>
+<p>编译器接口</p>
+<ul>
+<li>快速分配</li>
+<li>描述数据布局</li>
+<li>指针映射</li>
+<li>派生指针</li>
+</ul>
+</li>
+</ul>
+</details>
+<p>C、<span>C++<span class="heti-spacing"> </span></span>等语言采用<strong>手动</strong>管理内存的方法，比如使用 <code>malloc</code> 和 <code>free</code> 进行指针的动态分配和释放。但手动管理容易导致<strong>内存泄漏</strong>（双重释放、释放后使用等）和<strong>类型安全</strong>问题，且这样的存储错误难以发现。</p>
+<p>另一种是<strong>自动</strong>进行的内存管理。理想情况下，我们可以说任何不是动态活跃（不会在未来的计算中使用）的记录都是「<strong>垃圾</strong>」(garbage)，即已分配但不再使用的存储空间。但判断一个对象是否为垃圾是<strong>不可判定的</strong>(undecidable)，因此需要依赖一种保守近似：<u>从程序变量出发，通过任何指针链都无法到达的堆分配记录是垃圾</u>。</p>
+<ul>
+<li>不可达<span class="heti-skip"><span class="heti-spacing"> </span>-&gt;<span class="heti-spacing"> </span></span>垃圾</li>
+<li>垃圾<span class="heti-skip"><span class="heti-spacing"> </span>-&gt;<span class="heti-spacing"> </span></span>可能可达</li>
+</ul>
+<p>一个对象 <code>x</code> 是<strong>可达的</strong><span>(reachable)<span class="heti-spacing"> </span></span>当且仅当：</p>
+<ul>
+<li>某个寄存器包含指向 <code>x</code> 的指针，或者</li>
+<li>另一个可达对象 <code>y</code> 包含指向 <code>x</code> 的指针</li>
+</ul>
+<p><strong>垃圾回收</strong>(garbage collection, <strong>GC</strong><span>)<span class="heti-spacing"> </span></span>是无需显式调用 <code>free</code>，回收已分配但不再使用的存储空间的过程。它不是由编译器执行的，而是由运行时系统（与编译代码链接的支持程序）完成的。每种垃圾回收方案都包含以下步骤：</p>
+<ol>
+<li>根据需要为新对象分配空间</li>
+<li>当空间耗尽时：<ol>
+<li>计算可能被再次使用的对象（通常通过追踪从一组“根”寄存器可达的对象）  </li>
+<li>释放步骤<span class="heti-skip"><span class="heti-spacing"> </span>a<span class="heti-spacing"> </span></span>中未找到的对象所占用的空间  </li>
+</ol>
+</li>
+</ol>
+<p>有些策略会在空间实际耗尽之前执行垃圾回收。</p>
+<details class="example" open="open">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C13/1.png"><img src="images/C13/1.png" width="70%"/></a>
+</div><p></p>
+</details>
+<h2 id="mark-and-sweep-collection">Mark-and-Sweep Collection<a class="headerlink" href="#mark-and-sweep-collection" title="Permanent link">⚓︎</a></h2>
+<p>程序变量和堆分配记录构成一个<strong>有向图</strong>，这些变量是该图的<strong>根</strong>。若节点<span class="heti-skip"><span class="heti-spacing"> </span>n<span class="heti-spacing"> </span></span>存在一条有向边路径<span><span class="heti-spacing"> </span>r -&gt; ... -&gt; n</span>（其中<span class="heti-skip"><span class="heti-spacing"> </span>r<span class="heti-spacing"> </span></span>是某个根<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，则<span class="heti-skip"><span class="heti-spacing"> </span>n<span class="heti-spacing"> </span></span>是可达的。</p>
+<ul>
+<li>
+<p>我们可借助 <strong>DFS</strong>（深度优先搜索）等图搜索算法可以<strong>标记</strong><span>(mark)<span class="heti-spacing"> </span></span>所有可达节点</p>
+<div class="arithmatex">\[
+\begin{aligned}
+&amp;\textbf{function } \mathrm{DFS}(x)\\
+&amp;\textbf{if } x \text{ is a pointer into the heap}\\
+&amp;\qquad \textbf{if} \text{ record } x \text{ is not marked}\\
+&amp;\qquad\qquad \text{mark } x\\
+&amp;\qquad\qquad \textbf{for} \text{ each field } f_i \text{ of record } x\\
+&amp;\qquad\qquad\qquad \mathrm{DFS}(x.f_i)
+\end{aligned}
+\]</div>
+<ul>
+<li>每个对象都有一个额外的<strong>标记位</strong>，专用于内存管理</li>
+<li>初始时标记位为<span><span class="heti-spacing"> </span>0</span>；在标记阶段将可达对象的标记位设为<span><span class="heti-spacing"> </span>1</span></li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C13/2.png"><img src="images/C13/2.png" width="30%"/></a>
+</div><p></p>
+</li>
+<li>
+<p><strong>清扫</strong><span>(sweep)<span class="heti-spacing"> </span></span>整个堆，查找未被标记的节点（即<strong>垃圾</strong><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，通过链表（<strong>空闲列表</strong>(freelist)）将这些垃圾连接起来；另外还应取消所有已标记节点的标记，为下一次垃圾回收做准备</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C13/3.png"><img src="images/C13/3.png" width="30%"/></a>
+</div><p></p>
+</li>
+</ul>
+<p>完整算法如下：</p>
+<div class="grid">
+
+$$
+\begin{aligned}
+&amp;\textit{Mark phase:} \\
+&amp;\mathbf{for}\ \text{each root } v \\
+&amp;\qquad \mathrm{DFS}(v)
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+&amp;\textit{Sweep phase:} \\
+&amp;p \leftarrow \text{first address in heap} \\
+&amp;\mathbf{while}\ p &lt; \text{last address in heap} \\
+&amp;\qquad \mathbf{if}\ \text{record } p\ \text{is marked} \\
+&amp;\qquad\qquad \text{unmark } p \\
+&amp;\qquad \mathbf{else}\ \text{let } f_1\ \text{be the first field in } p \\
+&amp;\qquad\qquad p.f_1 \leftarrow \mathtt{freelist} \\
+&amp;\qquad\qquad \mathtt{freelist} \leftarrow p \\
+&amp;\qquad p \leftarrow p + (\text{size of record } p)
+\end{aligned}
+$$
+
+</div>
+<ul>
+<li><span>GC<span class="heti-spacing"> </span></span>之后，编译程序恢复执行</li>
+<li>每当需要在堆上分配一个新记录时，它就从空闲列表中获取一个记录；如果列表为空，则通过另一次<span class="heti-skip"><span class="heti-spacing"> </span>GC<span class="heti-spacing"> </span></span>来补充</li>
+</ul>
+<p><span>GC<span class="heti-spacing"> </span></span>的成本：</p>
+<ul>
+<li>
+<p>时间：</p>
+<ul>
+<li>标记：<span class="arithmatex">\(c_1 R\)</span>（<span class="arithmatex">\(R\)</span>：可达数据块的数量）</li>
+<li>清扫：<span class="arithmatex">\(c_2 H\)</span>（<span class="arithmatex">\(H\)</span>：堆的数据块数量）</li>
+<li>每个垃圾摊还后的成本<span><span class="heti-spacing"> </span>= <span class="arithmatex">\(\dfrac{c_1 R + c_2 H}{H - R}\)</span></span></li>
+</ul>
+</li>
+<li>
+<p>空间：</p>
+<ul>
+<li>由于<span class="heti-skip"><span class="heti-spacing"> </span>DFS<span class="heti-spacing"> </span></span>算法是递归的，因此在最坏情况下，活动记录栈的长度可能会超过整个堆</li>
+<li>
+<p>解决方案：使用<strong>显式栈</strong>代替递归，即使用<span class="heti-skip"><span class="heti-spacing"> </span>H<span class="heti-spacing"> </span></span>个词而不是<span class="heti-skip"><span class="heti-spacing"> </span>H<span class="heti-spacing"> </span></span>个活动记录</p>
+<div class="arithmatex">\[
+\begin{aligned}
+&amp;\mathbf{function}\ \mathrm{DFS}(x) \\
+&amp;\qquad \mathbf{if}\ x\ \text{is a pointer and record }x\text{ is not marked} \\
+&amp;\qquad\qquad \text{mark }x \\
+&amp;\qquad\qquad t \leftarrow 1 \\
+&amp;\qquad\qquad \mathrm{stack}[t] \leftarrow x \\
+&amp;\qquad\qquad \mathbf{while}\ t &gt; 0\quad //\ \text{stack is non-empty} \\
+&amp;\qquad\qquad\qquad x \leftarrow \mathrm{stack}[t];\ t \leftarrow t - 1 \\
+&amp;\qquad\qquad\qquad \mathbf{for}\ \text{each field }f_i\text{ of record }x \\
+&amp;\qquad\qquad\qquad\qquad \mathbf{if}\ x.f_i\text{ is a pointer and record }x.f_i\text{ is not marked} \\
+&amp;\qquad\qquad\qquad\qquad\qquad \text{mark }x.f_i \\
+&amp;\qquad\qquad\qquad\qquad\qquad t \leftarrow t + 1;\ \mathrm{stack}[t] \leftarrow x.f_i
+\end{aligned}
+\]</div>
+<ul>
+<li><span class="arithmatex">\(t\)</span>：栈顶索引</li>
+<li><span class="arithmatex">\(\text{stack}\)</span>：词列表</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="pointer-reversal">Pointer Reversal<a class="headerlink" href="#pointer-reversal" title="Permanent link">⚓︎</a></h3>
+<p>下面考虑不在算法中用到栈，这样可以节省更多空间。</p>
+<p><strong>指针反转</strong>(pointer reversal)：</p>
+<ul>
+<li>压栈：<span><span class="arithmatex">\(x.f_i\)</span><span class="heti-spacing"> </span></span>将被设置为指向到达<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x\)</span><span class="heti-spacing"> </span></span>的记录</li>
+<li>弹栈：先通过<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x.f_i\)</span><span class="heti-spacing"> </span></span>的值找到<span><span class="heti-spacing"> </span><span class="arithmatex">\(x\)</span></span>，然后将<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x.f_i\)</span><span class="heti-spacing"> </span></span>将恢复为原值</li>
+</ul>
+<p>算法如下：</p>
+<div class="arithmatex">\[
+\begin{aligned}
+&amp;\mathbf{function}\ \mathrm{DFS}(x) \\
+&amp;\mathbf{if}\ x\ \text{is a pointer and record }x\text{ is not marked} \\
+&amp;\qquad t \leftarrow \mathrm{nil} \\
+&amp;\qquad \text{mark }x;\ \mathrm{done}[x] \leftarrow 0 \\
+&amp;\qquad \mathbf{while}\ \mathrm{true} \\
+&amp;\qquad\qquad i \leftarrow \mathrm{done}[x] \\
+&amp;\qquad\qquad \mathbf{if}\ i &lt; \#\text{ of fields in record }x \\
+&amp;\qquad\qquad\qquad y \leftarrow x.f_i \\
+&amp;\qquad\qquad\qquad \mathbf{if}\ y\ \text{is a pointer and record }y\text{ is not marked} \\
+&amp;\qquad\qquad\qquad\qquad x.f_i \leftarrow t;\ t \leftarrow x;\ x \leftarrow y \\
+&amp;\qquad\qquad\qquad\qquad \text{mark }x;\ \mathrm{done}[x] \leftarrow 0 \\
+&amp;\qquad\qquad\qquad \mathbf{else} \\
+&amp;\qquad\qquad\qquad\qquad \mathrm{done}[x] \leftarrow i + 1 \\
+&amp;\qquad\qquad \mathbf{else} \\
+&amp;\qquad\qquad\qquad y \leftarrow x;\ x \leftarrow t \\
+&amp;\qquad\qquad\qquad \mathbf{if}\ x = \mathrm{nil}\ \mathbf{then}\ \mathbf{return} \\
+&amp;\qquad\qquad\qquad i \leftarrow \mathrm{done}[x] \\
+&amp;\qquad\qquad\qquad t \leftarrow x.f_i;\ x.f_i \leftarrow y \\
+&amp;\qquad\qquad\qquad \mathrm{done}[x] \leftarrow i + 1
+\end{aligned}
+\]</div>
+<ul>
+<li><span class="arithmatex">\(\text{done}\)</span>：每个记录中已处理的字段数<ul>
+<li>更详细地，<span><span class="arithmatex">\(\text{done}[x] = k\)</span><span class="heti-spacing"> </span></span>表示记录<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x\)</span><span class="heti-spacing"> </span></span>的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(f_0, f_1, \dots, f_{k-1}\)</span><span class="heti-spacing"> </span></span>已经处理完；下一次要检查的是<span><span class="heti-spacing"> </span><span class="arithmatex">\(f_k\)</span></span></li>
+</ul>
+</li>
+<li><span class="arithmatex">\(t\)</span>：栈顶（也可以理解为父节点<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>前驱节点）</li>
+<li>如果<span><span class="heti-spacing"> </span><span class="arithmatex">\(i = \text{done}[x]\)</span></span>，则<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x.f_i\)</span><span class="heti-spacing"> </span></span>是下一个节点的栈链接</li>
+</ul>
+<details class="example" open="open">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="" id="__tabbed_1_1" name="__tabbed_1" type="radio"/><input id="__tabbed_1_2" name="__tabbed_1" type="radio"/><div class="tabbed-labels"><label for="__tabbed_1_1">例<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span></label><label for="__tabbed_1_2">例<span><span class="heti-spacing"> </span>2</span></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="tabbed-set tabbed-alternate" data-tabs="2:6"><input checked="" id="__tabbed_2_1" name="__tabbed_2" type="radio"/><input id="__tabbed_2_2" name="__tabbed_2" type="radio"/><input id="__tabbed_2_3" name="__tabbed_2" type="radio"/><input id="__tabbed_2_4" name="__tabbed_2" type="radio"/><input id="__tabbed_2_5" name="__tabbed_2" type="radio"/><input id="__tabbed_2_6" name="__tabbed_2" type="radio"/><div class="tabbed-labels"><label for="__tabbed_2_1">Step 1</label><label for="__tabbed_2_2">Step 2</label><label for="__tabbed_2_3">Step 3</label><label for="__tabbed_2_4">Step 4</label><label for="__tabbed_2_5">Step 5</label><label for="__tabbed_2_6">Step 6</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C13/4.png"><img src="images/C13/4.png" width="50%"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C13/5.png"><img src="images/C13/5.png" width="50%"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C13/6.png"><img src="images/C13/6.png" width="50%"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C13/7.png"><img src="images/C13/7.png" width="50%"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C13/8.png"><img src="images/C13/8.png" width="50%"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C13/9.png"><img src="images/C13/9.png" width="30%"/></a>
+</div><p></p>
+</div>
+</div>
+</div>
+</div>
+<div class="tabbed-block">
+<blockquote>
+<p>来自作业题<span><span class="heti-spacing"> </span>13.2</span></p>
+</blockquote>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="" id="__tabbed_3_1" name="__tabbed_3" type="radio"/><input id="__tabbed_3_2" name="__tabbed_3" type="radio"/><div class="tabbed-labels"><label for="__tabbed_3_1">题目</label><label for="__tabbed_3_2">解答</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>Run Algorithm 13.6 (pointer reversal) on the heap of Figure 13.1（就是一开始介绍标记并清扫算法的那两张示意图中的例子）. Show the state of the heap, the <code>done</code> flags, and variables <code>t</code>, <code>x</code>, and <code>y</code> at the time the node containing 59 is first marked.</p>
+</div>
+<div class="tabbed-block">
+<p>在节点<span class="heti-skip"><span class="heti-spacing"> </span>59<span class="heti-spacing"> </span></span>第一次被标记时：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a>t -&gt; 37
+</span><span id="__span-0-2"><a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a>x -&gt; 59
+</span><span id="__span-0-3"><a href="#__codelineno-0-3" id="__codelineno-0-3" name="__codelineno-0-3"></a>y -&gt; 59
+</span></code></pre></div>
+<p><code>done</code> 标记情况：</p>
+<table>
+<thead>
+<tr>
+<th>节点</th>
+<th>done</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>15</code></td>
+<td><code>2</code></td>
+</tr>
+<tr>
+<td><code>12</code></td>
+<td><code>3</code></td>
+</tr>
+<tr>
+<td><code>37</code></td>
+<td><code>2</code></td>
+</tr>
+<tr>
+<td><code>20</code></td>
+<td><code>3</code></td>
+</tr>
+<tr>
+<td><code>59</code></td>
+<td><code>0</code></td>
+</tr>
+<tr>
+<td><code>7</code></td>
+<td>未设置</td>
+</tr>
+<tr>
+<td><code>9</code></td>
+<td>未设置</td>
+</tr>
+</tbody>
+</table>
+<p>堆中指针状态：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a>p -&gt; 15
+</span><span id="__span-1-2"><a href="#__codelineno-1-2" id="__codelineno-1-2" name="__codelineno-1-2"></a>q = 37
+</span><span id="__span-1-3"><a href="#__codelineno-1-3" id="__codelineno-1-3" name="__codelineno-1-3"></a>r -&gt; 37
+</span><span id="__span-1-4"><a href="#__codelineno-1-4" id="__codelineno-1-4" name="__codelineno-1-4"></a>
+</span><span id="__span-1-5"><a href="#__codelineno-1-5" id="__codelineno-1-5" name="__codelineno-1-5"></a>15.left  -&gt; 12
+</span><span id="__span-1-6"><a href="#__codelineno-1-6" id="__codelineno-1-6" name="__codelineno-1-6"></a>15.right -&gt; nil        // 暂时被反转
+</span><span id="__span-1-7"><a href="#__codelineno-1-7" id="__codelineno-1-7" name="__codelineno-1-7"></a>
+</span><span id="__span-1-8"><a href="#__codelineno-1-8" id="__codelineno-1-8" name="__codelineno-1-8"></a>12.left  -&gt; nil
+</span><span id="__span-1-9"><a href="#__codelineno-1-9" id="__codelineno-1-9" name="__codelineno-1-9"></a>12.right -&gt; nil
+</span><span id="__span-1-10"><a href="#__codelineno-1-10" id="__codelineno-1-10" name="__codelineno-1-10"></a>
+</span><span id="__span-1-11"><a href="#__codelineno-1-11" id="__codelineno-1-11" name="__codelineno-1-11"></a>37.left  -&gt; 20
+</span><span id="__span-1-12"><a href="#__codelineno-1-12" id="__codelineno-1-12" name="__codelineno-1-12"></a>37.right -&gt; 15         // 暂时被反转，原来是 59
+</span><span id="__span-1-13"><a href="#__codelineno-1-13" id="__codelineno-1-13" name="__codelineno-1-13"></a>
+</span><span id="__span-1-14"><a href="#__codelineno-1-14" id="__codelineno-1-14" name="__codelineno-1-14"></a>20.left  -&gt; nil
+</span><span id="__span-1-15"><a href="#__codelineno-1-15" id="__codelineno-1-15" name="__codelineno-1-15"></a>20.right -&gt; nil
+</span><span id="__span-1-16"><a href="#__codelineno-1-16" id="__codelineno-1-16" name="__codelineno-1-16"></a>
+</span><span id="__span-1-17"><a href="#__codelineno-1-17" id="__codelineno-1-17" name="__codelineno-1-17"></a>59.left  -&gt; nil
+</span><span id="__span-1-18"><a href="#__codelineno-1-18" id="__codelineno-1-18" name="__codelineno-1-18"></a>59.right -&gt; nil
+</span><span id="__span-1-19"><a href="#__codelineno-1-19" id="__codelineno-1-19" name="__codelineno-1-19"></a>
+</span><span id="__span-1-20"><a href="#__codelineno-1-20" id="__codelineno-1-20" name="__codelineno-1-20"></a>7.link -&gt; 9            // 未标记，保持原状
+</span><span id="__span-1-21"><a href="#__codelineno-1-21" id="__codelineno-1-21" name="__codelineno-1-21"></a>9.link -&gt; 7            // 未标记，保持原状
+</span></code></pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</details>
+<div class="admonition recommend">
+<p class="admonition-title">优点：不会移动对象，因而无需更新指针，可直接用在<span><span class="heti-spacing"> </span>C</span>、<span>C++<span class="heti-spacing"> </span></span>等语言</p>
+</div>
+<details class="bug" open="open">
+<summary>问题：<strong>碎片化</strong>(fragmentation)</summary>
+<ul>
+<li>
+<p><strong>外部碎片</strong>(external fragmentation)：程序想要分配一个大小为<span class="heti-skip"><span class="heti-spacing"> </span>n<span class="heti-spacing"> </span></span>的记录，但有许多小于<span class="heti-skip"><span class="heti-spacing"> </span>n<span class="heti-spacing"> </span></span>的空闲记录，却没有大小合适的（图中白色块）</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C13/10.png"><img src="images/C13/10.png" width="70%"/></a>
+</div><p></p>
+</li>
+<li>
+<p><strong>内部碎片</strong>(internal fragmentation)：程序使用了一个过大的记录而未将其分割，导致未使用的内存位于记录内部而非外部（图中实心填充蓝色块）</p>
+</li>
+</ul>
+</details>
+<h2 id="reference-counts">Reference Counts<a class="headerlink" href="#reference-counts" title="Permanent link">⚓︎</a></h2>
+<p>标记<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>清扫回收是通过首先找出哪些对象是可达的来识别垃圾的。我们还可以通过追踪有多少指针指向记录来直接完成这一步。这时需要为每个记录保留一个<strong>引用计数</strong>(reference count)，即指向该记录的指针数量。</p>
+<ul>
+<li>编译器会发出额外指令，以便每当<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(p\)</span><span class="heti-spacing"> </span></span>被存储到<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x.f_i\)</span><span class="heti-spacing"> </span></span>中时，<span><span class="arithmatex">\(p\)</span><span class="heti-spacing"> </span></span>的引用计数就会增加，而<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(x.f_i\)</span><span class="heti-spacing"> </span></span>先前指向的内容的引用计数就会减少</li>
+<li>如果某个记录<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(z\)</span><span class="heti-spacing"> </span></span>的引用计数达到零，那么<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(z\)</span><span class="heti-spacing"> </span></span>会被放入空闲列表中，并且<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(z\)</span><span class="heti-spacing"> </span></span>指向的所有其他记录的引用计数都会减少</li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C13/11.png"><img src="images/C13/11.png" width="70%"/></a>
+</div>
+<p>建议在空闲列表移除<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(r\)</span><span class="heti-spacing"> </span></span>时执行<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(r.f_i\)</span><span class="heti-spacing"> </span></span>的计数<span><span class="heti-spacing"> </span>-1</span> （即递减）的操作，而非将<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(r\)</span><span class="heti-spacing"> </span></span>放入空闲列表时，原因：</p>
+<ul>
+<li>它将递归递减工作分解成<strong>更小的片段</strong>(shorter pieces)，从而使程序运行更流畅（这对交互式或实时程序尤为重要）</li>
+<li>递归递减将仅在分配器中的一个位置执行</li>
+</ul>
+<div class="admonition bug">
+<p class="admonition-title">问题</p>
+<p><a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C13/12.png"><img align="right" alt="" src="images/C13/12.png" width="20%"/></a></p>
+<ul>
+<li>
+<p><strong>循环的垃圾无法被回收</strong></p>
+<ul>
+<li><strong>引用循环</strong>是一组相互循环引用的对象，比如右图存储<span class="heti-skip"><span class="heti-spacing"> </span>7<span class="heti-spacing"> </span></span>的记录和存储<span class="heti-skip"><span class="heti-spacing"> </span>9<span class="heti-spacing"> </span></span>的记录  </li>
+<li>引用计数跟踪的是引用的数量，而不是可达引引用的数量</li>
+<li>因此这是在采用引用计数的语言<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>系统（Perl、<span>Firefox 2<span class="heti-spacing"> </span></span>等）中存在的主要问题</li>
+</ul>
+</li>
+<li>
+<p><strong>带来额外的计算成本</strong></p>
+<ul>
+<li>比如<span class="heti-skip"><span class="heti-spacing"> </span>x.fi &lt;- p<span class="heti-spacing"> </span></span>会涉及原<span class="heti-skip"><span class="heti-spacing"> </span>x.fi<span class="heti-spacing"> </span></span>计数<span class="heti-skip"><span class="heti-spacing"> </span>-1<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>p<span class="heti-spacing"> </span></span>计数<span class="heti-skip"><span class="heti-spacing"> </span>+1<span class="heti-spacing"> </span></span>的计算</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="admonition abstract">
+<p class="admonition-title">总结</p>
+<ul>
+<li>优点：<ul>
+<li>实现简单</li>
+<li>以增量方式收集垃圾，执行过程中无长时间停顿</li>
+</ul>
+</li>
+<li>缺点：<ul>
+<li>无法回收所有不可达对象</li>
+<li>若发起大规模回收，可能速度较慢</li>
+<li>显著减慢赋值操作</li>
+</ul>
+</li>
+</ul>
+</div>
+<h2 id="copying-collection">Copying Collection<a class="headerlink" href="#copying-collection" title="Permanent link">⚓︎</a></h2>
+<p><strong>复制回收</strong>(copying collection)（又称<strong>停止并复制</strong><span>(stop-and-copy)<span class="heti-spacing"> </span></span>算法）思路是：将内存分为两部分，并通过复制进行回收。</p>
+<ul>
+<li>遍历有向图（即堆的可达部分，位于堆中称为「<strong>从空间</strong>」<span>(from-space)<span class="heti-spacing"> </span></span>的部分）</li>
+<li>在堆的新区域（称为「<strong>到空间</strong>」(to-space)）中构建一个同构副本，其布局是<strong>紧凑的</strong>(compact)（占用连续内存，无碎片化）</li>
+<li>
+<p>使根节点指向到空间中的副本，之后整个从空间变得不可达</p>
+<blockquote>
+<p>可以保留原来的从空间，可以在下次<span class="heti-skip"><span class="heti-spacing"> </span>GC<span class="heti-spacing"> </span></span>时用作到空间（两块空间的角色互换）</p>
+</blockquote>
+</li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C13/13.png"><img src="images/C13/13.png" width="80%"/></a>
+</div>
+<p>复制回收的步骤：</p>
+<ol>
+<li><strong>初始化一个集合</strong>(collection)：指针<span class="heti-skip"><span class="heti-spacing"> </span>next<span class="heti-spacing"> </span></span>被初始化为指向<span class="heti-skip"><span class="heti-spacing"> </span>to-space<span class="heti-spacing"> </span></span>的开头</li>
+<li>
+<p><strong>转发</strong>(forwarding)：给定一个指向<span class="heti-skip"><span class="heti-spacing"> </span>from-space<span class="heti-spacing"> </span></span>的指针<span><span class="heti-spacing"> </span>p</span>，使<span class="heti-skip"><span class="heti-spacing"> </span>p<span class="heti-spacing"> </span></span>指向<span><span class="heti-spacing"> </span>to-space</span></p>
+<div class="arithmatex">\[
+\begin{aligned}
+&amp;\mathbf{function}\ \mathrm{Forward}(p) \\
+&amp;\qquad \mathbf{if}\ p\ \text{points to from-space} \\
+&amp;\qquad\qquad \mathbf{then}\ \mathbf{if}\ p.f_1\ \text{points to to-space} \\
+&amp;\qquad\qquad\qquad \mathbf{then}\ \mathbf{return}\ p.f_1 \\
+&amp;\qquad\qquad\qquad \mathbf{else}\ \mathbf{for}\ \text{each field }f_i\text{ of }p \\
+&amp;\qquad\qquad\qquad\qquad \mathrm{next}.f_i \leftarrow p.f_i \\
+&amp;\qquad\qquad\qquad p.f_1 \leftarrow \mathrm{next} \\
+&amp;\qquad\qquad\qquad \mathrm{next} \leftarrow \mathrm{next} + \text{size of record }p \\
+&amp;\qquad\qquad\qquad \mathbf{return}\ p.f_1 \\
+&amp;\qquad \mathbf{else}\ \mathbf{return}\ p
+\end{aligned}
+\]</div>
+</li>
+<li>
+<p><strong>切尼算法</strong>(Cheney's algorithm)：一种使用<span><span class="heti-spacing"> </span>BFS</span>（广度优先搜索）遍历可达数据的集合算法</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C13/22.png"><img src="images/C13/22.png" width="80%"/></a>
+</div><p></p>
+<div class="arithmatex">\[
+\begin{aligned}
+&amp;\mathit{scan} \leftarrow \mathit{next} \leftarrow \text{beginning of to-space} \\
+&amp;\mathbf{for}\ \text{each root } r \\
+&amp;\qquad r \leftarrow \mathrm{Forward}(r) \\
+&amp;\mathbf{while}\ \mathit{scan} &lt; \mathit{next} \\
+&amp;\qquad \mathbf{for}\ \text{each field } f_i\ \text{of record at }\mathit{scan} \\
+&amp;\qquad\qquad \mathit{scan}.f_i \leftarrow \mathrm{Forward}(\mathit{scan}.f_i) \\
+&amp;\qquad \mathit{scan} \leftarrow \mathit{scan} + \text{size of record at }\mathit{scan}
+\end{aligned}
+\]</div>
+<ul>
+<li><span class="arithmatex">\(next\)</span>：用于已复制的记录  </li>
+<li><span class="arithmatex">\(scan\)</span>：用于字段已被复制的记录  </li>
+<li><span><span class="arithmatex">\(scan\)</span><span class="heti-spacing"> </span></span>与<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(next\)</span><span class="heti-spacing"> </span></span>之间的区域：广度优先搜索的队列</li>
+</ul>
+</li>
+</ol>
+<details class="example" open="open">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C13/14.png"><img src="images/C13/14.png" width="90%"/></a>
+</div><p></p>
+</details>
+<details class="note">
+<summary>另一种解释（来自<span><span class="heti-spacing"> </span>CS143</span>）</summary>
+<p>将到空间划分为三块连续的区域：</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C13/15.png"><img src="images/C13/15.png" width="70%"/></a>
+</div><p></p>
+<ul>
+<li><strong>复制并扫描</strong>(copied and scanned)：已复制的对象，其指针字段被追踪</li>
+<li><strong>复制</strong>(copied)：已复制的对象，其指针字段未被追踪（指针还是指向从空间）</li>
+<li><strong>空</strong>(empty)</li>
+</ul>
+<details class="example" open="open">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:6"><input checked="" id="__tabbed_4_1" name="__tabbed_4" type="radio"/><input id="__tabbed_4_2" name="__tabbed_4" type="radio"/><input id="__tabbed_4_3" name="__tabbed_4" type="radio"/><input id="__tabbed_4_4" name="__tabbed_4" type="radio"/><input id="__tabbed_4_5" name="__tabbed_4" type="radio"/><input id="__tabbed_4_6" name="__tabbed_4" type="radio"/><div class="tabbed-labels"><label for="__tabbed_4_1">Step 0</label><label for="__tabbed_4_2">Step 1</label><label for="__tabbed_4_3">Step 2</label><label for="__tabbed_4_4">Step 3</label><label for="__tabbed_4_5">Step 4</label><label for="__tabbed_4_6">Step 5</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p><span>GC<span class="heti-spacing"> </span></span>前</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C13/16.png"><img src="images/C13/16.png" width="70%"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<p>复制根对象所指向的对象，并设置转发指针。</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C13/17.png"><img src="images/C13/17.png" width="70%"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<p>追踪在下一个未扫描的对象（A）中的指针</p>
+<ul>
+<li>复制指向的对象（在此情况下仅为<span><span class="heti-spacing"> </span>C</span>）</li>
+<li>修正<span class="heti-skip"><span class="heti-spacing"> </span>A<span class="heti-spacing"> </span></span>中的指针</li>
+<li>设置转发指针</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C13/18.png"><img src="images/C13/18.png" width="70%"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<p>追踪下一个未扫描对象中的指针（C）</p>
+<ul>
+<li>复制指向的对象（此处为<span><span class="heti-spacing"> </span>F</span>）</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C13/19.png"><img src="images/C13/19.png" width="70%"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<p>追踪下一个未扫描对象中的指针（F）</p>
+<ul>
+<li>所指向的对象（A）已被复制 —<span>&gt;<span class="heti-spacing"> </span></span>将指针设置为与转发指针相同</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C13/20.png"><img src="images/C13/20.png" width="70%"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<ul>
+<li>由于扫描追上了分配<span class="heti-skip"><span class="heti-spacing"> </span>-&gt;<span class="heti-spacing"> </span></span>完成</li>
+<li>交换空间的作用并恢复程序</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C13/21.png"><img src="images/C13/21.png" width="70%"/></a>
+</div><p></p>
+</div>
+</div>
+</div>
+</details>
+<p>完整的算法如下：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a>while scan != alloc do
+</span><span id="__span-2-2"><a href="#__codelineno-2-2" id="__codelineno-2-2" name="__codelineno-2-2"></a>    let O be the object at scan pointer
+</span><span id="__span-2-3"><a href="#__codelineno-2-3" id="__codelineno-2-3" name="__codelineno-2-3"></a>    for each pointer p contained in O do
+</span><span id="__span-2-4"><a href="#__codelineno-2-4" id="__codelineno-2-4" name="__codelineno-2-4"></a>        find O’ that p points to
+</span><span id="__span-2-5"><a href="#__codelineno-2-5" id="__codelineno-2-5" name="__codelineno-2-5"></a>        if O’ is without a forwarding pointer
+</span><span id="__span-2-6"><a href="#__codelineno-2-6" id="__codelineno-2-6" name="__codelineno-2-6"></a>            copy O’ to new space (update alloc pointer)
+</span><span id="__span-2-7"><a href="#__codelineno-2-7" id="__codelineno-2-7" name="__codelineno-2-7"></a>            set 1st word of old O’ to point to the new copy
+</span><span id="__span-2-8"><a href="#__codelineno-2-8" id="__codelineno-2-8" name="__codelineno-2-8"></a>            change p to point to the new copy of O’
+</span><span id="__span-2-9"><a href="#__codelineno-2-9" id="__codelineno-2-9" name="__codelineno-2-9"></a>        else
+</span><span id="__span-2-10"><a href="#__codelineno-2-10" id="__codelineno-2-10" name="__codelineno-2-10"></a>            set p in O equal to the forwarding pointer
+</span><span id="__span-2-11"><a href="#__codelineno-2-11" id="__codelineno-2-11" name="__codelineno-2-11"></a>        fi
+</span><span id="__span-2-12"><a href="#__codelineno-2-12" id="__codelineno-2-12" name="__codelineno-2-12"></a>    end for
+</span><span id="__span-2-13"><a href="#__codelineno-2-13" id="__codelineno-2-13" name="__codelineno-2-13"></a>    increment scan pointer to the next object
+</span><span id="__span-2-14"><a href="#__codelineno-2-14" id="__codelineno-2-14" name="__codelineno-2-14"></a>od
+</span></code></pre></div>
+</details>
+<h3 id="locality-of-reference">Locality of Reference<a class="headerlink" href="#locality-of-reference" title="Permanent link">⚓︎</a></h3>
+<p><strong>广度优先复制</strong>的指针数据结构具有<strong>较差的引用局部性</strong>：如果地址<span class="heti-skip"><span class="heti-spacing"> </span>a<span class="heti-spacing"> </span></span>处的记录指向地址<span class="heti-skip"><span class="heti-spacing"> </span>b<span class="heti-spacing"> </span></span>处的另一个记录，那么<span class="heti-skip"><span class="heti-spacing"> </span>a<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>b<span class="heti-spacing"> </span></span>很可能相隔很远。</p>
+<p>而在具有虚拟内存或内存缓存的计算机系统中，良好的引用局部性非常重要，因为假如程序获取地址<span class="heti-skip"><span class="heti-spacing"> </span>a<span class="heti-spacing"> </span></span>后，内存子系统可以很快会获取地址<span class="heti-skip"><span class="heti-spacing"> </span>a<span class="heti-spacing"> </span></span>附近的地址。</p>
+<p><strong>深度优先复制</strong>提供了更好的局部性，但深度优先复制需要<strong>指针反转</strong>，这既不便利又速度缓慢。</p>
+<h3 id="a-hybrid-algorithm">A Hybrid Algorithm<a class="headerlink" href="#a-hybrid-algorithm" title="Permanent link">⚓︎</a></h3>
+<p>一种混合的、部分深度优先和部分广度优先的算法可以提供可接受的局部性。其基本思路是：用<span class="heti-skip"><span class="heti-spacing"> </span>BFS<span class="heti-spacing"> </span></span>寻找需要复
+制的记录, 复制时使用 DFS 复制。</p>
+<div class="grid">
+
+$$
+\begin{aligned}
+&amp;\mathbf{function}\ \mathrm{Forward}(p) \\
+&amp;\qquad \mathbf{if}\ p\ \text{points to from-space} \\
+&amp;\qquad\qquad \mathbf{then}\ \mathbf{if}\ p.f_1\ \text{points to to-space} \\
+&amp;\qquad\qquad\qquad \mathbf{then}\ \mathbf{return}\ p.f_1 \\
+&amp;\qquad\qquad\qquad \mathbf{else}\ \mathrm{Chase}(p);\ \mathbf{return}\ p.f_1 \\
+&amp;\qquad \mathbf{else}\ \mathbf{return}\ p
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+&amp;\mathbf{function}\ \mathrm{Chase}(p) \\
+&amp;\qquad \mathbf{repeat} \\
+&amp;\qquad\qquad q \leftarrow \mathrm{next} \\
+&amp;\qquad\qquad \mathrm{next} \leftarrow \mathrm{next} + \text{size of record } p \\
+&amp;\qquad\qquad r \leftarrow \mathrm{nil} \\
+&amp;\qquad\qquad \mathbf{for}\ \text{each field } f_i\ \text{of record } p \\
+&amp;\qquad\qquad\qquad q.f_i \leftarrow p.f_i \\
+&amp;\qquad\qquad\qquad \mathbf{if}\ q.f_i\ \text{points to from-space and} \\
+&amp;\qquad\qquad\qquad\qquad q.f_i.f_1\ \text{does not point to to-space} \\
+&amp;\qquad\qquad\qquad \mathbf{then}\ r \leftarrow q.f_i \\
+&amp;\qquad\qquad p.f_1 \leftarrow q \\
+&amp;\qquad\qquad p \leftarrow r \\
+&amp;\qquad \mathbf{until}\ p = \mathrm{nil}
+\end{aligned}
+$$
+
+</div>
+<details class="recommend" open="open">
+<summary>优点</summary>
+<ul>
+<li>通常被认为是最快的<span class="heti-skip"><span class="heti-spacing"> </span>GC<span class="heti-spacing"> </span></span>方法</li>
+<li>分配成本低：仅需递增堆指针</li>
+<li>收集成本相对较低，尤其在有大量垃圾的情况下（仅接触可达对象<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：假设<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(H\)</span><span class="heti-spacing"> </span></span>个数据块的堆中有<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(R\)</span><span class="heti-spacing"> </span></span>个可达数据块，摊还回收成本为<span><span class="heti-spacing"> </span><span class="arithmatex">\(\dfrac{c_3 R}{\frac{H}{2} - R}\)</span></span></li>
+</ul>
+</details>
+<h2 id="interface-to-the-compiler">Interface to the Compiler<a class="headerlink" href="#interface-to-the-compiler" title="Permanent link">⚓︎</a></h2>
+<p>具备垃圾回收能力的语言的编译器通过以下方式与垃圾回收器交互：</p>
+<ul>
+<li>生成分配记录的代码  </li>
+<li>描述每个垃圾回收周期的根位置  </li>
+<li>描述堆上数据记录的布局  </li>
+<li><del>生成实现读屏障或写屏障的指令（针对某些增量收集版本）</del></li>
+</ul>
+<h3 id="fast-allocation">Fast Allocation<a class="headerlink" href="#fast-allocation" title="Permanent link">⚓︎</a></h3>
+<p>由于创建堆记录的成本相当高，因此采用<strong>复制收集</strong>。</p>
+<ul>
+<li>下一个空闲位置是<span><span class="heti-spacing"> </span>next</span>，区域的末尾是<span><span class="heti-spacing"> </span>limit</span></li>
+<li>分配空间是连续的空闲区域</li>
+</ul>
+<p>分配一个大小为<span class="heti-skip"><span class="heti-spacing"> </span>N<span class="heti-spacing"> </span></span>的记录的步骤：</p>
+<ol>
+<li>调用分配函数</li>
+<li>检查<span><span class="heti-spacing"> </span>next + N &lt; limit ?</span> （如果检查失败，则调用<span><span class="heti-spacing"> </span>GC</span>）</li>
+<li>将<span class="heti-skip"><span class="heti-spacing"> </span>next<span class="heti-spacing"> </span></span>移动到<span><span class="heti-spacing"> </span>result</span></li>
+<li>清除<span><span class="heti-spacing"> </span>M[next], M[next+1], ..., M[next + N - 1]</span></li>
+<li>next &lt;- next + N</li>
+<li>从分配函数返回</li>
+</ol>
+<p><span>A.<span class="heti-spacing"> </span></span>将<span class="heti-skip"><span class="heti-spacing"> </span>result<span class="heti-spacing"> </span></span>移动到某个计算上有用的位置</p>
+<p><span>B.<span class="heti-spacing"> </span></span>将有效值存储到记录中</p>
+<p>（步骤<span class="heti-skip"><span class="heti-spacing"> </span>A<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>B<span class="heti-spacing"> </span></span>不是分配开销）</p>
+<p>其中：</p>
+<ul>
+<li>步骤<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>6<span class="heti-spacing"> </span></span>应该通过<strong>内联展开</strong><span>(inline expansion)<span class="heti-spacing"> </span></span>分配函数来消除</li>
+<li>步骤<span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span>通常可以通过与步骤<span class="heti-skip"><span class="heti-spacing"> </span>A<span class="heti-spacing"> </span></span>结合来省去</li>
+<li>步骤<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>可以省略，改用步骤<span><span class="heti-spacing"> </span>B</span></li>
+<li>步骤<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>5<span class="heti-spacing"> </span></span>不能消除，但它们可以在基本块中的多个分配之间共享；通过将<span class="heti-skip"><span class="heti-spacing"> </span>next<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>limit<span class="heti-spacing"> </span></span>保持在寄存器中，步骤<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>5<span class="heti-spacing"> </span></span>总计只需<strong>三条指令</strong>即可完成</li>
+</ul>
+<p>结合这些技术，分配一个记录（以及随后对其进行<span><span class="heti-spacing"> </span>GC</span>）的成本可以降低到<strong>大约四条指令</strong>。</p>
+<h3 id="describing-data-layouts">Describing Data Layouts<a class="headerlink" href="#describing-data-layouts" title="Permanent link">⚓︎</a></h3>
+<p>收集器必须能够操作程序声明的任何类型的记录，因此它必须能够确定每个记录中的字段数量，以及每个字段是否是指针。</p>
+<p>对于静态类型语言（如<span class="heti-skip"><span class="heti-spacing"> </span>Tiger<span class="heti-spacing"> </span></span>或<span><span class="heti-spacing"> </span>Pascal</span>）或面向对象语言（如<span><span class="heti-spacing"> </span>Java</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，让每个对象的第一个字指向一个特殊的<strong>类型描述符</strong><span>(type descriptor)<span class="heti-spacing"> </span></span>或<strong>类描述符</strong><span>(class descriptor)<span class="heti-spacing"> </span></span>记录，其中包含对象的<strong>总大小</strong>、每个<strong>指针字段位置</strong>的信息。它们由编译器根据静态类型信息（语义分析）生成。</p>
+<ul>
+<li><strong>静态类型语言</strong>：每条记录的开销为一个字</li>
+<li><strong>面向对象语言</strong>：没有因<span class="heti-skip"><span class="heti-spacing"> </span>GC<span class="heti-spacing"> </span></span>而产生的额外每对象开销，因为它们需要这个描述符指针来实现动态方法查找</li>
+</ul>
+<h3 id="pointer-map">Pointer Map<a class="headerlink" href="#pointer-map" title="Permanent link">⚓︎</a></h3>
+<p>编译器必须识别指向收集器的<strong>指针映射</strong>(pointer map)，即位于寄存器或活动记录中的所有包含指针的临时变量和局部变量。</p>
+<p>因为活动临时变量的集合在执行完每条指令后都有可能发生变化，使得指针映射在程序的每个位置都不同，所以更简单的做法是<strong>仅在新一轮<span class="heti-skip"><span class="heti-spacing"> </span>GC<span class="heti-spacing"> </span></span>可以开始的位置描述指针映射</strong>。新一轮<span class="heti-skip"><span class="heti-spacing"> </span>GC<span class="heti-spacing"> </span></span>时机包括： </p>
+<ul>
+<li>对<span class="heti-skip"><span class="heti-spacing"> </span>alloc<span class="heti-spacing"> </span></span>函数的调用  </li>
+<li>任何函数调用，因为任何函数调用都可能调用一个函数，而该函数又可能调用<span><span class="heti-spacing"> </span>alloc</span></li>
+</ul>
+<p>指针映射最好通过<strong>返回地址</strong>来索引，因为返回地址正是垃圾回收器在紧邻的下一个活动记录中会看到的内容。</p>
+<ul>
+<li>为了找到所有根，回收器从栈顶开始向下扫描</li>
+<li>每个返回地址对应一个指针映射条目，该条目描述了下一个栈帧</li>
+<li>在每个栈帧中，回收器会标记（如果是复制回收，则转发）该帧中的指针</li>
+<li>被调用者保存的寄存器需要特殊处理<ul>
+<li>假设函数 <code>f</code> 调用了 <code>g</code>，而 <code>g</code> 又调用了 <code>h</code></li>
+<li><code>g</code> 的指针映射必须描述：在调用 <code>h</code> 时，它的哪些被调用者保存寄存器包含指针，哪些是从 <code>f</code> 继承而来的</li>
+</ul>
+</li>
+</ul>
+<h3 id="derived-pointers">Derived Pointers<a class="headerlink" href="#derived-pointers" title="Permanent link">⚓︎</a></h3>
+<p>有时，编译后的程序中的指针可能指向堆记录的中间，或指向记录的前后位置。</p>
+<details class="example" open="open">
+<summary>例子</summary>
+<p><span>a[i-2000]<span class="heti-spacing"> </span></span>在内部会被计算为<span><span class="heti-spacing"> </span>M[a-2000+i]</span></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a>t1 &lt;- a-2000
+</span><span id="__span-3-2"><a href="#__codelineno-3-2" id="__codelineno-3-2" name="__codelineno-3-2"></a>t2 &lt;- t1 + i
+</span><span id="__span-3-3"><a href="#__codelineno-3-3" id="__codelineno-3-3" name="__codelineno-3-3"></a>t3 &lt;- M[t2]
+</span></code></pre></div>
+<ul>
+<li>如果<span class="heti-skip"><span class="heti-spacing"> </span>a[i-2000]<span class="heti-spacing"> </span></span>出现在循环中，编译器可能会选择将<span class="heti-skip"><span class="heti-spacing"> </span>t1 &lt;- a - 2000<span class="heti-spacing"> </span></span>提升到循环外部，以避免每次迭代都重新计算</li>
+<li>如果该循环还包含一个<span><span class="heti-spacing"> </span>alloc</span>，并且在<span class="heti-skip"><span class="heti-spacing"> </span>t1<span class="heti-spacing"> </span></span>活跃时发生了垃圾回收：<span>t1<span class="heti-spacing"> </span></span>并未指向某个对象的起始位置，或者（更糟的是）指向了一个不相关的对象</li>
+</ul>
+</details>
+<p>我们称<span class="heti-skip"><span class="heti-spacing"> </span>t1<span class="heti-spacing"> </span></span>是从<strong>基</strong><span>(base)<span class="heti-spacing"> </span></span>指针<span><span class="heti-spacing"> </span>a</span> <strong>派生</strong><span>(derived)<span class="heti-spacing"> </span></span>而来的，此时收集器会被<span class="heti-skip"><span class="heti-spacing"> </span>t1<span class="heti-spacing"> </span></span>混淆。</p>
+<p>为处理这个问题，<strong>指针映射</strong>必须标识每个<strong>派生指针</strong>，并告知其基指针。比如当收集器将<span class="heti-skip"><span class="heti-spacing"> </span>a<span class="heti-spacing"> </span></span>重定位到地址<span class="heti-skip"><span class="heti-spacing"> </span>a'<span class="heti-spacing"> </span></span>时，它必须调整<span><span class="heti-spacing"> </span>t1</span>，使其指向地址<span><span class="heti-spacing"> </span>t1 + a' - a</span>。只要<span class="heti-skip"><span class="heti-spacing"> </span>t1<span class="heti-spacing"> </span></span>存活，<span>a<span class="heti-spacing"> </span></span>就必须保持存活。例如：</p>
+<div class="grid">
+<div class="language-sml highlight"><pre><span></span><code><span id="__span-4-1"><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="kr">let</span>
+</span><span id="__span-4-2"><a href="#__codelineno-4-2" id="__codelineno-4-2" name="__codelineno-4-2"></a>  <span class="n">var</span> <span class="n">a</span> <span class="n">:=</span> <span class="n">int</span> <span class="n">array</span><span class="p">[</span><span class="mi">100</span><span class="p">]</span> <span class="kr">of</span> <span class="mi">0</span>
+</span><span id="__span-4-3"><a href="#__codelineno-4-3" id="__codelineno-4-3" name="__codelineno-4-3"></a><span class="kr">in</span>
+</span><span id="__span-4-4"><a href="#__codelineno-4-4" id="__codelineno-4-4" name="__codelineno-4-4"></a>  <span class="n">for</span> <span class="n">i</span> <span class="n">:=</span> <span class="mi">1930</span> <span class="n">to</span> <span class="mi">1990</span>
+</span><span id="__span-4-5"><a href="#__codelineno-4-5" id="__codelineno-4-5" name="__codelineno-4-5"></a>    <span class="kr">do</span> <span class="n">f</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">i-</span><span class="mi">2000</span><span class="p">])</span>
+</span><span id="__span-4-6"><a href="#__codelineno-4-6" id="__codelineno-4-6" name="__codelineno-4-6"></a><span class="kr">end</span>
+</span></code></pre></div>
+
+$$
+\begin{aligned}
+&amp;r1 \leftarrow 100 \\
+&amp;r2 \leftarrow 0 \\
+&amp;\textit{call alloc} \\
+&amp;a \leftarrow r1 \\
+&amp;t1 \leftarrow a - 2000 \\
+&amp;i \leftarrow 1930 \\
+&amp;L1:\ r1 \leftarrow M[t1 + i] \\
+&amp;\textit{call }f \\
+&amp;L2:\ \mathbf{if}\ i \le 1990\ \mathbf{goto}\ L1
+\end{aligned}
+$$
+
+</div>
+<ul>
+<li>临时变量<span class="heti-skip"><span class="heti-spacing"> </span>a<span class="heti-spacing"> </span></span>在赋值给<span class="heti-skip"><span class="heti-spacing"> </span>t1<span class="heti-spacing"> </span></span>后看起来已死亡</li>
+<li>但随后，与返回地址<span class="heti-skip"><span class="heti-spacing"> </span>L2<span class="heti-spacing"> </span></span>相关联的指针映射将无法充分“解释” t1</li>
+<li>因此，<strong>派生指针隐式地保持其基指针存活</strong></li>
+</ul>
+<hr/>
+<details class="abstract" open="open">
+<summary>针对垃圾回收的总结</summary>
+<p>虽然自动内存管理避免了严重的存储错误。但也降低了程序员的控制权，例如数据在内存中的布局、内存何时被释放等等。而且内存泄漏可能（甚至很可能）发生。</p>
+<p>由于<span class="heti-skip"><span class="heti-spacing"> </span>GC<span class="heti-spacing"> </span></span>很重要，研究人员正在开发更先进的垃圾回收算法：</p>
+<ul>
+<li>并发：允许程序在回收过程中继续运行</li>
+<li>分代：不在每次回收时扫描长期存活的对象</li>
+<li>并行：多个回收器并行工作</li>
+</ul>
+</details>
+<aside class="md-source-file">
+<span class="md-source-file__fact">
+<span class="md-icon" title="最后更新">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"></path></svg>
+</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2026年8月2日 20:39:17 CST">2026年8月2日 20:39:17</span>
+</span>
+<span class="md-source-file__fact">
+<span class="md-icon" title="创建日期">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"></path></svg>
+</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2026年8月2日 20:39:17 CST">2026年8月2日 20:39:17</span>
+</span>
+</aside>
+<p style="font-size: 30px; font-weight: 600">评论区</p>
+<div>
+    如果大家有什么问题或想法，欢迎在下方留言~
+  </div>
+<!-- Insert generated snippet here -->
+<script async="" crossorigin="anonymous" data-category="Announcements" data-category-id="DIC_kwDOMAb9Zs4CfmpP" data-emit-metadata="0" data-input-position="bottom" data-lang="zh-CN" data-mapping="pathname" data-reactions-enabled="1" data-repo="noughtq/notebook" data-repo-id="R_kgDOMAb9Zg" data-strict="0" data-theme="preferred_color_scheme" src="https://giscus.app/client.js">
+</script>
+<!-- Synchronize Giscus theme with palette -->
+<script>
+    var giscus = document.querySelector("script[src*=giscus]")
+
+    // Set palette on initial load
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object") {
+      var theme = palette.color.scheme === "slate"
+        ? "transparent_dark"
+        : "light"
+
+      // Instruct Giscus to set theme
+      giscus.setAttribute("data-theme", theme) 
+    }
+
+    // Register event handlers after documented loaded
+    document.addEventListener("DOMContentLoaded", function() {
+      var ref = document.querySelector("[data-md-component=palette]")
+      ref.addEventListener("change", function() {
+        var palette = __md_get("__palette")
+        if (palette && typeof palette.color === "object") {
+          var theme = palette.color.scheme === "slate"
+            ? "dark"
+            : "light"
+
+          // Instruct Giscus to change theme
+          var frame = document.querySelector(".giscus-frame")
+          frame.contentWindow.postMessage(
+            { giscus: { setConfig: { theme } } },
+            "https://giscus.app"
+          )
+        }
+      })
+    })
+  </script>
+<!-- 标题计数器 -->
+<link href="/css/counter.css" rel="stylesheet"/>
+<!-- 主页个性化 -->
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+<button class="md-top md-icon" data-md-component="top" hidden="" type="button">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  回到页面顶部
+</button>
+</main>
+<footer class="md-footer">
+<nav aria-label="页脚" class="md-footer__inner md-grid">
+<a aria-label="上一页: Register Allocation" class="md-footer__link md-footer__link--prev" href="11.html">
+<div class="md-footer__button md-icon">
+<svg viewbox="0 0 256 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path></svg>
+</div>
+<div class="md-footer__title">
+<span class="md-footer__direction">
+                上一页
+              </span>
+<div class="md-ellipsis">
+                Register Allocation
+              </div>
+</div>
+</a>
+<a aria-label="下一页: Object-Oriented Languages" class="md-footer__link md-footer__link--next" href="14.html">
+<div class="md-footer__title">
+<span class="md-footer__direction">
+                下一页
+              </span>
+<div class="md-ellipsis">
+                Object-Oriented Languages
+              </div>
+</div>
+<div class="md-footer__button md-icon">
+<svg viewbox="0 0 256 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M247.1 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L179.2 256 41.9 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"></path></svg>
+</div>
+</a>
+</nav>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright" style="margin-left: 33.5%">
+<div class="md-copyright__highlight" style="text-align: center">
+        Copyright © 2024-2026 <a href="https://github.com/NoughtQ">NoughtQ</a>
+</div>
+    
+    
+      Powered by
+      <a href="https://www.mkdocs.org/" rel="noopener" target="_blank">
+        MkDocs
+      </a>
+      with theme
+      <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+        Material
+      </a>
+      modified by
+      <a href="https://github.com/NoughtQ" rel="noopener" target="_blank">
+        NoughtQ
+      </a>
+<!-- <br> -->
+<div style="text-align: center;">
+<a href="https://icp.gov.moe/?keyword=20252357" target="_blank">萌ICP备20252357号</a>
+</div>
+</div>
+<div class="md-social">
+<a class="md-social__link" href="https://noughtq.top" rel="noopener" target="_blank" title="noughtq.top">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M277.8 8.6c-12.3-11.4-31.3-11.4-43.5 0l-224 208c-9.6 9-12.8 22.9-8 35.1S18.8 272 32 272h16v176c0 35.3 28.7 64 64 64h288c35.3 0 64-28.7 64-64V272h16c13.2 0 25-8.1 29.8-20.3s1.6-26.2-8-35.1zM240 320h32c26.5 0 48 21.5 48 48v96H192v-96c0-26.5 21.5-48 48-48"></path></svg>
+</a>
+<a class="md-social__link" href="https://game.noughtq.top" rel="noopener" target="_blank" title="game.noughtq.top">
+<svg viewbox="0 0 640 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M448 64c106 0 192 86 192 192s-86 192-192 192H192C86 448 0 362 0 256S86 64 192 64zM192 176c-13.3 0-24 10.7-24 24v32h-32c-13.3 0-24 10.7-24 24s10.7 24 24 24h32v32c0 13.3 10.7 24 24 24s24-10.7 24-24v-32h32c13.3 0 24-10.7 24-24s-10.7-24-24-24h-32v-32c0-13.3-10.7-24-24-24m240 96a32 32 0 1 0 0 64 32 32 0 1 0 0-64m64-96a32 32 0 1 0 0 64 32 32 0 1 0 0-64"></path></svg>
+</a>
+<a class="md-social__link" href="https://blog.noughtq.top" rel="noopener" target="_blank" title="blog.noughtq.top">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M224 24c0-13.3 10.7-24 24-24 145.8 0 264 118.2 264 264 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-119.3-96.7-216-216-216-13.3 0-24-10.7-24-24M80 96c26.5 0 48 21.5 48 48v224c0 26.5 21.5 48 48 48s48-21.5 48-48-21.5-48-48-48c-8.8 0-16-7.2-16-16v-64c0-8.8 7.2-16 16-16 79.5 0 144 64.5 144 144s-64.5 144-144 144S32 447.5 32 368V144c0-26.5 21.5-48 48-48m168 0c92.8 0 168 75.2 168 168 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-66.3-53.7-120-120-120-13.3 0-24-10.7-24-24s10.7-24 24-24"></path></svg>
+</a>
+<a class="md-social__link" href="https://github.com/noughtq" rel="noopener" target="_blank" title="github.com">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"></path></svg>
+</a>
+<a class="md-social__link" href="mailto:noughtq666@gmail.com" rel="noopener" target="_blank" title="">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m20 8-8 5-8-5V6l8 5 8-5m0-2H4c-1.11 0-2 .89-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2"></path></svg>
+</a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["announce.dismiss", "content.action.edit", "content.action.view", "content.code.copy", "content.code.annotate", "content.footnote.tooltips", "navigation.footer", "navigation.indexes", "navigation.path", "navigation.prune", "navigation.tabs", "navigation.top", "navigation.tracking", "search.share"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+<script src="../../js/anchor.js"></script>
+<script src="../../js/katex.js"></script>
+<script src="../../js/toc.js"></script>
+<script src="../../js/typed.js"></script>
+<script src="../../js/custom.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script src="../../js/settings.js"></script>
+<script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+<script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.js"></script>
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>

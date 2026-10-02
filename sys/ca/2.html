@@ -1,0 +1,3402 @@
+<!DOCTYPE html>
+<html class="no-js" lang="zh"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="NoughtQ的笔记本，主要记录一些 CS 相关的笔记" name="description"/>
+<meta content="NoughtQ" name="author"/>
+<link href="https://notebook.noughtq.top/sys/ca/2.html" rel="canonical"/>
+<link href="1.html" rel="prev"/>
+<link href="3.html" rel="next"/>
+<link href="../../feed_rss_created.xml" rel="alternate" title="RSS 订阅" type="application/rss+xml"/>
+<link href="../../feed_rss_updated.xml" rel="alternate" title="已更新内容的 RSS 订阅" type="application/rss+xml"/>
+<link href="../../assets/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.1" name="generator"/>
+<title>Chap 2: Memory Hierarchy Design - NoughtQ的笔记本</title>
+<link href="../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=JetBrains+Mono,+LXGW+WenKai+Screen+GB+Screen:300,300i,400,400i,700,700i%7CJetBrains+Mono,+Consolas:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"JetBrains Mono, LXGW WenKai Screen GB Screen";--md-code-font:"JetBrains Mono, Consolas"}</style>
+<link href="../../css/heti.css" rel="stylesheet"/>
+<link href="../../css/timeline.css" rel="stylesheet"/>
+<link href="../../css/card.css" rel="stylesheet"/>
+<link href="../../css/custom.css" rel="stylesheet"/>
+<link href="../../css/extra_changelog.css" rel="stylesheet"/>
+<link href="../../css/header.css" rel="stylesheet"/>
+<link href="../../css/sidebar.css" rel="stylesheet"/>
+<link href="../../css/settings.css" rel="stylesheet"/>
+<link href="../../css/neoteroi-css.css" rel="stylesheet"/>
+<link href="../../css/toc_extra.css" rel="stylesheet"/>
+<link href="https://unpkg.com/katex@0/dist/katex.min.css" rel="stylesheet"/>
+<link href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css" rel="stylesheet"/>
+<link href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.css" rel="stylesheet"/>
+<script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-43NH8CVRCJ"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-43NH8CVRCJ",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-43NH8CVRCJ",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+<script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+<link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+<body data-md-color-accent="indigo" data-md-color-primary="indigo" data-md-color-scheme="slate" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#chap-2-memory-hierarchy-design">
+          跳转至
+        </a>
+</div>
+<div data-md-component="announce">
+<aside class="md-banner">
+<div class="md-banner__inner md-grid md-typeset">
+<button aria-label="不再显示此消息" class="md-banner__button md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+<!-- Add announcement here, including arbitrary HTML -->
+    游戏开发相关的笔记（包括计算机图形学、游戏引擎等）迁移至我的<a href="https://game.noughtq.top" target="_blank">全新笔记网站</a>，欢迎大家前来阅读🎉
+
+          </div>
+<script>var el=document.querySelector("[data-md-component=announce]");if(el){var content=el.querySelector(".md-typeset");__md_hash(content.innerHTML)===__md_get("__announce")&&(el.hidden=!0)}</script>
+</aside>
+</div>
+<header class="md-header" data-md-component="header">
+<nav aria-label="页眉" class="md-header__inner md-grid">
+<a aria-label="NoughtQ的笔记本" class="md-header__button md-logo" data-md-component="logo" href="../.." title="NoughtQ的笔记本">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.05 9H7.06V6h1.99V4.03H7.06v-1c0-1.11.89-1.99 1.99-1.99h5.98V8l2.47-1.5L20 8V1.04h1c1.05 0 2 .96 2 1.99V17c0 1.03-.95 2-2 2H9.05c-1.05 0-1.99-.95-1.99-2v-1h1.99v-2H7.06v-3h1.99zM1 18h2v-3H1v-2h2v-3H1V8h2V5h2v3H3v2h2v3H3v2h2v3H3v2h2v1h16v2H5a2 2 0 0 1-2-2v-1H1z"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            NoughtQ的笔记本
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              Chap 2: Memory Hierarchy Design
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="Dark Mode" class="md-option" data-md-color-accent="indigo" data-md-color-media="(prefer-color-scheme: dark)" data-md-color-primary="indigo" data-md-color-scheme="slate" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="Dark Mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"></path></svg>
+</label>
+<input aria-label="Light Mode" class="md-option" data-md-color-accent="indigo" data-md-color-media="(prefer-color-scheme: light)" data-md-color-primary="indigo" data-md-color-scheme="default" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="Light Mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="搜索" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="搜索" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 256 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path></svg>
+</label>
+<nav aria-label="查找" class="md-search__options">
+<a aria-label="分享" class="md-search__icon md-icon" data-clipboard="" data-clipboard-text="" data-md-component="search-share" href="javascript:void(0)" tabindex="-1" title="分享">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"></path></svg>
+</a>
+<button aria-label="清空当前内容" class="md-search__icon md-icon" tabindex="-1" title="清空当前内容" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header__source">
+<a class="md-source" data-md-component="source" href="https://github.com/noughtq/notebook" title="前往仓库">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    NoughtQ/Notebook
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<nav aria-label="标签" class="md-tabs" data-md-component="tabs">
+<div class="md-grid">
+<ul class="md-tabs__list">
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../index.html">
+          
+  
+  
+    
+  
+  🏫主页
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../lang/index.html">
+          
+  
+  
+    
+  
+  🔡编程语言
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../math/index.html">
+          
+  
+  
+    
+  
+  📊数学相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../algo/index.html">
+          
+  
+  
+    
+  
+  🧮算法相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../software/index.html">
+          
+  
+  
+    
+  
+  💾软件相关
+
+        </a>
+</li>
+<li class="md-tabs__item md-tabs__item--active">
+<a class="md-tabs__link" href="../index.html">
+          
+  
+  
+    
+  
+  💻系统相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../web/index.html">
+          
+  
+  
+    
+  
+  🌏Web相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../ai/index.html">
+          
+  
+  
+    
+  
+  🤖人工智能
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../misc/index.html">
+          
+  
+  
+    
+  
+  🗃️杂项
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../tools/index.html">
+          
+  
+  
+    
+  
+  🛠️工具
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../papers/index.html">
+          
+  
+  
+    
+  
+  📑论文阅读
+
+        </a>
+</li>
+</ul>
+</div>
+</nav>
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="导航栏" class="md-nav md-nav--primary md-nav--lifted" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="NoughtQ的笔记本" class="md-nav__button md-logo" data-md-component="logo" href="../.." title="NoughtQ的笔记本">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.05 9H7.06V6h1.99V4.03H7.06v-1c0-1.11.89-1.99 1.99-1.99h5.98V8l2.47-1.5L20 8V1.04h1c1.05 0 2 .96 2 1.99V17c0 1.03-.95 2-2 2H9.05c-1.05 0-1.99-.95-1.99-2v-1h1.99v-2H7.06v-3h1.99zM1 18h2v-3H1v-2h2v-3H1V8h2V5h2v3H3v2h2v3H3v2h2v3H3v2h2v1h16v2H5a2 2 0 0 1-2-2v-1H1z"></path></svg>
+</a>
+    NoughtQ的笔记本
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-component="source" href="https://github.com/noughtq/notebook" title="前往仓库">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    NoughtQ/Notebook
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../index.html">
+<span class="md-ellipsis">
+    
+  
+    🏫主页
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../lang/index.html">
+<span class="md-ellipsis">
+    
+  
+    🔡编程语言
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../math/index.html">
+<span class="md-ellipsis">
+    
+  
+    📊数学相关
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../algo/index.html">
+<span class="md-ellipsis">
+    
+  
+    🧮算法相关
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../software/index.html">
+<span class="md-ellipsis">
+    
+  
+    💾软件相关
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_6" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../index.html">
+<span class="md-ellipsis">
+    
+  
+    💻系统相关
+  
+
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="true" aria-labelledby="__nav_6_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_6">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    💻系统相关
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../csapp/index.html">
+<span class="md-ellipsis">
+    
+  
+    CSAPP
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../dld/index.html">
+<span class="md-ellipsis">
+    
+  
+    数字逻辑设计
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../co/index.html">
+<span class="md-ellipsis">
+    
+  
+    计算机组成
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_6_5" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="index.html">
+<span class="md-ellipsis">
+    
+  
+    计算机体系结构
+  
+
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_6_5" id="__nav_6_5_label" tabindex="0">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="true" aria-labelledby="__nav_6_5_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_6_5">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    计算机体系结构
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="1.html">
+<span class="md-ellipsis">
+    
+  
+    Chap 1: Fundamentals of Quantitative Design and Analysis
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    
+  
+    Chap 2: Memory Hierarchy Design
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="2.html">
+<span class="md-ellipsis">
+    
+  
+    Chap 2: Memory Hierarchy Design
+  
+
+    
+  </span>
+</a>
+<nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#introduction">
+<span class="md-ellipsis">
+      
+        Introduction
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#memory-hierarchy">
+<span class="md-ellipsis">
+      
+        Memory Hierarchy
+      
+    </span>
+</a>
+<nav aria-label="Memory Hierarchy" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#memory-technologies">
+<span class="md-ellipsis">
+      
+        Memory Technologies
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#techniques-for-higher-bandwidth">
+<span class="md-ellipsis">
+      
+        Techniques for Higher Bandwidth
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#four-memory-hierarchy-questions">
+<span class="md-ellipsis">
+      
+        Four Memory Hierarchy Questions
+      
+    </span>
+</a>
+<nav aria-label="Four Memory Hierarchy Questions" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#block-placement">
+<span class="md-ellipsis">
+      
+        Block Placement
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#block-identification">
+<span class="md-ellipsis">
+      
+        Block Identification
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#block-replacement">
+<span class="md-ellipsis">
+      
+        Block Replacement
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#write-strategy">
+<span class="md-ellipsis">
+      
+        Write Strategy
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cache">
+<span class="md-ellipsis">
+      
+        Cache
+      
+    </span>
+</a>
+<nav aria-label="Cache" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#performance">
+<span class="md-ellipsis">
+      
+        Performance
+      
+    </span>
+</a>
+<nav aria-label="Performance" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#impact-of-caches-on-processor-performance">
+<span class="md-ellipsis">
+      
+        Impact of Caches on Processor Performance
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#out-of-order-execution-processors">
+<span class="md-ellipsis">
+      
+        Out-of-Order Execution Processors
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#basic-optimizations">
+<span class="md-ellipsis">
+      
+        Basic Optimizations
+      
+    </span>
+</a>
+<nav aria-label="Basic Optimizations" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#larger-block-size">
+<span class="md-ellipsis">
+      
+        Larger Block Size
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#larger-caches">
+<span class="md-ellipsis">
+      
+        Larger Caches
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#higher-associativity">
+<span class="md-ellipsis">
+      
+        Higher Associativity
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#multilevel-caches">
+<span class="md-ellipsis">
+      
+        Multilevel Caches
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#giving-priority-to-read-misses-over-writes">
+<span class="md-ellipsis">
+      
+        Giving Priority to Read Misses over Writes
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#avoiding-address-translation-during-indexing-of-the-cache">
+<span class="md-ellipsis">
+      
+        Avoiding Address Translation During Indexing of the Cache
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#advanced-optimizations">
+<span class="md-ellipsis">
+      
+        Advanced Optimizations
+      
+    </span>
+</a>
+<nav aria-label="Advanced Optimizations" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#small-and-simple-first-level-caches">
+<span class="md-ellipsis">
+      
+        Small and Simple First-Level Caches
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#way-prediction">
+<span class="md-ellipsis">
+      
+        Way Prediction
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#pipelined-access-and-multibanked-caches">
+<span class="md-ellipsis">
+      
+        Pipelined Access and Multibanked Caches
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#nonblocking-caches">
+<span class="md-ellipsis">
+      
+        Nonblocking Caches
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#critical-word-first-and-early-start">
+<span class="md-ellipsis">
+      
+        Critical Word First and Early Start
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#merging-write-buffer">
+<span class="md-ellipsis">
+      
+        Merging Write Buffer
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compiler-optimizations">
+<span class="md-ellipsis">
+      
+        Compiler Optimizations
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#hardware-prefetching-of-instructions-and-data">
+<span class="md-ellipsis">
+      
+        Hardware Prefetching of Instructions and Data
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compiler-controlled-prefetching">
+<span class="md-ellipsis">
+      
+        Compiler-Controlled Prefetching
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#using-hbm-to-extend-the-memory-hierarchy">
+<span class="md-ellipsis">
+      
+        Using HBM to Extend the Memory Hierarchy
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#virtual-memory">
+<span class="md-ellipsis">
+      
+        Virtual Memory
+      
+    </span>
+</a>
+<nav aria-label="Virtual Memory" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#four-memory-hierarchy-questions-revisited">
+<span class="md-ellipsis">
+      
+        Four Memory Hierarchy Questions Revisited
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#techniques-for-fast-address-translation">
+<span class="md-ellipsis">
+      
+        Techniques for Fast Address Translation
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#page-size">
+<span class="md-ellipsis">
+      
+        Page Size
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#protection">
+<span class="md-ellipsis">
+      
+        Protection
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#the-design-of-memory-hierarchies">
+<span class="md-ellipsis">
+      
+        The Design of Memory Hierarchies
+      
+    </span>
+</a>
+<nav aria-label="The Design of Memory Hierarchies" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#protection-virtualization-and-instruction-set-architecture">
+<span class="md-ellipsis">
+      
+        Protection, Virtualization and Instruction Set Architecture
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#autonomous-instruction-fetch-units">
+<span class="md-ellipsis">
+      
+        Autonomous Instruction Fetch Units
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#speculation-and-memory-access">
+<span class="md-ellipsis">
+      
+        Speculation and Memory Access
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#special-instruction-caches">
+<span class="md-ellipsis">
+      
+        Special Instruction Caches
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#coherency-of-cached-data">
+<span class="md-ellipsis">
+      
+        Coherency of Cached Data
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#fallacies-and-pitfalls">
+<span class="md-ellipsis">
+      
+        Fallacies and Pitfalls
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="3.html">
+<span class="md-ellipsis">
+    
+  
+    Chap 3: Instruction-Level Parallelism
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="4.html">
+<span class="md-ellipsis">
+    
+  
+    Chap 4: Data-Level Parallelism
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="5.html">
+<span class="md-ellipsis">
+    
+  
+    Chap 5: Thread-Level Parallelism
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../db/index.html">
+<span class="md-ellipsis">
+    
+  
+    数据库系统
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../os/index.html">
+<span class="md-ellipsis">
+    
+  
+    操作系统
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../aai/index.html">
+<span class="md-ellipsis">
+    
+  
+    汇编与接口
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../poc/index.html">
+<span class="md-ellipsis">
+    
+  
+    编译原理
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../web/index.html">
+<span class="md-ellipsis">
+    
+  
+    🌏Web相关
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ai/index.html">
+<span class="md-ellipsis">
+    
+  
+    🤖人工智能
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../misc/index.html">
+<span class="md-ellipsis">
+    
+  
+    🗃️杂项
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../tools/index.html">
+<span class="md-ellipsis">
+    
+  
+    🛠️工具
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../papers/index.html">
+<span class="md-ellipsis">
+    
+  
+    📑论文阅读
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#introduction">
+<span class="md-ellipsis">
+      
+        Introduction
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#memory-hierarchy">
+<span class="md-ellipsis">
+      
+        Memory Hierarchy
+      
+    </span>
+</a>
+<nav aria-label="Memory Hierarchy" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#memory-technologies">
+<span class="md-ellipsis">
+      
+        Memory Technologies
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#techniques-for-higher-bandwidth">
+<span class="md-ellipsis">
+      
+        Techniques for Higher Bandwidth
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#four-memory-hierarchy-questions">
+<span class="md-ellipsis">
+      
+        Four Memory Hierarchy Questions
+      
+    </span>
+</a>
+<nav aria-label="Four Memory Hierarchy Questions" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#block-placement">
+<span class="md-ellipsis">
+      
+        Block Placement
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#block-identification">
+<span class="md-ellipsis">
+      
+        Block Identification
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#block-replacement">
+<span class="md-ellipsis">
+      
+        Block Replacement
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#write-strategy">
+<span class="md-ellipsis">
+      
+        Write Strategy
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cache">
+<span class="md-ellipsis">
+      
+        Cache
+      
+    </span>
+</a>
+<nav aria-label="Cache" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#performance">
+<span class="md-ellipsis">
+      
+        Performance
+      
+    </span>
+</a>
+<nav aria-label="Performance" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#impact-of-caches-on-processor-performance">
+<span class="md-ellipsis">
+      
+        Impact of Caches on Processor Performance
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#out-of-order-execution-processors">
+<span class="md-ellipsis">
+      
+        Out-of-Order Execution Processors
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#basic-optimizations">
+<span class="md-ellipsis">
+      
+        Basic Optimizations
+      
+    </span>
+</a>
+<nav aria-label="Basic Optimizations" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#larger-block-size">
+<span class="md-ellipsis">
+      
+        Larger Block Size
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#larger-caches">
+<span class="md-ellipsis">
+      
+        Larger Caches
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#higher-associativity">
+<span class="md-ellipsis">
+      
+        Higher Associativity
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#multilevel-caches">
+<span class="md-ellipsis">
+      
+        Multilevel Caches
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#giving-priority-to-read-misses-over-writes">
+<span class="md-ellipsis">
+      
+        Giving Priority to Read Misses over Writes
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#avoiding-address-translation-during-indexing-of-the-cache">
+<span class="md-ellipsis">
+      
+        Avoiding Address Translation During Indexing of the Cache
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#advanced-optimizations">
+<span class="md-ellipsis">
+      
+        Advanced Optimizations
+      
+    </span>
+</a>
+<nav aria-label="Advanced Optimizations" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#small-and-simple-first-level-caches">
+<span class="md-ellipsis">
+      
+        Small and Simple First-Level Caches
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#way-prediction">
+<span class="md-ellipsis">
+      
+        Way Prediction
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#pipelined-access-and-multibanked-caches">
+<span class="md-ellipsis">
+      
+        Pipelined Access and Multibanked Caches
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#nonblocking-caches">
+<span class="md-ellipsis">
+      
+        Nonblocking Caches
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#critical-word-first-and-early-start">
+<span class="md-ellipsis">
+      
+        Critical Word First and Early Start
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#merging-write-buffer">
+<span class="md-ellipsis">
+      
+        Merging Write Buffer
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compiler-optimizations">
+<span class="md-ellipsis">
+      
+        Compiler Optimizations
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#hardware-prefetching-of-instructions-and-data">
+<span class="md-ellipsis">
+      
+        Hardware Prefetching of Instructions and Data
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compiler-controlled-prefetching">
+<span class="md-ellipsis">
+      
+        Compiler-Controlled Prefetching
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#using-hbm-to-extend-the-memory-hierarchy">
+<span class="md-ellipsis">
+      
+        Using HBM to Extend the Memory Hierarchy
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#virtual-memory">
+<span class="md-ellipsis">
+      
+        Virtual Memory
+      
+    </span>
+</a>
+<nav aria-label="Virtual Memory" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#four-memory-hierarchy-questions-revisited">
+<span class="md-ellipsis">
+      
+        Four Memory Hierarchy Questions Revisited
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#techniques-for-fast-address-translation">
+<span class="md-ellipsis">
+      
+        Techniques for Fast Address Translation
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#page-size">
+<span class="md-ellipsis">
+      
+        Page Size
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#protection">
+<span class="md-ellipsis">
+      
+        Protection
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#the-design-of-memory-hierarchies">
+<span class="md-ellipsis">
+      
+        The Design of Memory Hierarchies
+      
+    </span>
+</a>
+<nav aria-label="The Design of Memory Hierarchies" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#protection-virtualization-and-instruction-set-architecture">
+<span class="md-ellipsis">
+      
+        Protection, Virtualization and Instruction Set Architecture
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#autonomous-instruction-fetch-units">
+<span class="md-ellipsis">
+      
+        Autonomous Instruction Fetch Units
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#speculation-and-memory-access">
+<span class="md-ellipsis">
+      
+        Speculation and Memory Access
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#special-instruction-caches">
+<span class="md-ellipsis">
+      
+        Special Instruction Caches
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#coherency-of-cached-data">
+<span class="md-ellipsis">
+      
+        Coherency of Cached Data
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#fallacies-and-pitfalls">
+<span class="md-ellipsis">
+      
+        Fallacies and Pitfalls
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<nav aria-label="导航栏" class="md-path">
+<ol class="md-path__list">
+<li class="md-path__item">
+<a class="md-path__link" href="../index.html">
+<span class="md-ellipsis">
+    💻系统相关
+  </span>
+</a>
+</li>
+<li class="md-path__item">
+<a class="md-path__link" href="index.html">
+<span class="md-ellipsis">
+    计算机体系结构
+  </span>
+</a>
+</li>
+</ol>
+</nav>
+<article class="md-content__inner md-typeset">
+<a class="md-content__button md-icon" href="https://github.com/noughtq/notebook/edit/master/docs/sys/ca/2.md" rel="edit" title="编辑此页">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"></path></svg>
+</a>
+<a class="md-content__button md-icon" href="https://github.com/noughtq/notebook/raw/master/docs/sys/ca/2.md" title="查看本页的源代码">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"></path></svg>
+</a>
+<h1 id="chap-2-memory-hierarchy-design">Chap 2: Memory Hierarchy Design<a class="headerlink" href="#chap-2-memory-hierarchy-design" title="Permanent link">⚓︎</a></h1>
+<div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>16705<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 576 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M360.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6m64.6 136.1c-12.5 12.5-12.5 32.8 0 45.3l73.4 73.4-73.4 73.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l96-96c12.5-12.5 12.5-32.8 0-45.3l-96-96c-12.5-12.5-32.8-12.5-45.3 0zm-274.7 0c-12.5-12.5-32.8-12.5-45.3 0l-96 96c-12.5 12.5-12.5 32.8 0 45.3l96 96c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l73.3-73.4c12.5-12.5 12.5-32.8 0-45.3z"></path></svg></span> <span>44<span class="heti-spacing"> </span></span>行代码 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>84<span class="heti-spacing"> </span></span>分钟</p>
+</div>
+<details class="abstract">
+<summary>核心知识</summary>
+<ul>
+<li>
+<p>关于存储器层级的<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>个问题：</p>
+<ul>
+<li>块置放：直接映射、全相联、组相联</li>
+<li>块识别：块地址各个位的作用（标签、索引、偏移量、有效位、脏位<span><span class="heti-spacing"> </span>...</span>）</li>
+<li>块替换：随机，LRU，FIFO</li>
+<li>写策略：写穿<span class="heti-skip"><span class="heti-spacing"> </span>or<span class="heti-spacing"> </span></span>写回，写分配<span class="heti-skip"><span class="heti-spacing"> </span>or<span class="heti-spacing"> </span></span>非写分配</li>
+</ul>
+</li>
+<li>
+<p>高速缓存的优化策略（重中之重<heti-adjacent class="heti-adjacent-half">！</heti-adjacent><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
+<ul>
+<li>减少命中时间：小而简的高速缓存、路预测、避免地址转换</li>
+<li>增加高速缓存带宽：流水线化高速缓存、多分区高速缓存</li>
+<li>减少失效损失：多级高速缓存、读失效优于写、关键字优先、早启动、合并写缓冲区</li>
+<li>减少失效率：增大数据块、增大高速缓存容量、增大相联程度、编译器优化</li>
+<li>并行：预取（硬件<span class="heti-skip"><span class="heti-spacing"> </span>or<span class="heti-spacing"> </span></span>编译器）</li>
+</ul>
+</li>
+<li>
+<p>虚拟内存的原理</p>
+</li>
+<li>存储器层级设计（仅作了解）</li>
+</ul>
+</details>
+<div class="admonition info">
+<p class="admonition-title">注</p>
+<p>虽然本章的绝大多数内容在计组笔记中都讲过，而且某些地方讲得会比体系课程更细，但即便读者在计组课程中已经完全掌握了这块内容，我还是不建议跳过，因为体系课程还介绍了一些更高级的内容，包括针对高速缓存性能的<span class="heti-skip"><span class="heti-spacing"> </span>10<span class="heti-spacing"> </span></span>个高级优化方法等等。</p>
+<p>不同于<a href="../co/5.html">计组笔记</a>，我会跳过那些<span class="heti-skip"><span class="heti-spacing"> </span>PPT<span class="heti-spacing"> </span></span>完全没有涉及到的内容，比如虚拟机等（<del>这学期笔者实在太忙了</del><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
+<p>本笔记同时包含教材<span class="heti-skip"><span class="heti-spacing"> </span>Appendix B<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>Chap 2<span class="heti-spacing"> </span></span>的内容。</p>
+</div>
+<div class="admonition recommend">
+<p class="admonition-title">参考资料</p>
+<ul>
+<li><a href="https://zhuanlan.zhihu.com/p/577138649">关于<span class="heti-skip"><span class="heti-spacing"> </span>Cache<span class="heti-spacing"> </span></span>的歧义<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>别名问题和<span class="heti-skip"><span class="heti-spacing"> </span>VIVT/VIPT/PIPT<span class="heti-spacing"> </span></span>架构</a></li>
+</ul>
+</div>
+<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">⚓︎</a></h2>
+<details class="abstract">
+<summary>术语表</summary>
+<p>看看你还记得多少？</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/1.png"><img src="images/C2/1.png" width="80%"/></a>
+</div><p></p>
+</details>
+<p>简单回顾与存储器相关的一些基本概念：</p>
+<ul>
+<li><strong>高速缓存</strong>(cache)：位于存储器层级中最高层的存储器，直接与处理器连接。<ul>
+<li>也有类似缓冲区<span class="heti-skip"><span class="heti-spacing"> </span>(buffer)<span class="heti-spacing"> </span></span>的引申义</li>
+</ul>
+</li>
+<li>高速缓存<strong>命中<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>失效</strong>(hit/miss)：处理器在告诉缓存中找到<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>没有找到所需的数据</li>
+<li><strong>局部性原则</strong><span>(principle of locality)<span class="heti-spacing"> </span></span>分为<ul>
+<li><strong>时间</strong>局部性<span><span class="heti-spacing"> </span>(temporal locality)</span>：最近被访问过的数据可能在不久之后会被再次访问</li>
+<li><strong>空间</strong>局部性<span><span class="heti-spacing"> </span>(spatial locality)</span>：被访问过的数据的邻近数据在不久之后很可能被访问</li>
+</ul>
+</li>
+<li><strong>时延</strong>(latency)：决定数据块中第一个字数据被检索的时间</li>
+<li><strong>带宽</strong>(bandwidth)：决定数据块中其余内容被访问的时间</li>
+<li><strong>虚拟内存</strong>(virtual memory)<ul>
+<li><strong>地址空间</strong>(address space)</li>
+<li><strong>页</strong>(page)</li>
+<li><strong>页错误</strong>(page fault, palt)</li>
+</ul>
+</li>
+</ul>
+<details class="info">
+<summary>不同计算机类型的存储器层级</summary>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/41.png"><img src="images/C2/41.png" width="90%"/></a>
+</div><p></p>
+</details>
+<h2 id="memory-hierarchy">Memory Hierarchy<a class="headerlink" href="#memory-hierarchy" title="Permanent link">⚓︎</a></h2>
+<h3 id="memory-technologies">Memory Technologies<a class="headerlink" href="#memory-technologies" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li>
+<p><strong>SRAM</strong></p>
+<ul>
+<li>特性：静态存储，无需刷新，速度快，但成本高、功耗大（待机功耗<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</li>
+<li>应用：主要用于构建<strong>高速缓存</strong>（L1、L2、L3<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</li>
+<li>挑战：随着高速缓存容量的增加，<span>SRAM<span class="heti-spacing"> </span></span>的访问时间、功耗和芯片面积都会增加。</li>
+<li>优化：组相联高速缓存通过增加块数和动态功耗来减少访问时间。</li>
+</ul>
+</li>
+<li>
+<p><strong>DRAM</strong></p>
+<ul>
+<li>特性：动态存储，需要周期性刷新，成本低、密度高。</li>
+<li>
+<p>内部组织：<span>DRAM<span class="heti-spacing"> </span></span>被组织成多个<strong>分区</strong>(bank)，每个分区包含行和列。访问数据需要激活行（<span>ACT<span class="heti-spacing"> </span></span>命令<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，然后通过列地址选通（CAS）读取数据。</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/73.png"><img src="images/C2/73.png" width="70%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>性能提升：</p>
+<ul>
+<li><strong>同步<span><span class="heti-spacing"> </span>DRAM(SDRAM)</span></strong>：引入时钟信号，支持<strong>突发传输</strong>(burst transfer)，允许在一次行激活后连续传输多个数据。</li>
+<li><strong>DDR(double data rate) SDRAM</strong>：在时钟的上升沿和下降沿都传输数据，有效倍增了数据传输速率。DDR1、DDR2、DDR3、<span>DDR4<span class="heti-spacing"> </span></span>等版本不断提高时钟频率、降低电压、增加分区数量和预取位数，从而提升带宽和降低功耗。</li>
+<li>多分区并行访问：允许同时访问不同分区中的数据，进一步提高带宽。</li>
+</ul>
+</li>
+<li>功耗：动态内存的功耗包括读写、激活和背景功耗。<span>DDR4<span class="heti-spacing"> </span></span>通过降低电压和增加分区数量来降低功耗。</li>
+<li><strong>图形数据<span><span class="heti-spacing"> </span>RAM(GDRAMs)</span></strong>：专门为<span class="heti-skip"><span class="heti-spacing"> </span>GPU<span class="heti-spacing"> </span></span>设计，具有更宽的接口、更高的最大时钟频率和直接连接<span class="heti-skip"><span class="heti-spacing"> </span>GPU<span class="heti-spacing"> </span></span>的特性，提供比<span class="heti-skip"><span class="heti-spacing"> </span>DDR DRAM<span class="heti-spacing"> </span></span>高<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>到<span class="heti-skip"><span class="heti-spacing"> </span>5<span class="heti-spacing"> </span></span>倍的带宽。</li>
+</ul>
+</li>
+<li>
+<p><strong>堆叠或嵌入式<span><span class="heti-spacing"> </span>DRAM</span></strong>(stacked or embedded DRAMs)</p>
+<ul>
+<li><strong>高带宽内存<span><span class="heti-spacing"> </span>(HBM)</span></strong>：<span>2017<span class="heti-spacing"> </span></span>年出现的新型封装技术，通过<span class="heti-skip"><span class="heti-spacing"> </span>3D<span class="heti-spacing"> </span></span>堆叠多个<span class="heti-skip"><span class="heti-spacing"> </span>DRAM<span class="heti-spacing"> </span></span>芯片并与处理器（或中介层）紧密连接，大大缩短了<span class="heti-skip"><span class="heti-spacing"> </span>DRAM<span class="heti-spacing"> </span></span>与处理器之间的延迟，并提供极高的带宽。</li>
+<li>
+<p><span>2.5D<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>3D<span class="heti-spacing"> </span></span>堆叠：2.5D（通过中介层连接）已商用，3D（直接垂直堆叠）仍在开发中，面临散热挑战。</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/74.png"><img src="images/C2/74.png" width="70%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>应用：<span>HBM<span class="heti-spacing"> </span></span>主要用于高端应用，如<span class="heti-skip"><span class="heti-spacing"> </span>GPU<span class="heti-spacing"> </span></span>和高性能计算，也可作为服务器的<span class="heti-skip"><span class="heti-spacing"> </span>L4<span class="heti-spacing"> </span></span>缓存。</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>闪存</strong>(flash memory)</p>
+<ul>
+<li>特性：<span>EEPROM<span class="heti-spacing"> </span></span>的一种，非易失性，断电后数据不丢失。</li>
+<li>类型：<ul>
+<li><span>NOR<span class="heti-spacing"> </span></span>闪存：随机读写快，但写入慢，成本高</li>
+<li><span>NAND<span class="heti-spacing"> </span></span>闪存：密度高，成本低，适合大容量存储，但读写速度慢，需要擦除块</li>
+</ul>
+</li>
+<li>与<span class="heti-skip"><span class="heti-spacing"> </span>DRAM<span class="heti-spacing"> </span></span>对比：闪存的随机访问延迟远高于<span><span class="heti-spacing"> </span>DRAM</span>，但密度高、成本低。</li>
+<li>挑战：<ul>
+<li>写入速度慢，需要先擦除再写入</li>
+<li>写入次数有限（寿命问题，通过“<strong>磨损均衡</strong>”<span>(wear leverage)<span class="heti-spacing"> </span></span>解决<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</li>
+</ul>
+</li>
+<li>应用：广泛用于<span><span class="heti-spacing"> </span>PMD</span>（个人移动设备）和笔记本电脑，作为<span class="heti-skip"><span class="heti-spacing"> </span>SSD<span class="heti-spacing"> </span></span>替代传统硬盘。</li>
+</ul>
+</li>
+<li>
+<p><strong>相变内存</strong>(phase-change memory, PCM)</p>
+<ul>
+<li>特性：一种新兴的非易失性内存技术，通过改变材料的电阻状态来存储数据。</li>
+<li>优点：读写耐久性优于<span class="heti-skip"><span class="heti-spacing"> </span>NAND<span class="heti-spacing"> </span></span>闪存，读延迟也低于<span class="heti-skip"><span class="heti-spacing"> </span>NAND<span class="heti-spacing"> </span></span>闪存，有望降低成本和提高密度。</li>
+</ul>
+</li>
+</ul>
+<details class="abstract">
+<summary>存储器层级在各类计算机中的表现</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:3"><input checked="" id="__tabbed_1_1" name="__tabbed_1" type="radio"/><input id="__tabbed_1_2" name="__tabbed_1" type="radio"/><input id="__tabbed_1_3" name="__tabbed_1" type="radio"/><div class="tabbed-labels"><label for="__tabbed_1_1">个人移动设备</label><label for="__tabbed_1_2">笔记本<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>台式电脑</label><label for="__tabbed_1_3">服务器</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/100.png"><img src="images/C2/100.png" width="70%"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/101.png"><img src="images/C2/101.png" width="80%"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/102.png"><img src="images/C2/102.png" width="80%"/></a>
+</div><p></p>
+</div>
+</div>
+</div>
+</details>
+<h3 id="techniques-for-higher-bandwidth">Techniques for Higher Bandwidth<a class="headerlink" href="#techniques-for-higher-bandwidth" title="Permanent link">⚓︎</a></h3>
+<p>下面介绍一些提高内存带宽的技术：</p>
+<ul>
+<li>
+<p><strong>更宽的主存</strong>：增加高速缓存和内存的宽度，一次传输更多数据。</p>
+<ul>
+<li>效果：将内存宽度加倍或四倍，可使内存带宽加倍或四倍。</li>
+<li>缺点：<ul>
+<li>需要在关键路径上使用<span><span class="heti-spacing"> </span>MUX</span>，这会增加延迟</li>
+<li>增加客户购买的最小内存增量</li>
+<li>使错误纠正复杂化</li>
+</ul>
+</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/75.png"><img src="images/C2/75.png" width="40%"/></a>
+</div> <p></p>
+</li>
+<li>
+<p><strong>简单的交错内存</strong>：将内存组织成多个分区，可以同时读写多个字。</p>
+<ul>
+<li>优点：利用内存系统中多个芯片的并行性，优化顺序内存访问，与缓存读失效理想匹配。</li>
+<li>访问模式：通过共享地址线和数据总线，实现多路交错访问，可以同时访问不同分区，从而提高吞吐量。</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/76.png"><img src="images/C2/76.png" width="40%"/></a>
+</div> <p></p>
+<ul>
+<li>
+<p>关于分区的访问：</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/77.png"><img src="images/C2/77.png" width="90%"/></a>
+</div><p></p>
+</li>
+</ul>
+<details class="example">
+<summary>例子</summary>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/78.png"><img src="images/C2/78.png" width="70%"/></a>
+</div><p></p>
+</details>
+</li>
+<li>
+<p><strong>独立内存分区</strong>：扩展交错内存概念，为每个分区提供独立的内存控制器、地址线和数据总线，消除内存访问的所有限制。</p>
+<ul>
+<li>优点：允许顺序访问模式的交错，进一步提高并行性。</li>
+<li>分区数量：向量计算机中，分区数量应大于访问分区中字所需的时钟周期数，以避免等待。</li>
+</ul>
+</li>
+<li>
+<p><strong>避免内存分区冲突</strong>：</p>
+<ul>
+<li>问题：当数组大小或访问模式导致多个元素映射到同一个内存分区时，会发生分区冲突，导致<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>停顿。</li>
+<li>解决方案：<ul>
+<li>软件（编译器）层面：<ul>
+<li>循环交换：改变嵌套循环的顺序，以避免访问同一个分区。</li>
+<li>扩展数组大小：改变数组维度，使其不是<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>的幂次，从而强制地址映射到不同的分区。</li>
+</ul>
+</li>
+<li>硬件层面：使用质数数量的内存分区，有助于分散访问，减小冲突。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="four-memory-hierarchy-questions">Four Memory Hierarchy Questions<a class="headerlink" href="#four-memory-hierarchy-questions" title="Permanent link">⚓︎</a></h3>
+<p>在讨论“存储器层级”概念的时候，我们常常需要回答以下四个问题：</p>
+<ol>
+<li>如何放置数据块<heti-adjacent class="heti-adjacent-half">？</heti-adjacent>（<strong>数据块放置</strong>(block placement)）</li>
+<li>怎么找到数据块<heti-adjacent class="heti-adjacent-half">？</heti-adjacent>（<strong>数据块识别</strong>(block identification)）</li>
+<li>当失效发生时，哪个数据块需要被替代<heti-adjacent class="heti-adjacent-half">？</heti-adjacent>（<strong>数据块替换</strong>(block replacement)）</li>
+<li>写入时会发生什么<heti-adjacent class="heti-adjacent-half">？</heti-adjacent>（<strong>写入策略</strong>(write strategy)）</li>
+</ol>
+<h4 id="block-placement">Block Placement<a class="headerlink" href="#block-placement" title="Permanent link">⚓︎</a></h4>
+<p>有以下几种存储器的组织方式：</p>
+<ul>
+<li>
+<p><strong>直接映射</strong>(direct mapped)：每个数据块在存储器中只有一块确定的位置，计算公式为：</p>
+<div class="arithmatex">\[
+(Block\ address) \text{ MOD } (Numbers\ of\ blocks\ in\ memory)
+\]</div>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/103.png"><img src="images/C2/103.png" width="70%"/></a>
+</div><p></p>
+</li>
+<li>
+<p><strong>全相联</strong>(fully associative)：数据块可以放在存储器中的任意位置上</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/104.png"><img src="images/C2/104.png" width="70%"/></a>
+</div><p></p>
+</li>
+<li>
+<p><strong>组相联</strong>(set associative)：每个数据块被限制在存储器的某个<strong>组</strong><span>(set)<span class="heti-spacing"> </span></span>中，而每个组包含了<span class="heti-skip"><span class="heti-spacing"> </span>n<span class="heti-spacing"> </span></span>个可放数据块的地方，数据块可以在组内的<span class="heti-skip"><span class="heti-spacing"> </span>n<span class="heti-spacing"> </span></span>个地方任意挑选（这样的组相联称为 <strong><span>n<span class="heti-spacing"> </span></span>路组相联</strong>(n-way set associative)<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。组的位置的计算公式为：</p>
+<div class="arithmatex">\[
+(Block\ address) \text{ MOD } (Numbers\ of\ sets\ in\ memory)
+\]</div>
+<ul>
+<li>直接映射<span class="heti-skip"><span class="heti-spacing"> </span>= 1<span class="heti-spacing"> </span></span>路组相联，全相联<span class="heti-skip"><span class="heti-spacing"> </span>= m<span class="heti-spacing"> </span></span>路组相联（假设存储器容量为<span class="heti-skip"><span class="heti-spacing"> </span>m<span class="heti-spacing"> </span></span>个块）</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/105.png"><img src="images/C2/105.png" width="70%"/></a>
+</div><p></p>
+</li>
+</ul>
+<p>下图以高速缓存为例，展示了不同相联程度的高速缓存：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/2.png"><img src="images/C2/2.png" width="80%"/></a>
+</div>
+<div class="admonition info">
+<p class="admonition-title">注</p>
+<p>大多数的处理器高速缓存采用的是直接映射、二路组相联和四路组相联。</p>
+</div>
+<h4 id="block-identification">Block Identification<a class="headerlink" href="#block-identification" title="Permanent link">⚓︎</a></h4>
+<p>每个高速缓存块都有一个唯一的地址，而这个地址被分为多个字段，用于实现数据块的识别，具体可以分为：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/3.png"><img src="images/C2/3.png" width="60%"/></a>
+</div>
+<ul>
+<li><strong>块地址</strong>(block address)<ul>
+<li><strong>标签</strong>(tag)：检查某个高速缓存块是否为处理器所需要的数据块（比对一下标签是否匹配<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，这个搜索过程一般是并行执行的</li>
+<li><strong>索引</strong>(index)：在组相联中用于选择具体的组<ul>
+<li>位数<span><span class="heti-spacing"> </span>= <span class="arithmatex">\(\log_2(\#\text{sets})\)</span></span></li>
+<li>如果是全相联的话，就没有索引位，因为没有组</li>
+</ul>
+</li>
+<li>相联程度越高，标签位越多，而索引位越少</li>
+</ul>
+</li>
+<li><strong>块偏移</strong>(block offset)：<ul>
+<li>位数<span><span class="heti-spacing"> </span>= <span class="arithmatex">\(\log_2(\text{size of block})\)</span></span></li>
+</ul>
+</li>
+<li>此外还有一位<strong>有效位</strong>(valid bit)：用于表示某个高速缓存块是否持有有效地址。如果该位为<span class="heti-skip"><span class="heti-spacing"> </span>0<span class="heti-spacing"> </span></span>的话，表明地址无效，因此不能参与比较</li>
+</ul>
+<p>下图展示了某个高速缓存的逻辑结构（<del>从计组笔记那偷来的图</del><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="../co/images/C5/9.png"><img src="../co/images/C5/9.png" width="70%"/></a>
+</div>
+<h4 id="block-replacement">Block Replacement<a class="headerlink" href="#block-replacement" title="Permanent link">⚓︎</a></h4>
+<p>当失效发生时，控制器必须决定将哪个数据块作为被替换的块，用以存放处理器所需的数据。有以下几种可选的替换策略：</p>
+<ul>
+<li>对于<strong>直接映射</strong>，由于每个数据块的位置是唯一的，所以无需选择，直接替换某个确定的数据块</li>
+<li>对于<strong>组相联</strong>和<strong>全相联</strong>：<ul>
+<li><strong>随机</strong>(random)：在某个组中随机挑选一个块<ul>
+<li>最大的优点是实现简单，只需一个随机数生成器就能实现</li>
+<li>生成的随机数应均匀覆盖到高速缓存中每一个数据块</li>
+<li>缺点是可能会驱逐那些最近被访问的块</li>
+</ul>
+</li>
+<li><strong>最近最少使用</strong>(least recently used, LRU)：替换最久没使用过的数据块（借助了时间局部性的特征）<ul>
+<li>缺点是实现复杂，所以可以使用某种<span class="heti-skip"><span class="heti-spacing"> </span>LRU<span class="heti-spacing"> </span></span>的近似实现，比如用一组<span class="heti-skip"><span class="heti-spacing"> </span>bit<span class="heti-spacing"> </span></span>来记录某个组内的数据块的访问情况<span><span class="heti-spacing"> </span>ß</span></li>
+</ul>
+</li>
+<li><strong>先进先出</strong>(first in, first out)：也是一种<span class="heti-skip"><span class="heti-spacing"> </span>LRU<span class="heti-spacing"> </span></span>的近似实现（因为<span class="heti-skip"><span class="heti-spacing"> </span>LRU<span class="heti-spacing"> </span></span>的实现较为复杂<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，替换最早存在的数据块</li>
+</ul>
+</li>
+</ul>
+<h4 id="write-strategy">Write Strategy<a class="headerlink" href="#write-strategy" title="Permanent link">⚓︎</a></h4>
+<p>大部分的处理器<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>高速缓存访问操作都是<strong>读取</strong>操作，而且处理器需要等待读取完毕才能继续执行，而无需等待写入操作，所以为了遵循<span class="heti-skip"><span class="heti-spacing"> </span>"Make common case fast"<span class="heti-spacing"> </span></span>这一思想，我们需要着重优化读取高速缓存的表现。然而，根据阿姆达尔定律，仅仅考虑读取的优化是不够的，我们还必须考虑<strong>写入</strong>操作的速度。</p>
+<p>如果写入命中的话，通常会采取以下两种策略之一：</p>
+<ul>
+<li>
+<p><strong>写穿</strong>(write through)：写入的信息除了写入高速缓存的数据块外，还会写入下一级内存的数据块里。</p>
+<ul>
+<li>优点：实现简单，简化<strong>数据一致性</strong><span>(data coherency)<span class="heti-spacing"> </span></span>的实现</li>
+<li>处理器必须等待写穿完成才能继续执行下一步，这种情况称为<strong>写停顿</strong>(write stall)。为了减少这种情况的发生，一种常见的优化方法是增加一个<strong>写缓冲区</strong>(write buffer)，允许处理器在数据写入缓冲区的同时继续执行后续任务，实现了处理器执行和内存更新这两项工作的重叠，节省时间。<ul>
+<li>
+<p>但如果处理器的频率太高，且有很多的存储指令，可能导致写缓冲区的<strong>饱和</strong>(saturation)。缓解饱和问题的做法是在写缓冲区和主存之间再加一级（L2）高速缓存</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/61.png"><img src="images/C2/61.png" width="80%"/></a>
+</div><p></p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>写回</strong>(write back)：信息只写入到高速缓存的数据块内。但是一旦高速缓存中被<strong>修改过的</strong>数据块（脏块）里将要被替代，那么要将这个数据块写入到下一级内存中，确保之前的更新作用于底层内存中。</p>
+<ul>
+<li>此时高速缓存引入一个<strong>脏位</strong>(dirty bit)，作为记录某个数据块的修改情况的状态位。当脏位置<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>时，表明这个数据块是“脏”的（即被修改过了）</li>
+<li>优点：速度快（对高速缓存的多次写入的同时，可能只需对主存写入一次<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，使用更少的内存带宽（更适用于多核处理器<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，省电</li>
+</ul>
+</li>
+</ul>
+<p>对于<span class="heti-skip"><span class="heti-spacing"> </span>I/O<span class="heti-spacing"> </span></span>设备和多核处理器而言，它们希望同时有写回策略的速度和写穿策略的数据一致性。</p>
+<p>如果写入失效的话，则会采取以下两种策略之一：</p>
+<ul>
+<li><strong>写分配</strong>(write allocate)：当写入失效发生时，首先将目标地址所在的整个数据块从主存（或下一级缓存）加载到高速缓存中，然后再对这个新加载的高速缓存块执行写入操作。<ul>
+<li>对应<strong>写回</strong>策略</li>
+</ul>
+</li>
+<li><strong>非写分配</strong>(no-write allocate/write around)：数据直接写入主存（或下一级高速缓存<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，而不将该数据块加载到当前高速缓存中，使写失效不影响高速缓存。<ul>
+<li>对应<strong>写穿</strong>策略</li>
+</ul>
+</li>
+</ul>
+<p>下图展示了执行这两类写策略的流程图：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/106.png"><img src="images/C2/106.png" width="100%"/></a>
+</div>
+<details class="example">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="" id="__tabbed_2_1" name="__tabbed_2" type="radio"/><input id="__tabbed_2_2" name="__tabbed_2" type="radio"/><div class="tabbed-labels"><label for="__tabbed_2_1">题目</label><label for="__tabbed_2_2">答案</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/4.png"><img src="images/C2/4.png" width="80%"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/107.png"><img src="images/C2/107.png" width="80%"/></a>
+</div><p></p>
+</div>
+</div>
+</div>
+</details>
+<details class="note" open="open">
+<summary>备考建议（来自<span class="heti-skip"><span class="heti-spacing"> </span>hsb<span class="heti-spacing"> </span></span>的<span><span class="heti-spacing"> </span>PPT</span>）</summary>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/83.png"><img src="images/C2/83.png" width="90%"/></a>
+</div><p></p>
+</details>
+<h2 id="cache">Cache<a class="headerlink" href="#cache" title="Permanent link">⚓︎</a></h2>
+<details class="info" open="open">
+<summary>补充知识：统一缓存<span class="heti-skip"><span class="heti-spacing"> </span>vs.<span class="heti-spacing"> </span></span>分离缓存</summary>
+<ul>
+<li><strong>统一缓存</strong>(unified cache)：指令和数据共享同一个缓存空间<ul>
+<li>处理器在需要指令时从该缓存中获取，在需要数据时也从该缓存中获取</li>
+<li>理论上，这类缓存可以更好地利用缓存空间，且硬件得以简化；但存在指令和数据访问会相互<strong>竞争</strong>缓存端口和带宽的问题</li>
+</ul>
+</li>
+<li><strong>分离缓存</strong>(split cache)：指令和数据拥有各自独立的缓存空间<ul>
+<li>通常，<strong>指令缓存</strong><span>(I-cache)<span class="heti-spacing"> </span></span>用于存储指令，<strong>数据缓存</strong><span>(D-cache)<span class="heti-spacing"> </span></span>用于存储数据</li>
+<li>优点是允许处理器在同一周期内获取指令和数据（我们熟知的流水线<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>就是这么做的<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，且指令流和数据流是独立的，互不干扰</li>
+</ul>
+</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/79.png"><img src="images/C2/79.png" width="80%"/></a>
+</div> <p></p>
+</details>
+<h3 id="performance">Performance<a class="headerlink" href="#performance" title="Permanent link">⚓︎</a></h3>
+<p>我们可以将<a href="1.html#quantitative-principles-of-computer-design">上一章</a>介绍的处理器执行时间的计算公式用于评估高速缓存的性能，不过需要额外加上<strong>存储器停顿周期数</strong>(memory stall cycles)：</p>
+<div class="arithmatex">\[
+\text{CPU execution time} = (\text{CPU clock cycles} + \text{Memory stall cycles}) \times \text{Clock cycle time}
+\]</div>
+<p>而存储器停顿周期数由失效数和<strong>失效损失</strong><span>(miss penalty)<span class="heti-spacing"> </span></span>共同决定：</p>
+<div class="arithmatex">\[
+\begin{align}
+\text{Memory stall cycles} &amp; = \text{Numbers of misses} \times \text{Miss penalty} \notag \\
+&amp; = \text{IC} \times \dfrac{\text{Misses}}{\text{Instruction}} \times \text{Miss penalty} \notag \\
+&amp; = \text{IC} \times \dfrac{\text{Memory accesses}}{\text{Instruction}} \times \text{Miss rate} \times \text{Miss penalty} \notag
+\end{align}
+\]</div>
+<ul>
+<li>其中最后一行式子更容易计算，因为这些量更容易被测量</li>
+<li>失效损失实际上会随情况发生变化，但便于计算，我们就假定它是一个常数</li>
+<li><strong>失效率</strong>(miss rate)：导致失效的高速缓存访问的比重</li>
+<li>
+<p>此外，失效损失和失效率在读和写的情况下会有所不同，所以如有必要可以分开讨论：</p>
+<div class="arithmatex">\[
+\begin{align}
+\text{Miss stall clock cycles} = &amp; \text{IC} \times \text{Reads per instruction} \times \text{Read miss rate} \times \text{Read miss penalty} \notag \\
+&amp; + \text{IC} \times \text{Writes per instruction} \times \text{Write miss rate} \times \text{Write miss penalty} \notag
+\end{align}
+\]</div>
+<p>但还是为了便于讨论，之后不会做这种区分。</p>
+</li>
+<li>
+<p>有时，使用<strong>每条指令的失效次数</strong><span>(misses per instruction)<span class="heti-spacing"> </span></span>来衡量失效率，比原先用每次存储器访问的失效次数来衡量可能更好，因为这一指标和硬件实现无关。它们之间的关系为：</p>
+<div class="arithmatex">\[
+\dfrac{\text{Misses}}{\text{Instruction}} = \dfrac{\text{Miss rate} \times \text{Memory accesses}}{\text{Instruction count}} = \text{Miss rate} \times \dfrac{\text{Memory accesses}}{\text{Instruction}}
+\]</div>
+<p>但这一指标的缺点在于它取决于架构实现。</p>
+</li>
+</ul>
+<hr/>
+<p>如上所述，实际上无论是直接拿指令数，还是拿失效率作为衡量指标，都是有一些缺陷的，更好的测量方法是使用<strong>平均存储器访问时间</strong><span>(average memory access time, AMAT)<span class="heti-spacing"> </span></span>作为指标，对应的计算公式为：</p>
+<div class="arithmatex">\[
+\text{Average memory access time} = \text{Hit time} + \text{Miss rate} \times \text{Miss penalty}
+\]</div>
+<ul>
+<li>单位可以是绝对时间，也可以是周期数</li>
+<li>这种方法实际上还是一种间接的测量方法</li>
+</ul>
+<details class="example">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:5"><input checked="" id="__tabbed_3_1" name="__tabbed_3" type="radio"/><input id="__tabbed_3_2" name="__tabbed_3" type="radio"/><input id="__tabbed_3_3" name="__tabbed_3" type="radio"/><input id="__tabbed_3_4" name="__tabbed_3" type="radio"/><input id="__tabbed_3_5" name="__tabbed_3" type="radio"/><div class="tabbed-labels"><label for="__tabbed_3_1">例<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span></label><label for="__tabbed_3_2">例<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span></label><label for="__tabbed_3_3">例<span class="heti-skip"><span class="heti-spacing"> </span>3<span class="heti-spacing"> </span></span></label><label for="__tabbed_3_4">例<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span></label><label for="__tabbed_3_5">例<span><span class="heti-spacing"> </span>5</span></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="" id="__tabbed_4_1" name="__tabbed_4" type="radio"/><input id="__tabbed_4_2" name="__tabbed_4" type="radio"/><div class="tabbed-labels"><label for="__tabbed_4_1">题目</label><label for="__tabbed_4_2">解答</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/62.png"><img src="images/C2/62.png" width="70%"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/63.png"><img src="images/C2/63.png" width="80%"/></a>
+</div><p></p>
+</div>
+</div>
+</div>
+</div>
+<div class="tabbed-block">
+<div class="tabbed-set tabbed-alternate" data-tabs="5:2"><input checked="" id="__tabbed_5_1" name="__tabbed_5" type="radio"/><input id="__tabbed_5_2" name="__tabbed_5" type="radio"/><div class="tabbed-labels"><label for="__tabbed_5_1">题目</label><label for="__tabbed_5_2">解答</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/64.png"><img src="images/C2/64.png" width="70%"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/65.png"><img src="images/C2/65.png" width="70%"/></a>
+</div><p></p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/66.png"><img src="images/C2/66.png" width="80%"/></a>
+</div><p></p>
+</div>
+</div>
+</div>
+</div>
+<div class="tabbed-block">
+<div class="tabbed-set tabbed-alternate" data-tabs="6:2"><input checked="" id="__tabbed_6_1" name="__tabbed_6" type="radio"/><input id="__tabbed_6_2" name="__tabbed_6" type="radio"/><div class="tabbed-labels"><label for="__tabbed_6_1">题目</label><label for="__tabbed_6_2">解答</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/6.png"><img src="images/C2/6.png" width="80%"/></a>
+</div><p></p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/109.png"><img src="images/C2/109.png" width="80%"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<div class="admonition warning">
+<p class="admonition-title">注意</p>
+<p>在最后的计算中，教材误以为失效损失为<span class="heti-skip"><span class="heti-spacing"> </span>200<span class="heti-spacing"> </span></span>个时钟周期（题目说的是<span class="heti-skip"><span class="heti-spacing"> </span>100<span class="heti-spacing"> </span></span>个时钟周期<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，所以得到的结果是错的。不过我已经修正过了，应该没问题了吧<span><span class="heti-spacing"> </span>...</span></p>
+</div>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/7.png"><img src="images/C2/7.png" width="90%"/></a>
+</div><p></p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/8.png"><img src="images/C2/8.png" width="80%"/></a>
+</div><p></p>
+</div>
+</div>
+</div>
+</div>
+<div class="tabbed-block">
+<div class="tabbed-set tabbed-alternate" data-tabs="7:2"><input checked="" id="__tabbed_7_1" name="__tabbed_7" type="radio"/><input id="__tabbed_7_2" name="__tabbed_7" type="radio"/><div class="tabbed-labels"><label for="__tabbed_7_1">题目</label><label for="__tabbed_7_2">解答</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/86.png"><img src="images/C2/86.png" width="90%"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/87.png"><img src="images/C2/87.png" width="80%"/></a>
+</div><p></p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/88.png"><img src="images/C2/88.png" width="80%"/></a>
+</div><p></p>
+</div>
+</div>
+</div>
+</div>
+<div class="tabbed-block">
+<div class="tabbed-set tabbed-alternate" data-tabs="8:2"><input checked="" id="__tabbed_8_1" name="__tabbed_8" type="radio"/><input id="__tabbed_8_2" name="__tabbed_8" type="radio"/><div class="tabbed-labels"><label for="__tabbed_8_1">题目</label><label for="__tabbed_8_2">解答</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/98.png"><img src="images/C2/98.png" width="80%"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/99.png"><img src="images/C2/99.png" width="80%"/></a>
+</div><p></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</details>
+<h4 id="impact-of-caches-on-processor-performance">Impact of Caches on Processor Performance<a class="headerlink" href="#impact-of-caches-on-processor-performance" title="Permanent link">⚓︎</a></h4>
+<p>下面来探讨高速缓存的<span class="heti-skip"><span class="heti-spacing"> </span>AMAT<span class="heti-spacing"> </span></span>对处理器性能的影响。</p>
+<ul>
+<li>虽然实际上可能有其他原因导致处理器的停顿，但为了便于讨论，我们假定只有存储器的停顿导致处理器的停顿</li>
+<li>对于有序处理器而言，<span>AMAT<span class="heti-spacing"> </span></span>确实能预测处理器的性能；但是对于乱序处理器（之后的章节会介绍）而言就没那么简单了</li>
+<li>高速缓存的失效对于低<span class="heti-skip"><span class="heti-spacing"> </span>CPI<span class="heti-spacing"> </span></span>和高时钟频率的处理器而言有双重影响：<ul>
+<li><span><span class="arithmatex">\(\text{CPI}_{\text{execution}}\)</span><span class="heti-spacing"> </span></span>的值越低，高速缓存失效周期数的相对影响更大</li>
+<li>即使对于两个存储器层级相同的两台电脑而言，时钟频率更高的处理器在每次失效中会有更多的时钟周期数，因此存储器在<span class="heti-skip"><span class="heti-spacing"> </span>CPI<span class="heti-spacing"> </span></span>的占比会更高</li>
+</ul>
+</li>
+</ul>
+<details class="example">
+<summary>例子</summary>
+<p>下面来看一下不同的高速缓存组织对处理器性能的影响：</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="9:2"><input checked="" id="__tabbed_9_1" name="__tabbed_9" type="radio"/><input id="__tabbed_9_2" name="__tabbed_9" type="radio"/><div class="tabbed-labels"><label for="__tabbed_9_1">题目</label><label for="__tabbed_9_2">解答</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/9.png"><img src="images/C2/9.png" width="80%"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/10.png"><img src="images/C2/10.png" width="80%"/></a>
+</div><p></p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/11.png"><img src="images/C2/11.png" width="80%"/></a>
+</div><p></p>
+</div>
+</div>
+</div>
+</details>
+<h4 id="out-of-order-execution-processors">Out-of-Order Execution Processors<a class="headerlink" href="#out-of-order-execution-processors" title="Permanent link">⚓︎</a></h4>
+<p>对于乱序处理器而言，一件麻烦的事就是如何定义“失效损失”。下面我们仅将不重叠的时延作为失效损失来考虑，具体公式为：</p>
+<div class="arithmatex">\[
+\dfrac{\text{Memory stall cycles}}{\text{Instruction}} = \dfrac{\text{Misses}}{\text{Instruction}} \times (\text{Total miss latency} - \text{Overlapped miss latency})
+\]</div>
+<p>我们需要考虑以下两点：</p>
+<ul>
+<li><strong>存储器时延的长度</strong>：在乱序处理器中，将什么东西考虑为存储器操作的开始和结束？</li>
+<li><strong>时延重叠的长度</strong>：什么是处理器内重叠的开始？</li>
+</ul>
+<p>鉴于乱序执行处理器的复杂性，上述两个因素不存在唯一的正确定义。由于仅当操作到达提交流水线阶段时方可见，若处理器未能按该周期最大可能数量提交指令，我们认定它在某一时钟周期内停顿。我们将此停顿归因于首条无法被提交的指令。</p>
+<p>对于时延的测量，我们可以从内存指令进入指令窗口队列时开始计时，或自地址生成时刻起算，亦可选择在实际向内存系统发送指令时启动计量。只要保持方法一致性，任一选择皆可行。</p>
+<p>总之，尽管对乱序处理器中内存停顿的定义和测量相当复杂，但必须认识到这些问题会显著影响性能。这种复杂性源于乱序处理器能够在不损害性能的前提下，容忍由缓存失效引起的部分时延。因此，设计者在评估内存层次结构的权衡取舍时，通常会采用乱序处理器及内存的模拟器进行验证，以确保那些改善平均内存延迟的措施确实能提升程序运行效能。</p>
+<details class="example">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="10:2"><input checked="" id="__tabbed_10_1" name="__tabbed_10" type="radio"/><input id="__tabbed_10_2" name="__tabbed_10" type="radio"/><div class="tabbed-labels"><label for="__tabbed_10_1">题目</label><label for="__tabbed_10_2">解答</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/68.png"><img src="images/C2/68.png" width="80%"/></a>
+</div><p></p>
+<p><span>preceding example<span class="heti-spacing"> </span></span>如下：</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/70.png"><img src="images/C2/70.png" width="80%"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/69.png"><img src="images/C2/69.png" width="80%"/></a>
+</div><p></p>
+</div>
+</div>
+</div>
+</details>
+<details class="abstract" open="open">
+<summary>性能计算公式汇总</summary>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/12.png"><img src="images/C2/12.png" width="90%"/></a>
+</div><p></p>
+</details>
+<h3 id="basic-optimizations">Basic Optimizations<a class="headerlink" href="#basic-optimizations" title="Permanent link">⚓︎</a></h3>
+<p>根据<span class="heti-skip"><span class="heti-spacing"> </span>AMAT<span class="heti-spacing"> </span></span>的计算公式，我们可以得到以下三种提升高速缓存性能的方向，以及对应的优化方法：</p>
+<ul>
+<li>降低<strong>失效率</strong>：更大的数据块，更大的高速缓存，更高的相联程度</li>
+<li>降低<strong>失效损失</strong>：多级高速缓存，给予读取更高的优先级</li>
+<li>降低<strong>命中时间</strong>：在索引（动词）高速缓存时避免地址的转换</li>
+</ul>
+<p>在详细介绍这六种优化方法前，我们先为失效的情况分分类（称为<span class="heti-skip"><span class="heti-spacing"> </span>3C<span class="heti-spacing"> </span></span>模型<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
+<ul>
+<li><strong>强制</strong>(compulsory)（也称为冷启动失效<span class="heti-skip"><span class="heti-spacing"> </span>(cold-start misses)/<span class="heti-spacing"> </span></span>第一次引用失效<span><span class="heti-spacing"> </span>(first-reference misses)</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：最开始访问高速缓存的数据块时必定出现失效情况，此时对应的数据块必须先被带入到高速缓存中。</li>
+<li><strong>容量</strong>(capacity)：在程序执行的过程中，高速缓存无法包含所有需要的数据块，于是不得不抛弃一些数据块，但之后可能又需要检索这些数据块，此时失效发生</li>
+<li><strong>冲突</strong>(conflict)：对于组相联<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>直接映射而言，由于多个数据块映射到相同的组上，导致较早存入的数据被替换，使得后续访问时发生失效</li>
+</ul>
+<details class="info">
+<summary>注</summary>
+<p>其实还有第<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>个<span><span class="heti-spacing"> </span>C</span>——<strong>一致性</strong><span>(coherency)<span class="heti-spacing"> </span></span>失效，它主要针对多核处理器的高速缓存。不过这个<span class="heti-skip"><span class="heti-spacing"> </span>C<span class="heti-spacing"> </span></span>不在本章的讨论范围内。</p>
+</details>
+<p>下面两张图分别展示了对于不同大小的高速缓存，<span>3C<span class="heti-spacing"> </span></span>模型在总失效率和失效率分布上的情况：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/13.png"><img src="images/C2/13.png" width="90%"/></a>
+</div>
+<p>现在我们来思考一下如何解决这三类失效问题：</p>
+<ul>
+<li>最容易解决的是<strong>冲突失效</strong>——采用全相联的置放方案就可以完全避免此类失效问题，但这种理论上很简单的做法花费的实际成本较大，且会降低时钟频率</li>
+<li>对于<strong>容量失效</strong>，唯一能做的就是扩大高速缓存的容量，因为上级存储器容量过小的话会导致数据传输和置换时间的增加，从而带来存储器层级的<strong>抖动</strong><span>(thrash)<span class="heti-spacing"> </span></span>问题</li>
+<li>而对于强制失效，可以通过增大数据块容量来解决，但是这会导致其他失效的增加</li>
+</ul>
+<p><span>3C<span class="heti-spacing"> </span></span>模型存在一些局限：</p>
+<ul>
+<li>它只考虑了平均情况，而无法很好地解释个别的特殊情况</li>
+<li>它同时忽视了替代的策略</li>
+</ul>
+<p>所以，接下来我们将会看到：没有一种十全十美的优化方法，需要我们结合具体情况做好权衡。在正式介绍优化方法前，可以先瞄一眼下面这张总结图，留个总体的印象；等阅读完这六大优化方法后，再回过头来看这张图，这样有助于更好地理解这些优化方法带来的提升以及不足。</p>
+<details class="abstract">
+<summary>总结：六大基本的高速缓存优化方法</summary>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/14.png"><img src="images/C2/14.png" width="90%"/></a>
+</div><p></p>
+<ul>
+<li><code>+</code>表示对该因素起到提升作用</li>
+<li><code>-</code>表示对该因素起到负面影响</li>
+<li>空白表示没有影响</li>
+</ul>
+</details>
+<h4 id="larger-block-size">Larger Block Size<a class="headerlink" href="#larger-block-size" title="Permanent link">⚓︎</a></h4>
+<p><strong>降低失效率</strong>的最简单的方法是<u>增大数据块的大小</u>，它借助了空间局部性的优势，可以<strong>减少强制冲突</strong>的发生。</p>
+<p>同时，更大的数据块还会<u>提升失效损失</u>，因为对于相同大小的高速缓存，数据块的数量会随之减少，从而<strong>导致冲突失效乃至容量失效的发生</strong>（当高速缓存较小时<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。有时甚至还会出现失效损失的提升超过失效率的降低的情况，那么此时我们就不应该采取这种方法。</p>
+<p>具体来说，数据块大小的选择需要同时考虑下级存储器的<strong>时延</strong>和<strong>带宽</strong>。</p>
+<ul>
+<li>如果时延和带宽都很大的话，那么考虑使用更大的数据块，因为此时高速缓存在每次失效中可以得到更多的字节数据，而失效损失的提升相对较小</li>
+<li>但如果时延和带宽都很小的话，则鼓励使用更小的数据块，因为更大的数据块只能节省很少的时间</li>
+</ul>
+<p>下图展示了五种不同大小的高速缓存在不同大小的数据块下的失效率：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/15.png"><img src="images/C2/15.png" width="70%"/></a>
+</div>
+<details class="example">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="11:2"><input checked="" id="__tabbed_11_1" name="__tabbed_11" type="radio"/><input id="__tabbed_11_2" name="__tabbed_11" type="radio"/><div class="tabbed-labels"><label for="__tabbed_11_1">例<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span></label><label for="__tabbed_11_2">例<span><span class="heti-spacing"> </span>2</span></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="tabbed-set tabbed-alternate" data-tabs="12:2"><input checked="" id="__tabbed_12_1" name="__tabbed_12" type="radio"/><input id="__tabbed_12_2" name="__tabbed_12" type="radio"/><div class="tabbed-labels"><label for="__tabbed_12_1">题目</label><label for="__tabbed_12_2">答案</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/16.png"><img src="images/C2/16.png" width="80%"/></a>
+</div><p></p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/17.png"><img src="images/C2/17.png" width="70%"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/18.png"><img src="images/C2/18.png" width="80%"/></a>
+</div><p></p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/19.png"><img src="images/C2/19.png" width="80%"/></a>
+</div><p></p>
+</div>
+</div>
+</div>
+</div>
+<div class="tabbed-block">
+<div class="tabbed-set tabbed-alternate" data-tabs="13:2"><input checked="" id="__tabbed_13_1" name="__tabbed_13" type="radio"/><input id="__tabbed_13_2" name="__tabbed_13" type="radio"/><div class="tabbed-labels"><label for="__tabbed_13_1">题目</label><label for="__tabbed_13_2">答案</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/89.png"><img src="images/C2/89.png" width="90%"/></a>
+</div><p></p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/90.png"><img src="images/C2/90.png" width="50%"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/91.png"><img src="images/C2/91.png" width="80%"/></a>
+</div><p></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</details>
+<h4 id="larger-caches">Larger Caches<a class="headerlink" href="#larger-caches" title="Permanent link">⚓︎</a></h4>
+<p>前面提到过，<strong>降低容量失效</strong>的一种方法是<u>增大高速缓存的大小</u>。但这样做的缺点是可能会带来更长的命中时间，以及消耗更高的成本和功率。</p>
+<p>这种技术往往用于不在芯片上的高速缓存中。</p>
+<h4 id="higher-associativity">Higher Associativity<a class="headerlink" href="#higher-associativity" title="Permanent link">⚓︎</a></h4>
+<p>在本节开篇介绍<span class="heti-skip"><span class="heti-spacing"> </span>3C<span class="heti-spacing"> </span></span>模型的时候，有两张关于<span class="heti-skip"><span class="heti-spacing"> </span>3C<span class="heti-spacing"> </span></span>模型与失效率相关的图表，里面也包含了和<strong>相联程度</strong>相关的内容。从这两张图表中，我们可以得到以下两条经验法则：</p>
+<ul>
+<li>实际情况下，<strong>八路组相联</strong>降低失效的效果近乎等价于全相联的效果</li>
+<li><span>2:1<span class="heti-spacing"> </span></span>高速缓存经验法则<heti-adjacent class="heti-adjacent-half">：</heti-adjacent>（对于<span class="heti-skip"><span class="heti-spacing"> </span>128KiB<span class="heti-spacing"> </span></span>以下的高速缓存）对于大小为<span class="heti-skip"><span class="heti-spacing"> </span>N<span class="heti-spacing"> </span></span>的直接映射的高速缓存，它的失效率与大小为<span class="heti-skip"><span class="heti-spacing"> </span>N/2<span class="heti-spacing"> </span></span>的二路组相联的高速缓存的失效率相等</li>
+</ul>
+<p>相联程度的提高虽然能够<u>降低失效率</u>，但代价是增大了命中时间。因此，对于高时钟频率的处理器而言，不建议提升相联程度；而在失效损失较大的情况下，则鼓励提升相联程度。</p>
+<details class="example">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="14:2"><input checked="" id="__tabbed_14_1" name="__tabbed_14" type="radio"/><input id="__tabbed_14_2" name="__tabbed_14" type="radio"/><div class="tabbed-labels"><label for="__tabbed_14_1">题目</label><label for="__tabbed_14_2">解答</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/20.png"><img src="images/C2/20.png" width="80%"/></a>
+</div><p></p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/110.png"><img src="images/C2/110.png" width="80%"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/21.png"><img src="images/C2/21.png" width="80%"/></a>
+</div><p></p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/22.png"><img src="images/C2/22.png" width="80%"/></a>
+</div><p></p>
+</div>
+</div>
+</div>
+</details>
+<h4 id="multilevel-caches">Multilevel Caches<a class="headerlink" href="#multilevel-caches" title="Permanent link">⚓︎</a></h4>
+<p>鉴于处理器和存储器之间的鸿沟，计算机架构师们会考虑这个问题：我们应该让高速缓存的速度变得<strong>更快</strong>，以跟上处理器的速度；还是应该让高速缓存变得<strong>更大</strong>，以克服处理器和内存之间不断变宽的鸿沟？那么鱼和熊掌是否可以兼得呢？——幸运的是，引入<strong>多级高速缓存</strong><span>(multilevel caches)<span class="heti-spacing"> </span></span>的概念，我们可以兼得鱼和熊掌！</p>
+<p>我们先考虑最简单的情况——两级高速缓存：</p>
+<ul>
+<li>第一级高速缓存（以下简称 <strong>L1</strong>）可以足够小，以跟上处理器的时钟周期<ul>
+<li>所以<span class="heti-skip"><span class="heti-spacing"> </span>L1<span class="heti-spacing"> </span></span>的速度将影响处理器的时钟频率</li>
+</ul>
+</li>
+<li>第二级高速缓存（以下简称 <strong>L2</strong>）可以足够大，以捕获更多对内存的访问<ul>
+<li>所以<span class="heti-skip"><span class="heti-spacing"> </span>L2<span class="heti-spacing"> </span></span>的速度仅对<span class="heti-skip"><span class="heti-spacing"> </span>L1<span class="heti-spacing"> </span></span>的失效损失有影响</li>
+<li>如果<span class="heti-skip"><span class="heti-spacing"> </span>L2<span class="heti-spacing"> </span></span>不够大的话，反而会增加失效率</li>
+</ul>
+</li>
+</ul>
+<p>这样便能有效<u>减少失效损失</u>了。</p>
+<p>引入多级高速缓存后，我们需要重新考虑<span class="heti-skip"><span class="heti-spacing"> </span>AMAT<span class="heti-spacing"> </span></span>的定义了——现在的计算公式变成了：</p>
+<div class="arithmatex">\[
+\begin{align}
+\text{Average memory access time} = &amp; \text{Hit time}_{\text{L1}} + \text{Miss rate}_{\text{L1}} \notag \\
+&amp; \times (\text{Hit time}_{\text{L2}} + \text{Miss rate}_{\text{L2}} \times \text{Miss penalty}_{\text{L2}}) \notag 
+\end{align}
+\]</div>
+<p>为了消除歧义，有必要在这里对“失效率”做进一步的阐述：</p>
+<ul>
+<li><strong>局部失效率</strong><span>(local miss rate) =<span class="heti-spacing"> </span></span>在某个高速缓存的失效次数<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>在该高速缓存中总的存储器访问次数<ul>
+<li><span>L1<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>L2<span class="heti-spacing"> </span></span>的局部失效率分别为<span><span class="heti-spacing"> </span><span class="arithmatex">\(\text{Miss rate}_{\text{L1}}, \text{Miss rate}_{\text{L2}}\)</span></span></li>
+</ul>
+</li>
+<li><strong>全局失效率</strong><span>(global miss rate) =<span class="heti-spacing"> </span></span>在某个高速缓存的失效次数<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>来自处理器的总的存储器访问次数<ul>
+<li><span>L1<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>L2<span class="heti-spacing"> </span></span>的全局失效率分别为<span><span class="heti-spacing"> </span><span class="arithmatex">\(\text{Miss rate}_{\text{L1}}, \text{Miss rate}_{\text{L1}} \times \text{Miss rate}_{\text{L2}}\)</span></span></li>
+</ul>
+</li>
+</ul>
+<p>对于多级高速缓存而言，全局失效率是一种更合适的衡量指标。</p>
+<p>如果不想考虑失效率的话，可以用每条指令的失效数作为衡量指标，计算公式为：</p>
+<div class="arithmatex">\[
+\begin{align}
+\text{Average memory stalls per instruction} = &amp; \text{Misses per instruction}_{\text{L1}} \times \text{Hit time}_{\text{L2}} \notag \\
+&amp; + \text{Misses per instruction}_{\text{L2}} \times \text{Miss penalty}_{\text{L2}} \notag 
+\end{align}
+\]</div>
+<div class="admonition info">
+<p class="admonition-title">注</p>
+<p>上述公式同时考虑到读取和写入操作，且假设<span class="heti-skip"><span class="heti-spacing"> </span>L1<span class="heti-spacing"> </span></span>采用写回策略。</p>
+</div>
+<p>下面这个例子能够展现这个指标相比<span class="heti-skip"><span class="heti-spacing"> </span>AMAT<span class="heti-spacing"> </span></span>的优越性：</p>
+<details class="example">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="15:2"><input checked="" id="__tabbed_15_1" name="__tabbed_15" type="radio"/><input id="__tabbed_15_2" name="__tabbed_15" type="radio"/><div class="tabbed-labels"><label for="__tabbed_15_1">题目</label><label for="__tabbed_15_2">解答</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/23.png"><img src="images/C2/23.png" width="80%"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/24.png"><img src="images/C2/24.png" width="80%"/></a>
+</div><p></p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/25.png"><img src="images/C2/25.png" width="80%"/></a>
+</div><p></p>
+</div>
+</div>
+</div>
+</details>
+<hr/>
+<p>下面两张图分别展示了<span class="heti-skip"><span class="heti-spacing"> </span>L2<span class="heti-spacing"> </span></span>的大小对失效率和相对执行时间的影响：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/26.png"><img src="images/C2/26.png" width="80%"/></a>
+</div>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/27.png"><img src="images/C2/27.png" width="60%"/></a>
+</div>
+<p>可以发现：</p>
+<ul>
+<li>当<span class="heti-skip"><span class="heti-spacing"> </span>L2<span class="heti-spacing"> </span></span>足够大时，全局失效率与<span class="heti-skip"><span class="heti-spacing"> </span>L2<span class="heti-spacing"> </span></span>的失效率非常相似</li>
+<li>局部失效率不是一个良好的二级高速缓存的衡量指标</li>
+</ul>
+<hr/>
+<p>此外，<span>L2<span class="heti-spacing"> </span></span>的相联程度也会影响整个高速缓存的失效损失，具体见下面的例子：</p>
+<details class="example">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="16:2"><input checked="" id="__tabbed_16_1" name="__tabbed_16" type="radio"/><input id="__tabbed_16_2" name="__tabbed_16" type="radio"/><div class="tabbed-labels"><label for="__tabbed_16_1">题目</label><label for="__tabbed_16_2">解答</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/28.png"><img src="images/C2/28.png" width="80%"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/29.png"><img src="images/C2/29.png" width="80%"/></a>
+</div><p></p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/30.png"><img src="images/C2/30.png" width="80%"/></a>
+</div><p></p>
+</div>
+</div>
+</div>
+</details>
+<hr/>
+<p>最后需要考虑的问题是：<span>L1<span class="heti-spacing"> </span></span>内的数据是否需要出现在<span class="heti-skip"><span class="heti-spacing"> </span>L2<span class="heti-spacing"> </span></span>内？由此引出了两种策略：</p>
+<ul>
+<li><strong>多级包含</strong>(multilevel inclusion)：<span>L1<span class="heti-spacing"> </span></span>的数据永远都会在<span class="heti-skip"><span class="heti-spacing"> </span>L2<span class="heti-spacing"> </span></span>出现，这样可以确保数据的一致性<ul>
+<li>缺点是对于数据块大小不同的多级高速缓存中，需要做额外的处理工作，这样可能会略微提高<span class="heti-skip"><span class="heti-spacing"> </span>L1<span class="heti-spacing"> </span></span>的失效率。因此为了方便起见，很多高速缓存设计中会让各级的高速缓存保持相同大小的数据块。</li>
+</ul>
+</li>
+<li><strong>多级排斥</strong>(multilevel exclusion)：<span>L1<span class="heti-spacing"> </span></span>的数据永远不会在<span class="heti-skip"><span class="heti-spacing"> </span>L2<span class="heti-spacing"> </span></span>出现<ul>
+<li>这适用于<span class="heti-skip"><span class="heti-spacing"> </span>L2<span class="heti-spacing"> </span></span>仅比<span class="heti-skip"><span class="heti-spacing"> </span>L1<span class="heti-spacing"> </span></span>稍大一些的情况。</li>
+<li>当<span class="heti-skip"><span class="heti-spacing"> </span>L1<span class="heti-spacing"> </span></span>出现失效的情况时，交换<span class="heti-skip"><span class="heti-spacing"> </span>L1<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>L2<span class="heti-spacing"> </span></span>的数据，而非用<span class="heti-skip"><span class="heti-spacing"> </span>L2<span class="heti-spacing"> </span></span>的数据块替代<span><span class="heti-spacing"> </span>L1</span>，以避免<span class="heti-skip"><span class="heti-spacing"> </span>L2<span class="heti-spacing"> </span></span>额外的空间浪费</li>
+</ul>
+</li>
+</ul>
+<h4 id="giving-priority-to-read-misses-over-writes">Giving Priority to Read Misses over Writes<a class="headerlink" href="#giving-priority-to-read-misses-over-writes" title="Permanent link">⚓︎</a></h4>
+<p>在<strong>写穿</strong>策略中，我们会利用<strong>写缓冲区</strong>提升其性能。然而，写缓冲区虽然能提高写操作的效率，但它引入了一个复杂性：写缓冲区中可能包含了某个位置的最新更新值，而这个位置的数据可能在读失效时被请求。如果读操作直接从主存获取数据，而写缓冲区中的数据尚未写入主存，就会导致 <strong><span>RAW<span class="heti-spacing"> </span></span>数据冒险</strong>（即读到了旧数据<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
+<details class="example">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="17:2"><input checked="" id="__tabbed_17_1" name="__tabbed_17" type="radio"/><input id="__tabbed_17_2" name="__tabbed_17" type="radio"/><div class="tabbed-labels"><label for="__tabbed_17_1">题目</label><label for="__tabbed_17_2">解答</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/31.png"><img src="images/C2/31.png" width="80%"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/32.png"><img src="images/C2/32.png" width="80%"/></a>
+</div><p></p>
+</div>
+</div>
+</div>
+</details>
+<p>我们有以下解决方案：</p>
+<ul>
+<li>最简单但低效的方法是：让读失效操作等待，直到写缓冲区清空。但这会严重增加读失效的损失。</li>
+<li>所以，普遍采用的优化方法是：当发生读失效时，检查写缓冲区的内容。<ul>
+<li>如果读请求的地址在写缓冲区中存在（意味着有待写入的最新数据<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，则直接从写缓冲区获取数据。</li>
+<li>如果没有冲突，并且内存系统可用，则允许读失效继续进行，从主存获取数据。</li>
+<li>这种方法有效地赋予了<strong>读操作优先于写操作</strong>的权利。</li>
+</ul>
+</li>
+</ul>
+<p>即使是<strong>写回式高速缓存</strong>，写操作的开销也可以通过类似的方式减少：</p>
+<ul>
+<li>当读失效需要替换一个“脏”的内存块时，不是先将脏块写回主存，再从主存读取新块，而是将脏块复制到写缓冲区中。</li>
+<li>然后立即从主存读取新块</li>
+<li>脏块的写回操作则在后台由写缓冲区处理。</li>
+<li>同样，处理器在读未命中时也需要检查写缓冲区中是否有冲突的地址。</li>
+</ul>
+<h4 id="avoiding-address-translation-during-indexing-of-the-cache">Avoiding Address Translation During Indexing of the Cache<a class="headerlink" href="#avoiding-address-translation-during-indexing-of-the-cache" title="Permanent link">⚓︎</a></h4>
+<p>高速缓存需要完成从虚拟地址到物理地址的转换。</p>
+<p>为了<span><span class="heti-spacing"> </span>"make common case fast"</span>，高速缓存会用到虚拟地址，因为这样会提高命中率，而这样的高速缓存称为<strong>虚拟高速缓存</strong>(virtual caches)（对应传统意义上使用物理地址的<strong>物理高速缓存</strong>(physical caches)<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
+<p>在高速缓存中，我们需要区分两件事：索引高速缓存（即找到对应的组）和比较地址（的标签位<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。那么，虚拟地址和物理地址更适合完成这两项任务中的哪一个呢？假如对于索引和标签，全部使用虚拟地址（即 <strong>VIVT</strong>（虚拟索引，虚拟标签<heti-adjacent class="heti-adjacent-half">）</heti-adjacent><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，这样就消除了转换所需的时间。</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/80.png"><img src="images/C2/80.png" width="60%"/></a>
+</div>
+<p>看起来挺好的，但实际上没什么人会这样做，这是因为：</p>
+<ul>
+<li>
+<p>考虑到虚拟地址转换为物理地址时的页级<strong>保护</strong>机制</p>
+<ul>
+<li>通过在失效时拷贝<span class="heti-skip"><span class="heti-spacing"> </span>TLB<span class="heti-spacing"> </span></span>上的保护信息，并用一个字段来保存这个信息，并且在每次访问虚拟高速缓存时进行检查来克服这个问题</li>
+</ul>
+</li>
+<li>
+<p><strong>歧义</strong><span>(ambiguity)<span class="heti-spacing"> </span></span>问题：每当切换进程时，相同的虚拟地址就会指向不同的物理地址，需要对高速缓存进行清除操作</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/81.png"><img src="images/C2/81.png" width="40%"/></a>
+</div><p></p>
+<ul>
+<li>通过增加地址标签位的宽度，作为<strong>进程标识符标签</strong><span>(process-identifier tag, PID)<span class="heti-spacing"> </span></span>使用来解决这个问题。如果操作系统为进程赋予这些标签的话，它只需要清除那些<span><span class="heti-spacing"> </span>PID</span>（用于区分高速缓存中的数据是否用于该程序）被回收的标签，避免过多的清除操作，从而降低失效率：</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/33.png"><img src="images/C2/33.png" width="80%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>操作系统和用户程序可能使用两个不同的虚拟地址来指代同一个物理地址</p>
+<ul>
+<li>这些重复的地址称为同义词<span class="heti-skip"><span class="heti-spacing"> </span>(synonyms)<span class="heti-spacing"> </span></span>或<strong>别名</strong>(aliases)</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/82.png"><img src="images/C2/82.png" width="40%"/></a>
+</div><p></p>
+<ul>
+<li>硬件层面上，解决此问题的方法是<strong>反别名</strong>(antialiasing)：确保每个高速缓存数据块对应唯一的一个物理地址</li>
+<li>软件层面上，解决此问题的方法是强迫这些别名共享一些地址位，这种限制称为<strong>页着色</strong>(page coloring)，可以看作是组相联在虚拟内存中的应用。该方法能有效提升页偏移量，因为它保证了虚拟地址和物理地址最后的某些位是相同的</li>
+</ul>
+</li>
+<li>
+<p><span>I/O<span class="heti-spacing"> </span></span>设备</p>
+</li>
+</ul>
+<p>一种可以同时利用虚拟高速缓存和物理高速缓存优势的方法是<strong>虚拟索引，物理标签</strong>(virtually indexed, physically tagged)：</p>
+<ul>
+<li>使用虚拟地址和物理地址中页偏移量相同的那部分来索引高速缓存</li>
+<li>同时在使用该<strong>索引</strong>读取高速缓存的时候，转换地址的<strong>虚拟</strong>部分</li>
+<li>并且用<strong>标签</strong>匹配<strong>物理</strong>地址</li>
+<li>该方法实现了立即读取高速缓存的数据，并且仍然使用物理地址进行比较。</li>
+</ul>
+<p>下图展示了从虚拟地址到<span class="heti-skip"><span class="heti-spacing"> </span>L2<span class="heti-spacing"> </span></span>高速缓存访问的存储器层级原理图：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/34.png"><img src="images/C2/34.png" width="90%"/></a>
+</div>
+<p>相联程度可以保留地址物理部分内的索引，并且仍然可以支持较大的高速缓存。</p>
+<details class="example">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="18:2"><input checked="" id="__tabbed_18_1" name="__tabbed_18" type="radio"/><input id="__tabbed_18_2" name="__tabbed_18" type="radio"/><div class="tabbed-labels"><label for="__tabbed_18_1">题目</label><label for="__tabbed_18_2">解答</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/96.png"><img src="images/C2/96.png" width="80%"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<blockquote>
+<p>虽然这道题涉及到“虚拟索引，物理标签”的知识，但这里的“虚拟地址宽度”信息实际上并没有被用到。</p>
+</blockquote>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/97.png"><img src="images/C2/97.png" width="80%"/></a>
+</div><p></p>
+</div>
+</div>
+</div>
+</details>
+<h3 id="advanced-optimizations">Advanced Optimizations<a class="headerlink" href="#advanced-optimizations" title="Permanent link">⚓︎</a></h3>
+<p>在高级优化方法中，我们除了考虑<span class="heti-skip"><span class="heti-spacing"> </span>AMAT<span class="heti-spacing"> </span></span>公式中的三个因素外，还要考虑高速缓存的带宽和功耗问题。根据这<span class="heti-skip"><span class="heti-spacing"> </span>5<span class="heti-spacing"> </span></span>个因素，将下面即将介绍的优化方法分个类（也包括了上面一部分的基本优化方法<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：</p>
+<ul>
+<li>
+<p><strong>减少命中时间</strong>：小而简单的一级高速缓存，路预测<span><span class="heti-spacing"> </span>(way-prediction)</span>。这两种方法还能降低功率。</p>
+<ul>
+<li>基本优化中的<a href="#avoiding-address-translation-during-indexing-of-the-cache">最后一个方案</a>也属于此类</li>
+</ul>
+<details class="info">
+<summary>补充——<strong>追踪高速缓存</strong>(trace cache)</summary>
+<p>追踪高速缓存是一种特殊的指令缓存。它不存储物理上连续的指令块，而是存储<strong>动态执行的指令序列</strong>（即<span><span class="heti-spacing"> </span>trace</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
+<p>其工作原理如下：</p>
+<ul>
+<li>记录执行路径：当处理器执行程序时，追踪高速缓存会“观察”并记录实际执行过的指令序列，包括那些跨越了分支的指令。</li>
+<li>存储追踪：这些动态执行的指令序列（追踪）被存储在追踪高速缓存中。一个追踪可以包含来自不同内存地址的指令，但它们在逻辑上是连续执行的。</li>
+<li>预测与命中：当处理器需要获取指令时，它会尝试在追踪高速缓存中查找一个匹配的追踪。如果命中，处理器就可以一次性获取一个较长的、已经排好序的指令序列，而无需担心分支预测和指令获取的停顿。</li>
+<li>构建追踪：如果追踪高速缓存失效，处理器会从传统的指令缓存中获取指令，并同时在后台构建新的追踪，以便将来使用。</li>
+</ul>
+<details class="example">
+<summary>应用</summary>
+<p>追踪高速缓存的典型应用是<span><span class="heti-spacing"> </span>Intel Pentium 4</span>：</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/71.png"><img src="images/C2/71.png" width="80%"/></a>
+</div> <p></p>
+</details>
+</details>
+</li>
+<li>
+<p><strong>增加高速缓存带宽</strong>：流水线高速缓存<span><span class="heti-spacing"> </span>(pipelined caches)</span>，多分区高速缓存<span><span class="heti-spacing"> </span>(multibanked caches)</span>。这两种方法对功率的影响视具体情况而定</p>
+</li>
+<li>
+<p><strong>减少失效损失</strong>：关键字优先，合并写缓冲区。这两种方法略微提升功率。</p>
+<ul>
+<li>此外，基本优化方法中的<a href="#multilevel-caches">多级高速缓存</a>，<a href="#giving-priority-to-read-misses-over-writes">读失效优于写</a>的方案也属于此类</li>
+</ul>
+<details class="info">
+<summary>受害高速缓存<span><span class="heti-spacing"> </span>(victim cache)</span></summary>
+<p>这是一种小型、<strong>全相联</strong>的缓存，它位于主高速缓存和下一级内存之间。</p>
+<p>其工作原理如下：</p>
+<ul>
+<li>逐出时存储：当主高速缓存中的一个数据块被逐出时，它并不会直接被写回下一级内存，而是首先被移动到受害高速缓存中。</li>
+<li>查找：当处理器发出一个内存访问请求时：<ul>
+<li>首先检查主缓存</li>
+<li>如果主高速缓存失效，接着检查受害高速缓存</li>
+<li>如果受害高速缓存失效，则将数据从受害高速缓存移回主高速缓存（通常是交换位置，即受害高速缓存中的数据块进入主高速缓存，主高速缓存中被替换的数据块进入受害高速缓存<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，然后将数据提供给处理器。</li>
+<li>如果受害高速缓存也未命中，则从下一级内存中获取数据。</li>
+</ul>
+</li>
+<li>替换策略：受害高速缓存通常采用<span class="heti-skip"><span class="heti-spacing"> </span>LRU<span class="heti-spacing"> </span></span>等替换策略来管理其有限的空间。</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/72.png"><img src="images/C2/72.png" width="80%"/></a>
+</div> <p></p>
+</details>
+</li>
+<li>
+<p><strong>减少失效率</strong>：编译器优化。任何在编译时的提升能够降低功率。</p>
+<ul>
+<li>基本优化方法中的<a href="#larger-block-size">增大数据块</a>、<a href="#larger-caches">增大高速缓存容量</a>以及<a href="#higher-associativity">增大相联程度</a>也属于此类</li>
+</ul>
+</li>
+<li>
+<p><strong>通过并行减少失效损失或失效率</strong>：硬件预取，编译器预取。这两种方法都会提升功率，很可能是因为预取的数据没有被用到。</p>
+</li>
+</ul>
+<p>和介绍基本优化方法时一样，在开始之前也先放一张总结表格，可以先留个印象，学完后再回过头来看一遍，进一步加深印象。</p>
+<details class="abstract">
+<summary>总结：十大进阶的高速缓存优化方法</summary>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/42.png"><img src="images/C2/42.png" width="90%"/></a>
+</div><p></p>
+</details>
+<details class="abstract" open="open">
+<summary>备考建议（来自<span class="heti-skip"><span class="heti-spacing"> </span>hsb<span class="heti-spacing"> </span></span>的<span><span class="heti-spacing"> </span>PPT</span>）</summary>
+<ul>
+<li>可以将所有优化方法的要点完整地抄在<span class="heti-skip"><span class="heti-spacing"> </span>A4<span class="heti-spacing"> </span></span>纸上</li>
+<li>计算题有空自己推一下</li>
+<li>过程一定要写，至少有过程分。如果直接写答案错了没分</li>
+<li>中间结果不要提前近似，一定要算到最后一步再近似</li>
+</ul>
+</details>
+<h4 id="small-and-simple-first-level-caches">Small and Simple First-Level Caches<a class="headerlink" href="#small-and-simple-first-level-caches" title="Permanent link">⚓︎</a></h4>
+<p><u>减小一级高速缓存（以下简称<span><span class="heti-spacing"> </span>L1</span>）的大小，或者降低<span class="heti-skip"><span class="heti-spacing"> </span>L1<span class="heti-spacing"> </span></span>的相关程度</u>都有助于<strong>减小命中时间和功耗</strong>。</p>
+<ul>
+<li>回顾高速缓存命中的过程<ol>
+<li>使用地址的索引部分找到待比较的组</li>
+<li>使用地址的标签部分比较，检查是不是处理器所需要的数据</li>
+<li>如果是的话，就通过<span class="heti-skip"><span class="heti-spacing"> </span>MUX<span class="heti-spacing"> </span></span>选择正确的数据项</li>
+</ol>
+</li>
+<li>所以，直接映射的高速缓存能够将<span class="heti-skip"><span class="heti-spacing"> </span>2-3<span class="heti-spacing"> </span></span>两步合并在一起（因为一个组里只有一个数据块<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，从而降低命中时间；而且因为访问内容更少，还能降低功率</li>
+<li>
+<p>相联程度对命中时间的影响：</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/43.png"><img src="images/C2/43.png" width="70%"/></a>
+</div><p></p>
+</li>
+</ul>
+<details class="example">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="19:2"><input checked="" id="__tabbed_19_1" name="__tabbed_19" type="radio"/><input id="__tabbed_19_2" name="__tabbed_19" type="radio"/><div class="tabbed-labels"><label for="__tabbed_19_1">题目</label><label for="__tabbed_19_2">解答</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/45.png"><img src="images/C2/45.png" width="80%"/></a>
+</div><p></p>
+<p><span>Figure 2.8<span class="heti-spacing"> </span></span>就是上图，下图是<span><span class="heti-spacing"> </span>Figure B.8</span>：</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/110.png"><img src="images/C2/110.png" width="80%"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/46.png"><img src="images/C2/46.png" width="80%"/></a>
+</div><p></p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/47.png"><img src="images/C2/47.png" width="70%"/></a>
+</div><p></p>
+</div>
+</div>
+</div>
+</details>
+<ul>
+<li>
+<p>相联程度对功耗的影响：</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/44.png"><img src="images/C2/44.png" width="70%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>最近的设计反而采用更高相联程度的高速缓存，这是因为：</p>
+<ul>
+<li>很多处理器至少需要<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>个时钟周期来访问高速缓存，因此更长的命中时间并没有带来很大影响</li>
+<li>为了减少<span class="heti-skip"><span class="heti-spacing"> </span>TLB<span class="heti-spacing"> </span></span>的延时，所有的<span class="heti-skip"><span class="heti-spacing"> </span>L1<span class="heti-spacing"> </span></span>都是虚拟索引的（有待进一步理解）</li>
+<li>多线程导致冲突失效的增加，因而需要更高的相联程度</li>
+</ul>
+</li>
+</ul>
+<h4 id="way-prediction">Way Prediction<a class="headerlink" href="#way-prediction" title="Permanent link">⚓︎</a></h4>
+<p><strong>路预测</strong>(way-prediction)：在高速缓存中保留额外的位（称为<strong>块预测器位</strong>(block predictor bit)<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，用于预测下一次可能被访问的数据块。</p>
+<ul>
+<li>如果预测正确，高速缓存的访问时延就是很快的命中时间</li>
+<li>如果预测失败，那么就要尝试下一个数据块，改变预测者的内容，并且会有一个额外的时钟周期时延</li>
+</ul>
+<p>模拟结果表明：二路组相联和四路组相联的路预测准确率分别超过<span class="heti-skip"><span class="heti-spacing"> </span>90%<span class="heti-spacing"> </span></span>和<span><span class="heti-spacing"> </span>80%</span>，且指令高速缓存相比数据高速缓存表现更好。</p>
+<p>这种方法的一大缺点是加大了使高速缓存访问流水线化的难度。</p>
+<h4 id="pipelined-access-and-multibanked-caches">Pipelined Access and Multibanked Caches<a class="headerlink" href="#pipelined-access-and-multibanked-caches" title="Permanent link">⚓︎</a></h4>
+<p><u>使高速缓存访问流水线化</u>以及<u>采用多个<strong>分区</strong><span>(banks)<span class="heti-spacing"> </span></span>加宽高速缓存</u>都能<strong>提升高速缓存的带宽</strong>。这些优化方法主要针对的是<span><span class="heti-spacing"> </span>L1</span>，因为它的访问带宽会限制指令的吞吐量。但多个分区的做法同样可以用于<span class="heti-skip"><span class="heti-spacing"> </span>L2<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>L3<span class="heti-spacing"> </span></span>高速缓存中，但主要作为功率管理技术。</p>
+<ul>
+<li>使高速缓存访问流水线化：带来更高的时钟周期数，代价是提升了时延<ul>
+<li>使<strong>指令</strong>高速缓存流水线化可以有效提升流水线<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>的阶段数量，但这样会导致更大的分支预测错误损失</li>
+<li>使<strong>数据</strong>高速缓存流水线化可以在发射加载指令和使用数据之间增加更多的时钟周期数</li>
+<li><strong>指令</strong>高速缓存的流水线化相比<strong>数据</strong>高速缓存更为简单</li>
+</ul>
+</li>
+<li>
+<p>采用多个分区加宽高速缓存：高速缓存被分为独立的分区，每个分区支持独立的访问</p>
+<ul>
+<li>当访问在这些分区中平均分布时，这种方法的表现最好，因此如何将地址映射到分区会影响到存储器系统的行为</li>
+<li>一种简单的映射方法是按顺序将地址平均分配给每个分区，这样的方法称为<strong>顺序交错</strong>(sequential interleaving)</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/48.png"><img src="images/C2/48.png" width="90%"/></a>
+</div><p></p>
+</li>
+</ul>
+<h4 id="nonblocking-caches">Nonblocking Caches<a class="headerlink" href="#nonblocking-caches" title="Permanent link">⚓︎</a></h4>
+<p>乱序执行的流水线<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>不会在数据高速缓存失效时停顿，比如它在等待获取失效数据的同时还能继续从指令高速缓存中获取指令。而<strong>非阻塞的高速缓存</strong><span>(nonblocking caches)<span class="heti-spacing"> </span></span>允许数据高速缓存在失效发生时继续提供命中，从而发挥出乱序流水线<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>的潜在优势。这种<span class="heti-skip"><span class="heti-spacing"> </span>"hit during miss"<span class="heti-spacing"> </span></span>的优化方法能够降低失效损失。</p>
+<p>一种更复杂，但能进一步降低失效损失的方法是<span class="heti-skip"><span class="heti-spacing"> </span>"hit under multiple miss"<span class="heti-spacing"> </span></span>或<span><span class="heti-spacing"> </span>"miss under miss"</span>：将多个失效重叠在一起。</p>
+<details class="example">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="20:2"><input checked="" id="__tabbed_20_1" name="__tabbed_20" type="radio"/><input id="__tabbed_20_2" name="__tabbed_20" type="radio"/><div class="tabbed-labels"><label for="__tabbed_20_1">题目</label><label for="__tabbed_20_2">答案</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/49.png"><img src="images/C2/49.png" width="90%"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/50.png"><img src="images/C2/50.png" width="90%"/></a>
+</div><p></p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/51.png"><img src="images/C2/51.png" width="90%"/></a>
+</div><p></p>
+</div>
+</div>
+</div>
+</details>
+<p>高速缓存失效不会使处理器停顿的特点加大了评估非阻塞高速缓存性能的难度。有效的失效损失不是所有失效损失之和，而时使得处理器停顿的非重叠的时间。非阻塞高速缓存带来的好处取决于多个失效带来的失效损失、内存引用模式以及在<strong>未完成的失效</strong><span>(outstanding misses)<span class="heti-spacing"> </span></span>发生时处理器执行的指令数。</p>
+<p>乱序处理器能够隐藏在<span class="heti-skip"><span class="heti-spacing"> </span>L1<span class="heti-spacing"> </span></span>失效但在<span class="heti-skip"><span class="heti-spacing"> </span>L2<span class="heti-spacing"> </span></span>命中的失效损失，但是无法隐藏更低级的高速缓存失效。决定支持多少未完成的失效取决于以下因素：</p>
+<ul>
+<li>失效流的时间和空间局部性，这决定了失效是否发起向下一级高速缓存或内存的访问</li>
+<li>相应内存或高速缓存的带宽</li>
+<li>为了允许最底层的高速缓存有更多的未完成的失效，要求最高层的高速缓存至少支持与最底层同样多的失效，因为失效是从最高层的高速缓存中发起的</li>
+<li>存储器系统的时延</li>
+</ul>
+<hr/>
+<p>实现一个非阻塞高速缓存较为困难，原因有：</p>
+<ul>
+<li>为命中和失效的竞争进行仲裁<ul>
+<li>解决方案：给予命中更高的优先级，然后为冲突的失效排序</li>
+</ul>
+</li>
+<li>追踪未完成的失效，以弄清何时让加载和存储操作继续<ul>
+<li>解决方案：使用<strong>失效状态处理寄存器</strong><span>(miss status handling register, MSHR)<span class="heti-spacing"> </span></span>来记录信息。一个<span class="heti-skip"><span class="heti-spacing"> </span>MSHR<span class="heti-spacing"> </span></span>对应一个未完成的失效，记录与这个失效相关的一些信息。</li>
+</ul>
+</li>
+</ul>
+<h4 id="critical-word-first-and-early-start">Critical Word First and Early Start<a class="headerlink" href="#critical-word-first-and-early-start" title="Permanent link">⚓︎</a></h4>
+<ul>
+<li><strong>关键字优先</strong>(critical word first)：从内存中请求失效的字数据，一旦获取数据后便立即发送给处理器，并让处理器在填充数据块剩余字数据的同时继续执行指令。</li>
+<li><strong>早启动</strong>(early start)：按正常顺序获取字数据，但一旦获取到所需的字数据，就将其发送给处理器并让处理器继续执行指令。</li>
+</ul>
+<p>这两种优化方法仅在高速缓存数据块较大的情况下有明显的好处。它们带来的好处还取决于访问数据块中未获取的部分的可能性。</p>
+<p>它们和非阻塞高速缓存一样，为计算失效损失带来了不小的麻烦。</p>
+<h4 id="merging-write-buffer">Merging Write Buffer<a class="headerlink" href="#merging-write-buffer" title="Permanent link">⚓︎</a></h4>
+<ul>
+<li>写穿依赖于写缓冲区，即使是写回有时也会用到写缓冲区。</li>
+<li>如果写缓冲区是空的，那么数据和完整的地址都会被写入到缓冲区中，并且从处理器的视角看写操作已完成，所以在写缓冲区准备将字数据写入内存时，处理器继续干活。</li>
+<li>如果缓冲区包含一些被修改的数据块，那么就要检查一下地址，看这些新数据的地址是否与某个有效的写缓冲区项匹配，如果匹配的话，就将新数据并入到这个项里。这种优化方法称为<strong>写合并</strong>(write merging)。</li>
+<li>但如果写缓冲区是满的，且没有任何地址匹配，那么高速缓存（和处理器）必须等待，直到写缓冲区有一个空的项。</li>
+<li>这种优化方法能够更加高效地利用内存，因为一次写入多个字数据通常比一次写一个字数据的速度更快；并且也能减少停顿次数。</li>
+<li>下图比较了未使用写合并的写缓冲区和使用写合并的写缓冲区：</li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/52.png"><img src="images/C2/52.png" width="70%"/></a>
+</div>
+<h4 id="compiler-optimizations">Compiler Optimizations<a class="headerlink" href="#compiler-optimizations" title="Permanent link">⚓︎</a></h4>
+<p>前面讲到的优化都是硬件层面的优化，我们当然也可以进行软件层面的优化。下面就来介绍如何通过<strong>优化编译器</strong>来减少失效率。</p>
+<ul>
+<li>
+<p>对于<strong>指令</strong>：</p>
+<ul>
+<li>重排内存中的过程，以降低冲突失效</li>
+<li>分析指令，以观察冲突是否发生</li>
+</ul>
+</li>
+<li>
+<p>对于<strong>数据</strong>：</p>
+<ul>
+<li>
+<p><strong>合并数组</strong>(merging arrays)：用单个数组表示复合元素，以提升空间局部性</p>
+<details class="example">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="21:2"><input checked="" id="__tabbed_21_1" name="__tabbed_21" type="radio"/><input id="__tabbed_21_2" name="__tabbed_21" type="radio"/><div class="tabbed-labels"><label for="__tabbed_21_1">合并前</label><label for="__tabbed_21_2">合并后</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-c highlight"><pre><span></span><code><span id="__span-0-1"><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="kt">int</span><span class="w"> </span><span class="n">val</span><span class="p">[</span><span class="n">SIZE</span><span class="p">];</span>
+</span><span id="__span-0-2"><a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="p">[</span><span class="n">SIZE</span><span class="p">];</span>
+</span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-c highlight"><pre><span></span><code><span id="__span-1-1"><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="k">struct</span><span class="w"> </span><span class="nc">merge</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-2"><a href="#__codelineno-1-2" id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">val</span><span class="p">;</span>
+</span><span id="__span-1-3"><a href="#__codelineno-1-3" id="__codelineno-1-3" name="__codelineno-1-3"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">;</span>
+</span><span id="__span-1-4"><a href="#__codelineno-1-4" id="__codelineno-1-4" name="__codelineno-1-4"></a><span class="p">};</span>
+</span><span id="__span-1-5"><a href="#__codelineno-1-5" id="__codelineno-1-5" name="__codelineno-1-5"></a><span class="k">struct</span><span class="w"> </span><span class="nc">merge</span><span class="w"> </span><span class="n">merged_array</span><span class="p">[</span><span class="n">SIZE</span><span class="p">];</span>
+</span></code></pre></div>
+</div>
+</div>
+</div>
+</details>
+</li>
+<li>
+<p><strong>循环交换</strong>(loop interchange)：有时通过交换内层循环和外层循环，使得访问数据的顺序更符合存储数据的顺序。这种方法通过改进空间局部性来减少失效率。</p>
+<details class="example">
+<summary>例子</summary>
+<p>假定有一个二位数组，规模为<span><span class="heti-spacing"> </span>[5000, 100]</span>，且<span class="heti-skip"><span class="heti-spacing"> </span>x[i, j]<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>x[i, j+1]<span class="heti-spacing"> </span></span>两个元素是相邻的（行优先<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。那么对于下面两个嵌套循环，更推荐使用第二个循环：</p>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-2-1"><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="c1">// loop 1</span>
+</span><span id="__span-2-2"><a href="#__codelineno-2-2" id="__codelineno-2-2" name="__codelineno-2-2"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span>
+</span><span id="__span-2-3"><a href="#__codelineno-2-3" id="__codelineno-2-3" name="__codelineno-2-3"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">5000</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span><span id="__span-2-4"><a href="#__codelineno-2-4" id="__codelineno-2-4" name="__codelineno-2-4"></a><span class="w">        </span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">];</span>
+</span><span id="__span-2-5"><a href="#__codelineno-2-5" id="__codelineno-2-5" name="__codelineno-2-5"></a>
+</span><span id="__span-2-6"><a href="#__codelineno-2-6" id="__codelineno-2-6" name="__codelineno-2-6"></a><span class="c1">// loop 2</span>
+</span><span id="__span-2-7"><a href="#__codelineno-2-7" id="__codelineno-2-7" name="__codelineno-2-7"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">5000</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span><span id="__span-2-8"><a href="#__codelineno-2-8" id="__codelineno-2-8" name="__codelineno-2-8"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span><span class="w">   </span>
+</span><span id="__span-2-9"><a href="#__codelineno-2-9" id="__codelineno-2-9" name="__codelineno-2-9"></a><span class="w">        </span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">];</span>
+</span></code></pre></div>
+</details>
+</li>
+<li>
+<p><strong>循环融合</strong>(loop fusion)：合并两个具有相同循环，且部分变量重叠的独立循环。</p>
+<details class="example">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="22:2"><input checked="" id="__tabbed_22_1" name="__tabbed_22" type="radio"/><input id="__tabbed_22_2" name="__tabbed_22" type="radio"/><div class="tabbed-labels"><label for="__tabbed_22_1">融合前</label><label for="__tabbed_22_2">融合后</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-c highlight"><pre><span></span><code><span id="__span-3-1"><a href="#__codelineno-3-1" id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">N</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span>
+</span><span id="__span-3-2"><a href="#__codelineno-3-2" id="__codelineno-3-2" name="__codelineno-3-2"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">N</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">j</span><span class="p">)</span>
+</span><span id="__span-3-3"><a href="#__codelineno-3-3" id="__codelineno-3-3" name="__codelineno-3-3"></a><span class="w">        </span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">c</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">];</span>
+</span><span id="__span-3-4"><a href="#__codelineno-3-4" id="__codelineno-3-4" name="__codelineno-3-4"></a>
+</span><span id="__span-3-5"><a href="#__codelineno-3-5" id="__codelineno-3-5" name="__codelineno-3-5"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">N</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span>
+</span><span id="__span-3-6"><a href="#__codelineno-3-6" id="__codelineno-3-6" name="__codelineno-3-6"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">N</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">j</span><span class="p">)</span>
+</span><span id="__span-3-7"><a href="#__codelineno-3-7" id="__codelineno-3-7" name="__codelineno-3-7"></a><span class="w">        </span><span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">c</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">];</span>
+</span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-c highlight"><pre><span></span><code><span id="__span-4-1"><a href="#__codelineno-4-1" id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">N</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span>
+</span><span id="__span-4-2"><a href="#__codelineno-4-2" id="__codelineno-4-2" name="__codelineno-4-2"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">N</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-3"><a href="#__codelineno-4-3" id="__codelineno-4-3" name="__codelineno-4-3"></a><span class="w">        </span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">c</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">];</span>
+</span><span id="__span-4-4"><a href="#__codelineno-4-4" id="__codelineno-4-4" name="__codelineno-4-4"></a><span class="w">        </span><span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">c</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">];</span>
+</span><span id="__span-4-5"><a href="#__codelineno-4-5" id="__codelineno-4-5" name="__codelineno-4-5"></a><span class="w">    </span><span class="p">}</span>
+</span></code></pre></div>
+</div>
+</div>
+</div>
+</details>
+</li>
+<li>
+<p><strong>分块</strong>(blocking)：将大的数组划分一块块小块<span><span class="heti-spacing"> </span>(block)</span>，通过分别解决每个小块来解决整个数组。该方法同时利用了空间和时间的局部性。下面通过一个矩阵乘法的例子来认识该方法带来的好处：</p>
+<details class="example">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="23:3"><input checked="" id="__tabbed_23_1" name="__tabbed_23" type="radio"/><input id="__tabbed_23_2" name="__tabbed_23" type="radio"/><input id="__tabbed_23_3" name="__tabbed_23" type="radio"/><div class="tabbed-labels"><label for="__tabbed_23_1">例<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span></label><label for="__tabbed_23_2">例<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span></label><label for="__tabbed_23_3">例<span><span class="heti-spacing"> </span>3</span></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>给定两个规模均为<span class="heti-skip"><span class="heti-spacing"> </span>NxN<span class="heti-spacing"> </span></span>的矩阵<span><span class="heti-spacing"> </span>y, z</span>，计算<span><span class="heti-spacing"> </span>x = y * z</span>。</p>
+<p>代码如下：</p>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-5-1"><a href="#__codelineno-5-1" id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">N</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span><span id="__span-5-2"><a href="#__codelineno-5-2" id="__codelineno-5-2" name="__codelineno-5-2"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">N</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-5-3"><a href="#__codelineno-5-3" id="__codelineno-5-3" name="__codelineno-5-3"></a><span class="w">        </span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-5-4"><a href="#__codelineno-5-4" id="__codelineno-5-4" name="__codelineno-5-4"></a><span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">N</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="o">++</span><span class="p">)</span>
+</span><span id="__span-5-5"><a href="#__codelineno-5-5" id="__codelineno-5-5" name="__codelineno-5-5"></a><span class="w">            </span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">k</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">z</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">j</span><span class="p">];</span>
+</span><span id="__span-5-6"><a href="#__codelineno-5-6" id="__codelineno-5-6" name="__codelineno-5-6"></a><span class="w">        </span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">r</span><span class="p">;</span>
+</span><span id="__span-5-7"><a href="#__codelineno-5-7" id="__codelineno-5-7" name="__codelineno-5-7"></a><span class="w">    </span><span class="p">}</span>
+</span></code></pre></div>
+<p>在最坏情况下，<span><span class="arithmatex">\(N^3\)</span><span class="heti-spacing"> </span></span>次运算需要访问<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(2N^3 + N^2\)</span><span class="heti-spacing"> </span></span>个内存字数据。</p>
+<p>下图展示了某个时间段内矩阵的运算情况，其中深灰色表示最近访问的元素，浅灰色表示之前访问的元素，白色表示尚未访问的元素。</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/53.png"><img src="images/C2/53.png" width="80%"/></a>
+</div><p></p>
+<p>如果高速缓存空间有限，这样做显然是不行的。所以在计算前，需要将矩阵划分为<span class="heti-skip"><span class="heti-spacing"> </span>BxB<span class="heti-spacing"> </span></span>大小（<span>B<span class="heti-spacing"> </span></span>称为<strong>分块因子</strong>(blocking factor)）的子矩阵，逐个计算子矩阵乘法的结果。此时所需的内存字数据个数为<span><span class="heti-spacing"> </span><span class="arithmatex">\(2N^3 / B + N^2\)</span></span>，节省了高速缓存的空间，从而减少容量失效的发生。代码为：</p>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-6-1"><a href="#__codelineno-6-1" id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">jj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">jj</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">N</span><span class="p">;</span><span class="w"> </span><span class="n">jj</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">B</span><span class="p">)</span>
+</span><span id="__span-6-2"><a href="#__codelineno-6-2" id="__codelineno-6-2" name="__codelineno-6-2"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">kk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">kk</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">N</span><span class="p">;</span><span class="w"> </span><span class="n">kk</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">B</span><span class="p">)</span>
+</span><span id="__span-6-3"><a href="#__codelineno-6-3" id="__codelineno-6-3" name="__codelineno-6-3"></a><span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">N</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span><span id="__span-6-4"><a href="#__codelineno-6-4" id="__codelineno-6-4" name="__codelineno-6-4"></a><span class="w">            </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">jj</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">min</span><span class="p">(</span><span class="n">jj</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">B</span><span class="p">,</span><span class="w"> </span><span class="n">N</span><span class="p">);</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-6-5"><a href="#__codelineno-6-5" id="__codelineno-6-5" name="__codelineno-6-5"></a><span class="w">                </span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-6-6"><a href="#__codelineno-6-6" id="__codelineno-6-6" name="__codelineno-6-6"></a><span class="w">                </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">kk</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">min</span><span class="p">(</span><span class="n">kk</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">B</span><span class="p">,</span><span class="w"> </span><span class="n">N</span><span class="p">);</span><span class="w"> </span><span class="n">k</span><span class="o">++</span><span class="p">)</span>
+</span><span id="__span-6-7"><a href="#__codelineno-6-7" id="__codelineno-6-7" name="__codelineno-6-7"></a><span class="w">                    </span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">k</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">z</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">j</span><span class="p">];</span>
+</span><span id="__span-6-8"><a href="#__codelineno-6-8" id="__codelineno-6-8" name="__codelineno-6-8"></a><span class="w">                </span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">r</span><span class="p">;</span>
+</span><span id="__span-6-9"><a href="#__codelineno-6-9" id="__codelineno-6-9" name="__codelineno-6-9"></a><span class="w">            </span><span class="p">}</span>
+</span></code></pre></div>
+<p>下图展示了某个时间段内矩阵的运算情况：</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/54.png"><img src="images/C2/54.png" width="80%"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<div class="tabbed-set tabbed-alternate" data-tabs="24:2"><input checked="" id="__tabbed_24_1" name="__tabbed_24" type="radio"/><input id="__tabbed_24_2" name="__tabbed_24" type="radio"/><div class="tabbed-labels"><label for="__tabbed_24_1">题目</label><label for="__tabbed_24_2">解答</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/84.png"><img src="images/C2/84.png" width="90%"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/85.png"><img src="images/C2/85.png" width="80%"/></a>
+</div><p></p>
+</div>
+</div>
+</div>
+</div>
+<div class="tabbed-block">
+<div class="tabbed-set tabbed-alternate" data-tabs="25:2"><input checked="" id="__tabbed_25_1" name="__tabbed_25" type="radio"/><input id="__tabbed_25_2" name="__tabbed_25" type="radio"/><div class="tabbed-labels"><label for="__tabbed_25_1">题目</label><label for="__tabbed_25_2">解答</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/93.png"><img src="images/C2/93.png" width="80%"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<blockquote>
+<p>答案由<span class="heti-skip"><span class="heti-spacing"> </span>Gemini 2.5 pro<span class="heti-spacing"> </span></span>生成，且经过笔者验证。</p>
+</blockquote>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/94.png"><img src="images/C2/94.png" width="80%"/></a>
+</div><p></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</details>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="hardware-prefetching-of-instructions-and-data">Hardware Prefetching of Instructions and Data<a class="headerlink" href="#hardware-prefetching-of-instructions-and-data" title="Permanent link">⚓︎</a></h4>
+<p><strong>硬件预取</strong><span>(hardware prefetching)<span class="heti-spacing"> </span></span>的核心思想为：</p>
+<ul>
+<li>利用到<strong>非阻塞缓存</strong>，允许在执行过程中存在重叠的内存访问</li>
+<li>在处理器请求数据之前，提前将指令和数据预取到缓存或外部缓冲区中</li>
+</ul>
+<p>我们可以将预取分为：</p>
+<ul>
+<li><strong>指令预取</strong>：<ul>
+<li>通常由硬件在高速缓存外部完成</li>
+<li>当发生指令失效时，处理器不仅会请求当前缺失的指令块，还会预取<strong>下一个连续的指令块</strong></li>
+<li>这些预取到的块会被放置在指令<strong>流缓冲区</strong><span>(stream buffer)<span class="heti-spacing"> </span></span>中</li>
+<li>如果请求的块已经在流缓冲区中，则取消原始缓存请求，并发出下一个预取请求</li>
+</ul>
+</li>
+<li><strong>数据预取</strong>：上述方法也适用于数据访问。</li>
+</ul>
+<p>但使用预取时要考虑以下问题：</p>
+<ul>
+<li>带宽利用：预取依赖于利用原本可能未被使用的内存带宽；如果预取与实际需求访问竞争带宽，反而可能降低性能</li>
+<li>无用预取：如果预取的数据最终没有被使用，则会浪费内存带宽和缓存空间</li>
+<li>缓存污染：无用的预取数据可能会驱逐掉缓存中真正有用的数据，从而增加失效率</li>
+<li>功耗：预取操作会消耗额外的功耗，如果预取效率不高，这种功耗就是浪费</li>
+<li>编译器协助：编译器可以通过提供预取提示来帮助减少无用预取（下面马上介绍👇）</li>
+</ul>
+<h4 id="compiler-controlled-prefetching">Compiler-Controlled Prefetching<a class="headerlink" href="#compiler-controlled-prefetching" title="Permanent link">⚓︎</a></h4>
+<p>硬件预取的替代方案是使用<strong>编译器</strong>(compiler)，在处理器获取数据前，插入请求数据的预取指令。具体有以下两类方式：</p>
+<ul>
+<li><strong>寄存器预取</strong>(register prefetch)：将值加载到一个寄存器里。</li>
+<li><strong>高速缓存预取</strong>(cache prefetch)：将数据仅加载到高速缓存中。</li>
+</ul>
+<p>这两类方式都有发生错误的可能，也就是说地址可能引发，也可能不会引发虚拟地址错误和违反保护的异常。按照这种术语体系，常规加载指令可被视为<span class="heti-skip"><span class="heti-spacing"> </span>"<span class="heti-spacing"> </span></span>错误触发型寄存器预取指令<span><span class="heti-spacing"> </span>"</span>。而非错误触发的预取指令若在正常情况下会导致异常时，则会自动转为空操作<span><span class="heti-spacing"> </span>(no-ops)</span>——这正是我们期望的行为。</p>
+<p>最有效的预取是对程序“语义上不可见的”(semantically invisible)：预取不改变寄存器和内存的内容，并且它不会导致虚拟地址的错误。现在大多数处理器都提供了非错误触发的高速缓存预取，因此本节就专注于这类预取（又称为<strong>非绑定预取</strong>(nonbinding prefetch)<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
+<p>类似硬件预取，这类预取的目标是对预取而来的数据重叠执行。<strong>循环</strong>是很重要的，因为我们可用它来做预取优化。如果失效损失较小，编译器仅需展开<span class="heti-skip"><span class="heti-spacing"> </span>1-2<span class="heti-spacing"> </span></span>次循环，并在执行过程中调度预取；如果失效损失较大，它会用到软件流水线，或展开多次循环，以在未来迭代中预取数据。</p>
+<p>发射预取指令会带来额外的指令开销，所以编译器必须小心，确保这样的开销不会盖过其带来的好处。</p>
+<details class="example">
+<summary>例子</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="26:2"><input checked="" id="__tabbed_26_1" name="__tabbed_26" type="radio"/><input id="__tabbed_26_2" name="__tabbed_26" type="radio"/><div class="tabbed-labels"><label for="__tabbed_26_1">例<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span></label><label for="__tabbed_26_2">例<span><span class="heti-spacing"> </span>2</span></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="tabbed-set tabbed-alternate" data-tabs="27:2"><input checked="" id="__tabbed_27_1" name="__tabbed_27" type="radio"/><input id="__tabbed_27_2" name="__tabbed_27" type="radio"/><div class="tabbed-labels"><label for="__tabbed_27_1">题目</label><label for="__tabbed_27_2">解答</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/55.png"><img src="images/C2/55.png" width="80%"/></a>
+</div> <p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/56.png"><img src="images/C2/56.png" width="80%"/></a>
+</div><p></p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/57.png"><img src="images/C2/57.png" width="80%"/></a>
+</div><p></p>
+</div>
+</div>
+</div>
+</div>
+<div class="tabbed-block">
+<div class="tabbed-set tabbed-alternate" data-tabs="28:2"><input checked="" id="__tabbed_28_1" name="__tabbed_28" type="radio"/><input id="__tabbed_28_2" name="__tabbed_28" type="radio"/><div class="tabbed-labels"><label for="__tabbed_28_1">题目</label><label for="__tabbed_28_2">解答</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/58.png"><img src="images/C2/58.png" width="80%"/></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/59.png"><img src="images/C2/59.png" width="80%"/></a>
+</div><p></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</details>
+<h4 id="using-hbm-to-extend-the-memory-hierarchy">Using HBM to Extend the Memory Hierarchy<a class="headerlink" href="#using-hbm-to-extend-the-memory-hierarchy" title="Permanent link">⚓︎</a></h4>
+<p><strong>HBM</strong>(high bandwidth memory)：高带宽内存。</p>
+<p>当使用<span class="heti-skip"><span class="heti-spacing"> </span>HBM<span class="heti-spacing"> </span></span>作为大容量<span class="heti-skip"><span class="heti-spacing"> </span>L4<span class="heti-spacing"> </span></span>缓存时，</p>
+<ul>
+<li>若采用小块大小（如<span><span class="heti-spacing"> </span>64B</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，那么标签所需的静态内存量巨大（96 MiB<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，远超<span class="heti-skip"><span class="heti-spacing"> </span>CPU<span class="heti-spacing"> </span></span>上的<span class="heti-skip"><span class="heti-spacing"> </span>L3<span class="heti-spacing"> </span></span>缓存大小</li>
+<li>但若采用大块大小（如<span><span class="heti-spacing"> </span>4KiB</span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，则会产生以下问题：<ul>
+<li><strong>碎片化问题</strong>(fragmentation problem)：缓存块内容未被完全利用，导致效率低下</li>
+<li>传输效率低下：传输大块数据时，如果大部分数据未被使用，会造成浪费</li>
+<li>冲突和一致性缺失增加：缓存中可容纳的不同块数量减少，导致更多缓存未命中</li>
+</ul>
+</li>
+</ul>
+<p>此外，传统的标签为存储方案具备一定的延迟，因为标签被存储在<span class="heti-skip"><span class="heti-spacing"> </span>L4<span class="heti-spacing"> </span></span>缓存中，需要两次<span class="heti-skip"><span class="heti-spacing"> </span>DRAM<span class="heti-spacing"> </span></span>访问（一次取标签，一次取数据<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，这导致了高延迟（<span>100+<span class="heti-spacing"> </span></span>时钟周期<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，因此被认为不切实际。</p>
+<p>为了解决上述问题，这里提供了以下方案：</p>
+<ul>
+<li><span>Loh and Hill (L-H)<span class="heti-spacing"> </span></span>方案：<ul>
+<li>将标签和数据存储在<span class="heti-skip"><span class="heti-spacing"> </span>HBM SDRAM<span class="heti-spacing"> </span></span>的同一行中</li>
+<li>打开行虽然耗时，但访问同一行中不同部分（如先标签后数据）的延迟显著降低（约新行访问时间的<span><span class="heti-spacing"> </span>1/3</span>）</li>
+<li><span>L4<span class="heti-spacing"> </span></span>缓存被组织为<span class="heti-skip"><span class="heti-spacing"> </span>29<span class="heti-spacing"> </span></span>路组相联，每行包含一组标签和<span class="heti-skip"><span class="heti-spacing"> </span>29<span class="heti-spacing"> </span></span>个数据段</li>
+</ul>
+</li>
+<li>Qureshi and Loh（<strong>合金缓存</strong>(alloy cache)）方案：<ul>
+<li>在<span class="heti-skip"><span class="heti-spacing"> </span>L-H<span class="heti-spacing"> </span></span>方案基础上改进，将标签和数据融合在一起</li>
+<li>采用直接映射的缓存结构</li>
+<li>将<span class="heti-skip"><span class="heti-spacing"> </span>L4<span class="heti-spacing"> </span></span>访问时间缩短到单个<span class="heti-skip"><span class="heti-spacing"> </span>HBM<span class="heti-spacing"> </span></span>周期（通过直接索引和突发传输）</li>
+<li>权衡：显著降低了命中时间（比<span class="heti-skip"><span class="heti-spacing"> </span>L-H<span class="heti-spacing"> </span></span>方案快<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>倍<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，但会略微增加失效率（<span>1.1-1.2<span class="heti-spacing"> </span></span>倍）</li>
+</ul>
+</li>
+</ul>
+<p>下图展示了这些方案和以及原方案的命中时延：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/60.png"><img src="images/C2/60.png" width="80%"/></a>
+</div>
+<p>另外针对未命中延迟问题，我们有以下解决方案：</p>
+<ul>
+<li>使用<strong>映射</strong>来跟踪缓存中块的存在性</li>
+<li>使用<strong>内存访问预测器</strong>（基于历史预测技术）来预测可能的失效<ul>
+<li>小型预测器可以高精度预测失效，从而降低失效损失</li>
+</ul>
+</li>
+</ul>
+<h2 id="virtual-memory">Virtual Memory<a class="headerlink" href="#virtual-memory" title="Permanent link">⚓︎</a></h2>
+<p><strong>虚拟内存</strong><span>(virtual memory)<span class="heti-spacing"> </span></span>将物理内存划分为块，并且将其分配到不同的进程中。下图展示了虚拟地址到物理地址的映射情况：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/35.png"><img src="images/C2/35.png" width="70%"/></a>
+</div>
+<p>虚拟内存的作用包括：</p>
+<ul>
+<li>共享受保护的内存空间<ul>
+<li>虚拟内存采取一种<strong>保护</strong>机制，防止属于某个进程的内存块被其他进程访问</li>
+</ul>
+</li>
+<li>
+<p>自动管理存储器层级</p>
+<ul>
+<li>
+<p>不必分配连续的物理内存</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/108.png"><img src="images/C2/108.png" width="70%"/></a>
+</div><p></p>
+</li>
+</ul>
+</li>
+<li>
+<p>简化执行程序的加载：通过<strong>重定位</strong>(relocation)，允许相同的程序可以在物理内存中的任意位置运行</p>
+</li>
+<li>减少开始程序的时间：因为无需物理内存中所有的代码和数据</li>
+</ul>
+<p>下面是虚拟内存中常见的一些概念，包括：</p>
+<ul>
+<li>
+<p><strong>页</strong>(page)/<strong>段</strong>(segment)（类比高速缓存的数据块）</p>
+<ul>
+<li><strong>页</strong>：定长的虚拟内存数据块，一般是<span class="heti-skip"><span class="heti-spacing"> </span>4KB<span class="heti-spacing"> </span></span>到<span class="heti-skip"><span class="heti-spacing"> </span>8KB<span class="heti-spacing"> </span></span>左右<ul>
+<li>按页寻址：定长的地址被划分为页编号和页偏移量</li>
+<li>对编译器而言，这种地址空间更简单</li>
+</ul>
+</li>
+<li><strong>段</strong>：变长的虚拟内存数据块，最大可以到<span class="heti-skip"><span class="heti-spacing"> </span>64KB<span class="heti-spacing"> </span></span>到<span class="heti-skip"><span class="heti-spacing"> </span>4GB<span class="heti-spacing"> </span></span>左右，最小可以只有<span><span class="heti-spacing"> </span>1B</span><ul>
+<li>按段寻址：使用<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>个字来表示段编号，另<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>个字表示段偏移量</li>
+</ul>
+</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/37.png"><img src="images/C2/37.png" width="70%"/></a>
+</div><p></p>
+<p>下图比较分页和分段两种方式的优劣：</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/38.png"><img src="images/C2/38.png" width="80%"/></a>
+</div><p></p>
+</li>
+<li>
+<p><strong>页错误</strong>(page fault)/<strong>地址错误</strong>(address fault)（类比高速缓存的失效）</p>
+</li>
+<li><strong>虚拟地址</strong><span>(virtual address)<span class="heti-spacing"> </span></span>和<strong>物理地址</strong>(physical address)</li>
+<li><strong>内存映射</strong>(memory mapping)/<strong>地址转换</strong>(address translation)</li>
+</ul>
+<p>高速缓存与虚拟内存的不同之处有：</p>
+<ul>
+<li>高速缓存失效的替换是由硬件控制的，而虚拟内存的替换是由操作系统控制的</li>
+<li>处理器地址的大小决定了虚拟内存的大小，而高速缓存的大小与处理器地址的大小无关</li>
+</ul>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/36.png"><img src="images/C2/36.png" width="80%"/></a>
+</div>
+<h3 id="four-memory-hierarchy-questions-revisited">Four Memory Hierarchy Questions Revisited<a class="headerlink" href="#four-memory-hierarchy-questions-revisited" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li>
+<p>数据块放置：<strong>全相联</strong></p>
+<ul>
+<li>理由：虚拟内存的失效损失相当相当大（数百万个时钟周期数<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，因此需要尽可能地降低失效率，而全相联的失效率最低。</li>
+</ul>
+</li>
+<li>
+<p>数据块识别：通过页<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>段编号来索引对应的页<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>段</p>
+<ul>
+<li>
+<p>通常使用<strong>页表</strong><span>(page table)<span class="heti-spacing"> </span></span>这一数据结构来存储虚拟内存数据块的物理地址（段的话还要存储偏移量<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，作为虚拟地址转换为物理地址的参照依据。</p>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/39.png"><img src="images/C2/39.png" width="80%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>页表的大小就是虚拟地址空间中的页数量。有些计算机为了减小这一数据结构大小，会对虚拟地址采用<strong>哈希函数</strong>，使得其大小等于内存中物理页的数量，这种数据结构称为<strong>逆页表</strong>(inversed page table)。</p>
+</li>
+<li>为了减少地址转换的时间，通常还会用到一种名为转换后备缓冲区<span class="heti-skip"><span class="heti-spacing"> </span>(translation lookaside buffer,<span class="heti-spacing"> </span></span>以下简称 <strong>TLB</strong><span>)<span class="heti-spacing"> </span></span>的部件</li>
+</ul>
+</li>
+<li>
+<p>数据块替换：<strong>LRU</strong>，具体会用到一个使用位<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>引用位<span><span class="heti-spacing"> </span>(use/reference bit)</span>。操作系统会周期性地清除使用位，随后又添上去，这样便可以记录一段时间内页的访问情况。</p>
+</li>
+<li>
+<p>写入策略：<strong>写回</strong></p>
+<ul>
+<li>理由：内存和处理器访问时间的巨大差异，所以不可能使用写穿策略</li>
+<li>虚拟内存系统用到<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>个<strong>脏位</strong>(dirty bit)，允许数据块在因从硬盘读取而被改变的时候写入到硬盘中</li>
+</ul>
+</li>
+</ul>
+<h3 id="techniques-for-fast-address-translation">Techniques for Fast Address Translation<a class="headerlink" href="#techniques-for-fast-address-translation" title="Permanent link">⚓︎</a></h3>
+<p>由于页表很大，所以一般被存在内存中，甚至有时候页表自己也要分页。而分页意味着逻辑上内存访问需要分两步走：首先需要找到物理地址，然后再根据物理地址找到数据。为了避免额外的内存访问，我们可以借助局部性原则，将部分地址的翻译保留到一个特殊的缓存中，这样的缓存就是我们熟知的 <strong>TLB</strong>。</p>
+<p><span>TLB<span class="heti-spacing"> </span></span>的结构类似高速缓存：它的<strong>标签</strong>位用于保存<strong>虚拟</strong>地址；而<strong>数据</strong>位用于保存<strong>物理</strong>页编号，保护字段，合法位，以及可能的使用位和脏位。</p>
+<ul>
+<li>如果要改变页表中的物理页编号和保护信息，那么操作系统必须将<span class="heti-skip"><span class="heti-spacing"> </span>TLB<span class="heti-spacing"> </span></span>中的对应部分给清掉。</li>
+<li>这里的“脏位”表示对应的页是不是“脏”的，而不是表示<span class="heti-skip"><span class="heti-spacing"> </span>TLB<span class="heti-spacing"> </span></span>中的地址翻译或数据缓存的特定的数据块是不是脏的。</li>
+<li>操作系统通过改变页表中的值，以及使<span class="heti-skip"><span class="heti-spacing"> </span>TLB<span class="heti-spacing"> </span></span>中对应的项无效化来实现对这些位的重置</li>
+</ul>
+<p>下图展示了在地址转换中，<span>TLB<span class="heti-spacing"> </span></span>内发生的操作：</p>
+<div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C2/40.png"><img src="images/C2/40.png" width="80%"/></a>
+</div>
+<ol>
+<li>将虚拟地址发送至所有标签</li>
+<li>检查内存访问类型，与<span class="heti-skip"><span class="heti-spacing"> </span>TLB<span class="heti-spacing"> </span></span>中的保护信息进行比对</li>
+<li>匹配到的标签将物理地址发给<span><span class="heti-spacing"> </span>MUX</span></li>
+<li>拼接页偏移量和物理页帧，组成最终的物理地址</li>
+</ol>
+<h3 id="page-size">Page Size<a class="headerlink" href="#page-size" title="Permanent link">⚓︎</a></h3>
+<p>在以下情况，我们倾向于使用<strong>更大的页</strong>：</p>
+<ul>
+<li>由于页表的大小和页的大小成反比，因此内存（或其他存储页表的资源）可以通过增大页的大小来节省空间</li>
+<li>更大的页可以使用更大的高速缓存，以达到更快的命中时间</li>
+<li>在二级存储器，或者在网络中传输更大的页，相比传输更小的页更有效</li>
+<li>更大的页意味着更多的内存能被有效映射，因此减少了<span class="heti-skip"><span class="heti-spacing"> </span>TLB<span class="heti-spacing"> </span></span>失效的情况</li>
+</ul>
+<p>而当需要保留存储空间，或者希望启动进程的速度更快时，我们更倾向于使用<strong>更小的页</strong>。</p>
+<p>我们也可以做到“鱼和熊掌兼得”——<strong>采用多种页大小</strong>。最新的处理器开始支持多种页大小的选择，主要因为更大的页大小减少<span class="heti-skip"><span class="heti-spacing"> </span>TLB<span class="heti-spacing"> </span></span>内的项数，从而减少<span class="heti-skip"><span class="heti-spacing"> </span>TLB<span class="heti-spacing"> </span></span>失效的次数（对于某些程序，<span>TLB<span class="heti-spacing"> </span></span>失效对<span class="heti-skip"><span class="heti-spacing"> </span>CPI<span class="heti-spacing"> </span></span>的影响和高速缓存失效差不多大<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>。</p>
+<h3 id="protection">Protection<a class="headerlink" href="#protection" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li><strong>多程序</strong>(multiprogramming)：并发运行的程序共享一台计算机资源</li>
+<li><strong>进程</strong>(process)：包括正在运行的程序，以及该程序运行的状态</li>
+<li><strong>时间共享</strong>(time-sharing)：多程序的一种变体，同时为多个可交互的用户分享处理器和存储器资源，当作这些用户有自己的计算机</li>
+<li><strong>进程<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>上下文切换</strong>(process/context switch)：任何时候从一个进程切换到另一个进程的行为</li>
+<li>由于进程可能会被多次中断或切换，因此计算机（硬件）以及操作系统的设计者需要为维护正确的进程行为负责，具体来说：<ul>
+<li>计算机设计者确保进程状态中处理器的那部分能够被保存和恢复</li>
+<li>操作系统设计者保证进程之间不会相互干扰——通过划分内存来确保不同的进程在同一时间内有自己的状态</li>
+</ul>
+</li>
+<li>每个进程都有自己的页表，指向不同的内存页，以保护进程</li>
+<li><strong>环级权限</strong>(ring)：处理器的一种保护机制，分为用户、核<span><span class="heti-spacing"> </span>(kernel)</span>，以及可能更多的特权等级</li>
+<li>除了保护机制外，计算机还需提供进程间的<u>共享代码和数据</u>，以允许进程间的通信或通过减少相同信息的拷贝来节省内存空间</li>
+</ul>
+<h2 id="the-design-of-memory-hierarchies">The Design of Memory Hierarchies<a class="headerlink" href="#the-design-of-memory-hierarchies" title="Permanent link">⚓︎</a></h2>
+<h3 id="protection-virtualization-and-instruction-set-architecture">Protection, Virtualization and Instruction Set Architecture<a class="headerlink" href="#protection-virtualization-and-instruction-set-architecture" title="Permanent link">⚓︎</a></h3>
+<p>虚拟内存和虚拟化技术对处理器架构和操作系统提出了新的要求，需要对指令集架构进行调整以支持这些功能。例如，<span>IBM 360<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>80x86<span class="heti-spacing"> </span></span>架构都曾因虚拟化而进行修改，以解决特权指令（如 <code>POPF</code>）在用户模式下运行时的行为问题。</p>
+<p>为了提高虚拟化性能，<span>IBM<span class="heti-spacing"> </span></span>硬件和<span><span class="heti-spacing"> </span>VMM</span>（虚拟机管理器）曾做过以下努力：</p>
+<ul>
+<li>降低处理器虚拟化成本</li>
+<li>减少中断开销</li>
+<li>降低调用<span class="heti-skip"><span class="heti-spacing"> </span>VMM<span class="heti-spacing"> </span></span>的中断成本。</li>
+</ul>
+<p>为了实现这些目标，现代芯片组增加了对应的特殊指令。</p>
+<h3 id="autonomous-instruction-fetch-units">Autonomous Instruction Fetch Units<a class="headerlink" href="#autonomous-instruction-fetch-units" title="Permanent link">⚓︎</a></h3>
+<p>现代乱序执行和深流水线处理器通常使用独立的指令获取单元。这些单元能够获取整个指令块，并<strong>预取</strong>到<span class="heti-skip"><span class="heti-spacing"> </span>L1<span class="heti-spacing"> </span></span>缓存中，从而<strong>减少</strong>指令缓存<strong>失效损失</strong>。虽然这样做反而可能增加可数据缓存的失效率（因为预取了不立即需要的数据<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>，但总体的失效损失得到减小。</p>
+<h3 id="speculation-and-memory-access">Speculation and Memory Access<a class="headerlink" href="#speculation-and-memory-access" title="Permanent link">⚓︎</a></h3>
+<blockquote>
+<p>这里涉及到<a href="3.html">指令级并行</a><span><span class="heti-spacing"> </span>(ILP)</span></p>
+</blockquote>
+<p><a href="3.html#hardware-based-speculation"><strong>推测</strong></a><span>(speculation)<span class="heti-spacing"> </span></span>是高级流水线中的一项重要技术，它基于<strong>分支预测</strong>，在处理器确定指令是否真正需要执行之前就进行尝试性执行。如果推测错误，流水线中的推测指令会被清除，并可能产生不必要的内存引用，从而增加缓存失效率。然而，结合<strong>预取</strong>技术，推测实际上可以降低总体的缓存失效损失。因此，在比较失效率时，需要注意推测执行可能带来的误导性影响。</p>
+<h3 id="special-instruction-caches">Special Instruction Caches<a class="headerlink" href="#special-instruction-caches" title="Permanent link">⚓︎</a></h3>
+<blockquote>
+<p>这里涉及到<a href="4.html">数据级并行</a><span><span class="heti-spacing"> </span>(DLP)</span></p>
+</blockquote>
+<p>为了满足<strong>超标量处理器</strong><span>(superscalar processor)<span class="heti-spacing"> </span></span>对高指令带宽的需求，可以采用小型缓存来存储最近翻译的<strong>微操作</strong>(micro-operations)，有助于减少分支预测错误带来的惩罚。</p>
+<h3 id="coherency-of-cached-data">Coherency of Cached Data<a class="headerlink" href="#coherency-of-cached-data" title="Permanent link">⚓︎</a></h3>
+<blockquote>
+<p>这里涉及到<a href="5.html">线程级并行</a><span><span class="heti-spacing"> </span>(TLP)</span></p>
+</blockquote>
+<p>在存储器层次结构中，当存在多份数据副本时，我们需要确保这些数据的<strong>一致性</strong>(coherency)。</p>
+<ul>
+<li>在单处理器系统中，只要处理器是唯一的数据使用者，一致性问题较小。</li>
+<li>但在多处理器系统中，由于多个处理器可能拥有同一数据的副本，数据一致性成为一个主要挑战，可能导致处理器读取到陈旧数据。</li>
+</ul>
+<p><strong><span>I/O<span class="heti-spacing"> </span></span>缓存一致性</strong><span>(I/O cache coherency)<span class="heti-spacing"> </span></span>是一个特殊且重要的问题：当<span class="heti-skip"><span class="heti-spacing"> </span>I/O<span class="heti-spacing"> </span></span>设备与缓存数据交互时，需要确保<span class="heti-skip"><span class="heti-spacing"> </span>I/O<span class="heti-spacing"> </span></span>操作的数据与缓存中的数据保持一致，否则可能导致处理器看到<strong>陈旧</strong><span>(stale)<span class="heti-spacing"> </span></span>数据或因等待<span class="heti-skip"><span class="heti-spacing"> </span>I/O<span class="heti-spacing"> </span></span>而停顿。</p>
+<p>要解决这些问题，可以采取使缓存条目失效，或刷新缓冲区等措施。</p>
+<h2 id="fallacies-and-pitfalls">Fallacies and Pitfalls<a class="headerlink" href="#fallacies-and-pitfalls" title="Permanent link">⚓︎</a></h2>
+<div class="admonition bug">
+<p class="admonition-title">陷阱</p>
+<ul>
+<li>地址空间过小<ul>
+<li>地址的大小限制了程序的长度，因为程序的大小和程序所需数据的量必须不超过<span><span class="heti-spacing"> </span><span class="arithmatex">\(2^{\text{Address size}}\)</span></span></li>
+<li>反例：<span>PDP-11<span class="heti-spacing"> </span></span>的地址大小只有<span class="heti-skip"><span class="heti-spacing"> </span>16<span class="heti-spacing"> </span></span>位，而之后出产的<span class="heti-skip"><span class="heti-spacing"> </span>IBM 360<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>VAX<span class="heti-spacing"> </span></span>的地址大小分别为<span class="heti-skip"><span class="heti-spacing"> </span>24-31<span class="heti-spacing"> </span></span>位和<span class="heti-skip"><span class="heti-spacing"> </span>32<span class="heti-spacing"> </span></span>位，结果就是后面两台电脑明显比前者卖的更好</li>
+</ul>
+</li>
+<li>忽视操作系统对存储器层级性能的影响<ul>
+<li>大约<span class="heti-skip"><span class="heti-spacing"> </span>25%<span class="heti-spacing"> </span></span>的存储器停顿时间都是来自操作系统的干扰</li>
+</ul>
+</li>
+<li>依赖操作系统来改变页的大小</li>
+</ul>
+</div>
+<aside class="md-source-file">
+<span class="md-source-file__fact">
+<span class="md-icon" title="最后更新">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"></path></svg>
+</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2026年8月2日 20:39:17 CST">2026年8月2日 20:39:17</span>
+</span>
+<span class="md-source-file__fact">
+<span class="md-icon" title="创建日期">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"></path></svg>
+</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2026年8月2日 20:39:17 CST">2026年8月2日 20:39:17</span>
+</span>
+</aside>
+<p style="font-size: 30px; font-weight: 600">评论区</p>
+<div>
+    如果大家有什么问题或想法，欢迎在下方留言~
+  </div>
+<!-- Insert generated snippet here -->
+<script async="" crossorigin="anonymous" data-category="Announcements" data-category-id="DIC_kwDOMAb9Zs4CfmpP" data-emit-metadata="0" data-input-position="bottom" data-lang="zh-CN" data-mapping="pathname" data-reactions-enabled="1" data-repo="noughtq/notebook" data-repo-id="R_kgDOMAb9Zg" data-strict="0" data-theme="preferred_color_scheme" src="https://giscus.app/client.js">
+</script>
+<!-- Synchronize Giscus theme with palette -->
+<script>
+    var giscus = document.querySelector("script[src*=giscus]")
+
+    // Set palette on initial load
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object") {
+      var theme = palette.color.scheme === "slate"
+        ? "transparent_dark"
+        : "light"
+
+      // Instruct Giscus to set theme
+      giscus.setAttribute("data-theme", theme) 
+    }
+
+    // Register event handlers after documented loaded
+    document.addEventListener("DOMContentLoaded", function() {
+      var ref = document.querySelector("[data-md-component=palette]")
+      ref.addEventListener("change", function() {
+        var palette = __md_get("__palette")
+        if (palette && typeof palette.color === "object") {
+          var theme = palette.color.scheme === "slate"
+            ? "dark"
+            : "light"
+
+          // Instruct Giscus to change theme
+          var frame = document.querySelector(".giscus-frame")
+          frame.contentWindow.postMessage(
+            { giscus: { setConfig: { theme } } },
+            "https://giscus.app"
+          )
+        }
+      })
+    })
+  </script>
+<!-- 标题计数器 -->
+<link href="/css/counter.css" rel="stylesheet"/>
+<!-- 主页个性化 -->
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+<button class="md-top md-icon" data-md-component="top" hidden="" type="button">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  回到页面顶部
+</button>
+</main>
+<footer class="md-footer">
+<nav aria-label="页脚" class="md-footer__inner md-grid">
+<a aria-label="上一页: Chap 1: Fundamentals of Quantitative Design and Analysis" class="md-footer__link md-footer__link--prev" href="1.html">
+<div class="md-footer__button md-icon">
+<svg viewbox="0 0 256 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path></svg>
+</div>
+<div class="md-footer__title">
+<span class="md-footer__direction">
+                上一页
+              </span>
+<div class="md-ellipsis">
+                Chap 1: Fundamentals of Quantitative Design and Analysis
+              </div>
+</div>
+</a>
+<a aria-label="下一页: Chap 3: Instruction-Level Parallelism" class="md-footer__link md-footer__link--next" href="3.html">
+<div class="md-footer__title">
+<span class="md-footer__direction">
+                下一页
+              </span>
+<div class="md-ellipsis">
+                Chap 3: Instruction-Level Parallelism
+              </div>
+</div>
+<div class="md-footer__button md-icon">
+<svg viewbox="0 0 256 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M247.1 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L179.2 256 41.9 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"></path></svg>
+</div>
+</a>
+</nav>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright" style="margin-left: 33.5%">
+<div class="md-copyright__highlight" style="text-align: center">
+        Copyright © 2024-2026 <a href="https://github.com/NoughtQ">NoughtQ</a>
+</div>
+    
+    
+      Powered by
+      <a href="https://www.mkdocs.org/" rel="noopener" target="_blank">
+        MkDocs
+      </a>
+      with theme
+      <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+        Material
+      </a>
+      modified by
+      <a href="https://github.com/NoughtQ" rel="noopener" target="_blank">
+        NoughtQ
+      </a>
+<!-- <br> -->
+<div style="text-align: center;">
+<a href="https://icp.gov.moe/?keyword=20252357" target="_blank">萌ICP备20252357号</a>
+</div>
+</div>
+<div class="md-social">
+<a class="md-social__link" href="https://noughtq.top" rel="noopener" target="_blank" title="noughtq.top">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M277.8 8.6c-12.3-11.4-31.3-11.4-43.5 0l-224 208c-9.6 9-12.8 22.9-8 35.1S18.8 272 32 272h16v176c0 35.3 28.7 64 64 64h288c35.3 0 64-28.7 64-64V272h16c13.2 0 25-8.1 29.8-20.3s1.6-26.2-8-35.1zM240 320h32c26.5 0 48 21.5 48 48v96H192v-96c0-26.5 21.5-48 48-48"></path></svg>
+</a>
+<a class="md-social__link" href="https://game.noughtq.top" rel="noopener" target="_blank" title="game.noughtq.top">
+<svg viewbox="0 0 640 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M448 64c106 0 192 86 192 192s-86 192-192 192H192C86 448 0 362 0 256S86 64 192 64zM192 176c-13.3 0-24 10.7-24 24v32h-32c-13.3 0-24 10.7-24 24s10.7 24 24 24h32v32c0 13.3 10.7 24 24 24s24-10.7 24-24v-32h32c13.3 0 24-10.7 24-24s-10.7-24-24-24h-32v-32c0-13.3-10.7-24-24-24m240 96a32 32 0 1 0 0 64 32 32 0 1 0 0-64m64-96a32 32 0 1 0 0 64 32 32 0 1 0 0-64"></path></svg>
+</a>
+<a class="md-social__link" href="https://blog.noughtq.top" rel="noopener" target="_blank" title="blog.noughtq.top">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M224 24c0-13.3 10.7-24 24-24 145.8 0 264 118.2 264 264 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-119.3-96.7-216-216-216-13.3 0-24-10.7-24-24M80 96c26.5 0 48 21.5 48 48v224c0 26.5 21.5 48 48 48s48-21.5 48-48-21.5-48-48-48c-8.8 0-16-7.2-16-16v-64c0-8.8 7.2-16 16-16 79.5 0 144 64.5 144 144s-64.5 144-144 144S32 447.5 32 368V144c0-26.5 21.5-48 48-48m168 0c92.8 0 168 75.2 168 168 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-66.3-53.7-120-120-120-13.3 0-24-10.7-24-24s10.7-24 24-24"></path></svg>
+</a>
+<a class="md-social__link" href="https://github.com/noughtq" rel="noopener" target="_blank" title="github.com">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"></path></svg>
+</a>
+<a class="md-social__link" href="mailto:noughtq666@gmail.com" rel="noopener" target="_blank" title="">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m20 8-8 5-8-5V6l8 5 8-5m0-2H4c-1.11 0-2 .89-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2"></path></svg>
+</a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["announce.dismiss", "content.action.edit", "content.action.view", "content.code.copy", "content.code.annotate", "content.footnote.tooltips", "navigation.footer", "navigation.indexes", "navigation.path", "navigation.prune", "navigation.tabs", "navigation.top", "navigation.tracking", "search.share"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+<script src="../../js/anchor.js"></script>
+<script src="../../js/katex.js"></script>
+<script src="../../js/toc.js"></script>
+<script src="../../js/typed.js"></script>
+<script src="../../js/custom.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script src="../../js/settings.js"></script>
+<script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+<script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.js"></script>
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>

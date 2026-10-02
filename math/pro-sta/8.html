@@ -1,0 +1,1422 @@
+<!DOCTYPE html>
+<html class="no-js" lang="zh"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="NoughtQ的笔记本，主要记录一些 CS 相关的笔记" name="description"/>
+<meta content="NoughtQ" name="author"/>
+<link href="https://notebook.noughtq.top/math/pro-sta/8.html" rel="canonical"/>
+<link href="7.html" rel="prev"/>
+<link href="exercises.html" rel="next"/>
+<link href="../../feed_rss_created.xml" rel="alternate" title="RSS 订阅" type="application/rss+xml"/>
+<link href="../../feed_rss_updated.xml" rel="alternate" title="已更新内容的 RSS 订阅" type="application/rss+xml"/>
+<link href="../../assets/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.1" name="generator"/>
+<title>第8章 假设检验 - NoughtQ的笔记本</title>
+<link href="../../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=JetBrains+Mono,+LXGW+WenKai+Screen+GB+Screen:300,300i,400,400i,700,700i%7CJetBrains+Mono,+Consolas:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"JetBrains Mono, LXGW WenKai Screen GB Screen";--md-code-font:"JetBrains Mono, Consolas"}</style>
+<link href="../../css/heti.css" rel="stylesheet"/>
+<link href="../../css/timeline.css" rel="stylesheet"/>
+<link href="../../css/card.css" rel="stylesheet"/>
+<link href="../../css/custom.css" rel="stylesheet"/>
+<link href="../../css/extra_changelog.css" rel="stylesheet"/>
+<link href="../../css/header.css" rel="stylesheet"/>
+<link href="../../css/sidebar.css" rel="stylesheet"/>
+<link href="../../css/settings.css" rel="stylesheet"/>
+<link href="../../css/neoteroi-css.css" rel="stylesheet"/>
+<link href="../../css/toc_extra.css" rel="stylesheet"/>
+<link href="https://unpkg.com/katex@0/dist/katex.min.css" rel="stylesheet"/>
+<link href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css" rel="stylesheet"/>
+<link href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.css" rel="stylesheet"/>
+<script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-43NH8CVRCJ"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-43NH8CVRCJ",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-43NH8CVRCJ",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+<script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+<link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+<body data-md-color-accent="indigo" data-md-color-primary="indigo" data-md-color-scheme="slate" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#第8章-假设检验">
+          跳转至
+        </a>
+</div>
+<div data-md-component="announce">
+<aside class="md-banner">
+<div class="md-banner__inner md-grid md-typeset">
+<button aria-label="不再显示此消息" class="md-banner__button md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+<!-- Add announcement here, including arbitrary HTML -->
+    游戏开发相关的笔记（包括计算机图形学、游戏引擎等）迁移至我的<a href="https://game.noughtq.top" target="_blank">全新笔记网站</a>，欢迎大家前来阅读🎉
+
+          </div>
+<script>var el=document.querySelector("[data-md-component=announce]");if(el){var content=el.querySelector(".md-typeset");__md_hash(content.innerHTML)===__md_get("__announce")&&(el.hidden=!0)}</script>
+</aside>
+</div>
+<header class="md-header" data-md-component="header">
+<nav aria-label="页眉" class="md-header__inner md-grid">
+<a aria-label="NoughtQ的笔记本" class="md-header__button md-logo" data-md-component="logo" href="../.." title="NoughtQ的笔记本">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.05 9H7.06V6h1.99V4.03H7.06v-1c0-1.11.89-1.99 1.99-1.99h5.98V8l2.47-1.5L20 8V1.04h1c1.05 0 2 .96 2 1.99V17c0 1.03-.95 2-2 2H9.05c-1.05 0-1.99-.95-1.99-2v-1h1.99v-2H7.06v-3h1.99zM1 18h2v-3H1v-2h2v-3H1V8h2V5h2v3H3v2h2v3H3v2h2v3H3v2h2v1h16v2H5a2 2 0 0 1-2-2v-1H1z"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            NoughtQ的笔记本
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              第8章 假设检验
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="Dark Mode" class="md-option" data-md-color-accent="indigo" data-md-color-media="(prefer-color-scheme: dark)" data-md-color-primary="indigo" data-md-color-scheme="slate" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="Dark Mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"></path></svg>
+</label>
+<input aria-label="Light Mode" class="md-option" data-md-color-accent="indigo" data-md-color-media="(prefer-color-scheme: light)" data-md-color-primary="indigo" data-md-color-scheme="default" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="Light Mode">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="搜索" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="搜索" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 256 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path></svg>
+</label>
+<nav aria-label="查找" class="md-search__options">
+<a aria-label="分享" class="md-search__icon md-icon" data-clipboard="" data-clipboard-text="" data-md-component="search-share" href="javascript:void(0)" tabindex="-1" title="分享">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"></path></svg>
+</a>
+<button aria-label="清空当前内容" class="md-search__icon md-icon" tabindex="-1" title="清空当前内容" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header__source">
+<a class="md-source" data-md-component="source" href="https://github.com/noughtq/notebook" title="前往仓库">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    NoughtQ/Notebook
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<nav aria-label="标签" class="md-tabs" data-md-component="tabs">
+<div class="md-grid">
+<ul class="md-tabs__list">
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../index.html">
+          
+  
+  
+    
+  
+  🏫主页
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../lang/index.html">
+          
+  
+  
+    
+  
+  🔡编程语言
+
+        </a>
+</li>
+<li class="md-tabs__item md-tabs__item--active">
+<a class="md-tabs__link" href="../index.html">
+          
+  
+  
+    
+  
+  📊数学相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../algo/index.html">
+          
+  
+  
+    
+  
+  🧮算法相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../software/index.html">
+          
+  
+  
+    
+  
+  💾软件相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../sys/index.html">
+          
+  
+  
+    
+  
+  💻系统相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../web/index.html">
+          
+  
+  
+    
+  
+  🌏Web相关
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../ai/index.html">
+          
+  
+  
+    
+  
+  🤖人工智能
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../misc/index.html">
+          
+  
+  
+    
+  
+  🗃️杂项
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../tools/index.html">
+          
+  
+  
+    
+  
+  🛠️工具
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../papers/index.html">
+          
+  
+  
+    
+  
+  📑论文阅读
+
+        </a>
+</li>
+</ul>
+</div>
+</nav>
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="导航栏" class="md-nav md-nav--primary md-nav--lifted" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="NoughtQ的笔记本" class="md-nav__button md-logo" data-md-component="logo" href="../.." title="NoughtQ的笔记本">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.05 9H7.06V6h1.99V4.03H7.06v-1c0-1.11.89-1.99 1.99-1.99h5.98V8l2.47-1.5L20 8V1.04h1c1.05 0 2 .96 2 1.99V17c0 1.03-.95 2-2 2H9.05c-1.05 0-1.99-.95-1.99-2v-1h1.99v-2H7.06v-3h1.99zM1 18h2v-3H1v-2h2v-3H1V8h2V5h2v3H3v2h2v3H3v2h2v3H3v2h2v1h16v2H5a2 2 0 0 1-2-2v-1H1z"></path></svg>
+</a>
+    NoughtQ的笔记本
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-component="source" href="https://github.com/noughtq/notebook" title="前往仓库">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    NoughtQ/Notebook
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../index.html">
+<span class="md-ellipsis">
+    
+  
+    🏫主页
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../lang/index.html">
+<span class="md-ellipsis">
+    
+  
+    🔡编程语言
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_3" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../index.html">
+<span class="md-ellipsis">
+    
+  
+    📊数学相关
+  
+
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="true" aria-labelledby="__nav_3_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_3">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    📊数学相关
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../calculus/index.html">
+<span class="md-ellipsis">
+    
+  
+    微积分（甲）
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../linear-algebra.html">
+<span class="md-ellipsis">
+    
+  
+    线性代数（甲）
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../dm/index.html">
+<span class="md-ellipsis">
+    
+  
+    离散数学及其应用
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_3_5" type="checkbox"/>
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="index.html">
+<span class="md-ellipsis">
+    
+  
+    概率论与数理统计
+  
+
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="true" aria-labelledby="__nav_3_5_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_3_5">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    概率论与数理统计
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="1.html">
+<span class="md-ellipsis">
+    
+  
+    第1章 概率论的基本概念
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="2.html">
+<span class="md-ellipsis">
+    
+  
+    第2章 随机变量及其概率分布
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="3.html">
+<span class="md-ellipsis">
+    
+  
+    第3章 多维随机变量及其分布
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="4.html">
+<span class="md-ellipsis">
+    
+  
+    第4章 随机变量的数字特征
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="5.html">
+<span class="md-ellipsis">
+    
+  
+    第5章 大数定律及中心极限定理
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="6.html">
+<span class="md-ellipsis">
+    
+  
+    第6章 统计量与抽样分布
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="7.html">
+<span class="md-ellipsis">
+    
+  
+    第7章 参数估计
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    
+  
+    第8章 假设检验
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="8.html">
+<span class="md-ellipsis">
+    
+  
+    第8章 假设检验
+  
+
+    
+  </span>
+</a>
+<nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#假设检验的基本思想">
+<span class="md-ellipsis">
+      
+        假设检验的基本思想
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#正态总体参数的假设检验">
+<span class="md-ellipsis">
+      
+        正态总体参数的假设检验
+      
+    </span>
+</a>
+<nav aria-label="正态总体参数的假设检验" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#单个正态总体">
+<span class="md-ellipsis">
+      
+        单个正态总体
+      
+    </span>
+</a>
+<nav aria-label="单个正态总体" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#有关均值的假设检验">
+<span class="md-ellipsis">
+      
+        有关均值的假设检验
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#有关方差的假设检验">
+<span class="md-ellipsis">
+      
+        有关方差的假设检验
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#两个正态总体">
+<span class="md-ellipsis">
+      
+        两个正态总体
+      
+    </span>
+</a>
+<nav aria-label="两个正态总体" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#有关均值的假设检验_1">
+<span class="md-ellipsis">
+      
+        有关均值的假设检验
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#有关方差的假设检验_1">
+<span class="md-ellipsis">
+      
+        有关方差的假设检验
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#假设检验与区间估计">
+<span class="md-ellipsis">
+      
+        假设检验与区间估计
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#拟合优度检验">
+<span class="md-ellipsis">
+      
+        拟合优度检验
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="exercises.html">
+<span class="md-ellipsis">
+    
+  
+    题目整理
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../na/index.html">
+<span class="md-ellipsis">
+    
+  
+    数值分析
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../toc/index.html">
+<span class="md-ellipsis">
+    
+  
+    计算理论
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../algo/index.html">
+<span class="md-ellipsis">
+    
+  
+    🧮算法相关
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../software/index.html">
+<span class="md-ellipsis">
+    
+  
+    💾软件相关
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../sys/index.html">
+<span class="md-ellipsis">
+    
+  
+    💻系统相关
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../web/index.html">
+<span class="md-ellipsis">
+    
+  
+    🌏Web相关
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../ai/index.html">
+<span class="md-ellipsis">
+    
+  
+    🤖人工智能
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../misc/index.html">
+<span class="md-ellipsis">
+    
+  
+    🗃️杂项
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../tools/index.html">
+<span class="md-ellipsis">
+    
+  
+    🛠️工具
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+<a class="md-nav__link" href="../../papers/index.html">
+<span class="md-ellipsis">
+    
+  
+    📑论文阅读
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="目录" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+        目录
+      </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#假设检验的基本思想">
+<span class="md-ellipsis">
+      
+        假设检验的基本思想
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#正态总体参数的假设检验">
+<span class="md-ellipsis">
+      
+        正态总体参数的假设检验
+      
+    </span>
+</a>
+<nav aria-label="正态总体参数的假设检验" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#单个正态总体">
+<span class="md-ellipsis">
+      
+        单个正态总体
+      
+    </span>
+</a>
+<nav aria-label="单个正态总体" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#有关均值的假设检验">
+<span class="md-ellipsis">
+      
+        有关均值的假设检验
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#有关方差的假设检验">
+<span class="md-ellipsis">
+      
+        有关方差的假设检验
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#两个正态总体">
+<span class="md-ellipsis">
+      
+        两个正态总体
+      
+    </span>
+</a>
+<nav aria-label="两个正态总体" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#有关均值的假设检验_1">
+<span class="md-ellipsis">
+      
+        有关均值的假设检验
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#有关方差的假设检验_1">
+<span class="md-ellipsis">
+      
+        有关方差的假设检验
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#假设检验与区间估计">
+<span class="md-ellipsis">
+      
+        假设检验与区间估计
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#拟合优度检验">
+<span class="md-ellipsis">
+      
+        拟合优度检验
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<nav aria-label="导航栏" class="md-path">
+<ol class="md-path__list">
+<li class="md-path__item">
+<a class="md-path__link" href="../index.html">
+<span class="md-ellipsis">
+    📊数学相关
+  </span>
+</a>
+</li>
+<li class="md-path__item">
+<a class="md-path__link" href="index.html">
+<span class="md-ellipsis">
+    概率论与数理统计
+  </span>
+</a>
+</li>
+</ol>
+</nav>
+<article class="md-content__inner md-typeset">
+<a class="md-content__button md-icon" href="https://github.com/noughtq/notebook/edit/master/docs/math/pro-sta/8.md" rel="edit" title="编辑此页">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"></path></svg>
+</a>
+<a class="md-content__button md-icon" href="https://github.com/noughtq/notebook/raw/master/docs/math/pro-sta/8.md" title="查看本页的源代码">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"></path></svg>
+</a>
+<h1 id="第8章-假设检验">第<span class="heti-skip"><span class="heti-spacing"> </span>8<span class="heti-spacing"> </span></span>章 假设检验<a class="headerlink" href="#%E7%AC%AC8%E7%AB%A0-%E5%81%87%E8%AE%BE%E6%A3%80%E9%AA%8C" title="Permanent link">⚓︎</a></h1>
+<div style="margin-top: -30px; font-size: 0.9em; opacity: 0.7;">
+<p><span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10h-2a8 8 0 0 1-8 8 8 8 0 0 1-8-8 8 8 0 0 1 8-8zm6.78 1a.7.7 0 0 0-.48.2l-1.22 1.21 2.5 2.5L20.8 5.7c.26-.26.26-.7 0-.95L19.25 3.2c-.13-.13-.3-.2-.47-.2m-2.41 2.12L9 12.5V15h2.5l7.37-7.38z"></path></svg></span> 约<span class="heti-skip"><span class="heti-spacing"> </span>3224<span class="heti-spacing"> </span></span>个字 <span class="twemoji"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20c4.42 0 8-3.58 8-8s-3.58-8-8-8-8 3.58-8 8 3.58 8 8 8m0-18c5.5 0 10 4.5 10 10s-4.5 10-10 10C6.47 22 2 17.5 2 12S6.5 2 12 2m.5 11H11V7h1.5v4.26l3.7-2.13.75 1.3z"></path></svg></span> 预计阅读时间<span class="heti-skip"><span class="heti-spacing"> </span>16<span class="heti-spacing"> </span></span>分钟</p>
+</div>
+<details class="abstract">
+<summary>核心知识</summary>
+<ul>
+<li>一些基本概念：两类假设、三种检验、两类错误、拒绝域、<span>P-<span class="heti-spacing"> </span></span>值</li>
+<li>正态总体参数的假设检验<ul>
+<li>单个<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>两个正态总体、有关均值<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>方差的假设检验</li>
+<li>与第<span class="heti-skip"><span class="heti-spacing"> </span>7<span class="heti-spacing"> </span></span>章“正态总体的区间估计”相关知识结合起来理解</li>
+</ul>
+</li>
+</ul>
+</details>
+<h2 id="假设检验的基本思想">假设检验的基本思想<a class="headerlink" href="#%E5%81%87%E8%AE%BE%E6%A3%80%E9%AA%8C%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3" title="Permanent link">⚓︎</a></h2>
+<ul>
+<li>
+<p>问题的提出</p>
+<ul>
+<li>假设<span><span class="heti-spacing"> </span><span class="arithmatex">\(H\)</span></span>，同时提出两个完全相反的假设，分别为<strong>原假设<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>零假设</strong><span><span class="arithmatex">\(H_0\)</span><span class="heti-spacing"> </span></span>和<strong>备择假设<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>对立假设</strong><span class="arithmatex">\(H_1\)</span>（<u>备择假设一般是我们想要支持的假设</u>）</li>
+<li>关于总体参数<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\theta\)</span><span class="heti-spacing"> </span></span>的假设，有三种情况（<span><span class="arithmatex">\(\theta_0\)</span><span class="heti-spacing"> </span></span>为已知常数<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：<ul>
+<li><strong>左侧检验</strong>：<span class="arithmatex">\(H_0: \theta \ge \theta_0, H_1: \theta &lt; \theta_0\)</span></li>
+<li><strong>右侧检验</strong>：<span class="arithmatex">\(H_0: \theta \le \theta_0, H_1: \theta &gt; \theta_0\)</span></li>
+<li>前两种检验合称为<strong>单侧检验</strong>，还有两种形式为（需要知道<heti-adjacent class="heti-adjacent-half">）</heti-adjacent>：<ul>
+<li><span class="arithmatex">\(H_0: \theta = \theta_0, H_1: \theta &lt; \theta_0\)</span>（与第<span class="heti-skip"><span class="heti-spacing"> </span>1<span class="heti-spacing"> </span></span>种几乎相同）</li>
+<li><span class="arithmatex">\(H_0: \theta = \theta_0, H_1: \theta &gt; \theta_0\)</span>（与第<span class="heti-skip"><span class="heti-spacing"> </span>2<span class="heti-spacing"> </span></span>种几乎相同）</li>
+</ul>
+</li>
+<li><strong>双侧检验</strong>：<span class="arithmatex">\(H_0: \theta = \theta_0, H_1: \theta \ne \theta_0\)</span></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>检验统计量和拒绝域</p>
+<ul>
+<li><strong>检验统计量</strong>：在假设问题中取值大小和原假设<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(H_0\)</span><span class="heti-spacing"> </span></span>是否成立有密切关系的统计量<ul>
+<li>一般情况下，我们用上一章介绍过的<strong>枢轴量</strong>作为检验统计量</li>
+</ul>
+</li>
+<li>
+<p><strong>拒绝域</strong><span class="arithmatex">\(W\)</span>：拒绝原假设<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(H_0\)</span><span class="heti-spacing"> </span></span>的样本值范围（样本空间的一个子集）</p>
+<ul>
+<li>若样本落入<span><span class="heti-spacing"> </span><span class="arithmatex">\(W\)</span></span>，就拒绝<span><span class="heti-spacing"> </span><span class="arithmatex">\(H_0\)</span></span></li>
+</ul>
+<p><img alt="⭐" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2b50.svg" title=":star:"/><strong>结论</strong>：</p>
+<ul>
+<li>左侧检验：<span class="arithmatex">\(W = \{G_0 &lt; g_{1 - \alpha}\}\)</span></li>
+<li>右侧检验：<span class="arithmatex">\(W = \{G_0 &gt; g_\alpha\}\)</span></li>
+<li>双侧检验：<ul>
+<li><span><span class="arithmatex">\(\mu\)</span><span class="heti-spacing"> </span></span>相关：<span class="arithmatex">\(W = \{|G_0| &gt; g_{\alpha / 2}\}\)</span></li>
+<li><span><span class="arithmatex">\(\sigma^2\)</span><span class="heti-spacing"> </span></span>相关：<span class="arithmatex">\(W = \{G_0 &lt; g_{1 - \alpha / 2} \cup G_0 &gt; g_{\alpha / 2}\}\)</span></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>接受域</strong><span class="arithmatex">\(\overline{W}\)</span>：拒绝域的补集</p>
+</li>
+</ul>
+<div class="admonition abstract">
+<p class="admonition-title">总结</p>
+<p>对于正态总体的区间估计和假设检验，可以发现以下对应关系：</p>
+<ul>
+<li><strong>双侧</strong>置信区间<span><span class="heti-spacing"> </span>&lt;-&gt;</span> <strong>双侧</strong>检验的接受域</li>
+<li>单侧置信<strong>下限</strong> &lt;-&gt; <strong>左侧</strong>检验的接受域</li>
+<li>单侧置信<strong>上限</strong> &lt;-&gt; <strong>右侧</strong>检验的接受域</li>
+</ul>
+</div>
+</li>
+<li>
+<p>两类错误</p>
+<ul>
+<li>
+<p>在假设检验中可能出现下列四种情形：</p>
+<ul>
+<li>拒绝了一个错误的原假设<img alt="👍" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f44d.svg" title=":+1:"/></li>
+<li>接受了一个真实的原假设<img alt="👍" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f44d.svg" title=":+1:"/></li>
+<li>拒绝了一个真实的原假设<img alt="👎" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f44e.svg" title=":-1:"/> -&gt; <strong>第<span class="heti-skip"><span class="heti-spacing"> </span>I<span class="heti-spacing"> </span></span>类错误<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>弃真错误</strong>，发生概率记为<span><span class="heti-spacing"> </span><span class="arithmatex">\(\alpha\)</span></span></li>
+<li>接受了一个错误的原假设<img alt="👎" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/1f44e.svg" title=":-1:"/> -&gt; <strong>第<span class="heti-skip"><span class="heti-spacing"> </span>II<span class="heti-spacing"> </span></span>类错误<span class="heti-skip"><span class="heti-spacing"> </span>/<span class="heti-spacing"> </span></span>存伪错误</strong>，发生概率记为<span><span class="heti-spacing"> </span><span class="arithmatex">\(\beta\)</span></span></li>
+</ul>
+</li>
+<li>
+<p>计算公式：</p>
+</li>
+</ul>
+<div class="arithmatex">\[
+\begin{align}
+\alpha &amp; = P(\text{type I error}) = P(\text{reject } H_0 | H_0 \text{ is true}) = P_{H_0}(\text{reject } H_0) \notag \\
+&amp; = P\{(x_1, x_2, \dots, x_n) \in W | H_0 \text{ is true}\} \notag \\
+\beta &amp; = P(\text{type II error}) = P(\text{accpet } H_0 | H_0 \text{ is false}) = P_{H_1}(\text{accept } H_0) \notag \\
+&amp; = P\{(x_1, x_2, \dots, x_n) \in \overline{W} | H_0 \text{ is false}\} \notag
+\end{align}
+\]</div>
+<ul>
+<li><strong>奈曼<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>皮尔逊原则</strong>：<ul>
+<li>首先控制第<span class="heti-skip"><span class="heti-spacing"> </span>I<span class="heti-spacing"> </span></span>类错误的概率，即选定一个常数<span><span class="heti-spacing"> </span><span class="arithmatex">\(\alpha \in (0, 1)\)</span></span>，要求犯第<span class="heti-skip"><span class="heti-spacing"> </span>I<span class="heti-spacing"> </span></span>类错误的概率不超过<span><span class="heti-spacing"> </span><span class="arithmatex">\(\alpha\)</span></span></li>
+<li>然后在满足这个约束条件的检验下，在寻找检验，使得犯第<span class="heti-skip"><span class="heti-spacing"> </span>II<span class="heti-spacing"> </span></span>类错误的概率尽可能小</li>
+<li><span><span class="arithmatex">\(\alpha\)</span><span class="heti-spacing"> </span></span>称为<strong>显著性水平</strong>，常取<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\alpha = 0.01, 0.05, 0.10\)</span><span class="heti-spacing"> </span></span>等</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><span>P-<span class="heti-spacing"> </span></span>值与统计显著性</p>
+<ul>
+<li><strong><span>P-<span class="heti-spacing"> </span></span>值</strong>：当原假设<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(H_0\)</span><span class="heti-spacing"> </span></span>为真时，检验统计量取比观察到的结果更为极端的数值的概率，用于衡量拒绝<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(H_0\)</span><span class="heti-spacing"> </span></span>的理由是否充分，其值越小拒绝<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(H_0\)</span><span class="heti-spacing"> </span></span>的理由越充分</li>
+<li>若<span class="heti-skip"><span class="heti-spacing"> </span>P-<span class="heti-spacing"> </span></span>值<span><span class="heti-spacing"> </span><span class="arithmatex">\(\le \alpha\)</span></span>，则<strong>拒绝</strong>原假设，此时称检验结果在显著性水平<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\alpha\)</span><span class="heti-spacing"> </span></span>下是<strong>统计显著</strong>的</li>
+</ul>
+<p><img alt="⭐" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/2b50.svg" title=":star:"/><strong>结论</strong>：</p>
+<ul>
+<li>左侧检验：<span class="arithmatex">\(P_{-} = P(g &lt; G_0)\)</span></li>
+<li>右侧检验：<span class="arithmatex">\(P_{-} = P(g &gt; G_0)\)</span></li>
+<li>
+<p>双侧检验：</p>
+<ul>
+<li><span><span class="arithmatex">\(\mu\)</span><span class="heti-spacing"> </span></span>相关：<span class="arithmatex">\(P_{-} = 2P(g &gt; |G_0|)\)</span></li>
+<li><span><span class="arithmatex">\(\sigma^2\)</span><span class="heti-spacing"> </span></span>相关：<span class="arithmatex">\(P_{-} = 2 \min\{P(g &gt; G_0), P(g &lt; G_0)\}\)</span></li>
+</ul>
+</li>
+<li>
+<p>具体方法：在试卷第一页抬头寻找<span><span class="heti-spacing"> </span><span class="arithmatex">\(g_A = G_0\)</span></span>，则<span><span class="heti-spacing"> </span><span class="arithmatex">\(P(g &lt; G_0) = 1 - A, P(g &gt; G_0) = A\)</span></span></p>
+</li>
+</ul>
+</li>
+</ul>
+<p>处理假设检验问题的基本步骤：</p>
+<ol>
+<li>根据实际问题提出原假设和备择假设</li>
+<li>提出检验统计量和拒绝域的形式</li>
+<li>根据奈曼<span class="heti-skip"><span class="heti-spacing"> </span>-<span class="heti-spacing"> </span></span>皮尔逊原则和给定的显著性水平<span><span class="heti-spacing"> </span><span class="arithmatex">\(\alpha\)</span></span>，求出拒绝域<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(W\)</span><span class="heti-spacing"> </span></span>中的临界值</li>
+<li>根据实际样本值作出判断</li>
+</ol>
+<p><span>3<span class="heti-spacing"> </span></span>和<span class="heti-skip"><span class="heti-spacing"> </span>4<span class="heti-spacing"> </span></span>也可如下进行：</p>
+<ul>
+<li>计算检验统计量的观测值和<span class="heti-skip"><span class="heti-spacing"> </span>P-<span class="heti-spacing"> </span></span>值</li>
+<li>根据给定的显著性水平<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\alpha\)</span><span class="heti-spacing"> </span></span>作出判断</li>
+</ul>
+<h2 id="正态总体参数的假设检验">正态总体参数的假设检验<a class="headerlink" href="#%E6%AD%A3%E6%80%81%E6%80%BB%E4%BD%93%E5%8F%82%E6%95%B0%E7%9A%84%E5%81%87%E8%AE%BE%E6%A3%80%E9%AA%8C" title="Permanent link">⚓︎</a></h2>
+<h3 id="单个正态总体">单个正态总体<a class="headerlink" href="#%E5%8D%95%E4%B8%AA%E6%AD%A3%E6%80%81%E6%80%BB%E4%BD%93" title="Permanent link">⚓︎</a></h3>
+<p>设正态总体<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(X \sim N(\mu, \sigma^2), X_1, X_2, \dots, X_n\)</span><span class="heti-spacing"> </span></span>是来自该总体的样本，记样本均值为<span><span class="heti-spacing"> </span><span class="arithmatex">\(\overline{X}\)</span></span>，样本方差为<span><span class="heti-spacing"> </span><span class="arithmatex">\(S^2\)</span></span>。</p>
+<h4 id="有关均值的假设检验">有关均值的假设检验<a class="headerlink" href="#%E6%9C%89%E5%85%B3%E5%9D%87%E5%80%BC%E7%9A%84%E5%81%87%E8%AE%BE%E6%A3%80%E9%AA%8C" title="Permanent link">⚓︎</a></h4>
+<div class="admonition info">
+<p class="admonition-title">注</p>
+<p>对于之后的<span class="heti-skip"><span class="heti-spacing"> </span>6<span class="heti-spacing"> </span></span>张图片，用<code>/</code>表示的阴影部分面积为<span><span class="heti-spacing"> </span><span class="arithmatex">\(\alpha\)</span></span>，用<code>\</code>表示的阴影部分面积为<span class="heti-skip"><span class="heti-spacing"> </span>P-<span class="heti-spacing"> </span></span>值。</p>
+</div>
+<ul>
+<li>
+<p><span><span class="arithmatex">\(\sigma^2\)</span><span class="heti-spacing"> </span></span>已知<span><span class="heti-spacing"> </span>-&gt;</span> <strong><span>Z<span class="heti-spacing"> </span></span>检验</strong></p>
+<ul>
+<li>检验统计量：<span class="arithmatex">\(Z = \dfrac{\overline{X} - \mu_0}{\sigma / \sqrt{n}}\)</span>，对应的取值为<span><span class="heti-spacing"> </span><span class="arithmatex">\(z_0\)</span></span></li>
+<li>
+<p>双侧假设：<span class="arithmatex">\(H_0: \mu = \mu_0, H_1: \mu \ne \mu_0\)</span></p>
+<ul>
+<li>拒绝域：<span class="arithmatex">\(W = \{|Z| = \Big|\dfrac{\overline{X} - \mu_0}{\sigma / \sqrt{n}}\Big| \ge z_{\alpha / 2}\}\)</span></li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C8/1.png"><img src="images/C8/1.png" width="40%"/></a>
+</div><p></p>
+<ul>
+<li><span>P-<span class="heti-spacing"> </span></span>值<span><span class="heti-spacing"> </span>= <span class="arithmatex">\(P_{H_0}(|Z| \ge |z_0|) = 2P_{H_0}(Z \ge |z_0|) = 2(1 - \Phi(|z_0|))\)</span></span>。当<span class="heti-skip"><span class="heti-spacing"> </span>P-<span class="heti-spacing"> </span></span>值<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\le \alpha\)</span><span class="heti-spacing"> </span></span>时，拒绝原假设，否则不能拒绝，如图所示：</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C8/2.png"><img src="images/C8/2.png" width="40%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>左侧假设：<span class="arithmatex">\(H_0: \mu \ge \mu_0, H_1: \mu &lt; \mu_0\)</span></p>
+<ul>
+<li>拒绝域：<span class="arithmatex">\(W = \{Z = \dfrac{\overline{X} - \mu_0}{\sigma / \sqrt{n}} \le -z_{\alpha}\}\)</span></li>
+<li><span>P-<span class="heti-spacing"> </span></span>值<span><span class="heti-spacing"> </span>= <span class="arithmatex">\(\sup\limits_{\mu \ge \mu_0} P(Z \le z_0) = P(Z \le z_0 | \mu = \mu_0) = \Phi(z_0)\)</span></span>，若<span class="heti-skip"><span class="heti-spacing"> </span>P-<span class="heti-spacing"> </span></span>值<span><span class="heti-spacing"> </span><span class="arithmatex">\(\le \alpha\)</span></span>，则拒绝原假设<span><span class="heti-spacing"> </span><span class="arithmatex">\(H_0\)</span></span>，否则不能拒绝</li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C8/3.png"><img src="images/C8/3.png" width="70%"/></a>
+</div><p></p>
+</li>
+<li>
+<p>右侧假设：<span class="arithmatex">\(H_0: \mu \le \mu_0, H_1: \mu &gt; \mu_0\)</span></p>
+<ul>
+<li>拒绝域：<span class="arithmatex">\(W = \{Z = \dfrac{\overline{X} - \mu_0}{\sigma / \sqrt{n}} \ge z_\alpha\}\)</span></li>
+<li><span>P-<span class="heti-spacing"> </span></span>值<span><span class="heti-spacing"> </span>= <span class="arithmatex">\(\sup\limits_{\mu \ge \mu_0} P(Z \ge z_0) = P(Z \ge z_0 | \mu = \mu_0) = 1 - \Phi(z_0)\)</span></span></li>
+</ul>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C8/4.png"><img src="images/C8/4.png" width="70%"/></a>
+</div><p></p>
+</li>
+</ul>
+</li>
+<li>
+<p><span><span class="arithmatex">\(\sigma^2\)</span><span class="heti-spacing"> </span></span>未知：用样本方差<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(S^2\)</span><span class="heti-spacing"> </span></span>代替<span><span class="heti-spacing"> </span><span class="arithmatex">\(\sigma^2\)</span> -&gt;</span> <strong><span>t<span class="heti-spacing"> </span></span>检验</strong></p>
+<ul>
+<li>检验统计量：<span class="arithmatex">\(T = \dfrac{\overline{X} - \mu_0}{S / \sqrt{n}} \sim t(n - 1)\)</span>，对应的取值为<span><span class="heti-spacing"> </span><span class="arithmatex">\(t_0\)</span></span></li>
+<li>双侧假设：<span class="arithmatex">\(H_0: \mu = \mu_0, H_1: \mu \ne \mu_0\)</span><ul>
+<li>拒绝域：<span class="arithmatex">\(W = \{|T| = \Big|\dfrac{\overline{X} - \mu_0}{S / \sqrt{n}}\Big| \ge t_{\alpha / 2}(n - 1)\}\)</span></li>
+<li><span>P-<span class="heti-spacing"> </span></span>值<span><span class="heti-spacing"> </span>= <span class="arithmatex">\(2P(t(n-1) \ge |t_0|)\)</span></span></li>
+</ul>
+</li>
+<li>左侧假设：<span class="arithmatex">\(H_0: \mu \ge \mu_0, H_1: \mu &lt; \mu_0\)</span><ul>
+<li>拒绝域：<span class="arithmatex">\(W = \{T = \dfrac{\overline{X} - \mu_0}{S / \sqrt{n}} \le -t_{\alpha}(n - 1)\}\)</span></li>
+<li><span>P-<span class="heti-spacing"> </span></span>值<span><span class="heti-spacing"> </span>= <span class="arithmatex">\(\sup\limits_{\mu \ge \mu_0} P(T \le t_0) = P(t(n - 1) \le t_0)\)</span></span></li>
+</ul>
+</li>
+<li>右侧假设：<span class="arithmatex">\(H_0: \mu \le \mu_0, H_1: \mu &gt; \mu_0\)</span><ul>
+<li>拒绝域：<span class="arithmatex">\(W = \{T = \dfrac{\overline{X} - \mu_0}{S / \sqrt{n}} \ge t_{\alpha}(n - 1)\}\)</span></li>
+<li><span>P-<span class="heti-spacing"> </span></span>值<span><span class="heti-spacing"> </span>= <span class="arithmatex">\(\sup\limits_{\mu \le \mu_0} P(T \ge t_0) = P(t(n - 1) \ge t_0)\)</span></span></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="有关方差的假设检验">有关方差的假设检验<a class="headerlink" href="#%E6%9C%89%E5%85%B3%E6%96%B9%E5%B7%AE%E7%9A%84%E5%81%87%E8%AE%BE%E6%A3%80%E9%AA%8C" title="Permanent link">⚓︎</a></h4>
+<p>此时用到的检验为<strong><span><span class="arithmatex">\(\chi^2\)</span><span class="heti-spacing"> </span></span>检验</strong></p>
+<p>不妨假设<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\mu\)</span><span class="heti-spacing"> </span></span>是未知的，假设问题包括：</p>
+<ul>
+<li>双侧假设：<span class="arithmatex">\(H_0: \sigma^2 = \sigma_0^2, H_1: \sigma^2 \ne \sigma_0^2\)</span></li>
+<li>左侧假设：<span class="arithmatex">\(H_0: \sigma^2 \ge \sigma_0^2, H_1: \sigma^2 &lt; \sigma_0^2\)</span></li>
+<li>右侧假设：<span class="arithmatex">\(H_0: \sigma^2 \le \sigma_0^2, H_1: \sigma^2 &gt; \sigma_0^2\)</span></li>
+</ul>
+<p>其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\sigma_0^2\)</span><span class="heti-spacing"> </span></span>为已知常量，此时<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\sigma^2\)</span><span class="heti-spacing"> </span></span>的无偏估计量<span><span class="heti-spacing"> </span><span class="arithmatex">\(S^2 = \dfrac{1}{n - 1}\sum\limits_{i=1}^n(X_i - \overline{X})^2\)</span></span>，取检验统计量<span><span class="heti-spacing"> </span><span class="arithmatex">\(\chi^2 = \dfrac{(n - 1)S^2}{\sigma_0^2}\)</span></span>，当<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\sigma^2 = \sigma_0^2\)</span><span class="heti-spacing"> </span></span>时，<span class="arithmatex">\(\chi^2 \sim \chi^2(n - 1)\)</span>。</p>
+<p>在给定显著性水平<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\alpha\)</span><span class="heti-spacing"> </span></span>时，有拒绝域：</p>
+<ul>
+<li>双侧检验：<span class="arithmatex">\(W = \{\chi^2 \ge \chi_{\alpha / 2}^2(n - 1) \text{ or } \chi^2 \le \chi_{1 - \alpha / 2}^2(n - 1)\}\)</span></li>
+<li>左侧检验：<span class="arithmatex">\(W = \{\chi^2 \le \chi_{1 - \alpha}^2(n - 1)\}\)</span></li>
+<li>右侧检验：<span class="arithmatex">\(W = \{\chi^2 \ge \chi_{\alpha}^2(n - 1)\}\)</span></li>
+</ul>
+<p>计算<span class="heti-skip"><span class="heti-spacing"> </span>P-<span class="heti-spacing"> </span></span>值：<span class="arithmatex">\(p_0 = P_{\sigma^2 = \sigma_0^2}(\dfrac{(n - 1)S^2}{\sigma_0^2} \le \dfrac{(n - 1)s^2}{\sigma_0^2}) = P(\chi^2(n - 1) \le \chi_0^2)\)</span></p>
+<ul>
+<li>双侧检验：<span>P-<span class="heti-spacing"> </span></span>值<span><span class="heti-spacing"> </span>= <span class="arithmatex">\(2 \min\{p_0, 1 - p_0\}\)</span></span></li>
+<li>左侧检验：<span>P-<span class="heti-spacing"> </span></span>值<span><span class="heti-spacing"> </span>= <span class="arithmatex">\(p_0\)</span></span></li>
+<li>右侧检验：<span>P-<span class="heti-spacing"> </span></span>值<span><span class="heti-spacing"> </span>= <span class="arithmatex">\(1 - p_0\)</span></span></li>
+</ul>
+<h3 id="两个正态总体">两个正态总体<a class="headerlink" href="#%E4%B8%A4%E4%B8%AA%E6%AD%A3%E6%80%81%E6%80%BB%E4%BD%93" title="Permanent link">⚓︎</a></h3>
+<p>设正态总体<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(X \sim N(\mu_1, \sigma_1^2), Y \sim N(\mu_2, \sigma_2^2), X_1, X_2, \dots, X_{n1}, Y_1, Y_2, \dots, Y_{n2}\)</span><span class="heti-spacing"> </span></span>分别是来自这两个总体的样本，记：</p>
+<ul>
+<li><span class="arithmatex">\(\overline{X} = \dfrac{1}{n_1}\sum\limits_{i=1}^{n_1} X_i,\ S_1^2 = \dfrac{1}{n_1-1} \sum\limits_{i=1}^{n_1} (X_i - \overline{X})^2\)</span></li>
+<li><span class="arithmatex">\(\overline{Y} = \dfrac{1}{n_2}\sum\limits_{j=1}^{n_2} Y_i,\ S_2^2 = \dfrac{1}{n_2-1} \sum\limits_{j=1}^{n_2} (Y_i - \overline{Y})^2\)</span></li>
+</ul>
+<h4 id="有关均值的假设检验_1">有关均值的假设检验<a class="headerlink" href="#%E6%9C%89%E5%85%B3%E5%9D%87%E5%80%BC%E7%9A%84%E5%81%87%E8%AE%BE%E6%A3%80%E9%AA%8C_1" title="Permanent link">⚓︎</a></h4>
+<p>考虑双侧假设问题：<span class="arithmatex">\(H_0: \mu_1 = \mu_2, H_1: \mu_1 \ne \mu_2\)</span>，当原假设<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(H_0\)</span><span class="heti-spacing"> </span></span>成立时，两样本均值取值比较接近，即<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(|\overline{X} - \overline{Y}|\)</span><span class="heti-spacing"> </span></span>取值偏小，因此取检验统计量为<span><span class="heti-spacing"> </span><span class="arithmatex">\(\overline{X} - \overline{Y}\)</span></span></p>
+<ul>
+<li>
+<p><span><span class="arithmatex">\(\sigma_1^2, \sigma_2^2\)</span><span class="heti-spacing"> </span></span>已知<span><span class="heti-spacing"> </span>-&gt;</span> <strong><span>Z<span class="heti-spacing"> </span></span>检验</strong></p>
+<ul>
+<li>拒绝域：<span class="arithmatex">\(W = \{\dfrac{|\overline{X} - \overline{Y}|}{\sqrt{\frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}}} \ge z_{\alpha / 2}\}\)</span></li>
+<li><span>P-<span class="heti-spacing"> </span></span>值<span><span class="heti-spacing"> </span>= <span class="arithmatex">\(P_{H_0}(|Z| \ge |z_0|) = 2(1 - \Phi(|z_0|))\)</span></span>，其中<span><span class="heti-spacing"> </span><span class="arithmatex">\(Z \sim N(0, 1)\)</span></span>，<span><span class="arithmatex">\(z_0\)</span><span class="heti-spacing"> </span></span>为给定样本值时检验统计量的取值</li>
+</ul>
+</li>
+<li>
+<p><span><span class="arithmatex">\(\sigma_1^2 = \sigma_2^2 = \sigma^2\)</span><span class="heti-spacing"> </span></span>但未知<span><span class="heti-spacing"> </span>-&gt;</span> <strong>两样本精确<span class="heti-skip"><span class="heti-spacing"> </span>t<span class="heti-spacing"> </span></span>检验</strong></p>
+<ul>
+<li>检验统计量：<span class="arithmatex">\(T = \dfrac{\overline{X} - \overline{Y}}{S_w \sqrt{\frac{1}{n_1} + \frac{1}{n_2}}}\)</span></li>
+<li>拒绝域：<span class="arithmatex">\(W = \{|T| \ge t_{\alpha / 2}(n_1 + n_2 - 2)\}\)</span></li>
+<li><span>P-<span class="heti-spacing"> </span></span>值<span><span class="heti-spacing"> </span>= <span class="arithmatex">\(P_{H_0}(|T| \ge |t_0|) = 2P(t(n_1 + n_2 - 2) \ge |t_0|)\)</span></span>，其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(t_0\)</span><span class="heti-spacing"> </span></span>为给定样本值时检验统计量<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(T\)</span><span class="heti-spacing"> </span></span>的取值</li>
+</ul>
+</li>
+<li>
+<p><span><span class="arithmatex">\(\sigma_1^2 \ne \sigma_2^2\)</span><span class="heti-spacing"> </span></span>且未知</p>
+<details class="warning">
+<summary>注意：该情况不考，仅做了解（感兴趣的话可以点击展开阅读）</summary>
+<ul>
+<li>检验统计量：<span class="arithmatex">\(T = \dfrac{\overline{X} - \overline{Y}}{\sqrt{\frac{S_1^2}{n_1} + \frac{S_2^2}{n_2}}}\)</span></li>
+<li>拒绝域：<span class="arithmatex">\(W = \{|T| \ge z_{\alpha / 2}\}\)</span></li>
+<li><span>P-<span class="heti-spacing"> </span></span>值<span><span class="heti-spacing"> </span>= <span class="arithmatex">\(P_{H_0}(|T| \ge |t_0|) = 2P(Z \ge |t_0|)\)</span></span>，其中<span><span class="heti-spacing"> </span><span class="arithmatex">\(Z \sim N(0, 1)\)</span></span>，<span><span class="arithmatex">\(t_0\)</span><span class="heti-spacing"> </span></span>为给定样本值时检验统计量<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(T\)</span><span class="heti-spacing"> </span></span>的取值</li>
+<li>对于小样本情形，上述统计量<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(T\)</span><span class="heti-spacing"> </span></span>近似服从<span class="heti-skip"><span class="heti-spacing"> </span>t<span class="heti-spacing"> </span></span>分布<span><span class="heti-spacing"> </span>-&gt;</span> <strong>两样本近似<span class="heti-skip"><span class="heti-spacing"> </span>t<span class="heti-spacing"> </span></span>检验</strong><ul>
+<li>自由度为<span><span class="heti-spacing"> </span><span class="arithmatex">\(k = \min\{n_1 - 1, n_2 - 1\}\)</span></span></li>
+<li>更精确的近似自由度<span><span class="heti-spacing"> </span><span class="arithmatex">\(k = \dfrac{(S_1^2 / n_1 + S_2^2 / n_2)^2}{\frac{(S_1^2 / n_1)}{n_1 - 1} + \frac{(S_2^2 / n_2)^2}{n_2 - 1}}\)</span></span></li>
+<li>拒绝域：<span class="arithmatex">\(W = \{|T| \ge t_{\alpha / 2}(k)\}\)</span></li>
+<li><span>P-<span class="heti-spacing"> </span></span>值<span><span class="heti-spacing"> </span>= <span class="arithmatex">\(P_{H_0}(|T| \ge |t_0|) = 2P(t(k) \ge |t_0|)\)</span></span></li>
+</ul>
+</li>
+</ul>
+</details>
+</li>
+</ul>
+<h4 id="有关方差的假设检验_1">有关方差的假设检验<a class="headerlink" href="#%E6%9C%89%E5%85%B3%E6%96%B9%E5%B7%AE%E7%9A%84%E5%81%87%E8%AE%BE%E6%A3%80%E9%AA%8C_1" title="Permanent link">⚓︎</a></h4>
+<p>考虑假设问题：<span class="arithmatex">\(H_0: \sigma_1^2 = \sigma_2^2, H_1: \sigma_1^2 \ne \sigma_2^2\)</span>，取检验统计量<span><span class="heti-spacing"> </span><span class="arithmatex">\(F = \dfrac{S_1^2}{S_2^2}\)</span></span>。当<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(H_0\)</span><span class="heti-spacing"> </span></span>检验时，<span class="arithmatex">\(F \sim F(n_1 - 1, n_2 - 1)\)</span>，此时<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(F\)</span><span class="heti-spacing"> </span></span>的取值既不能偏大也不能偏小，因此检验的拒绝域为：</p>
+<div class="arithmatex">\[
+W = \{F \ge F_{\alpha / 2}(n_1 - 1, n_2 - 1) \text{ or } F \le F_{1 - \alpha / 2}(n_1 - 1, n_2 - 1)\}
+\]</div>
+<p>将样本值代入后得到的检验统计量的值记为<span><span class="heti-spacing"> </span><span class="arithmatex">\(f_0\)</span></span>，即<span><span class="heti-spacing"> </span><span class="arithmatex">\(f_0 = \dfrac{s_1^2}{s_2^2}\)</span></span>，设：</p>
+<div class="arithmatex">\[
+p_0 = P_{\sigma_1^2 = \sigma_2^2}(\dfrac{S_1^2}{S_2^2} \le \dfrac{s_1^2}{s_2^2}) = P(F(n_1 - 1, n_2 - 1) \le f_0)
+\]</div>
+<p><span>P-<span class="heti-spacing"> </span></span>值为</p>
+<ul>
+<li>双侧检验：<span class="arithmatex">\(2\min\{p_0, 1 - p_0\}\)</span></li>
+<li>左侧检验：<span class="arithmatex">\(p_0\)</span></li>
+<li>右侧检验：<span class="arithmatex">\(1 - p_0\)</span></li>
+</ul>
+<details class="abstract" open="open">
+<summary>总结：正态总体均值、方差的检验法</summary>
+<p></p><div style="text-align: center">
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C8/5.png"><img src="images/C8/5.png" width="100%"/></a>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto" href="images/C8/6.png"><img src="images/C8/6.png" width="100%"/></a>
+</div><p></p>
+</details>
+<h2 id="假设检验与区间估计">假设检验与区间估计<a class="headerlink" href="#%E5%81%87%E8%AE%BE%E6%A3%80%E9%AA%8C%E4%B8%8E%E5%8C%BA%E9%97%B4%E4%BC%B0%E8%AE%A1" title="Permanent link">⚓︎</a></h2>
+<p>设<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(X_1, X_2, \dots, X_n\)</span><span class="heti-spacing"> </span></span>是来自正态总体<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(N(\mu, \sigma^2)\)</span><span class="heti-spacing"> </span></span>的样本，其中方差<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\sigma^2\)</span><span class="heti-spacing"> </span></span>已知，此时<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\mu\)</span><span class="heti-spacing"> </span></span>的置信水平为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(1 - \alpha\)</span><span class="heti-spacing"> </span></span>的置信区间为：<span class="arithmatex">\(\Big(\overline{X} - \dfrac{\sigma}{\sqrt{n}}z_{\alpha / 2}, \overline{X} + \dfrac{\sigma}{\sqrt{n}}z_{\alpha / 2}\Big)\)</span></p>
+<p>对于均值<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\mu\)</span><span class="heti-spacing"> </span></span>的双侧假设问题，在给定显著性水平<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\alpha\)</span><span class="heti-spacing"> </span></span>下，</p>
+<ul>
+<li>拒绝域：<span class="arithmatex">\(W = \{\Big|\dfrac{\overline{X} - \mu_0}{\sigma / \sqrt{n}}\Big| \ge z-{\alpha / 2}\}\)</span></li>
+<li>接受域：<span class="arithmatex">\(\overline{W} = \{\Big|\dfrac{\overline{X} - \mu_0}{\sigma / \sqrt{n}}\Big| &lt; z-{\alpha / 2}\} = \{\overline{X} - \dfrac{\sigma}{\sqrt{n}}z_{\alpha / 2} &lt; \mu_0 &lt; \overline{X} + \dfrac{\sigma}{\sqrt{n}}z_{\alpha / 2}\}\)</span>，即接受域正好是这个置信区间</li>
+</ul>
+<hr/>
+<p>对应一般情况，设<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(X_1, X_2, \dots, X_n\)</span><span class="heti-spacing"> </span></span>是来自总体<span class="heti-skip"><span class="heti-spacing"> </span>$ X\sim F(x; \theta)$<span class="heti-spacing"> </span></span>的样本，</p>
+<ul>
+<li>如果双侧假设问题的显著性水平为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\alpha\)</span><span class="heti-spacing"> </span></span>的接受域<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\overline{W}\)</span><span class="heti-spacing"> </span></span>能等价地写成<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\widehat{\theta_L} &lt; \theta_0 &lt; \widehat{\theta_U}\)</span><span class="heti-spacing"> </span></span>的形式，那么<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\((\widehat{\theta_L}, \widehat{\theta_U})\)</span><span class="heti-spacing"> </span></span>是<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\theta\)</span><span class="heti-spacing"> </span></span>的置信水平为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(1 - \alpha\)</span><span class="heti-spacing"> </span></span>的置信区间</li>
+<li>反之也成立</li>
+</ul>
+<h2 id="拟合优度检验">拟合优度检验<a class="headerlink" href="#%E6%8B%9F%E5%90%88%E4%BC%98%E5%BA%A6%E6%A3%80%E9%AA%8C" title="Permanent link">⚓︎</a></h2>
+<div class="admonition warning">
+<p class="admonition-title">注</p>
+<p>这块内容不考！！！</p>
+</div>
+<p>设<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(F(x)\)</span><span class="heti-spacing"> </span></span>是总体的未知的分布函数，又设<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(F_0(x)\)</span><span class="heti-spacing"> </span></span>是具有某种已知类型的分布函数，但可能含有若干未知参数，需验证假设<span><span class="heti-spacing"> </span><span class="arithmatex">\(H_0: F(x) = F_0(x)\)</span></span>，这类分布的假设验证称为<strong>拟合优度检验</strong>。下面主要讨论皮尔逊拟合优度<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\chi^2\)</span><span class="heti-spacing"> </span></span>检验。</p>
+<p>基本思想（要求样本容量<span><span class="heti-spacing"> </span><span class="arithmatex">\(n \ge 50\)</span></span>，且<span><span class="heti-spacing"> </span><span class="arithmatex">\(np_i\)</span></span>（或<span><span class="heti-spacing"> </span><span class="arithmatex">\(n\widehat{p_i}\)</span></span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>）<span class="arithmatex">\(\ge 5\)</span>：</p>
+<ul>
+<li>对总体<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(X\)</span><span class="heti-spacing"> </span></span>的取值分为互不相容的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(k\)</span><span class="heti-spacing"> </span></span>类，记为<span><span class="heti-spacing"> </span><span class="arithmatex">\(A_1, A_2, \dots, A_k\)</span></span>；设<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(X_1, X_2, \dots, X_n\)</span><span class="heti-spacing"> </span></span>是来自该总体的样本，并记<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n_i\)</span><span class="heti-spacing"> </span></span>为样本值落在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(A_i\)</span><span class="heti-spacing"> </span></span>类的个数（<strong>实际频数</strong>）</li>
+<li>当<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(H_0\)</span><span class="heti-spacing"> </span></span>中的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(F_0(x)\)</span><span class="heti-spacing"> </span></span>完全已知时，计算<span><span class="heti-spacing"> </span><span class="arithmatex">\(p_i = O_{H_0}(A_i), i = 1, 2, \dots, k\)</span></span></li>
+<li>假设<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(H_0\)</span><span class="heti-spacing"> </span></span>中的<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(F_0(x)\)</span><span class="heti-spacing"> </span></span>含有<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(r\)</span><span class="heti-spacing"> </span></span>个未知参数时，要先在<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(F_0(x)\)</span><span class="heti-spacing"> </span></span>的形式下利用极大似然法估计<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(r\)</span><span class="heti-spacing"> </span></span>个未知的参数，然后求得<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(p_i\)</span><span class="heti-spacing"> </span></span>的估计值<span><span class="heti-spacing"> </span><span class="arithmatex">\(\widehat{p_i}\)</span></span></li>
+<li>当<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(H_0\)</span><span class="heti-spacing"> </span></span>为真时，<span><span class="arithmatex">\(n\)</span><span class="heti-spacing"> </span></span>个个体中属于<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(A_i\)</span><span class="heti-spacing"> </span></span>的“期望个数”应为<span><span class="heti-spacing"> </span><span class="arithmatex">\(np_i\)</span></span>（或<span><span class="heti-spacing"> </span><span class="arithmatex">\(n\widehat{p_i}\)</span></span><heti-adjacent class="heti-adjacent-half">）</heti-adjacent>（<strong>理论频数</strong>）</li>
+<li><span class="arithmatex">\(\chi^2 = \sum\limits_{i=1}^k\dfrac{(n_i - np_i)^2}{np_i}\)</span>（或<span><span class="heti-spacing"> </span><span class="arithmatex">\(\chi^2 = \sum\limits_{i=1}^k\dfrac{(n_i - n\widehat{p_i})^2}{n\widehat{p_i}}\)</span></span>）作为衡量实际频数与理论频数偏差的综合指标，当<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(H_0\)</span><span class="heti-spacing"> </span></span>为真时，<span><span class="arithmatex">\(\chi^2\)</span><span class="heti-spacing"> </span></span>的值偏小</li>
+<li>拒绝域：<span class="arithmatex">\(W = \{\chi^2 \ge C\}\)</span>，其中临界值<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(C\)</span><span class="heti-spacing"> </span></span>为待定常数</li>
+<li>极限定理：若<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(n\)</span><span class="heti-spacing"> </span></span>充分大，则当<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(H_0\)</span><span class="heti-spacing"> </span></span>为真时，统计量<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\chi^2\)</span><span class="heti-spacing"> </span></span>近似服从<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\chi^2(k - r - 1)\)</span><span class="heti-spacing"> </span></span>分布，其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(k\)</span><span class="heti-spacing"> </span></span>为分类数，<span><span class="arithmatex">\(r\)</span><span class="heti-spacing"> </span></span>为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(F_0(x)\)</span><span class="heti-spacing"> </span></span>中含有的未知参数个数，当<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(F_0(x)\)</span><span class="heti-spacing"> </span></span>完全已知时，<span class="arithmatex">\(r = 0\)</span><ul>
+<li>有关上述分布假设的显著性水平<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\approx \alpha\)</span><span class="heti-spacing"> </span></span>的拒绝域为<span><span class="heti-spacing"> </span><span class="arithmatex">\(W = \{\chi^2 \ge \chi_{\alpha}^2(k - r - 1)\}\)</span></span></li>
+<li><span>P-<span class="heti-spacing"> </span></span>值<span><span class="heti-spacing"> </span>= <span class="arithmatex">\(P(\chi^2(k - r - 1) \ge \chi_0^2)\)</span></span>，其中<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\chi_0^2\)</span><span class="heti-spacing"> </span></span>为<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\chi^2\)</span><span class="heti-spacing"> </span></span>的观测值，称该<span class="heti-skip"><span class="heti-spacing"> </span>P-<span class="heti-spacing"> </span></span>值为拟合优度，其值越大，越无法拒绝原假设。给定<span><span class="heti-spacing"> </span><span class="arithmatex">\(\alpha\)</span></span>，当<span class="heti-skip"><span class="heti-spacing"> </span>P-<span class="heti-spacing"> </span></span>值<span class="heti-skip"><span class="heti-spacing"> </span><span class="arithmatex">\(\le \alpha\)</span><span class="heti-spacing"> </span></span>时，就拒绝原假设</li>
+</ul>
+</li>
+</ul>
+<aside class="md-source-file">
+<span class="md-source-file__fact">
+<span class="md-icon" title="最后更新">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"></path></svg>
+</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2026年8月2日 20:39:17 CST">2026年8月2日 20:39:17</span>
+</span>
+<span class="md-source-file__fact">
+<span class="md-icon" title="创建日期">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"></path></svg>
+</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="2026年8月2日 20:39:17 CST">2026年8月2日 20:39:17</span>
+</span>
+</aside>
+<p style="font-size: 30px; font-weight: 600">评论区</p>
+<div>
+    如果大家有什么问题或想法，欢迎在下方留言~
+  </div>
+<!-- Insert generated snippet here -->
+<script async="" crossorigin="anonymous" data-category="Announcements" data-category-id="DIC_kwDOMAb9Zs4CfmpP" data-emit-metadata="0" data-input-position="bottom" data-lang="zh-CN" data-mapping="pathname" data-reactions-enabled="1" data-repo="noughtq/notebook" data-repo-id="R_kgDOMAb9Zg" data-strict="0" data-theme="preferred_color_scheme" src="https://giscus.app/client.js">
+</script>
+<!-- Synchronize Giscus theme with palette -->
+<script>
+    var giscus = document.querySelector("script[src*=giscus]")
+
+    // Set palette on initial load
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object") {
+      var theme = palette.color.scheme === "slate"
+        ? "transparent_dark"
+        : "light"
+
+      // Instruct Giscus to set theme
+      giscus.setAttribute("data-theme", theme) 
+    }
+
+    // Register event handlers after documented loaded
+    document.addEventListener("DOMContentLoaded", function() {
+      var ref = document.querySelector("[data-md-component=palette]")
+      ref.addEventListener("change", function() {
+        var palette = __md_get("__palette")
+        if (palette && typeof palette.color === "object") {
+          var theme = palette.color.scheme === "slate"
+            ? "dark"
+            : "light"
+
+          // Instruct Giscus to change theme
+          var frame = document.querySelector(".giscus-frame")
+          frame.contentWindow.postMessage(
+            { giscus: { setConfig: { theme } } },
+            "https://giscus.app"
+          )
+        }
+      })
+    })
+  </script>
+<!-- 标题计数器 -->
+<link href="/css/counter.css" rel="stylesheet"/>
+<!-- 主页个性化 -->
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+<button class="md-top md-icon" data-md-component="top" hidden="" type="button">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  回到页面顶部
+</button>
+</main>
+<footer class="md-footer">
+<nav aria-label="页脚" class="md-footer__inner md-grid">
+<a aria-label="上一页: 第7章 参数估计" class="md-footer__link md-footer__link--prev" href="7.html">
+<div class="md-footer__button md-icon">
+<svg viewbox="0 0 256 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path></svg>
+</div>
+<div class="md-footer__title">
+<span class="md-footer__direction">
+                上一页
+              </span>
+<div class="md-ellipsis">
+                第7章 参数估计
+              </div>
+</div>
+</a>
+<a aria-label="下一页: 题目整理" class="md-footer__link md-footer__link--next" href="exercises.html">
+<div class="md-footer__title">
+<span class="md-footer__direction">
+                下一页
+              </span>
+<div class="md-ellipsis">
+                题目整理
+              </div>
+</div>
+<div class="md-footer__button md-icon">
+<svg viewbox="0 0 256 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M247.1 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L179.2 256 41.9 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"></path></svg>
+</div>
+</a>
+</nav>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright" style="margin-left: 33.5%">
+<div class="md-copyright__highlight" style="text-align: center">
+        Copyright © 2024-2026 <a href="https://github.com/NoughtQ">NoughtQ</a>
+</div>
+    
+    
+      Powered by
+      <a href="https://www.mkdocs.org/" rel="noopener" target="_blank">
+        MkDocs
+      </a>
+      with theme
+      <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+        Material
+      </a>
+      modified by
+      <a href="https://github.com/NoughtQ" rel="noopener" target="_blank">
+        NoughtQ
+      </a>
+<!-- <br> -->
+<div style="text-align: center;">
+<a href="https://icp.gov.moe/?keyword=20252357" target="_blank">萌ICP备20252357号</a>
+</div>
+</div>
+<div class="md-social">
+<a class="md-social__link" href="https://noughtq.top" rel="noopener" target="_blank" title="noughtq.top">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M277.8 8.6c-12.3-11.4-31.3-11.4-43.5 0l-224 208c-9.6 9-12.8 22.9-8 35.1S18.8 272 32 272h16v176c0 35.3 28.7 64 64 64h288c35.3 0 64-28.7 64-64V272h16c13.2 0 25-8.1 29.8-20.3s1.6-26.2-8-35.1zM240 320h32c26.5 0 48 21.5 48 48v96H192v-96c0-26.5 21.5-48 48-48"></path></svg>
+</a>
+<a class="md-social__link" href="https://game.noughtq.top" rel="noopener" target="_blank" title="game.noughtq.top">
+<svg viewbox="0 0 640 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M448 64c106 0 192 86 192 192s-86 192-192 192H192C86 448 0 362 0 256S86 64 192 64zM192 176c-13.3 0-24 10.7-24 24v32h-32c-13.3 0-24 10.7-24 24s10.7 24 24 24h32v32c0 13.3 10.7 24 24 24s24-10.7 24-24v-32h32c13.3 0 24-10.7 24-24s-10.7-24-24-24h-32v-32c0-13.3-10.7-24-24-24m240 96a32 32 0 1 0 0 64 32 32 0 1 0 0-64m64-96a32 32 0 1 0 0 64 32 32 0 1 0 0-64"></path></svg>
+</a>
+<a class="md-social__link" href="https://blog.noughtq.top" rel="noopener" target="_blank" title="blog.noughtq.top">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M224 24c0-13.3 10.7-24 24-24 145.8 0 264 118.2 264 264 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-119.3-96.7-216-216-216-13.3 0-24-10.7-24-24M80 96c26.5 0 48 21.5 48 48v224c0 26.5 21.5 48 48 48s48-21.5 48-48-21.5-48-48-48c-8.8 0-16-7.2-16-16v-64c0-8.8 7.2-16 16-16 79.5 0 144 64.5 144 144s-64.5 144-144 144S32 447.5 32 368V144c0-26.5 21.5-48 48-48m168 0c92.8 0 168 75.2 168 168 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-66.3-53.7-120-120-120-13.3 0-24-10.7-24-24s10.7-24 24-24"></path></svg>
+</a>
+<a class="md-social__link" href="https://github.com/noughtq" rel="noopener" target="_blank" title="github.com">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"></path></svg>
+</a>
+<a class="md-social__link" href="mailto:noughtq666@gmail.com" rel="noopener" target="_blank" title="">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m20 8-8 5-8-5V6l8 5 8-5m0-2H4c-1.11 0-2 .89-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2"></path></svg>
+</a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["announce.dismiss", "content.action.edit", "content.action.view", "content.code.copy", "content.code.annotate", "content.footnote.tooltips", "navigation.footer", "navigation.indexes", "navigation.path", "navigation.prune", "navigation.tabs", "navigation.top", "navigation.tracking", "search.share"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+<script src="../../js/anchor.js"></script>
+<script src="../../js/katex.js"></script>
+<script src="../../js/toc.js"></script>
+<script src="../../js/typed.js"></script>
+<script src="../../js/custom.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script src="../../js/settings.js"></script>
+<script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+<script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.js"></script>
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>
