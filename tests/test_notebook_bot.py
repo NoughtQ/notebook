@@ -11,7 +11,7 @@ from unittest.mock import patch
 
 from notebook_bot.run import load_config, validate_config, admit, verify
 from notebook_bot.context import resolve_note, build_context
-from notebook_bot.github import read_event, read_thread, save_state, discover_events, publish
+from notebook_bot.github import read_event, read_thread, save_state, discover_events, publish, reconcile
 from notebook_bot.model import generate, validate_result
 from notebook_bot.patch import validate_edits, apply_edits
 
@@ -415,6 +415,58 @@ class PublishingTests(unittest.TestCase):
             self.assertEqual((first["events"]["comment:C1"]["pr_number"], len(prs), len(posts)), (7, 1, 1))
             self.assertEqual(again["events"]["comment:C1"]["pr_number"], 7)
             self.assertEqual(note.read_text(), "# Claim\nA or B\n")
+
+
+class LifecycleTests(unittest.TestCase):
+    def setUp(self):
+        self.posts = []
+        self.state = {"events": {"comment:C1": {"status": "published", "pr_number": 7,
+                       "discussion_id": "D1", "discussion_number": 1, "thread_root_id": "C1", "page_path": "math/toc/1",
+                       "expected_text": "A and B"}}, "pull_requests": {}}
+        self.config = {"bot_login": "notebook-helper[bot]", "site_url": "https://note.noughtq.top"}
+
+    def api(self, method, path, body):
+        if path.endswith("/pulls/7"):
+            return {"number": 7, "state": self.pr_state, "merged": self.merged,
+                    "merge_commit_sha": "MERGE", "user": {"login": "notebook-helper[bot]"},
+                    "body": "<!-- notebook-fix:1234567890abcdef -->"}
+        if "/compare/" in path:
+            return {"status": self.compare_status}
+        if path == "/graphql" and "discussion(number:" in body.get("query", ""):
+            comment = {"id": "C1", "body": "Question", "author": {"login": "reader"},
+                       "replies": {"nodes": [{"id": "BOT", "body": "Earlier bot answer",
+                                               "author": {"login": "notebook-helper[bot]"}}]}}
+            connection = {"nodes": [comment], "pageInfo": {"hasNextPage": False, "endCursor": None}}
+            return {"data": {"repository": {"discussion": {"comments": connection}}}}
+        if path == "/graphql" and "addDiscussionComment" in body.get("query", ""):
+            self.posts.append(body["variables"]["body"])
+            return {"data": {"addDiscussionComment": {"comment": {"id": "NOTICE"}}}}
+        raise AssertionError((method, path))
+
+    def site_get(self, url):
+        if url.endswith("bot-deploy.json"):
+            return 200, json.dumps({"source_sha": self.deploy_sha})
+        return self.page_status, self.page_body
+
+    def test_closed_unmerged_and_failed_deploy_do_not_claim_live(self):
+        self.pr_state, self.merged, self.compare_status = "closed", False, "behind"
+        self.deploy_sha, self.page_status, self.page_body = "OLD", 200, "A and B"
+        closed = reconcile(self.state, self.api, self.site_get, self.config)
+        self.assertEqual(closed["pull_requests"]["7"]["status"], "rejected")
+        self.pr_state, self.merged = "closed", True
+        merged = reconcile(self.state, self.api, self.site_get, self.config)
+        self.assertEqual(merged["pull_requests"]["7"]["status"], "pending_deploy")
+        self.assertEqual(self.posts, [])
+
+    def test_only_confirmed_site_change_gets_one_notice(self):
+        self.pr_state, self.merged, self.compare_status = "closed", True, "ahead"
+        self.deploy_sha, self.page_status, self.page_body = "DEPLOY", 200, "<p>A and B</p>"
+        updated = reconcile(self.state, self.api, self.site_get, self.config)
+        self.assertEqual(updated["pull_requests"]["7"]["status"], "deployed")
+        self.assertEqual(len(self.posts), 1)
+        self.assertIn("已上线", self.posts[0])
+        reconcile(updated, self.api, self.site_get, self.config)
+        self.assertEqual(len(self.posts), 1)
 
 
 if __name__ == "__main__":

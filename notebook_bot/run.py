@@ -9,6 +9,7 @@ import subprocess
 import tempfile
 import argparse
 import base64
+from urllib.request import urlopen
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from urllib.error import HTTPError
@@ -216,6 +217,26 @@ def main() -> None:
         if new_state != state:
             save_state(request, new_state, sha)
         output = {"status": new_state["events"][payload["reservation"]["key"]]["status"]}
+    elif args.stage == "reconcile":
+        from .github import request, reconcile, save_state
+        if config["mode"] not in {"mention", "auto"}:
+            output = {"skip": True}
+        else:
+            state, sha = _load_state(request)
+            if not sha:
+                raise ValueError("bot-state is missing")
+            def site_get(url):
+                if not url.startswith(config["site_url"].rstrip("/") + "/"):
+                    raise ValueError("site URL is outside configured domain")
+                try:
+                    with urlopen(url, timeout=15) as response:
+                        return response.status, response.read(2_000_000).decode("utf-8")
+                except HTTPError as exc:
+                    return exc.code, ""
+            new_state = reconcile(state, request, site_get, config)
+            if new_state != state:
+                save_state(request, new_state, sha)
+            output = {"pull_requests": new_state.get("pull_requests", {})}
     else:
         raise ValueError(f"{args.stage} is implemented in a later task")
     args.output.parent.mkdir(parents=True, exist_ok=True)

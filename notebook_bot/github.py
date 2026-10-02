@@ -8,6 +8,8 @@ import re
 import copy
 import subprocess
 import tempfile
+from html import unescape
+from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import quote
 from urllib.error import HTTPError
@@ -286,4 +288,74 @@ def publish(verified: dict, reservation: dict, state: dict, api, config: dict) -
     else:
         reply_id = existing["id"]
     record.update({"status": "published", "reply_id": reply_id, "pr_number": pr_number})
+    if pr_number:
+        record.update({"discussion_id": event["discussion_id"],
+                       "discussion_number": event["discussion_number"],
+                       "thread_root_id": event["thread_root_id"],
+                       "page_path": event["page_path"],
+                       "expected_text": result["edits"][0]["new"]})
     return state
+
+
+def reconcile(state: dict, api, site_get, config: dict) -> dict:
+    """Notify once only after a merged correction is visible on the public site."""
+    class Text(HTMLParser):
+        def __init__(self):
+            super().__init__()
+            self.parts = []
+
+        def handle_data(self, data):
+            self.parts.append(data)
+
+    updated = copy.deepcopy(state)
+    prs = updated.setdefault("pull_requests", {})
+    for key, record in updated.get("events", {}).items():
+        number = record.get("pr_number")
+        if not number or not record.get("page_path") or prs.get(str(number), {}).get("status") in {"deployed", "rejected"}:
+            continue
+        pr = api("GET", f"/repos/NoughtQ/notebook/pulls/{number}", None)
+        if pr["user"]["login"].lower() != config["bot_login"].lower() or not re.search(r"<!-- notebook-fix:[0-9a-f]{16} -->", pr.get("body", "")):
+            raise ValueError("correction PR identity changed")
+        item = prs.setdefault(str(number), {})
+        if pr["state"] == "closed" and not pr.get("merged"):
+            item["status"] = "rejected"
+            continue
+        if not pr.get("merged"):
+            item["status"] = "review"
+            continue
+        item["status"] = "pending_deploy"
+        status, marker_text = site_get(config["site_url"].rstrip("/") + "/bot-deploy.json")
+        if status != 200:
+            continue
+        try:
+            deployed_sha = json.loads(marker_text)["source_sha"]
+        except (ValueError, KeyError, TypeError):
+            continue
+        if api("GET", f"/repos/NoughtQ/notebook/compare/{pr['merge_commit_sha']}...{deployed_sha}", None)["status"] not in {"ahead", "identical"}:
+            continue
+        if not re.fullmatch(r"[A-Za-z0-9_/-]+", record["page_path"]):
+            raise ValueError("invalid page path in state")
+        page_url = config["site_url"].rstrip("/") + "/" + record["page_path"].strip("/") + "/"
+        page_status, html = site_get(page_url)
+        parser = Text()
+        parser.feed(html)
+        visible = " ".join(unescape(" ".join(parser.parts)).split())
+        expected = " ".join(record["expected_text"].split())
+        if page_status != 200 or not expected or expected not in visible:
+            continue
+        event = {"discussion_number": record["discussion_number"], "comment_id": record["thread_root_id"],
+                 "thread_root_id": record["thread_root_id"]}
+        thread = read_thread(event, api)
+        marker = f"<!-- notebook-deploy:{number} -->"
+        existing = next((comment for comment in thread if
+                         comment.get("author", {}).get("login", "").lower() == config["bot_login"].lower()
+                         and marker in comment.get("body", "")), None)
+        if existing is None:
+            query = """mutation($discussionId:ID!,$replyToId:ID,$body:String!){
+              addDiscussionComment(input:{discussionId:$discussionId,replyToId:$replyToId,body:$body}){comment{id}}}"""
+            api("POST", "/graphql", {"query": query, "variables": {
+                "discussionId": record["discussion_id"], "replyToId": event["thread_root_id"],
+                "body": f"这处笔记修正已上线：{page_url}\n\n本回复由笔记助手自动生成。\n{marker}"}})
+        item["status"] = "deployed"
+        item["source_sha"] = deployed_sha
+    return updated

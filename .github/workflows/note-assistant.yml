@@ -5,6 +5,11 @@ on:
     types: [created]
   discussion_comment:
     types: [created]
+  pull_request:
+    types: [closed]
+  workflow_run:
+    workflows: [Notebook deploy]
+    types: [completed]
   workflow_dispatch:
   schedule:
     - cron: '17 * * * *'
@@ -19,15 +24,16 @@ concurrency:
 
 jobs:
   prepare:
-    if: vars.NOTE_BOT_MODE != ''
+    if: vars.NOTE_BOT_MODE != '' && (github.event_name == 'discussion' || github.event_name == 'discussion_comment' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
     runs-on: ubuntu-latest
     timeout-minutes: 15
     outputs:
       ready: ${{ steps.prepare.outputs.ready }}
+      base_sha: ${{ steps.prepare.outputs.base_sha }}
     steps:
       - uses: actions/checkout@v7
         with:
-          ref: ${{ github.sha }}
+          ref: main
           persist-credentials: false
       - uses: actions/setup-python@v7
         with:
@@ -48,6 +54,7 @@ jobs:
           OPENAI_MODEL: ${{ vars.NOTE_BOT_MODEL }}
         run: |
           python -m notebook_bot.run prepare --input "$GITHUB_EVENT_PATH" --output prepare.json --publish
+          echo "base_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
           if jq -e '.skip == false' prepare.json >/dev/null; then echo 'ready=true' >> "$GITHUB_OUTPUT"; fi
       - if: steps.prepare.outputs.ready == 'true'
         uses: actions/upload-artifact@v7
@@ -64,7 +71,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
         with:
-          ref: ${{ github.sha }}
+          ref: ${{ needs.prepare.outputs.base_sha }}
           persist-credentials: false
       - uses: actions/setup-python@v7
         with:
@@ -90,7 +97,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
         with:
-          ref: ${{ github.sha }}
+          ref: ${{ needs.prepare.outputs.base_sha }}
           persist-credentials: false
       - uses: actions/setup-python@v7
         with:
@@ -114,7 +121,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
         with:
-          ref: ${{ github.sha }}
+          ref: ${{ needs.prepare.outputs.base_sha }}
           persist-credentials: false
       - uses: actions/setup-python@v7
         with:
@@ -135,3 +142,26 @@ jobs:
           BOT_LOGIN: ${{ vars.NOTE_BOT_LOGIN }}
           OPENAI_MODEL: ${{ vars.NOTE_BOT_MODEL }}
         run: python -m notebook_bot.run publish --input verified.json --output published.json --publish
+
+  reconcile:
+    if: vars.NOTE_BOT_MODE == 'auto' || vars.NOTE_BOT_MODE == 'mention'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - id: app
+        uses: actions/create-github-app-token@v3
+        with:
+          app-id: ${{ secrets.NOTE_BOT_APP_ID }}
+          private-key: ${{ secrets.NOTE_BOT_APP_PRIVATE_KEY }}
+      - env:
+          GITHUB_TOKEN: ${{ steps.app.outputs.token }}
+          NOTE_BOT_MODE: ${{ vars.NOTE_BOT_MODE }}
+          BOT_LOGIN: ${{ vars.NOTE_BOT_LOGIN }}
+        run: python -m notebook_bot.run reconcile --input "$GITHUB_EVENT_PATH" --output /tmp/notebook-reconcile.json
