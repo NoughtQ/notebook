@@ -9,7 +9,7 @@ from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
 
-from notebook_bot.run import load_config, validate_config, admit, verify
+from notebook_bot.run import load_config, validate_config, admit, verify, evaluate
 from notebook_bot.context import resolve_note, build_context
 from notebook_bot.github import read_event, read_thread, save_state, discover_events, publish, reconcile
 from notebook_bot.model import generate, validate_result
@@ -467,6 +467,22 @@ class LifecycleTests(unittest.TestCase):
         self.assertIn("已上线", self.posts[0])
         reconcile(updated, self.api, self.site_get, self.config)
         self.assertEqual(len(self.posts), 1)
+
+
+class EvaluationTests(unittest.TestCase):
+    def test_incomplete_or_style_leaking_dataset_fails_before_model_call(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            config = {"model": "test", "public_paths": ["docs/math/toc/1.md"]}
+            with self.assertRaises(ValueError):
+                evaluate([], config, root)
+            style = json.loads(Path("notebook_bot/style.json").read_text())
+            case = {"id": "one", "discussion_url": style[0]["discussion_url"],
+                    "source_sha": "abc", "question": "Q", "category": "explanation",
+                    "expected_facts": ["A"], "expected_action": "answer",
+                    "evidence_urls": ["https://example.edu"], "page_path": "docs/math/toc/1.md"}
+            with self.assertRaises(ValueError):
+                evaluate([case] * 30, config, root)
 
 
 if __name__ == "__main__":

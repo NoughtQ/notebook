@@ -9,6 +9,9 @@ import subprocess
 import tempfile
 import argparse
 import base64
+import re
+import time
+from importlib.metadata import version
 from urllib.request import urlopen
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
@@ -137,6 +140,73 @@ def verify(candidate: dict, root: Path, config: dict) -> dict:
             "diff_stats": stats, "build_status": build_status, "result": result}
 
 
+def evaluate(cases: list[dict], config: dict, output_dir: Path, client=None) -> dict:
+    """Run read-only, snapshot-pinned evaluation; factual grades require a human."""
+    from collections import Counter
+    from urllib.parse import urlparse
+    from .model import generate
+
+    required = {"id", "discussion_url", "source_sha", "question", "category",
+                "expected_facts", "expected_action", "evidence_urls", "page_path", "created_at"}
+    if len(cases) != 30 or Counter(case.get("category") for case in cases) != {
+            "correction": 10, "explanation": 10, "ambiguity": 5, "insufficient": 5}:
+        raise ValueError("evaluation requires 30 reviewed cases in the 10/10/5/5 split")
+    style_urls = {item["discussion_url"] for item in json.loads(
+        Path(__file__).with_name("style.json").read_text(encoding="utf-8"))}
+    if len({case.get("id") for case in cases}) != 30 or any(
+        not required <= case.keys() or case["discussion_url"] in style_urls or
+        not re.fullmatch(r"[0-9a-f]{40}", case["source_sha"]) or
+        case["page_path"] not in config["public_paths"] or
+        not case["expected_facts"] or not case["evidence_urls"] or
+        any(urlparse(url).scheme != "https" for url in case["evidence_urls"])
+        for case in cases
+    ):
+        raise ValueError("evaluation cases are incomplete, overlapping with style, or outside public notes")
+    root = Path.cwd()
+    snapshots = {}
+    for case in cases:
+        commit_time = subprocess.check_output(["git", "show", "-s", "--format=%cI", case["source_sha"]], cwd=root, text=True).strip()
+        if datetime.fromisoformat(commit_time) > datetime.fromisoformat(case["created_at"].replace("Z", "+00:00")):
+            raise ValueError("snapshot postdates question")
+        note = subprocess.check_output(["git", "show", f"{case['source_sha']}:{case['page_path']}"], cwd=root, text=True)
+        if re.search(r"(?m)^password\s*:", note) or "--8<--" in note:
+            raise ValueError("snapshot includes unreviewed content")
+        snapshots[case["id"]] = note[:20_000]
+    if client is None:
+        if not os.getenv("OPENAI_API_KEY"):
+            raise ValueError("OPENAI_API_KEY is required for live evaluation")
+        from openai import OpenAI
+        client = OpenAI(max_retries=0, timeout=90)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    results_path = output_dir / "results.jsonl"
+    prior = [json.loads(line) for line in results_path.read_text(encoding="utf-8").splitlines()] if results_path.exists() else []
+    done = {item["id"] for item in prior}
+    today = datetime.now(timezone.utc).date().isoformat()
+    remaining = max(0, config["daily_limit"] - sum(item.get("run_date") == today for item in prior))
+    for case in [item for item in cases if item["id"] not in done][:remaining]:
+        context = {"key": case["id"], "question": case["question"],
+                   "notes": [{"path": case["page_path"], "text": snapshots[case["id"]],
+                              "sha256": hashlib.sha256(snapshots[case["id"]].encode()).hexdigest()}],
+                   "thread": [], "limitations": [], "base_sha": case["source_sha"]}
+        started = time.monotonic()
+        result = generate(context, config, client)
+        row = {"id": case["id"], "run_date": today, "model": config["model"],
+               "source_sha": case["source_sha"], "action": result["action"],
+               "expected_action": case["expected_action"], "answer_md": result["answer_md"],
+               "sources": result["sources"], "latency_seconds": round(time.monotonic() - started, 2),
+               "needs_human_review": True}
+        with results_path.open("a", encoding="utf-8") as handle:
+            handle.write(json.dumps(row, ensure_ascii=False) + "\n")
+        prior.append(row)
+    summary = {"total": 30, "evaluated": len(prior), "remaining": 30 - len(prior),
+               "human_review_required": True, "model": config["model"],
+               "openai_sdk_version": version("openai"),
+               "source_sha": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip(),
+               "prompt_sha256": hashlib.sha256(Path(__file__).with_name("prompt.md").read_bytes()).hexdigest()}
+    (output_dir / "summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    return summary
+
+
 def _load_state(api) -> tuple[dict, str]:
     try:
         data = api("GET", "/repos/NoughtQ/notebook/contents/state.json?ref=bot-state", None)
@@ -192,6 +262,10 @@ def main() -> None:
     args = parser.parse_args()
     root = Path.cwd()
     config = load_config(root / "notebook_bot/config.json")
+    if args.stage == "evaluate":
+        cases = [json.loads(line) for line in args.input.read_text(encoding="utf-8").splitlines() if line.strip()]
+        print(json.dumps(evaluate(cases, config, args.output), ensure_ascii=False))
+        return
     payload = json.loads(args.input.read_text(encoding="utf-8"))
     if args.stage == "prepare":
         from .github import request
