@@ -19,13 +19,13 @@ jobs:
     steps:
       - uses: actions/checkout@v7
         with:
-          ref: main
           persist-credentials: false
       - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
       - run: python -m pip install -r bot/requirements/site.txt
       - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends texlive-xetex texlive-latex-extra texlive-pictures dvisvgm
+      - run: git fetch origin main --depth=1 && git checkout --detach FETCH_HEAD
       - name: Prepare complete site
         env:
           NOTEBOOK_PASSWORDS_YML: ${{ secrets.NOTEBOOK_PASSWORDS_YML }}
