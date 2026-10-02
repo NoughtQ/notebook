@@ -108,11 +108,11 @@ def discover_events(api, state: dict, config: dict) -> list[dict]:
     if config["mode"] == "off":
         return []
     query = """query($after:String){repository(owner:"NoughtQ",name:"notebook"){
-      discussions(first:100,after:$after,orderBy:{field:UPDATED_AT,direction:DESC}){
+      discussions(first:20,after:$after,orderBy:{field:UPDATED_AT,direction:DESC}){
         pageInfo{hasNextPage endCursor} nodes{id number body createdAt url author{login}
-          category{id} comments(first:100){pageInfo{hasNextPage endCursor}
+          category{id} comments(first:50){pageInfo{hasNextPage endCursor}
             nodes{id body createdAt url author{login}
-              replies(first:100){pageInfo{hasNextPage endCursor}
+              replies(first:50){pageInfo{hasNextPage endCursor}
                 nodes{id body createdAt url author{login}}}}}}}}}"""
     more_comments = """query($number:Int!,$after:String){repository(owner:"NoughtQ",name:"notebook"){
       discussion(number:$number){comments(first:100,after:$after){pageInfo{hasNextPage endCursor}
