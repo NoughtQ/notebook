@@ -1,12 +1,15 @@
 import unittest
 import tempfile
 import copy
+import json
 from datetime import datetime, timezone
 from pathlib import Path
+from types import SimpleNamespace
 
 from notebook_bot.run import load_config, validate_config, admit
 from notebook_bot.context import resolve_note, build_context
 from notebook_bot.github import read_event, read_thread, save_state, discover_events
+from notebook_bot.model import generate, validate_result
 
 
 class ConfigTests(unittest.TestCase):
@@ -197,6 +200,62 @@ class AdmissionTests(unittest.TestCase):
         with self.assertRaises(TimeoutError):
             discover_events(broken_api, state, self.config)
         self.assertEqual(state, {"events": {}, "scan_watermark": "old"})
+
+
+class ModelTests(unittest.TestCase):
+    def setUp(self):
+        self.context = {"key": "comment:C1", "question": "Is this theorem right?",
+                        "notes": [{"path": "docs/math/toc/1.md", "text": "# Theorem\nA implies B", "sha256": "abc"}],
+                        "thread": [], "limitations": [], "style_examples": []}
+        self.source = {"id": "src-1", "url": "https://example.edu/book", "title": "Book", "excerpt": "A implies B"}
+        self.result = {"action": "correction", "answer_md": "这个地方确实写反了，感谢指出。",
+                       "sources": [self.source], "claims": [{"text": "原文有误", "source_ids": ["src-1"]}],
+                       "edits": [{"path": "docs/math/toc/1.md", "old": "A implies B", "new": "B implies A"}],
+                       "reason": "与原始定义相反", "verification": "pass"}
+
+    def test_rejects_claim_with_unobserved_source(self):
+        with self.assertRaises(ValueError):
+            validate_result(self.result, self.context, [])
+
+    def test_rejects_overlong_reply_and_unsupported_url(self):
+        with self.assertRaises(ValueError):
+            validate_result({**self.result, "answer_md": "a" * 6001}, self.context, [self.source])
+        forged = {**self.result, "sources": [{**self.source, "url": "file:///etc/passwd"}]}
+        with self.assertRaises(ValueError):
+            validate_result(forged, self.context, [self.source])
+
+    def test_refusal_or_incomplete_output_fails_closed(self):
+        responses = [SimpleNamespace(status="incomplete", output_text="", output=[])]
+        calls = []
+        client = SimpleNamespace(responses=SimpleNamespace(create=lambda **kw: (calls.append(kw), responses.pop(0))[1]))
+        with self.assertRaises(ValueError):
+            generate(self.context, {"model": "test-model"}, client)
+        self.assertEqual(len(calls), 1)
+        self.assertEqual(calls[0]["max_tool_calls"], 3)
+
+    def test_search_then_structured_answer_has_real_source(self):
+        annotation = SimpleNamespace(type="url_citation", url="https://example.edu/book", title="Book")
+        search = SimpleNamespace(status="completed", output_text="A implies B [source]",
+                                 output=[SimpleNamespace(type="message", content=[SimpleNamespace(annotations=[annotation])])])
+        result = {**self.result, "action": "answer", "edits": [], "verification": "pass"}
+        answer = SimpleNamespace(status="completed", output_text=json.dumps(result), output=[])
+        calls = []
+        responses = [search, answer]
+        client = SimpleNamespace(responses=SimpleNamespace(create=lambda **kw: (calls.append(kw), responses.pop(0))[1]))
+        actual = generate(self.context, {"model": "test-model"}, client)
+        self.assertEqual(actual["action"], "answer")
+        self.assertEqual(len(calls), 2)
+        self.assertEqual(calls[0]["tools"], [{"type": "web_search"}])
+        self.assertNotIn("tools", calls[1])
+
+    def test_generated_prompt_includes_author_style_examples(self):
+        search = SimpleNamespace(status="completed", output_text="Research", output=[])
+        result = {**self.result, "action": "clarify", "sources": [], "claims": [], "edits": []}
+        answer = SimpleNamespace(status="completed", output_text=json.dumps(result), output=[])
+        calls, responses = [], [search, answer]
+        client = SimpleNamespace(responses=SimpleNamespace(create=lambda **kw: (calls.append(kw), responses.pop(0))[1]))
+        generate(self.context, {"model": "test-model"}, client)
+        self.assertGreater(len(json.loads(calls[1]["input"])["style_examples"]), 0)
 
 
 if __name__ == "__main__":
