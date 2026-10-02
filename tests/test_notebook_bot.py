@@ -6,10 +6,11 @@ from datetime import datetime, timezone
 from pathlib import Path
 from types import SimpleNamespace
 
-from notebook_bot.run import load_config, validate_config, admit
+from notebook_bot.run import load_config, validate_config, admit, verify
 from notebook_bot.context import resolve_note, build_context
 from notebook_bot.github import read_event, read_thread, save_state, discover_events
 from notebook_bot.model import generate, validate_result
+from notebook_bot.patch import validate_edits, apply_edits
 
 
 class ConfigTests(unittest.TestCase):
@@ -256,6 +257,56 @@ class ModelTests(unittest.TestCase):
         client = SimpleNamespace(responses=SimpleNamespace(create=lambda **kw: (calls.append(kw), responses.pop(0))[1]))
         generate(self.context, {"model": "test-model"}, client)
         self.assertGreater(len(json.loads(calls[1]["input"])["style_examples"]), 0)
+
+
+class PatchTests(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.tmp.cleanup)
+        self.root = Path(self.tmp.name)
+        self.note = self.root / "docs/math/toc/1.md"
+        self.note.parent.mkdir(parents=True)
+        self.note.write_text("---\ntitle: Test\n---\nA or B\n", encoding="utf-8")
+        self.allowed = {"docs/math/toc/1.md"}
+
+    def test_exact_single_replacement_succeeds(self):
+        edit = {"path": "docs/math/toc/1.md", "old": "A or B", "new": "A and B"}
+        validate_edits([edit], self.root, self.allowed)
+        stats = apply_edits([edit], self.root)
+        self.assertIn("A and B", self.note.read_text())
+        self.assertEqual(stats["files"], 1)
+
+    def test_ambiguous_and_missing_old_text_fail_without_changes(self):
+        edit = {"path": "docs/math/toc/1.md", "old": "A or B", "new": "A and B"}
+        self.note.write_text("A or B\nA or B\n", encoding="utf-8")
+        with self.assertRaises(ValueError):
+            validate_edits([edit], self.root, self.allowed)
+        self.note.write_text("A and B\n", encoding="utf-8")
+        with self.assertRaises(ValueError):
+            validate_edits([edit], self.root, self.allowed)
+        self.assertEqual(self.note.read_text(), "A and B\n")
+
+    def test_rejects_nonpublic_symlink_frontmatter_and_large_diff(self):
+        bad = {"path": ".github/workflows/deploy.yml", "old": "a", "new": "b"}
+        with self.assertRaises(ValueError):
+            validate_edits([bad], self.root, self.allowed)
+        with self.assertRaises(ValueError):
+            validate_edits([{"path": "docs/math/toc/1.md", "old": "title: Test", "new": "title: Better"}], self.root, self.allowed)
+        with self.assertRaises(ValueError):
+            validate_edits([{"path": "docs/math/toc/1.md", "old": "A or B", "new": "\n".join("line" for _ in range(81))}], self.root, self.allowed)
+        other = self.root / "docs/math/toc/other.md"
+        other.symlink_to(self.note)
+        with self.assertRaises(ValueError):
+            validate_edits([{"path": "docs/math/toc/other.md", "old": "A or B", "new": "A and B"}], self.root,
+                           self.allowed | {"docs/math/toc/other.md"})
+
+    def test_verify_answer_does_not_modify_source(self):
+        candidate = {"context": {"key": "comment:C1", "base_sha": "", "question": "why?"},
+                     "result": {"action": "answer", "answer_md": "Because.", "edits": []},
+                     "event": {"body_sha256": "abc"}}
+        result = verify(candidate, self.root, {"public_paths": list(self.allowed)})
+        self.assertEqual(result["diff_stats"], {"files": 0, "lines": 0})
+        self.assertEqual(self.note.read_text(), "---\ntitle: Test\n---\nA or B\n")
 
 
 if __name__ == "__main__":

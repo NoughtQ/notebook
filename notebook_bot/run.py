@@ -4,6 +4,9 @@ import json
 import os
 import copy
 import hashlib
+import shutil
+import subprocess
+import tempfile
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
@@ -79,3 +82,47 @@ def admit(event: dict, state: dict, config: dict, now: datetime) -> tuple[dict, 
                              "reserved_at": now.isoformat(), "attempts": attempt, "reply_id": prior.get("reply_id"),
                              "pr_number": prior.get("pr_number")}
     return state, reservation
+
+
+def verify(candidate: dict, root: Path, config: dict) -> dict:
+    from .patch import validate_edits, apply_edits
+
+    context, event = candidate["context"], candidate["event"]
+    result = copy.deepcopy(candidate["result"])
+    base_sha = context.get("base_sha", "")
+    if base_sha:
+        current_sha = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
+        if current_sha != base_sha:
+            raise ValueError("note base changed; regenerate answer")
+    stats = {"files": 0, "lines": 0}
+    build_status = "not-needed"
+    if result["action"] == "correction":
+        try:
+            validate_edits(result["edits"], root, set(config["public_paths"]))
+            with tempfile.TemporaryDirectory() as temp:
+                target = Path(temp)
+                for name in config["public_paths"]:
+                    source = root / name
+                    if source.is_file():
+                        destination = target / name
+                        destination.parent.mkdir(parents=True, exist_ok=True)
+                        shutil.copy2(source, destination)
+                shutil.copytree(root / "scripts", target / "scripts")
+                (target / "notebook_bot").mkdir()
+                (target / "notebook_bot/config.json").write_text(json.dumps(config), encoding="utf-8")
+                stats = apply_edits(result["edits"], target)
+                completed = subprocess.run(["bash", str(target / "scripts/build-notes.sh"), "public", str(target / "site")],
+                                           cwd=target, capture_output=True, text=True, timeout=120)
+                if completed.returncode:
+                    raise ValueError("public build failed: " + completed.stderr[-500:])
+            build_status = "passed"
+        except (ValueError, OSError, subprocess.TimeoutExpired) as exc:
+            result["action"] = "clarify"
+            result["edits"] = []
+            result["answer_md"] = "这处可能需要修正，但补丁未通过检查，暂不提交 PR。" + str(exc)[:300]
+            stats = {"files": 0, "lines": 0}
+            build_status = "failed"
+    result_sha = hashlib.sha256(json.dumps(result, ensure_ascii=False, sort_keys=True).encode()).hexdigest()
+    return {"key": context["key"], "base_sha": base_sha, "body_sha256": event.get("body_sha256", ""),
+            "result_sha256": result_sha, "allowed_paths": config["public_paths"],
+            "diff_stats": stats, "build_status": build_status, "result": result}
